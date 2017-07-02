@@ -3,11 +3,14 @@
   "description": "Interact with Twitch's API and chat.",
   "version": "0.1.0",
   "main": "lib",
-  "typings": "index",
+  "types": "lib/index",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/d-fischer/twitch.git"
+  },
+  "devDependencies": {
+    "@types/node": "^8.0.7"
   },
   "dependencies": {
     "ircv3": "^0.1.1",
