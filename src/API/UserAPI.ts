@@ -1,8 +1,10 @@
-import {Cacheable, Cached, CacheEntry} from '../Toolkit/Decorators';
+import { Cacheable, Cached, CacheEntry } from '../Toolkit/Decorators';
 import BaseAPI from './BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
-import User, {UserData} from './User';
-import ObjectTools, {UniformObject} from '../Toolkit/ObjectTools';
+import User, { UserData } from './User';
+import ObjectTools, { UniformObject } from '../Toolkit/ObjectTools';
+import { UserIdResolvable, default as UserTools } from '../Toolkit/UserTools';
+import EmoteSetList from './EmoteSetList';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {
@@ -52,6 +54,23 @@ export default class UserAPI extends BaseAPI {
 		const users = ObjectTools.indexBy(usersArr, 'userName');
 
 		return {...cachedUsers, ...users};
+	}
+
+	@Cached(3600)
+	async getUserEmotes(user?: UserIdResolvable) {
+		let userId: string;
+		if (user) {
+			userId = UserTools.getUserId(user);
+		} else {
+			const tokenInfo = await this._client.getTokenInfo();
+			if (!tokenInfo.valid) {
+				throw new Error('authorization necessary to get emotes');
+			}
+			userId = tokenInfo.userId as string;
+		}
+
+		const data = await this._client.apiCall({url: `users/${userId}/emotes`, scope: 'user_subscriptions'});
+		return new EmoteSetList(data.emoticon_sets, this._client);
 	}
 
 	private _cleanUserCache() {

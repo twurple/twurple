@@ -45,7 +45,7 @@ export function Cacheable<TBase extends Constructor>(cls: TBase) {
 	};
 }
 
-export function Cached(timeInSeconds: number = Infinity) {
+export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean = false) {
 	// tslint:disable-next-line:no-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
 		const origFn = descriptor.value;
@@ -60,7 +60,9 @@ export function Cached(timeInSeconds: number = Infinity) {
 			}
 
 			const result = await origFn.apply(this, params);
-			this.setCache(cacheKey, result, timeInSeconds);
+			if (result !== undefined || cacheFailures) {
+				this.setCache(cacheKey, result, timeInSeconds);
+			}
 			return result;
 		};
 

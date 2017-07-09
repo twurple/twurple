@@ -44,4 +44,8 @@ export default class TokenInfo {
 	get scopes(): string[] {
 		return this._data.valid ? this._data.authorization.scopes : [];
 	}
+
+	get valid(): boolean {
+		return this._data.valid;
+	}
 }
