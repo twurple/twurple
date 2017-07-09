@@ -12,7 +12,7 @@ export type UniformObject<T> = { [name: string]: T };
 export type KeyMapper<T> = (value: T) => string;
 
 export default class ObjectTools {
-	static map<T, O, Obj>(obj: Obj, fn: (value: T, key: keyof Obj) => O): ObjMap<Obj, O> {
+	static map<T, O, Obj = UniformObject<T>>(obj: Obj, fn: (value: T, key: keyof Obj) => O): ObjMap<Obj, O> {
 		const mapped = Object.entries<T, Obj>(obj).map(([key, value]: [keyof Obj, T]): ObjMapPart<Obj, O> => {
 			let result: ObjMapPart<Obj, O> = {};
 			result[key] = fn(value, key);

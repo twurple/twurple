@@ -2,7 +2,7 @@ import {Cacheable, Cached, CacheEntry} from '../Toolkit/Decorators';
 import BaseAPI from './BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
 import User, {UserData} from './User';
-import {default as ObjectTools, UniformObject} from '../Toolkit/ObjectTools';
+import ObjectTools, {UniformObject} from '../Toolkit/ObjectTools';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {
@@ -40,19 +40,18 @@ export default class UserAPI extends BaseAPI {
 		this._cleanUserCache();
 		userNames = userNames.map(name => name.toLowerCase());
 		const cachedEntries = Array.from(this._userByNameCache.entries()).filter(([key, val]) => userNames.includes(key));
-		const cachedObject: UniformObject<User> = ObjectTools.fromArray(cachedEntries, ([key, val]) => ({
-			[key]: val
-		}));
-		const toFetch = userNames.filter(name => !(name in cachedObject));
+		const cachedObject = ObjectTools.entriesToObject(cachedEntries);
+		const cachedUsers = ObjectTools.map<CacheEntry<User>, User>(cachedObject, entry => entry.value);
+		const toFetch = userNames.filter(name => !(name in cachedUsers));
 		if (!toFetch.length) {
-			return cachedObject;
+			return cachedUsers;
 		}
 		const usersData = await this._client.apiCall({url: 'users', query: {login: toFetch.join(',')}});
 		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
 		Object.values(usersArr).forEach(user => this._userByNameCache.set(user.userName, user));
 		const users = ObjectTools.indexBy(usersArr, 'userName');
 
-		return {...cachedObject, ...users};
+		return {...cachedUsers, ...users};
 	}
 
 	private _cleanUserCache() {
