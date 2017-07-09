@@ -51,7 +51,7 @@ export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean 
 		const origFn = descriptor.value;
 
 		// tslint:disable-next-line:no-any
-		descriptor.value = async function(this: any, ...params: string[]) {
+		descriptor.value = async function (this: any, ...params: string[]) {
 			const cacheKey = [propName, ...params].join('/');
 			const cachedValue = this.getFromCache(cacheKey);
 
@@ -77,7 +77,7 @@ export function CachedGetter(timeInSeconds: number = Infinity) {
 			const origFn = descriptor.get;
 
 			// tslint:disable-next-line:no-any
-			descriptor.get = function(this: any, ...params: string[]) {
+			descriptor.get = function (this: any, ...params: string[]) {
 				const cacheKey = [propName, ...params].join('/');
 				const cachedValue = this.getFromCache(cacheKey);
 
@@ -100,11 +100,11 @@ export function NonEnumerable(target: any, key: string) {
 	// first property defined in prototype, that's why we use getters/setters
 	// (otherwise assignment in object will override property in prototype)
 	Object.defineProperty(target, key, {
-		get: function() {
+		get: function () {
 			return undefined;
 		},
 		// tslint:disable-next-line:no-any
-		set: function(this: any, val: any) {
+		set: function (this: any, val: any) {
 			// here we have reference to instance and can set property directly to it
 			Object.defineProperty(this, key, {
 				value: val,

@@ -1,5 +1,6 @@
 declare interface ObjectCtor extends ObjectConstructor {
 	assign<T>(target: {}, ...source: Partial<T>[]): T;
+
 	entries<T, Obj>(o: Obj): [keyof Obj, T][];
 }
 

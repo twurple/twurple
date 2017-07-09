@@ -1,4 +1,4 @@
-import {Client as IRCClient} from 'ircv3';
+import { Client as IRCClient } from 'ircv3';
 
 export default class ChatClient {
 	private _ircClient: IRCClient;

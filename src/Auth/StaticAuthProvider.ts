@@ -1,5 +1,5 @@
 import AuthProvider from './AuthProvider';
-import {NonEnumerable} from '../Toolkit/Decorators';
+import { NonEnumerable } from '../Toolkit/Decorators';
 
 export default class StaticAuthProvider implements AuthProvider {
 	@NonEnumerable private _clientId: string;

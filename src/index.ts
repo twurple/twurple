@@ -1,10 +1,10 @@
 import AuthProvider from './Auth/AuthProvider';
 import * as defaults from 'defaults';
 import * as request from 'request-promise-native';
-import {Cacheable, Cached, CachedGetter} from './Toolkit/Decorators';
-import TokenInfo, {TokenInfoData} from './TokenInfo';
-import {CheermoteBackground, CheermoteScale, CheermoteState} from './API/CheermoteList';
-import {UniformObject} from './Toolkit/ObjectTools';
+import { Cacheable, Cached, CachedGetter } from './Toolkit/Decorators';
+import TokenInfo, { TokenInfoData } from './TokenInfo';
+import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/CheermoteList';
+import { UniformObject } from './Toolkit/ObjectTools';
 
 import BitsAPI from './API/BitsAPI';
 import ChannelAPI from './API/ChannelAPI';

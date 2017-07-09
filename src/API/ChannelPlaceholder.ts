@@ -1,5 +1,5 @@
 import Twitch from '../';
-import {NonEnumerable} from '../Toolkit/Decorators';
+import { NonEnumerable } from '../Toolkit/Decorators';
 import CheermoteList from './CheermoteList';
 import Channel from './Channel';
 

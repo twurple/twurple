@@ -1,10 +1,12 @@
 import Twitch from '../';
-import {NonEnumerable} from '../Toolkit/Decorators';
-import ObjectTools, {UniformObject} from '../Toolkit/ObjectTools';
+import { NonEnumerable } from '../Toolkit/Decorators';
+import ObjectTools, { UniformObject } from '../Toolkit/ObjectTools';
 import * as defaults from 'defaults';
 
 export enum CheermoteBackground { dark = 'dark', light = 'light' }
+
 export enum CheermoteState { animated = 'animated', 'static' = 'static' }
+
 export enum CheermoteScale { x1 = '1', x1_5 = '1.5', x2 = '2', x3 = '3', x4 = '4' }
 
 export type CheermoteActionImageUrlsByScale = {

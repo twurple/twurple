@@ -1,7 +1,7 @@
-import {Cacheable, Cached} from '../Toolkit/Decorators';
+import { Cacheable, Cached } from '../Toolkit/Decorators';
 import BaseAPI from './BaseAPI';
 import Channel from './Channel';
-import UserTools, {UserIdResolvable} from '../Toolkit/UserTools';
+import UserTools, { UserIdResolvable } from '../Toolkit/UserTools';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {

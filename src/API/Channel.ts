@@ -1,4 +1,4 @@
-import ChannelPlaceholder, {ChannelPlaceholderData} from './ChannelPlaceholder';
+import ChannelPlaceholder, { ChannelPlaceholderData } from './ChannelPlaceholder';
 import Twitch from '../index';
 
 export interface ChannelData extends ChannelPlaceholderData {
