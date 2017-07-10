@@ -2,6 +2,8 @@ import Twitch from '../';
 import { NonEnumerable } from '../Toolkit/Decorators';
 import Channel from './Channel';
 import ChannelPlaceholder from './ChannelPlaceholder';
+import { UserIdResolvable } from '../Toolkit/UserTools';
+import UserSubscription from './UserSubscription';
 
 export interface UserData {
 	_id: string;
@@ -39,5 +41,9 @@ export default class User {
 
 	getChannelPlaceholder() {
 		return new ChannelPlaceholder(this._data._id, this._client);
+	}
+
+	async getSubscriptionTo(channel: UserIdResolvable): Promise<UserSubscription> {
+		return await this._client.users.getSubscriptionData(this, channel);
 	}
 }

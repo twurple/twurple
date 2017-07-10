@@ -5,6 +5,7 @@ import User, { UserData } from './User';
 import ObjectTools, { UniformObject } from '../Toolkit/ObjectTools';
 import { UserIdResolvable, default as UserTools } from '../Toolkit/UserTools';
 import EmoteSetList from './EmoteSetList';
+import UserSubscription from './UserSubscription';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {
@@ -71,6 +72,20 @@ export default class UserAPI extends BaseAPI {
 
 		const data = await this._client.apiCall({url: `users/${userId}/emotes`, scope: 'user_subscriptions'});
 		return new EmoteSetList(data.emoticon_sets, this._client);
+	}
+
+	@Cached(3600)
+	async getSubscriptionData(user: UserIdResolvable, toChannel: UserIdResolvable) {
+		const userId = UserTools.getUserId(user);
+		const channelId = UserTools.getUserId(toChannel);
+
+		return new UserSubscription(
+			await this._client.apiCall({
+				url: `users/${userId}/subscriptions/${channelId}`,
+				scope: 'user_subscriptions'
+			}),
+			this._client
+		);
 	}
 
 	private _cleanUserCache() {
