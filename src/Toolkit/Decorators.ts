@@ -45,14 +45,20 @@ export function Cacheable<TBase extends Constructor>(cls: TBase) {
 	};
 }
 
+// tslint:disable-next-line:no-any
+export function createCacheKey(propName: string, params: any[]): string {
+	// tslint:disable-next-line:no-any
+	return [propName, ...params.map((param: any) => 'cacheKey' in param ? param.cacheKey : param.toString())].join('/');
+}
+
 export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean = false) {
 	// tslint:disable-next-line:no-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
 		const origFn = descriptor.value;
 
 		// tslint:disable-next-line:no-any
-		descriptor.value = async function (this: any, ...params: string[]) {
-			const cacheKey = [propName, ...params].join('/');
+		descriptor.value = async function (this: any, ...params: any[]) {
+			const cacheKey = createCacheKey(propName, params);
 			const cachedValue = this.getFromCache(cacheKey);
 
 			if (cachedValue) {
@@ -77,8 +83,8 @@ export function CachedGetter(timeInSeconds: number = Infinity) {
 			const origFn = descriptor.get;
 
 			// tslint:disable-next-line:no-any
-			descriptor.get = function (this: any, ...params: string[]) {
-				const cacheKey = [propName, ...params].join('/');
+			descriptor.get = function (this: any, ...params: any[]) {
+				const cacheKey = createCacheKey(propName, params);
 				const cachedValue = this.getFromCache(cacheKey);
 
 				if (cachedValue) {

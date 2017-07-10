@@ -23,6 +23,10 @@ export default class User {
 		this._client = client;
 	}
 
+	get cacheKey() {
+		return this._data._id;
+	}
+
 	get id() {
 		return this._data._id;
 	}

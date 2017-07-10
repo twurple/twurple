@@ -16,6 +16,10 @@ export default class ChannelPlaceholder {
 		this._client = client;
 	}
 
+	get cacheKey() {
+		return this._data._id;
+	}
+
 	get id() {
 		return this._data._id;
 	}
