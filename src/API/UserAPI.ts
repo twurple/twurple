@@ -6,6 +6,9 @@ import ObjectTools, { UniformObject } from '../Toolkit/ObjectTools';
 import { UserIdResolvable, default as UserTools } from '../Toolkit/UserTools';
 import EmoteSetList from './EmoteSetList';
 import UserSubscription from './UserSubscription';
+import { StatusCodeError } from 'request-promise-native/errors';
+import NotSubscribed from './NotSubscribed';
+import NoSubscriptionProgram from './NoSubscriptionProgram';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {
@@ -79,13 +82,25 @@ export default class UserAPI extends BaseAPI {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(toChannel);
 
-		return new UserSubscription(
-			await this._client.apiCall({
-				url: `users/${userId}/subscriptions/${channelId}`,
-				scope: 'user_subscriptions'
-			}),
-			this._client
-		);
+		try {
+			return new UserSubscription(
+				await this._client.apiCall({
+					url: `users/${userId}/subscriptions/${channelId}`,
+					scope: 'user_subscriptions'
+				}),
+				this._client
+			);
+		} catch (e) {
+			if (e instanceof StatusCodeError) {
+				if (e.statusCode === 404) {
+					throw new NotSubscribed(channelId, userId);
+				} else if (e.statusCode === 422) {
+					throw new NoSubscriptionProgram(channelId);
+				}
+			}
+
+			throw e;
+		}
 	}
 
 	private _cleanUserCache() {
