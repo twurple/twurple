@@ -48,7 +48,8 @@ export function Cacheable<TBase extends Constructor>(cls: TBase) {
 // tslint:disable-next-line:no-any
 export function createCacheKey(propName: string, params: any[]): string {
 	// tslint:disable-next-line:no-any
-	return [propName, ...params.map((param: any) => 'cacheKey' in param ? param.cacheKey : param.toString())].join('/');
+	return [propName, ...params.map((param: any) =>
+		typeof param === 'object' && 'cacheKey' in param ? param.cacheKey : param.toString())].join('/');
 }
 
 export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean = false) {
