@@ -1,5 +1,5 @@
 import { NonEnumerable } from '../Toolkit/Decorators';
-import Twitch from '../index';
+import Twitch from '../';
 
 export interface SubscriptionData {
 	_id: string;

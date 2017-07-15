@@ -1,11 +1,11 @@
-import { Cacheable, Cached } from '../Toolkit/Decorators';
-import BaseAPI from './BaseAPI';
-import Channel from './Channel';
-import UserTools, { UserIdResolvable } from '../Toolkit/UserTools';
+import { Cacheable, Cached } from '../../Toolkit/Decorators';
+import BaseAPI from '../BaseAPI';
+import Channel from './';
+import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelSubscription from './ChannelSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
-import NotSubscribed from './NotSubscribed';
-import NoSubscriptionProgram from './NoSubscriptionProgram';
+import NotSubscribed from '../NotSubscribed';
+import NoSubscriptionProgram from '../NoSubscriptionProgram';
 
 @Cacheable
 export default class ChannelAPI extends BaseAPI {

@@ -1,9 +1,9 @@
 import ChannelPlaceholder, { ChannelPlaceholderData } from './ChannelPlaceholder';
-import Twitch from '../index';
-import { UserIdResolvable } from '../Toolkit/UserTools';
+import Twitch from '../../';
+import { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelSubscription from './ChannelSubscription';
-import NoSubscriptionProgram from './NoSubscriptionProgram';
-import NotSubscribed from './NotSubscribed';
+import NoSubscriptionProgram from '../NoSubscriptionProgram';
+import NotSubscribed from '../NotSubscribed';
 
 export interface ChannelData extends ChannelPlaceholderData {
 	_id: string;

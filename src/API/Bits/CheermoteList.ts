@@ -1,6 +1,6 @@
-import Twitch from '../';
-import { NonEnumerable } from '../Toolkit/Decorators';
-import ObjectTools, { UniformObject } from '../Toolkit/ObjectTools';
+import Twitch from '../../';
+import { NonEnumerable } from '../../Toolkit/Decorators';
+import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
 import * as defaults from 'defaults';
 
 export enum CheermoteBackground { dark = 'dark', light = 'light' }

@@ -1,7 +1,7 @@
-import Twitch from '../';
-import { NonEnumerable } from '../Toolkit/Decorators';
-import CheermoteList from './CheermoteList';
-import Channel from './Channel';
+import Twitch from '../../';
+import { NonEnumerable } from '../../Toolkit/Decorators';
+import CheermoteList from '../Bits/CheermoteList';
+import Channel from './';
 
 export interface ChannelPlaceholderData {
 	_id: string;

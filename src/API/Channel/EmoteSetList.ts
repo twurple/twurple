@@ -1,6 +1,6 @@
-import Twitch from '../';
-import { Cacheable, Cached, NonEnumerable } from '../Toolkit/Decorators';
-import { UniformObject } from '../Toolkit/ObjectTools';
+import Twitch from '../../';
+import { Cacheable, Cached, NonEnumerable } from '../../Toolkit/Decorators';
+import { UniformObject } from '../../Toolkit/ObjectTools';
 
 export interface Emote {
 	code: string;

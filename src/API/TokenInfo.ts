@@ -1,5 +1,5 @@
-import Twitch from './';
-import { NonEnumerable } from './Toolkit/Decorators';
+import Twitch from '../';
+import { NonEnumerable } from '../Toolkit/Decorators';
 
 export interface TokenAuthorization {
 	scopes: string[];

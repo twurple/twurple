@@ -1,5 +1,5 @@
-import User from '../API/User';
-import ChannelPlaceholder from '../API/ChannelPlaceholder';
+import User from '../API/User/';
+import ChannelPlaceholder from '../API/Channel/ChannelPlaceholder';
 
 export type UserIdResolvable = string | User | ChannelPlaceholder;
 

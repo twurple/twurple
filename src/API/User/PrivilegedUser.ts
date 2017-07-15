@@ -1,4 +1,4 @@
-import User, { UserData } from './User';
+import User, { UserData } from './';
 
 export interface UserNotificationFlags {
 	email: boolean;

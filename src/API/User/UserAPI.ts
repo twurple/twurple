@@ -1,14 +1,15 @@
-import { Cacheable, Cached, CacheEntry } from '../Toolkit/Decorators';
-import BaseAPI from './BaseAPI';
+import { Cacheable, Cached, CacheEntry } from '../../Toolkit/Decorators';
+import BaseAPI from '../BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
-import User, { UserData } from './User';
-import ObjectTools, { UniformObject } from '../Toolkit/ObjectTools';
-import { UserIdResolvable, default as UserTools } from '../Toolkit/UserTools';
-import EmoteSetList from './EmoteSetList';
+import User, { UserData } from './';
+import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
+import { UserIdResolvable, default as UserTools } from '../../Toolkit/UserTools';
+import EmoteSetList from '../Channel/EmoteSetList';
 import UserSubscription from './UserSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
-import NotSubscribed from './NotSubscribed';
-import NoSubscriptionProgram from './NoSubscriptionProgram';
+import NotSubscribed from '../NotSubscribed';
+import NoSubscriptionProgram from '../NoSubscriptionProgram';
+import { default as UserFollow, UserFollowData } from './UserFollow';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {
@@ -101,6 +102,21 @@ export default class UserAPI extends BaseAPI {
 
 			throw e;
 		}
+	}
+
+	@Cached(300)
+	async getFollowedChannels(user: UserIdResolvable) {
+		const userId = UserTools.getUserId(user);
+		const data = await this._client.apiCall({url: `users/${userId}/follows/channels`});
+		return data.follows.map((follow: UserFollowData) => new UserFollow(follow, this._client));
+	}
+
+	@Cached(300)
+	async getFollowedChannel(user: UserIdResolvable, channel: UserIdResolvable) {
+		const userId = UserTools.getUserId(user);
+		const channelId = UserTools.getUserId(channel);
+		const data = await this._client.apiCall({url: `users/${userId}/follows/channels/${channelId}`});
+		return new UserFollow(data, this._client);
 	}
 
 	private _cleanUserCache() {

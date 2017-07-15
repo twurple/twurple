@@ -2,13 +2,13 @@ import AuthProvider from './Auth/AuthProvider';
 import * as defaults from 'defaults';
 import * as request from 'request-promise-native';
 import { Cacheable, Cached, CachedGetter } from './Toolkit/Decorators';
-import TokenInfo, { TokenInfoData } from './TokenInfo';
-import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/CheermoteList';
+import TokenInfo, { TokenInfoData } from './API/TokenInfo';
+import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Bits/CheermoteList';
 import { UniformObject } from './Toolkit/ObjectTools';
 
-import BitsAPI from './API/BitsAPI';
-import ChannelAPI from './API/ChannelAPI';
-import UserAPI from './API/UserAPI';
+import BitsAPI from './API/Bits/BitsAPI';
+import ChannelAPI from './API/Channel/ChannelAPI';
+import UserAPI from './API/User/UserAPI';
 
 export interface TwitchCheermoteConfig {
 	defaultBackground: CheermoteBackground;

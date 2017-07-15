@@ -1,11 +1,11 @@
-import Twitch from '../';
-import { NonEnumerable } from '../Toolkit/Decorators';
-import Channel from './Channel';
-import ChannelPlaceholder from './ChannelPlaceholder';
-import { UserIdResolvable } from '../Toolkit/UserTools';
+import Twitch from '../../';
+import { NonEnumerable } from '../../Toolkit/Decorators';
+import Channel from '../Channel/';
+import ChannelPlaceholder from '../Channel/ChannelPlaceholder';
+import { UserIdResolvable } from '../../Toolkit/UserTools';
 import UserSubscription from './UserSubscription';
-import NoSubscriptionProgram from './NoSubscriptionProgram';
-import NotSubscribed from './NotSubscribed';
+import NoSubscriptionProgram from '../NoSubscriptionProgram';
+import NotSubscribed from '../NotSubscribed';
 
 export interface UserData {
 	_id: string;

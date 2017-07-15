@@ -1,5 +1,5 @@
-import Subscription, { SubscriptionData } from './Subscription';
-import Channel, { ChannelData } from './Channel';
+import Subscription, { SubscriptionData } from '../Subscription';
+import Channel, { ChannelData } from '../Channel/';
 
 export interface UserSubscriptionData extends SubscriptionData {
 	channel: ChannelData;
