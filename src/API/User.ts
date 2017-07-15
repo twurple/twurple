@@ -4,6 +4,8 @@ import Channel from './Channel';
 import ChannelPlaceholder from './ChannelPlaceholder';
 import { UserIdResolvable } from '../Toolkit/UserTools';
 import UserSubscription from './UserSubscription';
+import NoSubscriptionProgram from './NoSubscriptionProgram';
+import NotSubscribed from './NotSubscribed';
 
 export interface UserData {
 	_id: string;
@@ -49,5 +51,18 @@ export default class User {
 
 	async getSubscriptionTo(channel: UserIdResolvable): Promise<UserSubscription> {
 		return await this._client.users.getSubscriptionData(this, channel);
+	}
+
+	async isSubscribedTo(channel: UserIdResolvable): Promise<boolean> {
+		try {
+			await this.getSubscriptionTo(channel);
+			return true;
+		} catch (e) {
+			if (e instanceof NoSubscriptionProgram || e instanceof NotSubscribed) {
+				return false;
+			}
+
+			throw e;
+		}
 	}
 }

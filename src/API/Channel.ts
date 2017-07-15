@@ -2,6 +2,8 @@ import ChannelPlaceholder, { ChannelPlaceholderData } from './ChannelPlaceholder
 import Twitch from '../index';
 import { UserIdResolvable } from '../Toolkit/UserTools';
 import ChannelSubscription from './ChannelSubscription';
+import NoSubscriptionProgram from './NoSubscriptionProgram';
+import NotSubscribed from './NotSubscribed';
 
 export interface ChannelData extends ChannelPlaceholderData {
 	_id: string;
@@ -25,5 +27,18 @@ export default class Channel extends ChannelPlaceholder {
 
 	async getSubscriptionBy(user: UserIdResolvable): Promise<ChannelSubscription> {
 		return await this._client.channels.getSubscriptionData(this, user);
+	}
+
+	async hasSubscriber(user: UserIdResolvable): Promise<boolean> {
+		try {
+			await this.getSubscriptionBy(user);
+			return true;
+		} catch (e) {
+			if (e instanceof NoSubscriptionProgram || e instanceof NotSubscribed) {
+				return false;
+			}
+
+			throw e;
+		}
 	}
 }
