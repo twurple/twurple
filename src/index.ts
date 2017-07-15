@@ -25,6 +25,7 @@ export interface TwitchConfig {
 
 export interface TwitchApiCallOptions {
 	url: string;
+	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 	query?: UniformObject<string>;
 	scope?: string;
 	version?: number;
@@ -67,13 +68,15 @@ export default class Twitch {
 
 		return await request({
 			url: `https://api.twitch.tv/kraken/${options.url.replace(/^\//, '')}`,
+			method: options.method,
 			headers: {
 				'Client-ID': this._config.authProvider.clientId,
 				Authorization: `OAuth ${authToken}`,
 				Accept: `application/vnd.twitchtv.v${options.version || 5}+json`
 			},
 			json: true,
-			qs: options.query
+			qs: options.query,
+			gzip: true
 		});
 	}
 
