@@ -57,7 +57,7 @@ export default class Twitch {
 		}
 	}
 
-	@Cached(600)
+	@Cached(3600)
 	public async getTokenInfo() {
 		const data: TokenInfoData = await this.apiCall({url: '/'});
 		return new TokenInfo(data.token, this);
