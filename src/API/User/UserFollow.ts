@@ -8,7 +8,7 @@ export interface UserFollowData {
 	channel: ChannelData;
 }
 
-class UserFollow {
+export default class UserFollow {
 	@NonEnumerable _client: Twitch;
 
 	constructor(private _data: UserFollowData, client: Twitch) {
@@ -19,5 +19,3 @@ class UserFollow {
 		return new Channel(this._data.channel, this._client);
 	}
 }
-
-export default UserFollow;

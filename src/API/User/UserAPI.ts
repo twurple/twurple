@@ -10,6 +10,8 @@ import { StatusCodeError } from 'request-promise-native/errors';
 import NotSubscribed from '../NotSubscribed';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import UserFollow, { UserFollowData } from './UserFollow';
+import NotFollowing from './NotSubscribed';
+import UserBlock, { UserBlockData } from './UserBlock';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {
@@ -109,7 +111,7 @@ export default class UserAPI extends BaseAPI {
 		user: UserIdResolvable,
 		page?: number, limit?: number,
 		orderBy?: string, orderDirection?: 'asc' | 'desc'
-	) {
+	): Promise<UserFollow[]> {
 		const userId = UserTools.getUserId(user);
 		let query: UniformObject<string> = {};
 		if (page) {
@@ -134,8 +136,18 @@ export default class UserAPI extends BaseAPI {
 	async getFollowedChannel(user: UserIdResolvable, channel: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
-		const data = await this._client.apiCall({url: `users/${userId}/follows/channels/${channelId}`});
-		return new UserFollow(data, this._client);
+		try {
+			const data = await this._client.apiCall({url: `users/${userId}/follows/channels/${channelId}`});
+			return new UserFollow(data, this._client);
+		} catch (e) {
+			if (e instanceof StatusCodeError) {
+				if (e.statusCode === 404) {
+					throw new NotFollowing(channelId, userId);
+				}
+			}
+
+			throw e;
+		}
 	}
 
 	async followChannel(user: UserIdResolvable, channel: UserIdResolvable, notifications?: boolean) {
@@ -150,12 +162,49 @@ export default class UserAPI extends BaseAPI {
 		return new UserFollow(data, this._client);
 	}
 
-	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable) {
+	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<void> {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
 		await this._client.apiCall({
 			url: `users/${userId}/follows/channels/${channelId}`,
 			scope: 'user_follows_edit',
+			method: 'DELETE'
+		});
+	}
+
+	@Cached(3600)
+	async getBlockedUsers(user: UserIdResolvable, page?: number, limit?: number): Promise<UserBlock[]> {
+		const userId = UserTools.getUserId(user);
+		let query: UniformObject<string> = {};
+		if (page) {
+			query.offset = ((page - 1) * (limit || 25)).toString();
+		}
+		if (limit) {
+			query.limit = limit.toString();
+		}
+		const data = await this._client.apiCall({
+			url: `users/${userId}/blocks`, query, scope: 'user_blocks_read'
+		});
+		return data.blocks.map((block: UserBlockData) => new UserBlock(block, this._client));
+	}
+
+	async blockUser(user: UserIdResolvable, userToBlock: UserIdResolvable) {
+		const userId = UserTools.getUserId(user);
+		const userIdToBlock = UserTools.getUserId(userToBlock);
+		const data = await this._client.apiCall({
+			url: `users/${userId}/blocks/${userIdToBlock}`,
+			method: 'PUT',
+			scope: 'user_blocks_edit',
+		});
+		return new UserFollow(data, this._client);
+	}
+
+	async unblockUser(user: UserIdResolvable, userToUnblock: UserIdResolvable) {
+		const userId = UserTools.getUserId(user);
+		const userIdToUnblock = UserTools.getUserId(userToUnblock);
+		await this._client.apiCall({
+			url: `users/${userId}/blocks/${userIdToUnblock}`,
+			scope: 'user_blocks_edit',
 			method: 'DELETE'
 		});
 	}

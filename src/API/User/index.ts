@@ -7,6 +7,7 @@ import UserSubscription from './UserSubscription';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import NotSubscribed from '../NotSubscribed';
 import UserFollow from './UserFollow';
+import NotFollowing from './NotSubscribed';
 
 export interface UserData {
 	_id: string;
@@ -75,11 +76,26 @@ export default class User {
 		return this._client.users.getFollowedChannel(this, channel);
 	}
 
-	async follow(channel: UserIdResolvable, notifications?: boolean) {
-		return this._client.users.followChannel(this, channel, notifications);
+	async follows(channel: UserIdResolvable): Promise<boolean> {
+		try {
+			await this.getFollowTo(channel);
+			return true;
+		} catch (e) {
+			if (e instanceof NotFollowing) {
+				return false;
+			}
+
+			throw e;
+		}
 	}
 
-	async unfollow(channel: UserIdResolvable) {
-		return this._client.users.unfollowChannel(this, channel);
+	async follow() {
+		const currentUser = await this._client.users.getCurrentUser();
+		return currentUser.followChannel(this);
+	}
+
+	async unfollow(): Promise<void> {
+		const currentUser = await this._client.users.getCurrentUser();
+		return currentUser.unfollowChannel(this);
 	}
 }
