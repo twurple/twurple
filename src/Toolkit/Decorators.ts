@@ -30,8 +30,26 @@ export function Cacheable<TBase extends Constructor>(cls: TBase) {
 			});
 		}
 
-		public removeFromCache(cacheKey: string) {
-			this.cache.delete(cacheKey);
+		public removeFromCache(cacheKey: string|string[], prefix?: boolean) {
+			let internalCacheKey: string;
+			if (typeof cacheKey === 'string') {
+				internalCacheKey = cacheKey;
+				if (!internalCacheKey.endsWith('/')) {
+					internalCacheKey += '/';
+				}
+			} else {
+				const propName = cacheKey.shift() as string;
+				internalCacheKey = createCacheKey(propName, cacheKey, prefix);
+			}
+			if (prefix) {
+				this.cache.forEach((val, key) => {
+					if (key.startsWith(internalCacheKey)) {
+						this.cache.delete(key);
+					}
+				});
+			} else {
+				this.cache.delete(internalCacheKey);
+			}
 		}
 
 		public _cleanCache() {
@@ -46,10 +64,11 @@ export function Cacheable<TBase extends Constructor>(cls: TBase) {
 }
 
 // tslint:disable-next-line:no-any
-export function createCacheKey(propName: string, params: any[]): string {
+export function createCacheKey(propName: string, params: any[], prefix?: boolean): string {
 	// tslint:disable-next-line:no-any
 	return [propName, ...params.map((param: any) =>
-		typeof param === 'object' && 'cacheKey' in param ? param.cacheKey : param.toString())].join('/');
+		typeof param === 'object' && 'cacheKey' in param ? param.cacheKey : param.toString())].join('/')
+		+ (prefix ? '/' : '');
 }
 
 export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean = false) {
