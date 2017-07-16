@@ -9,7 +9,7 @@ import UserSubscription from './UserSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
 import NotSubscribed from '../NotSubscribed';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
-import { default as UserFollow, UserFollowData } from './UserFollow';
+import UserFollow, { UserFollowData } from './UserFollow';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {
@@ -105,9 +105,28 @@ export default class UserAPI extends BaseAPI {
 	}
 
 	@Cached(300)
-	async getFollowedChannels(user: UserIdResolvable) {
+	async getFollowedChannels(
+		user: UserIdResolvable,
+		page?: number, limit?: number,
+		orderBy?: string, orderDirection?: 'asc' | 'desc'
+	) {
 		const userId = UserTools.getUserId(user);
-		const data = await this._client.apiCall({url: `users/${userId}/follows/channels`});
+		let query: UniformObject<string> = {};
+		if (page) {
+			query.offset = ((page - 1) * (limit || 25)).toString();
+		}
+		if (limit) {
+			query.limit = limit.toString();
+		}
+		if (orderBy) {
+			query.sortby = orderBy;
+		}
+		if (orderDirection) {
+			query.direction = orderDirection;
+		}
+		const data = await this._client.apiCall({
+			url: `users/${userId}/follows/channels`, query
+		});
 		return data.follows.map((follow: UserFollowData) => new UserFollow(follow, this._client));
 	}
 
@@ -117,6 +136,28 @@ export default class UserAPI extends BaseAPI {
 		const channelId = UserTools.getUserId(channel);
 		const data = await this._client.apiCall({url: `users/${userId}/follows/channels/${channelId}`});
 		return new UserFollow(data, this._client);
+	}
+
+	async followChannel(user: UserIdResolvable, channel: UserIdResolvable, notifications?: boolean) {
+		const userId = UserTools.getUserId(user);
+		const channelId = UserTools.getUserId(channel);
+		const data = await this._client.apiCall({
+			url: `users/${userId}/follows/channels/${channelId}`,
+			method: 'PUT',
+			scope: 'user_follows_edit',
+			body: {notifications: Boolean(notifications).toString()}
+		});
+		return new UserFollow(data, this._client);
+	}
+
+	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable) {
+		const userId = UserTools.getUserId(user);
+		const channelId = UserTools.getUserId(channel);
+		await this._client.apiCall({
+			url: `users/${userId}/follows/channels/${channelId}`,
+			scope: 'user_follows_edit',
+			method: 'DELETE'
+		});
 	}
 
 	private _cleanUserCache() {

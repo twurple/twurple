@@ -16,8 +16,11 @@ export interface ChannelData extends ChannelPlaceholderData {
 }
 
 export default class Channel extends ChannelPlaceholder {
-	constructor(_data: ChannelData, client: Twitch) {
-		super(_data._id, client);
+	protected _data: ChannelData;
+
+	constructor(data: ChannelData, client: Twitch) {
+		super(data._id, client);
+		this._data = data;
 	}
 
 	// override parent's method so we avoid the API/cache request here if someone wrongly assumes this is a placeholder
@@ -26,7 +29,7 @@ export default class Channel extends ChannelPlaceholder {
 	}
 
 	async getSubscriptionBy(user: UserIdResolvable): Promise<ChannelSubscription> {
-		return await this._client.channels.getSubscriptionData(this, user);
+		return this._client.channels.getSubscriptionData(this, user);
 	}
 
 	async hasSubscriber(user: UserIdResolvable): Promise<boolean> {

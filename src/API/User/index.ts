@@ -6,6 +6,7 @@ import { UserIdResolvable } from '../../Toolkit/UserTools';
 import UserSubscription from './UserSubscription';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import NotSubscribed from '../NotSubscribed';
+import UserFollow from './UserFollow';
 
 export interface UserData {
 	_id: string;
@@ -42,7 +43,7 @@ export default class User {
 	}
 
 	async getChannel(): Promise<Channel> {
-		return await this._client.channels.getChannelByUser(this);
+		return this._client.channels.getChannelByUser(this);
 	}
 
 	getChannelPlaceholder() {
@@ -50,7 +51,7 @@ export default class User {
 	}
 
 	async getSubscriptionTo(channel: UserIdResolvable): Promise<UserSubscription> {
-		return await this._client.users.getSubscriptionData(this, channel);
+		return this._client.users.getSubscriptionData(this, channel);
 	}
 
 	async isSubscribedTo(channel: UserIdResolvable): Promise<boolean> {
@@ -64,5 +65,21 @@ export default class User {
 
 			throw e;
 		}
+	}
+
+	async getFollows(page?: number, limit?: number, orderBy?: string, orderDirection?: 'asc' | 'desc') {
+		return this._client.users.getFollowedChannels(this, page, limit, orderBy, orderDirection);
+	}
+
+	async getFollowTo(channel: UserIdResolvable): Promise<UserFollow> {
+		return this._client.users.getFollowedChannel(this, channel);
+	}
+
+	async follow(channel: UserIdResolvable, notifications?: boolean) {
+		return this._client.users.followChannel(this, channel, notifications);
+	}
+
+	async unfollow(channel: UserIdResolvable) {
+		return this._client.users.unfollowChannel(this, channel);
 	}
 }

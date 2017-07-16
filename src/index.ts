@@ -27,6 +27,7 @@ export interface TwitchApiCallOptions {
 	url: string;
 	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 	query?: UniformObject<string>;
+	body?: UniformObject<string>;
 	scope?: string;
 	version?: number;
 }
@@ -66,7 +67,7 @@ export default class Twitch {
 	public async apiCall<T = any>(options: TwitchApiCallOptions): Promise<T> {
 		const authToken = await this._config.authProvider.getAuthToken(options.scope ? [options.scope] : []);
 
-		return await request({
+		return request({
 			url: `https://api.twitch.tv/kraken/${options.url.replace(/^\//, '')}`,
 			method: options.method,
 			headers: {
@@ -74,8 +75,9 @@ export default class Twitch {
 				Authorization: `OAuth ${authToken}`,
 				Accept: `application/vnd.twitchtv.v${options.version || 5}+json`
 			},
-			json: true,
 			qs: options.query,
+			form: options.body,
+			json: true,
 			gzip: true
 		});
 	}

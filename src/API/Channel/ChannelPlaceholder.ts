@@ -25,10 +25,10 @@ export default class ChannelPlaceholder {
 	}
 
 	async getCheermotes(): Promise<CheermoteList> {
-		return await this._client.bits.getCheermotes(this);
+		return this._client.bits.getCheermotes(this);
 	}
 
 	async getChannel(): Promise<Channel> {
-		return await this._client.channels.getChannelByUser(this);
+		return this._client.channels.getChannelByUser(this);
 	}
 }
