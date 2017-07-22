@@ -57,7 +57,7 @@ export default class UserAPI extends BaseAPI {
 		}
 		const usersData = await this._client.apiCall({url: 'users', query: {login: toFetch.join(',')}});
 		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
-		Object.values(usersArr).forEach(user => this._userByNameCache.set(user.userName, user));
+		usersArr.forEach(user => this._userByNameCache.set(user.userName, {value: user, expires: Date.now() + 3600 * 1000}));
 		const users = ObjectTools.indexBy(usersArr, 'userName');
 
 		return {...cachedUsers, ...users};
