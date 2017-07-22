@@ -44,7 +44,7 @@ export default class User {
 	}
 
 	async getChannel(): Promise<Channel> {
-		return this._client.channels.getChannelByUser(this);
+		return this._client.channels.getChannel(this);
 	}
 
 	getChannelPlaceholder() {

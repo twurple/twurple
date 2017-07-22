@@ -23,8 +23,8 @@ export default class UserAPI extends BaseAPI {
 	}
 
 	@Cached(3600)
-	async getUserById(userId: string) {
-		return new User(await this._client.apiCall({url: `users/${userId}`}), this._client);
+	async getUser(user: UserIdResolvable) {
+		return new User(await this._client.apiCall({url: `users/${UserTools.getUserId(user)}`}), this._client);
 	}
 
 	// not using the decorator's cache here as users-by-name is slightly more complex to cache

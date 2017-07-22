@@ -10,7 +10,7 @@ import NoSubscriptionProgram from '../NoSubscriptionProgram';
 @Cacheable
 export default class ChannelAPI extends BaseAPI {
 	@Cached(3600)
-	async getChannelByUser(user: UserIdResolvable) {
+	async getChannel(user: UserIdResolvable) {
 		return new Channel(await this._client.apiCall({url: `channels/${UserTools.getUserId(user)}`}), this._client);
 	}
 
