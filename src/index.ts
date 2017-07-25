@@ -28,6 +28,8 @@ export interface TwitchApiCallOptions {
 	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 	query?: UniformObject<string>;
 	body?: UniformObject<string>;
+	// tslint:disable-next-line:no-any
+	jsonBody?: any;
 	scope?: string;
 	version?: number;
 }
@@ -67,7 +69,7 @@ export default class Twitch {
 	public async apiCall<T = any>(options: TwitchApiCallOptions): Promise<T> {
 		const authToken = await this._config.authProvider.getAuthToken(options.scope ? [options.scope] : []);
 
-		return request({
+		let requestOptions: request.Options = {
 			url: `https://api.twitch.tv/kraken/${options.url.replace(/^\//, '')}`,
 			method: options.method,
 			headers: {
@@ -79,7 +81,15 @@ export default class Twitch {
 			form: options.body,
 			json: true,
 			gzip: true
-		});
+		};
+
+		if (options.body) {
+			requestOptions.form = options.body;
+		} else if (options.jsonBody) {
+			requestOptions.body = options.jsonBody;
+		}
+
+		return request(requestOptions);
 	}
 
 	@CachedGetter()

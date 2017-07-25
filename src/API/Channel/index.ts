@@ -4,15 +4,30 @@ import { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelSubscription from './ChannelSubscription';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import NotSubscribed from '../NotSubscribed';
+import { ChannelUpdateData } from './ChannelAPI';
+import ChannelFollow from './ChannelFollow';
 
 export interface ChannelData extends ChannelPlaceholderData {
 	_id: string;
-	bio: string;
+	broadcaster_language: string;
+	broadcaster_type: string;
 	created_at: string;
+	description: string;
 	display_name: string;
+	followers: number;
+	game: string;
+	language: string;
 	logo: string;
-	type: string;
+	mature: boolean;
+	name: string;
+	partner: boolean;
+	profile_banner: string | null;
+	profile_bannel_background_color: string | null;
+	status: string;
 	updated_at: string;
+	url: string;
+	video_banner: string;
+	views: number;
 }
 
 export default class Channel extends ChannelPlaceholder {
@@ -28,8 +43,20 @@ export default class Channel extends ChannelPlaceholder {
 		return this;
 	}
 
+	async update(data: ChannelUpdateData) {
+		return this._client.channels.updateChannel(this, data);
+	}
+
+	async getFollowers(): Promise<ChannelFollow[]> {
+		return this._client.channels.getChannelFollowers(this);
+	}
+
+	async getSubscriptions(): Promise<ChannelSubscription[]> {
+		return this._client.channels.getChannelSubscriptions(this);
+	}
+
 	async getSubscriptionBy(user: UserIdResolvable): Promise<ChannelSubscription> {
-		return this._client.channels.getSubscriptionData(this, user);
+		return this._client.channels.getChannelSubscriptionByUser(this, user);
 	}
 
 	async hasSubscriber(user: UserIdResolvable): Promise<boolean> {

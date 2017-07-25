@@ -1,4 +1,4 @@
-import { Cacheable, Cached, CacheEntry } from '../../Toolkit/Decorators';
+import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
 import User, { UserData } from './';
@@ -18,7 +18,7 @@ export default class UserAPI extends BaseAPI {
 	private _userByNameCache: Map<string, CacheEntry<User>> = new Map;
 
 	@Cached(3600)
-	async getCurrentUser() {
+	async getMe() {
 		return new PrivilegedUser(await this._client.apiCall({url: 'user', scope: 'user_read'}), this._client);
 	}
 
@@ -150,6 +150,8 @@ export default class UserAPI extends BaseAPI {
 		}
 	}
 
+	@ClearsCache<UserAPI>('getFollowedChannels', 1)
+	@ClearsCache<UserAPI>('getFollowedChannel', 2)
 	async followChannel(user: UserIdResolvable, channel: UserIdResolvable, notifications?: boolean) {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
@@ -162,6 +164,8 @@ export default class UserAPI extends BaseAPI {
 		return new UserFollow(data, this._client);
 	}
 
+	@ClearsCache<UserAPI>('getFollowedChannels', 1)
+	@ClearsCache<UserAPI>('getFollowedChannel', 2)
 	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<void> {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
@@ -188,6 +192,7 @@ export default class UserAPI extends BaseAPI {
 		return data.blocks.map((block: UserBlockData) => new UserBlock(block, this._client));
 	}
 
+	@ClearsCache<UserAPI>('getBlockedUsers', 1)
 	async blockUser(user: UserIdResolvable, userToBlock: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
 		const userIdToBlock = UserTools.getUserId(userToBlock);
@@ -199,13 +204,14 @@ export default class UserAPI extends BaseAPI {
 		return new UserFollow(data, this._client);
 	}
 
+	@ClearsCache<UserAPI>('getBlockedUsers', 1)
 	async unblockUser(user: UserIdResolvable, userToUnblock: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
 		const userIdToUnblock = UserTools.getUserId(userToUnblock);
 		await this._client.apiCall({
 			url: `users/${userId}/blocks/${userIdToUnblock}`,
-			scope: 'user_blocks_edit',
-			method: 'DELETE'
+			method: 'DELETE',
+			scope: 'user_blocks_edit'
 		});
 	}
 

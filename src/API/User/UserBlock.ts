@@ -1,6 +1,6 @@
 import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import User, { UserData } from './index';
+import User, { UserData } from './';
 
 export interface UserBlockData {
 	_id: string;

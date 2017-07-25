@@ -90,12 +90,12 @@ export default class User {
 	}
 
 	async follow() {
-		const currentUser = await this._client.users.getCurrentUser();
+		const currentUser = await this._client.users.getMe();
 		return currentUser.followChannel(this);
 	}
 
 	async unfollow(): Promise<void> {
-		const currentUser = await this._client.users.getCurrentUser();
+		const currentUser = await this._client.users.getMe();
 		return currentUser.unfollowChannel(this);
 	}
 }

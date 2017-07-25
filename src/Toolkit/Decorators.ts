@@ -7,7 +7,7 @@ export type CacheEntry<T = any> = {
 	expires: number;
 };
 
-export function Cacheable<TBase extends Constructor>(cls: TBase) {
+export function Cacheable<T extends Constructor>(cls: T) {
 	return class extends cls {
 		public cache: Map<string, CacheEntry> = new Map;
 
@@ -65,10 +65,29 @@ export function Cacheable<TBase extends Constructor>(cls: TBase) {
 
 // tslint:disable-next-line:no-any
 export function createCacheKey(propName: string, params: any[], prefix?: boolean): string {
+// tslint:disable-next-line:no-any
+	function createSingleCacheKey(param: any) {
+		// noinspection FallThroughInSwitchStatementJS
+		switch (typeof param) {
+			case 'undefined': {
+				return '';
+			}
+			case 'object': {
+				if (param === null) {
+					return '';
+				}
+				if ('cacheKey' in param) {
+					return param.cacheKey;
+				}
+			}
+			// tslint:disable-next-line:no-switch-case-fall-through
+			default: {
+				return param.toString();
+			}
+		}
+	}
 	// tslint:disable-next-line:no-any
-	return [propName, ...params.map((param: any) =>
-		typeof param === 'object' && 'cacheKey' in param ? param.cacheKey : param.toString())].join('/')
-		+ (prefix ? '/' : '');
+	return [propName, ...params.map(createSingleCacheKey)].join('/') + (prefix ? '/' : '');
 }
 
 export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean = false) {
@@ -116,6 +135,23 @@ export function CachedGetter(timeInSeconds: number = Infinity) {
 				return result;
 			};
 		}
+
+		return descriptor;
+	};
+}
+
+export function ClearsCache<T>(cacheName: keyof T, numberOfArguments?: number) {
+	// tslint:disable-next-line:no-any
+	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
+		const origFn = descriptor.value;
+
+		// tslint:disable-next-line:no-any
+		descriptor.value = async function (this: any, ...params: any[]) {
+			const result = await origFn.apply(this, params);
+			const args = numberOfArguments === undefined ? params.slice() : params.slice(0, numberOfArguments);
+			this.removeFromCache([cacheName, ...args], true);
+			return result;
+		};
 
 		return descriptor;
 	};
