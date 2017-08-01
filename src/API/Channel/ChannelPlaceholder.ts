@@ -2,6 +2,7 @@ import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import CheermoteList from '../Bits/CheermoteList';
 import Channel from './';
+import Stream from '../Stream/';
 
 export interface ChannelPlaceholderData {
 	_id: string;
@@ -30,5 +31,9 @@ export default class ChannelPlaceholder {
 
 	async getChannel(): Promise<Channel> {
 		return this._client.channels.getChannel(this);
+	}
+
+	async getStream(): Promise<Stream> {
+		return this._client.streams.getStreamByChannel(this);
 	}
 }

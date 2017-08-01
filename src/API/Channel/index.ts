@@ -71,4 +71,12 @@ export default class Channel extends ChannelPlaceholder {
 			throw e;
 		}
 	}
+
+	get name() {
+		return this._data.name;
+	}
+
+	get displayName() {
+		return this._data.display_name;
+	}
 }

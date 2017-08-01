@@ -8,6 +8,7 @@ import { UniformObject } from './Toolkit/ObjectTools';
 
 import BitsAPI from './API/Bits/BitsAPI';
 import ChannelAPI from './API/Channel/ChannelAPI';
+import StreamAPI from './API/Stream/StreamAPI';
 import UserAPI from './API/User/UserAPI';
 
 export interface TwitchCheermoteConfig {
@@ -100,6 +101,11 @@ export default class Twitch {
 	@CachedGetter()
 	get channels() {
 		return new ChannelAPI(this);
+	}
+
+	@CachedGetter()
+	get streams() {
+		return new StreamAPI(this);
 	}
 
 	@CachedGetter()
