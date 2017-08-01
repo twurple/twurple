@@ -105,7 +105,7 @@ export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean 
 			}
 
 			const result = await origFn.apply(this, params);
-			if (result !== undefined || cacheFailures) {
+			if (result != null || cacheFailures) {
 				this.setCache(cacheKey, result, timeInSeconds);
 			}
 			return result;
@@ -148,7 +148,7 @@ export function ClearsCache<T>(cacheName: keyof T, numberOfArguments?: number) {
 		// tslint:disable-next-line:no-any
 		descriptor.value = async function (this: any, ...params: any[]) {
 			const result = await origFn.apply(this, params);
-			const args = numberOfArguments === undefined ? params.slice() : params.slice(0, numberOfArguments);
+			const args = numberOfArguments == null ? params.slice() : params.slice(0, numberOfArguments);
 			this.removeFromCache([cacheName, ...args], true);
 			return result;
 		};
