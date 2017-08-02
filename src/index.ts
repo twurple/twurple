@@ -8,6 +8,7 @@ import { UniformObject } from './Toolkit/ObjectTools';
 
 import BitsAPI from './API/Bits/BitsAPI';
 import ChannelAPI from './API/Channel/ChannelAPI';
+import SearchAPI from './API/Search/SearchAPI';
 import StreamAPI from './API/Stream/StreamAPI';
 import UserAPI from './API/User/UserAPI';
 
@@ -101,6 +102,11 @@ export default class Twitch {
 	@CachedGetter()
 	get channels() {
 		return new ChannelAPI(this);
+	}
+
+	@CachedGetter()
+	get search() {
+		return new SearchAPI(this);
 	}
 
 	@CachedGetter()
