@@ -30,7 +30,7 @@ export function Cacheable<T extends Constructor>(cls: T) {
 			});
 		}
 
-		public removeFromCache(cacheKey: string|string[], prefix?: boolean) {
+		public removeFromCache(cacheKey: string | string[], prefix?: boolean) {
 			let internalCacheKey: string;
 			if (typeof cacheKey === 'string') {
 				internalCacheKey = cacheKey;
@@ -86,6 +86,7 @@ export function createCacheKey(propName: string, params: any[], prefix?: boolean
 			}
 		}
 	}
+
 	// tslint:disable-next-line:no-any
 	return [propName, ...params.map(createSingleCacheKey)].join('/') + (prefix ? '/' : '');
 }
