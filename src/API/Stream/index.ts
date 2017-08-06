@@ -1,6 +1,6 @@
 import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import Channel, { ChannelData } from '../Channel/index';
+import Channel, { ChannelData } from '../Channel/';
 
 export interface StreamPreviewURLList {
 	small: string;

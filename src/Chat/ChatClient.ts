@@ -1,20 +1,21 @@
 import { Client as IRCClient } from 'ircv3';
+import TwitchTagsCapability from './Capabilities/TwitchTags/';
+import TwitchCommandsCapability from './Capabilities/TwitchCommands/';
+import TwitchMembershipCapability from './Capabilities/TwitchMembership';
 
-export default class ChatClient {
-	private _ircClient: IRCClient;
-
-	constructor(private _username: string, token: string) {
-		this._ircClient = new IRCClient({
+export default class ChatClient extends IRCClient {
+	constructor(username: string, token: string) {
+		super({
 			connection: {
 				hostName: 'irc-ws.chat.twitch.tv',
-				nick: this._username.toLowerCase(),
+				nick: username.toLowerCase(),
 				password: `oauth:${token}`
 			},
 			webSocket: true
 		});
-	}
 
-	connect() {
-		this._ircClient.connect();
+		this.registerCapability(TwitchTagsCapability);
+		this.registerCapability(TwitchCommandsCapability);
+		this.registerCapability(TwitchMembershipCapability);
 	}
 }

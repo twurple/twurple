@@ -10,15 +10,15 @@
     "url": "git://github.com/d-fischer/twitch.git"
   },
   "devDependencies": {
-    "@types/node": "^8.0.7",
-    "@types/request": "0.0.45",
+    "@types/node": "^8.0.19",
+    "@types/request": "2.0.0",
     "@types/request-promise-native": "^1.0.6",
     "tslint": "^5.5.0",
-    "typescript": "^2.4.1"
+    "typescript": "^2.4.2"
   },
   "dependencies": {
     "defaults": "^1.0.3",
-    "ircv3": "^0.1.1",
+    "ircv3": "^0.4.0",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4"
   }

@@ -1,0 +1,14 @@
+import { Capability } from 'ircv3';
+import ClearChat from './MessageTypes/ClearChat';
+import HostTarget from './MessageTypes/HostTarget';
+import Reconnect from './MessageTypes/Reconnect';
+import RoomState from './MessageTypes/RoomState';
+import UserNotice from './MessageTypes/UserNotice';
+import UserState from './MessageTypes/UserState';
+
+const TwitchCommandsCapability: Capability = {
+	name: 'twitch.tv/commands',
+	messageTypes: [ClearChat, HostTarget, Reconnect, RoomState, UserNotice, UserState]
+};
+
+export default TwitchCommandsCapability;
