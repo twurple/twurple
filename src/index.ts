@@ -11,6 +11,7 @@ import ChannelAPI from './API/Channel/ChannelAPI';
 import SearchAPI from './API/Search/SearchAPI';
 import StreamAPI from './API/Stream/StreamAPI';
 import UserAPI from './API/User/UserAPI';
+import ChatClient from './Chat/ChatClient';
 
 export interface TwitchCheermoteConfig {
 	defaultBackground: CheermoteBackground;
@@ -39,6 +40,7 @@ export interface TwitchApiCallOptions {
 @Cacheable
 export default class Twitch {
 	readonly _config: TwitchConfig;
+	private _chatClients: Map<string, ChatClient> = new Map;
 
 	public constructor(config: Partial<TwitchConfig>) {
 		if (!config.authProvider) {
@@ -92,6 +94,22 @@ export default class Twitch {
 		}
 
 		return request(requestOptions);
+	}
+
+	public async getChatClient(identifier: string = 'default') {
+		if (!this._chatClients.has(identifier)) {
+			const token = await this._config.authProvider.getAuthToken(['chat_login']);
+			const tokenInfo = await this.getTokenInfo();
+			if (tokenInfo.valid && tokenInfo.userName) {
+				const newClient = new ChatClient(tokenInfo.userName, token);
+				this._chatClients.set(identifier, newClient);
+				return newClient;
+			}
+
+			throw new Error('invalid token when trying to connect to chat');
+		}
+
+		return this._chatClients.get(identifier);
 	}
 
 	@CachedGetter()
