@@ -1,6 +1,14 @@
-import { Message } from 'ircv3';
+import { Message, MessageParam, MessageParamSpec } from 'ircv3';
 
-// this command has no parameters, all information is in tags
+export interface UserStateParams {
+	channel: MessageParam;
+}
+
 export default class RoomState extends Message {
 	public static readonly COMMAND = 'ROOMSTATE';
+	public static readonly PARAM_SPEC: MessageParamSpec<UserStateParams> = {
+		channel: {
+			type: 'channel'
+		}
+	};
 }
