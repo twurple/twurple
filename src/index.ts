@@ -101,7 +101,7 @@ export default class Twitch {
 			const token = await this._config.authProvider.getAuthToken(['chat_login']);
 			const tokenInfo = await this.getTokenInfo();
 			if (tokenInfo.valid && tokenInfo.userName) {
-				const newClient = new ChatClient(tokenInfo.userName, token);
+				const newClient = new ChatClient(tokenInfo.userName, token, this);
 				this._chatClients.set(identifier, newClient);
 				return newClient;
 			}

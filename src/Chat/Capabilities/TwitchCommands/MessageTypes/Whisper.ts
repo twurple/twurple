@@ -3,17 +3,15 @@ import ChatUser from '../../../ChatUser';
 import ChatClient from '../../../ChatClient';
 import ChatTools from '../../../../Toolkit/ChatTools';
 
-export interface UserNoticeParams {
-	channel: MessageParam;
+export interface WhisperParams {
+	target: MessageParam;
 	message: MessageParam;
 }
 
-export default class UserNotice extends Message<UserNoticeParams> {
+export default class Whisper extends Message<WhisperParams> {
 	public static readonly COMMAND = 'USERNOTICE';
-	public static readonly PARAM_SPEC: MessageParamSpec<UserNoticeParams> = {
-		channel: {
-			type: 'channel'
-		},
+	public static readonly PARAM_SPEC: MessageParamSpec<WhisperParams> = {
+		target: {},
 		message: {
 			trailing: true,
 			optional: true

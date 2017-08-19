@@ -5,10 +5,11 @@ import Reconnect from './MessageTypes/Reconnect';
 import RoomState from './MessageTypes/RoomState';
 import UserNotice from './MessageTypes/UserNotice';
 import UserState from './MessageTypes/UserState';
+import Whisper from './MessageTypes/Whisper';
 
 const TwitchCommandsCapability: Capability = {
 	name: 'twitch.tv/commands',
-	messageTypes: [ClearChat, HostTarget, Reconnect, RoomState, UserNotice, UserState]
+	messageTypes: [ClearChat, HostTarget, Reconnect, RoomState, UserNotice, UserState, Whisper]
 };
 
 export default TwitchCommandsCapability;
