@@ -5,6 +5,7 @@ import { Cacheable, Cached, CachedGetter } from './Toolkit/Decorators';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Bits/CheermoteList';
 import { UniformObject } from './Toolkit/ObjectTools';
+import StaticAuthProvider from './Auth/StaticAuthProvider';
 
 import BitsAPI from './API/Bits/BitsAPI';
 import ChannelAPI from './API/Channel/ChannelAPI';
@@ -137,3 +138,5 @@ export default class Twitch {
 		return new UserAPI(this);
 	}
 }
+
+export { AuthProvider, StaticAuthProvider };
