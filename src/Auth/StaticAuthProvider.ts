@@ -6,9 +6,9 @@ export default class StaticAuthProvider implements AuthProvider {
 	@NonEnumerable private _authToken: string;
 	private _currentScopes: Set<string> = new Set();
 
-	constructor(clientId: string, authToken: string) {
-		this._clientId = clientId;
-		this._authToken = authToken;
+	constructor(clientId?: string, authToken?: string) {
+		this._clientId = clientId || '';
+		this._authToken = authToken || '';
 	}
 
 	async getAuthToken(scopes: string[]) {
