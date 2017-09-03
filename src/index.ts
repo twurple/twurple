@@ -38,6 +38,13 @@ export interface TwitchApiCallOptions {
 	version?: number;
 }
 
+export interface TwitchAccessTokenData {
+	access_token: string;
+	refresh_token: string;
+	expires_in: number;
+	scope: string;
+}
+
 @Cacheable
 export default class Twitch {
 	readonly _config: TwitchConfig;
@@ -73,13 +80,15 @@ export default class Twitch {
 	// tslint:disable-next-line:no-any
 	public async apiCall<T = any>(options: TwitchApiCallOptions): Promise<T> {
 		const authToken = await this._config.authProvider.getAuthToken(options.scope ? [options.scope] : []);
+		return Twitch.apiCall<T>(options, this._config.authProvider.clientId, authToken);
+	}
 
+	// tslint:disable-next-line:no-any
+	public static async apiCall<T = any>(options: TwitchApiCallOptions, clientId?: string, authToken?: string): Promise<T> {
 		let requestOptions: request.Options = {
 			url: `https://api.twitch.tv/kraken/${options.url.replace(/^\//, '')}`,
 			method: options.method,
 			headers: {
-				'Client-ID': this._config.authProvider.clientId,
-				Authorization: `OAuth ${authToken}`,
 				Accept: `application/vnd.twitchtv.v${options.version || 5}+json`
 			},
 			qs: options.query,
@@ -92,6 +101,14 @@ export default class Twitch {
 			requestOptions.form = options.body;
 		} else if (options.jsonBody) {
 			requestOptions.body = options.jsonBody;
+		}
+
+		if (clientId) {
+			requestOptions.headers!['Client-ID'] = clientId;
+		}
+
+		if (authToken) {
+			requestOptions.headers!.Authorization = `OAuth ${authToken}`;
 		}
 
 		return request(requestOptions);
@@ -111,6 +128,32 @@ export default class Twitch {
 		}
 
 		return this._chatClients.get(identifier);
+	}
+
+	public static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<TwitchAccessTokenData> {
+		return this.apiCall<TwitchAccessTokenData>({
+			url: 'oauth2/token',
+			method: 'POST',
+			query: {
+				grant_type: 'authorization_code',
+				client_id: clientId,
+				client_secret: clientSecret,
+				code: code
+			}
+		});
+	}
+
+	public static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<TwitchAccessTokenData> {
+		return this.apiCall<TwitchAccessTokenData>({
+			url: 'oauth2/token',
+			method: 'POST',
+			query: {
+				grant_type: 'refresh_token',
+				client_id: clientId,
+				client_secret: clientSecret,
+				refresh_token: refreshToken
+			}
+		});
 	}
 
 	@CachedGetter()
