@@ -61,7 +61,7 @@ export default class Twitch {
 
 		if (this._config.preAuth) {
 			// noinspection JSIgnoredPromiseFromCall
-			this._config.authProvider.getAuthToken(this._config.initialScopes || []);
+			this._config.authProvider.getAccessToken(this._config.initialScopes || []);
 		}
 	}
 
@@ -71,19 +71,19 @@ export default class Twitch {
 		return new TokenInfo(data.token, this);
 	}
 
-	public static async getTokenInfo(clientId: string, authToken: string) {
-		const data = await this.apiCall<TokenInfoData>({ url: '/' }, clientId, authToken);
+	public static async getTokenInfo(clientId: string, accessToken: string) {
+		const data = await this.apiCall<TokenInfoData>({ url: '/' }, clientId, accessToken);
 		return new TokenInfo(data.token);
 	}
 
 	// tslint:disable-next-line:no-any
 	public async apiCall<T = any>(options: TwitchApiCallOptions): Promise<T> {
-		const authToken = await this._config.authProvider.getAuthToken(options.scope ? [ options.scope ] : []);
-		return Twitch.apiCall<T>(options, this._config.authProvider.clientId, authToken);
+		const accessToken = await this._config.authProvider.getAccessToken(options.scope ? [ options.scope ] : []);
+		return Twitch.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
 	}
 
 	// tslint:disable-next-line:no-any
-	public static async apiCall<T = any>(options: TwitchApiCallOptions, clientId?: string, authToken?: string): Promise<T> {
+	public static async apiCall<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
 		let requestOptions: request.Options = {
 			url: `https://api.twitch.tv/kraken/${options.url.replace(/^\//, '')}`,
 			method: options.method,
@@ -106,8 +106,8 @@ export default class Twitch {
 			requestOptions.headers![ 'Client-ID' ] = clientId;
 		}
 
-		if (authToken) {
-			requestOptions.headers!.Authorization = `OAuth ${authToken}`;
+		if (accessToken) {
+			requestOptions.headers!.Authorization = `OAuth ${accessToken}`;
 		}
 
 		return request(requestOptions);
@@ -115,7 +115,7 @@ export default class Twitch {
 
 	public async getChatClient(identifier: string = 'default') {
 		if (!this._chatClients.has(identifier)) {
-			const token = await this._config.authProvider.getAuthToken([ 'chat_login' ]);
+			const token = await this._config.authProvider.getAccessToken([ 'chat_login' ]);
 			const tokenInfo = await this.getTokenInfo();
 			if (tokenInfo.valid && tokenInfo.userName) {
 				const newClient = new ChatClient(tokenInfo.userName, token, this);

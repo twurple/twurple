@@ -3,19 +3,19 @@ import { NonEnumerable } from '../Toolkit/Decorators';
 
 export default class StaticAuthProvider implements AuthProvider {
 	@NonEnumerable private _clientId: string;
-	@NonEnumerable private _authToken: string;
+	@NonEnumerable private _accessToken: string;
 	private _currentScopes: Set<string> = new Set();
 
-	constructor(clientId?: string, authToken?: string) {
+	constructor(clientId?: string, accessToken?: string) {
 		this._clientId = clientId || '';
-		this._authToken = authToken || '';
+		this._accessToken = accessToken || '';
 	}
 
-	async getAuthToken(scopes: string[]) {
+	async getAccessToken(scopes: string[]) {
 		// we only get a static token, so we just hope it works...
 		this._currentScopes = new Set([...this._currentScopes, ...scopes]);
 
-		return this._authToken;
+		return this._accessToken;
 	}
 
 	get clientId() {
