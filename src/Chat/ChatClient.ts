@@ -197,10 +197,10 @@ export default class ChatClient extends IRCClient {
 
 			if (messageType === 'sub' || messageType === 'resub') {
 				const event = messageType === 'sub' ? this.onSub : this.onResub;
-				const plan = tags.get('msg-param-sub-plan') as string;
+				const plan = tags.get('msg-param-sub-plan')!;
 				const subInfo: ChatSubInfo = {
 					plan: plan,
-					planName: tags.get('msg-param-sub-plan-name') as string,
+					planName: tags.get('msg-param-sub-plan-name')!,
 					isPrime: plan === 'Prime',
 					streak: Number(tags.get('msg-param-months')),
 					message: message

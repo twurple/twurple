@@ -31,7 +31,7 @@ export default class UserAPI extends BaseAPI {
 	async getUserByName(userName: string): Promise<User> {
 		this._cleanUserCache();
 		if (this._userByNameCache.has(userName)) {
-			return (this._userByNameCache.get(userName) as CacheEntry<User>).value;
+			return this._userByNameCache.get(userName)!.value;
 		}
 		const {users} = await this._client.apiCall({url: 'users', query: {login: userName}});
 		if (users.length === 0) {
@@ -76,7 +76,7 @@ export default class UserAPI extends BaseAPI {
 			if (!tokenInfo.valid) {
 				throw new Error('authorization necessary to get emotes');
 			}
-			userId = tokenInfo.userId as string;
+			userId = tokenInfo.userId!;
 		}
 
 		const data = await this._client.apiCall({url: `users/${userId}/emotes`, scope: 'user_subscriptions'});

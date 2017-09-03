@@ -38,7 +38,7 @@ export function Cacheable<T extends Constructor>(cls: T) {
 					internalCacheKey += '/';
 				}
 			} else {
-				const propName = cacheKey.shift() as string;
+				const propName = cacheKey.shift()!;
 				internalCacheKey = createCacheKey(propName, cacheKey, prefix);
 			}
 			if (prefix) {
