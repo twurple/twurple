@@ -19,11 +19,10 @@
     "interface-name": [true, "never-prefix"],
     "jsdoc-format": true,
     "label-position": true,
-    "max-line-length": [ true, 120 ],
+    "max-line-length": [ true, 200 ],
     "member-ordering": [
       true,
       "public-before-private",
-      "static-before-instance",
       "variables-before-functions"
     ],
     "no-any": true,
