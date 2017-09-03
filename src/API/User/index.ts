@@ -43,6 +43,10 @@ export default class User {
 		return this._data.display_name;
 	}
 
+	get logoUrl() {
+		return this._data.logo;
+	}
+
 	async getChannel(): Promise<Channel> {
 		return this._client.channels.getChannel(this);
 	}
