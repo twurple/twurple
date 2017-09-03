@@ -137,7 +137,8 @@ export default class Twitch {
 				grant_type: 'authorization_code',
 				client_id: clientId,
 				client_secret: clientSecret,
-				code: code
+				code: code,
+				redirect_uri: redirectUri
 			}
 		}));
 	}
