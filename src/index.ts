@@ -13,6 +13,7 @@ import SearchAPI from './API/Search/SearchAPI';
 import StreamAPI from './API/Stream/StreamAPI';
 import UserAPI from './API/User/UserAPI';
 import ChatClient from './Chat/ChatClient';
+import AccessToken, { AccessTokenData } from './API/AccessToken';
 
 export interface TwitchCheermoteConfig {
 	defaultBackground: CheermoteBackground;
@@ -36,13 +37,6 @@ export interface TwitchApiCallOptions {
 	jsonBody?: any;
 	scope?: string;
 	version?: number;
-}
-
-export interface TwitchAccessTokenData {
-	access_token: string;
-	refresh_token: string;
-	expires_in: number;
-	scope: string;
 }
 
 @Cacheable
@@ -73,13 +67,18 @@ export default class Twitch {
 
 	@Cached(3600)
 	public async getTokenInfo() {
-		const data: TokenInfoData = await this.apiCall({url: '/'});
+		const data = await this.apiCall<TokenInfoData>({ url: '/' });
 		return new TokenInfo(data.token, this);
+	}
+
+	public static async getTokenInfo(clientId: string, authToken: string) {
+		const data = await this.apiCall<TokenInfoData>({ url: '/' }, clientId, authToken);
+		return new TokenInfo(data.token);
 	}
 
 	// tslint:disable-next-line:no-any
 	public async apiCall<T = any>(options: TwitchApiCallOptions): Promise<T> {
-		const authToken = await this._config.authProvider.getAuthToken(options.scope ? [options.scope] : []);
+		const authToken = await this._config.authProvider.getAuthToken(options.scope ? [ options.scope ] : []);
 		return Twitch.apiCall<T>(options, this._config.authProvider.clientId, authToken);
 	}
 
@@ -104,7 +103,7 @@ export default class Twitch {
 		}
 
 		if (clientId) {
-			requestOptions.headers!['Client-ID'] = clientId;
+			requestOptions.headers![ 'Client-ID' ] = clientId;
 		}
 
 		if (authToken) {
@@ -116,7 +115,7 @@ export default class Twitch {
 
 	public async getChatClient(identifier: string = 'default') {
 		if (!this._chatClients.has(identifier)) {
-			const token = await this._config.authProvider.getAuthToken(['chat_login']);
+			const token = await this._config.authProvider.getAuthToken([ 'chat_login' ]);
 			const tokenInfo = await this.getTokenInfo();
 			if (tokenInfo.valid && tokenInfo.userName) {
 				const newClient = new ChatClient(tokenInfo.userName, token, this);
@@ -130,8 +129,8 @@ export default class Twitch {
 		return this._chatClients.get(identifier);
 	}
 
-	public static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<TwitchAccessTokenData> {
-		return this.apiCall<TwitchAccessTokenData>({
+	public static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<AccessToken> {
+		return new AccessToken(await this.apiCall<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',
 			query: {
@@ -140,11 +139,11 @@ export default class Twitch {
 				client_secret: clientSecret,
 				code: code
 			}
-		});
+		}));
 	}
 
-	public static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<TwitchAccessTokenData> {
-		return this.apiCall<TwitchAccessTokenData>({
+	public static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<AccessToken> {
+		return new AccessToken(await this.apiCall<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',
 			query: {
@@ -153,7 +152,7 @@ export default class Twitch {
 				client_secret: clientSecret,
 				refresh_token: refreshToken
 			}
-		});
+		}));
 	}
 
 	@CachedGetter()

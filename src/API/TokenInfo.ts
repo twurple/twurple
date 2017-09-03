@@ -23,9 +23,9 @@ export interface TokenInfoData {
 }
 
 export default class TokenInfo {
-	@NonEnumerable private _client: Twitch;
+	@NonEnumerable private _client?: Twitch;
 
-	constructor(private _data: TokenStructure, client: Twitch) {
+	constructor(private _data: TokenStructure, client?: Twitch) {
 		this._client = client;
 	}
 
