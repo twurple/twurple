@@ -113,12 +113,12 @@ export default class Twitch {
 		return request(requestOptions);
 	}
 
-	public async getChatClient(identifier: string = 'default') {
+	public async getChatClient(identifier: string = 'default', debugLevel: number = 0) {
 		if (!this._chatClients.has(identifier)) {
 			const token = await this._config.authProvider.getAccessToken([ 'chat_login' ]);
 			const tokenInfo = await this.getTokenInfo();
 			if (tokenInfo.valid && tokenInfo.userName) {
-				const newClient = new ChatClient(tokenInfo.userName, token, this);
+				const newClient = new ChatClient(tokenInfo.userName, token, this, debugLevel);
 				this._chatClients.set(identifier, newClient);
 				return newClient;
 			}

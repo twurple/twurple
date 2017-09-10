@@ -22,7 +22,6 @@
     "max-line-length": [ true, 200 ],
     "member-ordering": [
       true,
-      "public-before-private",
       "variables-before-functions"
     ],
     "no-any": true,
