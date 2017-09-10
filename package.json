@@ -1,7 +1,7 @@
 {
   "name": "twitch",
   "description": "Interact with Twitch's API and chat.",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "main": "lib",
   "types": "lib/index",
   "license": "MIT",
