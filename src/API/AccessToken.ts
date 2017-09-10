@@ -21,6 +21,9 @@ export default class AccessToken {
 	}
 
 	get expiresAt() {
+		if (!this._data.expires_in) {
+			return null;
+		}
 		return new Date(this._obtainedAt.getTime() + this._data.expires_in * 1000);
 	}
 
