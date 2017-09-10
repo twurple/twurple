@@ -183,3 +183,4 @@ export default class Twitch {
 }
 
 export { AuthProvider, StaticAuthProvider };
+export { ChatClient };
