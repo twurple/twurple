@@ -126,7 +126,7 @@ export default class Twitch {
 			throw new Error('invalid token when trying to connect to chat');
 		}
 
-		return this._chatClients.get(identifier);
+		return this._chatClients.get(identifier)!;
 	}
 
 	public static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<AccessToken> {
