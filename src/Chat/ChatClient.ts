@@ -86,7 +86,8 @@ export default class ChatClient extends IRCClient {
 			connection: {
 				hostName: 'irc-ws.chat.twitch.tv',
 				nick: username.toLowerCase(),
-				password: `oauth:${token}`
+				password: `oauth:${token}`,
+				secure: true
 			},
 			webSocket: true,
 			debugLevel
