@@ -8,7 +8,7 @@ import TwitchTagsCapability from './Capabilities/TwitchTags/';
 import TwitchCommandsCapability from './Capabilities/TwitchCommands/';
 import TwitchMembershipCapability from './Capabilities/TwitchMembership';
 
-import { Notice, PrivateMessage, ChannelJoin, ChannelPart } from 'ircv3/lib/Message/MessageTypes/Commands/';
+import { Notice, ChannelJoin, ChannelPart } from 'ircv3/lib/Message/MessageTypes/Commands/';
 import ClearChat from './Capabilities/TwitchCommands/MessageTypes/ClearChat';
 import HostTarget from './Capabilities/TwitchCommands/MessageTypes/HostTarget';
 import RoomState from './Capabilities/TwitchCommands/MessageTypes/RoomState';
@@ -45,6 +45,9 @@ export default class ChatClient extends IRCClient {
 	onResub: (handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
 	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
+
+	// override for specific class
+	onPrivmsg: (handler: (target: string, user: string, message: string, msg: TwitchPrivateMessage) => void) => Listener;
 
 	// internal events to resolve promises and stuff
 	private _onBanResult: (handler: (channel: string, user: string, error?: string) => void)
@@ -139,7 +142,7 @@ export default class ChatClient extends IRCClient {
 			this.emit(this.onPart, channel, prefix!.nick);
 		});
 
-		this.onMessage(PrivateMessage, (msg: PrivateMessage) => {
+		this.onMessage(TwitchPrivateMessage, (msg: TwitchPrivateMessage) => {
 			const {prefix, params: {target: channel, message}} = msg;
 			if (prefix && prefix.nick === 'jtv') {
 				// 1 = who hosted
