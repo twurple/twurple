@@ -475,7 +475,8 @@ export default class ChatClient extends IRCClient {
 				case 'timeout_success':
 				// ...and HOSTTARGET
 				case 'host_off':
-				case 'host_on': {
+				case 'host_on':
+				case 'host_target_went_offline': {
 					break;
 				}
 
