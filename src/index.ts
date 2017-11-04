@@ -11,7 +11,9 @@ import BitsAPI from './API/Bits/BitsAPI';
 import ChannelAPI from './API/Channel/ChannelAPI';
 import SearchAPI from './API/Search/SearchAPI';
 import StreamAPI from './API/Stream/StreamAPI';
+import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
 import UserAPI from './API/User/UserAPI';
+
 import ChatClient from './Chat/ChatClient';
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 
@@ -28,8 +30,11 @@ export interface TwitchConfig {
 	cheermotes: TwitchCheermoteConfig;
 }
 
+export type TwitchApiCallType = 'kraken' | 'custom'; // | 'helix' COMING SOON™!
+
 export interface TwitchApiCallOptions {
 	url: string;
+	type?: TwitchApiCallType;
 	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 	query?: UniformObject<string>;
 	body?: UniformObject<string>;
@@ -78,14 +83,25 @@ export default class Twitch {
 
 	// tslint:disable-next-line:no-any
 	public async apiCall<T = any>(options: TwitchApiCallOptions): Promise<T> {
-		const accessToken = await this._config.authProvider.getAccessToken(options.scope ? [ options.scope ] : []);
+		const accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
 		return Twitch.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
+	}
+
+	private static _getUrl(url: string, type?: TwitchApiCallType) {
+		switch (type || 'kraken') {
+			case 'kraken':
+				return `https://api.twitch.tv/kraken/${url.replace(/^\//, '')}`;
+			case 'custom':
+				return url;
+			default:
+				return url; // wat
+		}
 	}
 
 	// tslint:disable-next-line:no-any
 	public static async apiCall<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
 		let requestOptions: request.Options = {
-			url: `https://api.twitch.tv/kraken/${options.url.replace(/^\//, '')}`,
+			url: this._getUrl(options.url, options.type),
 			method: options.method,
 			headers: {
 				Accept: `application/vnd.twitchtv.v${options.version || 5}+json`
@@ -103,7 +119,7 @@ export default class Twitch {
 		}
 
 		if (clientId) {
-			requestOptions.headers![ 'Client-ID' ] = clientId;
+			requestOptions.headers!['Client-ID'] = clientId;
 		}
 
 		if (accessToken) {
@@ -115,7 +131,7 @@ export default class Twitch {
 
 	public async getChatClient(identifier: string = 'default', debugLevel: number = 0) {
 		if (!this._chatClients.has(identifier)) {
-			const token = await this._config.authProvider.getAccessToken([ 'chat_login' ]);
+			const token = await this._config.authProvider.getAccessToken(['chat_login']);
 			const tokenInfo = await this.getTokenInfo();
 			if (tokenInfo.valid && tokenInfo.userName) {
 				const newClient = new ChatClient(tokenInfo.userName, token, this, debugLevel);
@@ -179,6 +195,11 @@ export default class Twitch {
 	@CachedGetter()
 	get users() {
 		return new UserAPI(this);
+	}
+
+	@CachedGetter()
+	get unsupported() {
+		return new UnsupportedAPI(this);
 	}
 }
 
