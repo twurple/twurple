@@ -47,6 +47,10 @@ ansi-styles@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-2.2.1.tgz#b432dd3358b634cf75e1e4664368240533c1ddbe"
 
+array-uniq@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/array-uniq/-/array-uniq-1.0.2.tgz#5fcc373920775723cfd64d65c64bef53bf9eba6d"
+
 asn1@~0.2.3:
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/asn1/-/asn1-0.2.3.tgz#dac8787713c9966849fc8180777ebe9c1ddf3b86"
@@ -276,11 +280,12 @@ inherits@2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
-ircv3@^0.7.3:
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.7.3.tgz#9d1d693c6fbba29a60df2ff1185b83295665cad6"
+ircv3@^0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.0.tgz#26ef09a63bc423711dc97523459bf4b71b3c84f2"
   dependencies:
     escape-string-regexp "^1.0.5"
+    randomstring "^1.1.5"
     typed-event-emitter "^1.0.3"
     ws "^3.1.0"
 
@@ -376,6 +381,12 @@ punycode@^1.4.1:
 qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
+
+randomstring@^1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/randomstring/-/randomstring-1.1.5.tgz#6df0628f75cbd5932930d9fe3ab4e956a18518c3"
+  dependencies:
+    array-uniq "1.0.2"
 
 request-promise-core@1.1.1:
   version "1.1.1"
