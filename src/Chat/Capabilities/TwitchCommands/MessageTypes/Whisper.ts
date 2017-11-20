@@ -9,7 +9,7 @@ export interface WhisperParams {
 }
 
 export default class Whisper extends Message<WhisperParams> {
-	public static readonly COMMAND = 'USERNOTICE';
+	public static readonly COMMAND = 'WHISPER';
 	public static readonly PARAM_SPEC: MessageParamSpec<WhisperParams> = {
 		target: {},
 		message: {
