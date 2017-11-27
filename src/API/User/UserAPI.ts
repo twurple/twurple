@@ -204,7 +204,7 @@ export default class UserAPI extends BaseAPI {
 			method: 'PUT',
 			scope: 'user_blocks_edit',
 		});
-		return new UserFollow(data, this._client);
+		return new UserBlock(data, this._client);
 	}
 
 	@ClearsCache<UserAPI>('getBlockedUsers', 1)
