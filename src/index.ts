@@ -49,6 +49,10 @@ export default class Twitch {
 	readonly _config: TwitchConfig;
 	private _chatClients: Map<string, ChatClient> = new Map;
 
+	public static withCredentials(clientId: string, accessToken: string, config: Partial<TwitchConfig> = {}) {
+		return new this({ ...config, authProvider: new StaticAuthProvider(clientId, accessToken) });
+	}
+
 	public constructor(config: Partial<TwitchConfig>) {
 		if (!config.authProvider) {
 			throw new Error('No auth provider given');
