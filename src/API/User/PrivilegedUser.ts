@@ -1,6 +1,7 @@
 import User, { UserData } from './';
 import { UserIdResolvable } from '../../Toolkit/UserTools';
 import UserFollow from './UserFollow';
+import UserBlock from './UserBlock';
 
 export interface UserNotificationFlags {
 	email: boolean;
@@ -26,7 +27,7 @@ export default class PrivilegedUser extends User {
 		return this._client.users.unfollowChannel(this, channel);
 	}
 
-	async blockUser(userToBlock: UserIdResolvable): Promise<UserFollow> {
+	async blockUser(userToBlock: UserIdResolvable): Promise<UserBlock> {
 		return this._client.users.blockUser(this, userToBlock);
 	}
 
