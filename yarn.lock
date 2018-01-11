@@ -63,6 +63,10 @@ assert-plus@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/assert-plus/-/assert-plus-0.2.0.tgz#d74e1b87e7affc0db8aadb7021f3fe48101ab234"
 
+async-limiter@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/async-limiter/-/async-limiter-1.0.0.tgz#78faed8c3d074ab81f22b4e985d79e8738f720f8"
+
 asynckit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/asynckit/-/asynckit-0.4.0.tgz#c79ed97f7f34cb8f2ba1bc9790bcc366474b4b79"
@@ -281,12 +285,13 @@ inherits@2:
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
 ircv3@^0.8.0:
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.0.tgz#26ef09a63bc423711dc97523459bf4b71b3c84f2"
+  version "0.8.3"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.3.tgz#b801c7baee0fa19a4dde0d0a3814668d7166da11"
   dependencies:
     escape-string-regexp "^1.0.5"
     randomstring "^1.1.5"
     typed-event-emitter "^1.0.3"
+    universal-websocket-client "^1.0.1"
     ws "^3.1.0"
 
 is-typedarray@~1.0.0:
@@ -439,6 +444,10 @@ safe-buffer@^5.0.1, safe-buffer@~5.1.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
+safe-buffer@~5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
+
 semver@^5.3.0:
   version "5.4.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.4.1.tgz#e059c09d8571f0540823733433505d3a2f00b18e"
@@ -531,8 +540,14 @@ typescript@^2.4.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
 
 ultron@~1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.0.tgz#b07a2e6a541a815fc6a34ccd4533baec307ca864"
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
+
+universal-websocket-client@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/universal-websocket-client/-/universal-websocket-client-1.0.1.tgz#ad7c00e22cea16a2a83d6ab5e67ada2928dbe96f"
+  dependencies:
+    ws "^2.2.0"
 
 uuid@^3.0.0:
   version "3.1.0"
@@ -550,9 +565,17 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
 
-ws@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-3.1.0.tgz#8afafecdeab46d572e5397ee880739367aa2f41c"
+ws@^2.2.0:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-2.3.1.tgz#6b94b3e447cb6a363f785eaf94af6359e8e81c80"
   dependencies:
+    safe-buffer "~5.0.1"
+    ultron "~1.1.0"
+
+ws@^3.1.0:
+  version "3.3.3"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-3.3.3.tgz#f1cf84fe2d5e901ebce94efaece785f187a228f2"
+  dependencies:
+    async-limiter "~1.0.0"
     safe-buffer "~5.1.0"
     ultron "~1.1.0"
