@@ -18,11 +18,12 @@ export interface StreamData {
 	delay: number;
 	created_at: string;
 	is_playlist: boolean;
+	stream_type: StreamType;
 	preview: StreamPreviewURLList;
 	channel: ChannelData;
 }
 
-export type StreamType = 'live' | 'playlist' | 'all';
+export type StreamType = 'live' | 'watch_party' | 'all';
 
 export default class Stream {
 	@NonEnumerable
