@@ -12,6 +12,6 @@ export default class UnsupportedAPI extends BaseAPI {
 		}
 
 		const data: ChattersListData = await this._client.apiCall({url: `https://tmi.twitch.tv/group/user/${channel}/chatters`, type: 'custom'});
-		return new ChattersList(data, this._client);
+		return new ChattersList(data);
 	}
 }

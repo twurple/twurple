@@ -48,7 +48,7 @@ export default class UserAPI extends BaseAPI {
 	async getUsersByNames(userNames: string[]): Promise<UniformObject<User>> {
 		this._cleanUserCache();
 		userNames = userNames.map(name => name.toLowerCase());
-		const cachedEntries = Array.from(this._userByNameCache.entries()).filter(([key, val]) => userNames.includes(key));
+		const cachedEntries = Array.from(this._userByNameCache.entries()).filter(([key]) => userNames.includes(key));
 		const cachedObject = ObjectTools.entriesToObject(cachedEntries);
 		const cachedUsers = ObjectTools.map<CacheEntry<User>, User>(cachedObject, entry => entry.value);
 		const toFetch = userNames.filter(name => !(name in cachedUsers));
@@ -80,7 +80,7 @@ export default class UserAPI extends BaseAPI {
 		}
 
 		const data = await this._client.apiCall({url: `users/${userId}/emotes`, scope: 'user_subscriptions'});
-		return new EmoteSetList(data.emoticon_sets, this._client);
+		return new EmoteSetList(data.emoticon_sets);
 	}
 
 	@Cached(3600)

@@ -81,7 +81,7 @@ export default class Twitch {
 
 	public async getTokenInfo() {
 		const data = await this.apiCall<TokenInfoData>({ url: '/' });
-		return new TokenInfo(data.token, this);
+		return new TokenInfo(data.token);
 	}
 
 	public static async getTokenInfo(clientId: string, accessToken: string) {

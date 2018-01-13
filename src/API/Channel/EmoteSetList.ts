@@ -1,5 +1,4 @@
-import Twitch from '../../';
-import { Cacheable, Cached, NonEnumerable } from '../../Toolkit/Decorators';
+import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import { UniformObject } from '../../Toolkit/ObjectTools';
 
 export interface Emote {
@@ -11,10 +10,7 @@ export type EmoteSetListData = UniformObject<Emote[]>;
 
 @Cacheable
 export default class EmoteSetList {
-	@NonEnumerable private _client: Twitch;
-
-	constructor(private _data: EmoteSetListData, client: Twitch) {
-		this._client = client;
+	constructor(private _data: EmoteSetListData) {
 	}
 
 	@Cached(Infinity, true)

@@ -1,5 +1,4 @@
-import { Cacheable, Cached, NonEnumerable } from '../../Toolkit/Decorators';
-import Twitch from '../..';
+import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import ArrayTools from '../../Toolkit/ArrayTools';
 
 export interface ChattersListData {
@@ -9,10 +8,7 @@ export interface ChattersListData {
 
 @Cacheable
 export default class ChattersList {
-	@NonEnumerable private _client: Twitch;
-
-	constructor(private _data: ChattersListData, client: Twitch) {
-		this._client = client;
+	constructor(private _data: ChattersListData) {
 	}
 
 	@Cached(Infinity)

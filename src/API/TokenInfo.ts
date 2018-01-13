@@ -1,6 +1,3 @@
-import Twitch from '../';
-import { NonEnumerable } from '../Toolkit/Decorators';
-
 export interface TokenAuthorization {
 	scopes: string[];
 	created_at: string[];
@@ -23,10 +20,7 @@ export interface TokenInfoData {
 }
 
 export default class TokenInfo {
-	@NonEnumerable private _client?: Twitch;
-
-	constructor(private _data: TokenStructure, client?: Twitch) {
-		this._client = client;
+	constructor(private _data: TokenStructure) {
 	}
 
 	get clientId(): string | undefined {
