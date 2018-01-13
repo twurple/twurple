@@ -1,7 +1,7 @@
 import AuthProvider from './Auth/AuthProvider';
 import * as defaults from 'defaults';
 import * as request from 'request-promise-native';
-import { Cacheable, Cached, CachedGetter } from './Toolkit/Decorators';
+import { Cacheable, CachedGetter } from './Toolkit/Decorators';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Bits/CheermoteList';
 import { UniformObject } from './Toolkit/ObjectTools';
@@ -79,7 +79,6 @@ export default class Twitch {
 		}
 	}
 
-	@Cached(3600)
 	public async getTokenInfo() {
 		const data = await this.apiCall<TokenInfoData>({ url: '/' });
 		return new TokenInfo(data.token, this);
