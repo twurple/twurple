@@ -18,9 +18,8 @@
   },
   "dependencies": {
     "defaults": "^1.0.3",
-    "ircv3": "^0.8.4",
+    "ircv3": "^0.8.5",
     "request": "^2.81.0",
-    "request-promise-native": "^1.0.4",
-    "typed-event-emitter": "^1.0.3"
+    "request-promise-native": "^1.0.4"
   }
 }

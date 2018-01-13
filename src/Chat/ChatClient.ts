@@ -1,5 +1,5 @@
 import { Client as IRCClient } from 'ircv3';
-import { Listener } from 'typed-event-emitter';
+import { Listener } from 'ircv3/lib/TypedEventEmitter';
 
 import ChatSubInfo from './ChatSubInfo';
 import UserTools from '../Toolkit/UserTools';
@@ -34,6 +34,8 @@ export default class ChatClient extends IRCClient {
 	onHost: (handler: (channel: string, target: string, viewers?: number) => void) => Listener = this.registerEvent();
 	onHosted: (handler: (channel: string, byChannel: string, auto: boolean, viewers?: number) => void)
 		=> Listener = this.registerEvent();
+	onHostsRemaining: (handler: (channel: string, numberOfHosts: number) => void)
+		=> Listener = this.registerEvent();
 	onJoin: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
 	onPart: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
 	onR9k: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
@@ -65,7 +67,7 @@ export default class ChatClient extends IRCClient {
 		=> Listener = this.registerEvent();
 	private _onFollowersOnlyOffResult: (handler: (channel: string, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onHostResult: (handler: (channel: string, numberOfHosts: number, error?: string) => void)
+	private _onHostResult: (handler: (channel: string, error?: string) => void)
 		=> Listener = this.registerEvent();
 	private _onUnhostResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 	private _onModResult: (handler: (channel: string, user: string, error?: string) => void)
@@ -125,7 +127,6 @@ export default class ChatClient extends IRCClient {
 			const [target, viewers] = targetAndViewers.split(' ');
 			if (target === '-') {
 				// unhost
-				this.emit(this._onUnhostResult, channel);
 				this.emit(this.onUnhost, channel);
 			} else {
 				this.emit(this.onHost, channel, target, viewers ? Number(viewers) : undefined);
@@ -331,7 +332,7 @@ export default class ChatClient extends IRCClient {
 				case 'hosts_remaining': {
 					const remainingHostsFromChar = +message[0];
 					const remainingHosts = isNaN(remainingHostsFromChar) ? 0 : Number(remainingHostsFromChar);
-					this.emit(this._onHostResult, channel, remainingHosts);
+					this.emit(this.onHostsRemaining, channel, remainingHosts);
 					break;
 				}
 
@@ -500,6 +501,38 @@ export default class ChatClient extends IRCClient {
 					}
 				}
 			}
+		});
+	}
+
+	async host(target: string) {
+		return new Promise((resolve, reject) => {
+			let e = this._onHostResult((channel, error) => {
+				if (channel === this._nick) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(this._nick), message: `/host ${target}`});
+		});
+	}
+
+	async unhost() {
+		return new Promise((resolve, reject) => {
+			let e = this._onHostResult((channel, error) => {
+				if (channel === this._nick) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(this._nick), message: '/unhost'});
 		});
 	}
 

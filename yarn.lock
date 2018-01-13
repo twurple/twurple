@@ -347,13 +347,12 @@ inherits@2:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.3.tgz#633c2c83e3da42a502f52466022480f4208261de"
 
-ircv3@^0.8.4:
-  version "0.8.4"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.4.tgz#3c55ebb04de4c5fba25f5b1d55d68656a3c81063"
+ircv3@^0.8.5:
+  version "0.8.5"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.5.tgz#2f86fcce4c87676f30b9e1a20b64fe438bb66df4"
   dependencies:
     escape-string-regexp "^1.0.5"
     randomstring "^1.1.5"
-    typed-event-emitter "^1.0.3"
     universal-websocket-client "^1.0.1"
     ws "^3.1.0"
 
@@ -606,10 +605,6 @@ tunnel-agent@^0.6.0:
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
-
-typed-event-emitter@^1.0.3:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/typed-event-emitter/-/typed-event-emitter-1.0.3.tgz#116baa78bc3af454932c61a2e1ce35118603c39f"
 
 typescript@^2.6.2:
   version "2.6.2"
