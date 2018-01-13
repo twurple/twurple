@@ -6,7 +6,7 @@ export default class StaticAuthProvider implements AuthProvider {
 	@NonEnumerable private _accessToken: string;
 	private _currentScopes: Set<string> = new Set();
 
-	constructor(clientId?: string, accessToken?: string) {
+	constructor(clientId: string, accessToken?: string) {
 		this._clientId = clientId || '';
 		this._accessToken = accessToken || '';
 	}
@@ -16,6 +16,10 @@ export default class StaticAuthProvider implements AuthProvider {
 		this._currentScopes = new Set([...Array.from(this._currentScopes), ...scopes]);
 
 		return this._accessToken;
+	}
+
+	setAccessToken(token: string) {
+		this._accessToken = token;
 	}
 
 	get clientId() {

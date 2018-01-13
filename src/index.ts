@@ -16,6 +16,7 @@ import UserAPI from './API/User/UserAPI';
 
 import ChatClient from './Chat/ChatClient';
 import AccessToken, { AccessTokenData } from './API/AccessToken';
+import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
 
 export interface TwitchCheermoteConfig {
 	defaultBackground: CheermoteBackground;
@@ -49,8 +50,12 @@ export default class Twitch {
 	readonly _config: TwitchConfig;
 	private _chatClients: Map<string, ChatClient> = new Map;
 
-	public static withCredentials(clientId: string, accessToken: string, config: Partial<TwitchConfig> = {}) {
-		return new this({ ...config, authProvider: new StaticAuthProvider(clientId, accessToken) });
+	public static withCredentials(clientId: string, accessToken?: string, refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
+		if (refreshConfig) {
+			return new this({ ...config, authProvider: new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken), refreshConfig) });
+		} else {
+			return new this({ ...config, authProvider: new StaticAuthProvider(clientId, accessToken) });
+		}
 	}
 
 	public constructor(config: Partial<TwitchConfig>) {
@@ -87,8 +92,18 @@ export default class Twitch {
 
 	// tslint:disable-next-line:no-any
 	public async apiCall<T = any>(options: TwitchApiCallOptions): Promise<T> {
-		const accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
-		return Twitch.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
+		let accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
+		try {
+			return await Twitch.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
+		} catch (e) {
+			if (e.response && e.response.status === 401 && this._config.authProvider instanceof RefreshableAuthProvider) {
+				await this._config.authProvider.refresh();
+				accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
+				return await Twitch.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
+			}
+
+			throw e;
+		}
 	}
 
 	private static _getUrl(url: string, type?: TwitchApiCallType) {
@@ -207,5 +222,5 @@ export default class Twitch {
 	}
 }
 
-export { AuthProvider, StaticAuthProvider };
+export { AuthProvider, StaticAuthProvider, RefreshableAuthProvider };
 export { ChatClient };
