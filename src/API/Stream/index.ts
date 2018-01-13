@@ -44,4 +44,12 @@ export default class Stream {
 	get viewers() {
 		return this._data.viewers;
 	}
+
+	get startDate() {
+		return new Date(this._data.created_at);
+	}
+
+	get type() {
+		return this._data.stream_type;
+	}
 }
