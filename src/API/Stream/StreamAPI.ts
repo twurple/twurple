@@ -32,7 +32,7 @@ export default class StreamAPI extends BaseAPI {
 			query.game = game;
 		}
 		if (languageCode) {
-			query.language = languageCode;
+			query.broadcaster_language = languageCode;
 		}
 		if (type) {
 			query.stream_type = type;
