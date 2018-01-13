@@ -14,11 +14,11 @@
     "@types/request": "2.0.0",
     "@types/request-promise-native": "^1.0.6",
     "tslint": "^5.5.0",
-    "typescript": "^2.4.2"
+    "typescript": "^2.6.2"
   },
   "dependencies": {
     "defaults": "^1.0.3",
-    "ircv3": "^0.8.0",
+    "ircv3": "^0.8.4",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
     "typed-event-emitter": "^1.0.3"
