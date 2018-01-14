@@ -147,7 +147,7 @@ export default class Twitch {
 		}
 
 		if (accessToken) {
-			requestOptions.headers!.Authorization = `OAuth ${accessToken}`;
+			requestOptions.headers!.Authorization = `${options.type === 'helix' ? 'Bearer' : 'OAuth'} ${accessToken}`;
 		}
 
 		return request(requestOptions);
