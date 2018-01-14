@@ -3,14 +3,14 @@ import BaseAPI from '../BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
 import User, { UserData } from './';
 import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
-import { UserIdResolvable, default as UserTools } from '../../Toolkit/UserTools';
+import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import EmoteSetList from '../Channel/EmoteSetList';
 import UserSubscription from './UserSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
 import NotSubscribed from '../NotSubscribed';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import UserFollow, { UserFollowData } from './UserFollow';
-import NotFollowing from './NotSubscribed';
+import NotFollowing from '../NotFollowing';
 import UserBlock, { UserBlockData } from './UserBlock';
 
 @Cacheable

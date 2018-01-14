@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
 import Channel from '../Channel';
-import { default as ChattersList, ChattersListData } from './ChattersList';
+import ChattersList, { ChattersListData } from './ChattersList';
 
 @Cacheable
 export default class UnsupportedAPI extends BaseAPI {

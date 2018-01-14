@@ -65,7 +65,7 @@ export function Cacheable<T extends Constructor>(cls: T) {
 
 // tslint:disable-next-line:no-any
 export function createCacheKey(propName: string, params: any[], prefix?: boolean): string {
-// tslint:disable-next-line:no-any
+	// tslint:disable-next-line:no-any
 	function createSingleCacheKey(param: any) {
 		// noinspection FallThroughInSwitchStatementJS
 		switch (typeof param) {
@@ -79,6 +79,10 @@ export function createCacheKey(propName: string, params: any[], prefix?: boolean
 				if ('cacheKey' in param) {
 					return param.cacheKey;
 				}
+				let objKey = JSON.stringify(param);
+				if (objKey !== '{}') {
+					return objKey;
+				}
 			}
 			// tslint:disable-next-line:no-switch-case-fall-through
 			default: {
@@ -87,7 +91,6 @@ export function createCacheKey(propName: string, params: any[], prefix?: boolean
 		}
 	}
 
-	// tslint:disable-next-line:no-any
 	return [propName, ...params.map(createSingleCacheKey)].join('/') + (prefix ? '/' : '');
 }
 

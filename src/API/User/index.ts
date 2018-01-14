@@ -7,7 +7,7 @@ import UserSubscription from './UserSubscription';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import NotSubscribed from '../NotSubscribed';
 import UserFollow from './UserFollow';
-import NotFollowing from './NotSubscribed';
+import NotFollowing from '../NotFollowing';
 
 export interface UserData {
 	_id: string;
@@ -35,7 +35,14 @@ export default class User {
 		return this._data._id;
 	}
 
+	/**
+	 * @deprecated use `name` instead
+	 */
 	get userName() {
+		return this._data.name;
+	}
+
+	get name() {
 		return this._data.name;
 	}
 

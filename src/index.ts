@@ -9,6 +9,7 @@ import StaticAuthProvider from './Auth/StaticAuthProvider';
 
 import BitsAPI from './API/Bits/BitsAPI';
 import ChannelAPI from './API/Channel/ChannelAPI';
+import HelixAPIGroup from './API/Helix/HelixAPIGroup';
 import SearchAPI from './API/Search/SearchAPI';
 import StreamAPI from './API/Stream/StreamAPI';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
@@ -31,14 +32,14 @@ export interface TwitchConfig {
 	cheermotes: TwitchCheermoteConfig;
 }
 
-export type TwitchApiCallType = 'kraken' | 'custom'; // | 'helix' COMING SOON™!
+export type TwitchApiCallType = 'kraken' | 'helix' | 'custom';
 
 export interface TwitchApiCallOptions {
 	url: string;
 	type?: TwitchApiCallType;
 	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-	query?: UniformObject<string>;
-	body?: UniformObject<string>;
+	query?: UniformObject<string | string[] | undefined>;
+	body?: UniformObject<string | string[] | undefined>;
 	// tslint:disable-next-line:no-any
 	jsonBody?: any;
 	scope?: string;
@@ -106,9 +107,11 @@ export default class Twitch {
 	}
 
 	private static _getUrl(url: string, type?: TwitchApiCallType) {
-		switch (type || 'kraken') {
+		type = type || 'kraken';
+		switch (type) {
 			case 'kraken':
-				return `https://api.twitch.tv/kraken/${url.replace(/^\//, '')}`;
+			case 'helix':
+				return `https://api.twitch.tv/${type}/${url.replace(/^\//, '')}`;
 			case 'custom':
 				return url;
 			default:
@@ -125,6 +128,9 @@ export default class Twitch {
 				Accept: `application/vnd.twitchtv.v${options.version || 5}+json`
 			},
 			qs: options.query,
+			qsStringifyOptions: {
+				arrayFormat: 'repeat'
+			},
 			form: options.body,
 			json: true,
 			gzip: true
@@ -213,6 +219,11 @@ export default class Twitch {
 	@CachedGetter()
 	get users() {
 		return new UserAPI(this);
+	}
+
+	@CachedGetter()
+	get helix() {
+		return new HelixAPIGroup(this);
 	}
 
 	@CachedGetter()
