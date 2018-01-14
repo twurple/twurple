@@ -332,6 +332,7 @@ export default class ChatClient extends IRCClient {
 				case 'hosts_remaining': {
 					const remainingHostsFromChar = +message[0];
 					const remainingHosts = isNaN(remainingHostsFromChar) ? 0 : Number(remainingHostsFromChar);
+					this.emit(this._onHostResult, channel);
 					this.emit(this.onHostsRemaining, channel, remainingHosts);
 					break;
 				}
@@ -504,10 +505,11 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
-	async host(target: string) {
+	async host(target: string, channel: string = this._nick) {
+		channel = UserTools.toUserName(channel);
 		return new Promise((resolve, reject) => {
-			let e = this._onHostResult((channel, error) => {
-				if (channel === this._nick) {
+			let e = this._onHostResult((chan, error) => {
+				if (UserTools.toUserName(chan) === channel) {
 					if (error) {
 						reject(error);
 					} else {
@@ -516,14 +518,15 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(this._nick), message: `/host ${target}`});
+			this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(channel), message: `/host ${target}`});
 		});
 	}
 
-	async unhost() {
+	async unhost(channel: string = this._nick) {
+		channel = UserTools.toUserName(channel);
 		return new Promise((resolve, reject) => {
-			let e = this._onHostResult((channel, error) => {
-				if (channel === this._nick) {
+			let e = this._onUnhostResult((chan, error) => {
+				if (UserTools.toUserName(chan) === channel) {
 					if (error) {
 						reject(error);
 					} else {
@@ -532,8 +535,12 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(this._nick), message: '/unhost'});
+			this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(channel), message: '/unhost'});
 		});
+	}
+
+	unhostOutside(channel: string = this._nick) {
+		this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(channel), message: '/unhost'});
 	}
 
 	protected registerCoreMessageTypes() {
