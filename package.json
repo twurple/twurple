@@ -14,12 +14,17 @@
     "@types/request": "2.0.0",
     "@types/request-promise-native": "^1.0.6",
     "tslint": "^5.5.0",
-    "typescript": "^2.6.2"
+    "typescript": "^2.6.2",
+    "yarn-or-npm": "^2.0.4"
   },
   "dependencies": {
     "defaults": "^1.0.3",
     "ircv3": "^0.8.5",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "yon run build"
   }
 }
