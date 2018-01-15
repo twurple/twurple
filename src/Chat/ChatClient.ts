@@ -1,7 +1,7 @@
 import { Client as IRCClient } from 'ircv3';
 import { Listener } from 'ircv3/lib/TypedEventEmitter';
 
-import ChatSubInfo from './ChatSubInfo';
+import ChatSubInfo, { ChatSubGiftInfo } from './ChatSubInfo';
 import UserTools from '../Toolkit/UserTools';
 
 import TwitchTagsCapability from './Capabilities/TwitchTags/';
@@ -45,6 +45,8 @@ export default class ChatClient extends IRCClient {
 	onSub: (handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
 	onResub: (handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void)
+		=> Listener = this.registerEvent();
+	onSubGift: (handler: (channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
 	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
 
@@ -198,20 +200,33 @@ export default class ChatClient extends IRCClient {
 		});
 
 		this.onMessage(UserNotice, (userNotice: UserNotice) => {
-			const {prefix, params: {channel, message}, tags} = userNotice;
+			const {params: {channel, message}, tags} = userNotice;
 			const messageType = tags.get('msg-id');
 
 			if (messageType === 'sub' || messageType === 'resub') {
 				const event = messageType === 'sub' ? this.onSub : this.onResub;
 				const plan = tags.get('msg-param-sub-plan')!;
 				const subInfo: ChatSubInfo = {
+					displayName: tags.get('display-name')!,
 					plan: plan,
 					planName: tags.get('msg-param-sub-plan-name')!,
 					isPrime: plan === 'Prime',
 					streak: Number(tags.get('msg-param-months')),
 					message: message
 				};
-				this.emit(event, channel, prefix!.nick, subInfo, userNotice);
+				this.emit(event, channel, tags.get('login')!, subInfo, userNotice);
+			} else if (messageType === 'subgift') {
+				const plan = tags.get('msg-param-sub-plan')!;
+				const subInfo: ChatSubGiftInfo = {
+					displayName: tags.get('msg-param-recipient-display-name')!,
+					gifter: tags.get('login')!,
+					gifterDisplayName: tags.get('display-name')!,
+					plan: plan,
+					planName: tags.get('msg-param-sub-plan-name')!,
+					isPrime: plan === 'Prime',
+					streak: Number(tags.get('msg-param-months'))
+				};
+				this.emit(this.onSubGift, channel, tags.get('msg-param-recipient-user-name'), subInfo, userNotice);
 			}
 		});
 

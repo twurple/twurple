@@ -1,4 +1,5 @@
-interface ChatSubInfo {
+export default interface ChatSubInfo {
+	displayName: string;
 	plan: string;
 	planName: string;
 	isPrime: boolean;
@@ -6,4 +7,7 @@ interface ChatSubInfo {
 	message?: string;
 }
 
-export default ChatSubInfo;
+export interface ChatSubGiftInfo extends ChatSubInfo {
+	gifter: string;
+	gifterDisplayName: string;
+}
