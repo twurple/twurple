@@ -2,7 +2,7 @@ import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import Channel, { ChannelData } from '../Channel/';
 
-export interface StreamPreviewURLList {
+export interface StreamPreviewUrlList {
 	small: string;
 	medium: string;
 	large: string;
@@ -19,7 +19,7 @@ export interface StreamData {
 	created_at: string;
 	is_playlist: boolean;
 	stream_type: StreamType;
-	preview: StreamPreviewURLList;
+	preview: StreamPreviewUrlList;
 	channel: ChannelData;
 }
 
