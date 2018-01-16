@@ -2,11 +2,9 @@ import BaseAPI from '../../BaseAPI';
 import HelixResponse from '../HelixResponse';
 import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
 import { UniformObject } from '../../../Toolkit/ObjectTools';
+import HelixPagination from '../HelixPagination';
 
-export interface StreamFilter {
-	after?: string;
-	before?: string;
-	limit?: string;
+export interface StreamFilter extends HelixPagination {
 	community?: string | string[];
 	game?: string | string[];
 	language?: string | string[];
