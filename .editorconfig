@@ -10,3 +10,7 @@ max_line_length = 200
 [package.json]
 indent_style = space
 indent_size = 2
+
+[*.yml]
+indent_style = space
+indent_size = 4
