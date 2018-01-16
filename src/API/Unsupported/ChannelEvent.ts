@@ -15,6 +15,11 @@ export interface ChannelEventData {
 	// game: GameData;
 }
 
+export interface ChannelEventAPIResult {
+	_total: number,
+	events: ChannelEventData[]
+}
+
 export default class ChannelEvent {
 	@NonEnumerable _client: Twitch;
 
