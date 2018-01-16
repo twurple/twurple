@@ -36,11 +36,11 @@ export default class ChannelEvent {
 	}
 
 	get startTime() {
-		return Date.parse(this._data.start_time);
+		return new Date(this._data.start_time);
 	}
 
 	get endTime() {
-		return Date.parse(this._data.end_time);
+		return new Date(this._data.end_time);
 	}
 
 	get title() {
