@@ -61,7 +61,7 @@ export default class ChannelAPI extends BaseAPI {
 	): Promise<ChannelFollow[]> {
 		const channelId = UserTools.getUserId(channel);
 
-		let query: UniformObject<string> = {};
+		const query: UniformObject<string> = {};
 		if (page) {
 			query.offset = ((page - 1) * (limit || 25)).toString();
 		}
@@ -87,7 +87,7 @@ export default class ChannelAPI extends BaseAPI {
 	): Promise<ChannelSubscription[]> {
 		const channelId = UserTools.getUserId(channel);
 
-		let query: UniformObject<string> = {};
+		const query: UniformObject<string> = {};
 		if (page) {
 			query.offset = ((page - 1) * (limit || 25)).toString();
 		}
@@ -102,7 +102,7 @@ export default class ChannelAPI extends BaseAPI {
 			const data = await this._client.apiCall({
 				url: `channels/${channelId}/subscriptions`,
 				query,
-				scope: `channel_subscriptions`
+				scope: 'channel_subscriptions'
 			});
 			return data.subscriptions.map((sub: ChannelSubscriptionData) => new ChannelSubscription(sub, this._client));
 		} catch (e) {
@@ -121,7 +121,7 @@ export default class ChannelAPI extends BaseAPI {
 
 		try {
 			return new ChannelSubscription(
-				await this._client.apiCall({
+				await this._client.apiCall<ChannelSubscriptionData>({
 					url: `channels/${channelId}/subscriptions/${userId}`,
 					scope: 'channel_check_subscription'
 				}),
@@ -142,7 +142,7 @@ export default class ChannelAPI extends BaseAPI {
 
 	async startChannelCommercial(channel: UserIdResolvable, length: CommercialLength) {
 		const channelId = UserTools.getUserId(channel);
-		return await this._client.apiCall({
+		return this._client.apiCall({
 			url: `channels/${channelId}/commercial`,
 			method: 'POST',
 			jsonBody: {length},
@@ -153,7 +153,7 @@ export default class ChannelAPI extends BaseAPI {
 	@ClearsCache<ChannelAPI>('getMyChannel')
 	async resetChannelStreamKey(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
-		return await this._client.apiCall({
+		return this._client.apiCall({
 			url: `channels/${channelId}/stream_key`,
 			method: 'DELETE',
 			scope: 'channel_stream'

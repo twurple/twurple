@@ -14,6 +14,7 @@
     "@types/request": "2.0.0",
     "@types/request-promise-native": "^1.0.6",
     "tslint": "^5.5.0",
+    "tslint-language-service": "^0.9.8",
     "typescript": "^2.6.2",
     "yarn-or-npm": "^2.0.4"
   },

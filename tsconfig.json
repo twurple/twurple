@@ -1,25 +1,31 @@
 {
-  "compilerOptions": {
-    "outDir": "lib",
-    "module": "commonjs",
-    "target": "es5",
-    "lib": ["es6", "es2017", "dom"],
-    "sourceMap": true,
-    "moduleResolution": "node",
-    "rootDir": "src",
-    "declaration": true,
-    "forceConsistentCasingInFileNames": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noImplicitAny": true,
-    "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true,
-    "experimentalDecorators": true
-  },
-  "exclude": [
-    "node_modules",
-    "lib",
-    "../ircv3"
-  ]
+	"compilerOptions": {
+		"outDir": "lib",
+		"module": "commonjs",
+		"target": "es5",
+		"lib": ["es6", "es2017", "dom"],
+		"sourceMap": true,
+		"moduleResolution": "node",
+		"rootDir": "src",
+		"declaration": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"noImplicitThis": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"suppressImplicitAnyIndexErrors": true,
+		"noUnusedLocals": true,
+		"experimentalDecorators": true,
+		"plugins": [
+			{
+				"name": "tslint-language-service",
+				"ignoreDefinitionFiles": true
+			}
+		]
+	},
+	"exclude": [
+		"node_modules",
+		"lib",
+		"../ircv3"
+	]
 }

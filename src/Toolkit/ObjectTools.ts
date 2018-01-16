@@ -1,7 +1,7 @@
 declare interface ObjectCtor extends ObjectConstructor {
-	assign<T>(target: {}, ...source: Partial<T>[]): T;
+	assign<T>(target: {}, ...source: Array<Partial<T>>): T;
 
-	entries<T, Obj>(o: Obj): [keyof Obj, T][];
+	entries<T, Obj>(o: Obj): Array<[keyof Obj, T]>;
 }
 
 declare let Object: ObjectCtor;
@@ -15,7 +15,7 @@ export type KeyMapper<T> = (value: T) => string;
 export default class ObjectTools {
 	static map<T, O, Obj = UniformObject<T>>(obj: Obj, fn: (value: T, key: keyof Obj) => O): ObjMap<Obj, O> {
 		const mapped = Object.entries<T, Obj>(obj).map(([key, value]: [keyof Obj, T]): ObjMapPart<Obj, O> => {
-			let result: ObjMapPart<Obj, O> = {};
+			const result: ObjMapPart<Obj, O> = {};
 			result[key] = fn(value, key);
 			return result;
 		});
@@ -23,7 +23,7 @@ export default class ObjectTools {
 	}
 
 	static fromArray<T, O, Obj>(arr: T[], fn: (value: T) => ObjMapPart<Obj, O>): ObjMap<Obj, O> {
-		return Object.assign<ObjMap<Obj, O>>({}, ...arr.map(value => fn(value)));
+		return Object.assign<ObjMap<Obj, O>>({}, ...arr.map(fn));
 	}
 
 	static indexBy<T>(arr: T[], key: keyof T): UniformObject<T>;
@@ -32,9 +32,7 @@ export default class ObjectTools {
 	static indexBy<T>(arr: T[], keyFn: any): UniformObject<T> {
 		if (typeof keyFn !== 'function') {
 			const key = keyFn;
-			keyFn = (value: T) => {
-				return value[key].toString();
-			};
+			keyFn = (value: T) => value[key].toString();
 		}
 		return this.fromArray(arr, val => ({[keyFn(val)]: val}));
 	}
@@ -43,7 +41,7 @@ export default class ObjectTools {
 		Object.entries(obj).forEach(([key, value]: [keyof Obj, T]) => fn(value, key));
 	}
 
-	static entriesToObject<T>(obj: [string, T][]): UniformObject<T> {
+	static entriesToObject<T>(obj: Array<[string, T]>): UniformObject<T> {
 		return this.fromArray(obj, ([key, val]) => ({[key]: val}));
 	}
 }

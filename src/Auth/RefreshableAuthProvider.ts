@@ -11,12 +11,12 @@ export interface RefreshConfig {
 }
 
 export default class RefreshableAuthProvider implements AuthProvider {
-	@NonEnumerable private _clientSecret: string;
+	@NonEnumerable private readonly _clientSecret: string;
 	@NonEnumerable private _refreshToken: string;
 	private _expiry?: Date | null;
-	private _onRefresh?: (token: AccessToken) => void;
+	private readonly _onRefresh?: (token: AccessToken) => void;
 
-	constructor(private _childProvider: AuthProvider, refreshConfig: RefreshConfig) {
+	constructor(private readonly _childProvider: AuthProvider, refreshConfig: RefreshConfig) {
 		this._clientSecret = refreshConfig.clientSecret;
 		this._refreshToken = refreshConfig.refreshToken;
 		this._expiry = refreshConfig.expiry;

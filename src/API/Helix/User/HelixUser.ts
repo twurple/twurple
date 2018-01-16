@@ -49,7 +49,7 @@ export default class HelixUser {
 	}
 
 	async getFollows(paginationParams: HelixPagination) {
-		let params: HelixFollowFilter = paginationParams;
+		const params: HelixFollowFilter = paginationParams;
 		params.user = this;
 		return this._client.helix.users.getFollows(params);
 	}

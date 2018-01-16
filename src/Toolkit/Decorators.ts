@@ -1,3 +1,5 @@
+// tslint:disable:only-arrow-functions
+
 // tslint:disable-next-line:no-any
 export type Constructor<T = {}> = new (...args: any[]) => T;
 
@@ -79,7 +81,7 @@ export function createCacheKey(propName: string, params: any[], prefix?: boolean
 				if ('cacheKey' in param) {
 					return param.cacheKey;
 				}
-				let objKey = JSON.stringify(param);
+				const objKey = JSON.stringify(param);
 				if (objKey !== '{}') {
 					return objKey;
 				}
@@ -123,6 +125,7 @@ export function CachedGetter(timeInSeconds: number = Infinity) {
 	// tslint:disable-next-line:no-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
 		if (descriptor.get) {
+			// tslint:disable-next-line:no-unbound-method
 			const origFn = descriptor.get;
 
 			// tslint:disable-next-line:no-any
@@ -152,7 +155,7 @@ export function ClearsCache<T>(cacheName: keyof T, numberOfArguments?: number) {
 		// tslint:disable-next-line:no-any
 		descriptor.value = async function (this: any, ...params: any[]) {
 			const result = await origFn.apply(this, params);
-			const args = numberOfArguments == null ? params.slice() : params.slice(0, numberOfArguments);
+			const args = numberOfArguments === undefined ? params.slice() : params.slice(0, numberOfArguments);
 			this.removeFromCache([cacheName, ...args], true);
 			return result;
 		};
@@ -167,7 +170,7 @@ export function NonEnumerable(target: any, key: string) {
 	// (otherwise assignment in object will override property in prototype)
 	Object.defineProperty(target, key, {
 		get: function () {
-			return undefined;
+			return;
 		},
 		// tslint:disable-next-line:no-any
 		set: function (this: any, val: any) {
@@ -175,10 +178,10 @@ export function NonEnumerable(target: any, key: string) {
 			Object.defineProperty(this, key, {
 				value: val,
 				writable: true,
-				enumerable: false,
+				enumerable: false
 			});
 		},
 
-		enumerable: false,
+		enumerable: false
 	});
 }

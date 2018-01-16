@@ -10,7 +10,7 @@ export default class StreamAPI extends BaseAPI {
 	async getStreamByChannel(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
 
-		const data: StreamData = await this._client.apiCall({url: `streams/${channelId}`});
+		const data = await this._client.apiCall<StreamData>({url: `streams/${channelId}`});
 		return new Stream(data, this._client);
 	}
 
@@ -19,14 +19,10 @@ export default class StreamAPI extends BaseAPI {
 		type?: StreamType,
 		page?: number, limit?: number
 	): Promise<Stream[]> {
-		let query: UniformObject<string> = {};
+		const query: UniformObject<string> = {};
 
 		if (channels) {
-			if (typeof channels === 'string') {
-				query.channel = channels;
-			} else {
-				query.channel = channels.join(',');
-			}
+			query.channel = typeof channels === 'string' ? channels : channels.join(',');
 		}
 		if (game) {
 			query.game = game;
@@ -59,7 +55,7 @@ export default class StreamAPI extends BaseAPI {
 
 	@Cached(60)
 	async getFollowedStreams(type?: StreamType, page?: number, limit?: number) {
-		let query: UniformObject<string> = {};
+		const query: UniformObject<string> = {};
 
 		if (type) {
 			query.type = type;

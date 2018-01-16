@@ -11,7 +11,7 @@ export interface ChannelFollowData {
 export default class ChannelFollow {
 	@NonEnumerable _client: Twitch;
 
-	constructor(private _data: ChannelFollowData, client: Twitch) {
+	constructor(private readonly _data: ChannelFollowData, client: Twitch) {
 		this._client = client;
 	}
 

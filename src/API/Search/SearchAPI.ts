@@ -8,7 +8,7 @@ import Stream, { StreamData } from '../Stream/';
 export default class SearchAPI extends BaseAPI {
 	@Cached(300)
 	async searchChannels(term: string, page?: number, limit?: number): Promise<Channel[]> {
-		let query: UniformObject<string> = {query: term};
+		const query: UniformObject<string> = {query: term};
 
 		if (page) {
 			query.offset = ((page - 1) * (limit || 10)).toString();
@@ -24,7 +24,7 @@ export default class SearchAPI extends BaseAPI {
 
 	@Cached(300)
 	async searchStreams(term: string, page?: number, limit?: number, hls?: boolean): Promise<Stream[]> {
-		let query: UniformObject<string> = {query: term};
+		const query: UniformObject<string> = {query: term};
 
 		if (page) {
 			query.offset = ((page - 1) * (limit || 10)).toString();
@@ -32,7 +32,7 @@ export default class SearchAPI extends BaseAPI {
 		if (limit) {
 			query.limit = limit.toString();
 		}
-		if (hls != null) {
+		if (hls !== undefined) {
 			query.hls = hls.toString();
 		}
 

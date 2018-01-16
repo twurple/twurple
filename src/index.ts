@@ -49,7 +49,7 @@ export interface TwitchApiCallOptions {
 @Cacheable
 export default class Twitch {
 	readonly _config: TwitchConfig;
-	private _chatClients: Map<string, ChatClient> = new Map;
+	private readonly _chatClients: Map<string, ChatClient> = new Map;
 
 	public static withCredentials(clientId: string, accessToken?: string, refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
 		if (refreshConfig) {
@@ -75,7 +75,7 @@ export default class Twitch {
 		});
 
 		if (this._config.preAuth) {
-			// noinspection JSIgnoredPromiseFromCall
+			// tslint:disable-next-line:no-floating-promises
 			this._config.authProvider.getAccessToken(this._config.initialScopes || []);
 		}
 	}
@@ -99,7 +99,7 @@ export default class Twitch {
 			if (e.response && e.response.status === 401 && this._config.authProvider instanceof RefreshableAuthProvider) {
 				await this._config.authProvider.refresh();
 				accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
-				return await Twitch.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
+				return Twitch.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
 			}
 
 			throw e;
@@ -121,7 +121,7 @@ export default class Twitch {
 
 	// tslint:disable-next-line:no-any
 	public static async apiCall<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
-		let requestOptions: request.Options = {
+		const requestOptions: request.Options = {
 			url: this._getUrl(options.url, options.type),
 			method: options.method,
 			headers: {
@@ -177,7 +177,7 @@ export default class Twitch {
 				grant_type: 'authorization_code',
 				client_id: clientId,
 				client_secret: clientSecret,
-				code: code,
+				code,
 				redirect_uri: redirectUri
 			}
 		}));

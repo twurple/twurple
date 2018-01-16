@@ -15,7 +15,7 @@ import UserBlock, { UserBlockData } from './UserBlock';
 
 @Cacheable
 export default class UserAPI extends BaseAPI {
-	private _userByNameCache: Map<string, CacheEntry<User>> = new Map;
+	private readonly _userByNameCache: Map<string, CacheEntry<User>> = new Map;
 
 	@Cached(3600)
 	async getMe() {
@@ -57,7 +57,7 @@ export default class UserAPI extends BaseAPI {
 		}
 		const usersData = await this._client.apiCall({url: 'users', query: {login: toFetch.join(',')}});
 		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
-		usersArr.forEach(user => this._userByNameCache.set(user.userName, {
+		usersArr.forEach(user => this._userByNameCache.set(user.name, {
 			value: user,
 			expires: Date.now() + 3600 * 1000
 		}));
@@ -116,7 +116,7 @@ export default class UserAPI extends BaseAPI {
 		orderBy?: string, orderDirection?: 'asc' | 'desc'
 	): Promise<UserFollow[]> {
 		const userId = UserTools.getUserId(user);
-		let query: UniformObject<string> = {};
+		const query: UniformObject<string> = {};
 		if (page) {
 			query.offset = ((page - 1) * (limit || 25)).toString();
 		}
@@ -182,7 +182,7 @@ export default class UserAPI extends BaseAPI {
 	@Cached(3600)
 	async getBlockedUsers(user: UserIdResolvable, page?: number, limit?: number): Promise<UserBlock[]> {
 		const userId = UserTools.getUserId(user);
-		let query: UniformObject<string> = {};
+		const query: UniformObject<string> = {};
 		if (page) {
 			query.offset = ((page - 1) * (limit || 25)).toString();
 		}
@@ -202,7 +202,7 @@ export default class UserAPI extends BaseAPI {
 		const data = await this._client.apiCall({
 			url: `users/${userId}/blocks/${userIdToBlock}`,
 			method: 'PUT',
-			scope: 'user_blocks_edit',
+			scope: 'user_blocks_edit'
 		});
 		return new UserBlock(data, this._client);
 	}

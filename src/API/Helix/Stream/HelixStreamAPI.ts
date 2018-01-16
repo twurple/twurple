@@ -13,7 +13,7 @@ export interface StreamFilter extends HelixPagination {
 	userName?: string | string[];
 }
 
-export default class StreamAPI extends BaseAPI {
+export default class HelixStreamAPI extends BaseAPI {
 	async getStreams(filter?: StreamFilter): Promise<HelixStream[]> {
 		let query: UniformObject<string | string[] | undefined> = {};
 		if (filter) {

@@ -5,7 +5,7 @@ import HelixStreamAPI from './Stream/HelixStreamAPI';
 import HelixUserAPI from './User/HelixUserAPI';
 
 @Cacheable
-export default class HelixGroup extends BaseAPI {
+export default class HelixAPIGroup extends BaseAPI {
 	@CachedGetter()
 	get streams() {
 		return new HelixStreamAPI(this._client);

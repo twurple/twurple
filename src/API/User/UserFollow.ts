@@ -11,7 +11,7 @@ export interface UserFollowData {
 export default class UserFollow {
 	@NonEnumerable _client: Twitch;
 
-	constructor(private _data: UserFollowData, client: Twitch) {
+	constructor(private readonly _data: UserFollowData, client: Twitch) {
 		this._client = client;
 	}
 

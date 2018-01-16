@@ -27,9 +27,9 @@ export type StreamType = 'live' | 'watch_party' | 'all';
 
 export default class Stream {
 	@NonEnumerable
-	private _client: Twitch;
+	private readonly _client: Twitch;
 
-	constructor(private _data: StreamData, client: Twitch) {
+	constructor(private readonly _data: StreamData, client: Twitch) {
 		this._client = client;
 	}
 

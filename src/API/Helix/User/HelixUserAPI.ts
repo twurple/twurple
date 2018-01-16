@@ -14,7 +14,7 @@ export interface HelixUserUpdate {
 
 export default class HelixUserAPI extends BaseAPI {
 	private async getUsers(lookupType: UserLookupType, param: string | string[]) {
-		let query: UniformObject<string | string[] | undefined> = {[lookupType]: param};
+		const query: UniformObject<string | string[] | undefined> = {[lookupType]: param};
 		const result = await this._client.apiCall<HelixResponse<HelixUserData[]>>({
 			type: 'helix',
 			url: 'users',
@@ -76,7 +76,7 @@ export default class HelixUserAPI extends BaseAPI {
 	}
 
 	async getFollows(filter: HelixFollowFilter) {
-		let query: UniformObject<string | undefined> = {
+		const query: UniformObject<string | undefined> = {
 			after: filter.after,
 			before: filter.before,
 			first: filter.limit
@@ -92,7 +92,7 @@ export default class HelixUserAPI extends BaseAPI {
 		}
 
 		if (!hasUserIdParam) {
-			throw new TypeError("Either from, to or both have to be set");
+			throw new TypeError('Either from, to or both have to be set');
 		}
 
 		const result = await this._client.apiCall<HelixResponse<HelixFollowData[]>>({
@@ -101,6 +101,6 @@ export default class HelixUserAPI extends BaseAPI {
 			query
 		});
 
-		return result.data.map((follow) => new HelixFollow(follow, this._client));
+		return result.data.map(follow => new HelixFollow(follow, this._client));
 	}
 }

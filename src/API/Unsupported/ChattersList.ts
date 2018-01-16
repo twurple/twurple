@@ -8,7 +8,7 @@ export interface ChattersListData {
 
 @Cacheable
 export default class ChattersList {
-	constructor(private _data: ChattersListData) {
+	constructor(private readonly _data: ChattersListData) {
 	}
 
 	@Cached(Infinity)

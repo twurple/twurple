@@ -4,10 +4,10 @@ import { NonEnumerable } from '../Toolkit/Decorators';
 import User from '../API/User/';
 
 export default class ChatUser {
-	private _userData: Map<string, string>;
-	private _userName: string;
+	private readonly _userData: Map<string, string>;
+	private readonly _userName: string;
 
-	@NonEnumerable private _client: ChatClient;
+	@NonEnumerable private readonly _client: ChatClient;
 
 	constructor(prefix: MessagePrefix, userData: Map<string, string> | undefined, client: ChatClient) {
 		this._userName = prefix.nick.toLowerCase();

@@ -55,8 +55,8 @@ export interface CheermoteDisplayInfo {
 }
 
 export default class CheermoteList {
-	@NonEnumerable private _client: Twitch;
-	private _data: UniformObject<CheermoteActionData>;
+	@NonEnumerable private readonly _client: Twitch;
+	private readonly _data: UniformObject<CheermoteActionData>;
 
 	constructor(data: CheermoteActionData[], client: Twitch) {
 		this._client = client;

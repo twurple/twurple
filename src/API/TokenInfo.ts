@@ -20,7 +20,7 @@ export interface TokenInfoData {
 }
 
 export default class TokenInfo {
-	constructor(private _data: TokenStructure) {
+	constructor(private readonly _data: TokenStructure) {
 	}
 
 	get clientId(): string | undefined {

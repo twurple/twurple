@@ -6,9 +6,9 @@ export interface AccessTokenData {
 }
 
 export default class AccessToken {
-	private _obtainedAt: Date;
+	private readonly _obtainedAt: Date;
 
-	constructor(private _data: AccessTokenData, obtainedAt?: Date) {
+	constructor(private readonly _data: AccessTokenData, obtainedAt?: Date) {
 		this._obtainedAt = obtainedAt || new Date();
 	}
 

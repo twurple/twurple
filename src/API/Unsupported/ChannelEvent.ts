@@ -16,14 +16,14 @@ export interface ChannelEventData {
 }
 
 export interface ChannelEventAPIResult {
-	_total: number,
-	events: ChannelEventData[]
+	_total: number;
+	events: ChannelEventData[];
 }
 
 export default class ChannelEvent {
 	@NonEnumerable _client: Twitch;
 
-	constructor(private _data: ChannelEventData, client: Twitch) {
+	constructor(private readonly _data: ChannelEventData, client: Twitch) {
 		this._client = client;
 	}
 
@@ -36,11 +36,11 @@ export default class ChannelEvent {
 	}
 
 	get startTime() {
-		return Date.parse(this._data.start_time);
+		return new Date(this._data.start_time);
 	}
 
 	get endTime() {
-		return Date.parse(this._data.end_time);
+		return new Date(this._data.end_time);
 	}
 
 	get title() {
@@ -53,7 +53,7 @@ export default class ChannelEvent {
 
 	buildCoverImageUrl(width: number, height: number) {
 		return this._data.cover_image_url
-			.replace("{width}", width.toString())
-			.replace("{height}", height.toString());
+			.replace('{width}', width.toString())
+			.replace('{height}', height.toString());
 	}
 }

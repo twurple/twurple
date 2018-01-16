@@ -17,7 +17,7 @@ export default class UserTools {
 
 	static toChannelName(user: string) {
 		// remove leading pound first - in case it already is a channel name
-		return '#' + this.toUserName(user);
+		return `#${this.toUserName(user)}`;
 	}
 
 	static toUserName(channel: string) {

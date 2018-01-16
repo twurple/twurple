@@ -54,39 +54,39 @@ export default class ChatClient extends IRCClient {
 	onPrivmsg: (handler: (target: string, user: string, message: string, msg: TwitchPrivateMessage) => void) => Listener;
 
 	// internal events to resolve promises and stuff
-	private _onBanResult: (handler: (channel: string, user: string, error?: string) => void)
+	private readonly _onBanResult: (handler: (channel: string, user: string, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onTimeoutResult:
+	private readonly _onTimeoutResult:
 		(handler: (channel: string, user: string, duration?: number, reason?: string, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onUnbanResult: (handler: (channel: string, user: string, error?: string) => void)
+	private readonly _onUnbanResult: (handler: (channel: string, user: string, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onColorResult: (handler: (error?: string) => void) => Listener = this.registerEvent();
-	private _onCommercialResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
-	private _onEmoteOnlyResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
-	private _onEmoteOnlyOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
-	private _onFollowersOnlyResult: (handler: (channel: string, delay?: number, error?: string) => void)
+	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onCommercialResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onEmoteOnlyResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onEmoteOnlyOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onFollowersOnlyResult: (handler: (channel: string, delay?: number, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onFollowersOnlyOffResult: (handler: (channel: string, error?: string) => void)
+	private readonly _onFollowersOnlyOffResult: (handler: (channel: string, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onHostResult: (handler: (channel: string, error?: string) => void)
+	private readonly _onHostResult: (handler: (channel: string, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onUnhostResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
-	private _onModResult: (handler: (channel: string, user: string, error?: string) => void)
+	private readonly _onUnhostResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onModResult: (handler: (channel: string, user: string, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onUnmodResult: (handler: (channel: string, user: string, error?: string) => void)
+	private readonly _onUnmodResult: (handler: (channel: string, user: string, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onModsResult: (handler: (channel: string, mods?: string[], error?: string) => void)
+	private readonly _onModsResult: (handler: (channel: string, mods?: string[], error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onJoinResult: (handler: (channel: string, state?: Map<string, string>, error?: string) => void)
+	private readonly _onJoinResult: (handler: (channel: string, state?: Map<string, string>, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onR9kResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
-	private _onR9kOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
-	private _onSlowResult: (handler: (channel: string, delay?: number, error?: string) => void)
+	private readonly _onR9kResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onR9kOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onSlowResult: (handler: (channel: string, delay?: number, error?: string) => void)
 		=> Listener = this.registerEvent();
-	private _onSlowOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
-	private _onSubsOnlyResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
-	private _onSubsOnlyOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onSlowOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onSubsOnlyResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onSubsOnlyOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 
 	constructor(username: string, token: string, twitchClient: Twitch, debugLevel: number = 0) {
 		super({
@@ -102,15 +102,17 @@ export default class ChatClient extends IRCClient {
 
 		this._twitchClient = twitchClient;
 
+		// tslint:disable:no-floating-promises
 		this.registerCapability(TwitchTagsCapability);
 		this.registerCapability(TwitchCommandsCapability);
 		this.registerCapability(TwitchMembershipCapability);
+		// tslint:enable:no-floating-promises
 
 		this.onMessage(ClearChat, ({params: {channel, user}, tags}: ClearChat) => {
 			if (user) {
 				const duration = tags.get('ban-duration');
 				const reason = tags.get('ban-reason');
-				if (duration != null) {
+				if (duration !== undefined) {
 					// timeout
 					this.emit(this.onTimeout, channel, user, reason, Number(duration));
 					this.emit(this._onTimeoutResult, channel, user, reason, Number(duration));
@@ -208,11 +210,11 @@ export default class ChatClient extends IRCClient {
 				const plan = tags.get('msg-param-sub-plan')!;
 				const subInfo: ChatSubInfo = {
 					displayName: tags.get('display-name')!,
-					plan: plan,
+					plan,
 					planName: tags.get('msg-param-sub-plan-name')!,
 					isPrime: plan === 'Prime',
 					streak: Number(tags.get('msg-param-months')),
-					message: message
+					message
 				};
 				this.emit(event, channel, tags.get('login')!, subInfo, userNotice);
 			} else if (messageType === 'subgift') {
@@ -221,7 +223,7 @@ export default class ChatClient extends IRCClient {
 					displayName: tags.get('msg-param-recipient-display-name')!,
 					gifter: tags.get('login')!,
 					gifterDisplayName: tags.get('display-name')!,
-					plan: plan,
+					plan,
 					planName: tags.get('msg-param-sub-plan-name')!,
 					isPrime: plan === 'Prime',
 					streak: Number(tags.get('msg-param-months'))
@@ -522,8 +524,8 @@ export default class ChatClient extends IRCClient {
 
 	async host(target: string, channel: string = this._nick) {
 		channel = UserTools.toUserName(channel);
-		return new Promise((resolve, reject) => {
-			let e = this._onHostResult((chan, error) => {
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onHostResult((chan, error) => {
 				if (UserTools.toUserName(chan) === channel) {
 					if (error) {
 						reject(error);
@@ -539,8 +541,8 @@ export default class ChatClient extends IRCClient {
 
 	async unhost(channel: string = this._nick) {
 		channel = UserTools.toUserName(channel);
-		return new Promise((resolve, reject) => {
-			let e = this._onUnhostResult((chan, error) => {
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onUnhostResult((chan, error) => {
 				if (UserTools.toUserName(chan) === channel) {
 					if (error) {
 						reject(error);
