@@ -3,7 +3,7 @@ import BaseAPI from '../BaseAPI';
 import Channel from '../Channel';
 import ChattersList, { ChattersListData } from './ChattersList';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
-import ChannelEvent, { ChannelEventData } from './ChannelEvent';
+import ChannelEvent, { ChannelEventData, ChannelEventAPIResult } from './ChannelEvent';
 
 @Cacheable
 export default class UnsupportedAPI extends BaseAPI {
@@ -20,7 +20,7 @@ export default class UnsupportedAPI extends BaseAPI {
 	@Cached(60)
 	async getEvents(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
-		const data = await this._client.apiCall({url: `channels/${channelId}/events`});
+		const data = await this._client.apiCall<ChannelEventAPIResult>({url: `channels/${channelId}/events`});
 		return data.events.map((event: ChannelEventData) => new ChannelEvent(event, this._client));
 	}
 }
