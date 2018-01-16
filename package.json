@@ -25,7 +25,8 @@
     "request-promise-native": "^1.0.4"
   },
   "scripts": {
+    "lint": "tslint --project .",
     "build": "tsc",
-    "prepare": "yon run build"
+    "prepare": "yon run lint && yon run build"
   }
 }
