@@ -4,6 +4,7 @@ import HelixResponse from '../HelixResponse';
 import HelixUser, { HelixUserData } from './HelixUser';
 import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import { UserIdResolvable, default as UserTools, UserNameResolvable } from '../../../Toolkit/UserTools';
+import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 
 type UserLookupType = 'id' | 'login';
 
@@ -72,5 +73,34 @@ export default class HelixUserAPI extends BaseAPI {
 		});
 
 		return new HelixPrivilegedUser(result.data[0], this._client);
+	}
+
+	async getFollows(filter: HelixFollowFilter) {
+		let query: UniformObject<string | undefined> = {
+			after: filter.after,
+			before: filter.before,
+			first: filter.limit
+		};
+		let hasUserIdParam = false;
+		if (filter.user) {
+			query.from_id = UserTools.getUserId(filter.user);
+			hasUserIdParam = true;
+		}
+		if (filter.followedUser) {
+			query.to_id = UserTools.getUserId(filter.followedUser);
+			hasUserIdParam = true;
+		}
+
+		if (!hasUserIdParam) {
+			throw new TypeError("Either from, to or both have to be set");
+		}
+
+		const result = await this._client.apiCall<HelixResponse<HelixFollowData[]>>({
+			type: 'helix',
+			url: 'users/follows',
+			query
+		});
+
+		return result.data.map((follow) => new HelixFollow(follow, this._client));
 	}
 }

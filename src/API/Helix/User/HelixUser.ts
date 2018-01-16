@@ -1,8 +1,10 @@
 import Twitch from '../../../';
 import { NonEnumerable } from '../../../Toolkit/Decorators';
-import { UserIdResolvable } from '../../../Toolkit/UserTools';
+import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
 import NotFollowing from '../../NotFollowing';
 import UserFollow from '../../User/UserFollow';
+import HelixFollow, { HelixFollowFilter } from './HelixFollow';
+import HelixPagination from '../HelixPagination';
 
 export type HelixBroadcasterType = 'partner' | 'affiliate' | '';
 export type HelixUserType = 'staff' | 'admin' | 'global_mod' | '';
@@ -46,12 +48,25 @@ export default class HelixUser {
 		return this._data.profile_image_url;
 	}
 
-	async getFollows(page?: number, limit?: number, orderBy?: string, orderDirection?: 'asc' | 'desc') {
-		return this._client.users.getFollowedChannels(this, page, limit, orderBy, orderDirection);
+	async getFollows(paginationParams: HelixPagination) {
+		let params: HelixFollowFilter = paginationParams;
+		params.user = this;
+		return this._client.helix.users.getFollows(params);
 	}
 
-	async getFollowTo(channel: UserIdResolvable): Promise<UserFollow> {
-		return this._client.users.getFollowedChannel(this, channel);
+	async getFollowTo(channel: UserIdResolvable): Promise<HelixFollow> {
+		const params = {
+			user: this.id,
+			followedUser: channel
+		};
+
+		const result = await this._client.helix.users.getFollows(params);
+
+		if (!result.length) {
+			throw new NotFollowing(this.id, UserTools.getUserId(channel));
+		}
+
+		return result[0];
 	}
 
 	async follows(channel: UserIdResolvable): Promise<boolean> {
@@ -67,7 +82,7 @@ export default class HelixUser {
 		}
 	}
 
-	async follow() {
+	async follow(): Promise<UserFollow> {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.followChannel(this);
 	}
