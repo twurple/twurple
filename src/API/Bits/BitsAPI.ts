@@ -13,7 +13,7 @@ export default class BitsAPI extends BaseAPI {
 			query.channel_id = UserTools.getUserId(channel);
 		}
 
-		const data = await this._client.apiCall<CheermoteListData>({url: 'bits/actions', query});
+		const data = await this._client.apiCall<CheermoteListData>({ url: 'bits/actions', query });
 		return new CheermoteList(data.actions, this._client);
 	}
 }

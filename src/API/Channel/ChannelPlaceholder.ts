@@ -18,7 +18,7 @@ export default class ChannelPlaceholder {
 	protected _data: ChannelPlaceholderData;
 
 	constructor(id: string, client: Twitch) {
-		this._data = {_id: id};
+		this._data = { _id: id };
 		this._client = client;
 	}
 

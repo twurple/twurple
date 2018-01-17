@@ -12,6 +12,6 @@ export default class HelixPrivilegedUser extends HelixUser {
 	}
 
 	async setDescription(description: string) {
-		return this._client.helix.users.updateUser({description});
+		return this._client.helix.users.updateUser({ description });
 	}
 }

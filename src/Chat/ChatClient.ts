@@ -108,7 +108,7 @@ export default class ChatClient extends IRCClient {
 		this.registerCapability(TwitchMembershipCapability);
 		// tslint:enable:no-floating-promises
 
-		this.onMessage(ClearChat, ({params: {channel, user}, tags}: ClearChat) => {
+		this.onMessage(ClearChat, ({ params: { channel, user }, tags }: ClearChat) => {
 			if (user) {
 				const duration = tags.get('ban-duration');
 				const reason = tags.get('ban-reason');
@@ -127,7 +127,7 @@ export default class ChatClient extends IRCClient {
 		});
 
 		this.onMessage(HostTarget, (hostMessage: HostTarget) => {
-			const {params: {channel, targetAndViewers}} = hostMessage;
+			const { params: { channel, targetAndViewers } } = hostMessage;
 			const [target, viewers] = targetAndViewers.split(' ');
 			if (target === '-') {
 				// unhost
@@ -138,17 +138,17 @@ export default class ChatClient extends IRCClient {
 		});
 
 		this.onMessage(ChannelJoin, (joinMessage: ChannelJoin) => {
-			const {prefix, params: {channel}} = joinMessage;
+			const { prefix, params: { channel } } = joinMessage;
 			this.emit(this.onJoin, channel, prefix!.nick);
 		});
 
 		this.onMessage(ChannelPart, (partMessage: ChannelPart) => {
-			const {prefix, params: {channel}} = partMessage;
+			const { prefix, params: { channel } } = partMessage;
 			this.emit(this.onPart, channel, prefix!.nick);
 		});
 
 		this.onMessage(TwitchPrivateMessage, (msg: TwitchPrivateMessage) => {
-			const {prefix, params: {target: channel, message}} = msg;
+			const { prefix, params: { target: channel, message } } = msg;
 			if (prefix && prefix.nick === 'jtv') {
 				// 1 = who hosted
 				// 2 = auto-host or not
@@ -161,7 +161,7 @@ export default class ChatClient extends IRCClient {
 		});
 
 		this.onMessage(RoomState, (stateMessage: RoomState) => {
-			const {params: {channel}, tags} = stateMessage;
+			const { params: { channel }, tags } = stateMessage;
 
 			let isInitial = false;
 			if (tags.has('subs-only') && tags.has('slow')) {
@@ -202,7 +202,7 @@ export default class ChatClient extends IRCClient {
 		});
 
 		this.onMessage(UserNotice, (userNotice: UserNotice) => {
-			const {params: {channel, message}, tags} = userNotice;
+			const { params: { channel, message }, tags } = userNotice;
 			const messageType = tags.get('msg-id');
 
 			if (messageType === 'sub' || messageType === 'resub') {
@@ -237,7 +237,7 @@ export default class ChatClient extends IRCClient {
 		});
 
 		this.onMessage(Notice, (notice: Notice) => {
-			const {params: {target: channel, message}, tags} = notice;
+			const { params: { target: channel, message }, tags } = notice;
 			const messageType = tags.get('msg-id');
 
 			// this event handler involves a lot of parsing strings you shouldn't parse...
@@ -535,7 +535,7 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(channel), message: `/host ${target}`});
+			this.sendMessage(TwitchPrivateMessage, { target: UserTools.toChannelName(channel), message: `/host ${target}` });
 		});
 	}
 
@@ -552,12 +552,12 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(channel), message: '/unhost'});
+			this.sendMessage(TwitchPrivateMessage, { target: UserTools.toChannelName(channel), message: '/unhost' });
 		});
 	}
 
 	unhostOutside(channel: string = this._nick) {
-		this.sendMessage(TwitchPrivateMessage, {target: UserTools.toChannelName(channel), message: '/unhost'});
+		this.sendMessage(TwitchPrivateMessage, { target: UserTools.toChannelName(channel), message: '/unhost' });
 	}
 
 	protected registerCoreMessageTypes() {

@@ -10,7 +10,7 @@ export default class StreamAPI extends BaseAPI {
 	async getStreamByChannel(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
 
-		const data = await this._client.apiCall<StreamData>({url: `streams/${channelId}`});
+		const data = await this._client.apiCall<StreamData>({ url: `streams/${channelId}` });
 		return new Stream(data, this._client);
 	}
 
@@ -40,7 +40,7 @@ export default class StreamAPI extends BaseAPI {
 			query.limit = limit.toString();
 		}
 
-		const data = await this._client.apiCall({url: 'streams', query});
+		const data = await this._client.apiCall({ url: 'streams', query });
 
 		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
 	}
@@ -67,7 +67,7 @@ export default class StreamAPI extends BaseAPI {
 			query.limit = limit.toString();
 		}
 
-		const data = await this._client.apiCall({url: 'streams/followed', query, scope: 'user_read'});
+		const data = await this._client.apiCall({ url: 'streams/followed', query, scope: 'user_read' });
 
 		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
 	}

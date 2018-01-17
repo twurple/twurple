@@ -19,12 +19,12 @@ export default class UserAPI extends BaseAPI {
 
 	@Cached(3600)
 	async getMe() {
-		return new PrivilegedUser(await this._client.apiCall({url: 'user', scope: 'user_read'}), this._client);
+		return new PrivilegedUser(await this._client.apiCall({ url: 'user', scope: 'user_read' }), this._client);
 	}
 
 	@Cached(3600)
 	async getUser(user: UserIdResolvable) {
-		return new User(await this._client.apiCall({url: `users/${UserTools.getUserId(user)}`}), this._client);
+		return new User(await this._client.apiCall({ url: `users/${UserTools.getUserId(user)}` }), this._client);
 	}
 
 	// not using the decorator's cache here as users-by-name is slightly more complex to cache
@@ -33,7 +33,7 @@ export default class UserAPI extends BaseAPI {
 		if (this._userByNameCache.has(userName)) {
 			return this._userByNameCache.get(userName)!.value;
 		}
-		const {users} = await this._client.apiCall({url: 'users', query: {login: userName}});
+		const { users } = await this._client.apiCall({ url: 'users', query: { login: userName } });
 		if (users.length === 0) {
 			throw new Error('user not found');
 		}
@@ -55,7 +55,7 @@ export default class UserAPI extends BaseAPI {
 		if (!toFetch.length) {
 			return cachedUsers;
 		}
-		const usersData = await this._client.apiCall({url: 'users', query: {login: toFetch.join(',')}});
+		const usersData = await this._client.apiCall({ url: 'users', query: { login: toFetch.join(',') } });
 		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
 		usersArr.forEach(user => this._userByNameCache.set(user.name, {
 			value: user,
@@ -63,7 +63,7 @@ export default class UserAPI extends BaseAPI {
 		}));
 		const users = ObjectTools.indexBy(usersArr, 'userName');
 
-		return {...cachedUsers, ...users};
+		return { ...cachedUsers, ...users };
 	}
 
 	@Cached(3600)
@@ -79,7 +79,7 @@ export default class UserAPI extends BaseAPI {
 			userId = tokenInfo.userId!;
 		}
 
-		const data = await this._client.apiCall({url: `users/${userId}/emotes`, scope: 'user_subscriptions'});
+		const data = await this._client.apiCall({ url: `users/${userId}/emotes`, scope: 'user_subscriptions' });
 		return new EmoteSetList(data.emoticon_sets);
 	}
 
@@ -140,7 +140,7 @@ export default class UserAPI extends BaseAPI {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
 		try {
-			const data = await this._client.apiCall({url: `users/${userId}/follows/channels/${channelId}`});
+			const data = await this._client.apiCall({ url: `users/${userId}/follows/channels/${channelId}` });
 			return new UserFollow(data, this._client);
 		} catch (e) {
 			if (e instanceof StatusCodeError) {
@@ -162,7 +162,7 @@ export default class UserAPI extends BaseAPI {
 			url: `users/${userId}/follows/channels/${channelId}`,
 			method: 'PUT',
 			scope: 'user_follows_edit',
-			body: {notifications: Boolean(notifications).toString()}
+			body: { notifications: Boolean(notifications).toString() }
 		});
 		return new UserFollow(data, this._client);
 	}

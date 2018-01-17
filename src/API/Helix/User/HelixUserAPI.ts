@@ -14,7 +14,7 @@ export interface HelixUserUpdate {
 
 export default class HelixUserAPI extends BaseAPI {
 	private async getUsers(lookupType: UserLookupType, param: string | string[]) {
-		const query: UniformObject<string | string[] | undefined> = {[lookupType]: param};
+		const query: UniformObject<string | string[] | undefined> = { [lookupType]: param };
 		const result = await this._client.apiCall<HelixResponse<HelixUserData[]>>({
 			type: 'helix',
 			url: 'users',

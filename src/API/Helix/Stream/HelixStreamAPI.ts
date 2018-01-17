@@ -39,13 +39,13 @@ export default class HelixStreamAPI extends BaseAPI {
 	}
 
 	async getStreamByUserName(userName: string) {
-		const streams = await this.getStreams({userName});
+		const streams = await this.getStreams({ userName });
 
 		return streams.length ? streams[0] : null;
 	}
 
 	async getStreamByUserId(user: string) {
-		const streams = await this.getStreams({user});
+		const streams = await this.getStreams({ user });
 
 		return streams.length ? streams[0] : null;
 	}

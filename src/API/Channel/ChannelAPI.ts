@@ -24,12 +24,12 @@ export type CommercialLength = 30 | 60 | 90 | 120 | 150 | 180;
 export default class ChannelAPI extends BaseAPI {
 	@Cached(3600)
 	async getMyChannel() {
-		return new PrivilegedChannel(await this._client.apiCall({url: 'channel', scope: 'channel_read'}), this._client);
+		return new PrivilegedChannel(await this._client.apiCall({ url: 'channel', scope: 'channel_read' }), this._client);
 	}
 
 	@Cached(3600)
 	async getChannel(user: UserIdResolvable) {
-		return new Channel(await this._client.apiCall({url: `channels/${UserTools.getUserId(user)}`}), this._client);
+		return new Channel(await this._client.apiCall({ url: `channels/${UserTools.getUserId(user)}` }), this._client);
 	}
 
 	@ClearsCache<ChannelAPI>('getChannel', 1)
@@ -38,7 +38,7 @@ export default class ChannelAPI extends BaseAPI {
 		await this._client.apiCall({
 			url: `channels/${channelId}`,
 			method: 'PUT',
-			jsonBody: {channel: data},
+			jsonBody: { channel: data },
 			scope: 'channel_editor'
 		});
 	}
@@ -145,7 +145,7 @@ export default class ChannelAPI extends BaseAPI {
 		return this._client.apiCall({
 			url: `channels/${channelId}/commercial`,
 			method: 'POST',
-			jsonBody: {length},
+			jsonBody: { length },
 			scope: 'channel_commercial'
 		});
 	}

@@ -8,7 +8,7 @@ import Stream, { StreamData } from '../Stream/';
 export default class SearchAPI extends BaseAPI {
 	@Cached(300)
 	async searchChannels(term: string, page?: number, limit?: number): Promise<Channel[]> {
-		const query: UniformObject<string> = {query: term};
+		const query: UniformObject<string> = { query: term };
 
 		if (page) {
 			query.offset = ((page - 1) * (limit || 10)).toString();
@@ -17,14 +17,14 @@ export default class SearchAPI extends BaseAPI {
 			query.limit = limit.toString();
 		}
 
-		const data = await this._client.apiCall({url: 'search/channels', query});
+		const data = await this._client.apiCall({ url: 'search/channels', query });
 
 		return data.channels.map((channelData: ChannelData) => new Channel(channelData, this._client));
 	}
 
 	@Cached(300)
 	async searchStreams(term: string, page?: number, limit?: number, hls?: boolean): Promise<Stream[]> {
-		const query: UniformObject<string> = {query: term};
+		const query: UniformObject<string> = { query: term };
 
 		if (page) {
 			query.offset = ((page - 1) * (limit || 10)).toString();
@@ -36,7 +36,7 @@ export default class SearchAPI extends BaseAPI {
 			query.hls = hls.toString();
 		}
 
-		const data = await this._client.apiCall({url: 'search/streams', query});
+		const data = await this._client.apiCall({ url: 'search/streams', query });
 
 		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
 	}

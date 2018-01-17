@@ -1,4 +1,7 @@
 {
+	"extends": [
+		"tslint-eslint-rules"
+	],
 	"rules": {
 		"adjacent-overload-signatures": true,
 		"align": [true, "parameters", "arguments", "statements"],
@@ -83,6 +86,7 @@
 		"no-var-requires": true,
 		"no-void-expression": [true, "ignore-arrow-function-shorthand"],
 		"number-literal-format": true,
+		"object-curly-spacing": [true, "always"],
 		"object-literal-key-quotes": [true, "as-needed"],
 		"one-line": [true, "check-catch", "check-finally", "check-else", "check-open-brace", "check-whitespace"],
 		"one-variable-per-declaration": [true, "ignore-for-loop"],

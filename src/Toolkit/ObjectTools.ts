@@ -34,7 +34,7 @@ export default class ObjectTools {
 			const key = keyFn;
 			keyFn = (value: T) => value[key].toString();
 		}
-		return this.fromArray(arr, val => ({[keyFn(val)]: val}));
+		return this.fromArray(arr, val => ({ [keyFn(val)]: val }));
 	}
 
 	static forEach<T, Obj>(obj: Obj, fn: (value: T, key: keyof Obj) => void): void {
@@ -42,6 +42,6 @@ export default class ObjectTools {
 	}
 
 	static entriesToObject<T>(obj: Array<[string, T]>): UniformObject<T> {
-		return this.fromArray(obj, ([key, val]) => ({[key]: val}));
+		return this.fromArray(obj, ([key, val]) => ({ [key]: val }));
 	}
 }

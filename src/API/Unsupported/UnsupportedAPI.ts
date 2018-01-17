@@ -13,14 +13,14 @@ export default class UnsupportedAPI extends BaseAPI {
 			channel = channel.name;
 		}
 
-		const data: ChattersListData = await this._client.apiCall({url: `https://tmi.twitch.tv/group/user/${channel}/chatters`, type: 'custom'});
+		const data: ChattersListData = await this._client.apiCall({ url: `https://tmi.twitch.tv/group/user/${channel}/chatters`, type: 'custom' });
 		return new ChattersList(data);
 	}
 
 	@Cached(60)
 	async getEvents(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
-		const data = await this._client.apiCall<ChannelEventAPIResult>({url: `channels/${channelId}/events`});
+		const data = await this._client.apiCall<ChannelEventAPIResult>({ url: `channels/${channelId}/events` });
 		return data.events.map((event: ChannelEventData) => new ChannelEvent(event, this._client));
 	}
 }
