@@ -55,9 +55,9 @@ export default class PubSubClient extends EventEmitter {
 			this._onResponse((recvNonce, error) => {
 				if (recvNonce === nonce) {
 					if (error) {
-						resolve();
-					} else {
 						reject(new Error(`Error sending nonced ${packet.type} packet: ${error}`));
+					} else {
+						resolve();
 					}
 				}
 			});
@@ -70,6 +70,10 @@ export default class PubSubClient extends EventEmitter {
 
 	async connect() {
 		return new Promise<void>((resolve, reject) => {
+			if (this._connected) {
+				resolve();
+				return;
+			}
 			this._connecting = true;
 			this._initialConnect = true;
 			this._socket = new WebSocket('wss://pubsub-edge.twitch.tv');
@@ -79,6 +83,7 @@ export default class PubSubClient extends EventEmitter {
 				this._initialConnect = false;
 				this._retryDelayGenerator = undefined;
 				this._startPingCheckTimer();
+				resolve();
 			});
 			this._socket.onmessage = ({ data }: { data: WebSocket.Data }) => {
 				this._receiveMessage(data.toString());
