@@ -20,10 +20,15 @@
     "yarn-or-npm": "^2.0.4"
   },
   "dependencies": {
+    "@types/randomstring": "^1.1.6",
+    "@types/ws": "^4.0.0",
     "defaults": "^1.0.3",
     "ircv3": "^0.8.5",
+    "randomstring": "^1.1.5",
     "request": "^2.81.0",
-    "request-promise-native": "^1.0.4"
+    "request-promise-native": "^1.0.4",
+    "universal-websocket-client": "^1.0.1",
+    "ws": "^4.0.0"
   },
   "scripts": {
     "lint": "tslint --project .",
