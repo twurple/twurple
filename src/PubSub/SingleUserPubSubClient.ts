@@ -1,9 +1,13 @@
 import PubSubClient from './PubSubClient';
 import Twitch from '../';
 import { NonEnumerable } from '../Toolkit/Decorators';
-import RefreshableAuthProvider from '../Auth/RefreshableAuthProvider';
-import PubSubMessage, { PubSubBitsMessage, PubSubCommerceMessage, PubSubSubscriptionMessage, PubSubWhisperMessage } from './PubSubMessage';
 import { PubSubListener } from './PubSubListener';
+import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
+import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
+import PubSubCommerceMessage, { PubSubCommerceMessageData } from './Messages/PubSubCommerceMessage';
+import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
+import PubSubMessage from './Messages/PubSubMessage';
+import RefreshableAuthProvider from '../Auth/RefreshableAuthProvider';
 
 export default class SingleUserPubSubClient {
 	@NonEnumerable private readonly _twitchClient: Twitch;
@@ -14,9 +18,29 @@ export default class SingleUserPubSubClient {
 	constructor(twitchClient: Twitch, pubSubClient?: PubSubClient) {
 		this._twitchClient = twitchClient;
 		this._pubSubClient = pubSubClient || new PubSubClient();
-		this._pubSubClient.onMessage((topic, message) => {
+		this._pubSubClient.onMessage((topic, messageData) => {
 			const [type] = topic.split('.');
 			if (this._listeners.has(type)) {
+				let message: PubSubMessage;
+				switch (type) {
+					case 'channel-bits-events-v1': {
+						message = new PubSubBitsMessage(messageData as PubSubBitsMessageData, this._twitchClient);
+						break;
+					}
+					case 'channel-subscribe-events-v1': {
+						message = new PubSubSubscriptionMessage(messageData as PubSubSubscriptionMessageData, this._twitchClient);
+						break;
+					}
+					case 'channel-commerce-events-v1': {
+						message = new PubSubCommerceMessage(messageData as PubSubCommerceMessageData, this._twitchClient);
+						break;
+					}
+					case 'whispers': {
+						message = new PubSubWhisperMessage(messageData as PubSubWhisperMessageData, this._twitchClient);
+						break;
+					}
+					default: return;
+				}
 				this._listeners.get(type)!.forEach(l => l.call(message));
 			}
 		});
@@ -24,17 +48,17 @@ export default class SingleUserPubSubClient {
 
 	private async _getUserData(scope?: string) {
 		let accessToken = await this._twitchClient._config.authProvider.getAccessToken(scope);
-		let userId: string;
-		try {
-			userId = (await this._twitchClient.getTokenInfo()).userId!;
-		} catch (e) {
-			if (this._twitchClient._config.authProvider instanceof RefreshableAuthProvider) {
-				accessToken = (await this._twitchClient._config.authProvider.refresh()).accessToken;
-				userId = (await this._twitchClient.getTokenInfo()).userId!;
-			} else {
-				throw e;
-			}
+		let tokenInfo = await this._twitchClient.getTokenInfo();
+
+		if (!tokenInfo.valid && this._twitchClient._config.authProvider instanceof RefreshableAuthProvider) {
+			accessToken = (await this._twitchClient._config.authProvider.refresh()).accessToken;
+			tokenInfo = await this._twitchClient.getTokenInfo();
 		}
+		if (!tokenInfo.valid) {
+			throw new Error('PubSub authentication failed');
+		}
+
+		const userId = tokenInfo.userId!;
 
 		return { userId, accessToken };
 	}

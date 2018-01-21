@@ -1,5 +1,5 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
-import Twitch from '../../../index';
+import Twitch from '../../../';
 import HelixUser from '../User/HelixUser';
 
 export type HelixStreamType = '' | 'live' | 'vodcast';

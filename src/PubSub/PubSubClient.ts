@@ -2,7 +2,7 @@ import * as WebSocket from 'universal-websocket-client';
 import * as randomstring from 'randomstring';
 import { EventEmitter, Listener } from 'ircv3/lib/TypedEventEmitter';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
-import PubSubMessage from './PubSubMessage';
+import { PubSubMessageData } from './Messages/PubSubMessage';
 
 export default class PubSubClient extends EventEmitter {
 	private _socket?: WebSocket;
@@ -19,9 +19,9 @@ export default class PubSubClient extends EventEmitter {
 
 	private readonly _onPong: (handler: () => void) => Listener = this.registerEvent();
 	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener = this.registerEvent();
-	readonly onMessage: (handler: (topic: string, message: PubSubMessage) => void) => Listener = this.registerEvent();
+	readonly onMessage: (handler: (topic: string, message: PubSubMessageData) => void) => Listener = this.registerEvent();
 
-	async listen(topics: string|string[], authToken?: string) {
+	async listen(topics: string | string[], authToken?: string) {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
@@ -35,7 +35,7 @@ export default class PubSubClient extends EventEmitter {
 		});
 	}
 
-	async unlisten(topics: string|string[]) {
+	async unlisten(topics: string | string[]) {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}

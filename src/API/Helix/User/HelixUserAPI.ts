@@ -3,7 +3,7 @@ import { UniformObject } from '../../../Toolkit/ObjectTools';
 import HelixResponse from '../HelixResponse';
 import HelixUser, { HelixUserData } from './HelixUser';
 import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
-import { UserIdResolvable, default as UserTools, UserNameResolvable } from '../../../Toolkit/UserTools';
+import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 
 type UserLookupType = 'id' | 'login';

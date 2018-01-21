@@ -1,7 +1,7 @@
 import AuthProvider from './AuthProvider';
 import AccessToken from '../API/AccessToken';
 import { NonEnumerable } from '../Toolkit/Decorators';
-import Twitch from '../index';
+import Twitch from '../';
 
 export interface RefreshConfig {
 	clientSecret: string;
