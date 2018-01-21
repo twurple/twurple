@@ -16,8 +16,10 @@ import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
 import UserAPI from './API/User/UserAPI';
 
 import ChatClient from './Chat/ChatClient';
+import PubSubClient from './PubSub/PubSubClient';
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
+import SingleUserPubSubClient from './PubSub/SingleUserPubSubClient';
 
 export interface TwitchCheermoteConfig {
 	defaultBackground: CheermoteBackground;
@@ -50,6 +52,7 @@ export interface TwitchApiCallOptions {
 export default class Twitch {
 	readonly _config: TwitchConfig;
 	private readonly _chatClients: Map<string, ChatClient> = new Map;
+	private readonly _pubSubClients: Map<string, SingleUserPubSubClient> = new Map;
 
 	public static withCredentials(clientId: string, accessToken?: string, refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
 		if (refreshConfig) {
@@ -169,6 +172,16 @@ export default class Twitch {
 		return this._chatClients.get(identifier)!;
 	}
 
+	public getPubSubClient(identifier: string = 'default') {
+		if (!this._pubSubClients.has(identifier)) {
+			const newClient = new SingleUserPubSubClient(this);
+			this._pubSubClients.set(identifier, newClient);
+			return newClient;
+		}
+
+		return this._pubSubClients.get(identifier)!;
+	}
+
 	public static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<AccessToken> {
 		return new AccessToken(await this.apiCall<AccessTokenData>({
 			url: 'oauth2/token',
@@ -233,4 +246,4 @@ export default class Twitch {
 }
 
 export { AuthProvider, StaticAuthProvider, RefreshableAuthProvider };
-export { ChatClient };
+export { ChatClient, PubSubClient };

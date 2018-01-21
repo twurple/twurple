@@ -11,7 +11,11 @@ export default class StaticAuthProvider implements AuthProvider {
 		this._accessToken = accessToken || '';
 	}
 
-	async getAccessToken(scopes: string[]) {
+	async getAccessToken(scopes: string|string[]) {
+		if (typeof scopes === 'string') {
+			scopes = [scopes];
+		}
+
 		// we only get a static token, so we just hope it works...
 		this._currentScopes = new Set([...Array.from(this._currentScopes), ...scopes]);
 

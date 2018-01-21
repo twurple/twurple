@@ -23,7 +23,10 @@ export default class RefreshableAuthProvider implements AuthProvider {
 		this._onRefresh = refreshConfig.onRefresh;
 	}
 
-	async getAccessToken(scopes?: string[]) {
+	async getAccessToken(scopes?: string|string[]) {
+		if (typeof scopes === 'string') {
+			scopes = [scopes];
+		}
 		const oldToken = await this._childProvider.getAccessToken();
 		if (scopes && scopes.some(scope => !this.currentScopes.includes(scope))) {
 			// requesting a new scope should be delegated down...

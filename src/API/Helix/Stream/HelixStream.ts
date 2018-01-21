@@ -18,8 +18,7 @@ export interface HelixStreamData {
 }
 
 export default class HelixStream {
-	@NonEnumerable
-	private readonly _client: Twitch;
+	@NonEnumerable private readonly _client: Twitch;
 
 	constructor(private readonly _data: HelixStreamData, client: Twitch) {
 		this._client = client;
