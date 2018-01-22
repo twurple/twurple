@@ -17,7 +17,7 @@ export default class SingleUserPubSubClient {
 
 	constructor(twitchClient: Twitch, pubSubClient?: PubSubClient) {
 		this._twitchClient = twitchClient;
-		this._pubSubClient = pubSubClient || new PubSubClient();
+		this._pubSubClient = pubSubClient || new PubSubClient(twitchClient._config.debugLevel);
 		this._pubSubClient.onMessage((topic, messageData) => {
 			const [type] = topic.split('.');
 			if (this._listeners.has(type)) {

@@ -21,6 +21,10 @@ export default class PubSubClient extends EventEmitter {
 	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener = this.registerEvent();
 	readonly onMessage: (handler: (topic: string, message: PubSubMessageData) => void) => Listener = this.registerEvent();
 
+	constructor(private readonly _debugLevel: number = 0) {
+		super();
+	}
+
 	async listen(topics: string | string[], authToken?: string) {
 		if (typeof topics === 'string') {
 			topics = [topics];
@@ -121,8 +125,10 @@ export default class PubSubClient extends EventEmitter {
 	private _receiveMessage(dataStr: string) {
 		const data: PubSubIncomingPacket = JSON.parse(dataStr);
 
-		// tslint:disable-next-line:no-console
-		console.log('>', data);
+		if (this._debugLevel >= 1) {
+			// tslint:disable-next-line:no-console
+			console.log('>', data);
+		}
 
 		switch (data.type) {
 			case 'PONG': {
@@ -150,8 +156,10 @@ export default class PubSubClient extends EventEmitter {
 	}
 
 	protected _sendPacket(data: PubSubOutgoingPacket) {
-		// tslint:disable-next-line:no-console
-		console.log('<', data);
+		if (this._debugLevel >= 1) {
+			// tslint:disable-next-line:no-console
+			console.log('<', data);
+		}
 
 		if (this._socket && this._connected) {
 			this._socket.send(JSON.stringify(data));

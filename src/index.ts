@@ -32,6 +32,7 @@ export interface TwitchConfig {
 	preAuth: boolean;
 	initialScopes: string[];
 	cheermotes: TwitchCheermoteConfig;
+	debugLevel: number;
 }
 
 export type TwitchApiCallType = 'kraken' | 'helix' | 'custom';
@@ -74,7 +75,8 @@ export default class Twitch {
 				defaultBackground: CheermoteBackground.dark,
 				defaultState: CheermoteState.animated,
 				defaultScale: CheermoteScale.x1
-			}
+			},
+			debugLevel: 0
 		});
 
 		if (this._config.preAuth) {
@@ -156,12 +158,12 @@ export default class Twitch {
 		return request(requestOptions);
 	}
 
-	public async getChatClient(identifier: string = 'default', debugLevel: number = 0) {
+	public async getChatClient(identifier: string = 'default') {
 		if (!this._chatClients.has(identifier)) {
 			const token = await this._config.authProvider.getAccessToken(['chat_login']);
 			const tokenInfo = await this.getTokenInfo();
 			if (tokenInfo.valid && tokenInfo.userName) {
-				const newClient = new ChatClient(tokenInfo.userName, token, this, debugLevel);
+				const newClient = new ChatClient(tokenInfo.userName, token, this);
 				this._chatClients.set(identifier, newClient);
 				return newClient;
 			}

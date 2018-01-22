@@ -88,7 +88,7 @@ export default class ChatClient extends IRCClient {
 	private readonly _onSubsOnlyResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 	private readonly _onSubsOnlyOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 
-	constructor(username: string, token: string, twitchClient: Twitch, debugLevel: number = 0) {
+	constructor(username: string, token: string, twitchClient: Twitch) {
 		super({
 			connection: {
 				hostName: 'irc-ws.chat.twitch.tv',
@@ -97,7 +97,7 @@ export default class ChatClient extends IRCClient {
 				secure: true
 			},
 			webSocket: true,
-			debugLevel
+			debugLevel: twitchClient._config.debugLevel
 		});
 
 		this._twitchClient = twitchClient;
