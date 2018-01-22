@@ -1,13 +1,13 @@
 import { Cacheable, Cached, ClearsCache } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
-import Channel from './';
+import Channel from './Channel';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelSubscription, { ChannelSubscriptionData } from './ChannelSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
 import NotSubscribed from '../NotSubscribed';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import PrivilegedChannel from './PrivilegedChannel';
-import User, { UserData } from '../User/';
+import User, { UserData } from '../User/User';
 import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
 import { UniformObject } from '../../Toolkit/ObjectTools';
 

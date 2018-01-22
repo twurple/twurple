@@ -1,7 +1,7 @@
 import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import Twitch from '../../';
 import HelixUser from '../../API/Helix/User/HelixUser';
+import TwitchClient from '../../TwitchClient';
 
 export interface PubSubCommerceMessageData extends PubSubBasicMessageInfo {
 	display_name: string;
@@ -12,9 +12,9 @@ export interface PubSubCommerceMessageData extends PubSubBasicMessageInfo {
 }
 
 export default class PubSubCommerceMessage {
-	@NonEnumerable private readonly _twitchClient: Twitch;
+	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
-	constructor(private readonly _data: PubSubCommerceMessageData, twitchClient: Twitch) {
+	constructor(private readonly _data: PubSubCommerceMessageData, twitchClient: TwitchClient) {
 		this._twitchClient = twitchClient;
 	}
 

@@ -1,6 +1,6 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
-import Twitch from '../../../';
 import HelixUser from '../User/HelixUser';
+import TwitchClient from '../../../TwitchClient';
 
 export type HelixStreamType = '' | 'live' | 'vodcast';
 
@@ -18,9 +18,9 @@ export interface HelixStreamData {
 }
 
 export default class HelixStream {
-	@NonEnumerable private readonly _client: Twitch;
+	@NonEnumerable private readonly _client: TwitchClient;
 
-	constructor(private readonly _data: HelixStreamData, client: Twitch) {
+	constructor(private readonly _data: HelixStreamData, client: TwitchClient) {
 		this._client = client;
 	}
 

@@ -1,6 +1,6 @@
-import Channel, { ChannelData } from '../Channel/';
-import Twitch from '../../';
+import Channel, { ChannelData } from '../Channel/Channel';
 import { NonEnumerable } from '../../Toolkit/Decorators';
+import TwitchClient from '../../TwitchClient';
 
 export interface ChannelEventData {
 	_id: string;
@@ -21,9 +21,9 @@ export interface ChannelEventAPIResult {
 }
 
 export default class ChannelEvent {
-	@NonEnumerable _client: Twitch;
+	@NonEnumerable _client: TwitchClient;
 
-	constructor(private readonly _data: ChannelEventData, client: Twitch) {
+	constructor(private readonly _data: ChannelEventData, client: TwitchClient) {
 		this._client = client;
 	}
 

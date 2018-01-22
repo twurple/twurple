@@ -1,23 +1,23 @@
-import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import CheermoteList from '../Bits/CheermoteList';
-import Channel from './';
-import Stream from '../Stream/';
+import Channel from './Channel';
+import Stream from '../Stream/Stream';
 import { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelSubscription from './ChannelSubscription';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import NotSubscribed from '../NotSubscribed';
 import ChannelFollow from './ChannelFollow';
+import TwitchClient from '../../TwitchClient';
 
 export interface ChannelPlaceholderData {
 	_id: string;
 }
 
 export default class ChannelPlaceholder {
-	@NonEnumerable protected _client: Twitch;
+	@NonEnumerable protected _client: TwitchClient;
 	protected _data: ChannelPlaceholderData;
 
-	constructor(id: string, client: Twitch) {
+	constructor(id: string, client: TwitchClient) {
 		this._data = { _id: id };
 		this._client = client;
 	}

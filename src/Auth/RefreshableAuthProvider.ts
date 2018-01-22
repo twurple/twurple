@@ -1,7 +1,7 @@
 import AuthProvider from './AuthProvider';
 import AccessToken from '../API/AccessToken';
 import { NonEnumerable } from '../Toolkit/Decorators';
-import Twitch from '../';
+import TwitchClient from '../TwitchClient';
 
 export interface RefreshConfig {
 	clientSecret: string;
@@ -48,7 +48,7 @@ export default class RefreshableAuthProvider implements AuthProvider {
 	}
 
 	async refresh() {
-		const tokenData = await Twitch.refreshAccessToken(this.clientId, this._clientSecret, this._refreshToken);
+		const tokenData = await TwitchClient.refreshAccessToken(this.clientId, this._clientSecret, this._refreshToken);
 		this.setAccessToken(tokenData.accessToken);
 		this._refreshToken = tokenData.refreshToken;
 		this._expiry = tokenData.expiresAt;

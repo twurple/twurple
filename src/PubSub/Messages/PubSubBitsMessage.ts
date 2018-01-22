@@ -1,7 +1,7 @@
 import { PubSubBasicMessageInfo } from './PubSubMessage';
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import Twitch from '../../index';
 import HelixUser from '../../API/Helix/User/HelixUser';
+import TwitchClient from '../../TwitchClient';
 
 export interface PubSubBitsMessageBitsEntitlement {
 	previous_version: number;
@@ -24,9 +24,9 @@ export interface PubSubBitsMessageData {
 }
 
 export default class PubSubBitsMessage {
-	@NonEnumerable private readonly _twitchClient: Twitch;
+	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
-	constructor(private readonly _data: PubSubBitsMessageData, twitchClient: Twitch) {
+	constructor(private readonly _data: PubSubBitsMessageData, twitchClient: TwitchClient) {
 		this._twitchClient = twitchClient;
 	}
 

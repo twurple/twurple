@@ -1,5 +1,4 @@
 import PubSubClient from './PubSubClient';
-import Twitch from '../';
 import { NonEnumerable } from '../Toolkit/Decorators';
 import { PubSubListener } from './PubSubListener';
 import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
@@ -8,14 +7,15 @@ import PubSubCommerceMessage, { PubSubCommerceMessageData } from './Messages/Pub
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import PubSubMessage from './Messages/PubSubMessage';
 import RefreshableAuthProvider from '../Auth/RefreshableAuthProvider';
+import TwitchClient from '../TwitchClient';
 
 export default class SingleUserPubSubClient {
-	@NonEnumerable private readonly _twitchClient: Twitch;
+	@NonEnumerable private readonly _twitchClient: TwitchClient;
 	@NonEnumerable private readonly _pubSubClient: PubSubClient;
 
 	private readonly _listeners: Map<string, PubSubListener[]> = new Map;
 
-	constructor(twitchClient: Twitch, pubSubClient?: PubSubClient) {
+	constructor(twitchClient: TwitchClient, pubSubClient?: PubSubClient) {
 		this._twitchClient = twitchClient;
 		this._pubSubClient = pubSubClient || new PubSubClient(twitchClient._config.debugLevel);
 		this._pubSubClient.onMessage((topic, messageData) => {

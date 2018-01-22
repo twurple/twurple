@@ -1,6 +1,6 @@
-import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import User, { UserData } from './';
+import User, { UserData } from './User';
+import TwitchClient from '../../TwitchClient';
 
 export interface UserBlockData {
 	_id: string;
@@ -9,9 +9,9 @@ export interface UserBlockData {
 }
 
 export default class UserBlock {
-	@NonEnumerable _client: Twitch;
+	@NonEnumerable _client: TwitchClient;
 
-	constructor(private readonly _data: UserBlockData, client: Twitch) {
+	constructor(private readonly _data: UserBlockData, client: TwitchClient) {
 		this._client = client;
 	}
 

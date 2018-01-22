@@ -1,7 +1,7 @@
-import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import HelixUser, { HelixUserType } from '../../API/Helix/User/HelixUser';
 import { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
+import TwitchClient from '../../TwitchClient';
 
 export interface PubSubWhisperTags {
 	login: string;
@@ -40,9 +40,9 @@ export interface PubSubWhisperMessageData {
 }
 
 export default class PubSubWhisperMessage {
-	@NonEnumerable private readonly _twitchClient: Twitch;
+	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
-	constructor(private readonly _data: PubSubWhisperMessageData, twitchClient: Twitch) {
+	constructor(private readonly _data: PubSubWhisperMessageData, twitchClient: TwitchClient) {
 		this._twitchClient = twitchClient;
 	}
 

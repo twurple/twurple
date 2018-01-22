@@ -1,6 +1,5 @@
-import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import Channel from '../Channel/';
+import Channel from '../Channel/Channel';
 import ChannelPlaceholder from '../Channel/ChannelPlaceholder';
 import { UserIdResolvable } from '../../Toolkit/UserTools';
 import UserSubscription from './UserSubscription';
@@ -8,6 +7,7 @@ import NoSubscriptionProgram from '../NoSubscriptionProgram';
 import NotSubscribed from '../NotSubscribed';
 import UserFollow from './UserFollow';
 import NotFollowing from '../NotFollowing';
+import TwitchClient from '../../TwitchClient';
 
 export interface UserData {
 	_id: string;
@@ -21,9 +21,9 @@ export interface UserData {
 }
 
 export default class User {
-	@NonEnumerable protected _client: Twitch;
+	@NonEnumerable protected _client: TwitchClient;
 
-	constructor(protected _data: UserData, client: Twitch) {
+	constructor(protected _data: UserData, client: TwitchClient) {
 		this._client = client;
 	}
 

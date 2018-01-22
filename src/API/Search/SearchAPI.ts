@@ -1,8 +1,8 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
 import { UniformObject } from '../../Toolkit/ObjectTools';
-import Channel, { ChannelData } from '../Channel/';
-import Stream, { StreamData } from '../Stream/';
+import Channel, { ChannelData } from '../Channel/Channel';
+import Stream, { StreamData } from '../Stream/Stream';
 
 @Cacheable
 export default class SearchAPI extends BaseAPI {

@@ -1,8 +1,8 @@
-import Twitch from '../../../';
 import { NonEnumerable } from '../../../Toolkit/Decorators';
 import HelixPagination from '../HelixPagination';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import HelixUser from './HelixUser';
+import TwitchClient from '../../../TwitchClient';
 
 export interface HelixFollowFilter extends HelixPagination {
 	user?: UserIdResolvable;
@@ -16,9 +16,9 @@ export interface HelixFollowData {
 }
 
 export default class HelixFollow {
-	@NonEnumerable protected _client: Twitch;
+	@NonEnumerable protected _client: TwitchClient;
 
-	constructor(protected _data: HelixFollowData, client: Twitch) {
+	constructor(protected _data: HelixFollowData, client: TwitchClient) {
 		this._client = client;
 	}
 

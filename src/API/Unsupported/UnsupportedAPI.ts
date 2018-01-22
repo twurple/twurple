@@ -1,6 +1,6 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
-import Channel from '../Channel';
+import Channel from '../Channel/Channel';
 import ChattersList, { ChattersListData } from './ChattersList';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelEvent, { ChannelEventData, ChannelEventAPIResult } from './ChannelEvent';

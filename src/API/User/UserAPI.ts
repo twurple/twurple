@@ -1,7 +1,7 @@
 import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
-import User, { UserData } from './';
+import User, { UserData } from './User';
 import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import EmoteSetList from '../Channel/EmoteSetList';

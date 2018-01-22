@@ -1,4 +1,4 @@
-import Twitch from '../../';
+import TwitchClient from '../../TwitchClient';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
 import * as defaults from 'defaults';
@@ -55,10 +55,10 @@ export interface CheermoteDisplayInfo {
 }
 
 export default class CheermoteList {
-	@NonEnumerable private readonly _client: Twitch;
+	@NonEnumerable private readonly _client: TwitchClient;
 	private readonly _data: UniformObject<CheermoteActionData>;
 
-	constructor(data: CheermoteActionData[], client: Twitch) {
+	constructor(data: CheermoteActionData[], client: TwitchClient) {
 		this._client = client;
 		this._data = ObjectTools.indexBy(data, action => action.prefix.toLowerCase());
 	}

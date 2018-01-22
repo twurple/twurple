@@ -1,7 +1,7 @@
 import { MessagePrefix } from 'ircv3';
 import ChatClient from './ChatClient';
 import { NonEnumerable } from '../Toolkit/Decorators';
-import User from '../API/User/';
+import User from '../API/User/User';
 
 export default class ChatUser {
 	private readonly _userData: Map<string, string>;

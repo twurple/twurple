@@ -1,6 +1,6 @@
-import Twitch from '../../';
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import Channel, { ChannelData } from '../Channel/';
+import Channel, { ChannelData } from '../Channel/Channel';
+import TwitchClient from '../../TwitchClient';
 
 export interface StreamPreviewUrlList {
 	small: string;
@@ -26,9 +26,9 @@ export interface StreamData {
 export type StreamType = 'live' | 'watch_party' | 'all';
 
 export default class Stream {
-	@NonEnumerable private readonly _client: Twitch;
+	@NonEnumerable private readonly _client: TwitchClient;
 
-	constructor(private readonly _data: StreamData, client: Twitch) {
+	constructor(private readonly _data: StreamData, client: TwitchClient) {
 		this._client = client;
 	}
 

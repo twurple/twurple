@@ -1,7 +1,7 @@
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
-import Stream, { StreamData, StreamType } from './';
+import Stream, { StreamData, StreamType } from './Stream';
 import { UniformObject } from '../../Toolkit/ObjectTools';
 
 @Cacheable

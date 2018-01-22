@@ -14,15 +14,15 @@ import HostTarget from './Capabilities/TwitchCommands/MessageTypes/HostTarget';
 import RoomState from './Capabilities/TwitchCommands/MessageTypes/RoomState';
 import UserNotice from './Capabilities/TwitchCommands/MessageTypes/UserNotice';
 import Whisper from './Capabilities/TwitchCommands/MessageTypes/Whisper';
-import Twitch from '../';
 import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchPrivateMessage from './StandardCommands/PrivateMessage';
+import TwitchClient from '../TwitchClient';
 
 export default class ChatClient extends IRCClient {
 	private static readonly HOST_MESSAGE_REGEX =
 		/(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
-	@NonEnumerable _twitchClient: Twitch;
+	@NonEnumerable _twitchClient: TwitchClient;
 
 	onTimeout: (handler: (channel: string, user: string, reason: string, duration: number) => void)
 		=> Listener = this.registerEvent();
@@ -88,7 +88,7 @@ export default class ChatClient extends IRCClient {
 	private readonly _onSubsOnlyResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 	private readonly _onSubsOnlyOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 
-	constructor(username: string, token: string, twitchClient: Twitch) {
+	constructor(username: string, token: string, twitchClient: TwitchClient) {
 		super({
 			connection: {
 				hostName: 'irc-ws.chat.twitch.tv',

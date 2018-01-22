@@ -1,10 +1,10 @@
-import Twitch from '../../../';
 import { NonEnumerable } from '../../../Toolkit/Decorators';
 import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
 import NotFollowing from '../../NotFollowing';
 import UserFollow from '../../User/UserFollow';
 import HelixFollow, { HelixFollowFilter } from './HelixFollow';
 import HelixPagination from '../HelixPagination';
+import TwitchClient from '../../../TwitchClient';
 
 export type HelixBroadcasterType = 'partner' | 'affiliate' | '';
 export type HelixUserType = 'staff' | 'admin' | 'global_mod' | '';
@@ -22,9 +22,9 @@ export interface HelixUserData {
 }
 
 export default class HelixUser {
-	@NonEnumerable protected _client: Twitch;
+	@NonEnumerable protected _client: TwitchClient;
 
-	constructor(protected _data: HelixUserData, client: Twitch) {
+	constructor(protected _data: HelixUserData, client: TwitchClient) {
 		this._client = client;
 	}
 

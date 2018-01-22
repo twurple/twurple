@@ -1,4 +1,4 @@
-import User, { UserData } from './';
+import User, { UserData } from './User';
 import { UserIdResolvable } from '../../Toolkit/UserTools';
 import UserFollow from './UserFollow';
 import UserBlock from './UserBlock';
