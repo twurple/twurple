@@ -9,6 +9,7 @@ import UserFollow from './UserFollow';
 import NotFollowing from '../NotFollowing';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface UserData {
 	_id: string;
 	bio: string;
@@ -21,12 +22,15 @@ export interface UserData {
 }
 
 export default class User {
-	@NonEnumerable protected _client: TwitchClient;
+	/** @private */
+	@NonEnumerable protected readonly _client: TwitchClient;
 
-	constructor(protected _data: UserData, client: TwitchClient) {
+	/** @private */
+	constructor(/** @private */ protected _data: UserData, client: TwitchClient) {
 		this._client = client;
 	}
 
+	/** @private */
 	get cacheKey() {
 		return this._data._id;
 	}

@@ -9,6 +9,7 @@ export default class ChatUser {
 
 	@NonEnumerable private readonly _client: ChatClient;
 
+	/** @private */
 	constructor(prefix: MessagePrefix, userData: Map<string, string> | undefined, client: ChatClient) {
 		this._userName = prefix.nick.toLowerCase();
 		this._client = client;

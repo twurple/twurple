@@ -2,6 +2,7 @@ import Channel, { ChannelData } from '../Channel/Channel';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface UserFollowData {
 	created_at: string;
 	notifications: boolean;
@@ -9,8 +10,9 @@ export interface UserFollowData {
 }
 
 export default class UserFollow {
-	@NonEnumerable _client: TwitchClient;
+	@NonEnumerable private readonly _client: TwitchClient;
 
+	/** @private */
 	constructor(private readonly _data: UserFollowData, client: TwitchClient) {
 		this._client = client;
 	}

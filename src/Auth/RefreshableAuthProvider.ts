@@ -60,6 +60,7 @@ export default class RefreshableAuthProvider implements AuthProvider {
 		return tokenData;
 	}
 
+	/** @private */
 	setAccessToken(token: string) {
 		this._childProvider.setAccessToken(token);
 	}

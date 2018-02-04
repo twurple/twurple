@@ -1,6 +1,7 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import ArrayTools from '../../Toolkit/ArrayTools';
 
+/** @private */
 export interface ChattersListData {
 	chatter_count: number;
 	chatters: { [status: string]: string[] };
@@ -8,6 +9,7 @@ export interface ChattersListData {
 
 @Cacheable
 export default class ChattersList {
+	/** @private */
 	constructor(private readonly _data: ChattersListData) {
 	}
 

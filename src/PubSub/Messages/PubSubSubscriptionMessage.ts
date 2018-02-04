@@ -3,10 +3,12 @@ import { NonEnumerable } from '../../Toolkit/Decorators';
 import HelixUser from '../../API/Helix/User/HelixUser';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface PubSubSubscriptionDetail {
 	context: 'sub' | 'resub';
 }
 
+/** @private */
 export interface PubSubSubscriptionGiftDetail {
 	context: 'subgift';
 	recipient_id: string;
@@ -14,6 +16,7 @@ export interface PubSubSubscriptionGiftDetail {
 	recipient_display_name: string;
 }
 
+/** @private */
 export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 	display_name: string;
 	sub_plan: 'Prime' | '1000' | '2000' | '3000';
@@ -25,6 +28,7 @@ export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 export default class PubSubSubscriptionMessage {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
+	/** @private */
 	constructor(private readonly _data: PubSubSubscriptionMessageData, twitchClient: TwitchClient) {
 		this._twitchClient = twitchClient;
 	}

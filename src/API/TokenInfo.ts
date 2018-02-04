@@ -1,9 +1,11 @@
+/** @private */
 export interface TokenAuthorization {
 	scopes: string[];
 	created_at: string[];
 	updated_at: string[];
 }
 
+/** @private */
 export type TokenStructure = {
 	valid: true;
 	authorization: TokenAuthorization;
@@ -15,11 +17,13 @@ export type TokenStructure = {
 	authorization: null;
 };
 
+/** @private */
 export interface TokenInfoData {
 	token: TokenStructure;
 }
 
 export default class TokenInfo {
+	/** @private */
 	constructor(private readonly _data: TokenStructure) {
 	}
 

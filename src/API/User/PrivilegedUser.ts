@@ -3,11 +3,13 @@ import { UserIdResolvable } from '../../Toolkit/UserTools';
 import UserFollow from './UserFollow';
 import UserBlock from './UserBlock';
 
+/** @private */
 export interface UserNotificationFlags {
 	email: boolean;
 	push: boolean;
 }
 
+/** @private */
 export interface PrivilegedUserData extends UserData {
 	email: string;
 	email_verified: boolean;
@@ -17,6 +19,7 @@ export interface PrivilegedUserData extends UserData {
 }
 
 export default class PrivilegedUser extends User {
+	/** @private */
 	protected _data: PrivilegedUserData;
 
 	async followChannel(channel: UserIdResolvable, notifications?: boolean): Promise<UserFollow> {

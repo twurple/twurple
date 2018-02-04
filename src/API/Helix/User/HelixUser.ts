@@ -22,12 +22,15 @@ export interface HelixUserData {
 }
 
 export default class HelixUser {
-	@NonEnumerable protected _client: TwitchClient;
+	/** @private */
+	@NonEnumerable protected readonly _client: TwitchClient;
 
-	constructor(protected _data: HelixUserData, client: TwitchClient) {
+	/** @private */
+	constructor(/** @private */ protected _data: HelixUserData, client: TwitchClient) {
 		this._client = client;
 	}
 
+	/** @private */
 	get cacheKey() {
 		return this._data.id;
 	}

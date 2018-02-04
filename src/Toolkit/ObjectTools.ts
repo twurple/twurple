@@ -1,17 +1,24 @@
+/** @private */
 declare interface ObjectCtor extends ObjectConstructor {
 	assign<T>(target: {}, ...source: Array<Partial<T>>): T;
 
 	entries<T, Obj>(o: Obj): Array<[keyof Obj, T]>;
 }
 
+/** @private */
 declare let Object: ObjectCtor;
 
+/** @private */
 export type ObjMap<Obj, T> = { [name in keyof Obj]: T };
+/** @private */
 export type ObjMapPart<Obj, T> = Partial<ObjMap<Obj, T>>;
 
+/** @private */
 export type UniformObject<T> = { [name: string]: T };
+/** @private */
 export type KeyMapper<T> = (value: T) => string;
 
+/** @private */
 export default class ObjectTools {
 	static map<T, O, Obj = UniformObject<T>>(obj: Obj, fn: (value: T, key: keyof Obj) => O): ObjMap<Obj, O> {
 		const mapped = Object.entries<T, Obj>(obj).map(([key, value]: [keyof Obj, T]): ObjMapPart<Obj, O> => {

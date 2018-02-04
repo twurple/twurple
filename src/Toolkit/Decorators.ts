@@ -1,14 +1,17 @@
 // tslint:disable:only-arrow-functions
 
+/** @private */
 // tslint:disable-next-line:no-any
 export type Constructor<T = {}> = new (...args: any[]) => T;
 
+/** @private */
 // tslint:disable-next-line:no-any
 export type CacheEntry<T = any> = {
 	value: T;
 	expires: number;
 };
 
+/** @private */
 export function Cacheable<T extends Constructor>(cls: T) {
 	return class extends cls {
 		public cache: Map<string, CacheEntry> = new Map;
@@ -65,6 +68,7 @@ export function Cacheable<T extends Constructor>(cls: T) {
 	};
 }
 
+/** @private */
 // tslint:disable-next-line:no-any
 export function createCacheKey(propName: string, params: any[], prefix?: boolean): string {
 	// tslint:disable-next-line:no-any
@@ -96,6 +100,7 @@ export function createCacheKey(propName: string, params: any[], prefix?: boolean
 	return [propName, ...params.map(createSingleCacheKey)].join('/') + (prefix ? '/' : '');
 }
 
+/** @private */
 export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean = false) {
 	// tslint:disable-next-line:no-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
@@ -121,6 +126,7 @@ export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean 
 	};
 }
 
+/** @private */
 export function CachedGetter(timeInSeconds: number = Infinity) {
 	// tslint:disable-next-line:no-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
@@ -147,6 +153,7 @@ export function CachedGetter(timeInSeconds: number = Infinity) {
 	};
 }
 
+/** @private */
 export function ClearsCache<T>(cacheName: keyof T, numberOfArguments?: number) {
 	// tslint:disable-next-line:no-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
@@ -164,6 +171,7 @@ export function ClearsCache<T>(cacheName: keyof T, numberOfArguments?: number) {
 	};
 }
 
+/** @private */
 // tslint:disable-next-line:no-any
 export function NonEnumerable(target: any, key: string) {
 	// first property defined in prototype, that's why we use getters/setters

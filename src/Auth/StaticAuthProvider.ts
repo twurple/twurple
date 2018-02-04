@@ -22,6 +22,7 @@ export default class StaticAuthProvider implements AuthProvider {
 		return this._accessToken;
 	}
 
+	/** @private */
 	setAccessToken(token: string) {
 		this._accessToken = token;
 	}

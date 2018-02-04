@@ -2,6 +2,7 @@ import { NonEnumerable } from '../../Toolkit/Decorators';
 import User, { UserData } from './User';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface UserBlockData {
 	_id: string;
 	updated_at: string;
@@ -9,8 +10,9 @@ export interface UserBlockData {
 }
 
 export default class UserBlock {
-	@NonEnumerable _client: TwitchClient;
+	@NonEnumerable private readonly _client: TwitchClient;
 
+	/** @private */
 	constructor(private readonly _data: UserBlockData, client: TwitchClient) {
 		this._client = client;
 	}

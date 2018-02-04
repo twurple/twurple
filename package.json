@@ -16,6 +16,7 @@
     "tslint": "^5.5.0",
     "tslint-eslint-rules": "^4.1.1",
     "tslint-language-service": "^0.9.8",
+    "typedoc": "^0.9.0",
     "typescript": "^2.6.2",
     "yarn-or-npm": "^2.0.4"
   },

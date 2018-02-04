@@ -22,7 +22,8 @@ export default class ChatClient extends IRCClient {
 	private static readonly HOST_MESSAGE_REGEX =
 		/(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
-	@NonEnumerable _twitchClient: TwitchClient;
+	/** @private */
+	@NonEnumerable readonly _twitchClient: TwitchClient;
 
 	onTimeout: (handler: (channel: string, user: string, reason: string, duration: number) => void)
 		=> Listener = this.registerEvent();

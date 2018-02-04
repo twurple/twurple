@@ -1,6 +1,7 @@
 import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchClient from '../TwitchClient';
 
+/** @private */
 export interface SubscriptionData {
 	_id: string;
 	sub_plan: string;
@@ -9,9 +10,11 @@ export interface SubscriptionData {
 }
 
 export default class Subscription {
-	@NonEnumerable protected _client: TwitchClient;
+	/** @private */
+	@NonEnumerable protected readonly _client: TwitchClient;
 
-	constructor(protected _data: SubscriptionData, client: TwitchClient) {
+	/** @private */
+	constructor(/** @private */ protected _data: SubscriptionData, client: TwitchClient) {
 		this._client = client;
 	}
 

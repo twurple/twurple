@@ -4,6 +4,7 @@ import TwitchClient from '../../../TwitchClient';
 
 export type HelixStreamType = '' | 'live' | 'vodcast';
 
+/** @private */
 export interface HelixStreamData {
 	id: string;
 	user_id: string;
@@ -20,6 +21,7 @@ export interface HelixStreamData {
 export default class HelixStream {
 	@NonEnumerable private readonly _client: TwitchClient;
 
+	/** @private */
 	constructor(private readonly _data: HelixStreamData, client: TwitchClient) {
 		this._client = client;
 	}

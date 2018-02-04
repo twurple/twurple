@@ -9,6 +9,7 @@ export interface HelixFollowFilter extends HelixPagination {
 	followedUser?: UserIdResolvable;
 }
 
+/** @private */
 export interface HelixFollowData {
 	from_id: string;
 	to_id: string;
@@ -16,9 +17,11 @@ export interface HelixFollowData {
 }
 
 export default class HelixFollow {
-	@NonEnumerable protected _client: TwitchClient;
+	/** @private */
+	@NonEnumerable protected readonly _client: TwitchClient;
 
-	constructor(protected _data: HelixFollowData, client: TwitchClient) {
+	/** @private */
+	constructor(/** @private */ protected _data: HelixFollowData, client: TwitchClient) {
 		this._client = client;
 	}
 

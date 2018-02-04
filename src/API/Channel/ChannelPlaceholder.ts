@@ -14,14 +14,19 @@ export interface ChannelPlaceholderData {
 }
 
 export default class ChannelPlaceholder {
-	@NonEnumerable protected _client: TwitchClient;
+	/** @private */
+	@NonEnumerable protected readonly _client: TwitchClient;
+
+	/** @private */
 	protected _data: ChannelPlaceholderData;
 
+	/** @private */
 	constructor(id: string, client: TwitchClient) {
 		this._data = { _id: id };
 		this._client = client;
 	}
 
+	/** @private */
 	get cacheKey() {
 		return this._data._id;
 	}

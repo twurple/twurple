@@ -1,3 +1,4 @@
+/** @private */
 export interface AccessTokenData {
 	access_token: string;
 	refresh_token: string;
@@ -8,6 +9,7 @@ export interface AccessTokenData {
 export default class AccessToken {
 	private readonly _obtainedAt: Date;
 
+	/** @private */
 	constructor(private readonly _data: AccessTokenData, obtainedAt?: Date) {
 		this._obtainedAt = obtainedAt || new Date();
 	}

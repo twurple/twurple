@@ -1,3 +1,4 @@
+/** @private */
 export default class ChatTools {
 	static parseEmotes(emotes?: string): Map<string, string[]> {
 		if (!emotes) {

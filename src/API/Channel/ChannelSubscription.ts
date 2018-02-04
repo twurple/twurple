@@ -1,6 +1,7 @@
 import Subscription, { SubscriptionData } from '../Subscription';
 import User, { UserData } from '../User/User';
 
+/** @private */
 export interface ChannelSubscriptionData extends SubscriptionData {
 	user: UserData;
 }

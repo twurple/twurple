@@ -50,6 +50,7 @@ export interface TwitchApiCallOptions {
 
 @Cacheable
 export default class TwitchClient {
+	/** @private */
 	readonly _config: TwitchConfig;
 	private readonly _chatClients: Map<string, ChatClient> = new Map;
 	private readonly _pubSubClients: Map<string, SingleUserPubSubClient> = new Map;

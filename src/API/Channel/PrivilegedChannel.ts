@@ -2,12 +2,14 @@ import Channel, { ChannelData } from './Channel';
 import User from '../User/User';
 import { CommercialLength } from './ChannelAPI';
 
+/** @private */
 export interface PrivilegedChannelData extends ChannelData {
 	stream_key: string;
 	email: string;
 }
 
 export default class PrivilegedChannel extends Channel {
+	/** @private */
 	protected _data: PrivilegedChannelData;
 
 	get streamKey() {

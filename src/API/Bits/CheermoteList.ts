@@ -9,18 +9,22 @@ export enum CheermoteState { animated = 'animated', 'static' = 'static' }
 
 export enum CheermoteScale { x1 = '1', x1_5 = '1.5', x2 = '2', x3 = '3', x4 = '4' }
 
+/** @private */
 export type CheermoteActionImageUrlsByScale = {
 	[scale in CheermoteScale]: string;
 };
 
+/** @private */
 export type CheermoteActionImageUrlsByStateAndScale = {
 	[state in CheermoteState]: CheermoteActionImageUrlsByScale;
 };
 
+/** @private */
 export type CheermoteActionImageUrlsByBackgroundAndStateAndScale = {
 	[background in CheermoteBackground]: CheermoteActionImageUrlsByStateAndScale;
 };
 
+/** @private */
 export interface CheermoteActionTierData {
 	min_bits: number;
 	id: string;
@@ -28,6 +32,7 @@ export interface CheermoteActionTierData {
 	images: CheermoteActionImageUrlsByBackgroundAndStateAndScale[];
 }
 
+/** @private */
 export interface CheermoteActionData {
 	prefix: string;
 	scales: string[];
@@ -39,16 +44,19 @@ export interface CheermoteActionData {
 	priority: number;
 }
 
+/** @private */
 export interface CheermoteListData {
 	actions: CheermoteActionData[];
 }
 
+/** @private */
 export interface CheermoteOptions {
 	background: CheermoteBackground;
 	state: CheermoteState;
 	scale: CheermoteScale;
 }
 
+/** @private */
 export interface CheermoteDisplayInfo {
 	url: string;
 	color: string;

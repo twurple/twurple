@@ -1,10 +1,12 @@
 import HelixUser, { HelixUserData } from './HelixUser';
 
+/** @private */
 export interface HelixPrivilegedUserData extends HelixUserData {
 	email?: string;
 }
 
 export default class HelixPrivilegedUser extends HelixUser {
+	/** @private */
 	protected _data: HelixPrivilegedUserData;
 
 	get email() {

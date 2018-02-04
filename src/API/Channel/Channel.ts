@@ -2,6 +2,7 @@ import ChannelPlaceholder, { ChannelPlaceholderData } from './ChannelPlaceholder
 import TwitchClient from '../../TwitchClient';
 import { ChannelUpdateData } from './ChannelAPI';
 
+/** @private */
 export interface ChannelData extends ChannelPlaceholderData {
 	broadcaster_language: string;
 	broadcaster_type: string;
@@ -25,8 +26,10 @@ export interface ChannelData extends ChannelPlaceholderData {
 }
 
 export default class Channel extends ChannelPlaceholder {
+	/** @private */
 	protected _data: ChannelData;
 
+	/** @private */
 	constructor(data: ChannelData, client: TwitchClient) {
 		super(data._id, client);
 		this._data = data;

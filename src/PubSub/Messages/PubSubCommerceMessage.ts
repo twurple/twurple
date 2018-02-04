@@ -3,6 +3,7 @@ import { NonEnumerable } from '../../Toolkit/Decorators';
 import HelixUser from '../../API/Helix/User/HelixUser';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface PubSubCommerceMessageData extends PubSubBasicMessageInfo {
 	display_name: string;
 	item_image_url: string;
@@ -14,6 +15,7 @@ export interface PubSubCommerceMessageData extends PubSubBasicMessageInfo {
 export default class PubSubCommerceMessage {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
+	/** @private */
 	constructor(private readonly _data: PubSubCommerceMessageData, twitchClient: TwitchClient) {
 		this._twitchClient = twitchClient;
 	}

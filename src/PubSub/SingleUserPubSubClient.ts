@@ -15,6 +15,7 @@ export default class SingleUserPubSubClient {
 
 	private readonly _listeners: Map<string, PubSubListener[]> = new Map;
 
+	/** @private */
 	constructor(twitchClient: TwitchClient, pubSubClient?: PubSubClient) {
 		this._twitchClient = twitchClient;
 		this._pubSubClient = pubSubClient || new PubSubClient(twitchClient._config.debugLevel);

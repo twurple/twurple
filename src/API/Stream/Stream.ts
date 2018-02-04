@@ -2,6 +2,7 @@ import { NonEnumerable } from '../../Toolkit/Decorators';
 import Channel, { ChannelData } from '../Channel/Channel';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface StreamPreviewUrlList {
 	small: string;
 	medium: string;
@@ -9,6 +10,7 @@ export interface StreamPreviewUrlList {
 	template: string;
 }
 
+/** @private */
 export interface StreamData {
 	_id: string;
 	game: string;
@@ -28,6 +30,7 @@ export type StreamType = 'live' | 'watch_party' | 'all';
 export default class Stream {
 	@NonEnumerable private readonly _client: TwitchClient;
 
+	/** @private */
 	constructor(private readonly _data: StreamData, client: TwitchClient) {
 		this._client = client;
 	}

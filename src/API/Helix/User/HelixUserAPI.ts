@@ -6,6 +6,7 @@ import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedU
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 
+/** @private */
 type UserLookupType = 'id' | 'login';
 
 export interface HelixUserUpdate {

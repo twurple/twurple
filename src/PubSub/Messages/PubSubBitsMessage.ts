@@ -3,11 +3,13 @@ import { NonEnumerable } from '../../Toolkit/Decorators';
 import HelixUser from '../../API/Helix/User/HelixUser';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface PubSubBitsMessageBitsEntitlement {
 	previous_version: number;
 	new_version: number;
 }
 
+/** @private */
 export interface PubSubBitsMessageContent extends PubSubBasicMessageInfo {
 	chat_message: string;
 	bits_used: number;
@@ -16,6 +18,7 @@ export interface PubSubBitsMessageContent extends PubSubBasicMessageInfo {
 	badge_entitlement: PubSubBitsMessageBitsEntitlement | null;
 }
 
+/** @private */
 export interface PubSubBitsMessageData {
 	data: PubSubBitsMessageContent;
 	version: string;
@@ -26,6 +29,7 @@ export interface PubSubBitsMessageData {
 export default class PubSubBitsMessage {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
+	/** @private */
 	constructor(private readonly _data: PubSubBitsMessageData, twitchClient: TwitchClient) {
 		this._twitchClient = twitchClient;
 	}
