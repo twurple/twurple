@@ -10,6 +10,7 @@ export type EmoteSetListData = UniformObject<Emote[]>;
 
 @Cacheable
 export default class EmoteSetList {
+	/** @private */
 	constructor(private readonly _data: EmoteSetListData) {
 	}
 

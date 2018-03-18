@@ -25,33 +25,52 @@ export default class ChatClient extends IRCClient {
 	/** @private */
 	@NonEnumerable readonly _twitchClient: TwitchClient;
 
+	/** @eventListener */
 	onTimeout: (handler: (channel: string, user: string, reason: string, duration: number) => void)
 		=> Listener = this.registerEvent();
+	/** @eventListener */
 	onBan: (handler: (channel: string, user: string, reason: string) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onChatClear: (handler: (channel: string) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onEmoteOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onFollowersOnly: (handler: (channel: string, enabled: boolean, delay?: number) => void)
 		=> Listener = this.registerEvent();
+	/** @eventListener */
 	onHost: (handler: (channel: string, target: string, viewers?: number) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onHosted: (handler: (channel: string, byChannel: string, auto: boolean, viewers?: number) => void)
 		=> Listener = this.registerEvent();
+	/** @eventListener */
 	onHostsRemaining: (handler: (channel: string, numberOfHosts: number) => void)
 		=> Listener = this.registerEvent();
+	/** @eventListener */
 	onJoin: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onPart: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onR9k: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onUnhost: (handler: (channel: string) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onSlow: (handler: (channel: string, enabled: boolean, delay?: number) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onSubsOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	onSub: (handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
+	/** @eventListener */
 	onResub: (handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
+	/** @eventListener */
 	onSubGift: (handler: (channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
+	/** @eventListener */
 	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
 
 	// override for specific class
+	/** @eventListener */
 	onPrivmsg: (handler: (target: string, user: string, message: string, msg: TwitchPrivateMessage) => void) => Listener;
 
 	// internal events to resolve promises and stuff

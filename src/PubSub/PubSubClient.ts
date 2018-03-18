@@ -19,6 +19,7 @@ export default class PubSubClient extends EventEmitter {
 
 	private readonly _onPong: (handler: () => void) => Listener = this.registerEvent();
 	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener = this.registerEvent();
+	/** @eventListener */
 	readonly onMessage: (handler: (topic: string, message: PubSubMessageData) => void) => Listener = this.registerEvent();
 
 	constructor(private readonly _debugLevel: number = 0) {

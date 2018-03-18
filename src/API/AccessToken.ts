@@ -6,6 +6,9 @@ export interface AccessTokenData {
 	scope: string;
 }
 
+/**
+ * Represents the data of an OAuth access token returned by Twitch.
+ */
 export default class AccessToken {
 	private readonly _obtainedAt: Date;
 
@@ -22,7 +25,7 @@ export default class AccessToken {
 		return this._data.refresh_token;
 	}
 
-	get expiresAt() {
+	get expiresAt(): Date | null {
 		if (!this._data.expires_in) {
 			return null;
 		}
