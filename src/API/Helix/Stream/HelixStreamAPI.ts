@@ -3,6 +3,7 @@ import HelixResponse from '../HelixResponse';
 import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
 import { UniformObject } from '../../../Toolkit/ObjectTools';
 import HelixPagination from '../HelixPagination';
+import { TwitchApiCallType } from '../../../TwitchClient';
 
 export interface StreamFilter extends HelixPagination {
 	community?: string | string[];
@@ -31,7 +32,7 @@ export default class HelixStreamAPI extends BaseAPI {
 		}
 		const result = await this._client.apiCall<HelixResponse<HelixStreamData[]>>({
 			url: 'streams',
-			type: 'helix',
+			type: TwitchApiCallType.Helix,
 			query
 		});
 

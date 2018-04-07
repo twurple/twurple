@@ -23,7 +23,12 @@ export interface StreamData {
 	channel: ChannelData;
 }
 
-export type StreamType = 'live' | 'watch_party' | 'all';
+export enum StreamType {
+	Live = 'live',
+	Premiere = 'premiere',
+	ReRun = 'rerun',
+	All = 'all' // for filtering
+}
 
 export default class Stream {
 	@NonEnumerable private readonly _client: TwitchClient;

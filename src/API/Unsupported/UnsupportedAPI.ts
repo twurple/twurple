@@ -4,6 +4,7 @@ import Channel from '../Channel/Channel';
 import ChattersList, { ChattersListData } from './ChattersList';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelEvent, { ChannelEventData, ChannelEventAPIResult } from './ChannelEvent';
+import { TwitchApiCallType } from '../../TwitchClient';
 
 @Cacheable
 export default class UnsupportedAPI extends BaseAPI {
@@ -13,7 +14,10 @@ export default class UnsupportedAPI extends BaseAPI {
 			channel = channel.name;
 		}
 
-		const data: ChattersListData = await this._client.apiCall({ url: `https://tmi.twitch.tv/group/user/${channel}/chatters`, type: 'custom' });
+		const data: ChattersListData = await this._client.apiCall({
+			url: `https://tmi.twitch.tv/group/user/${channel}/chatters`,
+			type: TwitchApiCallType.Custom
+		});
 		return new ChattersList(data);
 	}
 
