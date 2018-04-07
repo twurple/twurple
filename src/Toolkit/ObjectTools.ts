@@ -14,7 +14,7 @@ export type ObjMap<Obj, T> = { [name in keyof Obj]: T };
 export type ObjMapPart<Obj, T> = Partial<ObjMap<Obj, T>>;
 
 /** @private */
-export type UniformObject<T> = { [name: string]: T };
+export interface UniformObject<T> { [name: string]: T; }
 /** @private */
 export type KeyMapper<T> = (value: T) => string;
 
