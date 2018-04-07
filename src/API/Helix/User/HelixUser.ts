@@ -6,8 +6,18 @@ import HelixFollow, { HelixFollowFilter } from './HelixFollow';
 import HelixPagination from '../HelixPagination';
 import TwitchClient from '../../../TwitchClient';
 
-export type HelixBroadcasterType = 'partner' | 'affiliate' | '';
-export type HelixUserType = 'staff' | 'admin' | 'global_mod' | '';
+export enum HelixBroadcasterType {
+	None = '',
+	Affiliate = 'affiliate',
+	Partner = 'partner'
+}
+
+export enum HelixUserType {
+	None = '',
+	GlobalMod = 'global_mod',
+	Admin = 'admin',
+	Staff = 'staff'
+}
 
 export interface HelixUserData {
 	id: string;

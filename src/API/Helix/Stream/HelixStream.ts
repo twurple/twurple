@@ -2,7 +2,11 @@ import { NonEnumerable } from '../../../Toolkit/Decorators';
 import HelixUser from '../User/HelixUser';
 import TwitchClient from '../../../TwitchClient';
 
-export type HelixStreamType = '' | 'live' | 'vodcast';
+export enum HelixStreamType {
+	None = '',
+	Live = 'live',
+	Vodcast = 'vodcast'
+}
 
 /** @private */
 export interface HelixStreamData {

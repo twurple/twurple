@@ -8,6 +8,7 @@ import NotSubscribed from '../NotSubscribed';
 import UserFollow from './UserFollow';
 import NotFollowing from '../NotFollowing';
 import TwitchClient from '../../TwitchClient';
+import Stream from '../Stream/Stream';
 
 /** @private */
 export interface UserData {
@@ -64,6 +65,10 @@ export default class User {
 
 	getChannelPlaceholder() {
 		return new ChannelPlaceholder(this._data._id, this._client);
+	}
+
+	async getStream(): Promise<Stream> {
+		return this.getChannelPlaceholder().getStream();
 	}
 
 	async getSubscriptionTo(channel: UserIdResolvable): Promise<UserSubscription> {

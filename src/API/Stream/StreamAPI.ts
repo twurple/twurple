@@ -46,11 +46,11 @@ export default class StreamAPI extends BaseAPI {
 	}
 
 	async getAllStreams(page?: number, limit?: number) {
-		return this.getStreams(undefined, undefined, undefined, 'all', page, limit);
+		return this.getStreams(undefined, undefined, undefined, StreamType.All, page, limit);
 	}
 
 	async getAllLiveStreams(page?: number, limit?: number) {
-		return this.getStreams(undefined, undefined, undefined, 'live', page, limit);
+		return this.getStreams(undefined, undefined, undefined, StreamType.Live, page, limit);
 	}
 
 	@Cached(60)

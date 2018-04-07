@@ -34,7 +34,9 @@ export interface TwitchConfig {
 	debugLevel: number;
 }
 
-export type TwitchApiCallType = 'kraken' | 'helix' | 'custom';
+export enum TwitchApiCallType {
+	Kraken, Helix, Custom
+}
 
 export interface TwitchApiCallOptions {
 	url: string;
@@ -112,12 +114,12 @@ export default class TwitchClient {
 	}
 
 	private static _getUrl(url: string, type?: TwitchApiCallType) {
-		type = type || 'kraken';
+		type = type === undefined ? TwitchApiCallType.Kraken : type;
 		switch (type) {
-			case 'kraken':
-			case 'helix':
+			case TwitchApiCallType.Kraken:
+			case TwitchApiCallType.Helix:
 				return `https://api.twitch.tv/${type}/${url.replace(/^\//, '')}`;
-			case 'custom':
+			case TwitchApiCallType.Custom:
 				return url;
 			default:
 				return url; // wat
@@ -152,7 +154,7 @@ export default class TwitchClient {
 		}
 
 		if (accessToken) {
-			requestOptions.headers!.Authorization = `${options.type === 'helix' ? 'Bearer' : 'OAuth'} ${accessToken}`;
+			requestOptions.headers!.Authorization = `${options.type === TwitchApiCallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`;
 		}
 
 		return request(requestOptions);
