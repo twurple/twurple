@@ -4,10 +4,10 @@
 export type Constructor<T = {}> = new (...args: any[]) => T;
 
 // tslint:disable-next-line:no-any
-export type CacheEntry<T = any> = {
+export interface CacheEntry<T = any> {
 	value: T;
 	expires: number;
-};
+}
 
 export function Cacheable<T extends Constructor>(cls: T) {
 	return class extends cls {

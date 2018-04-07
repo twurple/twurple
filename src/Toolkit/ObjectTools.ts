@@ -9,7 +9,7 @@ declare let Object: ObjectCtor;
 export type ObjMap<Obj, T> = { [name in keyof Obj]: T };
 export type ObjMapPart<Obj, T> = Partial<ObjMap<Obj, T>>;
 
-export type UniformObject<T> = { [name: string]: T };
+export interface UniformObject<T> { [name: string]: T; }
 export type KeyMapper<T> = (value: T) => string;
 
 export default class ObjectTools {
