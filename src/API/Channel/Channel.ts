@@ -16,7 +16,7 @@ export interface ChannelData extends ChannelPlaceholderData {
 	name: string;
 	partner: boolean;
 	profile_banner: string | null;
-	profile_bannel_background_color: string | null;
+	profile_banner_background_color: string | null;
 	status: string;
 	updated_at: string;
 	url: string;
