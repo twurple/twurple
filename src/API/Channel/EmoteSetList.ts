@@ -1,11 +1,13 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import { UniformObject } from '../../Toolkit/ObjectTools';
 
+/** @private */
 export interface Emote {
 	code: string;
 	id: number;
 }
 
+/** @private */
 export type EmoteSetListData = UniformObject<Emote[]>;
 
 @Cacheable

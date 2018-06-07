@@ -34,6 +34,7 @@
   "scripts": {
     "lint": "tslint --project .",
     "build": "tsc",
-    "prepare": "yon run lint && yon run build"
+    "prepare": "yon run lint && yon run build",
+    "docs": "node $NODE_DEBUG_OPTION node_modules/.bin/typedoc --out docs --mode file types src"
   }
 }

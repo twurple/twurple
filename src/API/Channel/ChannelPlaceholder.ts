@@ -9,6 +9,7 @@ import NotSubscribed from '../NotSubscribed';
 import ChannelFollow from './ChannelFollow';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface ChannelPlaceholderData {
 	_id: string;
 }

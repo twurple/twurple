@@ -19,6 +19,7 @@ export enum HelixUserType {
 	Staff = 'staff'
 }
 
+/** @private */
 export interface HelixUserData {
 	id: string;
 	login: string;

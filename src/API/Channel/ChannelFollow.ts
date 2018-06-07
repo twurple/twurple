@@ -2,6 +2,7 @@ import User, { UserData } from '../User/User';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import TwitchClient from '../../TwitchClient';
 
+/** @private */
 export interface ChannelFollowData {
 	created_at: string;
 	notifications: boolean;

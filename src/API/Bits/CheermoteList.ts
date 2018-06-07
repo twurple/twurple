@@ -3,7 +3,27 @@ import { NonEnumerable } from '../../Toolkit/Decorators';
 import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
 import * as defaults from 'defaults';
 
-export enum CheermoteBackground { dark = 'dark', light = 'light' }
+/**
+ * Specifies the type of background the cheermote is supposed to appear on.
+ *
+ * We will supply a fitting graphic that does not show any artifacts
+ * on the given type of background.
+ */
+export enum CheermoteBackground {
+	/**
+	 * Specifies a dark background.
+	 *
+	 * Cheermotes might show artifacts on bright backgrounds.
+	 */
+	dark = 'dark',
+
+	/**
+	 * Specifies a bright background.
+	 *
+	 * Cheermotes might show artifacts on dark backgrounds.
+	 */
+	light = 'light'
+}
 
 export enum CheermoteState { animated = 'animated', 'static' = 'static' }
 
@@ -49,14 +69,12 @@ export interface CheermoteListData {
 	actions: CheermoteActionData[];
 }
 
-/** @private */
 export interface CheermoteOptions {
 	background: CheermoteBackground;
 	state: CheermoteState;
 	scale: CheermoteScale;
 }
 
-/** @private */
 export interface CheermoteDisplayInfo {
 	url: string;
 	color: string;
@@ -66,6 +84,7 @@ export default class CheermoteList {
 	@NonEnumerable private readonly _client: TwitchClient;
 	private readonly _data: UniformObject<CheermoteActionData>;
 
+	/** @private */
 	constructor(data: CheermoteActionData[], client: TwitchClient) {
 		this._client = client;
 		this._data = ObjectTools.indexBy(data, action => action.prefix.toLowerCase());
