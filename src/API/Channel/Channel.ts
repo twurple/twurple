@@ -48,4 +48,73 @@ export default class Channel extends ChannelPlaceholder {
 	get displayName() {
 		return this._data.display_name;
 	}
+
+	get broadcasterLanguage() {
+		return this._data.broadcaster_language;
+	}
+
+	get broadcasterType() {
+		return this._data.broadcaster_type;
+	}
+
+	get createdAt() {
+		return new Date(this._data.created_at);
+	}
+
+	get description() {
+		return this._data.description;
+	}
+
+	get followers() {
+		return this._data.followers;
+	}
+
+	get game() {
+		return this._data.game;
+	}
+
+	get language() {
+		return this._data.language;
+	}
+
+	get logo() {
+		return this._data.logo;
+	}
+
+	get isMature() {
+		return this._data.mature;
+	}
+
+	get isPartner() {
+		return this._data.partner;
+	}
+
+	get profileBanner() {
+		return this._data.profile_banner;
+	}
+
+	get profileBannerBackgroundColor() {
+		return this._data.profile_banner_background_color;
+	}
+
+	get status() {
+		return this._data.status;
+	}
+
+	get updatedAt() {
+		return new Date(this._data.updated_at);
+	}
+
+	get url() {
+		return this._data.url;
+	}
+
+	get videoBanner() {
+		return this._data.video_banner;
+	}
+
+	get views() {
+		return this._data.views;
+	}
+
 }
