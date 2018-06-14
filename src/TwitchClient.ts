@@ -118,7 +118,8 @@ export default class TwitchClient {
 		switch (type) {
 			case TwitchApiCallType.Kraken:
 			case TwitchApiCallType.Helix:
-				return `https://api.twitch.tv/${type}/${url.replace(/^\//, '')}`;
+				const typeName = type === TwitchApiCallType.Kraken ? 'kraken' : 'helix';
+				return `https://api.twitch.tv/${typeName}/${url.replace(/^\//, '')}`;
 			case TwitchApiCallType.Custom:
 				return url;
 			default:
