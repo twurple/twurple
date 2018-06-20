@@ -11,27 +11,62 @@ import User, { UserData } from '../User/User';
 import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
 import { UniformObject } from '../../Toolkit/ObjectTools';
 
+/**
+ * Channel data to update using {@ChannelAPI#updateChannel}.
+ */
 export interface ChannelUpdateData {
+	/**
+	 * The status/title of the channel.
+	 */
 	status?: string;
+
+	/**
+	 * The currently played game.
+	 */
 	game?: string;
+
+	/**
+	 * The desired delay of the stream.
+	 */
 	delay?: number;
+
+	/**
+	 * Whether or not to show the channel feed.
+	 */
 	channel_feed_enabled?: boolean;
 }
 
+/**
+ * The possible lengths of a channel commercial.
+ */
 export type CommercialLength = 30 | 60 | 90 | 120 | 150 | 180;
 
 @Cacheable
 export default class ChannelAPI extends BaseAPI {
+	/**
+	 * Gets the channel the client is logged in to.
+	 */
 	@Cached(3600)
 	async getMyChannel() {
 		return new PrivilegedChannel(await this._client.apiCall({ url: 'channel', scope: 'channel_read' }), this._client);
 	}
 
+	/**
+	 * Retrieves the channel for a specified user.
+	 *
+	 * @param user The user you want to retrieve the channel for.
+	 */
 	@Cached(3600)
 	async getChannel(user: UserIdResolvable) {
 		return new Channel(await this._client.apiCall({ url: `channels/${UserTools.getUserId(user)}` }), this._client);
 	}
 
+	/**
+	 * Updates the given channel with the given data.
+	 *
+	 * @param channel The channel you want to update.
+	 * @param data The updated channel data.
+	 */
 	@ClearsCache<ChannelAPI>('getChannel', 1)
 	async updateChannel(channel: UserIdResolvable, data: ChannelUpdateData) {
 		const channelId = UserTools.getUserId(channel);
@@ -43,6 +78,11 @@ export default class ChannelAPI extends BaseAPI {
 		});
 	}
 
+	/**
+	 * Retrieves the list of users that have editor rights to the given channel.
+	 *
+	 * @param channel The channel you want to retrieve the list of editors for.
+	 */
 	@Cached(3600)
 	async getChannelEditors(channel: UserIdResolvable): Promise<User[]> {
 		const channelId = UserTools.getUserId(channel);
@@ -53,6 +93,15 @@ export default class ChannelAPI extends BaseAPI {
 		return data.users.map((userData: UserData) => new User(userData, this._client));
 	}
 
+	/**
+	 * Retrieves the list of followers of the given channel.
+	 *
+	 * @param channel The channel you want to retrieve the list of followers of.
+	 * @param page The result page you want to retrieve.
+	 * @param limit The number of results you want to retrieve.
+	 * @param orderDirection The direction the results should be ordered in.
+	 * `'asc'` means that the oldest follows show up first, `'desc'` means that the newest follows show up first.
+	 */
 	@Cached(30)
 	async getChannelFollowers(
 		channel: UserIdResolvable,
@@ -79,6 +128,15 @@ export default class ChannelAPI extends BaseAPI {
 		return data.follows.map((follow: ChannelFollowData) => new ChannelFollow(follow, this._client));
 	}
 
+	/**
+	 * Retrieves the list of subscribers of the given channel.
+	 *
+	 * @param channel The channel you want to retrieve the list of subscribers of.
+	 * @param page The result page you want to retrieve.
+	 * @param limit The number of results you want to retrieve.
+	 * @param orderDirection The direction the results should be ordered in.
+	 * `'asc'` means that the oldest subscriptions show up first, `'desc'` means that the newest subscriptions show up first.
+	 */
 	@Cached(30)
 	async getChannelSubscriptions(
 		channel: UserIdResolvable,
@@ -114,6 +172,17 @@ export default class ChannelAPI extends BaseAPI {
 		}
 	}
 
+	/**
+	 * Retrieves the subscription data for a specified user to a specified channel.
+	 *
+	 * Throws if the channel doesn't have a subscription program or the user is not subscribed to it.
+	 *
+	 * This method requires access to the channel. If you only have access to the user,
+	 * use {@UserAPI#getSubscriptionData} instead.
+	 *
+	 * @param channel The channel to check the subscription to.
+	 * @param byUser The user to check the subscription for.
+	 */
 	@Cached(3600)
 	async getChannelSubscriptionByUser(channel: UserIdResolvable, byUser: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
@@ -140,9 +209,15 @@ export default class ChannelAPI extends BaseAPI {
 		}
 	}
 
+	/**
+	 * Starts a commercial in the channel.
+	 *
+	 * @param channel The channel to start the commercial in.
+	 * @param length The length of the commercial.
+	 */
 	async startChannelCommercial(channel: UserIdResolvable, length: CommercialLength) {
 		const channelId = UserTools.getUserId(channel);
-		return this._client.apiCall({
+		return this._client.apiCall<void>({
 			url: `channels/${channelId}/commercial`,
 			method: 'POST',
 			jsonBody: { length },
@@ -150,10 +225,15 @@ export default class ChannelAPI extends BaseAPI {
 		});
 	}
 
+	/**
+	 * Resets the channel's stream key.
+	 *
+	 * @param channel The channel to reset the stream key for.
+	 */
 	@ClearsCache<ChannelAPI>('getMyChannel')
 	async resetChannelStreamKey(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
-		return this._client.apiCall({
+		return this._client.apiCall<void>({
 			url: `channels/${channelId}/stream_key`,
 			method: 'DELETE',
 			scope: 'channel_stream'

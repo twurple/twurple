@@ -4,8 +4,25 @@ import CheermoteList, { CheermoteListData } from './CheermoteList';
 import BaseAPI from '../BaseAPI';
 import { UniformObject } from '../../Toolkit/ObjectTools';
 
+/**
+ * The API methods that deal with Bits/Cheermotes.
+ *
+ * Can be accessed using `client.bits` on a {@TwitchClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const client = new TwitchClient(options);
+ * const cheermotes = await client.bits.getCheermotes();
+ * ```
+ */
 @Cacheable
 export default class BitsAPI extends BaseAPI {
+	/**
+	 * Retrieves global and channel cheermotes.
+	 *
+	 * @param channel The channel you want to retrieve the available cheermotes for.
+	 * If not given, this method retrieves a list of globally available cheermotes.
+	 */
 	@Cached(3600)
 	async getCheermotes(channel?: UserIdResolvable) {
 		const query: UniformObject<string> = {};

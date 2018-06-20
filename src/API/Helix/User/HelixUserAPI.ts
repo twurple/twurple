@@ -18,7 +18,7 @@ export interface HelixUserUpdate {
 }
 
 export default class HelixUserAPI extends BaseAPI {
-	private async getUsers(lookupType: UserLookupType, param: string | string[]) {
+	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
 		const query: UniformObject<string | string[] | undefined> = { [lookupType]: param };
 		const result = await this._client.apiCall<HelixResponse<HelixUserData[]>>({
 			type: TwitchApiCallType.Helix,
@@ -30,15 +30,15 @@ export default class HelixUserAPI extends BaseAPI {
 	}
 
 	async getUsersByIds(users: UserIdResolvable[]) {
-		return this.getUsers(UserLookupType.Id, users.map(id => UserTools.getUserId(id)));
+		return this._getUsers(UserLookupType.Id, users.map(id => UserTools.getUserId(id)));
 	}
 
 	async getUsersByNames(users: UserNameResolvable[]) {
-		return this.getUsers(UserLookupType.Login, users.map(name => UserTools.getUserName(name)));
+		return this._getUsers(UserLookupType.Login, users.map(name => UserTools.getUserName(name)));
 	}
 
 	async getUserById(user: UserIdResolvable) {
-		const users = await this.getUsers(UserLookupType.Id, UserTools.getUserId(user));
+		const users = await this._getUsers(UserLookupType.Id, UserTools.getUserId(user));
 		if (!users.length) {
 			throw new Error('user not found');
 		}
@@ -46,7 +46,7 @@ export default class HelixUserAPI extends BaseAPI {
 	}
 
 	async getUserByName(user: UserNameResolvable) {
-		const users = await this.getUsers(UserLookupType.Login, UserTools.getUserName(user));
+		const users = await this._getUsers(UserLookupType.Login, UserTools.getUserName(user));
 		if (!users.length) {
 			throw new Error('user not found');
 		}
