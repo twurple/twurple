@@ -65,7 +65,9 @@ export default class HelixUser {
 	async getFollows(paginationParams: HelixPagination) {
 		const params: HelixFollowFilter = paginationParams;
 		params.user = this;
-		return this._client.helix.users.getFollows(params);
+		const result = await this._client.helix.users.getFollows(params);
+
+		return result.data;
 	}
 
 	async getFollowTo(channel: UserIdResolvable): Promise<HelixFollow> {
@@ -76,11 +78,11 @@ export default class HelixUser {
 
 		const result = await this._client.helix.users.getFollows(params);
 
-		if (!result.length) {
+		if (!result.data.length) {
 			throw new NotFollowing(this.id, UserTools.getUserId(channel));
 		}
 
-		return result[0];
+		return result.data[0];
 	}
 
 	async follows(channel: UserIdResolvable): Promise<boolean> {

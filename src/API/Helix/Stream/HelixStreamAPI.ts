@@ -4,8 +4,9 @@ import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
 import { UniformObject } from '../../../Toolkit/ObjectTools';
 import HelixPagination from '../HelixPagination';
 import { TwitchApiCallType } from '../../../TwitchClient';
+import HelixPaginatedResult from '../HelixPaginatedResult';
 
-export interface StreamFilter extends HelixPagination {
+export interface HelixStreamFilter extends HelixPagination {
 	community?: string | string[];
 	game?: string | string[];
 	language?: string | string[];
@@ -15,7 +16,7 @@ export interface StreamFilter extends HelixPagination {
 }
 
 export default class HelixStreamAPI extends BaseAPI {
-	async getStreams(filter?: StreamFilter): Promise<HelixStream[]> {
+	async getStreams(filter?: HelixStreamFilter): Promise<HelixPaginatedResult<HelixStream[]>> {
 		let query: UniformObject<string | string[] | undefined> = {};
 		if (filter) {
 			query = {
@@ -36,18 +37,21 @@ export default class HelixStreamAPI extends BaseAPI {
 			query
 		});
 
-		return result.data.map(streamData => new HelixStream(streamData, this._client));
+		return {
+			data: result.data.map(streamData => new HelixStream(streamData, this._client)),
+			cursor: result.pagination.cursor
+		};
 	}
 
 	async getStreamByUserName(userName: string) {
 		const streams = await this.getStreams({ userName });
 
-		return streams.length ? streams[0] : null;
+		return streams.data.length ? streams.data[0] : null;
 	}
 
 	async getStreamByUserId(user: string) {
 		const streams = await this.getStreams({ user });
 
-		return streams.length ? streams[0] : null;
+		return streams.data.length ? streams.data[0] : null;
 	}
 }

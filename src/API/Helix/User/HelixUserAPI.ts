@@ -6,6 +6,7 @@ import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedU
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { TwitchApiCallType } from '../../../TwitchClient';
+import HelixPaginatedResult from '../HelixPaginatedResult';
 
 /** @private */
 export enum UserLookupType {
@@ -80,7 +81,7 @@ export default class HelixUserAPI extends BaseAPI {
 		return new HelixPrivilegedUser(result.data[0], this._client);
 	}
 
-	async getFollows(filter: HelixFollowFilter) {
+	async getFollows(filter: HelixFollowFilter): Promise<HelixPaginatedResult<HelixFollow[]>> {
 		const query: UniformObject<string | undefined> = {
 			after: filter.after,
 			before: filter.before,
@@ -106,6 +107,9 @@ export default class HelixUserAPI extends BaseAPI {
 			query
 		});
 
-		return result.data.map(follow => new HelixFollow(follow, this._client));
+		return {
+			data: result.data.map(follow => new HelixFollow(follow, this._client)),
+			cursor: result.pagination.cursor
+		};
 	}
 }
