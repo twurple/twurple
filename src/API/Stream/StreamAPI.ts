@@ -17,27 +17,28 @@ export default class StreamAPI extends BaseAPI {
 	async getStreams(
 		channels?: string | string[], game?: string, languageCode?: string,
 		type?: StreamType,
-		page?: number, limit?: number
+		page?: number, limit: number = 25
 	): Promise<Stream[]> {
-		const query: UniformObject<string> = {};
+		const query: UniformObject<string> = { limit: limit.toString() };
 
 		if (channels) {
 			query.channel = typeof channels === 'string' ? channels : channels.join(',');
 		}
+
 		if (game) {
 			query.game = game;
 		}
+
 		if (languageCode) {
 			query.broadcaster_language = languageCode;
 		}
+
 		if (type) {
 			query.stream_type = type;
 		}
+
 		if (page) {
-			query.offset = ((page - 1) * (limit || 25)).toString();
-		}
-		if (limit) {
-			query.limit = limit.toString();
+			query.offset = ((page - 1) * limit).toString();
 		}
 
 		const data = await this._client.apiCall({ url: 'streams', query });
@@ -54,17 +55,15 @@ export default class StreamAPI extends BaseAPI {
 	}
 
 	@Cached(60)
-	async getFollowedStreams(type?: StreamType, page?: number, limit?: number) {
-		const query: UniformObject<string> = {};
+	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25) {
+		const query: UniformObject<string> = { limit: limit.toString() };
 
 		if (type) {
 			query.type = type;
 		}
+
 		if (page) {
-			query.offset = ((page - 1) * (limit || 25)).toString();
-		}
-		if (limit) {
-			query.limit = limit.toString();
+			query.offset = ((page - 1) * limit).toString();
 		}
 
 		const data = await this._client.apiCall({ url: 'streams/followed', query, scope: 'user_read' });
