@@ -26,7 +26,7 @@ export enum CheermoteBackground {
 }
 
 /**
- * Specifies the state of a cheermote, i.e. whether it's animated or not.
+ * The state of a cheermote, i.e. whether it's animated or not.
  */
 export enum CheermoteState {
 	/**

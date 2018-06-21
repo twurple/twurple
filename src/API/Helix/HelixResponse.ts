@@ -1,3 +1,4 @@
+/** @private */
 interface HelixResponse<T> {
 	data: T;
 	pagination: {

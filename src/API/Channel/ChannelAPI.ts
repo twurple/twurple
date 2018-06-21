@@ -6,7 +6,7 @@ import ChannelSubscription, { ChannelSubscriptionData } from './ChannelSubscript
 import { StatusCodeError } from 'request-promise-native/errors';
 import NotSubscribed from '../NotSubscribed';
 import NoSubscriptionProgram from '../NoSubscriptionProgram';
-import PrivilegedChannel from './PrivilegedChannel';
+import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
 import User, { UserData } from '../User/User';
 import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
 import { UniformObject } from '../../Toolkit/ObjectTools';
@@ -41,6 +41,17 @@ export interface ChannelUpdateData {
  */
 export type CommercialLength = 30 | 60 | 90 | 120 | 150 | 180;
 
+/**
+ * The API methods that deal with channels.
+ *
+ * Can be accessed using `client.channels` on a {@TwitchClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const client = new TwitchClient(options);
+ * const channel = await client.channels.getMyChannel();
+ * ```
+ */
 @Cacheable
 export default class ChannelAPI extends BaseAPI {
 	/**
@@ -52,7 +63,7 @@ export default class ChannelAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the channel for a specified user.
+	 * Retrieves the channel for a given user.
 	 *
 	 * @param user The user you want to retrieve the channel for.
 	 */
@@ -173,7 +184,7 @@ export default class ChannelAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the subscription data for a specified user to a specified channel.
+	 * Retrieves the subscription data for a given user to a given channel.
 	 *
 	 * Throws if the channel doesn't have a subscription program or the user is not subscribed to it.
 	 *
@@ -210,7 +221,7 @@ export default class ChannelAPI extends BaseAPI {
 	}
 
 	/**
-	 * Starts a commercial in the channel.
+	 * Starts a commercial in the given channel.
 	 *
 	 * @param channel The channel to start the commercial in.
 	 * @param length The length of the commercial.
@@ -226,14 +237,14 @@ export default class ChannelAPI extends BaseAPI {
 	}
 
 	/**
-	 * Resets the channel's stream key.
+	 * Resets the given channel's stream key.
 	 *
 	 * @param channel The channel to reset the stream key for.
 	 */
 	@ClearsCache<ChannelAPI>('getMyChannel')
 	async resetChannelStreamKey(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
-		return this._client.apiCall<void>({
+		return this._client.apiCall<PrivilegedChannelData>({
 			url: `channels/${channelId}/stream_key`,
 			method: 'DELETE',
 			scope: 'channel_stream'

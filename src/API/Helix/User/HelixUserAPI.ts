@@ -14,10 +14,24 @@ export enum UserLookupType {
 	Login = 'login'
 }
 
+/**
+ * User data to update using {@HelixUserAPI#updateUser}.
+ */
 export interface HelixUserUpdate {
 	description?: string;
 }
 
+/**
+ * The Helix API methods that deal with users.
+ *
+ * Can be accessed using `client.helix.users` on a {@TwitchClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const client = new TwitchClient(options);
+ * const user = await client.helix.users.getUserById('125328655');
+ * ```
+ */
 export default class HelixUserAPI extends BaseAPI {
 	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
 		const query: UniformObject<string | string[] | undefined> = { [lookupType]: param };
@@ -30,30 +44,55 @@ export default class HelixUserAPI extends BaseAPI {
 		return result.data.map(userData => new HelixUser(userData, this._client));
 	}
 
-	async getUsersByIds(users: UserIdResolvable[]) {
-		return this._getUsers(UserLookupType.Id, users.map(id => UserTools.getUserId(id)));
+	/**
+	 * Retrieves the user data for a list of user IDs.
+	 *
+	 * @param userIds The user IDs you want to look up.
+	 */
+	async getUsersByIds(userIds: UserIdResolvable[]) {
+		return this._getUsers(UserLookupType.Id, userIds.map(id => UserTools.getUserId(id)));
 	}
 
-	async getUsersByNames(users: UserNameResolvable[]) {
-		return this._getUsers(UserLookupType.Login, users.map(name => UserTools.getUserName(name)));
+	/**
+	 * Retrieves the user data for a list of user names.
+	 *
+	 * @param userNames The user names you want to look up.
+	 */
+	async getUsersByNames(userNames: UserNameResolvable[]) {
+		return this._getUsers(UserLookupType.Login, userNames.map(name => UserTools.getUserName(name)));
 	}
 
-	async getUserById(user: UserIdResolvable) {
-		const users = await this._getUsers(UserLookupType.Id, UserTools.getUserId(user));
+	/**
+	 * Retrieves the user data for a given user ID.
+	 *
+	 * @param userId The user ID you want to look up.
+	 */
+	async getUserById(userId: UserIdResolvable) {
+		const users = await this._getUsers(UserLookupType.Id, UserTools.getUserId(userId));
 		if (!users.length) {
 			throw new Error('user not found');
 		}
 		return users[0];
 	}
 
-	async getUserByName(user: UserNameResolvable) {
-		const users = await this._getUsers(UserLookupType.Login, UserTools.getUserName(user));
+	/**
+	 * Retrieves the user data for a given user name.
+	 *
+	 * @param userName The user name you want to look up.
+	 */
+	async getUserByName(userName: UserNameResolvable) {
+		const users = await this._getUsers(UserLookupType.Login, UserTools.getUserName(userName));
 		if (!users.length) {
 			throw new Error('user not found');
 		}
 		return users[0];
 	}
 
+	/**
+	 * Retrieves the user data of the currently authenticated user.
+	 *
+	 * @param withEmail Whether you need the user's email address.
+	 */
 	async getMe(withEmail: boolean = false) {
 		const result = await this._client.apiCall<HelixResponse<HelixPrivilegedUserData[]>>({
 			type: TwitchApiCallType.Helix,
@@ -68,6 +107,11 @@ export default class HelixUserAPI extends BaseAPI {
 		return new HelixPrivilegedUser(result.data[0], this._client);
 	}
 
+	/**
+	 * Updates the currently authenticated user's data.
+	 *
+	 * @param data The data to update.
+	 */
 	async updateUser(data: HelixUserUpdate) {
 		const result = await this._client.apiCall<HelixResponse<HelixPrivilegedUserData>>({
 			type: TwitchApiCallType.Helix,
@@ -81,6 +125,11 @@ export default class HelixUserAPI extends BaseAPI {
 		return new HelixPrivilegedUser(result.data[0], this._client);
 	}
 
+	/**
+	 * Retrieves a list of follow relations.
+	 *
+	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
+	 */
 	async getFollows(filter: HelixFollowFilter): Promise<HelixPaginatedResult<HelixFollow[]>> {
 		const query: UniformObject<string | undefined> = {
 			after: filter.after,
@@ -98,7 +147,7 @@ export default class HelixUserAPI extends BaseAPI {
 		}
 
 		if (!hasUserIdParam) {
-			throw new TypeError('Either from, to or both have to be set');
+			throw new TypeError('At least one of user and followedUser have to be set');
 		}
 
 		const result = await this._client.apiCall<HelixResponse<HelixFollowData[]>>({

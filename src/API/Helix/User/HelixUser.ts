@@ -6,17 +6,49 @@ import HelixFollow, { HelixFollowFilter } from './HelixFollow';
 import HelixPagination from '../HelixPagination';
 import TwitchClient from '../../../TwitchClient';
 
+/**
+ * The type of a broadcaster.
+ */
 export enum HelixBroadcasterType {
-	None = '',
+	/**
+	 * A Twitch Partner.
+	 */
+	Partner = 'partner',
+
+	/**
+	 * A Twitch Affiliate.
+	 */
 	Affiliate = 'affiliate',
-	Partner = 'partner'
+
+	/**
+	 * A user that's neither a partner nor an affiliate.
+	 */
+	None = ''
 }
 
+/**
+ * The type of a user.
+ */
 export enum HelixUserType {
-	None = '',
-	GlobalMod = 'global_mod',
+	/**
+	 * A Twitch staff member.
+	 */
+	Staff = 'staff',
+
+	/**
+	 * A Twitch administrator.
+	 */
 	Admin = 'admin',
-	Staff = 'staff'
+
+	/**
+	 * A global moderator.
+	 */
+	GlobalMod = 'global_mod',
+
+	/**
+	 * A user with no special permissions across Twitch.
+	 */
+	None = ''
 }
 
 /** @private */
@@ -32,6 +64,9 @@ export interface HelixUserData {
 	view_count: number;
 }
 
+/**
+ * A Twitch user/channel.
+ */
 export default class HelixUser {
 	/** @private */
 	@NonEnumerable protected readonly _client: TwitchClient;
@@ -46,22 +81,39 @@ export default class HelixUser {
 		return this._data.id;
 	}
 
+	/**
+	 * The ID of the user.
+	 */
 	get id() {
 		return this._data.id;
 	}
 
+	/**
+	 * The user name of the user.
+	 */
 	get name() {
 		return this._data.login;
 	}
 
+	/**
+	 * The display name of the user.
+	 */
 	get displayName() {
 		return this._data.display_name;
 	}
 
+	/**
+	 * The URL to the profile picture of the user.
+	 */
 	get profilePictureUrl() {
 		return this._data.profile_image_url;
 	}
 
+	/**
+	 * Retrieves a list of channels the user follows.
+	 *
+	 * @param paginationParams Parameters for pagination.
+	 */
 	async getFollows(paginationParams: HelixPagination) {
 		const params: HelixFollowFilter = paginationParams;
 		params.user = this;
@@ -70,6 +122,11 @@ export default class HelixUser {
 		return result.data;
 	}
 
+	/**
+	 * Retrieves the follow data for this user to a given channel.
+	 *
+	 * @param channel
+	 */
 	async getFollowTo(channel: UserIdResolvable): Promise<HelixFollow> {
 		const params = {
 			user: this.id,
@@ -85,6 +142,11 @@ export default class HelixUser {
 		return result.data[0];
 	}
 
+	/**
+	 * Checks whether the user is following a given channel.
+	 *
+	 * @param channel The channel to check for the user's follow.
+	 */
 	async follows(channel: UserIdResolvable): Promise<boolean> {
 		try {
 			await this.getFollowTo(channel);
@@ -98,11 +160,17 @@ export default class HelixUser {
 		}
 	}
 
+	/**
+	 * Follows the channel.
+	 */
 	async follow(): Promise<UserFollow> {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.followChannel(this);
 	}
 
+	/**
+	 * Unfollows the channel.
+	 */
 	async unfollow(): Promise<void> {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.unfollowChannel(this);

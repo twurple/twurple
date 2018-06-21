@@ -9,6 +9,9 @@ export interface ChannelFollowData {
 	user: UserData;
 }
 
+/**
+ * A relation of a user following a previously given channel.
+ */
 export default class ChannelFollow {
 	/** @private */
 	@NonEnumerable private readonly _client: TwitchClient;
@@ -18,6 +21,9 @@ export default class ChannelFollow {
 		this._client = client;
 	}
 
+	/**
+	 * The user following the given channel.
+	 */
 	get user() {
 		return new User(this._data.user, this._client);
 	}

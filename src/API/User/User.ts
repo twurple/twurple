@@ -41,7 +41,7 @@ export default class User {
 	}
 
 	/**
-	 * @deprecated use `name` instead
+	 * @deprecated Use `name` instead.
 	 */
 	get userName() {
 		return this._data.name;
