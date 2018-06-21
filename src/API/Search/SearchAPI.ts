@@ -7,14 +7,11 @@ import Stream, { StreamData } from '../Stream/Stream';
 @Cacheable
 export default class SearchAPI extends BaseAPI {
 	@Cached(300)
-	async searchChannels(term: string, page?: number, limit?: number): Promise<Channel[]> {
-		const query: UniformObject<string> = { query: term };
+	async searchChannels(term: string, page?: number, limit: number = 25): Promise<Channel[]> {
+		const query: UniformObject<string> = { query: term, limit: limit.toString() };
 
 		if (page) {
-			query.offset = ((page - 1) * (limit || 10)).toString();
-		}
-		if (limit) {
-			query.limit = limit.toString();
+			query.offset = ((page - 1) * limit).toString();
 		}
 
 		const data = await this._client.apiCall({ url: 'search/channels', query });
@@ -23,15 +20,13 @@ export default class SearchAPI extends BaseAPI {
 	}
 
 	@Cached(300)
-	async searchStreams(term: string, page?: number, limit?: number, hls?: boolean): Promise<Stream[]> {
-		const query: UniformObject<string> = { query: term };
+	async searchStreams(term: string, page?: number, limit: number = 25, hls?: boolean): Promise<Stream[]> {
+		const query: UniformObject<string> = { query: term, limit: limit.toString() };
 
 		if (page) {
-			query.offset = ((page - 1) * (limit || 10)).toString();
+			query.offset = ((page - 1) * limit).toString();
 		}
-		if (limit) {
-			query.limit = limit.toString();
-		}
+
 		if (hls !== undefined) {
 			query.hls = hls.toString();
 		}

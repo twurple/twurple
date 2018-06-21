@@ -56,18 +56,16 @@ export default class ChannelAPI extends BaseAPI {
 	@Cached(30)
 	async getChannelFollowers(
 		channel: UserIdResolvable,
-		page?: number, limit?: number,
+		page?: number, limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
 	): Promise<ChannelFollow[]> {
 		const channelId = UserTools.getUserId(channel);
 
-		const query: UniformObject<string> = {};
+		const query: UniformObject<string> = { limit: limit.toString() };
 		if (page) {
-			query.offset = ((page - 1) * (limit || 25)).toString();
+			query.offset = ((page - 1) * limit).toString();
 		}
-		if (limit) {
-			query.limit = limit.toString();
-		}
+
 		if (orderDirection) {
 			query.direction = orderDirection;
 		}
@@ -82,18 +80,17 @@ export default class ChannelAPI extends BaseAPI {
 	@Cached(30)
 	async getChannelSubscriptions(
 		channel: UserIdResolvable,
-		page?: number, limit?: number,
+		page?: number, limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
 	): Promise<ChannelSubscription[]> {
 		const channelId = UserTools.getUserId(channel);
 
-		const query: UniformObject<string> = {};
+		const query: UniformObject<string> = { limit: limit.toString() };
+
 		if (page) {
-			query.offset = ((page - 1) * (limit || 25)).toString();
+			query.offset = ((page - 1) * limit).toString();
 		}
-		if (limit) {
-			query.limit = limit.toString();
-		}
+
 		if (orderDirection) {
 			query.direction = orderDirection;
 		}
@@ -104,6 +101,7 @@ export default class ChannelAPI extends BaseAPI {
 				query,
 				scope: 'channel_subscriptions'
 			});
+
 			return data.subscriptions.map((sub: ChannelSubscriptionData) => new ChannelSubscription(sub, this._client));
 		} catch (e) {
 			if (e instanceof StatusCodeError && e.statusCode === 422) {

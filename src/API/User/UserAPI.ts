@@ -112,26 +112,30 @@ export default class UserAPI extends BaseAPI {
 	@Cached(300)
 	async getFollowedChannels(
 		user: UserIdResolvable,
-		page?: number, limit?: number,
+		page?: number, limit: number = 25,
 		orderBy?: string, orderDirection?: 'asc' | 'desc'
 	): Promise<UserFollow[]> {
 		const userId = UserTools.getUserId(user);
 		const query: UniformObject<string> = {};
+
 		if (page) {
-			query.offset = ((page - 1) * (limit || 25)).toString();
+			query.offset = ((page - 1) * limit).toString();
 		}
-		if (limit) {
-			query.limit = limit.toString();
-		}
+
+		query.limit = limit.toString();
+
 		if (orderBy) {
 			query.sortby = orderBy;
 		}
+
 		if (orderDirection) {
 			query.direction = orderDirection;
 		}
+
 		const data = await this._client.apiCall({
 			url: `users/${userId}/follows/channels`, query
 		});
+
 		return data.follows.map((follow: UserFollowData) => new UserFollow(follow, this._client));
 	}
 
@@ -180,18 +184,18 @@ export default class UserAPI extends BaseAPI {
 	}
 
 	@Cached(3600)
-	async getBlockedUsers(user: UserIdResolvable, page?: number, limit?: number): Promise<UserBlock[]> {
+	async getBlockedUsers(user: UserIdResolvable, page?: number, limit: number = 25): Promise<UserBlock[]> {
 		const userId = UserTools.getUserId(user);
-		const query: UniformObject<string> = {};
+		const query: UniformObject<string> = { limit: limit.toString() };
+
 		if (page) {
-			query.offset = ((page - 1) * (limit || 25)).toString();
+			query.offset = ((page - 1) * limit).toString();
 		}
-		if (limit) {
-			query.limit = limit.toString();
-		}
+
 		const data = await this._client.apiCall({
 			url: `users/${userId}/blocks`, query, scope: 'user_blocks_read'
 		});
+
 		return data.blocks.map((block: UserBlockData) => new UserBlock(block, this._client));
 	}
 
