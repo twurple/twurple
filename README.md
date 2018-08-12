@@ -8,6 +8,12 @@ Public APIs may break with any release that increases y in version 0.y.z until t
 To add Twitch.js to your project, just execute:
 	
 	yarn add twitch
+
+## Reference
+
+There is a reference of all classes in the library here: https://d-fischer.github.io/twitch
+
+The documentation below will eventuall move to this location too and cover more use cases.
 	
 ## Basic usage
 
