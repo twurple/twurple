@@ -2,7 +2,7 @@
 declare interface ObjectCtor extends ObjectConstructor {
 	assign<T>(target: {}, ...source: Array<Partial<T>>): T;
 
-	entries<T, Obj>(o: Obj): Array<[keyof Obj, T]>;
+	entries<T, Obj>(o: Obj): Array<[Extract<keyof Obj, string>, T]>;
 }
 
 /** @private */
@@ -33,22 +33,21 @@ export default class ObjectTools {
 		return Object.assign<ObjMap<Obj, O>>({}, ...arr.map(fn));
 	}
 
-	static indexBy<T>(arr: T[], key: keyof T): UniformObject<T>;
+	static indexBy<T>(arr: T[], key: Extract<keyof T, string>): UniformObject<T>;
 	static indexBy<T>(arr: T[], keyFn: KeyMapper<T>): UniformObject<T>;
-	// tslint:disable-next-line:no-any
-	static indexBy<T>(arr: T[], keyFn: any): UniformObject<T> {
+	static indexBy<T>(arr: T[], keyFn: Extract<keyof T, string> | KeyMapper<T>): UniformObject<T> {
 		if (typeof keyFn !== 'function') {
 			const key = keyFn;
-			keyFn = (value: T) => value[key].toString();
+			keyFn = ((value: T) => value[key].toString()) as KeyMapper<T>;
 		}
-		return this.fromArray(arr, val => ({ [keyFn(val)]: val }));
+		return this.fromArray<T, T, UniformObject<T>>(arr, val => ({ [(keyFn as KeyMapper<T>)(val)]: val }));
 	}
 
 	static forEach<T, Obj>(obj: Obj, fn: (value: T, key: keyof Obj) => void): void {
-		Object.entries(obj).forEach(([key, value]: [keyof Obj, T]) => fn(value, key));
+		Object.entries(obj).forEach(([key, value]: [Extract<keyof Obj, string>, T]) => fn(value, key));
 	}
 
 	static entriesToObject<T>(obj: Array<[string, T]>): UniformObject<T> {
-		return this.fromArray(obj, ([key, val]) => ({ [key]: val }));
+		return this.fromArray<[string, T], T, UniformObject<T>>(obj, ([key, val]) => ({ [key]: val }));
 	}
 }
