@@ -483,8 +483,8 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.1.0.tgz#7ed1b1410c6a0e0f78cf95d3b8440c63f78b8614"
 
 ircv3@^0.8.5:
-  version "0.8.8"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.8.tgz#af932b4032ac5f621435a4818bbacc6378710d30"
+  version "0.8.9"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.9.tgz#cd3809e98c9b406eb74516ff252adb701646c98c"
   dependencies:
     escape-string-regexp "^1.0.5"
     randomstring "^1.1.5"
@@ -720,10 +720,6 @@ safe-buffer@^5.0.1, safe-buffer@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
-safe-buffer@~5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
-
 safe-buffer@~5.1.0:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
@@ -919,10 +915,10 @@ ultron@~1.1.0:
   resolved "https://registry.yarnpkg.com/ultron/-/ultron-1.1.1.tgz#9fe1536a10a664a65266a1e3ccf85fd36302bc9c"
 
 universal-websocket-client@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/universal-websocket-client/-/universal-websocket-client-1.0.1.tgz#ad7c00e22cea16a2a83d6ab5e67ada2928dbe96f"
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/universal-websocket-client/-/universal-websocket-client-1.0.2.tgz#9942307a9d418bb5defd33594048c7e367448b44"
   dependencies:
-    ws "^2.2.0"
+    ws "^3.3.3"
 
 universalify@^0.1.0:
   version "0.1.1"
@@ -962,14 +958,7 @@ wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
 
-ws@^2.2.0:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-2.3.1.tgz#6b94b3e447cb6a363f785eaf94af6359e8e81c80"
-  dependencies:
-    safe-buffer "~5.0.1"
-    ultron "~1.1.0"
-
-ws@^3.1.0:
+ws@^3.1.0, ws@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/ws/-/ws-3.3.3.tgz#f1cf84fe2d5e901ebce94efaece785f187a228f2"
   dependencies:
