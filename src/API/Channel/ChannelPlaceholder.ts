@@ -81,7 +81,7 @@ export default class ChannelPlaceholder {
 	}
 
 	/**
-	 * Retrieves the subscription data for a given user to the channel.
+	 * Retrieves the subscription data for the given user to the channel.
 	 *
 	 * Throws if the channel doesn't have a subscription program or the user is not subscribed to it.
 	 *

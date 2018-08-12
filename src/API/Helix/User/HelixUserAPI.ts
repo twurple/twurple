@@ -45,7 +45,7 @@ export default class HelixUserAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the user data for a list of user IDs.
+	 * Retrieves the user data for the given list of user IDs.
 	 *
 	 * @param userIds The user IDs you want to look up.
 	 */
@@ -54,7 +54,7 @@ export default class HelixUserAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the user data for a list of user names.
+	 * Retrieves the user data for the given list of user names.
 	 *
 	 * @param userNames The user names you want to look up.
 	 */
@@ -63,7 +63,7 @@ export default class HelixUserAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the user data for a given user ID.
+	 * Retrieves the user data for the given user ID.
 	 *
 	 * @param userId The user ID you want to look up.
 	 */
@@ -76,7 +76,7 @@ export default class HelixUserAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the user data for a given user name.
+	 * Retrieves the user data for the given user name.
 	 *
 	 * @param userName The user name you want to look up.
 	 */

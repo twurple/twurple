@@ -25,13 +25,34 @@ export interface StreamData {
 	channel: ChannelData;
 }
 
+/**
+ * The type of a stream.
+ */
 export enum StreamType {
+	/**
+	 * A live stream.
+	 */
 	Live = 'live',
+
+	/**
+	 * An upload to the channel (VoD) that is streamed live for the first time.
+	 */
 	Premiere = 'premiere',
+
+	/**
+	 * A rerun of a past live stream.
+	 */
 	ReRun = 'rerun',
-	All = 'all' // for filtering
+
+	/**
+	 * All types of streams. Used for filtering.
+	 */
+	All = 'all'
 }
 
+/**
+ * A Twitch stream.
+ */
 export default class Stream {
 	@NonEnumerable private readonly _client: TwitchClient;
 
@@ -40,22 +61,37 @@ export default class Stream {
 		this._client = client;
 	}
 
+	/**
+	 * The channel where the stream is shown.
+	 */
 	get channel() {
 		return new Channel(this._data.channel, this._client);
 	}
 
+	/**
+	 * The game played on the stream.
+	 */
 	get game() {
 		return this._data.game;
 	}
 
+	/**
+	 * The current number of concurrent viewers.
+	 */
 	get viewers() {
 		return this._data.viewers;
 	}
 
+	/**
+	 * The time when the stream started.
+	 */
 	get startDate() {
 		return new Date(this._data.created_at);
 	}
 
+	/**
+	 * The type of the stream.
+	 */
 	get type() {
 		return this._data.stream_type;
 	}

@@ -43,29 +43,48 @@ export interface PubSubWhisperMessageData {
 	data_object: PubSubWhisperMessageContent;
 }
 
+/**
+ * A message informing about a whisper being received from another user.
+ */
 export default class PubSubWhisperMessage {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
+	/** @private */
 	constructor(private readonly _data: PubSubWhisperMessageData, twitchClient: TwitchClient) {
 		this._twitchClient = twitchClient;
 	}
 
+	/**
+	 * The message text.
+	 */
 	get text() {
 		return this._data.data_object.body;
 	}
 
+	/**
+	 * The ID of the user who sent the whisper.
+	 */
 	get senderId() {
 		return this._data.data_object.from_id.toString();
 	}
 
+	/**
+	 * The name of the user who sent the whisper.
+	 */
 	get senderName() {
 		return this._data.data_object.tags.login;
 	}
 
+	/**
+	 * The display name of the user who sent the whisper.
+	 */
 	get senderDisplayName() {
 		return this._data.data_object.tags.display_name;
 	}
 
+	/**
+	 * Retrieves more data about the user who sent the whisper.
+	 */
 	async getSender(): Promise<HelixUser> {
 		return this._twitchClient.helix.users.getUserById(this._data.data_object.from_id.toString());
 	}

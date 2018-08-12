@@ -9,7 +9,7 @@ export interface PrivilegedChannelData extends ChannelData {
 }
 
 /**
- * A channel you have extended privileges for, i.e. your own channel.
+ * A channel you have extended privileges for, i.e. the channel of the currently authenticated user.
  */
 export default class PrivilegedChannel extends Channel {
 	/** @private */

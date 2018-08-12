@@ -3,11 +3,13 @@ import ChatUser from '../../../ChatUser';
 import ChatClient from '../../../ChatClient';
 import ChatTools from '../../../../Toolkit/ChatTools';
 
+/** @private */
 export interface UserNoticeParams {
 	channel: MessageParam;
 	message: MessageParam;
 }
 
+/** @private */
 export default class UserNotice extends Message<UserNoticeParams> {
 	public static readonly COMMAND = 'USERNOTICE';
 	public static readonly PARAM_SPEC: MessageParamSpec<UserNoticeParams> = {

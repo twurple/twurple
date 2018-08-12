@@ -4,6 +4,9 @@ import { EventEmitter, Listener } from 'ircv3/lib/TypedEventEmitter';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 
+/**
+ * A client for the Twitch PubSub interface.
+ */
 export default class PubSubClient extends EventEmitter {
 	private _socket?: WebSocket;
 
@@ -19,14 +22,30 @@ export default class PubSubClient extends EventEmitter {
 
 	private readonly _onPong: (handler: () => void) => Listener = this.registerEvent();
 	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a message that matches your listening topics is received.
+	 *
+	 * @eventListener
+	 * @param topic The name of the topic.
+	 * @param message The message data.
+	 */
 	readonly onMessage: (handler: (topic: string, message: PubSubMessageData) => void) => Listener = this.registerEvent();
 
+	/**
+	 * Creates a new PubSub client.
+	 */
 	constructor(private readonly _debugLevel: number = 0) {
 		super();
 	}
 
-	async listen(topics: string | string[], authToken?: string) {
+	/**
+	 * Listens to one or more topics.
+	 *
+	 * @param topics A topic or a list of topics to listen to.
+	 * @param accessToken An access token. Only necessary for some topics.
+	 */
+	async listen(topics: string | string[], accessToken?: string) {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
@@ -35,11 +54,16 @@ export default class PubSubClient extends EventEmitter {
 			type: 'LISTEN',
 			data: {
 				topics,
-				auth_token: authToken
+				auth_token: accessToken
 			}
 		});
 	}
 
+	/**
+	 * Removes one or more topics from the listener.
+	 *
+	 * @param topics A topic or a list of topics to not listen to anymore.
+	 */
 	async unlisten(topics: string | string[]) {
 		if (typeof topics === 'string') {
 			topics = [topics];
@@ -73,6 +97,9 @@ export default class PubSubClient extends EventEmitter {
 		});
 	}
 
+	/**
+	 * Connects to the PubSub interface.
+	 */
 	async connect() {
 		return new Promise<void>((resolve, reject) => {
 			if (this._connected) {
@@ -156,7 +183,7 @@ export default class PubSubClient extends EventEmitter {
 		}
 	}
 
-	protected _sendPacket(data: PubSubOutgoingPacket) {
+	private _sendPacket(data: PubSubOutgoingPacket) {
 		if (this._debugLevel >= 1) {
 			// tslint:disable-next-line:no-console
 			console.log('<', data);
@@ -196,10 +223,16 @@ export default class PubSubClient extends EventEmitter {
 		await this.connect();
 	}
 
+	/**
+	 * Checks whether the client is currently connecting to the server.
+	 */
 	protected get isConnecting() {
 		return this._connecting;
 	}
 
+	/**
+	 * Checks whether the client is currently connected to the server.
+	 */
 	protected get isConnected() {
 		return this._connected;
 	}

@@ -8,7 +8,7 @@ import TwitchTagsCapability from './Capabilities/TwitchTags/';
 import TwitchCommandsCapability from './Capabilities/TwitchCommands/';
 import TwitchMembershipCapability from './Capabilities/TwitchMembership';
 
-import { Notice, ChannelJoin, ChannelPart } from 'ircv3/lib/Message/MessageTypes/Commands/';
+import { ChannelJoin, ChannelPart, Notice } from 'ircv3/lib/Message/MessageTypes/Commands/';
 import ClearChat from './Capabilities/TwitchCommands/MessageTypes/ClearChat';
 import HostTarget from './Capabilities/TwitchCommands/MessageTypes/HostTarget';
 import RoomState from './Capabilities/TwitchCommands/MessageTypes/RoomState';
@@ -18,6 +18,12 @@ import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchPrivateMessage from './StandardCommands/PrivateMessage';
 import TwitchClient from '../TwitchClient';
 
+/**
+ * An interface to Twitch chat.
+ *
+ * @inheritDoc
+ * @hideProtected
+ */
 export default class ChatClient extends IRCClient {
 	private static readonly HOST_MESSAGE_REGEX =
 		/(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
@@ -25,53 +31,206 @@ export default class ChatClient extends IRCClient {
 	/** @private */
 	@NonEnumerable readonly _twitchClient: TwitchClient;
 
-	/** @eventListener */
+	/**
+	 * Fires when a user is timed out from a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel the user is timed out from.
+	 * @param user The timed out user.
+	 * @param reason The reason for the timeout.
+	 * @param duration The duration of the timeout, in seconds.
+	 */
 	onTimeout: (handler: (channel: string, user: string, reason: string, duration: number) => void)
 		=> Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a user is permanently banned from a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel the user is banned from.
+	 * @param user The banned user.
+	 * @param reason The reason for the ban.
+	 */
 	onBan: (handler: (channel: string, user: string, reason: string) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when the chat of a channel is cleared.
+	 *
+	 * @eventListener
+	 * @param channel The channel whose chat is cleared.
+	 */
 	onChatClear: (handler: (channel: string) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when emote-only mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where emote-only mode is being toggled.
+	 * @param enabled Whether emote-only mode is being enabled. If false, it's being disabled.
+	 */
 	onEmoteOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when followers-only mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where followers-only mode is being toggled.
+	 * @param enabled Whether followers-only mode is being enabled. If false, it's being disabled.
+	 * @param delay The time a user needs to follow the channel to be able to talk. Only available when `enabled === true`.
+	 */
 	onFollowersOnly: (handler: (channel: string, enabled: boolean, delay?: number) => void)
 		=> Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a channel hosts another channel.
+	 *
+	 * @eventListener
+	 * @param channel The hosting channel.
+	 * @param target The channel that is being hosted.
+	 * @param viewers The number of viewers in the hosting channel.
+	 *
+	 *   If you're not logged in as the owner of the channel, this is undefined.
+	 */
 	onHost: (handler: (channel: string, target: string, viewers?: number) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a channel you're logged in as its owner is being hosted by another channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel that is being hosted.
+	 * @param byChannel The hosting channel.
+	 * @param auto Whether the host was triggered automatically (by Twitch's auto-host functionality).
+	 * @param viewers The number of viewers in the hosting channel.
+	 */
 	onHosted: (handler: (channel: string, byChannel: string, auto: boolean, viewers?: number) => void)
 		=> Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when Twitch tells you the number of hosts you have remaining in the next half hour for the channel
+	 * for which you're logged in as owner after hosting a channel.
+	 *
+	 * @eventListener
+	 * @param channel The hosting channel.
+	 * @param numberOfHosts The number of hosts remaining in the next half hour.
+	 */
 	onHostsRemaining: (handler: (channel: string, numberOfHosts: number) => void)
 		=> Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a user joins a channel.
+	 *
+	 * The join/part events are cached by the Twitch chat server and will be batched and sent every 30-60 seconds.
+	 *
+	 * @eventListener
+	 * @param channel The channel that is being joined.
+	 * @param user The user that joined.
+	 */
 	onJoin: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a user leaves ("parts") a channel.
+	 *
+	 * The join/part events are cached by the Twitch chat server and will be batched and sent every 30-60 seconds.
+	 *
+	 * @eventListener
+	 * @param channel The channel that is being left.
+	 * @param user The user that left.
+	 */
 	onPart: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when R9K mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where R9K mode is being toggled.
+	 * @param enabled Whether R9K mode is being enabled. If false, it's being disabled.
+	 */
 	onR9k: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when host mode is disabled in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where host mode is being disabled.
+	 */
 	onUnhost: (handler: (channel: string) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when slow mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where slow mode is being toggled.
+	 * @param enabled Whether slow mode is being enabled. If false, it's being disabled.
+	 * @param delay The time a user has to wait between sending messages. Only set when enabling slow mode.
+	 */
 	onSlow: (handler: (channel: string, enabled: boolean, delay?: number) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when sub only mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where sub only mode is being toggled.
+	 * @param enabled Whether sub only mode is being enabled. If false, it's being disabled.
+	 */
 	onSubsOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a user subscribes to a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel that was subscribed to.
+	 * @param user The subscribing user.
+	 * @param subInfo Additional information about the subscription.
+	 * @param msg The raw message that was received.
+	 */
 	onSub: (handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a user resubscribes to a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel that was resubscribed to.
+	 * @param user The resubscribing user.
+	 * @param subInfo Additional information about the resubscription.
+	 * @param msg The raw message that was received.
+	 */
 	onResub: (handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when a user gifts a subscription to a channel to another user.
+	 *
+	 * @eventListener
+	 * @param channel The channel that was subscribed to.
+	 * @param user The user that the subscription was gifted to. The gifting user is defined in `subInfo.gifter`.
+	 * @param subInfo Additional information about the subscription.
+	 * @param msg The raw message that was received.
+	 */
 	onSubGift: (handler: (channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice) => void)
 		=> Listener = this.registerEvent();
-	/** @eventListener */
+
+	/**
+	 * Fires when receiving a whisper from another user.
+	 *
+	 * @eventListener
+	 * @param user The user that sent the whisper.
+	 * @param message The message text.
+	 * @param msg The raw message that was received.
+	 */
 	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
 
 	// override for specific class
-	/** @eventListener */
-	onPrivmsg: (handler: (target: string, user: string, message: string, msg: TwitchPrivateMessage) => void) => Listener;
+	/**
+	 * Fires when a user sends a message to a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel the message was sent to.
+	 * @param user The user that send the message.
+	 * @param message The message text.
+	 * @param msg The raw message  that was received.
+	 */
+	onPrivmsg: (handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void) => Listener;
 
 	// internal events to resolve promises and stuff
 	private readonly _onBanResult: (handler: (channel: string, user: string, error?: string) => void)
@@ -108,6 +267,15 @@ export default class ChatClient extends IRCClient {
 	private readonly _onSubsOnlyResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 	private readonly _onSubsOnlyOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 
+	/**
+	 * Creates a new Twitch chat client.
+	 *
+	 * @param username The user name to use to connect to Twitch chat.
+	 * @param token The access token to use to connect to Twitch chat.
+	 *
+	 * Do not prefix `oauth:`.
+	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
+	 */
 	constructor(username: string, token: string, twitchClient: TwitchClient) {
 		super({
 			connection: {
@@ -542,6 +710,12 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	/**
+	 * Hosts a channel on another channel.
+	 *
+	 * @param target The host target, i.e. the channel that is being hosted.
+	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
+	 */
 	async host(target: string, channel: string = this._nick) {
 		channel = UserTools.toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
@@ -559,6 +733,15 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	/**
+	 * Ends any host on a channel.
+	 *
+	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
+	 *
+	 * If you don't need this feedback, consider using {@ChatClient#unhostOutside} instead.
+	 *
+	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
+	 */
 	async unhost(channel: string = this._nick) {
 		channel = UserTools.toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
@@ -576,6 +759,15 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	/**
+	 * Ends any host on a channel.
+	 *
+	 * This works even when not in the channel that was hosted, but provides no feedback about success of the command.
+	 *
+	 * If you need feedback about success, use {@ChatClient#unhost} (but make sure you're in the channel you are hosting).
+	 *
+	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
+	 */
 	unhostOutside(channel: string = this._nick) {
 		this.sendMessage(TwitchPrivateMessage, { target: UserTools.toChannelName(channel), message: '/unhost' });
 	}

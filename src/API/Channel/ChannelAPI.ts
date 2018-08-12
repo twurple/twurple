@@ -63,7 +63,7 @@ export default class ChannelAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the channel for a given user.
+	 * Retrieves the channel for the given user.
 	 *
 	 * @param user The user you want to retrieve the channel for.
 	 */
@@ -110,8 +110,7 @@ export default class ChannelAPI extends BaseAPI {
 	 * @param channel The channel you want to retrieve the list of followers of.
 	 * @param page The result page you want to retrieve.
 	 * @param limit The number of results you want to retrieve.
-	 * @param orderDirection The direction the results should be ordered in.
-	 * `'asc'` means that the oldest follows show up first, `'desc'` means that the newest follows show up first.
+	 * @param orderDirection The direction to order in - ascending or descending.
 	 */
 	@Cached(30)
 	async getChannelFollowers(
@@ -143,8 +142,7 @@ export default class ChannelAPI extends BaseAPI {
 	 * @param channel The channel you want to retrieve the list of subscribers of.
 	 * @param page The result page you want to retrieve.
 	 * @param limit The number of results you want to retrieve.
-	 * @param orderDirection The direction the results should be ordered in.
-	 * `'asc'` means that the oldest subscriptions show up first, `'desc'` means that the newest subscriptions show up first.
+	 * @param orderDirection The direction to order in - ascending or descending.
 	 */
 	@Cached(30)
 	async getChannelSubscriptions(
@@ -182,7 +180,7 @@ export default class ChannelAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the subscription data for a given user to a given channel.
+	 * Retrieves the subscription data for the given user to a given channel.
 	 *
 	 * Throws if the channel doesn't have a subscription program or the user is not subscribed to it.
 	 *

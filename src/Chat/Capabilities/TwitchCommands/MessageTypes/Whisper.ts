@@ -3,11 +3,13 @@ import ChatUser from '../../../ChatUser';
 import ChatClient from '../../../ChatClient';
 import ChatTools from '../../../../Toolkit/ChatTools';
 
+/** @private */
 export interface WhisperParams {
 	target: MessageParam;
 	message: MessageParam;
 }
 
+/** @private */
 export default class Whisper extends Message<WhisperParams> {
 	public static readonly COMMAND = 'WHISPER';
 	public static readonly PARAM_SPEC: MessageParamSpec<WhisperParams> = {

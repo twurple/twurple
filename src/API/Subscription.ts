@@ -9,6 +9,9 @@ export interface SubscriptionData {
 	created_at: string;
 }
 
+/**
+ * A subscription to a Twitch channel.
+ */
 export default class Subscription {
 	/** @private */
 	@NonEnumerable protected readonly _client: TwitchClient;
@@ -18,10 +21,16 @@ export default class Subscription {
 		this._client = client;
 	}
 
+	/**
+	 * The identifier of the subscription plan.
+	 */
 	get subPlan() {
 		return this._data.sub_plan;
 	}
 
+	/**
+	 * The name of the subscription plan.
+	 */
 	get subPlanName() {
 		return this._data.sub_plan_name;
 	}

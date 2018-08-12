@@ -161,7 +161,7 @@ export default class CheermoteList {
 	}
 
 	/**
-	 * Gets the URL and color needed to properly represent a cheer of a given amount of bits with a given prefix.
+	 * Gets the URL and color needed to properly represent a cheer of the given amount of bits with the given prefix.
 	 *
 	 * @param name The name/prefix of the cheermote.
 	 * @param bits The amount of bits cheered.

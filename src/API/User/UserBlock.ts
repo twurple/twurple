@@ -9,6 +9,9 @@ export interface UserBlockData {
 	user: UserData;
 }
 
+/**
+ * A relation of a previously givn user blocking another user.
+ */
 export default class UserBlock {
 	@NonEnumerable private readonly _client: TwitchClient;
 
@@ -17,6 +20,9 @@ export default class UserBlock {
 		this._client = client;
 	}
 
+	/**
+	 * The blocked user.
+	 */
 	get blockedUser() {
 		return new User(this._data.user, this._client);
 	}

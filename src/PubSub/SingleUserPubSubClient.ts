@@ -9,6 +9,11 @@ import PubSubMessage from './Messages/PubSubMessage';
 import RefreshableAuthProvider from '../Auth/RefreshableAuthProvider';
 import TwitchClient from '../TwitchClient';
 
+/**
+ * A higher level PubSub client attached to a single user.
+ *
+ * Create an instance of this class via {@TwitchClient#getPubSubClient}.
+ */
 export default class SingleUserPubSubClient {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
 	@NonEnumerable private readonly _pubSubClient: PubSubClient;
@@ -42,7 +47,9 @@ export default class SingleUserPubSubClient {
 					}
 					default: return;
 				}
-				this._listeners.get(type)!.forEach(l => l.call(message));
+				for (const listener of this._listeners.get(type)!) {
+					listener.call(message);
+				}
 			}
 		});
 	}
@@ -77,22 +84,55 @@ export default class SingleUserPubSubClient {
 		return listener;
 	}
 
+	/**
+	 * Adds a listener to bits events to the client.
+	 *
+	 * @param callback A function to be called when a bits event happens in the user's channel.
+	 *
+	 * It receives a {@PubSubBitsMessage} object.
+	 */
 	async addBitsListener(callback: (message: PubSubBitsMessage) => void) {
 		return this._addListener('channel-bits-events-v1', callback);
 	}
 
+	/**
+	 * Adds a listener to subscription events to the client.
+	 *
+	 * @param callback A function to be called when a subscription event happens in the user's channel.
+	 *
+	 * It receives a {@PubSubSubscriptionMessage} object.
+	 */
 	async addSubListener(callback: (message: PubSubSubscriptionMessage) => void) {
 		return this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
 	}
 
+	/**
+	 * Adds a listener to commerce events to the client.
+	 *
+	 * @param callback A function to be called when a commerce event happens in the user's channel.
+	 *
+	 * It receives a {@PubSubCommerceMessage} object.
+	 */
 	async addCommerceListener(callback: (message: PubSubCommerceMessage) => void) {
 		return this._addListener('channel-commerce-events-v1', callback);
 	}
 
+	/**
+	 * Adds a listener to whisper events to the client.
+	 *
+	 * @param callback A function to be called when a whisper event is sent to the user.
+	 *
+	 * It receives a {@PubSubWhisperMessage} object.
+	 */
 	async addWhisperListener(callback: (message: PubSubWhisperMessage) => void) {
 		return this._addListener('whispers', callback, 'chat_login');
 	}
 
+	/**
+	 * Removes a listener from the client.
+	 *
+	 * @param listener A listener returned by one of the `add*Listener` methods.
+	 */
 	removeListener(listener: PubSubListener) {
 		if (this._listeners.has(listener.type)) {
 			const newListeners = this._listeners.get(listener.type)!.filter(l => l !== listener);

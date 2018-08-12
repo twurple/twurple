@@ -26,6 +26,9 @@ export interface PubSubBitsMessageData {
 	message_id: string;
 }
 
+/**
+ * A message that informs about bits being used in a channel.
+ */
 export default class PubSubBitsMessage {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
@@ -34,26 +37,44 @@ export default class PubSubBitsMessage {
 		this._twitchClient = twitchClient;
 	}
 
+	/**
+	 * The ID of the user that sent the bits.
+	 */
 	get userId() {
 		return this._data.data.user_id;
 	}
 
+	/**
+	 * The name of the user that sent the bits.
+	 */
 	get userName() {
 		return this._data.data.user_name;
 	}
 
+	/**
+	 * Retrieves more data about the user.
+	 */
 	async getUser(): Promise<HelixUser> {
 		return this._twitchClient.helix.users.getUserById(this._data.data.user_id);
 	}
 
+	/**
+	 * The full message that was sent with the bits.
+	 */
 	get message() {
 		return this._data.data.chat_message;
 	}
 
+	/**
+	 * The number of bits that were sent.
+	 */
 	get bits() {
 		return this._data.data.bits_used;
 	}
 
+	/**
+	 * The total number of bits that were ever sent by the user in the channel.
+	 */
 	get totalBits() {
 		return this._data.data.total_bits_used;
 	}

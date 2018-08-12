@@ -13,22 +13,46 @@ import UserFollow, { UserFollowData } from './UserFollow';
 import NotFollowing from '../NotFollowing';
 import UserBlock, { UserBlockData } from './UserBlock';
 
+/**
+ * The API methods that deal with users.
+ *
+ * Can be accessed using `client.users` on a {@TwitchClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const client = new TwitchClient(options);
+ * const cheermotes = await client.users.getStreamByChannel('125328655');
+ * ```
+ */
 @Cacheable
 export default class UserAPI extends BaseAPI {
 	private readonly _userByNameCache: Map<string, CacheEntry<User>> = new Map;
 
+	/**
+	 * Retrieves the user data of the currently authenticated user.
+	 */
 	@Cached(3600)
 	async getMe() {
 		return new PrivilegedUser(await this._client.apiCall({ url: 'user', scope: 'user_read' }), this._client);
 	}
 
+	/**
+	 * Retrieves the user data for the given user ID.
+	 *
+	 * @param userId The user ID you want to look up.
+	 */
 	@Cached(3600)
-	async getUser(user: UserIdResolvable) {
-		return new User(await this._client.apiCall({ url: `users/${UserTools.getUserId(user)}` }), this._client);
+	async getUser(userId: UserIdResolvable) {
+		return new User(await this._client.apiCall({ url: `users/${UserTools.getUserId(userId)}` }), this._client);
 	}
 
-	// not using the decorator's cache here as users-by-name is slightly more complex to cache
+	/**
+	 * Retrieves the user data for the given user name.
+	 *
+	 * @param userName The user name you want to look up.
+	 */
 	async getUserByName(userName: string): Promise<User> {
+		// not using the decorator's cache here as users-by-name is slightly more complex to cache
 		this._cleanUserCache();
 		if (this._userByNameCache.has(userName)) {
 			return this._userByNameCache.get(userName)!.value;
@@ -45,6 +69,11 @@ export default class UserAPI extends BaseAPI {
 		return user;
 	}
 
+	/**
+	 * Retrieves the user data for the given user names.
+	 *
+	 * @param userNames The user names you want to look up.
+	 */
 	async getUsersByNames(userNames: string[]): Promise<UniformObject<User>> {
 		this._cleanUserCache();
 		userNames = userNames.map(name => name.toLowerCase());
@@ -66,6 +95,11 @@ export default class UserAPI extends BaseAPI {
 		return { ...cachedUsers, ...users };
 	}
 
+	/**
+	 * Retrieves the emotes a user can use.
+	 *
+	 * @param user The user you want to get emotes for.
+	 */
 	@Cached(3600)
 	async getUserEmotes(user?: UserIdResolvable) {
 		let userId: string;
@@ -83,6 +117,12 @@ export default class UserAPI extends BaseAPI {
 		return new EmoteSetList(data.emoticon_sets);
 	}
 
+	/**
+	 * Retrieves the subscription data for a given user to a given channel.
+	 *
+	 * @param user The user to retrieve the subscription data of.
+	 * @param toChannel The channel you want to retrieve the subscription data to.
+	 */
 	@Cached(3600)
 	async getSubscriptionData(user: UserIdResolvable, toChannel: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
@@ -109,6 +149,15 @@ export default class UserAPI extends BaseAPI {
 		}
 	}
 
+	/**
+	 * Get a list of channels a given user follows.
+	 *
+	 * @param user The user you want to retrieve the follows of.
+	 * @param page The result page you want to retrieve.
+	 * @param limit The number of results you want to retrieve.
+	 * @param orderBy The field to order by.
+	 * @param orderDirection The direction to order in - ascending or descending.
+	 */
 	@Cached(300)
 	async getFollowedChannels(
 		user: UserIdResolvable,
@@ -139,6 +188,12 @@ export default class UserAPI extends BaseAPI {
 		return data.follows.map((follow: UserFollowData) => new UserFollow(follow, this._client));
 	}
 
+	/**
+	 * Get follow data for a given user to a given channel.
+	 *
+	 * @param user The user you want to retrieve follow data of.
+	 * @param channel The channel you want to retrieve follow data to.
+	 */
 	@Cached(300)
 	async getFollowedChannel(user: UserIdResolvable, channel: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
@@ -157,6 +212,13 @@ export default class UserAPI extends BaseAPI {
 		}
 	}
 
+	/**
+	 * Follows a given channel with a given user.
+	 *
+	 * @param user The user you want to follow with.
+	 * @param channel The channel to follow.
+	 * @param notifications Whether the user will receive notifications.
+	 */
 	@ClearsCache<UserAPI>('getFollowedChannels', 1)
 	@ClearsCache<UserAPI>('getFollowedChannel', 2)
 	async followChannel(user: UserIdResolvable, channel: UserIdResolvable, notifications?: boolean) {
@@ -171,6 +233,12 @@ export default class UserAPI extends BaseAPI {
 		return new UserFollow(data, this._client);
 	}
 
+	/**
+	 * Unfollows a given channel with a given user.
+	 *
+	 * @param user The user you want to unfollow with.
+	 * @param channel The channel to unfollow.
+	 */
 	@ClearsCache<UserAPI>('getFollowedChannels', 1)
 	@ClearsCache<UserAPI>('getFollowedChannel', 2)
 	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<void> {
@@ -183,6 +251,13 @@ export default class UserAPI extends BaseAPI {
 		});
 	}
 
+	/**
+	 * Retrieves a list of users a given user has blocked.
+	 *
+	 * @param user The user you want to retrieve the block list of.
+	 * @param page The result page you want to retrieve.
+	 * @param limit The number of results you want to retrieve.
+	 */
 	@Cached(3600)
 	async getBlockedUsers(user: UserIdResolvable, page?: number, limit: number = 25): Promise<UserBlock[]> {
 		const userId = UserTools.getUserId(user);
@@ -199,6 +274,12 @@ export default class UserAPI extends BaseAPI {
 		return data.blocks.map((block: UserBlockData) => new UserBlock(block, this._client));
 	}
 
+	/**
+	 * Blocks a given user with another given user.
+	 *
+	 * @param user The user you want to block with.
+	 * @param userToBlock The user to block.
+	 */
 	@ClearsCache<UserAPI>('getBlockedUsers', 1)
 	async blockUser(user: UserIdResolvable, userToBlock: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
@@ -211,6 +292,12 @@ export default class UserAPI extends BaseAPI {
 		return new UserBlock(data, this._client);
 	}
 
+	/**
+	 * Unblocks a given user with another given user.
+	 *
+	 * @param user The user you want to unblock with.
+	 * @param userToUnblock The user to unblock.
+	 */
 	@ClearsCache<UserAPI>('getBlockedUsers', 1)
 	async unblockUser(user: UserIdResolvable, userToUnblock: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);

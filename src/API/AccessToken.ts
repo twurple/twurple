@@ -25,7 +25,7 @@ export default class AccessToken {
 	}
 
 	/**
-	 * The refresh token which is necessary to refresh your access token once it expires.
+	 * The refresh token which is necessary to refresh the access token once it expires.
 	 */
 	get refreshToken() {
 		return this._data.refresh_token;

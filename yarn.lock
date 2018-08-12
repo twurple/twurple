@@ -483,8 +483,8 @@ interpret@^1.0.0:
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.1.0.tgz#7ed1b1410c6a0e0f78cf95d3b8440c63f78b8614"
 
 ircv3@^0.8.5:
-  version "0.8.6"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.6.tgz#8da1b49aa0ad9aad4d67b646ae1a04c6a4819e14"
+  version "0.8.8"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.8.tgz#af932b4032ac5f621435a4818bbacc6378710d30"
   dependencies:
     escape-string-regexp "^1.0.5"
     randomstring "^1.1.5"
@@ -716,13 +716,17 @@ right-align@^0.1.1:
   dependencies:
     align-text "^0.1.1"
 
-safe-buffer@^5.0.1, safe-buffer@^5.1.1, safe-buffer@~5.1.0:
+safe-buffer@^5.0.1, safe-buffer@^5.1.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.1.tgz#893312af69b2123def71f57889001671eeb2c853"
 
 safe-buffer@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.0.1.tgz#d263ca54696cd8a306b5ca6551e92de57918fbe7"
+
+safe-buffer@~5.1.0:
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.1.2.tgz#991ec69d296e0313747d59bdfd2b745c35f8828d"
 
 semver@^5.3.0:
   version "5.4.1"

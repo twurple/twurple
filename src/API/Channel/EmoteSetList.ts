@@ -20,7 +20,7 @@ export default class EmoteSetList {
 	}
 
 	/**
-	 * Finds the emote ID for a given emote code.
+	 * Finds the emote ID for the given emote code.
 	 *
 	 * @param emoteCode The emote code to check for.
 	 */

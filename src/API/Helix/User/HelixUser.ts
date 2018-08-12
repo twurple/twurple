@@ -123,7 +123,7 @@ export default class HelixUser {
 	}
 
 	/**
-	 * Retrieves the follow data for this user to a given channel.
+	 * Retrieves the follow data of the user to the given channel.
 	 *
 	 * @param channel
 	 */
@@ -143,7 +143,7 @@ export default class HelixUser {
 	}
 
 	/**
-	 * Checks whether the user is following a given channel.
+	 * Checks whether the user is following the given channel.
 	 *
 	 * @param channel The channel to check for the user's follow.
 	 */
