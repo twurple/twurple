@@ -1,4 +1,4 @@
-import { Cacheable, Cached } from '../../Toolkit/Decorators';
+import { Cacheable, CachedGetter } from '../../Toolkit/Decorators';
 import ArrayTools from '../../Toolkit/ArrayTools';
 
 /** @private */
@@ -19,7 +19,7 @@ export default class ChattersList {
 	/**
 	 * A list of user names of all chatters in the chat.
 	 */
-	@Cached(Infinity)
+	@CachedGetter()
 	get allChatters(): string[] {
 		return ArrayTools.flatten(Object.values(this._data.chatters));
 	}
@@ -27,7 +27,7 @@ export default class ChattersList {
 	/**
 	 * A map of user names of all chatters in the chat, mapped to their status in the channel.
 	 */
-	@Cached(Infinity)
+	@CachedGetter()
 	get allChattersWithStatus(): Map<string, string> {
 		return new Map(ArrayTools.flatten(Object.entries(this._data.chatters).map(([status, names]) => names.map<[string, string]>(name => [name, status]))));
 	}
