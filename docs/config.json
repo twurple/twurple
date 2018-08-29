@@ -1,0 +1,33 @@
+{
+	"inputDirs": ["types", "src"],
+	"outputDir": "generatedDocs",
+	"mode": "html",
+	"routerMode": "htmlSuffix",
+	"baseUrl": "/twitch",
+
+	"indexTitle": "Welcome to Twitch.js",
+	"indexFile": "index.md",
+	"categories": [
+		{
+			"name": "basic-usage",
+			"title": "Basic usage",
+			"articles": [
+				{
+					"name": "getting-started",
+					"title": "Getting started",
+					"file": "basic-usage/getting-started.md"
+				},
+				{
+					"name": "creating-instance",
+					"title": "Creating a client instance",
+					"file": "basic-usage/creating-instance.md"
+				},
+				{
+					"name": "calling-api",
+					"title": "Calling the Twitch API",
+					"file": "basic-usage/calling-api.md"
+				}
+			]
+		}
+	]
+}

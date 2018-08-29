@@ -9,23 +9,23 @@ declare interface ObjectCtor extends ObjectConstructor {
 declare let Object: ObjectCtor;
 
 /** @private */
-export type ObjMap<Obj, T> = { [name in keyof Obj]: T };
+export type ObjMap<Obj, T> = { [name in Extract<keyof Obj, string>]: T };
 /** @private */
 export type ObjMapPart<Obj, T> = Partial<ObjMap<Obj, T>>;
 
 /** @private */
-export interface UniformObject<T> { [name: string]: T; }
+export interface UniformObject<T> {
+	[name: string]: T;
+}
+
 /** @private */
 export type KeyMapper<T> = (value: T) => string;
 
 /** @private */
 export default class ObjectTools {
-	static map<T, O, Obj = UniformObject<T>>(obj: Obj, fn: (value: T, key: keyof Obj) => O): ObjMap<Obj, O> {
-		const mapped = Object.entries<T, Obj>(obj).map(([key, value]: [keyof Obj, T]): ObjMapPart<Obj, O> => {
-			const result: ObjMapPart<Obj, O> = {};
-			result[key] = fn(value, key);
-			return result;
-		});
+	static map<T, O, Obj = UniformObject<T>>(obj: Obj, fn: (value: T, key: Extract<keyof Obj, string>) => O): ObjMap<Obj, O> {
+		// tslint:disable-next-line:no-object-literal-type-assertion
+		const mapped = Object.entries<T, Obj>(obj).map(([key, value]: [Extract<keyof Obj, string>, T]): ObjMapPart<Obj, O> => ({ [key]: fn(value, key) } as ObjMapPart<Obj, O>));
 		return Object.assign<ObjMap<Obj, O>>({}, ...mapped);
 	}
 
@@ -43,7 +43,7 @@ export default class ObjectTools {
 		return this.fromArray<T, T, UniformObject<T>>(arr, val => ({ [(keyFn as KeyMapper<T>)(val)]: val }));
 	}
 
-	static forEach<T, Obj>(obj: Obj, fn: (value: T, key: keyof Obj) => void): void {
+	static forEach<T, Obj>(obj: Obj, fn: (value: T, key: Extract<keyof Obj, string>) => void): void {
 		Object.entries(obj).forEach(([key, value]: [Extract<keyof Obj, string>, T]) => fn(value, key));
 	}
 

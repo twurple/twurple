@@ -13,4 +13,4 @@ node_modules/
 .yarn-integrity
 .env
 .idea
-/docs/
+/generatedDocs/
