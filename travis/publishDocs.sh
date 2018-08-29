@@ -7,7 +7,7 @@ npm run docs
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
 
-git clone git://${GH_TOKEN}@github.com/d-fischer/d-fischer.github.io
+git clone https://${GH_TOKEN}@github.com/d-fischer/d-fischer.github.io.git
 rm -rfv d-fischer.github.io/twitch
 mv -fv generatedDocs d-fischer.github.io/twitch
 
