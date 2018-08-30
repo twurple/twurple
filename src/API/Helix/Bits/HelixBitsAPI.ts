@@ -48,10 +48,9 @@ export interface HelixBitsLeaderboardQuery {
  * ```
  */
 export default class HelixBitsAPI extends BaseAPI {
+	// TODO figure out how to document named params
 	/**
-	 * Updates the currently authenticated user's data.
-	 *
-	 * @param data The data to update.
+	 * Gets a bits leaderboard of your channel.
 	 */
 	async getLeaderboard({ count = 10, period = 'all', startedAt, contextUserId }: HelixBitsLeaderboardQuery) {
 		const result = await this._client.apiCall<HelixBitsLeaderboardData>({
