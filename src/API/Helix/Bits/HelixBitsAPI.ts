@@ -44,7 +44,7 @@ export interface HelixBitsLeaderboardQuery {
  * ## Example
  * ```ts
  * const client = new TwitchClient(options);
- * const leaderboard = await client.helix.bits.getLeaderboard({ period: 'day' }');
+ * const leaderboard = await client.helix.bits.getLeaderboard({ period: 'day' });
  * ```
  */
 export default class HelixBitsAPI extends BaseAPI {
