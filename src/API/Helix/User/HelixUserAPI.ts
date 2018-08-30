@@ -117,6 +117,7 @@ export default class HelixUserAPI extends BaseAPI {
 			type: TwitchApiCallType.Helix,
 			url: 'users',
 			method: 'PUT',
+			scope: 'user:edit',
 			query: {
 				description: data.description
 			}
