@@ -12,6 +12,8 @@ rm -rfv d-fischer.github.io/twitch
 mv -fv generatedDocs d-fischer.github.io/twitch
 
 cd d-fischer.github.io
-git add .
-git commit -m "Travis build of twitch: $TRAVIS_BUILD_NUMBER"
-git push --quiet --set-upstream origin master
+if [[ `git status --porcelain` ]]; then
+	git add .
+	git commit -m "Travis build of twitch: $TRAVIS_BUILD_NUMBER"
+	git push --quiet --set-upstream origin master
+fi
