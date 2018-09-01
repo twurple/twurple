@@ -14,3 +14,4 @@ node_modules/
 .env
 .idea
 /generatedDocs/
+docs.json

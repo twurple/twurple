@@ -48,11 +48,13 @@ export interface HelixBitsLeaderboardQuery {
  * ```
  */
 export default class HelixBitsAPI extends BaseAPI {
-	// TODO figure out how to document named params
 	/**
 	 * Gets a bits leaderboard of your channel.
+	 *
+	 * @expandParams
 	 */
-	async getLeaderboard({ count = 10, period = 'all', startedAt, contextUserId }: HelixBitsLeaderboardQuery) {
+	async getLeaderboard(params: HelixBitsLeaderboardQuery = {}) {
+		const { count = 10, period = 'all', startedAt, contextUserId } = params;
 		const result = await this._client.apiCall<HelixBitsLeaderboardData>({
 			type: TwitchApiCallType.Helix,
 			url: 'bits/leaderboard',

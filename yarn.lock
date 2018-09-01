@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@d-fischer/documen.ts@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.1.1.tgz#855d84ad228a580e13c7ff823b9e2aa2dc1abcd4"
+"@d-fischer/documen.ts@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.2.1.tgz#7c44335dfdef4ed1ce550082ee5529de73a65331"
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.2"
     "@fortawesome/free-solid-svg-icons" "^5.2.0"
