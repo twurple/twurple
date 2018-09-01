@@ -7,11 +7,15 @@ pids
 *.pid
 *.seed
 *.pid.lock
-lib
-node_modules/
+src
 *.tgz
 .yarn-integrity
 .env
 .idea
 /generatedDocs/
+/.editorconfig
 /docs.json
+/.travis.yml
+/publishNewVersion.sh
+/tsconfig.json
+/tslint.json
