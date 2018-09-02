@@ -1,5 +1,5 @@
 import BaseAPI from '../../BaseAPI';
-import { TwitchApiCallType } from '../../../TwitchClient';
+import { TwitchAPICallType } from '../../../TwitchClient';
 import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixVideo, { HelixVideoData, HelixVideoType } from './HelixVideo';
 import HelixPagination from '../HelixPagination';
@@ -58,8 +58,8 @@ export default class HelixVideoAPI extends BaseAPI {
 	 * @param ids The video IDs you want to look up.
 	 */
 	async getVideosByIds(ids: string | string[]) {
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixVideoData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixVideoData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'videos',
 			query: {
 				id: ids
@@ -103,8 +103,8 @@ export default class HelixVideoAPI extends BaseAPI {
 
 	private async _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
 		const { language, period, orderBy, type } = filter;
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixVideoData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixVideoData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'videos',
 			query: {
 				[filterType]: filterValues,

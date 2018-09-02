@@ -1,5 +1,5 @@
 import BaseAPI from '../../BaseAPI';
-import { TwitchApiCallType } from '../../../TwitchClient';
+import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixGame, { HelixGameData } from './HelixGame';
 import HelixPagination from '../HelixPagination';
@@ -65,8 +65,8 @@ export default class HelixGameAPI extends BaseAPI {
 	}
 
 	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
-		const result = await this._client.apiCall<HelixResponse<HelixGameData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixResponse<HelixGameData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'games',
 			query: {
 				[filterType]: filterValues
@@ -78,8 +78,8 @@ export default class HelixGameAPI extends BaseAPI {
 
 	async getTopGames(pagination: HelixPagination): Promise<HelixPaginatedResult<HelixGame>> {
 		const { after, before, limit } = pagination;
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixGameData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixGameData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'games/top',
 			query: {
 				after,

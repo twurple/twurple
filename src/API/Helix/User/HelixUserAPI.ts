@@ -5,7 +5,7 @@ import HelixUser, { HelixUserData } from './HelixUser';
 import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
-import { TwitchApiCallType } from '../../../TwitchClient';
+import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixPaginatedResult from '../HelixPaginatedResult';
 
 /** @private */
@@ -35,8 +35,8 @@ export interface HelixUserUpdate {
 export default class HelixUserAPI extends BaseAPI {
 	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
 		const query: UniformObject<string | string[] | undefined> = { [lookupType]: param };
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixUserData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixUserData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'users',
 			query
 		});
@@ -94,8 +94,8 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param withEmail Whether you need the user's email address.
 	 */
 	async getMe(withEmail: boolean = false) {
-		const result = await this._client.apiCall<HelixResponse<HelixPrivilegedUserData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixResponse<HelixPrivilegedUserData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'users',
 			scope: withEmail ? 'user:read:email' : ''
 		});
@@ -113,8 +113,8 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param data The data to update.
 	 */
 	async updateUser(data: HelixUserUpdate) {
-		const result = await this._client.apiCall<HelixResponse<HelixPrivilegedUserData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixResponse<HelixPrivilegedUserData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'users',
 			method: 'PUT',
 			scope: 'user:edit',
@@ -151,8 +151,8 @@ export default class HelixUserAPI extends BaseAPI {
 			throw new TypeError('At least one of user and followedUser have to be set');
 		}
 
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixFollowData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixFollowData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'users/follows',
 			query
 		});

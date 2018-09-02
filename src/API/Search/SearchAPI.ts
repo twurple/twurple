@@ -32,7 +32,7 @@ export default class SearchAPI extends BaseAPI {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.apiCall({ url: 'search/channels', query });
+		const data = await this._client.callAPI({ url: 'search/channels', query });
 
 		return data.channels.map((channelData: ChannelData) => new Channel(channelData, this._client));
 	}
@@ -57,7 +57,7 @@ export default class SearchAPI extends BaseAPI {
 			query.hls = hls.toString();
 		}
 
-		const data = await this._client.apiCall({ url: 'search/streams', query });
+		const data = await this._client.callAPI({ url: 'search/streams', query });
 
 		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
 	}

@@ -59,7 +59,7 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getMyChannel() {
-		return new PrivilegedChannel(await this._client.apiCall({ url: 'channel', scope: 'channel_read' }), this._client);
+		return new PrivilegedChannel(await this._client.callAPI({ url: 'channel', scope: 'channel_read' }), this._client);
 	}
 
 	/**
@@ -69,7 +69,7 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getChannel(user: UserIdResolvable) {
-		return new Channel(await this._client.apiCall({ url: `channels/${UserTools.getUserId(user)}` }), this._client);
+		return new Channel(await this._client.callAPI({ url: `channels/${UserTools.getUserId(user)}` }), this._client);
 	}
 
 	/**
@@ -81,7 +81,7 @@ export default class ChannelAPI extends BaseAPI {
 	@ClearsCache<ChannelAPI>('getChannel', 1)
 	async updateChannel(channel: UserIdResolvable, data: ChannelUpdateData) {
 		const channelId = UserTools.getUserId(channel);
-		await this._client.apiCall({
+		await this._client.callAPI({
 			url: `channels/${channelId}`,
 			method: 'PUT',
 			jsonBody: { channel: data },
@@ -97,7 +97,7 @@ export default class ChannelAPI extends BaseAPI {
 	@Cached(3600)
 	async getChannelEditors(channel: UserIdResolvable): Promise<User[]> {
 		const channelId = UserTools.getUserId(channel);
-		const data = await this._client.apiCall({
+		const data = await this._client.callAPI({
 			url: `channels/${channelId}/editors`,
 			scope: 'channel_read'
 		});
@@ -129,7 +129,7 @@ export default class ChannelAPI extends BaseAPI {
 			query.direction = orderDirection;
 		}
 
-		const data = await this._client.apiCall({
+		const data = await this._client.callAPI({
 			url: `channels/${channelId}/follows`,
 			query
 		});
@@ -163,7 +163,7 @@ export default class ChannelAPI extends BaseAPI {
 		}
 
 		try {
-			const data = await this._client.apiCall({
+			const data = await this._client.callAPI({
 				url: `channels/${channelId}/subscriptions`,
 				query,
 				scope: 'channel_subscriptions'
@@ -197,7 +197,7 @@ export default class ChannelAPI extends BaseAPI {
 
 		try {
 			return new ChannelSubscription(
-				await this._client.apiCall<ChannelSubscriptionData>({
+				await this._client.callAPI<ChannelSubscriptionData>({
 					url: `channels/${channelId}/subscriptions/${userId}`,
 					scope: 'channel_check_subscription'
 				}),
@@ -224,7 +224,7 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	async startChannelCommercial(channel: UserIdResolvable, length: CommercialLength) {
 		const channelId = UserTools.getUserId(channel);
-		return this._client.apiCall<void>({
+		return this._client.callAPI<void>({
 			url: `channels/${channelId}/commercial`,
 			method: 'POST',
 			jsonBody: { length },
@@ -240,7 +240,7 @@ export default class ChannelAPI extends BaseAPI {
 	@ClearsCache<ChannelAPI>('getMyChannel')
 	async resetChannelStreamKey(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
-		return this._client.apiCall<PrivilegedChannelData>({
+		return this._client.callAPI<PrivilegedChannelData>({
 			url: `channels/${channelId}/stream_key`,
 			method: 'DELETE',
 			scope: 'channel_stream'

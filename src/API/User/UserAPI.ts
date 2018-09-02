@@ -33,7 +33,7 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getMe() {
-		return new PrivilegedUser(await this._client.apiCall({ url: 'user', scope: 'user_read' }), this._client);
+		return new PrivilegedUser(await this._client.callAPI({ url: 'user', scope: 'user_read' }), this._client);
 	}
 
 	/**
@@ -43,7 +43,7 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getUser(userId: UserIdResolvable) {
-		return new User(await this._client.apiCall({ url: `users/${UserTools.getUserId(userId)}` }), this._client);
+		return new User(await this._client.callAPI({ url: `users/${UserTools.getUserId(userId)}` }), this._client);
 	}
 
 	/**
@@ -57,7 +57,7 @@ export default class UserAPI extends BaseAPI {
 		if (this._userByNameCache.has(userName)) {
 			return this._userByNameCache.get(userName)!.value;
 		}
-		const { users } = await this._client.apiCall({ url: 'users', query: { login: userName } });
+		const { users } = await this._client.callAPI({ url: 'users', query: { login: userName } });
 		if (users.length === 0) {
 			throw new Error('user not found');
 		}
@@ -84,7 +84,7 @@ export default class UserAPI extends BaseAPI {
 		if (!toFetch.length) {
 			return cachedUsers;
 		}
-		const usersData = await this._client.apiCall({ url: 'users', query: { login: toFetch.join(',') } });
+		const usersData = await this._client.callAPI({ url: 'users', query: { login: toFetch.join(',') } });
 		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
 		usersArr.forEach(user => this._userByNameCache.set(user.name, {
 			value: user,
@@ -113,7 +113,7 @@ export default class UserAPI extends BaseAPI {
 			userId = tokenInfo.userId!;
 		}
 
-		const data = await this._client.apiCall({ url: `users/${userId}/emotes`, scope: 'user_subscriptions' });
+		const data = await this._client.callAPI({ url: `users/${userId}/emotes`, scope: 'user_subscriptions' });
 		return new EmoteSetList(data.emoticon_sets);
 	}
 
@@ -130,7 +130,7 @@ export default class UserAPI extends BaseAPI {
 
 		try {
 			return new UserSubscription(
-				await this._client.apiCall({
+				await this._client.callAPI({
 					url: `users/${userId}/subscriptions/${channelId}`,
 					scope: 'user_subscriptions'
 				}),
@@ -181,7 +181,7 @@ export default class UserAPI extends BaseAPI {
 			query.direction = orderDirection;
 		}
 
-		const data = await this._client.apiCall({
+		const data = await this._client.callAPI({
 			url: `users/${userId}/follows/channels`, query
 		});
 
@@ -199,7 +199,7 @@ export default class UserAPI extends BaseAPI {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
 		try {
-			const data = await this._client.apiCall({ url: `users/${userId}/follows/channels/${channelId}` });
+			const data = await this._client.callAPI({ url: `users/${userId}/follows/channels/${channelId}` });
 			return new UserFollow(data, this._client);
 		} catch (e) {
 			if (e instanceof StatusCodeError) {
@@ -224,7 +224,7 @@ export default class UserAPI extends BaseAPI {
 	async followChannel(user: UserIdResolvable, channel: UserIdResolvable, notifications?: boolean) {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
-		const data = await this._client.apiCall({
+		const data = await this._client.callAPI({
 			url: `users/${userId}/follows/channels/${channelId}`,
 			method: 'PUT',
 			scope: 'user_follows_edit',
@@ -244,7 +244,7 @@ export default class UserAPI extends BaseAPI {
 	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<void> {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
-		await this._client.apiCall({
+		await this._client.callAPI({
 			url: `users/${userId}/follows/channels/${channelId}`,
 			scope: 'user_follows_edit',
 			method: 'DELETE'
@@ -267,7 +267,7 @@ export default class UserAPI extends BaseAPI {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.apiCall({
+		const data = await this._client.callAPI({
 			url: `users/${userId}/blocks`, query, scope: 'user_blocks_read'
 		});
 
@@ -284,7 +284,7 @@ export default class UserAPI extends BaseAPI {
 	async blockUser(user: UserIdResolvable, userToBlock: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
 		const userIdToBlock = UserTools.getUserId(userToBlock);
-		const data = await this._client.apiCall({
+		const data = await this._client.callAPI({
 			url: `users/${userId}/blocks/${userIdToBlock}`,
 			method: 'PUT',
 			scope: 'user_blocks_edit'
@@ -302,7 +302,7 @@ export default class UserAPI extends BaseAPI {
 	async unblockUser(user: UserIdResolvable, userToUnblock: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
 		const userIdToUnblock = UserTools.getUserId(userToUnblock);
-		await this._client.apiCall({
+		await this._client.callAPI({
 			url: `users/${userId}/blocks/${userIdToUnblock}`,
 			method: 'DELETE',
 			scope: 'user_blocks_edit'

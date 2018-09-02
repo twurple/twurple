@@ -73,7 +73,7 @@ export interface TwitchConfig {
 /**
  * The endpoint to call, i.e. /kraken, /helix or a custom (potentially unsupported) endpoint.
  */
-export enum TwitchApiCallType {
+export enum TwitchAPICallType {
 	/**
 	 * Call a Kraken API endpoint.
 	 */
@@ -93,7 +93,7 @@ export enum TwitchApiCallType {
 /**
  * Configuration for a single API call.
  */
-export interface TwitchApiCallOptions {
+export interface TwitchAPICallOptions {
 	/**
 	 * The URL to request.
 	 *
@@ -104,7 +104,7 @@ export interface TwitchApiCallOptions {
 	/**
 	 * The endpoint to call, i.e. /kraken, /helix or a custom (potentially unsupported) endpoint.
 	 */
-	type?: TwitchApiCallType;
+	type?: TwitchAPICallType;
 
 	/**
 	 * The HTTP method to use. Defaults to `'GET'`.
@@ -207,7 +207,7 @@ export default class TwitchClient {
 	 * Retrieves information about your access token.
 	 */
 	public async getTokenInfo() {
-		const data = await this.apiCall<TokenInfoData>({ url: '/' });
+		const data = await this.callAPI<TokenInfoData>({ url: '/' });
 		return new TokenInfo(data.token);
 	}
 
@@ -218,7 +218,7 @@ export default class TwitchClient {
 	 * @param accessToken The access token.
 	 */
 	public static async getTokenInfo(clientId: string, accessToken: string) {
-		const data = await this.apiCall<TokenInfoData>({ url: '/' }, clientId, accessToken);
+		const data = await this.callAPI<TokenInfoData>({ url: '/' }, clientId, accessToken);
 		return new TokenInfo(data.token);
 	}
 
@@ -228,29 +228,29 @@ export default class TwitchClient {
 	 * @param options The configuration of the call.
 	 */
 	// tslint:disable-next-line:no-any
-	public async apiCall<T = any>(options: TwitchApiCallOptions): Promise<T> {
+	public async callAPI<T = any>(options: TwitchAPICallOptions): Promise<T> {
 		let accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
 		try {
-			return await TwitchClient.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
+			return await TwitchClient.callAPI<T>(options, this._config.authProvider.clientId, accessToken);
 		} catch (e) {
 			if (e.response && e.response.status === 401 && this._config.authProvider instanceof RefreshableAuthProvider) {
 				await this._config.authProvider.refresh();
 				accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
-				return TwitchClient.apiCall<T>(options, this._config.authProvider.clientId, accessToken);
+				return TwitchClient.callAPI<T>(options, this._config.authProvider.clientId, accessToken);
 			}
 
 			throw e;
 		}
 	}
 
-	private static _getUrl(url: string, type?: TwitchApiCallType) {
-		type = type === undefined ? TwitchApiCallType.Kraken : type;
+	private static _getUrl(url: string, type?: TwitchAPICallType) {
+		type = type === undefined ? TwitchAPICallType.Kraken : type;
 		switch (type) {
-			case TwitchApiCallType.Kraken:
-			case TwitchApiCallType.Helix:
-				const typeName = type === TwitchApiCallType.Kraken ? 'kraken' : 'helix';
+			case TwitchAPICallType.Kraken:
+			case TwitchAPICallType.Helix:
+				const typeName = type === TwitchAPICallType.Kraken ? 'kraken' : 'helix';
 				return `https://api.twitch.tv/${typeName}/${url.replace(/^\//, '')}`;
-			case TwitchApiCallType.Custom:
+			case TwitchAPICallType.Custom:
 				return url;
 			default:
 				return url; // wat
@@ -265,7 +265,7 @@ export default class TwitchClient {
 	 * @param accessToken The access token.
 	 */
 	// tslint:disable-next-line:no-any
-	public static async apiCall<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
+	public static async callAPI<T = any>(options: TwitchAPICallOptions, clientId?: string, accessToken?: string): Promise<T> {
 		const requestOptions: request.Options = {
 			url: this._getUrl(options.url, options.type),
 			method: options.method,
@@ -291,7 +291,7 @@ export default class TwitchClient {
 		}
 
 		if (accessToken) {
-			requestOptions.headers!.Authorization = `${options.type === TwitchApiCallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`;
+			requestOptions.headers!.Authorization = `${options.type === TwitchAPICallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`;
 		}
 
 		return request(requestOptions);
@@ -346,7 +346,7 @@ export default class TwitchClient {
 	 * @param redirectUri The redirect URI. This serves no real purpose here, but must still match with the redirect URI you configured in the Twitch Developer dashboard.
 	 */
 	public static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<AccessToken> {
-		return new AccessToken(await this.apiCall<AccessTokenData>({
+		return new AccessToken(await this.callAPI<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',
 			query: {
@@ -367,7 +367,7 @@ export default class TwitchClient {
 	 * @param refreshToken The refresh token.
 	 */
 	public static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<AccessToken> {
-		return new AccessToken(await this.apiCall<AccessTokenData>({
+		return new AccessToken(await this.callAPI<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',
 			query: {

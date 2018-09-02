@@ -1,5 +1,5 @@
 import BaseAPI from '../../BaseAPI';
-import { TwitchApiCallType } from '../../../TwitchClient';
+import { TwitchAPICallType } from '../../../TwitchClient';
 import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixPagination from '../HelixPagination';
 import HelixPaginatedResult from '../HelixPaginatedResult';
@@ -101,8 +101,8 @@ export default class HelixClipAPI extends BaseAPI {
 
 	private async _getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip>> {
 		const { filterType, ids, after, before, limit } = params;
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixClipData>>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixClipData>>({
+			type: TwitchAPICallType.Helix,
 			url: 'clips',
 			method: 'GET',
 			query: {
@@ -128,8 +128,8 @@ export default class HelixClipAPI extends BaseAPI {
 	 */
 	async createClip(params: HelixClipCreateParams) {
 		const { channelId, createAfterDelay = false } = params;
-		const result = await this._client.apiCall<{ data: [HelixClipCreateResponse] }>({
-			type: TwitchApiCallType.Helix,
+		const result = await this._client.callAPI<{ data: [HelixClipCreateResponse] }>({
+			type: TwitchAPICallType.Helix,
 			url: 'clips',
 			method: 'POST',
 			scope: 'clips:edit',
