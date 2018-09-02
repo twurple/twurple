@@ -3,8 +3,20 @@ import { TwitchApiCallType } from '../../../TwitchClient';
 import HelixResponse from '../HelixResponse';
 import HelixGame, { HelixGameData } from './HelixGame';
 
+/** @private */
 export type HelixGameFilterType = 'id' | 'name';
 
+/**
+ * The Helix API methods that deal with games.
+ *
+ * Can be accessed using `client.helix.games` on a {@TwitchClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const client = new TwitchClient(options);
+ * const game = await client.helix.games.getGameByName('Hearthstone');
+ * ```
+ */
 export default class HelixGameAPI extends BaseAPI {
 	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
 		const result = await this._client.apiCall<HelixResponse<HelixGameData[]>>({

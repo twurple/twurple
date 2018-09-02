@@ -42,7 +42,7 @@ export interface HelixClipCreateResponse {
  * ## Example
  * ```ts
  * const client = new TwitchClient(options);
- * const leaderboard = await client.helix.clips.createClip({ channelId: '125328655' });
+ * const clipId = await client.helix.clips.createClip({ channelId: '125328655' });
  * ```
  */
 export default class HelixClipAPI extends BaseAPI {
