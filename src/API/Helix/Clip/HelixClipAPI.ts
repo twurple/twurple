@@ -7,20 +7,9 @@ import HelixClip, { HelixClipData } from './HelixClip';
 
 export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
 
-/**
- * A Helix clip filter definition.
- */
+/** @private */
 export interface HelixClipFilter extends HelixPagination {
-	/**
-	 * The type of filter. You can filter by broadcaster, game or just get some clips by their IDs.
-	 */
 	filterType: HelixClipFilterType;
-
-	/**
-	 * The IDs you want to filter for.
-	 *
-	 * Please note that the broadcaster and game filters only support a single ID, but you still need to pass it as an array.
-	 */
 	ids: string[];
 }
 
@@ -110,15 +99,7 @@ export default class HelixClipAPI extends BaseAPI {
 		return data[0];
 	}
 
-	/**
-	 * Retrieves the latest clips based on specified filter parameters.
-	 *
-	 * Please note that you rarely need to use this method. You should use {@HelixClipAPI#getClipsForBroadcaster},
-	 * {@HelixClipAPI#getClipsForGame} or {@HelixClipAPI#getClipsByIds} instead.
-	 *
-	 * @expandParams
-	 */
-	async getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip[]>> {
+	private async getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip[]>> {
 		const { filterType, ids, after, before, limit } = params;
 		const result = await this._client.apiCall<HelixResponse<HelixClipData[]>>({
 			type: TwitchApiCallType.Helix,
