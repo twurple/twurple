@@ -86,7 +86,7 @@ export default class HelixClipsAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the latest clips for the specified broadcaster.
+	 * Retrieves the clips identified by the given IDs.
 	 *
 	 * @param ids The clip IDs.
 	 */
@@ -95,6 +95,19 @@ export default class HelixClipsAPI extends BaseAPI {
 			filterType: 'id',
 			ids
 		});
+	}
+
+	/**
+	 * Retrieves the clip identified by the given ID.
+	 *
+	 * @param id The clip ID.
+	 */
+	async getClipById(id: string) {
+		const { data } = await this.getClipsByIds([id]);
+		if (!data.length) {
+			throw new Error('clip not found');
+		}
+		return data[0];
 	}
 
 	/**
