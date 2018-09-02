@@ -17,8 +17,7 @@
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^4.1.1",
     "tslint-language-service": "^0.9.9",
-    "typescript": "^3.0.1",
-    "yarn-or-npm": "^2.0.4"
+    "typescript": "^3.0.1"
   },
   "dependencies": {
     "@types/randomstring": "^1.1.6",
@@ -34,7 +33,7 @@
   "scripts": {
     "lint": "tslint --project .",
     "build": "tsc",
-    "prepare": "yon run lint && yon run build",
+    "prepare": "yarn run lint && yarn run build",
     "docs": "documen.ts"
   }
 }
