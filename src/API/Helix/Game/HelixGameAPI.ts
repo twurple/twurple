@@ -1,7 +1,9 @@
 import BaseAPI from '../../BaseAPI';
 import { TwitchApiCallType } from '../../../TwitchClient';
-import HelixResponse from '../HelixResponse';
+import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixGame, { HelixGameData } from './HelixGame';
+import HelixPagination from '../HelixPagination';
+import HelixPaginatedResult from '../HelixPaginatedResult';
 
 /** @private */
 export type HelixGameFilterType = 'id' | 'name';
@@ -18,18 +20,6 @@ export type HelixGameFilterType = 'id' | 'name';
  * ```
  */
 export default class HelixGameAPI extends BaseAPI {
-	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
-		const result = await this._client.apiCall<HelixResponse<HelixGameData[]>>({
-			type: TwitchApiCallType.Helix,
-			url: 'games',
-			query: {
-				[filterType]: filterValues
-			}
-		});
-
-		return result.data.map(data => new HelixGame(data, this._client));
-	}
-
 	/**
 	 * Retrieves the game data for the given list of game IDs.
 	 *
@@ -72,5 +62,35 @@ export default class HelixGameAPI extends BaseAPI {
 			throw new Error('game not found');
 		}
 		return games[0];
+	}
+
+	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
+		const result = await this._client.apiCall<HelixResponse<HelixGameData[]>>({
+			type: TwitchApiCallType.Helix,
+			url: 'games',
+			query: {
+				[filterType]: filterValues
+			}
+		});
+
+		return result.data.map(data => new HelixGame(data, this._client));
+	}
+
+	async getTopGames(pagination: HelixPagination): Promise<HelixPaginatedResult<HelixGame[]>> {
+		const { after, before, limit } = pagination;
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixGameData[]>>({
+			type: TwitchApiCallType.Helix,
+			url: 'games/top',
+			query: {
+				after,
+				before,
+				first: limit
+			}
+		});
+
+		return {
+			data: result.data.map(data => new HelixGame(data, this._client)),
+			cursor: result.pagination.cursor
+		};
 	}
 }
