@@ -53,7 +53,7 @@ export default class HelixClipAPI extends BaseAPI {
 	 * @param pagination Parameters for pagination.
 	 */
 	async getClipsForBroadcaster(id: string, pagination: HelixPagination) {
-		return this.getClips({
+		return this._getClips({
 			...pagination,
 			filterType: 'broadcaster_id',
 			ids: [id]
@@ -67,7 +67,7 @@ export default class HelixClipAPI extends BaseAPI {
 	 * @param pagination Parameters for pagination.
 	 */
 	async getClipsForGame(id: string, pagination: HelixPagination) {
-		return this.getClips({
+		return this._getClips({
 			...pagination,
 			filterType: 'game_id',
 			ids: [id]
@@ -80,7 +80,7 @@ export default class HelixClipAPI extends BaseAPI {
 	 * @param ids The clip IDs.
 	 */
 	async getClipsByIds(ids: string[]) {
-		return this.getClips({
+		return this._getClips({
 			filterType: 'id',
 			ids
 		});
@@ -99,7 +99,7 @@ export default class HelixClipAPI extends BaseAPI {
 		return data[0];
 	}
 
-	private async getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip[]>> {
+	private async _getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip[]>> {
 		const { filterType, ids, after, before, limit } = params;
 		const result = await this._client.apiCall<HelixResponse<HelixClipData[]>>({
 			type: TwitchApiCallType.Helix,
