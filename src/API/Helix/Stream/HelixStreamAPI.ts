@@ -1,5 +1,5 @@
 import BaseAPI from '../../BaseAPI';
-import HelixResponse from '../HelixResponse';
+import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
 import { UniformObject } from '../../../Toolkit/ObjectTools';
 import HelixPagination from '../HelixPagination';
@@ -80,7 +80,7 @@ export default class HelixStreamAPI extends BaseAPI {
 				user_login: filter.userName
 			};
 		}
-		const result = await this._client.apiCall<HelixResponse<HelixStreamData[]>>({
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixStreamData[]>>({
 			url: 'streams',
 			type: TwitchApiCallType.Helix,
 			query

@@ -2,10 +2,10 @@ import HelixDateRangeData from '../HelixDateRangeData';
 import { CachedGetter, NonEnumerable } from '../../../Toolkit/Decorators';
 import TwitchClient from '../../../TwitchClient';
 import HelixBitsLeaderboardEntry, { HelixBitsLeaderboardEntryData } from './HelixBitsLeaderboardEntry';
+import HelixResponse from '../HelixResponse';
 
 /** @private */
-export interface HelixBitsLeaderboardData {
-	data: HelixBitsLeaderboardEntryData[];
+export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLeaderboardEntryData[]> {
 	date_range: HelixDateRangeData;
 	total: number;
 }
@@ -18,7 +18,7 @@ export default class HelixBitsLeaderboard {
 	@NonEnumerable protected readonly _client: TwitchClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixBitsLeaderboardData, client: TwitchClient) {
+	constructor(private readonly _data: HelixBitsLeaderboardResponse, client: TwitchClient) {
 		this._client = client;
 	}
 

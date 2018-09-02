@@ -1,6 +1,6 @@
 import BaseAPI from '../../BaseAPI';
 import { TwitchApiCallType } from '../../../TwitchClient';
-import HelixResponse from '../HelixResponse';
+import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixPagination from '../HelixPagination';
 import HelixPaginatedResult from '../HelixPaginatedResult';
 import HelixClip, { HelixClipData } from './HelixClip';
@@ -101,7 +101,7 @@ export default class HelixClipAPI extends BaseAPI {
 
 	private async _getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip[]>> {
 		const { filterType, ids, after, before, limit } = params;
-		const result = await this._client.apiCall<HelixResponse<HelixClipData[]>>({
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixClipData[]>>({
 			type: TwitchApiCallType.Helix,
 			url: 'clips',
 			method: 'GET',

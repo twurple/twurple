@@ -1,6 +1,6 @@
 import BaseAPI from '../../BaseAPI';
 import { UniformObject } from '../../../Toolkit/ObjectTools';
-import HelixResponse from '../HelixResponse';
+import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixUser, { HelixUserData } from './HelixUser';
 import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
@@ -35,7 +35,7 @@ export interface HelixUserUpdate {
 export default class HelixUserAPI extends BaseAPI {
 	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
 		const query: UniformObject<string | string[] | undefined> = { [lookupType]: param };
-		const result = await this._client.apiCall<HelixResponse<HelixUserData[]>>({
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixUserData[]>>({
 			type: TwitchApiCallType.Helix,
 			url: 'users',
 			query
@@ -94,7 +94,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param withEmail Whether you need the user's email address.
 	 */
 	async getMe(withEmail: boolean = false) {
-		const result = await this._client.apiCall<HelixResponse<HelixPrivilegedUserData[]>>({
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixPrivilegedUserData[]>>({
 			type: TwitchApiCallType.Helix,
 			url: 'users',
 			scope: withEmail ? 'user:read:email' : ''
@@ -113,7 +113,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param data The data to update.
 	 */
 	async updateUser(data: HelixUserUpdate) {
-		const result = await this._client.apiCall<HelixResponse<HelixPrivilegedUserData>>({
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixPrivilegedUserData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'users',
 			method: 'PUT',
@@ -151,7 +151,7 @@ export default class HelixUserAPI extends BaseAPI {
 			throw new TypeError('At least one of user and followedUser have to be set');
 		}
 
-		const result = await this._client.apiCall<HelixResponse<HelixFollowData[]>>({
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixFollowData[]>>({
 			type: TwitchApiCallType.Helix,
 			url: 'users/follows',
 			query
