@@ -112,10 +112,10 @@ export default class HelixUser {
 	/**
 	 * Retrieves a list of channels the user follows.
 	 *
-	 * @param paginationParams Parameters for pagination.
+	 * @param pagination Parameters for pagination.
 	 */
-	async getFollows(paginationParams: HelixPagination) {
-		const params: HelixFollowFilter = paginationParams;
+	async getFollows(pagination: HelixPagination) {
+		const params: HelixFollowFilter = pagination;
 		params.user = this;
 		const result = await this._client.helix.users.getFollows(params);
 
