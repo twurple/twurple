@@ -11,19 +11,9 @@ script:
     - npm run lint
     - npm run build
 
-#deploy:
-#    provider: pages
-#    skip-cleanup: true
-#    github-token: $GH_TOKEN
-#    keep-history: true
-#    on:
-#        branch: master
-#    local-dir: generatedDocs
-#    repo: d-fischer.github.io
-#    target-branch: master
-
 jobs:
     include:
         - stage: Publish docs
+          if: type = push AND branch = master
           script: travis/publishDocs.sh
 
