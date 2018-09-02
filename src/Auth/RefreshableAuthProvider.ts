@@ -79,7 +79,7 @@ export default class RefreshableAuthProvider implements AuthProvider {
 		const tokenData = await TwitchClient.refreshAccessToken(this.clientId, this._clientSecret, this._refreshToken);
 		this.setAccessToken(tokenData.accessToken);
 		this._refreshToken = tokenData.refreshToken;
-		this._expiry = tokenData.expiresAt;
+		this._expiry = tokenData.expiryDate;
 
 		if (this._onRefresh) {
 			this._onRefresh(tokenData);

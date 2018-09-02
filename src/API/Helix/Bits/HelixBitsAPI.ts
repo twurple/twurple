@@ -26,7 +26,7 @@ export interface HelixBitsLeaderboardQuery {
 	/**
 	 * The time to retrieve the bits leaderboard for.
 	 */
-	startedAt?: Date;
+	startDate?: Date;
 
 	/**
 	 * The user ID to show.
@@ -54,7 +54,7 @@ export default class HelixBitsAPI extends BaseAPI {
 	 * @expandParams
 	 */
 	async getLeaderboard(params: HelixBitsLeaderboardQuery = {}) {
-		const { count = 10, period = 'all', startedAt, contextUserId } = params;
+		const { count = 10, period = 'all', startDate, contextUserId } = params;
 		const result = await this._client.apiCall<HelixBitsLeaderboardResponse>({
 			type: TwitchApiCallType.Helix,
 			url: 'bits/leaderboard',
@@ -63,7 +63,7 @@ export default class HelixBitsAPI extends BaseAPI {
 			query: {
 				count: count.toString(),
 				period,
-				started_at: startedAt ? startedAt.toISOString() : undefined,
+				started_at: startDate ? startDate.toISOString() : undefined,
 				user_id: contextUserId
 			}
 		});

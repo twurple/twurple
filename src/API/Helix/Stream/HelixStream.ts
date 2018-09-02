@@ -50,15 +50,53 @@ export default class HelixStream {
 	}
 
 	/**
-	 * Retrieves the user broadcasting the stream.
+	 * The stream ID.
+	 */
+	get id() {
+		return this._data.id;
+	}
+
+	/**
+	 * The user ID.
+	 */
+	get userId() {
+		return this._data.user_id;
+	}
+
+	/**
+	 * Retrieves information about the user broadcasting the stream.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 
-	// TODO implement stream -> game
-	// async getGame() {
-	// }
+	/**
+	 * The game ID.
+	 */
+	get gameId() {
+		return this._data.game_id;
+	}
+
+	/**
+	 * Retrieves information about the game that is being played on this stream.
+	 */
+	async getGame() {
+		return this._client.helix.games.getGameById(this._data.game_id);
+	}
+
+	/**
+	 * The type of the stream.
+	 */
+	get type() {
+		return this._data.type;
+	}
+
+	/**
+	 * The title of the stream.
+	 */
+	get title() {
+		return this._data.title;
+	}
 
 	/**
 	 * The number of viewers the stream currently has.
@@ -75,9 +113,16 @@ export default class HelixStream {
 	}
 
 	/**
-	 * The type of the stream.
+	 * The language of the stream.
 	 */
-	get type() {
-		return this._data.type;
+	get language() {
+		return this._data.language;
+	}
+
+	/**
+	 * The URL of the thumbnail of the stream.
+	 */
+	get thumbnailUrl() {
+		return this._data.thumbnail_url;
 	}
 }

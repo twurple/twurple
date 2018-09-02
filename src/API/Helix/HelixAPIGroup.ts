@@ -5,6 +5,7 @@ import HelixStreamAPI from './Stream/HelixStreamAPI';
 import HelixUserAPI from './User/HelixUserAPI';
 import HelixBitsAPI from './Bits/HelixBitsAPI';
 import HelixClipAPI from './Clip/HelixClipAPI';
+import HelixGameAPI from './Game/HelixGameAPI';
 
 /**
  * Groups all API calls available in Helix a.k.a. the "New Twitch API".
@@ -27,6 +28,14 @@ export default class HelixAPIGroup extends BaseAPI {
 	@CachedGetter()
 	get clips() {
 		return new HelixClipAPI(this._client);
+	}
+
+	/**
+	 * The Helix game API methods.
+	 */
+	@CachedGetter()
+	get games() {
+		return new HelixGameAPI(this._client);
 	}
 
 	/**

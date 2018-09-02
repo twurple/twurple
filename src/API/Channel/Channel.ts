@@ -82,7 +82,7 @@ export default class Channel extends ChannelPlaceholder {
 	/**
 	 * The date when the channel was created.
 	 */
-	get createdAt() {
+	get creationDate() {
 		return new Date(this._data.created_at);
 	}
 
@@ -159,7 +159,7 @@ export default class Channel extends ChannelPlaceholder {
 	/**
 	 * The date when the channel was last updated.
 	 */
-	get updatedAt() {
+	get updateDate() {
 		return new Date(this._data.updated_at);
 	}
 

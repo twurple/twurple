@@ -10,11 +10,11 @@ export interface AccessTokenData {
  * Represents the data of an OAuth access token returned by Twitch.
  */
 export default class AccessToken {
-	private readonly _obtainedAt: Date;
+	private readonly _obtainmentDate: Date;
 
 	/** @private */
-	constructor(private readonly _data: AccessTokenData, obtainedAt?: Date) {
-		this._obtainedAt = obtainedAt || new Date();
+	constructor(private readonly _data: AccessTokenData, obtainmentDate?: Date) {
+		this._obtainmentDate = obtainmentDate || new Date();
 	}
 
 	/**
@@ -37,11 +37,11 @@ export default class AccessToken {
 	 * May be `null`, in which case the token does not expire.
 	 * This can only be the case with very old Client IDs.
 	 */
-	get expiresAt(): Date | null {
+	get expiryDate(): Date | null {
 		if (!this._data.expires_in) {
 			return null;
 		}
-		return new Date(this._obtainedAt.getTime() + this._data.expires_in * 1000);
+		return new Date(this._obtainmentDate.getTime() + this._data.expires_in * 1000);
 	}
 
 	/**

@@ -41,7 +41,7 @@ export default class HelixFollow {
 	/**
 	 * The date when the user followed the channel.
 	 */
-	get followedAt() {
+	get followDate() {
 		return new Date(this._data.followed_at);
 	}
 
