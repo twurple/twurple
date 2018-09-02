@@ -1,9 +1,14 @@
 /** @private */
 export default class CustomError extends Error {
-	constructor(message: string) {
-		super();
-		this.name = this.constructor.name;
-		this.message = message;
-		Error.captureStackTrace(this, this.constructor);
+	constructor(...params: [string, string?, string?]) {
+		// @ts-ignore
+		super(...params);
+		if (Error.captureStackTrace) {
+			Error.captureStackTrace(this, this.constructor);
+		}
+	}
+
+	get name() {
+		return this.constructor.name;
 	}
 }
