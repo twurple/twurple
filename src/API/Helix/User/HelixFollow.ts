@@ -5,7 +5,7 @@ import HelixUser from './HelixUser';
 import TwitchClient from '../../../TwitchClient';
 
 /**
- * Filters for the Helix User Follow resource.
+ * Filters for the follower request.
  */
 export interface HelixFollowFilter extends HelixPagination {
 	/**

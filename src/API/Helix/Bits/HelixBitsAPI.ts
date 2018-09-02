@@ -31,7 +31,7 @@ export interface HelixBitsLeaderboardQuery {
 	/**
 	 * The user ID to show.
 	 *
-	 * The leaderboard will be guaranteed to include this user and then have more users before and after that person.
+	 * The leaderboard will be guaranteed to include this user and then have more users before and after that user.
 	 */
 	contextUserId?: string;
 }

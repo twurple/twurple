@@ -75,10 +75,17 @@ export default class HelixClip {
 	}
 
 	/**
-	 * The ID of the video where there clip is taken from.
+	 * The ID of the video the clip is taken from.
 	 */
 	get videoId() {
 		return this._data.video_id;
+	}
+
+	/**
+	 * Retrieves information about the video the clip is taken from.
+	 */
+	async getVideo() {
+		return this._client.helix.videos.getVideoById(this._data.video_id);
 	}
 
 	/**

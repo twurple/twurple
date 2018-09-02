@@ -7,7 +7,7 @@ import { TwitchApiCallType } from '../../../TwitchClient';
 import HelixPaginatedResult from '../HelixPaginatedResult';
 
 /**
- * Filters for the Helix Stream API.
+ * Filters for the streams request.
  */
 export interface HelixStreamFilter extends HelixPagination {
 	/**

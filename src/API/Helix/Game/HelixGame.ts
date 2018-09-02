@@ -7,6 +7,9 @@ export interface HelixGameData {
 	box_art_url: string;
 }
 
+/**
+ * A game as displayed on Twitch.
+ */
 export default class HelixGame {
 	/** @private */
 	@NonEnumerable protected readonly _client: TwitchClient;
