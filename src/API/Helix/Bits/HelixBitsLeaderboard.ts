@@ -5,7 +5,7 @@ import HelixBitsLeaderboardEntry, { HelixBitsLeaderboardEntryData } from './Heli
 import HelixResponse from '../HelixResponse';
 
 /** @private */
-export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLeaderboardEntryData[]> {
+export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLeaderboardEntryData> {
 	date_range: HelixDateRangeData;
 	total: number;
 }

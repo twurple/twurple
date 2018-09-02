@@ -5,7 +5,7 @@ export default interface HelixPaginatedResult<T> {
 	/**
 	 * The returned data.
 	 */
-	data: T;
+	data: T[];
 
 	/**
 	 * A cursor for traversing more results.

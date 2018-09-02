@@ -65,7 +65,7 @@ export default class HelixStreamAPI extends BaseAPI {
 	 *
 	 * @param filter Several filtering and pagination parameters. See the {@HelixStreamFilter} documentation.
 	 */
-	async getStreams(filter?: HelixStreamFilter): Promise<HelixPaginatedResult<HelixStream[]>> {
+	async getStreams(filter?: HelixStreamFilter): Promise<HelixPaginatedResult<HelixStream>> {
 		let query: UniformObject<string | string[] | undefined> = {};
 		if (filter) {
 			query = {
@@ -80,7 +80,7 @@ export default class HelixStreamAPI extends BaseAPI {
 				user_login: filter.userName
 			};
 		}
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixStreamData[]>>({
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixStreamData>>({
 			url: 'streams',
 			type: TwitchApiCallType.Helix,
 			query

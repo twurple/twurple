@@ -99,9 +99,9 @@ export default class HelixClipAPI extends BaseAPI {
 		return data[0];
 	}
 
-	private async _getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip[]>> {
+	private async _getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip>> {
 		const { filterType, ids, after, before, limit } = params;
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixClipData[]>>({
+		const result = await this._client.apiCall<HelixPaginatedResponse<HelixClipData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'clips',
 			method: 'GET',
