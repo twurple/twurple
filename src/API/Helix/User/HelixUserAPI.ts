@@ -1,6 +1,6 @@
 import BaseAPI from '../../BaseAPI';
 import { UniformObject } from '../../../Toolkit/ObjectTools';
-import { HelixPaginatedResponse } from '../HelixResponse';
+import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixUser, { HelixUserData } from './HelixUser';
 import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
@@ -94,7 +94,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param withEmail Whether you need the user's email address.
 	 */
 	async getMe(withEmail: boolean = false) {
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixPrivilegedUserData[]>>({
+		const result = await this._client.apiCall<HelixResponse<HelixPrivilegedUserData[]>>({
 			type: TwitchApiCallType.Helix,
 			url: 'users',
 			scope: withEmail ? 'user:read:email' : ''
@@ -113,7 +113,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param data The data to update.
 	 */
 	async updateUser(data: HelixUserUpdate) {
-		const result = await this._client.apiCall<HelixPaginatedResponse<HelixPrivilegedUserData>>({
+		const result = await this._client.apiCall<HelixResponse<HelixPrivilegedUserData[]>>({
 			type: TwitchApiCallType.Helix,
 			url: 'users',
 			method: 'PUT',
