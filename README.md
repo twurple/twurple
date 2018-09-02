@@ -20,4 +20,4 @@ which also includes a complete reference of all classes and interfaces.
 
 ## If you're getting stuck...
 
-You can join the [Discord Server](https://discord.gg/b9ZqMfz) for support.
+You can join the [Discord server](https://discord.gg/b9ZqMfz) for support.
