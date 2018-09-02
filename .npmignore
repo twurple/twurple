@@ -21,3 +21,5 @@ src
 /tslint.json
 /travis
 /docs
+/.github
+/CONTRIBUTING.md
