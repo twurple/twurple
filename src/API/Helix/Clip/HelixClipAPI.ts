@@ -10,7 +10,7 @@ export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
 /** @private */
 export interface HelixClipFilter extends HelixPagination {
 	filterType: HelixClipFilterType;
-	ids: string[];
+	ids: string | string[];
 }
 
 /**
@@ -56,7 +56,7 @@ export default class HelixClipAPI extends BaseAPI {
 		return this._getClips({
 			...pagination,
 			filterType: 'broadcaster_id',
-			ids: [id]
+			ids: id
 		});
 	}
 
@@ -70,7 +70,7 @@ export default class HelixClipAPI extends BaseAPI {
 		return this._getClips({
 			...pagination,
 			filterType: 'game_id',
-			ids: [id]
+			ids: id
 		});
 	}
 
