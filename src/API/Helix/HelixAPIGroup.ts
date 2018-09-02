@@ -4,7 +4,7 @@ import { Cacheable, CachedGetter } from '../../Toolkit/Decorators';
 import HelixStreamAPI from './Stream/HelixStreamAPI';
 import HelixUserAPI from './User/HelixUserAPI';
 import HelixBitsAPI from './Bits/HelixBitsAPI';
-import HelixClipsAPI from './Clips/HelixClipsAPI';
+import HelixClipAPI from './Clip/HelixClipAPI';
 
 /**
  * Groups all API calls available in Helix a.k.a. the "New Twitch API".
@@ -26,7 +26,7 @@ export default class HelixAPIGroup extends BaseAPI {
 	 */
 	@CachedGetter()
 	get clips() {
-		return new HelixClipsAPI(this._client);
+		return new HelixClipAPI(this._client);
 	}
 
 	/**

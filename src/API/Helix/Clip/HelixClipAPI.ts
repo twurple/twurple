@@ -56,7 +56,7 @@ export interface HelixClipCreateResponse {
  * const leaderboard = await client.helix.clips.createClip({ channelId: '125328655' });
  * ```
  */
-export default class HelixClipsAPI extends BaseAPI {
+export default class HelixClipAPI extends BaseAPI {
 	/**
 	 * Retrieves the latest clips for the specified broadcaster.
 	 *
@@ -113,8 +113,8 @@ export default class HelixClipsAPI extends BaseAPI {
 	/**
 	 * Retrieves the latest clips based on specified filter parameters.
 	 *
-	 * Please note that you rarely need to use this method. You should use {@HelixClipsAPI#getClipsForBroadcaster},
-	 * {@HelixClipsAPI#getClipsForGame} or {@HelixClipsAPI#getClipsByIds} instead.
+	 * Please note that you rarely need to use this method. You should use {@HelixClipAPI#getClipsForBroadcaster},
+	 * {@HelixClipAPI#getClipsForGame} or {@HelixClipAPI#getClipsByIds} instead.
 	 *
 	 * @expandParams
 	 */
