@@ -15,9 +15,9 @@ export default class PubSubClient extends EventEmitter {
 	private _manualDisconnect: boolean = false;
 	private _initialConnect: boolean = false;
 
-	private _pingCheckTimer: NodeJS.Timer;
-	private _pingTimeoutTimer: NodeJS.Timer;
-	private _retryTimer: NodeJS.Timer;
+	private _pingCheckTimer?: NodeJS.Timer;
+	private _pingTimeoutTimer?: NodeJS.Timer;
+	private _retryTimer?: NodeJS.Timer;
 	private _retryDelayGenerator?: IterableIterator<number>;
 
 	private readonly _onPong: (handler: () => void) => Listener = this.registerEvent();
@@ -121,8 +121,12 @@ export default class PubSubClient extends EventEmitter {
 				this._receiveMessage(data.toString());
 			};
 			this._socket.onclose = ({ wasClean, code, reason }) => {
-				clearInterval(this._pingCheckTimer);
-				clearTimeout(this._pingTimeoutTimer);
+				if (this._pingCheckTimer) {
+					clearInterval(this._pingCheckTimer);
+				}
+				if (this._pingTimeoutTimer) {
+					clearTimeout(this._pingTimeoutTimer);
+				}
 				this._socket = undefined;
 				this._connected = false;
 				this._connecting = false;
@@ -196,7 +200,9 @@ export default class PubSubClient extends EventEmitter {
 
 	private _pingCheck() {
 		const pongListener = this._onPong(() => {
-			clearTimeout(this._pingTimeoutTimer);
+			if (this._pingTimeoutTimer) {
+				clearTimeout(this._pingTimeoutTimer);
+			}
 			this.removeListener(pongListener);
 		});
 		this._pingTimeoutTimer = setTimeout(
@@ -210,7 +216,9 @@ export default class PubSubClient extends EventEmitter {
 	}
 
 	private _disconnect() {
-		clearInterval(this._retryTimer);
+		if (this._retryTimer) {
+			clearInterval(this._retryTimer);
+		}
 		this._retryDelayGenerator = undefined;
 		if (this._socket) {
 			this._manualDisconnect = true;
@@ -238,7 +246,9 @@ export default class PubSubClient extends EventEmitter {
 	}
 
 	private _startPingCheckTimer() {
-		clearInterval(this._pingCheckTimer);
+		if (this._pingCheckTimer) {
+			clearInterval(this._pingCheckTimer);
+		}
 		this._pingCheckTimer = setInterval(
 			() => this._pingCheck(),
 			60000

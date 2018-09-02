@@ -1,9 +1,7 @@
 /** @private */
-interface HelixResponse<T> {
+export default interface HelixResponse<T> {
 	data: T;
 	pagination: {
 		cursor: string;
 	};
 }
-
-export default HelixResponse;
