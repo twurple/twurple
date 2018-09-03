@@ -1,14 +1,12 @@
 {
   "name": "twitch",
-  "description": "Interact with Twitch's API and chat.",
   "version": "0.21.1",
+  "description": "Interact with Twitch's API and chat.",
   "main": "lib",
   "types": "lib/index",
+  "repository": "github:d-fischer/twitch",
+  "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/d-fischer/twitch.git"
-  },
   "devDependencies": {
     "@d-fischer/documen.ts": "^0.2.2",
     "@types/node": "^8.0.19",

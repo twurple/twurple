@@ -14,7 +14,6 @@ import StreamAPI from './API/Stream/StreamAPI';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
 import UserAPI from './API/User/UserAPI';
 
-import ChatClient from './Chat/ChatClient';
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
 import SingleUserPubSubClient from './PubSub/SingleUserPubSubClient';
@@ -154,7 +153,6 @@ export interface TwitchAPICallOptions {
 export default class TwitchClient {
 	/** @private */
 	readonly _config: TwitchConfig;
-	private readonly _chatClients: Map<string, ChatClient> = new Map;
 	private readonly _pubSubClients: Map<string, SingleUserPubSubClient> = new Map;
 
 	/**
@@ -305,29 +303,6 @@ export default class TwitchClient {
 		}
 
 		return request(requestOptions);
-	}
-
-	/**
-	 * Creates a chat client with your credentials.
-	 *
-	 * @param identifier The identifier of the chat client.
-	 *
-	 * Passing different strings to this will create separate clients. Passing the same string twice will return the same client.
-	 */
-	async getChatClient(identifier: string = 'default') {
-		if (!this._chatClients.has(identifier)) {
-			const token = await this._config.authProvider.getAccessToken(['chat_login']);
-			const tokenInfo = await this.getTokenInfo();
-			if (tokenInfo.valid && tokenInfo.userName) {
-				const newClient = new ChatClient(tokenInfo.userName, token, this);
-				this._chatClients.set(identifier, newClient);
-				return newClient;
-			}
-
-			throw new Error('invalid token when trying to connect to chat');
-		}
-
-		return this._chatClients.get(identifier)!;
 	}
 
 	/**
