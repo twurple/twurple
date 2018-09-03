@@ -1,6 +1,6 @@
 import * as WebSocket from 'universal-websocket-client';
 import * as randomstring from 'randomstring';
-import { EventEmitter, Listener } from 'ircv3/lib/TypedEventEmitter';
+import { EventEmitter, Listener } from '../Toolkit/TypedEventEmitter';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 
