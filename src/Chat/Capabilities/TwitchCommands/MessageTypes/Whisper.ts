@@ -11,8 +11,8 @@ export interface WhisperParams {
 
 /** @private */
 export default class Whisper extends Message<WhisperParams> {
-	public static readonly COMMAND = 'WHISPER';
-	public static readonly PARAM_SPEC: MessageParamSpec<WhisperParams> = {
+	static readonly COMMAND = 'WHISPER';
+	static readonly PARAM_SPEC: MessageParamSpec<WhisperParams> = {
 		target: {},
 		message: {
 			trailing: true,

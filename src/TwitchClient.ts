@@ -167,7 +167,7 @@ export default class TwitchClient {
 	 *
 	 * Note that if you provide a custom authentication provider, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	public static withCredentials(clientId: string, accessToken?: string, refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
+	static withCredentials(clientId: string, accessToken?: string, refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
 		if (refreshConfig) {
 			return new this({ ...config, authProvider: new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken), refreshConfig) });
 		} else {
@@ -180,7 +180,7 @@ export default class TwitchClient {
 	 *
 	 * @param config Configuration for the client instance.
 	 */
-	public constructor(config: Partial<TwitchConfig>) {
+	constructor(config: Partial<TwitchConfig>) {
 		if (!config.authProvider) {
 			throw new Error('No auth provider given');
 		}
@@ -207,7 +207,7 @@ export default class TwitchClient {
 	/**
 	 * Retrieves information about your access token.
 	 */
-	public async getTokenInfo() {
+	async getTokenInfo() {
 		const data = await this.callAPI<TokenInfoData>({ url: '/' });
 		return new TokenInfo(data.token);
 	}
@@ -218,7 +218,7 @@ export default class TwitchClient {
 	 * @param clientId The client ID of your application.
 	 * @param accessToken The access token.
 	 */
-	public static async getTokenInfo(clientId: string, accessToken: string) {
+	static async getTokenInfo(clientId: string, accessToken: string) {
 		const data = await this.callAPI<TokenInfoData>({ url: '/' }, clientId, accessToken);
 		return new TokenInfo(data.token);
 	}
@@ -238,7 +238,7 @@ export default class TwitchClient {
 	 * @param options The configuration of the call.
 	 */
 	// tslint:disable-next-line:no-any
-	public async callAPI<T = any>(options: TwitchAPICallOptions): Promise<T> {
+	async callAPI<T = any>(options: TwitchAPICallOptions): Promise<T> {
 		let accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
 		try {
 			return await TwitchClient.callAPI<T>(options, this._config.authProvider.clientId, accessToken);
@@ -275,7 +275,7 @@ export default class TwitchClient {
 	 * @param accessToken The access token.
 	 */
 	// tslint:disable-next-line:no-any
-	public static async callAPI<T = any>(options: TwitchAPICallOptions, clientId?: string, accessToken?: string): Promise<T> {
+	static async callAPI<T = any>(options: TwitchAPICallOptions, clientId?: string, accessToken?: string): Promise<T> {
 		const requestOptions: request.Options = {
 			url: this._getUrl(options.url, options.type),
 			method: options.method,
@@ -314,7 +314,7 @@ export default class TwitchClient {
 	 *
 	 * Passing different strings to this will create separate clients. Passing the same string twice will return the same client.
 	 */
-	public async getChatClient(identifier: string = 'default') {
+	async getChatClient(identifier: string = 'default') {
 		if (!this._chatClients.has(identifier)) {
 			const token = await this._config.authProvider.getAccessToken(['chat_login']);
 			const tokenInfo = await this.getTokenInfo();
@@ -337,7 +337,7 @@ export default class TwitchClient {
 	 *
 	 * Passing different strings to this will create separate clients. Passing the same string twice will return the same client.
 	 */
-	public getPubSubClient(identifier: string = 'default') {
+	getPubSubClient(identifier: string = 'default') {
 		if (!this._pubSubClients.has(identifier)) {
 			const newClient = new SingleUserPubSubClient(this);
 			this._pubSubClients.set(identifier, newClient);
@@ -355,7 +355,7 @@ export default class TwitchClient {
 	 * @param code The authorization code.
 	 * @param redirectUri The redirect URI. This serves no real purpose here, but must still match with the redirect URI you configured in the Twitch Developer dashboard.
 	 */
-	public static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<AccessToken> {
+	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<AccessToken> {
 		return new AccessToken(await this.callAPI<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',
@@ -376,7 +376,7 @@ export default class TwitchClient {
 	 * @param clientSecret The client secret of your application.
 	 * @param refreshToken The refresh token.
 	 */
-	public static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<AccessToken> {
+	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<AccessToken> {
 		return new AccessToken(await this.callAPI<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',

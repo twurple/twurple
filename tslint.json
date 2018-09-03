@@ -28,6 +28,7 @@
 		"match-default-export-name": true,
 		"max-classes-per-file": [true, 1],
 		"max-line-length": [true, 200],
+		"member-access": [true, "no-public"],
 		"member-ordering": [true, "variables-before-functions"],
 		"no-angle-bracket-type-assertion": true,
 		"no-any": true,

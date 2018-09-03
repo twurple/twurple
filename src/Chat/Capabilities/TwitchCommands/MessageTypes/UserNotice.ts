@@ -11,8 +11,8 @@ export interface UserNoticeParams {
 
 /** @private */
 export default class UserNotice extends Message<UserNoticeParams> {
-	public static readonly COMMAND = 'USERNOTICE';
-	public static readonly PARAM_SPEC: MessageParamSpec<UserNoticeParams> = {
+	static readonly COMMAND = 'USERNOTICE';
+	static readonly PARAM_SPEC: MessageParamSpec<UserNoticeParams> = {
 		channel: {
 			type: 'channel'
 		},

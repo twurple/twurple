@@ -14,9 +14,9 @@ export interface CacheEntry<T = any> {
 /** @private */
 export function Cacheable<T extends Constructor>(cls: T) {
 	return class extends cls {
-		public cache: Map<string, CacheEntry> = new Map;
+		cache: Map<string, CacheEntry> = new Map;
 
-		public getFromCache(cacheKey: string): {} | undefined {
+		getFromCache(cacheKey: string): {} | undefined {
 			this._cleanCache();
 			if (this.cache.has(cacheKey)) {
 				const entry = this.cache.get(cacheKey);
@@ -29,13 +29,13 @@ export function Cacheable<T extends Constructor>(cls: T) {
 			return undefined;
 		}
 
-		public setCache(cacheKey: string, value: {}, timeInSeconds: number): void {
+		setCache(cacheKey: string, value: {}, timeInSeconds: number): void {
 			this.cache.set(cacheKey, {
 				value, expires: Date.now() + (timeInSeconds * 1000)
 			});
 		}
 
-		public removeFromCache(cacheKey: string | string[], prefix?: boolean) {
+		removeFromCache(cacheKey: string | string[], prefix?: boolean) {
 			let internalCacheKey: string;
 			if (typeof cacheKey === 'string') {
 				internalCacheKey = cacheKey;
@@ -57,7 +57,7 @@ export function Cacheable<T extends Constructor>(cls: T) {
 			}
 		}
 
-		public _cleanCache() {
+		_cleanCache() {
 			const now = Date.now();
 			this.cache.forEach((val, key) => {
 				if (val.expires < now) {
