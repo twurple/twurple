@@ -4150,15 +4150,6 @@ ipaddr.js@1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.8.0.tgz#eaa33d6ddd7ace8f7f6fe0c9ca0440e706738b1e"
 
-ircv3@^0.8.5:
-  version "0.8.9"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.8.9.tgz#cd3809e98c9b406eb74516ff252adb701646c98c"
-  dependencies:
-    escape-string-regexp "^1.0.5"
-    randomstring "^1.1.5"
-    universal-websocket-client "^1.0.1"
-    ws "^3.1.0"
-
 is-absolute-url@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/is-absolute-url/-/is-absolute-url-2.1.0.tgz#50530dfb84fcc9aa7dbe7852e83a37b93b9f2aa6"
@@ -7967,7 +7958,7 @@ unique-string@^1.0.0:
   dependencies:
     crypto-random-string "^1.0.0"
 
-universal-websocket-client@^1.0.1, universal-websocket-client@^1.0.2:
+universal-websocket-client@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/universal-websocket-client/-/universal-websocket-client-1.0.2.tgz#9942307a9d418bb5defd33594048c7e367448b44"
   dependencies:
@@ -8461,7 +8452,7 @@ write-file-atomic@^2.0.0:
     imurmurhash "^0.1.4"
     signal-exit "^3.0.2"
 
-ws@^3.1.0, ws@^3.3.3:
+ws@^3.3.3:
   version "3.3.3"
   resolved "https://registry.yarnpkg.com/ws/-/ws-3.3.3.tgz#f1cf84fe2d5e901ebce94efaece785f187a228f2"
   dependencies:
