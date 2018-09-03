@@ -224,6 +224,15 @@ export default class TwitchClient {
 	}
 
 	/**
+	 * Retrieves an access token for the authentication provider.
+	 *
+	 * @param scope
+	 */
+	async getAccessToken(scope?: string) {
+		return this._config.authProvider.getAccessToken(scope);
+	}
+
+	/**
 	 * Makes a call to the Twitch API using your access token.
 	 *
 	 * @param options The configuration of the call.
