@@ -147,7 +147,7 @@ export interface TwitchAPICallOptions {
 }
 
 /**
- * The main entry point of this library. Manages API calls, chat and PubSub connections and the use of access token in all of these.
+ * The main entry point of this library. Manages API calls and the use of access tokens in these.
  */
 @Cacheable
 export default class TwitchClient {

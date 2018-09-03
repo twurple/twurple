@@ -1,7 +1,7 @@
 {
   "name": "twitch",
   "version": "0.21.1",
-  "description": "Interact with Twitch's API and chat.",
+  "description": "Interact with Twitch's API.",
   "main": "lib",
   "types": "lib/index",
   "repository": "github:d-fischer/twitch",
