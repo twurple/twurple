@@ -1,5 +1,4 @@
 import AuthProvider from './Auth/AuthProvider';
-import * as defaults from 'defaults';
 import * as request from 'request-promise-native';
 import { Cacheable, CachedGetter } from './Toolkit/Decorators';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
@@ -186,7 +185,7 @@ export default class TwitchClient {
 			throw new Error('No auth provider given');
 		}
 
-		this._config = defaults(config, {
+		this._config = {
 			preAuth: false,
 			initialScopes: [],
 			cheermotes: {
@@ -194,8 +193,10 @@ export default class TwitchClient {
 				defaultState: CheermoteState.animated,
 				defaultScale: CheermoteScale.x1
 			},
-			debugLevel: 0
-		});
+			debugLevel: 0,
+			authProvider: config.authProvider, // for some reason this is necessary to shut up TS
+			...config
+		};
 
 		if (this._config.preAuth) {
 			// tslint:disable-next-line:no-floating-promises

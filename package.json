@@ -22,7 +22,6 @@
   "dependencies": {
     "@types/randomstring": "^1.1.6",
     "@types/ws": "^4.0.0",
-    "defaults": "^1.0.3",
     "ircv3": "^0.8.5",
     "randomstring": "^1.1.5",
     "request": "^2.81.0",

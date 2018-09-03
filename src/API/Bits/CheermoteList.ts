@@ -1,7 +1,6 @@
 import TwitchClient from '../../TwitchClient';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
-import * as defaults from 'defaults';
 
 /**
  * The type of background a cheermote is supposed to appear on.
@@ -167,14 +166,15 @@ export default class CheermoteList {
 	 * @param bits The amount of bits cheered.
 	 * @param format The format of the cheermote you want to request.
 	 */
-	getCheermoteDisplayInfo(name: string, bits: number, format?: Partial<CheermoteFormat>): CheermoteDisplayInfo {
+	getCheermoteDisplayInfo(name: string, bits: number, format: Partial<CheermoteFormat> = {}): CheermoteDisplayInfo {
 		name = name.toLowerCase();
 		const cheermoteDefaults = this._client._config.cheermotes;
-		const fullOptions: CheermoteFormat = defaults(format || {}, {
+		const fullOptions: CheermoteFormat = {
 			background: cheermoteDefaults.defaultBackground,
 			state: cheermoteDefaults.defaultState,
-			scale: cheermoteDefaults.defaultScale
-		});
+			scale: cheermoteDefaults.defaultScale,
+			...format
+		};
 
 		const tiers = this._data[name].tiers;
 		const correctTier = tiers.sort((a, b) => b.min_bits - a.min_bits).find(tier => tier.min_bits <= bits);
