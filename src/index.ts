@@ -71,14 +71,10 @@ export { HelixStream };
 
 import HelixFollow from './API/Helix/User/HelixFollow';
 import HelixPrivilegedUser from './API/Helix/User/HelixPrivilegedUser';
-import HelixUser from './API/Helix/User/HelixUser';
+import HelixUser, { HelixUserType } from './API/Helix/User/HelixUser';
 
-export { HelixFollow, HelixPrivilegedUser, HelixUser };
+export { HelixFollow, HelixPrivilegedUser, HelixUser, HelixUserType };
 
 import HelixVideo from './API/Helix/Video/HelixVideo';
 
 export { HelixVideo };
-
-import PubSubClient from './PubSub/PubSubClient';
-
-export { PubSubClient };

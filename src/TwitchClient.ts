@@ -16,7 +16,6 @@ import UserAPI from './API/User/UserAPI';
 
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
-import SingleUserPubSubClient from './PubSub/SingleUserPubSubClient';
 
 /**
  * Default configuration for the cheermote API.
@@ -153,7 +152,6 @@ export interface TwitchAPICallOptions {
 export default class TwitchClient {
 	/** @private */
 	readonly _config: TwitchConfig;
-	private readonly _pubSubClients: Map<string, SingleUserPubSubClient> = new Map;
 
 	/**
 	 * Creates a new instance with fixed credentials.
@@ -303,23 +301,6 @@ export default class TwitchClient {
 		}
 
 		return request(requestOptions);
-	}
-
-	/**
-	 * Creates a PubSub client with your credentials.
-	 *
-	 * @param identifier The identifier of the PubSub client.
-	 *
-	 * Passing different strings to this will create separate clients. Passing the same string twice will return the same client.
-	 */
-	getPubSubClient(identifier: string = 'default') {
-		if (!this._pubSubClients.has(identifier)) {
-			const newClient = new SingleUserPubSubClient(this);
-			this._pubSubClients.set(identifier, newClient);
-			return newClient;
-		}
-
-		return this._pubSubClients.get(identifier)!;
 	}
 
 	/**
