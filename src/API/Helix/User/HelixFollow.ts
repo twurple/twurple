@@ -1,5 +1,4 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
-import HelixPagination from '../HelixPagination';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import HelixUser from './HelixUser';
 import TwitchClient from '../../../TwitchClient';
@@ -7,7 +6,7 @@ import TwitchClient from '../../../TwitchClient';
 /**
  * Filters for the follower request.
  */
-export interface HelixFollowFilter extends HelixPagination {
+export interface HelixFollowFilter {
 	/**
 	 * The following user.
 	 */

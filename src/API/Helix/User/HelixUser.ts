@@ -2,8 +2,7 @@ import { NonEnumerable } from '../../../Toolkit/Decorators';
 import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
 import NotFollowing from '../../NotFollowing';
 import UserFollow from '../../User/UserFollow';
-import HelixFollow, { HelixFollowFilter } from './HelixFollow';
-import HelixPagination from '../HelixPagination';
+import HelixFollow from './HelixFollow';
 import TwitchClient from '../../../TwitchClient';
 
 /**
@@ -111,15 +110,9 @@ export default class HelixUser {
 
 	/**
 	 * Retrieves a list of channels the user follows.
-	 *
-	 * @param pagination Parameters for pagination.
 	 */
-	async getFollows(pagination: HelixPagination) {
-		const params: HelixFollowFilter = pagination;
-		params.user = this;
-		const result = await this._client.helix.users.getFollows(params);
-
-		return result.data;
+	getFollows() {
+		return this._client.helix.users.getFollows({ user: this });
 	}
 
 	/**
@@ -133,13 +126,14 @@ export default class HelixUser {
 			followedUser: channel
 		};
 
-		const result = await this._client.helix.users.getFollows(params);
+		const req = this._client.helix.users.getFollows(params);
+		const result = await req.getAll();
 
-		if (!result.data.length) {
+		if (!result.length) {
 			throw new NotFollowing(this.id, UserTools.getUserId(channel));
 		}
 
-		return result.data[0];
+		return result[0];
 	}
 
 	/**

@@ -6,7 +6,7 @@ import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedU
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import HelixPaginatedResult from '../HelixPaginatedResult';
+import HelixPaginatedRequest from '../HelixPaginatedRequest';
 
 /** @private */
 export enum UserLookupType {
@@ -131,12 +131,8 @@ export default class HelixUserAPI extends BaseAPI {
 	 *
 	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
 	 */
-	async getFollows(filter: HelixFollowFilter): Promise<HelixPaginatedResult<HelixFollow>> {
-		const query: UniformObject<string | undefined> = {
-			after: filter.after,
-			before: filter.before,
-			first: filter.limit
-		};
+	getFollows(filter: HelixFollowFilter) {
+		const query: UniformObject<string | undefined> = {};
 		let hasUserIdParam = false;
 		if (filter.user) {
 			query.from_id = UserTools.getUserId(filter.user);
@@ -151,15 +147,14 @@ export default class HelixUserAPI extends BaseAPI {
 			throw new TypeError('At least one of user and followedUser have to be set');
 		}
 
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixFollowData>>({
-			type: TwitchAPICallType.Helix,
-			url: 'users/follows',
-			query
-		});
-
-		return {
-			data: result.data.map(follow => new HelixFollow(follow, this._client)),
-			cursor: result.pagination.cursor
-		};
+		return new HelixPaginatedRequest(
+			{
+				type: TwitchAPICallType.Helix,
+				url: 'users/follows',
+				query
+			},
+			this._client,
+			(data: HelixFollowData) => new HelixFollow(data, this._client)
+		);
 	}
 }

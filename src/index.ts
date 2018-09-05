@@ -47,10 +47,10 @@ import UserSubscription from './API/User/UserSubscription';
 
 export { PrivilegedUser, User, UserBlock, UserFollow, UserSubscription };
 
-import HelixPaginatedResult from './API/Helix/HelixPaginatedResult';
+import HelixPaginatedRequest from './API/Helix/HelixPaginatedRequest';
 import HelixResponse from './API/Helix/HelixResponse';
 
-export { HelixPaginatedResult, HelixResponse };
+export { HelixPaginatedRequest, HelixResponse };
 
 import HelixBitsLeaderboard from './API/Helix/Bits/HelixBitsLeaderboard';
 import HelixBitsLeaderboardEntry from './API/Helix/Bits/HelixBitsLeaderboardEntry';
