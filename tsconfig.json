@@ -10,6 +10,7 @@
 		"declaration": true,
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitReturns": true,
+		"importHelpers": true,
 		"strict": true,
 		"strictFunctionTypes": false,
 		"strictPropertyInitialization": false,
