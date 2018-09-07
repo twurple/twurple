@@ -15,7 +15,6 @@
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^4.1.1",
-    "tslint-language-service": "^0.9.9",
     "typescript": "^3.0.1"
   },
   "dependencies": {

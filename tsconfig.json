@@ -16,13 +16,7 @@
 		"strictPropertyInitialization": false,
 		"suppressImplicitAnyIndexErrors": true,
 		"noUnusedLocals": true,
-		"experimentalDecorators": true,
-		"plugins": [
-			{
-				"name": "tslint-language-service",
-				"ignoreDefinitionFiles": true
-			}
-		]
+		"experimentalDecorators": true
 	},
 	"exclude": [
 		"node_modules",
