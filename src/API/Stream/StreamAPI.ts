@@ -27,6 +27,9 @@ export default class StreamAPI extends BaseAPI {
 		const channelId = UserTools.getUserId(channel);
 
 		const data = await this._client.callAPI<StreamDataWrapper>({ url: `streams/${channelId}` });
+		if (!data.stream) {
+			throw new Error('channel not online');
+		}
 		return new Stream(data.stream, this._client);
 	}
 
