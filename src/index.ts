@@ -1,6 +1,7 @@
-import TwitchClient from './TwitchClient';
+import TwitchClient, { TwitchAPICallType } from './TwitchClient';
 
 export default TwitchClient;
+export { TwitchAPICallType };
 
 import AuthProvider from './Auth/AuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
@@ -17,9 +18,9 @@ import TokenInfo from './API/TokenInfo';
 
 export { AccessToken, NoSubscriptionProgram, NotFollowing, NotSubscribed, Subscription, TokenInfo };
 
-import CheermoteList from './API/Bits/CheermoteList';
+import CheermoteList, { CheermoteBackground, CheermoteState, CheermoteScale } from './API/Bits/CheermoteList';
 
-export { CheermoteList };
+export { CheermoteList, CheermoteBackground, CheermoteState, CheermoteScale };
 
 import Channel from './API/Channel/Channel';
 import ChannelFollow from './API/Channel/ChannelFollow';
@@ -65,15 +66,15 @@ import HelixGame from './API/Helix/Game/HelixGame';
 
 export { HelixGame };
 
-import HelixStream from './API/Helix/Stream/HelixStream';
+import HelixStream, { HelixStreamType } from './API/Helix/Stream/HelixStream';
 
-export { HelixStream };
+export { HelixStream, HelixStreamType };
 
 import HelixFollow from './API/Helix/User/HelixFollow';
 import HelixPrivilegedUser from './API/Helix/User/HelixPrivilegedUser';
-import HelixUser, { HelixUserType } from './API/Helix/User/HelixUser';
+import HelixUser, { HelixBroadcasterType, HelixUserType } from './API/Helix/User/HelixUser';
 
-export { HelixFollow, HelixPrivilegedUser, HelixUser, HelixUserType };
+export { HelixFollow, HelixPrivilegedUser, HelixUser, HelixBroadcasterType, HelixUserType };
 
 import HelixVideo from './API/Helix/Video/HelixVideo';
 
