@@ -30,9 +30,9 @@ import PrivilegedChannel from './API/Channel/PrivilegedChannel';
 
 export { Channel, ChannelFollow, ChannelPlaceholder, ChannelSubscription, EmoteSetList, PrivilegedChannel };
 
-import Stream from './API/Stream/Stream';
+import Stream, { StreamType } from './API/Stream/Stream';
 
-export { Stream };
+export { Stream, StreamType };
 
 import ChannelEvent from './API/Unsupported/ChannelEvent';
 import ChattersList from './API/Unsupported/ChattersList';
