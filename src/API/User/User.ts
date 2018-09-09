@@ -148,7 +148,7 @@ export default class User {
 	 *
 	 * @param channel The channel to check for the user's follow.
 	 */
-	async follows(channel: UserIdResolvable): Promise<boolean> {
+	async follows(channel: UserIdResolvable) {
 		try {
 			return await this.getFollowTo(channel) !== null;
 		} catch (e) {

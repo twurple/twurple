@@ -1,5 +1,4 @@
 import Channel, { ChannelData } from './Channel';
-import User from '../User/User';
 import { CommercialLength } from './ChannelAPI';
 
 /** @private */
@@ -25,7 +24,7 @@ export default class PrivilegedChannel extends Channel {
 	/**
 	 * Retrieves the list of editors of the channel.
 	 */
-	async getEditors(): Promise<User[]> {
+	async getEditors() {
 		return this._client.channels.getChannelEditors(this);
 	}
 

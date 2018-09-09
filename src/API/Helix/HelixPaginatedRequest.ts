@@ -20,7 +20,7 @@ export default class HelixPaginatedRequest<D, T> {
 		return this._currentData;
 	}
 
-	async getNext(): Promise<T[]> {
+	async getNext() {
 		const result = await this._client.callAPI<HelixPaginatedResponse<D>>({
 			...this._callOptions,
 			query: {
@@ -40,7 +40,7 @@ export default class HelixPaginatedRequest<D, T> {
 		return result.data.map(this._mapper);
 	}
 
-	async getAll(): Promise<T[]> {
+	async getAll() {
 		this.reset();
 		const result = [];
 		do {

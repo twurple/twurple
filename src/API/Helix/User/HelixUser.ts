@@ -1,6 +1,5 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import UserFollow from '../../User/UserFollow';
 import TwitchClient from '../../../TwitchClient';
 
 /**
@@ -135,14 +134,14 @@ export default class HelixUser {
 	 *
 	 * @param channel The channel to check for the user's follow.
 	 */
-	async follows(channel: UserIdResolvable): Promise<boolean> {
+	async follows(channel: UserIdResolvable) {
 		return await this.getFollowTo(channel) !== null;
 	}
 
 	/**
 	 * Follows the channel.
 	 */
-	async follow(): Promise<UserFollow> {
+	async follow() {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.followChannel(this);
 	}
@@ -150,7 +149,7 @@ export default class HelixUser {
 	/**
 	 * Unfollows the channel.
 	 */
-	async unfollow(): Promise<void> {
+	async unfollow() {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.unfollowChannel(this);
 	}

@@ -1,7 +1,6 @@
 import User, { UserData } from './User';
 import { UserIdResolvable } from '../../Toolkit/UserTools';
 import UserFollow from './UserFollow';
-import UserBlock from './UserBlock';
 
 /** @private */
 export interface UserNotificationFlags {
@@ -51,7 +50,7 @@ export default class PrivilegedUser extends User {
 	 *
 	 * @param userToBlock The user to block.
 	 */
-	async blockUser(userToBlock: UserIdResolvable): Promise<UserBlock> {
+	async blockUser(userToBlock: UserIdResolvable) {
 		return this._client.users.blockUser(this, userToBlock);
 	}
 

@@ -96,7 +96,7 @@ export default class HelixClipAPI extends BaseAPI {
 		return clips.length ? clips[0] : null;
 	}
 
-	private _getClips(params: HelixClipFilter): HelixPaginatedRequest<HelixClipData, HelixClip> {
+	private _getClips(params: HelixClipFilter) {
 		const { filterType, ids, after, before, limit } = params;
 
 		return new HelixPaginatedRequest(
@@ -112,7 +112,7 @@ export default class HelixClipAPI extends BaseAPI {
 				}
 			},
 			this._client,
-			data => new HelixClip(data, this._client)
+			(data: HelixClipData) => new HelixClip(data, this._client)
 		);
 	}
 

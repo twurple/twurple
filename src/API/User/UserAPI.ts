@@ -245,7 +245,7 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@ClearsCache<UserAPI>('getFollowedChannels', 1)
 	@ClearsCache<UserAPI>('getFollowedChannel', 2)
-	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<void> {
+	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
 		const channelId = UserTools.getUserId(channel);
 		await this._client.callAPI({

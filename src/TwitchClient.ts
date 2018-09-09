@@ -236,7 +236,7 @@ export default class TwitchClient {
 	 * @param options The configuration of the call.
 	 */
 	// tslint:disable-next-line:no-any
-	async callAPI<T = any>(options: TwitchAPICallOptions): Promise<T> {
+	async callAPI<T = any>(options: TwitchAPICallOptions) {
 		let accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
 		try {
 			return await TwitchClient.callAPI<T>(options, this._config.authProvider.clientId, accessToken);
@@ -313,7 +313,7 @@ export default class TwitchClient {
 	 * @param code The authorization code.
 	 * @param redirectUri The redirect URI. This serves no real purpose here, but must still match with the redirect URI you configured in the Twitch Developer dashboard.
 	 */
-	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<AccessToken> {
+	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string) {
 		return new AccessToken(await this.callAPI<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',
@@ -334,7 +334,7 @@ export default class TwitchClient {
 	 * @param clientSecret The client secret of your application.
 	 * @param refreshToken The refresh token.
 	 */
-	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<AccessToken> {
+	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string) {
 		return new AccessToken(await this.callAPI<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',

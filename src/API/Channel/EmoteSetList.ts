@@ -25,7 +25,7 @@ export default class EmoteSetList {
 	 * @param emoteCode The emote code to check for.
 	 */
 	@Cached(Infinity, true)
-	findEmoteId(emoteCode: string): number | undefined {
+	findEmoteId(emoteCode: string) {
 		for (const emoteSet of Object.values(this._data)) {
 			for (const emote of emoteSet) {
 				if ((new RegExp(emote.code)).test(emoteCode)) {

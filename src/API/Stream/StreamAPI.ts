@@ -100,7 +100,7 @@ export default class StreamAPI extends BaseAPI {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	@Cached(60)
-	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25) {
+	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25): Promise<Stream> {
 		const query: UniformObject<string> = { limit: limit.toString() };
 
 		if (type) {
