@@ -11,6 +11,11 @@ export interface StreamPreviewUrlList {
 }
 
 /** @private */
+export interface StreamDataWrapper {
+	stream: StreamData;
+}
+
+/** @private */
 export interface StreamData {
 	_id: string;
 	game: string;
