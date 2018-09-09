@@ -3,6 +3,13 @@ import TwitchClient, { TwitchAPICallType } from './TwitchClient';
 export default TwitchClient;
 export { TwitchAPICallType };
 
+import AuthorizationError from './Errors/AuthorizationError';
+import ConfigError from './Errors/ConfigError';
+import HellFreezesOverError from './Errors/HellFreezesOverError';
+import NoSubscriptionProgramError from './Errors/NoSubscriptionProgramError';
+
+export { AuthorizationError, ConfigError, HellFreezesOverError, NoSubscriptionProgramError };
+
 import AuthProvider from './Auth/AuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
 import RefreshableAuthProvider from './Auth/RefreshableAuthProvider';
@@ -10,13 +17,10 @@ import RefreshableAuthProvider from './Auth/RefreshableAuthProvider';
 export { AuthProvider, StaticAuthProvider, RefreshableAuthProvider };
 
 import AccessToken from './API/AccessToken';
-import NoSubscriptionProgram from './API/NoSubscriptionProgram';
-import NotFollowing from './API/NotFollowing';
-import NotSubscribed from './API/NotSubscribed';
 import Subscription from './API/Subscription';
 import TokenInfo from './API/TokenInfo';
 
-export { AccessToken, NoSubscriptionProgram, NotFollowing, NotSubscribed, Subscription, TokenInfo };
+export { AccessToken, Subscription, TokenInfo };
 
 import CheermoteList, { CheermoteBackground, CheermoteState, CheermoteScale } from './API/Bits/CheermoteList';
 

@@ -16,6 +16,7 @@ import UserAPI from './API/User/UserAPI';
 
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
+import ConfigError from './Errors/ConfigError';
 
 /**
  * Default configuration for the cheermote API.
@@ -177,8 +178,9 @@ export default class TwitchClient {
 	 * @param config Configuration for the client instance.
 	 */
 	constructor(config: Partial<TwitchConfig>) {
-		if (!config.authProvider) {
-			throw new Error('No auth provider given');
+		const { authProvider, ...restConfig } = config;
+		if (!authProvider) {
+			throw new ConfigError('No auth provider given');
 		}
 
 		this._config = {
@@ -190,13 +192,13 @@ export default class TwitchClient {
 				defaultScale: CheermoteScale.x1
 			},
 			debugLevel: 0,
-			authProvider: config.authProvider, // for some reason this is necessary to shut up TS
-			...config
+			authProvider,
+			...restConfig
 		};
 
 		if (this._config.preAuth) {
 			// tslint:disable-next-line:no-floating-promises
-			this._config.authProvider.getAccessToken(this._config.initialScopes || []);
+			authProvider.getAccessToken(this._config.initialScopes || []);
 		}
 	}
 

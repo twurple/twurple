@@ -1,6 +1,5 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import HelixUser from './HelixUser';
 import TwitchClient from '../../../TwitchClient';
 
 /**
@@ -54,7 +53,7 @@ export default class HelixFollow {
 	/**
 	 * Retrieves the data of the following user.
 	 */
-	async getUser(): Promise<HelixUser> {
+	async getUser() {
 		return this._client.helix.users.getUserById(this._data.from_id);
 	}
 
@@ -68,7 +67,7 @@ export default class HelixFollow {
 	/**
 	 * Retrieves the data of the followed user/channel.
 	 */
-	async getFollowedUser(): Promise<HelixUser> {
+	async getFollowedUser() {
 		return this._client.helix.users.getUserById(this._data.to_id);
 	}
 }

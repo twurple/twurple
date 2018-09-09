@@ -76,10 +76,7 @@ export default class HelixVideoAPI extends BaseAPI {
 	 */
 	async getVideoById(id: string) {
 		const videos = await this.getVideosByIds(id);
-		if (!videos.length) {
-			throw new Error('video not found');
-		}
-		return videos[0];
+		return videos.length ? videos[0] : null;
 	}
 
 	/**

@@ -7,6 +7,7 @@ import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolki
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 
 /** @private */
 export enum UserLookupType {
@@ -69,10 +70,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 */
 	async getUserById(userId: UserIdResolvable) {
 		const users = await this._getUsers(UserLookupType.Id, UserTools.getUserId(userId));
-		if (!users.length) {
-			throw new Error('user not found');
-		}
-		return users[0];
+		return users.length ? users[0] : null;
 	}
 
 	/**
@@ -82,10 +80,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 */
 	async getUserByName(userName: UserNameResolvable) {
 		const users = await this._getUsers(UserLookupType.Login, UserTools.getUserName(userName));
-		if (!users.length) {
-			throw new Error('user not found');
-		}
-		return users[0];
+		return users.length ? users[0] : null;
 	}
 
 	/**
@@ -101,7 +96,7 @@ export default class HelixUserAPI extends BaseAPI {
 		});
 
 		if (!result.data || !result.data.length) {
-			throw new Error('could not get authenticated user');
+			throw new HellFreezesOverError('Could not get authenticated user');
 		}
 
 		return new HelixPrivilegedUser(result.data[0], this._client);

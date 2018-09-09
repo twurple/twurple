@@ -7,11 +7,11 @@ import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import EmoteSetList from '../Channel/EmoteSetList';
 import UserSubscription from './UserSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
-import NotSubscribed from '../NotSubscribed';
-import NoSubscriptionProgram from '../NoSubscriptionProgram';
+import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import UserFollow, { UserFollowData } from './UserFollow';
-import NotFollowing from '../NotFollowing';
 import UserBlock, { UserBlockData } from './UserBlock';
+import HellFreezesOverError from '../../Errors/HellFreezesOverError';
+import AuthorizationError from '../../Errors/AuthorizationError';
 
 /**
  * The API methods that deal with users.
@@ -43,7 +43,11 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getUser(userId: UserIdResolvable) {
-		return new User(await this._client.callAPI({ url: `users/${UserTools.getUserId(userId)}` }), this._client);
+		const userData = await this._client.callAPI({ url: `users/${UserTools.getUserId(userId)}` });
+		if (!userData) {
+			throw new HellFreezesOverError('Could not get authenticated user');
+		}
+		return new User(userData, this._client);
 	}
 
 	/**
@@ -51,7 +55,7 @@ export default class UserAPI extends BaseAPI {
 	 *
 	 * @param userName The user name you want to look up.
 	 */
-	async getUserByName(userName: string): Promise<User> {
+	async getUserByName(userName: string) {
 		// not using the decorator's cache here as users-by-name is slightly more complex to cache
 		this._cleanUserCache();
 		if (this._userByNameCache.has(userName)) {
@@ -59,7 +63,7 @@ export default class UserAPI extends BaseAPI {
 		}
 		const { users } = await this._client.callAPI({ url: 'users', query: { login: userName } });
 		if (users.length === 0) {
-			throw new Error('user not found');
+			return null;
 		}
 		const user = new User(users[0], this._client);
 		this._userByNameCache.set(userName, {
@@ -108,7 +112,7 @@ export default class UserAPI extends BaseAPI {
 		} else {
 			const tokenInfo = await this._client.getTokenInfo();
 			if (!tokenInfo.valid) {
-				throw new Error('authorization necessary to get emotes');
+				throw new AuthorizationError('Authorization necessary to get emotes');
 			}
 			userId = tokenInfo.userId!;
 		}
@@ -139,9 +143,9 @@ export default class UserAPI extends BaseAPI {
 		} catch (e) {
 			if (e instanceof StatusCodeError) {
 				if (e.statusCode === 404) {
-					throw new NotSubscribed(channelId, userId);
+					return null;
 				} else if (e.statusCode === 422) {
-					throw new NoSubscriptionProgram(channelId);
+					throw new NoSubscriptionProgramError(channelId);
 				}
 			}
 
@@ -204,7 +208,7 @@ export default class UserAPI extends BaseAPI {
 		} catch (e) {
 			if (e instanceof StatusCodeError) {
 				if (e.statusCode === 404) {
-					throw new NotFollowing(channelId, userId);
+					return null;
 				}
 			}
 

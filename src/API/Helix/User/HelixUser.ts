@@ -1,8 +1,6 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
-import NotFollowing from '../../NotFollowing';
+import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import UserFollow from '../../User/UserFollow';
-import HelixFollow from './HelixFollow';
 import TwitchClient from '../../../TwitchClient';
 
 /**
@@ -120,7 +118,7 @@ export default class HelixUser {
 	 *
 	 * @param channel
 	 */
-	async getFollowTo(channel: UserIdResolvable): Promise<HelixFollow> {
+	async getFollowTo(channel: UserIdResolvable) {
 		const params = {
 			user: this.id,
 			followedUser: channel
@@ -129,11 +127,7 @@ export default class HelixUser {
 		const req = this._client.helix.users.getFollows(params);
 		const result = await req.getAll();
 
-		if (!result.length) {
-			throw new NotFollowing(this.id, UserTools.getUserId(channel));
-		}
-
-		return result[0];
+		return result.length ? result[0] : null;
 	}
 
 	/**
@@ -142,16 +136,7 @@ export default class HelixUser {
 	 * @param channel The channel to check for the user's follow.
 	 */
 	async follows(channel: UserIdResolvable): Promise<boolean> {
-		try {
-			await this.getFollowTo(channel);
-			return true;
-		} catch (e) {
-			if (e instanceof NotFollowing) {
-				return false;
-			}
-
-			throw e;
-		}
+		return await this.getFollowTo(channel) !== null;
 	}
 
 	/**

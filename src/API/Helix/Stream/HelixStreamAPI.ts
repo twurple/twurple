@@ -90,10 +90,7 @@ export default class HelixStreamAPI extends BaseAPI {
 		const req = this.getStreams({ userName });
 		const streams = await req.getAll();
 
-		if (!streams.length) {
-			throw new Error('stream not found');
-		}
-		return streams[0];
+		return streams.length ? streams[0] : null;
 	}
 
 	/**
@@ -105,9 +102,6 @@ export default class HelixStreamAPI extends BaseAPI {
 		const req = this.getStreams({ userId });
 		const streams = await req.getAll();
 
-		if (!streams.length) {
-			throw new Error('stream not found');
-		}
-		return streams[0];
+		return streams.length ? streams[0] : null;
 	}
 }

@@ -1,6 +1,7 @@
 import TwitchClient from '../../TwitchClient';
 import { NonEnumerable } from '../../Toolkit/Decorators';
 import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
+import HellFreezesOverError from '../../Errors/HellFreezesOverError';
 
 /**
  * The type of background a cheermote is supposed to appear on.
@@ -180,7 +181,7 @@ export default class CheermoteList {
 		const correctTier = tiers.sort((a, b) => b.min_bits - a.min_bits).find(tier => tier.min_bits <= bits);
 
 		if (!correctTier) {
-			throw new Error(`Cheermote "${name}" does not have an applicable tier for ${bits} bits`);
+			throw new HellFreezesOverError(`Cheermote "${name}" does not have an applicable tier for ${bits} bits`);
 		}
 
 		return {

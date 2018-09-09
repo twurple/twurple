@@ -1,12 +1,6 @@
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import CheermoteList from '../Bits/CheermoteList';
-import Channel from './Channel';
-import Stream from '../Stream/Stream';
 import { UserIdResolvable } from '../../Toolkit/UserTools';
-import ChannelSubscription from './ChannelSubscription';
-import NoSubscriptionProgram from '../NoSubscriptionProgram';
-import NotSubscribed from '../NotSubscribed';
-import ChannelFollow from './ChannelFollow';
+import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import TwitchClient from '../../TwitchClient';
 
 /** @private */
@@ -48,35 +42,35 @@ export default class ChannelPlaceholder {
 	/**
 	 * Retrieves the list of cheermotes you can use in the channel.
 	 */
-	async getCheermotes(): Promise<CheermoteList> {
+	async getCheermotes() {
 		return this._client.bits.getCheermotes(this);
 	}
 
 	/**
 	 * Retrieves the channel data.
 	 */
-	async getChannel(): Promise<Channel> {
+	async getChannel() {
 		return this._client.channels.getChannel(this);
 	}
 
 	/**
 	 * Retrieves the channel's stream data.
 	 */
-	async getStream(): Promise<Stream> {
+	async getStream() {
 		return this._client.streams.getStreamByChannel(this);
 	}
 
 	/**
 	 * Retrieves the channel's followers.
 	 */
-	async getFollowers(): Promise<ChannelFollow[]> {
+	async getFollowers() {
 		return this._client.channels.getChannelFollowers(this);
 	}
 
 	/**
 	 * Retrieves the channel's subscribers.
 	 */
-	async getSubscriptions(): Promise<ChannelSubscription[]> {
+	async getSubscriptions() {
 		return this._client.channels.getChannelSubscriptions(this);
 	}
 
@@ -90,7 +84,7 @@ export default class ChannelPlaceholder {
 	 *
 	 * @param user The user you want to get the subscription data for.
 	 */
-	async getSubscriptionBy(user: UserIdResolvable): Promise<ChannelSubscription> {
+	async getSubscriptionBy(user: UserIdResolvable) {
 		return this._client.channels.getChannelSubscriptionByUser(this, user);
 	}
 
@@ -99,12 +93,11 @@ export default class ChannelPlaceholder {
 	 *
 	 * @param user The user you want to check the subscription for.
 	 */
-	async hasSubscriber(user: UserIdResolvable): Promise<boolean> {
+	async hasSubscriber(user: UserIdResolvable) {
 		try {
-			await this.getSubscriptionBy(user);
-			return true;
+			return await this.getSubscriptionBy(user) !== null;
 		} catch (e) {
-			if (e instanceof NoSubscriptionProgram || e instanceof NotSubscribed) {
+			if (e instanceof NoSubscriptionProgramError) {
 				return false;
 			}
 

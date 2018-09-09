@@ -1,5 +1,6 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
 import TwitchClient from '../../../TwitchClient';
+import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 
 export type HelixVideoViewableStatus = 'public' | 'private';
 export type HelixVideoType = 'upload' | 'archive' | 'highlight';
@@ -136,12 +137,12 @@ export default class HelixVideo {
 	get durationInSeconds() {
 		const parts = this._data.duration.match(/\d+[hms]/g);
 		if (!parts) {
-			throw new Error(`could not parse duration string: ${this._data.duration}`);
+			throw new HellFreezesOverError(`Could not parse duration string: ${this._data.duration}`);
 		}
 		return parts.map(part => {
 			const partialMatch = part.match(/(\d+)([hms])/);
 			if (!partialMatch) {
-				throw new Error(`could not parse partial duration string: ${part}`);
+				throw new HellFreezesOverError(`Could not parse partial duration string: ${part}`);
 			}
 
 			const [, num, unit] = partialMatch;
