@@ -1,6 +1,6 @@
 {
   "name": "twitch",
-  "version": "1.0.0-pre.3",
+  "version": "1.0.0-pre.4",
   "description": "Interact with Twitch's API.",
   "main": "lib",
   "types": "lib/index",
