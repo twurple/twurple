@@ -50,6 +50,27 @@ export default class User {
 	}
 
 	/**
+	 * The bio of the user.
+	 */
+	get bio() {
+		return this._data.bio;
+	}
+
+	/**
+	 * The date when the user was created, i.e. when they registered on Twitch.
+	 */
+	get creationDate() {
+		return new Date(this._data.created_at);
+	}
+
+	/**
+	 * The last date when the user changed anything in their profile, e.g. their description or their profile picture.
+	 */
+	get updateDate() {
+		return new Date(this._data.updated_at);
+	}
+
+	/**
 	 * The user name of the user.
 	 */
 	get name() {
@@ -68,6 +89,13 @@ export default class User {
 	 */
 	get logoUrl() {
 		return this._data.logo;
+	}
+
+	/**
+	 * The type of the user.
+	 */
+	get type() {
+		return this._data.type;
 	}
 
 	/**

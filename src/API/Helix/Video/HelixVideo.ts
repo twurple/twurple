@@ -1,4 +1,4 @@
-import { NonEnumerable } from '../../../Toolkit/Decorators';
+import { CachedGetter, NonEnumerable } from '../../../Toolkit/Decorators';
 import TwitchClient from '../../../TwitchClient';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 
@@ -134,6 +134,7 @@ export default class HelixVideo {
 	/**
 	 * The duration of the video, in seconds.
 	 */
+	@CachedGetter()
 	get durationInSeconds() {
 		const parts = this._data.duration.match(/\d+[hms]/g);
 		if (!parts) {

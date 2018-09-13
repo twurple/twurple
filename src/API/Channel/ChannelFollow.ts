@@ -27,4 +27,11 @@ export default class ChannelFollow {
 	get user() {
 		return new User(this._data.user, this._client);
 	}
+
+	/**
+	 * Whether the user has notifications enabled for the channel.
+	 */
+	get hasNotifications() {
+		return this._data.notifications;
+	}
 }

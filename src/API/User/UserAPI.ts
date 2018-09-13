@@ -83,7 +83,7 @@ export default class UserAPI extends BaseAPI {
 		userNames = userNames.map(name => name.toLowerCase());
 		const cachedEntries = Array.from(this._userByNameCache.entries()).filter(([key]) => userNames.includes(key));
 		const cachedObject = ObjectTools.entriesToObject(cachedEntries);
-		const cachedUsers = ObjectTools.map<CacheEntry<User>, User>(cachedObject, entry => entry.value);
+		const cachedUsers = ObjectTools.map(cachedObject, (entry: CacheEntry<User>) => entry.value);
 		const toFetch = userNames.filter(name => !(name in cachedUsers));
 		if (!toFetch.length) {
 			return cachedUsers;

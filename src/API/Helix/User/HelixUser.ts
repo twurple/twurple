@@ -99,10 +99,45 @@ export default class HelixUser {
 	}
 
 	/**
+	 * The description of the user.
+	 */
+	get description() {
+		return this._data.description;
+	}
+
+	/**
+	 * The type of the user.
+	 */
+	get type() {
+		return this._data.type;
+	}
+
+	/**
+	 * The type of the user.
+	 */
+	get broadcasterType() {
+		return this._data.broadcaster_type;
+	}
+
+	/**
 	 * The URL to the profile picture of the user.
 	 */
 	get profilePictureUrl() {
 		return this._data.profile_image_url;
+	}
+
+	/**
+	 * The URL to the offline video placeholder of the user.
+	 */
+	get offlinePlaceholderUrl() {
+		return this._data.offline_image_url;
+	}
+
+	/**
+	 * The total number of views of the channel.
+	 */
+	get views() {
+		return this._data.view_count;
 	}
 
 	/**

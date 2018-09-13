@@ -37,13 +37,6 @@ export default class HelixFollow {
 	}
 
 	/**
-	 * The date when the user followed the channel.
-	 */
-	get followDate() {
-		return new Date(this._data.followed_at);
-	}
-
-	/**
 	 * The user ID of the following user.
 	 */
 	get userId() {
@@ -69,5 +62,12 @@ export default class HelixFollow {
 	 */
 	async getFollowedUser() {
 		return this._client.helix.users.getUserById(this._data.to_id);
+	}
+
+	/**
+	 * The date when the user followed the channel.
+	 */
+	get followDate() {
+		return new Date(this._data.followed_at);
 	}
 }

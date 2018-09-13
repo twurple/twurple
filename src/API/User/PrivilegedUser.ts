@@ -27,6 +27,48 @@ export default class PrivilegedUser extends User {
 	protected _data: PrivilegedUserData;
 
 	/**
+	 * The user's email address.
+	 */
+	get email() {
+		return this._data.email;
+	}
+
+	/**
+	 * Whether the user's email address is verified.
+	 */
+	get isEmailVerified() {
+		return this._data.email_verified;
+	}
+
+	/**
+	 * Whether the user has email notifications enabled.
+	 */
+	get hasEmailNotifications() {
+		return this._data.notifications.email;
+	}
+
+	/**
+	 * Whether the user has push notifications enabled.
+	 */
+	get hasPushNotifications() {
+		return this._data.notifications.push;
+	}
+
+	/**
+	 * Whether the user is partnered.
+	 */
+	get isPartnered() {
+		return this._data.partnered;
+	}
+
+	/**
+	 * Whether the user has a Twitter account connected.
+	 */
+	get hasTwitter() {
+		return this._data.twitter_connected;
+	}
+
+	/**
 	 * Follows a channel.
 	 *
 	 * @param channel The channel to follow.

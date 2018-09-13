@@ -2,13 +2,15 @@ import { NonEnumerable } from '../../Toolkit/Decorators';
 import Channel, { ChannelData } from '../Channel/Channel';
 import TwitchClient from '../../TwitchClient';
 
+/**
+ * The possible sizes for a stream preview.
+ */
+export type StreamPreviewSize = 'small' | 'medium' | 'large' | 'template';
+
 /** @private */
-export interface StreamPreviewUrlList {
-	small: string;
-	medium: string;
-	large: string;
-	template: string;
-}
+export type StreamPreviewUrlList = {
+	[size in StreamPreviewSize]: string;
+};
 
 /** @private */
 export interface StreamDataWrapper {
@@ -67,10 +69,10 @@ export default class Stream {
 	}
 
 	/**
-	 * The channel where the stream is shown.
+	 * The ID of the stream.
 	 */
-	get channel() {
-		return new Channel(this._data.channel, this._client);
+	get id() {
+		return this._data._id;
 	}
 
 	/**
@@ -88,6 +90,27 @@ export default class Stream {
 	}
 
 	/**
+	 * The height of the stream video.
+	 */
+	get videoHeight() {
+		return this._data.video_height;
+	}
+
+	/**
+	 * The average FPS (frames per second) that are shown on the stream.
+	 */
+	get averageFPS() {
+		return this._data.average_fps;
+	}
+
+	/**
+	 * The delay of the stream, in seconds.
+	 */
+	get delay() {
+		return this._data.delay;
+	}
+
+	/**
 	 * The time when the stream started.
 	 */
 	get startDate() {
@@ -95,9 +118,32 @@ export default class Stream {
 	}
 
 	/**
+	 * Whether the stream is running a playlist.
+	 */
+	get isPlaylist() {
+		return this._data.is_playlist;
+	}
+
+	/**
 	 * The type of the stream.
 	 */
 	get type() {
 		return this._data.stream_type;
+	}
+
+	/**
+	 * Gets the URL of a preview image for the stream
+	 *
+	 * @param size The size of the image.
+	 */
+	getPreviewUrl(size: StreamPreviewSize) {
+		return this._data.preview[size];
+	}
+
+	/**
+	 * The channel where the stream is shown.
+	 */
+	get channel() {
+		return new Channel(this._data.channel, this._client);
 	}
 }

@@ -22,6 +22,13 @@ export default class PrivilegedChannel extends Channel {
 	}
 
 	/**
+	 * The channel's email address.
+	 */
+	get email() {
+		return this._data.email;
+	}
+
+	/**
 	 * Retrieves the list of editors of the channel.
 	 */
 	async getEditors() {
