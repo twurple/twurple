@@ -29,13 +29,6 @@ export interface HelixStreamFilter {
 
 	/**
 	 * A user ID or a list thereof.
-	 *
-	 * @deprecated Use `userId` instead.
-	 */
-	user?: string | string[];
-
-	/**
-	 * A user ID or a list thereof.
 	 */
 	userId?: string | string[];
 
@@ -72,7 +65,7 @@ export default class HelixStreamAPI extends BaseAPI {
 					game_id: filter.game,
 					language: filter.language,
 					type: filter.type,
-					user_id: filter.userId || filter.user, // tslint:disable-line:deprecation
+					user_id: filter.userId,
 					user_login: filter.userName
 				}
 			},

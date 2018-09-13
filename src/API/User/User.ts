@@ -41,15 +41,6 @@ export default class User {
 	}
 
 	/**
-	 * The user name of the user.
-	 *
-	 * @deprecated Use `name` instead.
-	 */
-	get userName() {
-		return this._data.name;
-	}
-
-	/**
 	 * The bio of the user.
 	 */
 	get bio() {

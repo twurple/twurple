@@ -94,7 +94,7 @@ export default class UserAPI extends BaseAPI {
 			value: user,
 			expires: Date.now() + 3600 * 1000
 		}));
-		const users = ObjectTools.indexBy(usersArr, 'userName');
+		const users = ObjectTools.indexBy(usersArr, 'name');
 
 		return { ...cachedUsers, ...users };
 	}
