@@ -17,8 +17,8 @@ which also includes a complete reference of all classes and interfaces.
 
 ## Additional packages
 
-- https://github.com/d-fischer/twitch-chat-client - connect to and interact with Twitch Chat
-- https://github.com/d-fischer/twitch-pubsub-client - listen to events using the Twitch PubSub interface
+- [https://github.com/d-fischer/twitch-chat-client](twitch-chat-client) - connect to and interact with Twitch Chat
+- [https://github.com/d-fischer/twitch-pubsub-client](twitch-pubsub-client) - listen to events using the Twitch PubSub interface
 
 ## If you're getting stuck...
 
