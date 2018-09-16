@@ -1,38 +1,33 @@
 {
   "name": "twitch",
-  "description": "Interact with Twitch's API and chat.",
-  "version": "0.21.2",
+  "version": "1.0.0-pre.8",
+  "description": "Interact with Twitch's API.",
   "main": "lib",
   "types": "lib/index",
+  "repository": "github:d-fischer/twitch",
+  "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/d-fischer/twitch.git"
-  },
   "devDependencies": {
     "@d-fischer/documen.ts": "^0.2.2",
     "@types/node": "^8.0.19",
     "@types/request": "2.0.0",
     "@types/request-promise-native": "^1.0.6",
+    "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^4.1.1",
-    "tslint-language-service": "^0.9.9",
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@types/randomstring": "^1.1.6",
-    "@types/ws": "^4.0.0",
-    "ircv3": "^0.8.5",
-    "randomstring": "^1.1.5",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
-    "universal-websocket-client": "^1.0.2",
-    "ws": "^4.0.0"
+    "tslib": "^1.9.3"
   },
   "scripts": {
     "lint": "tslint --project .",
+    "clean": "rimraf lib",
     "build": "tsc",
-    "prepare": "yarn run lint && yarn run build",
+    "rebuild": "rimraf lib && yarn run build",
+    "prepare": "yarn run lint && yarn run rebuild",
     "docs": "documen.ts"
   }
 }

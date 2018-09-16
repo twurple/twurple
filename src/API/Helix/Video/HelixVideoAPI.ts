@@ -3,8 +3,8 @@ import { TwitchAPICallType } from '../../../TwitchClient';
 import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixVideo, { HelixVideoData, HelixVideoType } from './HelixVideo';
 import HelixPagination from '../HelixPagination';
-import HelixPaginatedResult from '../HelixPaginatedResult';
 import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import HelixPaginatedRequest from '../HelixPaginatedRequest';
 
 /** @private */
 export type HelixVideoFilterType = 'user_id' | 'game_id';
@@ -76,10 +76,7 @@ export default class HelixVideoAPI extends BaseAPI {
 	 */
 	async getVideoById(id: string) {
 		const videos = await this.getVideosByIds(id);
-		if (!videos.length) {
-			throw new Error('video not found');
-		}
-		return videos[0];
+		return videos.length ? videos[0] : null;
 	}
 
 	/**
@@ -101,23 +98,22 @@ export default class HelixVideoAPI extends BaseAPI {
 		return this._getVideos('game_id', gameId);
 	}
 
-	private async _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
+	private _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}) {
 		const { language, period, orderBy, type } = filter;
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixVideoData>>({
-			type: TwitchAPICallType.Helix,
-			url: 'videos',
-			query: {
-				[filterType]: filterValues,
-				language,
-				period,
-				sort: orderBy,
-				type
-			}
-		});
-
-		return {
-			data: result.data.map(data => new HelixVideo(data, this._client)),
-			cursor: result.pagination.cursor
-		};
+		return new HelixPaginatedRequest(
+			{
+				type: TwitchAPICallType.Helix,
+				url: 'videos',
+				query: {
+					[filterType]: filterValues,
+					language,
+					period,
+					sort: orderBy,
+					type
+				}
+			},
+			this._client,
+			(data: HelixVideoData) => new HelixVideo(data, this._client)
+		);
 	}
 }

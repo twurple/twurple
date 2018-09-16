@@ -34,13 +34,6 @@ export default class ChannelEvent {
 	}
 
 	/**
-	 * The channel where the event is held.
-	 */
-	get channel() {
-		return new Channel(this._data.channel, this._client);
-	}
-
-	/**
 	 * The ID of the event.
 	 */
 	get id() {
@@ -50,15 +43,22 @@ export default class ChannelEvent {
 	/**
 	 * The time when the event starts.
 	 */
-	get startTime() {
+	get startDate() {
 		return new Date(this._data.start_time);
 	}
 
 	/**
 	 * The time when the event ends.
 	 */
-	get endTime() {
+	get endDate() {
 		return new Date(this._data.end_time);
+	}
+
+	/**
+	 * The ID of the timezone that the start and end times of the event are local to.
+	 */
+	get timeZoneId() {
+		return this._data.time_zone_id;
 	}
 
 	/**
@@ -73,6 +73,20 @@ export default class ChannelEvent {
 	 */
 	get description() {
 		return this._data.description;
+	}
+
+	/**
+	 * The language of the event.
+	 */
+	get language() {
+		return this._data.language;
+	}
+
+	/**
+	 * The channel where the event is held.
+	 */
+	get channel() {
+		return new Channel(this._data.channel, this._client);
 	}
 
 	/**

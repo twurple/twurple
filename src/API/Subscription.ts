@@ -22,6 +22,13 @@ export default class Subscription {
 	}
 
 	/**
+	 * The ID of the subscription.
+	 */
+	get id() {
+		return this._data._id;
+	}
+
+	/**
 	 * The identifier of the subscription plan.
 	 */
 	get subPlan() {
@@ -33,5 +40,12 @@ export default class Subscription {
 	 */
 	get subPlanName() {
 		return this._data.sub_plan_name;
+	}
+
+	/**
+	 * The date when the subscription was started.
+	 */
+	get startDate() {
+		return new Date(this._data.created_at);
 	}
 }

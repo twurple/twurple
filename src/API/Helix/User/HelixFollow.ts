@@ -1,13 +1,11 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
-import HelixPagination from '../HelixPagination';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import HelixUser from './HelixUser';
 import TwitchClient from '../../../TwitchClient';
 
 /**
  * Filters for the follower request.
  */
-export interface HelixFollowFilter extends HelixPagination {
+export interface HelixFollowFilter {
 	/**
 	 * The following user.
 	 */
@@ -39,13 +37,6 @@ export default class HelixFollow {
 	}
 
 	/**
-	 * The date when the user followed the channel.
-	 */
-	get followDate() {
-		return new Date(this._data.followed_at);
-	}
-
-	/**
 	 * The user ID of the following user.
 	 */
 	get userId() {
@@ -55,7 +46,7 @@ export default class HelixFollow {
 	/**
 	 * Retrieves the data of the following user.
 	 */
-	async getUser(): Promise<HelixUser> {
+	async getUser() {
 		return this._client.helix.users.getUserById(this._data.from_id);
 	}
 
@@ -69,7 +60,14 @@ export default class HelixFollow {
 	/**
 	 * Retrieves the data of the followed user/channel.
 	 */
-	async getFollowedUser(): Promise<HelixUser> {
+	async getFollowedUser() {
 		return this._client.helix.users.getUserById(this._data.to_id);
+	}
+
+	/**
+	 * The date when the user followed the channel.
+	 */
+	get followDate() {
+		return new Date(this._data.followed_at);
 	}
 }

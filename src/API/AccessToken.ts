@@ -37,7 +37,7 @@ export default class AccessToken {
 	 * May be `null`, in which case the token does not expire.
 	 * This can only be the case with very old Client IDs.
 	 */
-	get expiryDate(): Date | null {
+	get expiryDate() {
 		if (!this._data.expires_in) {
 			return null;
 		}

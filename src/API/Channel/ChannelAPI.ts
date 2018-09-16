@@ -4,8 +4,7 @@ import Channel from './Channel';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelSubscription, { ChannelSubscriptionData } from './ChannelSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
-import NotSubscribed from '../NotSubscribed';
-import NoSubscriptionProgram from '../NoSubscriptionProgram';
+import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
 import User, { UserData } from '../User/User';
 import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
@@ -172,7 +171,7 @@ export default class ChannelAPI extends BaseAPI {
 			return data.subscriptions.map((sub: ChannelSubscriptionData) => new ChannelSubscription(sub, this._client));
 		} catch (e) {
 			if (e instanceof StatusCodeError && e.statusCode === 422) {
-				throw new NoSubscriptionProgram(channelId);
+				throw new NoSubscriptionProgramError(channelId);
 			}
 
 			throw e;
@@ -206,9 +205,9 @@ export default class ChannelAPI extends BaseAPI {
 		} catch (e) {
 			if (e instanceof StatusCodeError) {
 				if (e.statusCode === 404) {
-					throw new NotSubscribed(channelId, userId);
+					return null;
 				} else if (e.statusCode === 422) {
-					throw new NoSubscriptionProgram(channelId);
+					throw new NoSubscriptionProgramError(channelId);
 				}
 			}
 

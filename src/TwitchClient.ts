@@ -14,10 +14,9 @@ import StreamAPI from './API/Stream/StreamAPI';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
 import UserAPI from './API/User/UserAPI';
 
-import ChatClient from './Chat/ChatClient';
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
-import SingleUserPubSubClient from './PubSub/SingleUserPubSubClient';
+import ConfigError from './Errors/ConfigError';
 
 /**
  * Default configuration for the cheermote API.
@@ -148,14 +147,12 @@ export interface TwitchAPICallOptions {
 }
 
 /**
- * The main entry point of this library. Manages API calls, chat and PubSub connections and the use of access token in all of these.
+ * The main entry point of this library. Manages API calls and the use of access tokens in these.
  */
 @Cacheable
 export default class TwitchClient {
 	/** @private */
 	readonly _config: TwitchConfig;
-	private readonly _chatClients: Map<string, ChatClient> = new Map;
-	private readonly _pubSubClients: Map<string, SingleUserPubSubClient> = new Map;
 
 	/**
 	 * Creates a new instance with fixed credentials.
@@ -181,8 +178,9 @@ export default class TwitchClient {
 	 * @param config Configuration for the client instance.
 	 */
 	constructor(config: Partial<TwitchConfig>) {
-		if (!config.authProvider) {
-			throw new Error('No auth provider given');
+		const { authProvider, ...restConfig } = config;
+		if (!authProvider) {
+			throw new ConfigError('No auth provider given');
 		}
 
 		this._config = {
@@ -194,13 +192,13 @@ export default class TwitchClient {
 				defaultScale: CheermoteScale.x1
 			},
 			debugLevel: 0,
-			authProvider: config.authProvider, // for some reason this is necessary to shut up TS
-			...config
+			authProvider,
+			...restConfig
 		};
 
 		if (this._config.preAuth) {
 			// tslint:disable-next-line:no-floating-promises
-			this._config.authProvider.getAccessToken(this._config.initialScopes || []);
+			authProvider.getAccessToken(this._config.initialScopes || []);
 		}
 	}
 
@@ -238,7 +236,7 @@ export default class TwitchClient {
 	 * @param options The configuration of the call.
 	 */
 	// tslint:disable-next-line:no-any
-	async callAPI<T = any>(options: TwitchAPICallOptions): Promise<T> {
+	async callAPI<T = any>(options: TwitchAPICallOptions) {
 		let accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
 		try {
 			return await TwitchClient.callAPI<T>(options, this._config.authProvider.clientId, accessToken);
@@ -308,46 +306,6 @@ export default class TwitchClient {
 	}
 
 	/**
-	 * Creates a chat client with your credentials.
-	 *
-	 * @param identifier The identifier of the chat client.
-	 *
-	 * Passing different strings to this will create separate clients. Passing the same string twice will return the same client.
-	 */
-	async getChatClient(identifier: string = 'default') {
-		if (!this._chatClients.has(identifier)) {
-			const token = await this._config.authProvider.getAccessToken(['chat_login']);
-			const tokenInfo = await this.getTokenInfo();
-			if (tokenInfo.valid && tokenInfo.userName) {
-				const newClient = new ChatClient(tokenInfo.userName, token, this);
-				this._chatClients.set(identifier, newClient);
-				return newClient;
-			}
-
-			throw new Error('invalid token when trying to connect to chat');
-		}
-
-		return this._chatClients.get(identifier)!;
-	}
-
-	/**
-	 * Creates a PubSub client with your credentials.
-	 *
-	 * @param identifier The identifier of the PubSub client.
-	 *
-	 * Passing different strings to this will create separate clients. Passing the same string twice will return the same client.
-	 */
-	getPubSubClient(identifier: string = 'default') {
-		if (!this._pubSubClients.has(identifier)) {
-			const newClient = new SingleUserPubSubClient(this);
-			this._pubSubClients.set(identifier, newClient);
-			return newClient;
-		}
-
-		return this._pubSubClients.get(identifier)!;
-	}
-
-	/**
 	 * Retrieves an access token with your client credentials and an authorization code.
 	 *
 	 * @param clientId The client ID of your application.
@@ -355,7 +313,7 @@ export default class TwitchClient {
 	 * @param code The authorization code.
 	 * @param redirectUri The redirect URI. This serves no real purpose here, but must still match with the redirect URI you configured in the Twitch Developer dashboard.
 	 */
-	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string): Promise<AccessToken> {
+	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string) {
 		return new AccessToken(await this.callAPI<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',
@@ -376,7 +334,7 @@ export default class TwitchClient {
 	 * @param clientSecret The client secret of your application.
 	 * @param refreshToken The refresh token.
 	 */
-	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string): Promise<AccessToken> {
+	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string) {
 		return new AccessToken(await this.callAPI<AccessTokenData>({
 			url: 'oauth2/token',
 			method: 'POST',

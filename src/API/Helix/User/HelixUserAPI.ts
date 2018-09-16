@@ -6,7 +6,8 @@ import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedU
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import HelixPaginatedResult from '../HelixPaginatedResult';
+import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 
 /** @private */
 export enum UserLookupType {
@@ -69,10 +70,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 */
 	async getUserById(userId: UserIdResolvable) {
 		const users = await this._getUsers(UserLookupType.Id, UserTools.getUserId(userId));
-		if (!users.length) {
-			throw new Error('user not found');
-		}
-		return users[0];
+		return users.length ? users[0] : null;
 	}
 
 	/**
@@ -82,10 +80,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 */
 	async getUserByName(userName: UserNameResolvable) {
 		const users = await this._getUsers(UserLookupType.Login, UserTools.getUserName(userName));
-		if (!users.length) {
-			throw new Error('user not found');
-		}
-		return users[0];
+		return users.length ? users[0] : null;
 	}
 
 	/**
@@ -101,7 +96,7 @@ export default class HelixUserAPI extends BaseAPI {
 		});
 
 		if (!result.data || !result.data.length) {
-			throw new Error('could not get authenticated user');
+			throw new HellFreezesOverError('Could not get authenticated user');
 		}
 
 		return new HelixPrivilegedUser(result.data[0], this._client);
@@ -131,12 +126,8 @@ export default class HelixUserAPI extends BaseAPI {
 	 *
 	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
 	 */
-	async getFollows(filter: HelixFollowFilter): Promise<HelixPaginatedResult<HelixFollow>> {
-		const query: UniformObject<string | undefined> = {
-			after: filter.after,
-			before: filter.before,
-			first: filter.limit
-		};
+	getFollows(filter: HelixFollowFilter) {
+		const query: UniformObject<string | undefined> = {};
 		let hasUserIdParam = false;
 		if (filter.user) {
 			query.from_id = UserTools.getUserId(filter.user);
@@ -151,15 +142,14 @@ export default class HelixUserAPI extends BaseAPI {
 			throw new TypeError('At least one of user and followedUser have to be set');
 		}
 
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixFollowData>>({
-			type: TwitchAPICallType.Helix,
-			url: 'users/follows',
-			query
-		});
-
-		return {
-			data: result.data.map(follow => new HelixFollow(follow, this._client)),
-			cursor: result.pagination.cursor
-		};
+		return new HelixPaginatedRequest(
+			{
+				type: TwitchAPICallType.Helix,
+				url: 'users/follows',
+				query
+			},
+			this._client,
+			(data: HelixFollowData) => new HelixFollow(data, this._client)
+		);
 	}
 }

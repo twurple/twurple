@@ -1,14 +1,8 @@
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import Channel from '../Channel/Channel';
 import ChannelPlaceholder from '../Channel/ChannelPlaceholder';
 import { UserIdResolvable } from '../../Toolkit/UserTools';
-import UserSubscription from './UserSubscription';
-import NoSubscriptionProgram from '../NoSubscriptionProgram';
-import NotSubscribed from '../NotSubscribed';
-import UserFollow from './UserFollow';
-import NotFollowing from '../NotFollowing';
+import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import TwitchClient from '../../TwitchClient';
-import Stream from '../Stream/Stream';
 
 /** @private */
 export interface UserData {
@@ -47,12 +41,24 @@ export default class User {
 	}
 
 	/**
-	 * The user name of the user.
-	 *
-	 * @deprecated Use `name` instead.
+	 * The bio of the user.
 	 */
-	get userName() {
-		return this._data.name;
+	get bio() {
+		return this._data.bio;
+	}
+
+	/**
+	 * The date when the user was created, i.e. when they registered on Twitch.
+	 */
+	get creationDate() {
+		return new Date(this._data.created_at);
+	}
+
+	/**
+	 * The last date when the user changed anything in their profile, e.g. their description or their profile picture.
+	 */
+	get updateDate() {
+		return new Date(this._data.updated_at);
 	}
 
 	/**
@@ -77,9 +83,16 @@ export default class User {
 	}
 
 	/**
+	 * The type of the user.
+	 */
+	get type() {
+		return this._data.type;
+	}
+
+	/**
 	 * Retrieves the channel data of the user.
 	 */
-	async getChannel(): Promise<Channel> {
+	async getChannel() {
 		return this._client.channels.getChannel(this);
 	}
 
@@ -93,7 +106,7 @@ export default class User {
 	/**
 	 * Retrieves the currently running stream of the user.
 	 */
-	async getStream(): Promise<Stream> {
+	async getStream() {
 		return this.getChannelPlaceholder().getStream();
 	}
 
@@ -107,7 +120,7 @@ export default class User {
 	 *
 	 * @param channel The channel you want to get the subscription data for.
 	 */
-	async getSubscriptionTo(channel: UserIdResolvable): Promise<UserSubscription> {
+	async getSubscriptionTo(channel: UserIdResolvable) {
 		return this._client.users.getSubscriptionData(this, channel);
 	}
 
@@ -116,12 +129,11 @@ export default class User {
 	 *
 	 * @param channel The channel you want to check the subscription for.
 	 */
-	async isSubscribedTo(channel: UserIdResolvable): Promise<boolean> {
+	async isSubscribedTo(channel: UserIdResolvable) {
 		try {
-			await this.getSubscriptionTo(channel);
-			return true;
+			return await this.getSubscriptionTo(channel) !== null;
 		} catch (e) {
-			if (e instanceof NoSubscriptionProgram || e instanceof NotSubscribed) {
+			if (e instanceof NoSubscriptionProgramError) {
 				return false;
 			}
 
@@ -146,7 +158,7 @@ export default class User {
 	 *
 	 * @param channel The channel to retrieve the follow data for.
 	 */
-	async getFollowTo(channel: UserIdResolvable): Promise<UserFollow> {
+	async getFollowTo(channel: UserIdResolvable) {
 		return this._client.users.getFollowedChannel(this, channel);
 	}
 
@@ -155,15 +167,10 @@ export default class User {
 	 *
 	 * @param channel The channel to check for the user's follow.
 	 */
-	async follows(channel: UserIdResolvable): Promise<boolean> {
+	async follows(channel: UserIdResolvable) {
 		try {
-			await this.getFollowTo(channel);
-			return true;
+			return await this.getFollowTo(channel) !== null;
 		} catch (e) {
-			if (e instanceof NotFollowing) {
-				return false;
-			}
-
 			throw e;
 		}
 	}
@@ -179,7 +186,7 @@ export default class User {
 	/**
 	 * Unfollows the channel with the authenticated user.
 	 */
-	async unfollow(): Promise<void> {
+	async unfollow() {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.unfollowChannel(this);
 	}

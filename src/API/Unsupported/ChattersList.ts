@@ -20,7 +20,7 @@ export default class ChattersList {
 	 * A list of user names of all chatters in the chat.
 	 */
 	@CachedGetter()
-	get allChatters(): string[] {
+	get allChatters() {
 		return ArrayTools.flatten(Object.values(this._data.chatters));
 	}
 
@@ -28,7 +28,7 @@ export default class ChattersList {
 	 * A map of user names of all chatters in the chat, mapped to their status in the channel.
 	 */
 	@CachedGetter()
-	get allChattersWithStatus(): Map<string, string> {
+	get allChattersWithStatus() {
 		return new Map(ArrayTools.flatten(Object.entries(this._data.chatters).map(([status, names]) => names.map<[string, string]>(name => [name, status]))));
 	}
 }

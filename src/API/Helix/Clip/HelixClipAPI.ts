@@ -1,9 +1,8 @@
 import BaseAPI from '../../BaseAPI';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixPagination from '../HelixPagination';
-import HelixPaginatedResult from '../HelixPaginatedResult';
 import HelixClip, { HelixClipData } from './HelixClip';
+import HelixPaginatedRequest from '../HelixPaginatedRequest';
 
 export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
 
@@ -52,7 +51,7 @@ export default class HelixClipAPI extends BaseAPI {
 	 * @param id The broadcaster's user ID.
 	 * @param pagination Parameters for pagination.
 	 */
-	async getClipsForBroadcaster(id: string, pagination: HelixPagination) {
+	getClipsForBroadcaster(id: string, pagination: HelixPagination) {
 		return this._getClips({
 			...pagination,
 			filterType: 'broadcaster_id',
@@ -66,7 +65,7 @@ export default class HelixClipAPI extends BaseAPI {
 	 * @param id The game ID.
 	 * @param pagination Parameters for pagination.
 	 */
-	async getClipsForGame(id: string, pagination: HelixPagination) {
+	getClipsForGame(id: string, pagination: HelixPagination) {
 		return this._getClips({
 			...pagination,
 			filterType: 'game_id',
@@ -79,7 +78,7 @@ export default class HelixClipAPI extends BaseAPI {
 	 *
 	 * @param ids The clip IDs.
 	 */
-	async getClipsByIds(ids: string[]) {
+	getClipsByIds(ids: string[]) {
 		return this._getClips({
 			filterType: 'id',
 			ids
@@ -92,31 +91,29 @@ export default class HelixClipAPI extends BaseAPI {
 	 * @param id The clip ID.
 	 */
 	async getClipById(id: string) {
-		const { data } = await this.getClipsByIds([id]);
-		if (!data.length) {
-			throw new Error('clip not found');
-		}
-		return data[0];
+		const req = this.getClipsByIds([id]);
+		const clips = await req.getAll();
+		return clips.length ? clips[0] : null;
 	}
 
-	private async _getClips(params: HelixClipFilter): Promise<HelixPaginatedResult<HelixClip>> {
+	private _getClips(params: HelixClipFilter) {
 		const { filterType, ids, after, before, limit } = params;
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixClipData>>({
-			type: TwitchAPICallType.Helix,
-			url: 'clips',
-			method: 'GET',
-			query: {
-				[filterType]: ids,
-				after,
-				before,
-				first: limit
-			}
-		});
 
-		return {
-			data: result.data.map(data => new HelixClip(data, this._client)),
-			cursor: result.pagination.cursor
-		};
+		return new HelixPaginatedRequest(
+			{
+				type: TwitchAPICallType.Helix,
+				url: 'clips',
+				method: 'GET',
+				query: {
+					[filterType]: ids,
+					after,
+					before,
+					first: limit
+				}
+			},
+			this._client,
+			(data: HelixClipData) => new HelixClip(data, this._client)
+		);
 	}
 
 	/**

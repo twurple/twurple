@@ -1,7 +1,4 @@
 # Twitch.js
-__ATTENTION:__ This library is still under initial development.
-
-Public APIs may break with any release that increases y in version 0.y.z until this library reaches 1.0 (as per [SemVer](http://semver.org/#spec-item-4)).
 
 ## Installation
 
@@ -17,6 +14,11 @@ or using npm:
 
 A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch)
 which also includes a complete reference of all classes and interfaces.
+
+## Additional packages
+
+- https://github.com/d-fischer/twitch-chat-client - connect to and interact with Twitch Chat
+- https://github.com/d-fischer/twitch-pubsub-client - listen to events using the Twitch PubSub interface
 
 ## If you're getting stuck...
 

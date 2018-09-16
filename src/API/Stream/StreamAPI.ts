@@ -25,9 +25,9 @@ export default class StreamAPI extends BaseAPI {
 	@Cached(60)
 	async getStreamByChannel(channel: UserIdResolvable) {
 		const channelId = UserTools.getUserId(channel);
-
 		const data = await this._client.callAPI<StreamDataWrapper>({ url: `streams/${channelId}` });
-		return new Stream(data.stream, this._client);
+
+		return data.stream ? new Stream(data.stream, this._client) : null;
 	}
 
 	/**
@@ -100,7 +100,7 @@ export default class StreamAPI extends BaseAPI {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	@Cached(60)
-	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25) {
+	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25): Promise<Stream> {
 		const query: UniformObject<string> = { limit: limit.toString() };
 
 		if (type) {

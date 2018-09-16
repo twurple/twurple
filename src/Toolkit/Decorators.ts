@@ -29,7 +29,7 @@ export function Cacheable<T extends Constructor>(cls: T) {
 			return undefined;
 		}
 
-		setCache(cacheKey: string, value: {}, timeInSeconds: number): void {
+		setCache(cacheKey: string, value: {}, timeInSeconds: number) {
 			this.cache.set(cacheKey, {
 				value, expires: Date.now() + (timeInSeconds * 1000)
 			});
@@ -70,7 +70,7 @@ export function Cacheable<T extends Constructor>(cls: T) {
 
 /** @private */
 // tslint:disable-next-line:no-any
-export function createCacheKey(propName: string, params: any[], prefix?: boolean): string {
+export function createCacheKey(propName: string, params: any[], prefix?: boolean) {
 	// tslint:disable-next-line:no-any
 	function createSingleCacheKey(param: any) {
 		// noinspection FallThroughInSwitchStatementJS

@@ -1,5 +1,4 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
-import HelixUser from '../User/HelixUser';
 import TwitchClient from '../../../TwitchClient';
 
 /**
@@ -66,7 +65,7 @@ export default class HelixStream {
 	/**
 	 * Retrieves information about the user broadcasting the stream.
 	 */
-	async getUser(): Promise<HelixUser> {
+	async getUser() {
 		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 

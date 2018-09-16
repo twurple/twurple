@@ -1,15 +1,12 @@
 import BaseAPI from '../../BaseAPI';
-import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
-import { UniformObject } from '../../../Toolkit/ObjectTools';
-import HelixPagination from '../HelixPagination';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import HelixPaginatedResult from '../HelixPaginatedResult';
+import HelixPaginatedRequest from '../HelixPaginatedRequest';
 
 /**
  * Filters for the streams request.
  */
-export interface HelixStreamFilter extends HelixPagination {
+export interface HelixStreamFilter {
 	/**
 	 * A community ID or a list thereof.
 	 */
@@ -29,13 +26,6 @@ export interface HelixStreamFilter extends HelixPagination {
 	 * A type of stream.
 	 */
 	type?: HelixStreamType;
-
-	/**
-	 * A user ID or a list thereof.
-	 *
-	 * @deprecated Use `userId` instead.
-	 */
-	user?: string | string[];
 
 	/**
 	 * A user ID or a list thereof.
@@ -65,31 +55,23 @@ export default class HelixStreamAPI extends BaseAPI {
 	 *
 	 * @param filter Several filtering and pagination parameters. See the {@HelixStreamFilter} documentation.
 	 */
-	async getStreams(filter?: HelixStreamFilter): Promise<HelixPaginatedResult<HelixStream>> {
-		let query: UniformObject<string | string[] | undefined> = {};
-		if (filter) {
-			query = {
-				after: filter.after,
-				before: filter.before,
-				first: filter.limit,
-				community_id: filter.community,
-				game_id: filter.game,
-				language: filter.language,
-				type: filter.type,
-				user_id: filter.userId || filter.user, // tslint:disable-line:deprecation
-				user_login: filter.userName
-			};
-		}
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamData>>({
-			url: 'streams',
-			type: TwitchAPICallType.Helix,
-			query
-		});
-
-		return {
-			data: result.data.map(streamData => new HelixStream(streamData, this._client)),
-			cursor: result.pagination.cursor
-		};
+	getStreams(filter: HelixStreamFilter = {}) {
+		return new HelixPaginatedRequest(
+			{
+				url: 'streams',
+				type: TwitchAPICallType.Helix,
+				query: {
+					community_id: filter.community,
+					game_id: filter.game,
+					language: filter.language,
+					type: filter.type,
+					user_id: filter.userId,
+					user_login: filter.userName
+				}
+			},
+			this._client,
+			(data: HelixStreamData) => new HelixStream(data, this._client)
+		);
 	}
 
 	/**
@@ -98,9 +80,10 @@ export default class HelixStreamAPI extends BaseAPI {
 	 * @param userName The user name to retrieve the stream for.
 	 */
 	async getStreamByUserName(userName: string) {
-		const streams = await this.getStreams({ userName });
+		const req = this.getStreams({ userName });
+		const streams = await req.getAll();
 
-		return streams.data.length ? streams.data[0] : null;
+		return streams.length ? streams[0] : null;
 	}
 
 	/**
@@ -109,8 +92,9 @@ export default class HelixStreamAPI extends BaseAPI {
 	 * @param userId The user ID to retrieve the stream for.
 	 */
 	async getStreamByUserId(userId: string) {
-		const streams = await this.getStreams({ userId });
+		const req = this.getStreams({ userId });
+		const streams = await req.getAll();
 
-		return streams.data.length ? streams.data[0] : null;
+		return streams.length ? streams[0] : null;
 	}
 }

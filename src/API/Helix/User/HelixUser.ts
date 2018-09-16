@@ -1,9 +1,5 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators';
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
-import NotFollowing from '../../NotFollowing';
-import UserFollow from '../../User/UserFollow';
-import HelixFollow, { HelixFollowFilter } from './HelixFollow';
-import HelixPagination from '../HelixPagination';
+import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import TwitchClient from '../../../TwitchClient';
 
 /**
@@ -103,6 +99,27 @@ export default class HelixUser {
 	}
 
 	/**
+	 * The description of the user.
+	 */
+	get description() {
+		return this._data.description;
+	}
+
+	/**
+	 * The type of the user.
+	 */
+	get type() {
+		return this._data.type;
+	}
+
+	/**
+	 * The type of the user.
+	 */
+	get broadcasterType() {
+		return this._data.broadcaster_type;
+	}
+
+	/**
 	 * The URL to the profile picture of the user.
 	 */
 	get profilePictureUrl() {
@@ -110,16 +127,24 @@ export default class HelixUser {
 	}
 
 	/**
-	 * Retrieves a list of channels the user follows.
-	 *
-	 * @param pagination Parameters for pagination.
+	 * The URL to the offline video placeholder of the user.
 	 */
-	async getFollows(pagination: HelixPagination) {
-		const params: HelixFollowFilter = pagination;
-		params.user = this;
-		const result = await this._client.helix.users.getFollows(params);
+	get offlinePlaceholderUrl() {
+		return this._data.offline_image_url;
+	}
 
-		return result.data;
+	/**
+	 * The total number of views of the channel.
+	 */
+	get views() {
+		return this._data.view_count;
+	}
+
+	/**
+	 * Retrieves a list of channels the user follows.
+	 */
+	getFollows() {
+		return this._client.helix.users.getFollows({ user: this });
 	}
 
 	/**
@@ -127,19 +152,16 @@ export default class HelixUser {
 	 *
 	 * @param channel
 	 */
-	async getFollowTo(channel: UserIdResolvable): Promise<HelixFollow> {
+	async getFollowTo(channel: UserIdResolvable) {
 		const params = {
 			user: this.id,
 			followedUser: channel
 		};
 
-		const result = await this._client.helix.users.getFollows(params);
+		const req = this._client.helix.users.getFollows(params);
+		const result = await req.getAll();
 
-		if (!result.data.length) {
-			throw new NotFollowing(this.id, UserTools.getUserId(channel));
-		}
-
-		return result.data[0];
+		return result.length ? result[0] : null;
 	}
 
 	/**
@@ -147,23 +169,14 @@ export default class HelixUser {
 	 *
 	 * @param channel The channel to check for the user's follow.
 	 */
-	async follows(channel: UserIdResolvable): Promise<boolean> {
-		try {
-			await this.getFollowTo(channel);
-			return true;
-		} catch (e) {
-			if (e instanceof NotFollowing) {
-				return false;
-			}
-
-			throw e;
-		}
+	async follows(channel: UserIdResolvable) {
+		return await this.getFollowTo(channel) !== null;
 	}
 
 	/**
 	 * Follows the channel.
 	 */
-	async follow(): Promise<UserFollow> {
+	async follow() {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.followChannel(this);
 	}
@@ -171,7 +184,7 @@ export default class HelixUser {
 	/**
 	 * Unfollows the channel.
 	 */
-	async unfollow(): Promise<void> {
+	async unfollow() {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.unfollowChannel(this);
 	}

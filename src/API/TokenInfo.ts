@@ -37,42 +37,42 @@ export default class TokenInfo {
 	/**
 	 * The client ID.
 	 */
-	get clientId(): string | null {
+	get clientId() {
 		return this._data.valid ? this._data.client_id : null;
 	}
 
 	/**
 	 * The ID of the authenticated user.
 	 */
-	get userId(): string | null {
+	get userId() {
 		return this._data.valid ? this._data.user_id : null;
 	}
 
 	/**
 	 * The user name of the authenticated user.
 	 */
-	get userName(): string | null {
+	get userName() {
 		return this._data.valid ? this._data.user_name : null;
 	}
 
 	/**
 	 * The scopes for which this token is valid.
 	 */
-	get scopes(): string[] {
+	get scopes() {
 		return this._data.valid ? this._data.authorization.scopes : [];
 	}
 
 	/**
 	 * Whether the token is valid or not.
 	 */
-	get valid(): boolean {
+	get valid() {
 		return this._data.valid;
 	}
 
 	/**
 	 * The expiry date of the token. If this returns null, it means that the token is either invalid or never expires (happens with old client IDs).
 	 */
-	get expiryDate(): Date | null {
+	get expiryDate() {
 		if (!this._data.valid || !this._data.expires_in) {
 			return null;
 		}
