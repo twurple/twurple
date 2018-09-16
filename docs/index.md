@@ -7,8 +7,8 @@ Please feel free to browse the menu for the left and either get started with the
 
 As of v1.0, some functionality is now located in separate modules:
 
-- [https://d-fischer.github.io/twitch-chat-client](twitch-chat-client) - connect to and interact with Twitch Chat
-- [https://d-fischer.github.io/twitch-pubsub-client](twitch-pubsub-client) - listen to events using the Twitch PubSub interface
+- [twitch-chat-client](https://d-fischer.github.io/twitch-chat-client) - connect to and interact with Twitch Chat
+- [twitch-pubsub-client](https://d-fischer.github.io/twitch-pubsub-client) - listen to events using the Twitch PubSub interface
 
 ## If you're getting stuck...
 
