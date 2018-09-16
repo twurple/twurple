@@ -69,7 +69,7 @@ export default class StreamAPI extends BaseAPI {
 
 		const data = await this._client.callAPI<{ streams: StreamData[] }>({ url: 'streams', query });
 
-		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
+		return data.streams.map(streamData => new Stream(streamData, this._client));
 	}
 
 	/**
@@ -113,6 +113,6 @@ export default class StreamAPI extends BaseAPI {
 
 		const data = await this._client.callAPI<{ streams: StreamData[] }>({ url: 'streams/followed', query, scope: 'user_read' });
 
-		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
+		return data.streams.map(streamData => new Stream(streamData, this._client));
 	}
 }
