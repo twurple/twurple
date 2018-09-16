@@ -18,8 +18,6 @@
     "typescript": "^3.0.1"
   },
   "dependencies": {
-    "@types/randomstring": "^1.1.6",
-    "randomstring": "^1.1.5",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
     "tslib": "^1.9.3"
@@ -28,7 +26,8 @@
     "lint": "tslint --project .",
     "clean": "rimraf lib",
     "build": "tsc",
-    "prepare": "yarn run lint && yarn run clean && yarn run build",
+    "rebuild": "rimraf lib && yarn run build",
+    "prepare": "yarn run lint && yarn run rebuild",
     "docs": "documen.ts"
   }
 }
