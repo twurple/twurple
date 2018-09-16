@@ -44,7 +44,7 @@ export default class StreamAPI extends BaseAPI {
 		channels?: string | string[], game?: string, languageCode?: string,
 		type?: StreamType,
 		page?: number, limit: number = 25
-	): Promise<Stream[]> {
+	) {
 		const query: UniformObject<string> = { limit: limit.toString() };
 
 		if (channels) {
@@ -67,7 +67,7 @@ export default class StreamAPI extends BaseAPI {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.callAPI({ url: 'streams', query });
+		const data = await this._client.callAPI<{ streams: StreamData[] }>({ url: 'streams', query });
 
 		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
 	}
@@ -100,7 +100,7 @@ export default class StreamAPI extends BaseAPI {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	@Cached(60)
-	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25): Promise<Stream> {
+	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25) {
 		const query: UniformObject<string> = { limit: limit.toString() };
 
 		if (type) {
@@ -111,7 +111,7 @@ export default class StreamAPI extends BaseAPI {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.callAPI({ url: 'streams/followed', query, scope: 'user_read' });
+		const data = await this._client.callAPI<{ streams: StreamData[] }>({ url: 'streams/followed', query, scope: 'user_read' });
 
 		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
 	}
