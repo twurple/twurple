@@ -63,9 +63,6 @@ export interface TwitchConfig {
 	 * Default values for fetched cheermotes.
 	 */
 	cheermotes: TwitchCheermoteConfig;
-
-	/** @private */
-	debugLevel: number;
 }
 
 /**
@@ -191,7 +188,6 @@ export default class TwitchClient {
 				defaultState: CheermoteState.animated,
 				defaultScale: CheermoteScale.x1
 			},
-			debugLevel: 0,
 			authProvider,
 			...restConfig
 		};
