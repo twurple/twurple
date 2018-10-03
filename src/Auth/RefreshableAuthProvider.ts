@@ -79,10 +79,13 @@ export default class RefreshableAuthProvider implements AuthProvider {
 			}
 		}
 
-		const now = new Date();
+		// if we don't have a current token, we just pass this and refresh right away
+		if (oldToken) {
+			const now = new Date();
 
-		if (!this._expiry || this._expiry > now) {
-			return oldToken;
+			if (!this._expiry || this._expiry > now) {
+				return oldToken;
+			}
 		}
 
 		const tokenData = await this.refresh();
