@@ -7,9 +7,26 @@ import TwitchClient from '../TwitchClient';
  * Configuration for the {@RefreshableAuthProvider}.
  */
 export interface RefreshConfig {
+	/**
+	 * The client secret of your application.
+	 */
 	clientSecret: string;
+
+	/**
+	 * The refresh token you got when requesting an access token from Twitch.
+	 */
 	refreshToken: string;
+
+	/**
+	 * The date of expiry of your access token.
+	 */
 	expiry?: Date | null;
+
+	/**
+	 * A callback that is called whenever the auth provider refreshes the token, e.g. to save the new data in your database.
+	 *
+	 * @param token The token data.
+	 */
 	onRefresh?: (token: AccessToken) => void;
 }
 
