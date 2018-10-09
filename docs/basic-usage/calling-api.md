@@ -2,13 +2,11 @@ The API methods are organized into the different API subresources, like `/users`
 
 ```typescript
 async function isStreamLive(userName: string) {
-	try {
-		const user = await twitchClient.users.getUserByName(userName);
-		await twitchClient.streams.getStreamByChannel(user.id); // will reject the promise if the stream is not live
-		return true;
-	} catch (e) {
+	const user = await twitchClient.users.getUserByName(userName);
+	if (!user) {
 		return false;
 	}
+	return await twitchClient.streams.getStreamByChannel(user.id) !== null;
 }
 ```
 
@@ -16,12 +14,10 @@ We make extensive use of convenience methods that fetch related resources, so th
 
 ```typescript
 async function isStreamLive(userName: string) {
-	try {
-		const user = await twitchClient.users.getUserByName(userName);
-		await user.getStream(); // will reject the promise if the stream is not live
-		return true;
-	} catch (e) {
-		return false;
-	}
+	const user = await twitchClient.users.getUserByName(userName);
+    if (!user) {
+        return false;
+    }
+    return await user.getStream() !== null;
 }
 ```
