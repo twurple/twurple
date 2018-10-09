@@ -15,9 +15,9 @@ We make extensive use of convenience methods that fetch related resources, so th
 ```typescript
 async function isStreamLive(userName: string) {
 	const user = await twitchClient.users.getUserByName(userName);
-    if (!user) {
-        return false;
-    }
-    return await user.getStream() !== null;
+	if (!user) {
+		return false;
+	}
+	return await user.getStream() !== null;
 }
 ```
