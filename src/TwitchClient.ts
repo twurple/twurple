@@ -155,7 +155,9 @@ export default class TwitchClient {
 	 * Creates a new instance with fixed credentials.
 	 *
 	 * @param clientId The client ID of your application.
-	 * @param accessToken The access token to do API requests with.
+	 * @param accessToken The access token to call the API with.
+	 *
+	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param refreshConfig Configuration to automatically refresh expired tokens.
 	 * @param config Additional configuration to pass to the constructor.
 	 *
@@ -210,7 +212,9 @@ export default class TwitchClient {
 	 * Retrieves information about an access token.
 	 *
 	 * @param clientId The client ID of your application.
-	 * @param accessToken The access token.
+	 * @param accessToken The access token to get the information of.
+	 *
+	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
 	static async getTokenInfo(clientId: string, accessToken: string) {
 		const data = await this.callAPI<TokenInfoData>({ url: '/' }, clientId, accessToken);
@@ -266,7 +270,9 @@ export default class TwitchClient {
 	 *
 	 * @param options The configuration of the call.
 	 * @param clientId The client ID of your application.
-	 * @param accessToken The access token.
+	 * @param accessToken The access token to call the API with.
+	 *
+	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
 	// tslint:disable-next-line:no-any
 	static async callAPI<T = any>(options: TwitchAPICallOptions, clientId?: string, accessToken?: string): Promise<T> {

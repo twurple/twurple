@@ -17,7 +17,9 @@ export default class StaticAuthProvider implements AuthProvider {
 	 * Creates a new auth provider with static credentials.
 	 *
 	 * @param clientId The client ID.
-	 * @param accessToken The access token.
+	 * @param accessToken The access token to provide.
+	 *
+	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
 	constructor(clientId: string, accessToken?: string) {
 		this._clientId = clientId || '';
