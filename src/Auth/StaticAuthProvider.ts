@@ -37,7 +37,7 @@ export default class StaticAuthProvider implements AuthProvider {
 	 */
 	async getAccessToken(scopes: string|string[]) {
 		if (typeof scopes === 'string') {
-			scopes = [scopes];
+			scopes = scopes.split(' ');
 		}
 
 		// we only get a static token, so we just hope it works...

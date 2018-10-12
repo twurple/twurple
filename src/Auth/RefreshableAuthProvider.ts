@@ -67,7 +67,7 @@ export default class RefreshableAuthProvider implements AuthProvider {
 	 */
 	async getAccessToken(scopes?: string|string[]) {
 		if (typeof scopes === 'string') {
-			scopes = [scopes];
+			scopes = scopes.split(' ');
 		}
 		const oldToken = await this._childProvider.getAccessToken();
 		if (scopes && scopes.some(scope => !this.currentScopes.includes(scope))) {
