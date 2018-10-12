@@ -189,4 +189,8 @@ export default class CheermoteList {
 			color: correctTier.color
 		};
 	}
+
+	getPossibleNames() {
+		return Object.keys(this._data);
+	}
 }
