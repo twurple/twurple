@@ -28,7 +28,7 @@ or for bigger pieces of code, create a new GitHub repository we can clone to rep
 
 ### Environment
 
-- Version
+- Version:
 - Node version: <!-- remove if not applicable -->
 - Browser version: <!-- remove if not applicable -->
-- Opearting system:
+- Operating system:
