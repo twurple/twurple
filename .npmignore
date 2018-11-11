@@ -19,7 +19,7 @@ src
 /publishNewVersion.sh
 /tsconfig.json
 /tslint.json
-/travis
+/scripts/travis
 /docs
 /.github
 /CONTRIBUTING.md

@@ -20,6 +20,7 @@
   "dependencies": {
     "request": "^2.81.0",
     "request-promise-native": "^1.0.4",
+    "top-package": "^1.0.0",
     "tslib": "^1.9.3"
   },
   "scripts": {
@@ -27,7 +28,8 @@
     "clean": "rimraf lib",
     "build": "tsc",
     "rebuild": "rimraf lib && yarn run build",
+    "docs": "documen.ts",
     "prepare": "yarn run lint && yarn run rebuild",
-    "docs": "documen.ts"
+    "postinstall": "scripts/npm/postinstall.js"
   }
 }

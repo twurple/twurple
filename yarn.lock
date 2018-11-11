@@ -7652,6 +7652,11 @@ to-regex@^3.0.1, to-regex@^3.0.2:
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
 
+top-package@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/top-package/-/top-package-1.0.0.tgz#7d3decdc203ffa5eb85d75eb34da85a834852b0e"
+  integrity sha512-m/WYSXV3rk6AX+/tTYL+xZfZzgLpuqVzw6HJqZwWzSfoCWgjfPyam55ID5b2WxuSbbBnVybD2FuOazw14JmR3w==
+
 toposort@^1.0.0:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/toposort/-/toposort-1.0.7.tgz#2e68442d9f64ec720b8cc89e6443ac6caa950029"
