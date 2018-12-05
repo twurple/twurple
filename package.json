@@ -30,6 +30,6 @@
     "rebuild": "rimraf lib && yarn run build",
     "docs": "documen.ts",
     "prepare": "yarn run lint && yarn run rebuild",
-    "postinstall": "scripts/npm/postinstall.js"
+    "postinstall": "node ./scripts/npm/postinstall.js"
   }
 }
