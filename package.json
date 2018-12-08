@@ -23,6 +23,12 @@
     "top-package": "^1.0.0",
     "tslib": "^1.9.3"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "scripts/npm"
+  ],
   "scripts": {
     "lint": "tslint --project .",
     "clean": "rimraf lib",
