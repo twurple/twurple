@@ -73,6 +73,7 @@ export default class HelixGameAPI extends BaseAPI {
 	}
 
 	async getTopGames() {
+		// TODO next major: this method should not be async
 		return new HelixPaginatedRequest(
 			{
 				type: TwitchAPICallType.Helix,
