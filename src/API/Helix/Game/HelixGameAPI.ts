@@ -2,6 +2,7 @@ import BaseAPI from '../../BaseAPI';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixGame, { HelixGameData } from './HelixGame';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import HelixResponse from '../HelixResponse';
 
 /** @private */
 export type HelixGameFilterType = 'id' | 'name';
@@ -23,7 +24,7 @@ export default class HelixGameAPI extends BaseAPI {
 	 *
 	 * @param ids The game IDs you want to look up.
 	 */
-	getGamesByIds(ids: string[]) {
+	async getGamesByIds(ids: string[]) {
 		return this._getGames('id', ids);
 	}
 
@@ -32,7 +33,7 @@ export default class HelixGameAPI extends BaseAPI {
 	 *
 	 * @param names The game names you want to look up.
 	 */
-	getGamesByNames(names: string[]) {
+	async getGamesByNames(names: string[]) {
 		return this._getGames('name', names);
 	}
 
@@ -42,8 +43,7 @@ export default class HelixGameAPI extends BaseAPI {
 	 * @param id The game ID you want to look up.
 	 */
 	async getGameById(id: string) {
-		const req = this._getGames('id', id);
-		const games = await req.getAll();
+		const games = await this._getGames('id', id);
 		return games.length ? games[0] : null;
 	}
 
@@ -53,23 +53,20 @@ export default class HelixGameAPI extends BaseAPI {
 	 * @param name The game name you want to look up.
 	 */
 	async getGameByName(name: string) {
-		const req = this._getGames('name', name);
-		const games = await req.getAll();
+		const games = await this._getGames('name', name);
 		return games.length ? games[0] : null;
 	}
 
-	private _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
-		return new HelixPaginatedRequest(
-			{
-				type: TwitchAPICallType.Helix,
-				url: 'games',
-				query: {
-					[filterType]: filterValues
-				}
-			},
-			this._client,
-			(data: HelixGameData) => new HelixGame(data, this._client)
-		);
+	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
+		const data = await this._client.callAPI<HelixResponse<HelixGameData>>({
+			type: TwitchAPICallType.Helix,
+			url: 'games',
+			query: {
+				[filterType]: filterValues
+			}
+		});
+
+		return data.data.map(entry => new HelixGame(entry, this._client));
 	}
 
 	async getTopGames() {
