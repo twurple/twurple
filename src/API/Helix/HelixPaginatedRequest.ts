@@ -55,7 +55,7 @@ export default class HelixPaginatedRequest<D, T> {
 			return [];
 		}
 
-		this._currentCursor = result.pagination.cursor;
+		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
 		this._currentData = result.data;
 
 		return result.data.map(this._mapper);

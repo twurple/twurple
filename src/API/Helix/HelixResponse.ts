@@ -4,7 +4,7 @@ export default interface HelixResponse<T> {
 }
 
 export interface HelixPaginatedResponse<T> extends HelixResponse<T> {
-	pagination: {
+	pagination?: {
 		cursor: string;
 	};
 }
