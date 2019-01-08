@@ -8,7 +8,6 @@ import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError'
 import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
 import User, { UserData } from '../User/User';
 import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
-import { UniformObject } from '../../Toolkit/ObjectTools';
 
 /**
  * Channel data to update using {@ChannelAPI#updateChannel}.
@@ -119,7 +118,7 @@ export default class ChannelAPI extends BaseAPI {
 	): Promise<ChannelFollow[]> {
 		const channelId = UserTools.getUserId(channel);
 
-		const query: UniformObject<string> = { limit: limit.toString() };
+		const query: Record<string, string> = { limit: limit.toString() };
 		if (page) {
 			query.offset = ((page - 1) * limit).toString();
 		}
@@ -151,7 +150,7 @@ export default class ChannelAPI extends BaseAPI {
 	): Promise<ChannelSubscription[]> {
 		const channelId = UserTools.getUserId(channel);
 
-		const query: UniformObject<string> = { limit: limit.toString() };
+		const query: Record<string, string> = { limit: limit.toString() };
 
 		if (page) {
 			query.offset = ((page - 1) * limit).toString();

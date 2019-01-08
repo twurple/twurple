@@ -1,6 +1,6 @@
 import TwitchClient from '../../TwitchClient';
 import { NonEnumerable } from '../../Toolkit/Decorators';
-import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
+import ObjectTools from '../../Toolkit/ObjectTools';
 import HellFreezesOverError from '../../Errors/HellFreezesOverError';
 
 /**
@@ -152,7 +152,7 @@ export interface CheermoteDisplayInfo {
  */
 export default class CheermoteList {
 	@NonEnumerable private readonly _client: TwitchClient;
-	private readonly _data: UniformObject<CheermoteActionData>;
+	private readonly _data: Record<string, CheermoteActionData>;
 
 	/** @private */
 	constructor(data: CheermoteActionData[], client: TwitchClient) {

@@ -3,7 +3,6 @@ import * as request from 'request-promise-native';
 import { Cacheable, CachedGetter } from './Toolkit/Decorators';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Bits/CheermoteList';
-import { UniformObject } from './Toolkit/ObjectTools';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
 
 import BitsAPI from './API/Bits/BitsAPI';
@@ -109,14 +108,14 @@ export interface TwitchAPICallOptions {
 	/**
 	 * The query parameters to send with the API call.
 	 */
-	query?: UniformObject<string | string[] | undefined>;
+	query?: Record<string, string | string[] | undefined>;
 
 	/**
 	 * The form body to send with the API call.
 	 *
 	 * If this is given, `jsonBody` will be ignored.
 	 */
-	body?: UniformObject<string | string[] | undefined>;
+	body?: Record<string, string | string[] | undefined>;
 
 	/**
 	 * The JSON body to send with the API call.

@@ -1,5 +1,4 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
-import { UniformObject } from '../../Toolkit/ObjectTools';
 
 /** @private */
 export interface Emote {
@@ -8,7 +7,7 @@ export interface Emote {
 }
 
 /** @private */
-export type EmoteSetListData = UniformObject<Emote[]>;
+export type EmoteSetListData = Record<string, Emote[]>;
 
 /**
  * A list of emotes, grouped into emote sets, that a user can use.

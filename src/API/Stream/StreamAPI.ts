@@ -2,7 +2,6 @@ import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
 import Stream, { StreamData, StreamDataWrapper, StreamType } from './Stream';
-import { UniformObject } from '../../Toolkit/ObjectTools';
 
 /**
  * The API methods that deal with streams.
@@ -45,7 +44,7 @@ export default class StreamAPI extends BaseAPI {
 		type?: StreamType,
 		page?: number, limit: number = 25
 	) {
-		const query: UniformObject<string> = { limit: limit.toString() };
+		const query: Record<string, string> = { limit: limit.toString() };
 
 		if (channels) {
 			query.channel = typeof channels === 'string' ? channels : channels.join(',');
@@ -101,7 +100,7 @@ export default class StreamAPI extends BaseAPI {
 	 */
 	@Cached(60)
 	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25) {
-		const query: UniformObject<string> = { limit: limit.toString() };
+		const query: Record<string, string> = { limit: limit.toString() };
 
 		if (type) {
 			query.type = type;

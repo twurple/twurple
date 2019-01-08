@@ -1,6 +1,5 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
-import { UniformObject } from '../../Toolkit/ObjectTools';
 import Channel, { ChannelData } from '../Channel/Channel';
 import Stream, { StreamData } from '../Stream/Stream';
 
@@ -26,7 +25,7 @@ export default class SearchAPI extends BaseAPI {
 	 */
 	@Cached(300)
 	async searchChannels(term: string, page?: number, limit: number = 25): Promise<Channel[]> {
-		const query: UniformObject<string> = { query: term, limit: limit.toString() };
+		const query: Record<string, string> = { query: term, limit: limit.toString() };
 
 		if (page) {
 			query.offset = ((page - 1) * limit).toString();
@@ -47,7 +46,7 @@ export default class SearchAPI extends BaseAPI {
 	 */
 	@Cached(300)
 	async searchStreams(term: string, page?: number, limit: number = 25, hls?: boolean): Promise<Stream[]> {
-		const query: UniformObject<string> = { query: term, limit: limit.toString() };
+		const query: Record<string, string> = { query: term, limit: limit.toString() };
 
 		if (page) {
 			query.offset = ((page - 1) * limit).toString();

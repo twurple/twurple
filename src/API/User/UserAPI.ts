@@ -2,7 +2,7 @@ import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../Toolkit/Decora
 import BaseAPI from '../BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
 import User, { UserData } from './User';
-import ObjectTools, { UniformObject } from '../../Toolkit/ObjectTools';
+import ObjectTools from '../../Toolkit/ObjectTools';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import EmoteSetList from '../Channel/EmoteSetList';
 import UserSubscription from './UserSubscription';
@@ -78,7 +78,7 @@ export default class UserAPI extends BaseAPI {
 	 *
 	 * @param userNames The user names you want to look up.
 	 */
-	async getUsersByNames(userNames: string[]): Promise<UniformObject<User>> {
+	async getUsersByNames(userNames: string[]): Promise<Record<string, User>> {
 		this._cleanUserCache();
 		userNames = userNames.map(name => name.toLowerCase());
 		const cachedEntries = Array.from(this._userByNameCache.entries()).filter(([key]) => userNames.includes(key));
@@ -169,7 +169,7 @@ export default class UserAPI extends BaseAPI {
 		orderBy?: string, orderDirection?: 'asc' | 'desc'
 	): Promise<UserFollow[]> {
 		const userId = UserTools.getUserId(user);
-		const query: UniformObject<string> = {};
+		const query: Record<string, string> = {};
 
 		if (page) {
 			query.offset = ((page - 1) * limit).toString();
@@ -265,7 +265,7 @@ export default class UserAPI extends BaseAPI {
 	@Cached(3600)
 	async getBlockedUsers(user: UserIdResolvable, page?: number, limit: number = 25): Promise<UserBlock[]> {
 		const userId = UserTools.getUserId(user);
-		const query: UniformObject<string> = { limit: limit.toString() };
+		const query: Record<string, string> = { limit: limit.toString() };
 
 		if (page) {
 			query.offset = ((page - 1) * limit).toString();

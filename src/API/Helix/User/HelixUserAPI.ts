@@ -1,5 +1,4 @@
 import BaseAPI from '../../BaseAPI';
-import { UniformObject } from '../../../Toolkit/ObjectTools';
 import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixUser, { HelixUserData } from './HelixUser';
 import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
@@ -35,7 +34,7 @@ export interface HelixUserUpdate {
  */
 export default class HelixUserAPI extends BaseAPI {
 	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
-		const query: UniformObject<string | string[] | undefined> = { [lookupType]: param };
+		const query: Record<string, string | string[] | undefined> = { [lookupType]: param };
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixUserData>>({
 			type: TwitchAPICallType.Helix,
 			url: 'users',
@@ -127,7 +126,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
 	 */
 	getFollows(filter: HelixFollowFilter) {
-		const query: UniformObject<string | undefined> = {};
+		const query: Record<string, string | undefined> = {};
 		let hasUserIdParam = false;
 		if (filter.user) {
 			query.from_id = UserTools.getUserId(filter.user);
