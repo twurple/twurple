@@ -4,7 +4,7 @@ import ArrayTools from '../../Toolkit/ArrayTools';
 /** @private */
 export interface ChattersListData {
 	chatter_count: number;
-	chatters: { [status: string]: string[] };
+	chatters: Record<string, string[]>;
 }
 
 /**
