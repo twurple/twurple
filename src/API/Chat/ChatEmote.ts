@@ -16,7 +16,7 @@ export default class ChatEmote {
 	@NonEnumerable protected readonly _client: TwitchClient;
 
 	/** @private */
-	constructor(private _data: ChatEmoteData, client: TwitchClient) {
+	constructor(private readonly _data: ChatEmoteData, client: TwitchClient) {
 		this._client = client;
 	}
 

@@ -15,7 +15,7 @@ export default class ChatBadgeSet {
 	@NonEnumerable protected readonly _client: TwitchClient;
 
 	/** @private */
-	constructor(private _data: ChatBadgeSetData, client: TwitchClient) {
+	constructor(private readonly _data: ChatBadgeSetData, client: TwitchClient) {
 		this._client = client;
 	}
 

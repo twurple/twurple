@@ -19,7 +19,7 @@ export default class ChatRoom {
 	@NonEnumerable protected readonly _client: TwitchClient;
 
 	/** @private */
-	constructor(private _data: ChatRoomData, client: TwitchClient) {
+	constructor(private readonly _data: ChatRoomData, client: TwitchClient) {
 		this._client = client;
 	}
 
