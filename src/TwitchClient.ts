@@ -7,6 +7,7 @@ import StaticAuthProvider from './Auth/StaticAuthProvider';
 
 import BitsAPI from './API/Bits/BitsAPI';
 import ChannelAPI from './API/Channel/ChannelAPI';
+import ChatAPI from './API/Chat/ChatAPI';
 import HelixAPIGroup from './API/Helix/HelixAPIGroup';
 import SearchAPI from './API/Search/SearchAPI';
 import StreamAPI from './API/Stream/StreamAPI';
@@ -362,6 +363,15 @@ export default class TwitchClient {
 	@CachedGetter()
 	get channels() {
 		return new ChannelAPI(this);
+	}
+
+	/**
+	 * The API methods that deal with chat.
+	 */
+
+	@CachedGetter()
+	get chat() {
+		return new ChatAPI(this);
 	}
 
 	/**
