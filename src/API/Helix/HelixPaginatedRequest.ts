@@ -16,17 +16,17 @@ import { HelixPaginatedResponse } from './HelixResponse';
  */
 export default class HelixPaginatedRequest<D, T> {
 	@NonEnumerable private readonly _client: TwitchClient;
-	private readonly _callOptions: TwitchAPICallOptions;
-	private readonly _mapper: (data: D) => T;
 
 	private _currentCursor?: string;
 	private _currentData?: D[];
 
 	/** @private */
-	constructor(callOptions: TwitchAPICallOptions, client: TwitchClient, mapper: (data: D) => T) {
-		this._callOptions = callOptions;
+	constructor(
+		private readonly _callOptions: TwitchAPICallOptions,
+		client: TwitchClient,
+		private readonly _mapper: (data: D) => T | T[]
+	) {
 		this._client = client;
-		this._mapper = mapper;
 	}
 
 	/**
@@ -58,7 +58,13 @@ export default class HelixPaginatedRequest<D, T> {
 		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
 		this._currentData = result.data;
 
-		return result.data.map(this._mapper);
+		return result.data.reduce(
+			(acc, elem) => {
+				const mapped = this._mapper(elem);
+				return Array.isArray(mapped) ? [...acc, ...mapped] : [...acc, mapped];
+			},
+			[]
+		);
 	}
 
 	/**
