@@ -14,6 +14,6 @@ script:
 jobs:
     include:
         - stage: Publish docs
-          if: type = push AND branch = master
+          if: type = push AND branch = master AND fork = false
           script: scripts/travis/publishDocs.sh
 
