@@ -42,7 +42,7 @@ export default class HelixPaginatedRequest<D, T> {
 	}
 
 	/** @private */
-	protected _fetchData(additionalOptions: Partial<TwitchAPICallOptions> = {}) {
+	protected async _fetchData(additionalOptions: Partial<TwitchAPICallOptions> = {}) {
 		return this._client.callAPI<HelixPaginatedResponse<D>>({
 			...this._callOptions,
 			...additionalOptions,
