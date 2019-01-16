@@ -8,3 +8,7 @@ export interface HelixPaginatedResponse<T> extends HelixResponse<T> {
 		cursor: string;
 	};
 }
+
+export interface HelixPaginatedResponseWithTotal<T> extends HelixPaginatedResponse<T> {
+	total: number;
+}

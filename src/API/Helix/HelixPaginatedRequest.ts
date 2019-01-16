@@ -17,8 +17,11 @@ import { HelixPaginatedResponse } from './HelixResponse';
 export default class HelixPaginatedRequest<D, T> {
 	@NonEnumerable private readonly _client: TwitchClient;
 
-	private _currentCursor?: string;
-	private _currentData?: D[];
+	/** @private */
+	protected _currentCursor?: string;
+
+	/** @private */
+	protected _currentData?: HelixPaginatedResponse<D>;
 
 	/** @private */
 	constructor(
@@ -35,28 +38,27 @@ export default class HelixPaginatedRequest<D, T> {
 	 * Only works with {@HelixPaginatedRequest#getNext} and not with any other methods of data retrieval.
 	 */
 	get current() {
-		return this._currentData;
+		return this._currentData ? this._currentData.data : undefined;
 	}
 
-	/**
-	 * Retrieves and returns the next available page of data associated to the requested resource, or an empty array if there are no more available pages.
-	 */
-	async getNext() {
-		const result = await this._client.callAPI<HelixPaginatedResponse<D>>({
+	/** @private */
+	protected _fetchData(additionalOptions: Partial<TwitchAPICallOptions> = {}) {
+		return this._client.callAPI<HelixPaginatedResponse<D>>({
 			...this._callOptions,
+			...additionalOptions,
 			query: {
 				...this._callOptions.query,
 				after: this._currentCursor,
-				first: '100'
+				first: '100',
+				...additionalOptions.query
 			}
 		});
+	}
 
-		if (!result.data.length) {
-			return [];
-		}
-
+	/** @private */
+	protected _processResult(result: HelixPaginatedResponse<D>) {
 		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
-		this._currentData = result.data;
+		this._currentData = result;
 
 		return result.data.reduce(
 			(acc, elem) => {
@@ -65,6 +67,19 @@ export default class HelixPaginatedRequest<D, T> {
 			},
 			[]
 		);
+	}
+
+	/**
+	 * Retrieves and returns the next available page of data associated to the requested resource, or an empty array if there are no more available pages.
+	 */
+	async getNext() {
+		const result = await this._fetchData();
+
+		if (!result.data.length) {
+			return [];
+		}
+
+		return this._processResult(result);
 	}
 
 	/**

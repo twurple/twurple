@@ -5,7 +5,7 @@ import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedU
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 
 /** @private */
@@ -141,7 +141,7 @@ export default class HelixUserAPI extends BaseAPI {
 			throw new TypeError('At least one of user and followedUser have to be set');
 		}
 
-		return new HelixPaginatedRequest(
+		return new HelixPaginatedRequestWithTotal(
 			{
 				type: TwitchAPICallType.Helix,
 				url: 'users/follows',
