@@ -2,7 +2,7 @@ import { Cacheable, Cached, ClearsCache } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
 import Channel from './Channel';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
-import ChannelSubscription, { ChannelSubscriptionsResponse, ChannelSubscriptionData } from './ChannelSubscription';
+import ChannelSubscription, { ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
 import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
@@ -150,23 +150,22 @@ export default class ChannelAPI extends BaseAPI {
 	): Promise<ChannelSubscription[]> {
 		const data = await this._getChannelSubscriptions(channel, page, limit, orderDirection);
 
-		return data.subscriptions.map((sub: ChannelSubscriptionData) => new ChannelSubscription(sub, this._client));
+		return data.subscriptions.map(sub => new ChannelSubscription(sub, this._client));
 	}
 
 	/**
 	 * Retrieves the total number of subscribers for the given channel.
 	 *
-	 * @param channel The channel you want to retrieve the list of subscribers for.
+	 * @param channel The channel you want to retrieve the number of subscribers for.
 	 */
 	@Cached(30)
-	async getChannelSubscriptionsCount(channel: UserIdResolvable): Promise<number> {
+	async getChannelSubscriptionCount(channel: UserIdResolvable): Promise<number> {
 		const data = await this._getChannelSubscriptions(channel, 0, 1);
 
 		return data._total;
 	}
-
-	/** @private */
-	async _getChannelSubscriptions(
+	
+	private async _getChannelSubscriptions(
 		channel: UserIdResolvable,
 		page?: number, limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
@@ -184,13 +183,11 @@ export default class ChannelAPI extends BaseAPI {
 		}
 
 		try {
-			const data = await this._client.callAPI({
+			return await this._client.callAPI({
 				url: `channels/${channelId}/subscriptions`,
 				query,
 				scope: 'channel_subscriptions'
 			});
-
-			return data;
 		} catch (e) {
 			if (e instanceof StatusCodeError && e.statusCode === 422) {
 				throw new NoSubscriptionProgramError(channelId);
