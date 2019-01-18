@@ -2,6 +2,12 @@ import Subscription, { SubscriptionData } from '../Subscription';
 import User, { UserData } from '../User/User';
 
 /** @private */
+export interface ChannelSubscriptionsResponse {
+	_total: number;
+	subscriptions: ChannelSubscriptionData[];
+}
+
+/** @private */
 export interface ChannelSubscriptionData extends SubscriptionData {
 	user: UserData;
 }
