@@ -2,7 +2,7 @@ import { Cacheable, Cached, ClearsCache } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
 import Channel from './Channel';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
-import ChannelSubscription, { ChannelSubscriptionData } from './ChannelSubscription';
+import ChannelSubscription, { ChannelSubscriptionsResponse, ChannelSubscriptionData } from './ChannelSubscription';
 import { StatusCodeError } from 'request-promise-native/errors';
 import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
@@ -148,6 +148,29 @@ export default class ChannelAPI extends BaseAPI {
 		page?: number, limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
 	): Promise<ChannelSubscription[]> {
+		const data = await this._getChannelSubscriptions(channel, page, limit, orderDirection);
+
+		return data.subscriptions.map((sub: ChannelSubscriptionData) => new ChannelSubscription(sub, this._client));
+	}
+
+	/**
+	 * Retrieves the total number of subscribers for the given channel.
+	 *
+	 * @param channel The channel you want to retrieve the list of subscribers for.
+	 */
+	@Cached(30)
+	async getChannelSubscriptionsCount(channel: UserIdResolvable): Promise<number> {
+		const data = await this._getChannelSubscriptions(channel, 0, 1);
+
+		return data._total;
+	}
+
+	/** @private */
+	async _getChannelSubscriptions(
+		channel: UserIdResolvable,
+		page?: number, limit: number = 25,
+		orderDirection?: 'asc' | 'desc'
+	): Promise<ChannelSubscriptionsResponse> {
 		const channelId = UserTools.getUserId(channel);
 
 		const query: Record<string, string> = { limit: limit.toString() };
@@ -167,7 +190,7 @@ export default class ChannelAPI extends BaseAPI {
 				scope: 'channel_subscriptions'
 			});
 
-			return data.subscriptions.map((sub: ChannelSubscriptionData) => new ChannelSubscription(sub, this._client));
+			return data;
 		} catch (e) {
 			if (e instanceof StatusCodeError && e.statusCode === 422) {
 				throw new NoSubscriptionProgramError(channelId);
