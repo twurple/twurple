@@ -67,7 +67,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 */
 	async sendHubRequest(options: HelixWebHookHubRequest) {
 		const { mode, callbackUrl, topicUrl, validityInSeconds = 3600, secret, scope } = options;
-		return this._client.callAPI<string>({
+		await this._client.callAPI({
 			url: 'webhooks/hub',
 			method: 'POST',
 			scope,
