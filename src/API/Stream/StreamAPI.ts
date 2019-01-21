@@ -11,7 +11,7 @@ import Stream, { StreamData, StreamDataWrapper, StreamType } from './Stream';
  * ## Example
  * ```ts
  * const client = new TwitchClient(options);
- * const cheermotes = await client.streams.getStreamByChannel('125328655');
+ * const stream = await client.streams.getStreamByChannel('125328655');
  * ```
  */
 @Cacheable

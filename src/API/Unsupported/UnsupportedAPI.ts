@@ -1,8 +1,7 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators';
 import BaseAPI from '../BaseAPI';
-import Channel from '../Channel/Channel';
 import ChattersList, { ChattersListData } from './ChattersList';
-import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
+import UserTools, { UserIdResolvable, UserNameResolvable } from '../../Toolkit/UserTools';
 import ChannelEvent, { ChannelEventData, ChannelEventAPIResult } from './ChannelEvent';
 import { TwitchAPICallType } from '../../TwitchClient';
 
@@ -14,7 +13,7 @@ import { TwitchAPICallType } from '../../TwitchClient';
  * ## Example
  * ```ts
  * const client = new TwitchClient(options);
- * const cheermotes = await client.unsupported.getEvents('125328655');
+ * const events = await client.unsupported.getEvents('125328655');
  * ```
  */
 @Cacheable
@@ -27,13 +26,11 @@ export default class UnsupportedAPI extends BaseAPI {
 	 * @param channel The channel to retrieve the chatters for.
 	 */
 	@Cached(60)
-	async getChatters(channel: string | Channel) {
-		if (typeof channel !== 'string') {
-			channel = channel.name;
-		}
+	async getChatters(channel: UserNameResolvable) {
+		const channelName = UserTools.getUserName(channel);
 
 		const data: ChattersListData = await this._client.callAPI({
-			url: `https://tmi.twitch.tv/group/user/${channel}/chatters`,
+			url: `https://tmi.twitch.tv/group/user/${channelName}/chatters`,
 			type: TwitchAPICallType.Custom
 		});
 		return new ChattersList(data);

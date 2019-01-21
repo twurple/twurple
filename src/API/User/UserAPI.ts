@@ -21,7 +21,7 @@ import AuthorizationError from '../../Errors/AuthorizationError';
  * ## Example
  * ```ts
  * const client = new TwitchClient(options);
- * const cheermotes = await client.users.getStreamByChannel('125328655');
+ * const user = await client.users.getUser('125328655');
  * ```
  */
 @Cacheable
