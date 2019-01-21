@@ -1,5 +1,6 @@
 import BaseAPI from '../../BaseAPI';
 import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { TwitchAPICallType } from '../../../TwitchClient';
 
 /**
  * The properties describing where and how long a WebHook notification is sent, and how it is signed.
@@ -69,6 +70,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		const { mode, callbackUrl, topicUrl, validityInSeconds = 3600, secret, scope } = options;
 		await this._client.callAPI({
 			url: 'webhooks/hub',
+			type: TwitchAPICallType.Helix,
 			method: 'POST',
 			scope,
 			jsonBody: {
