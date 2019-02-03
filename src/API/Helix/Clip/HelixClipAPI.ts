@@ -1,13 +1,18 @@
 import BaseAPI from '../../BaseAPI';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import HelixPagination from '../HelixPagination';
 import HelixClip, { HelixClipData } from './HelixClip';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
 
+/** @private */
 export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
 
+export interface HelixClipFilter {
+	startDate?: string;
+	endDate?: string;
+}
+
 /** @private */
-export interface HelixClipFilter extends HelixPagination {
+export interface HelixClipIdFilter extends HelixClipFilter {
 	filterType: HelixClipFilterType;
 	ids: string | string[];
 }
@@ -49,11 +54,11 @@ export default class HelixClipAPI extends BaseAPI {
 	 * Retrieves the latest clips for the specified broadcaster.
 	 *
 	 * @param id The broadcaster's user ID.
-	 * @param pagination Parameters for pagination.
+	 * @param filter Additional filters.
 	 */
-	getClipsForBroadcaster(id: string, pagination: HelixPagination) {
+	getClipsForBroadcaster(id: string, filter: HelixClipFilter = {}) {
 		return this._getClips({
-			...pagination,
+			...filter,
 			filterType: 'broadcaster_id',
 			ids: id
 		});
@@ -63,11 +68,11 @@ export default class HelixClipAPI extends BaseAPI {
 	 * Retrieves the latest clips for the specified game.
 	 *
 	 * @param id The game ID.
-	 * @param pagination Parameters for pagination.
+	 * @param filter Additional filters.
 	 */
-	getClipsForGame(id: string, pagination: HelixPagination) {
+	getClipsForGame(id: string, filter: HelixClipFilter = {}) {
 		return this._getClips({
-			...pagination,
+			...filter,
 			filterType: 'game_id',
 			ids: id
 		});
@@ -96,8 +101,8 @@ export default class HelixClipAPI extends BaseAPI {
 		return clips.length ? clips[0] : null;
 	}
 
-	private _getClips(params: HelixClipFilter) {
-		const { filterType, ids, after, before, limit } = params;
+	private _getClips(params: HelixClipIdFilter) {
+		const { filterType, ids, startDate, endDate } = params;
 
 		return new HelixPaginatedRequest(
 			{
@@ -106,9 +111,8 @@ export default class HelixClipAPI extends BaseAPI {
 				method: 'GET',
 				query: {
 					[filterType]: ids,
-					after,
-					before,
-					first: limit
+					started_at: startDate,
+					ended_at: endDate
 				}
 			},
 			this._client,
