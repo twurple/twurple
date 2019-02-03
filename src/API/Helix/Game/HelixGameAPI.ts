@@ -69,8 +69,7 @@ export default class HelixGameAPI extends BaseAPI {
 		return data.data.map(entry => new HelixGame(entry, this._client));
 	}
 
-	async getTopGames() {
-		// TODO next major: this method should not be async
+	getTopGames() {
 		return new HelixPaginatedRequest(
 			{
 				type: TwitchAPICallType.Helix,

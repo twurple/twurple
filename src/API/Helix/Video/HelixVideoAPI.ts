@@ -84,8 +84,7 @@ export default class HelixVideoAPI extends BaseAPI {
 	 *
 	 * @param user The user you want to retrieve videos from.
 	 */
-	async getVideosByUser(user: UserIdResolvable) {
-		// TODO next major: this method should not be async
+	getVideosByUser(user: UserIdResolvable) {
 		const userId = UserTools.getUserId(user);
 		return this._getVideos('user_id', userId);
 	}
@@ -95,8 +94,7 @@ export default class HelixVideoAPI extends BaseAPI {
 	 *
 	 * @param gameId The game you want to retrieve videos from.
 	 */
-	async getVideosByGame(gameId: string) {
-		// TODO next major: this method should not be async
+	getVideosByGame(gameId: string) {
 		return this._getVideos('game_id', gameId);
 	}
 
