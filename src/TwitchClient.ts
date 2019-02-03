@@ -1,5 +1,4 @@
 import AuthProvider from './Auth/AuthProvider';
-import * as request from 'request-promise-native';
 import { Cacheable, CachedGetter } from './Toolkit/Decorators';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Bits/CheermoteList';
@@ -16,7 +15,13 @@ import UserAPI from './API/User/UserAPI';
 
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
+import * as qs from 'qs';
 import ConfigError from './Errors/ConfigError';
+import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
+
+import * as fetchPonyfill from 'fetch-ponyfill';
+
+const { fetch, Headers } = fetchPonyfill();
 
 /**
  * Default configuration for the cheermote API.
@@ -276,35 +281,40 @@ export default class TwitchClient {
 	 */
 	// tslint:disable-next-line:no-any
 	static async callAPI<T = any>(options: TwitchAPICallOptions, clientId?: string, accessToken?: string): Promise<T> {
-		const requestOptions: request.Options = {
-			url: this._getUrl(options.url, options.type),
-			method: options.method,
-			headers: {
-				Accept: `application/vnd.twitchtv.v${options.version || 5}+json`
-			},
-			qs: options.query,
-			qsStringifyOptions: {
-				arrayFormat: 'repeat'
-			},
-			json: true,
-			gzip: true
-		};
+		const url = this._getUrl(options.url, options.type);
+		const params = qs.stringify(options.query, { arrayFormat: 'repeat' });
+		const headers = new Headers({
+			Accept: `application/vnd.twitchtv.v${options.version || 5}+json`
+		});
 
+		let body: string | undefined;
 		if (options.body) {
-			requestOptions.form = options.body;
+			body = qs.stringify(options.body);
 		} else if (options.jsonBody) {
-			requestOptions.body = options.jsonBody;
+			body = JSON.stringify(options.jsonBody);
 		}
 
 		if (clientId) {
-			requestOptions.headers!['Client-ID'] = clientId;
+			headers.append('Client-ID', clientId);
 		}
 
 		if (accessToken) {
-			requestOptions.headers!.Authorization = `${options.type === TwitchAPICallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`;
+			headers.append('Authorization', `${options.type === TwitchAPICallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`);
 		}
 
-		return request(requestOptions);
+		const requestOptions: RequestInit = {
+			method: options.method || 'GET',
+			headers,
+			body
+		};
+
+		const response = await fetch(params ? `${url}?${params}` : url, requestOptions);
+
+		if (!response.ok) {
+			throw new HTTPStatusCodeError(response.status, response.statusText, await response.json());
+		}
+
+		return response.json();
 	}
 
 	/**

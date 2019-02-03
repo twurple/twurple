@@ -6,8 +6,8 @@ import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
 import HelixStreamMarkerWithVideo, { HelixStreamMarkerVideoData } from './HelixStreamMarkerWithVideo';
 import HelixResponse from '../HelixResponse';
 import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
-import { StatusCodeError } from 'request-promise-native/errors';
 import StreamNotLiveError from '../../../Errors/StreamNotLiveError';
+import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
 
 /**
  * Filters for the streams request.
@@ -171,7 +171,7 @@ export default class HelixStreamAPI extends BaseAPI {
 
 			return new HelixStreamMarker(data.data[0], this._client);
 		} catch (e) {
-			if ((e instanceof StatusCodeError) && e.statusCode === 404) {
+			if ((e instanceof HTTPStatusCodeError) && e.statusCode === 404) {
 				throw new StreamNotLiveError();
 			}
 

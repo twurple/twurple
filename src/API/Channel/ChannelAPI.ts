@@ -3,11 +3,11 @@ import BaseAPI from '../BaseAPI';
 import Channel from './Channel';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChannelSubscription, { ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
-import { StatusCodeError } from 'request-promise-native/errors';
 import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
 import User, { UserData } from '../User/User';
 import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
+import HTTPStatusCodeError from '../../Errors/HTTPStatusCodeError';
 
 /**
  * Channel data to update using {@ChannelAPI#updateChannel}.
@@ -164,7 +164,7 @@ export default class ChannelAPI extends BaseAPI {
 
 		return data._total;
 	}
-	
+
 	private async _getChannelSubscriptions(
 		channel: UserIdResolvable,
 		page?: number, limit: number = 25,
@@ -189,7 +189,7 @@ export default class ChannelAPI extends BaseAPI {
 				scope: 'channel_subscriptions'
 			});
 		} catch (e) {
-			if (e instanceof StatusCodeError && e.statusCode === 422) {
+			if (e instanceof HTTPStatusCodeError && e.statusCode === 422) {
 				throw new NoSubscriptionProgramError(channelId);
 			}
 
@@ -222,7 +222,7 @@ export default class ChannelAPI extends BaseAPI {
 				this._client
 			);
 		} catch (e) {
-			if (e instanceof StatusCodeError) {
+			if (e instanceof HTTPStatusCodeError) {
 				if (e.statusCode === 404) {
 					return null;
 				} else if (e.statusCode === 422) {

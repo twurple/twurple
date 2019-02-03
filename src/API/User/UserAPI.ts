@@ -6,12 +6,12 @@ import ObjectTools from '../../Toolkit/ObjectTools';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import EmoteSetList from '../Channel/EmoteSetList';
 import UserSubscription from './UserSubscription';
-import { StatusCodeError } from 'request-promise-native/errors';
 import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import UserFollow, { UserFollowData } from './UserFollow';
 import UserBlock, { UserBlockData } from './UserBlock';
 import HellFreezesOverError from '../../Errors/HellFreezesOverError';
 import AuthorizationError from '../../Errors/AuthorizationError';
+import HTTPStatusCodeError from '../../Errors/HTTPStatusCodeError';
 
 /**
  * The API methods that deal with users.
@@ -141,7 +141,7 @@ export default class UserAPI extends BaseAPI {
 				this._client
 			);
 		} catch (e) {
-			if (e instanceof StatusCodeError) {
+			if (e instanceof HTTPStatusCodeError) {
 				if (e.statusCode === 404) {
 					return null;
 				} else if (e.statusCode === 422) {
@@ -206,7 +206,7 @@ export default class UserAPI extends BaseAPI {
 			const data = await this._client.callAPI({ url: `users/${userId}/follows/channels/${channelId}` });
 			return new UserFollow(data, this._client);
 		} catch (e) {
-			if (e instanceof StatusCodeError) {
+			if (e instanceof HTTPStatusCodeError) {
 				if (e.statusCode === 404) {
 					return null;
 				}
