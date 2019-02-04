@@ -6,7 +6,9 @@ export interface HelixClipData {
 	url: string;
 	embed_url: string;
 	broadcaster_id: string;
+	broadcaster_name: string;
 	creator_id: string;
+	creator_name: string;
 	video_id: string;
 	game_id: string;
 	language: string;
@@ -54,6 +56,13 @@ export default class HelixClip {
 	}
 
 	/**
+	 * The display name of the broadcaster of the stream where the clip was created.
+	 */
+	get broadcasterDisplayName() {
+		return this._data.broadcaster_name;
+	}
+
+	/**
 	 * Retrieves information about the broadcaster of the stream where the clip was created.
 	 */
 	async getBroadcaster() {
@@ -65,6 +74,13 @@ export default class HelixClip {
 	 */
 	get creatorId() {
 		return this._data.creator_id;
+	}
+
+	/**
+	 * The display name of the creator of the clip.
+	 */
+	get creatorDisplayName() {
+		return this._data.creator_name;
 	}
 
 	/**
@@ -107,6 +123,13 @@ export default class HelixClip {
 	 */
 	get language() {
 		return this._data.language;
+	}
+
+	/**
+	 * The title of the clip.
+	 */
+	get title() {
+		return this._data.title;
 	}
 
 	/**
