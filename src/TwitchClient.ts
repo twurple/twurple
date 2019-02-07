@@ -1,8 +1,14 @@
+import * as qs from 'qs';
 import AuthProvider from './Auth/AuthProvider';
 import { Cacheable, CachedGetter } from './Toolkit/Decorators';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Bits/CheermoteList';
+import AccessToken, { AccessTokenData } from './API/AccessToken';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
+import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
+import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider';
+import ConfigError from './Errors/ConfigError';
+import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 
 import BitsAPI from './API/Bits/BitsAPI';
 import ChannelAPI from './API/Channel/ChannelAPI';
@@ -12,12 +18,6 @@ import SearchAPI from './API/Search/SearchAPI';
 import StreamAPI from './API/Stream/StreamAPI';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
 import UserAPI from './API/User/UserAPI';
-
-import AccessToken, { AccessTokenData } from './API/AccessToken';
-import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
-import * as qs from 'qs';
-import ConfigError from './Errors/ConfigError';
-import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 
 import * as fetchPonyfill from 'fetch-ponyfill';
 
@@ -175,6 +175,18 @@ export default class TwitchClient {
 		} else {
 			return new this({ ...config, authProvider: new StaticAuthProvider(clientId, accessToken, scopes) });
 		}
+	}
+
+	/**
+	 * Creates a new instance with client credentials.
+	 *
+	 * @param clientId
+	 * @param clientSecret
+	 * @param accessToken
+	 * @param config
+	 */
+	static withClientCredentials(clientId: string, clientSecret: string, accessToken?: string, config: Partial<TwitchConfig> = {}) {
+		return new this({ ...config, authProvider: new ClientCredentialsAuthProvider(clientId, clientSecret) });
 	}
 
 	/**
