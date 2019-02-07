@@ -12,7 +12,7 @@ import AccessToken from '../API/AccessToken';
 export default class StaticAuthProvider implements AuthProvider {
 	@NonEnumerable private readonly _clientId: string;
 	@NonEnumerable private _accessToken?: AccessToken;
-	private _scopes: string[] = [];
+	private readonly _scopes: string[] = [];
 
 	/**
 	 * Creates a new auth provider with static credentials.
