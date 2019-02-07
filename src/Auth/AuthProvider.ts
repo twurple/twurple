@@ -1,3 +1,5 @@
+import AccessToken from '../API/AccessToken';
+
 /**
  * Describes a class that manages and supplies access tokens.
  *
@@ -9,6 +11,7 @@
  * is used as a wrapper around another `AuthProvider` and can make use of
  * refresh tokens.
  */
+
 interface AuthProvider {
 	/**
 	 * The client ID.
@@ -32,10 +35,19 @@ interface AuthProvider {
 	 *
 	 * @param scopes The requested scope(s).
 	 */
-	getAccessToken(scopes?: string | string[]): Promise<string>;
+	getAccessToken(scopes?: string | string[]): Promise<AccessToken | null>;
 
 	/** @private */
-	setAccessToken(token: string): void;
+	setAccessToken(token: AccessToken): void;
+
+	/**
+	 * Requests that the provider fetches a new token from Twitch.
+	 *
+	 * This method is optional to implement. For some use cases,
+	 * it might not be desirable to e.g. ask the user to log in
+	 * again at just any time.
+	 */
+	refresh?(): Promise<AccessToken>;
 }
 
 export default AuthProvider;

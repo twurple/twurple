@@ -163,16 +163,17 @@ export default class TwitchClient {
 	 * @param accessToken The access token to call the API with.
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
+	 * @param scopes The scopes your supplied token has.
 	 * @param refreshConfig Configuration to automatically refresh expired tokens.
 	 * @param config Additional configuration to pass to the constructor.
 	 *
 	 * Note that if you provide a custom authentication provider, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	static withCredentials(clientId: string, accessToken?: string, refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
+	static withCredentials(clientId: string, accessToken?: string, scopes: string[] = [], refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
 		if (refreshConfig) {
-			return new this({ ...config, authProvider: new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken), refreshConfig) });
+			return new this({ ...config, authProvider: new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig) });
 		} else {
-			return new this({ ...config, authProvider: new StaticAuthProvider(clientId, accessToken) });
+			return new this({ ...config, authProvider: new StaticAuthProvider(clientId, accessToken, scopes) });
 		}
 	}
 
@@ -242,18 +243,17 @@ export default class TwitchClient {
 	 */
 	// tslint:disable-next-line:no-any
 	async callAPI<T = any>(options: TwitchAPICallOptions) {
-		let accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
-		try {
-			return await TwitchClient.callAPI<T>(options, this._config.authProvider.clientId, accessToken);
-		} catch (e) {
-			if (e.response && e.response.status === 401 && this._config.authProvider instanceof RefreshableAuthProvider) {
-				await this._config.authProvider.refresh();
-				accessToken = await this._config.authProvider.getAccessToken(options.scope ? [options.scope] : []);
-				return TwitchClient.callAPI<T>(options, this._config.authProvider.clientId, accessToken);
-			}
-
-			throw e;
+		const { authProvider } = this._config;
+		let accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : []);
+		if (!accessToken) {
+			return TwitchClient.callAPI<T>(options, authProvider.clientId);
 		}
+
+		if (accessToken.isExpired && authProvider.refresh) {
+			accessToken = await authProvider.refresh();
+		}
+
+		return TwitchClient.callAPI<T>(options, authProvider.clientId, accessToken.accessToken);
 	}
 
 	private static _getUrl(url: string, type?: TwitchAPICallType) {
@@ -335,6 +335,25 @@ export default class TwitchClient {
 				client_secret: clientSecret,
 				code,
 				redirect_uri: redirectUri
+			}
+		}));
+	}
+
+	/**
+	 * Retrieves an app access token with your client credentials.
+	 *
+	 * @param clientId The client ID of your application.
+	 * @param clientSecret The client secret of your application.
+	 * @param clientSecret
+	 */
+	static async getAppAccessToken(clientId: string, clientSecret: string) {
+		return new AccessToken(await this.callAPI<AccessTokenData>({
+			url: 'oauth2/token',
+			method: 'POST',
+			query: {
+				grant_type: 'client_credentials',
+				client_id: clientId,
+				client_secret: clientSecret
 			}
 		}));
 	}

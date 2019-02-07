@@ -2,7 +2,7 @@
 export interface AccessTokenData {
 	access_token: string;
 	refresh_token: string;
-	expires_in: number;
+	expires_in?: number;
 	scope: string;
 }
 
@@ -42,6 +42,13 @@ export default class AccessToken {
 			return null;
 		}
 		return new Date(this._obtainmentDate.getTime() + this._data.expires_in * 1000);
+	}
+
+	get isExpired() {
+		if (!this._data.expires_in) {
+			return false;
+		}
+		return Date.now() > (this._obtainmentDate.getTime() + this._data.expires_in * 1000);
 	}
 
 	/**

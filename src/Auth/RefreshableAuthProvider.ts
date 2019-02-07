@@ -38,12 +38,16 @@ export default class RefreshableAuthProvider implements AuthProvider {
 	@NonEnumerable private readonly _clientSecret: string;
 	@NonEnumerable private _refreshToken: string;
 	private readonly _childProvider: AuthProvider;
-	private _expiry?: Date | null;
+	private _initialExpiry?: Date | null;
 	private readonly _onRefresh?: (token: AccessToken) => void;
 
 	/**
 	 * Creates a new auth provider based on the given one that can automatically
 	 * refresh access tokens.
+	 *
+	 * You don't usually have to create this manually. You should use `TwitchClient.withCredentials`
+	 * with the `refreshConfig` parameter instead.
+	 *
 	 * @param childProvider The base auth provider.
 	 * @param refreshConfig The information necessary to automatically refresh an access token.
 	 */
@@ -51,7 +55,7 @@ export default class RefreshableAuthProvider implements AuthProvider {
 		this._clientSecret = refreshConfig.clientSecret;
 		this._refreshToken = refreshConfig.refreshToken;
 		this._childProvider = childProvider;
-		this._expiry = refreshConfig.expiry;
+		this._initialExpiry = refreshConfig.expiry;
 		this._onRefresh = refreshConfig.onRefresh;
 	}
 
@@ -81,15 +85,17 @@ export default class RefreshableAuthProvider implements AuthProvider {
 
 		// if we don't have a current token, we just pass this and refresh right away
 		if (oldToken) {
-			const now = new Date();
-
-			if (!this._expiry || this._expiry > now) {
+			if (this._initialExpiry) {
+				const now = new Date();
+				if (now < this._initialExpiry) {
+					return oldToken;
+				}
+			} else if (!oldToken.isExpired) {
 				return oldToken;
 			}
 		}
 
-		const tokenData = await this.refresh();
-		return tokenData.accessToken;
+		return this.refresh();
 	}
 
 	/**
@@ -97,9 +103,9 @@ export default class RefreshableAuthProvider implements AuthProvider {
 	 */
 	async refresh() {
 		const tokenData = await TwitchClient.refreshAccessToken(this.clientId, this._clientSecret, this._refreshToken);
-		this.setAccessToken(tokenData.accessToken);
+		this.setAccessToken(tokenData);
 		this._refreshToken = tokenData.refreshToken;
-		this._expiry = tokenData.expiryDate;
+		this._initialExpiry = undefined;
 
 		if (this._onRefresh) {
 			this._onRefresh(tokenData);
@@ -109,7 +115,7 @@ export default class RefreshableAuthProvider implements AuthProvider {
 	}
 
 	/** @private */
-	setAccessToken(token: string) {
+	setAccessToken(token: AccessToken) {
 		this._childProvider.setAccessToken(token);
 	}
 
