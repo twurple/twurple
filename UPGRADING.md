@@ -2,7 +2,7 @@
 
 ## Add initial scopes to your `withCredentials` call if necessary
 
-The `StaticAuthProvider` that is created when you use `TwitchClient.withCredentials` now throws when any scopes are requested that are not initially passed to it. All scopes your token has need to be given in the new third parameter `initialScopes`. This also means that if you used a refresh config with this method, you need to add this parameter even if the token does not have any scopes.
+The `StaticAuthProvider` that is created when you use `TwitchClient.withCredentials` now throws when any scopes are requested that are not initially passed to it. All scopes your token has need to be given in the new third parameter `scopes`. This also means that if you used a refresh config with this method, you need to add this parameter even if the token does not have any scopes.
 
 ## Change the return type of any implementations of `AuthProvider#getAccessToken`
 
