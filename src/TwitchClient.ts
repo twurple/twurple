@@ -164,12 +164,23 @@ export default class TwitchClient {
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param scopes The scopes your supplied token has.
+	 *
+	 * If this argument is given, the scopes need to be correct, or weird things might happen. If it's not (i.e. it's `undefined`), we fetch the correct scopes for you.
+	 *
+	 * If you can't exactly say which scopes your token has, don't use this parameter/set it to `undefined`.
 	 * @param refreshConfig Configuration to automatically refresh expired tokens.
 	 * @param config Additional configuration to pass to the constructor.
 	 *
-	 * Note that if you provide a custom authentication provider, this method will overwrite it. In this case, you should use the constructor directly.
+	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	static withCredentials(clientId: string, accessToken?: string, scopes: string[] = [], refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
+	static async withCredentials(clientId: string, accessToken?: string, scopes?: string[], refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
+		if (!scopes && accessToken) {
+			const tokenData = await this.getTokenInfo(clientId, accessToken);
+			if (!tokenData.valid) {
+				throw new ConfigError('Supplied an invalid access token to retrieve scopes with');
+			}
+			scopes = tokenData.scopes;
+		}
 		if (refreshConfig) {
 			return new this({ ...config, authProvider: new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig) });
 		} else {
@@ -180,10 +191,12 @@ export default class TwitchClient {
 	/**
 	 * Creates a new instance with client credentials.
 	 *
-	 * @param clientId
-	 * @param clientSecret
-	 * @param accessToken
-	 * @param config
+	 * @param clientId The client ID of your application.
+	 * @param clientSecret The client secret of your application.
+	 * @param accessToken The app access token to set initially.
+	 * @param config Additional configuration to pass to the constructor.
+	 *
+	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
 	static withClientCredentials(clientId: string, clientSecret: string, accessToken?: string, config: Partial<TwitchConfig> = {}) {
 		return new this({ ...config, authProvider: new ClientCredentialsAuthProvider(clientId, clientSecret) });
