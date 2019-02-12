@@ -27,6 +27,7 @@ export enum HelixStreamType {
 export interface HelixStreamData {
 	id: string;
 	user_id: string;
+	user_name: string;
 	game_id: string;
 	community_ids: string[];
 	type: HelixStreamType;
@@ -59,6 +60,13 @@ export default class HelixStream {
 	 * The user ID.
 	 */
 	get userId() {
+		return this._data.user_id;
+	}
+
+	/**
+	 * The user's display name.
+	 */
+	get userDisplayName() {
 		return this._data.user_id;
 	}
 

@@ -4,6 +4,7 @@ import TwitchClient from '../../../TwitchClient';
 /** @private */
 export interface HelixBitsLeaderboardEntryData {
 	user_id: string;
+	user_name: string;
 	rank: number;
 	score: number;
 }
@@ -25,6 +26,13 @@ export default class HelixBitsLeaderboardEntry {
 	 */
 	get userId() {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The display name of the user on the leaderboard.
+	 */
+	get userDisplayName() {
+		return this._data.user_name;
 	}
 
 	/**
