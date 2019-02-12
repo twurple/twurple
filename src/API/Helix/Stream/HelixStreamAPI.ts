@@ -72,7 +72,7 @@ export default class HelixStreamAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of streams.
 	 *
-	 * @param filter Several filtering and pagination parameters. See the {@HelixStreamFilter} documentation.
+	 * @expandParams
 	 */
 	getStreams(filter: HelixStreamFilter = {}) {
 		return new HelixPaginatedRequest(
