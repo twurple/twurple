@@ -8,6 +8,12 @@ The `StaticAuthProvider` that is created when you use `TwitchClient.withCredenti
 
 This method should now return a full `AccessToken` object instead of the access token as a string.
 
+## Replace the usage of the method `UserAPI.getUserEmotes` without an argument
+
+`client.users.getUserEmotes()` was essentially a shorthand for `client.users.getUserEmotes(await client.users.getMe())`, but with added technical complexity. Instead of this, you can now use the method `User#getEmotes`, or just get your user ID from somewhere and use the method with the user parameter.
+
+The `AuthorizationError` used only for this purpose was removed too.
+
 ## Remove the pagination parameter in `HelixClipAPI`
 
 The second parameter named `pagination` in the methods `.getClipsForBroadcaster` and `.getClipsForGame` was a relic from 0.x days. They did not work at all. If you still used it, you need to remove it - it got replaced by a new parameter that enables you to filter the clips by creation date.

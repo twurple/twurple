@@ -3,14 +3,13 @@ import TwitchClient, { TwitchAPICallType } from './TwitchClient';
 export default TwitchClient;
 export { TwitchAPICallType };
 
-import AuthorizationError from './Errors/AuthorizationError';
 import ConfigError from './Errors/ConfigError';
 import HellFreezesOverError from './Errors/HellFreezesOverError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 import NoSubscriptionProgramError from './Errors/NoSubscriptionProgramError';
 import StreamNotLiveError from './Errors/StreamNotLiveError';
 
-export { AuthorizationError, ConfigError, HellFreezesOverError, HTTPStatusCodeError, NoSubscriptionProgramError, StreamNotLiveError };
+export { ConfigError, HellFreezesOverError, HTTPStatusCodeError, NoSubscriptionProgramError, StreamNotLiveError };
 
 import AuthProvider from './Auth/AuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';

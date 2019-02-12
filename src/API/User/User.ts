@@ -190,4 +190,11 @@ export default class User {
 		const currentUser = await this._client.users.getMe();
 		return currentUser.unfollowChannel(this);
 	}
+
+	/**
+	 * Retrieves the emotes the user can use.
+	 */
+	async getEmotes() {
+		return this._client.users.getUserEmotes(this);
+	}
 }

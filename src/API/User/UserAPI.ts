@@ -10,7 +10,6 @@ import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError'
 import UserFollow, { UserFollowData } from './UserFollow';
 import UserBlock, { UserBlockData } from './UserBlock';
 import HellFreezesOverError from '../../Errors/HellFreezesOverError';
-import AuthorizationError from '../../Errors/AuthorizationError';
 import HTTPStatusCodeError from '../../Errors/HTTPStatusCodeError';
 
 /**
@@ -100,22 +99,13 @@ export default class UserAPI extends BaseAPI {
 	}
 
 	/**
-	 * Retrieves the emotes a user can use.
+	 * Retrieves the emotes a given user can use.
 	 *
 	 * @param user The user you want to get emotes for.
 	 */
 	@Cached(3600)
-	async getUserEmotes(user?: UserIdResolvable) {
-		let userId: string;
-		if (user) {
-			userId = UserTools.getUserId(user);
-		} else {
-			const tokenInfo = await this._client.getTokenInfo();
-			if (!tokenInfo.valid) {
-				throw new AuthorizationError('Authorization necessary to get emotes');
-			}
-			userId = tokenInfo.userId!;
-		}
+	async getUserEmotes(user: UserIdResolvable) {
+		const userId = UserTools.getUserId(user);
 
 		const data = await this._client.callAPI({ url: `users/${userId}/emotes`, scope: 'user_subscriptions' });
 		return new EmoteSetList(data.emoticon_sets);
