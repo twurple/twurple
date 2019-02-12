@@ -64,7 +64,7 @@ interface HelixStreamGetMarkersResult {
  *
  * ## Example
  * ```ts
- * const client = new TwitchClient(options);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const stream = await client.helix.streams.getStreamByUserId('125328655');
  * ```
  */

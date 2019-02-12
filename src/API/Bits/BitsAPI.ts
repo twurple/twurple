@@ -10,7 +10,7 @@ import BaseAPI from '../BaseAPI';
  *
  * ## Example
  * ```ts
- * const client = new TwitchClient(options);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const cheermotes = await client.bits.getCheermotes();
  * ```
  */

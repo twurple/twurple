@@ -28,7 +28,7 @@ export interface HelixUserUpdate {
  *
  * ## Example
  * ```ts
- * const client = new TwitchClient(options);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const user = await client.helix.users.getUserById('125328655');
  * ```
  */

@@ -45,7 +45,7 @@ export interface HelixClipCreateResponse {
  *
  * ## Example
  * ```ts
- * const client = new TwitchClient(options);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const clipId = await client.helix.clips.createClip({ channelId: '125328655' });
  * ```
  */

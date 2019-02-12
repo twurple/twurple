@@ -20,7 +20,7 @@ import HTTPStatusCodeError from '../../Errors/HTTPStatusCodeError';
  *
  * ## Example
  * ```ts
- * const client = new TwitchClient(options);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const user = await client.users.getUser('125328655');
  * ```
  */

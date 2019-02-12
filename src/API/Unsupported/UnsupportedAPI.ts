@@ -12,7 +12,7 @@ import { TwitchAPICallType } from '../../TwitchClient';
  *
  * ## Example
  * ```ts
- * const client = new TwitchClient(options);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const events = await client.unsupported.getEvents('125328655');
  * ```
  */

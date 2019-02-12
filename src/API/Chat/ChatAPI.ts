@@ -14,7 +14,7 @@ import ChatRoom, { ChatRoomData } from './ChatRoom';
  *
  * ## Example
  * ```ts
- * const client = new TwitchClient(options);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const channel = await client.chat.getBadges('125328655');
  * ```
  */

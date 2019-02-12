@@ -14,7 +14,7 @@ export type HelixGameFilterType = 'id' | 'name';
  *
  * ## Example
  * ```ts
- * const client = new TwitchClient(options);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const game = await client.helix.games.getGameByName('Hearthstone');
  * ```
  */
