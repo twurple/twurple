@@ -3,8 +3,12 @@
 const {getTopPackageDependencies} = require('top-package');
 
 const argvJson = process.env.npm_config_argv;
+if (!argvJson) {
+	// bail on CI with npm >= 6.7 and other weirdnesses
+	process.exit(0);
+}
 const argv = JSON.parse(argvJson);
-if (!argv.remain || !argv.remain.length) {
+if (!argv || !argv.remain || !argv.remain.length) {
 	// only show recommendation when first adding to project, not when rebuilding from scratch (e.g. on a CI)
 	process.exit(0);
 }
