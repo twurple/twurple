@@ -11,7 +11,7 @@ else
 	REPO_FULL_NAME="${REPO_NAME}@${TRAVIS_BRANCH}"
 fi
 
-npm run docs --base-url "/${REPO_FULL_NAME}"
+npm run docs -- --base-url "/${REPO_FULL_NAME}"
 
 git config --global user.email "travis@travis-ci.org"
 git config --global user.name "Travis CI"
