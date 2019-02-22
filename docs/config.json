@@ -7,6 +7,10 @@
 
 	"indexTitle": "Welcome to Twitch.js",
 	"indexFile": "index.md",
+
+	"repoUser": "d-fischer",
+	"repoName": "twitch",
+
 	"categories": [
 		{
 			"name": "basic-usage",
