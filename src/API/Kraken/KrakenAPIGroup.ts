@@ -1,5 +1,5 @@
 import BaseAPI from '../BaseAPI';
-import { CachedGetter } from '../../Toolkit/Decorators/Cache';
+import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
 import BitsAPI from './Bits/BitsAPI';
 import ChannelAPI from './Channel/ChannelAPI';
 import ChatAPI from './Chat/ChatAPI';
@@ -7,6 +7,7 @@ import SearchAPI from './Search/SearchAPI';
 import StreamAPI from './Stream/StreamAPI';
 import UserAPI from './User/UserAPI';
 
+@Cacheable
 export default class KrakenAPIGroup extends BaseAPI {
 	/**
 	 * The API methods that deal with bits.
