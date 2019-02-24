@@ -1,6 +1,6 @@
 import * as qs from 'qs';
 import AuthProvider from './Auth/AuthProvider';
-import { Cacheable, CachedGetter } from './Toolkit/Decorators';
+import { Cacheable, CachedGetter } from './Toolkit/Decorators/Cache';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Bits/CheermoteList';
 import AccessToken, { AccessTokenData } from './API/AccessToken';

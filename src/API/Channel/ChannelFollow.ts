@@ -1,5 +1,5 @@
 import User, { UserData } from '../User/User';
-import { NonEnumerable } from '../../Toolkit/Decorators';
+import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../../TwitchClient';
 
 /** @private */

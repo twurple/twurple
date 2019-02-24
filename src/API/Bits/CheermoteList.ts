@@ -1,5 +1,5 @@
 import TwitchClient from '../../TwitchClient';
-import { NonEnumerable } from '../../Toolkit/Decorators';
+import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
 import ObjectTools from '../../Toolkit/ObjectTools';
 import HellFreezesOverError from '../../Errors/HellFreezesOverError';
 

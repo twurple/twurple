@@ -1,4 +1,4 @@
-import { NonEnumerable } from '../../Toolkit/Decorators';
+import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
 import { UserIdResolvable } from '../../Toolkit/UserTools';
 import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
 import TwitchClient from '../../TwitchClient';

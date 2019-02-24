@@ -1,8 +1,9 @@
 import HelixDateRangeData from '../HelixDateRangeData';
-import { CachedGetter, NonEnumerable } from '../../../Toolkit/Decorators';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../../../TwitchClient';
 import HelixBitsLeaderboardEntry, { HelixBitsLeaderboardEntryData } from './HelixBitsLeaderboardEntry';
 import HelixResponse from '../HelixResponse';
+import { CachedGetter } from '../../../Toolkit/Decorators/Cache';
 
 /** @private */
 export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLeaderboardEntryData> {

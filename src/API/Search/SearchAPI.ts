@@ -1,4 +1,4 @@
-import { Cacheable, Cached } from '../../Toolkit/Decorators';
+import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
 import BaseAPI from '../BaseAPI';
 import Channel, { ChannelData } from '../Channel/Channel';
 import Stream, { StreamData } from '../Stream/Stream';

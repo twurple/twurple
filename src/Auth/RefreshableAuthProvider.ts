@@ -1,6 +1,6 @@
 import AuthProvider from './AuthProvider';
 import AccessToken from '../API/AccessToken';
-import { NonEnumerable } from '../Toolkit/Decorators';
+import { NonEnumerable } from '../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../TwitchClient';
 
 /**

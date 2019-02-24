@@ -1,5 +1,5 @@
 import AuthProvider from './AuthProvider';
-import { NonEnumerable } from '../Toolkit/Decorators';
+import { NonEnumerable } from '../Toolkit/Decorators/NonEnumerable';
 import AccessToken from '../API/AccessToken';
 
 /**

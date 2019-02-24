@@ -1,5 +1,5 @@
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
-import { Cacheable, Cached } from '../../Toolkit/Decorators';
+import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
 import CheermoteList, { CheermoteListData } from './CheermoteList';
 import BaseAPI from '../BaseAPI';
 

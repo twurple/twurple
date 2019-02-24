@@ -1,6 +1,7 @@
-import { CachedGetter, NonEnumerable } from '../../../Toolkit/Decorators';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../../../TwitchClient';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
+import { CachedGetter } from '../../../Toolkit/Decorators/Cache';
 
 export type HelixVideoViewableStatus = 'public' | 'private';
 export type HelixVideoType = 'upload' | 'archive' | 'highlight';

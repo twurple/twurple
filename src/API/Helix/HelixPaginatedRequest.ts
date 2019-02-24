@@ -1,5 +1,5 @@
 import TwitchClient, { TwitchAPICallOptions } from '../../TwitchClient';
-import { NonEnumerable } from '../../Toolkit/Decorators';
+import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
 import { HelixPaginatedResponse } from './HelixResponse';
 
 /**

@@ -1,4 +1,4 @@
-import { Cacheable, CachedGetter } from '../../Toolkit/Decorators';
+import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
 import ArrayTools from '../../Toolkit/ArrayTools';
 
 /** @private */

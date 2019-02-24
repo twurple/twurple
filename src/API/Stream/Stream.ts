@@ -1,4 +1,4 @@
-import { NonEnumerable } from '../../Toolkit/Decorators';
+import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
 import Channel, { ChannelData } from '../Channel/Channel';
 import TwitchClient from '../../TwitchClient';
 

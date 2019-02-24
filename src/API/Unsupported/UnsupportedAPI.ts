@@ -1,4 +1,4 @@
-import { Cacheable, Cached } from '../../Toolkit/Decorators';
+import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
 import BaseAPI from '../BaseAPI';
 import ChattersList, { ChattersListData } from './ChattersList';
 import UserTools, { UserIdResolvable, UserNameResolvable } from '../../Toolkit/UserTools';

@@ -1,5 +1,5 @@
 import BaseAPI from '../BaseAPI';
-import { Cacheable, Cached } from '../../Toolkit/Decorators';
+import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
 import { TwitchAPICallType } from '../../TwitchClient';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';

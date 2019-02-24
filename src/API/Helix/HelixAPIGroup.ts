@@ -1,5 +1,5 @@
 import BaseAPI from '../BaseAPI';
-import { Cacheable, CachedGetter } from '../../Toolkit/Decorators';
+import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
 
 import HelixStreamAPI from './Stream/HelixStreamAPI';
 import HelixUserAPI from './User/HelixUserAPI';
