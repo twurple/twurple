@@ -1,5 +1,5 @@
 import User, { UserData } from './User';
-import { UserIdResolvable } from '../../Toolkit/UserTools';
+import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import UserFollow from './UserFollow';
 
 /** @private */
@@ -75,7 +75,7 @@ export default class PrivilegedUser extends User {
 	 * @param notifications Whether the user will receive notifications.
 	 */
 	async followChannel(channel: UserIdResolvable, notifications?: boolean): Promise<UserFollow> {
-		return this._client.users.followChannel(this, channel, notifications);
+		return this._client.kraken.users.followChannel(this, channel, notifications);
 	}
 
 	/**
@@ -84,7 +84,7 @@ export default class PrivilegedUser extends User {
 	 * @param channel The channel to unfollow.
 	 */
 	async unfollowChannel(channel: UserIdResolvable): Promise<void> {
-		return this._client.users.unfollowChannel(this, channel);
+		return this._client.kraken.users.unfollowChannel(this, channel);
 	}
 
 	/**
@@ -93,7 +93,7 @@ export default class PrivilegedUser extends User {
 	 * @param userToBlock The user to block.
 	 */
 	async blockUser(userToBlock: UserIdResolvable) {
-		return this._client.users.blockUser(this, userToBlock);
+		return this._client.kraken.users.blockUser(this, userToBlock);
 	}
 
 	/**
@@ -102,6 +102,6 @@ export default class PrivilegedUser extends User {
 	 * @param userToUnblock The user to unblock.
 	 */
 	async unblockUser(userToUnblock: UserIdResolvable) {
-		return this._client.users.unblockUser(this, userToUnblock);
+		return this._client.kraken.users.unblockUser(this, userToUnblock);
 	}
 }

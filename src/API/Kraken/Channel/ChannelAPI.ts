@@ -1,13 +1,13 @@
-import { Cacheable, Cached, ClearsCache } from '../../Toolkit/Decorators/Cache';
-import BaseAPI from '../BaseAPI';
+import { Cacheable, Cached, ClearsCache } from '../../../Toolkit/Decorators/Cache';
+import BaseAPI from '../../BaseAPI';
 import Channel from './Channel';
-import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
+import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
 import ChannelSubscription, { ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
-import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
+import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
 import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
 import User, { UserData } from '../User/User';
 import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
-import HTTPStatusCodeError from '../../Errors/HTTPStatusCodeError';
+import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
 
 /**
  * Channel data to update using {@ChannelAPI#updateChannel}.

@@ -1,16 +1,16 @@
-import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../Toolkit/Decorators/Cache';
-import BaseAPI from '../BaseAPI';
+import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../../Toolkit/Decorators/Cache';
+import BaseAPI from '../../BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
 import User, { UserData } from './User';
-import ObjectTools from '../../Toolkit/ObjectTools';
-import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
+import ObjectTools from '../../../Toolkit/ObjectTools';
+import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
 import EmoteSetList from '../Channel/EmoteSetList';
 import UserSubscription from './UserSubscription';
-import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
+import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
 import UserFollow, { UserFollowData } from './UserFollow';
 import UserBlock, { UserBlockData } from './UserBlock';
-import HellFreezesOverError from '../../Errors/HellFreezesOverError';
-import HTTPStatusCodeError from '../../Errors/HTTPStatusCodeError';
+import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
+import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
 
 /**
  * The API methods that deal with users.

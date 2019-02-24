@@ -1,7 +1,7 @@
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
-import { UserIdResolvable } from '../../Toolkit/UserTools';
-import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
-import TwitchClient from '../../TwitchClient';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import { UserIdResolvable } from '../../../Toolkit/UserTools';
+import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import TwitchClient from '../../../TwitchClient';
 
 /** @private */
 export interface ChannelPlaceholderData {
@@ -43,35 +43,35 @@ export default class ChannelPlaceholder {
 	 * Retrieves the list of cheermotes you can use in the channel.
 	 */
 	async getCheermotes() {
-		return this._client.bits.getCheermotes(this);
+		return this._client.kraken.bits.getCheermotes(this);
 	}
 
 	/**
 	 * Retrieves the channel data.
 	 */
 	async getChannel() {
-		return this._client.channels.getChannel(this);
+		return this._client.kraken.channels.getChannel(this);
 	}
 
 	/**
 	 * Retrieves the channel's stream data.
 	 */
 	async getStream() {
-		return this._client.streams.getStreamByChannel(this);
+		return this._client.kraken.streams.getStreamByChannel(this);
 	}
 
 	/**
 	 * Retrieves the channel's followers.
 	 */
 	async getFollowers() {
-		return this._client.channels.getChannelFollowers(this);
+		return this._client.kraken.channels.getChannelFollowers(this);
 	}
 
 	/**
 	 * Retrieves the channel's subscribers.
 	 */
 	async getSubscriptions() {
-		return this._client.channels.getChannelSubscriptions(this);
+		return this._client.kraken.channels.getChannelSubscriptions(this);
 	}
 
 	/**
@@ -85,7 +85,7 @@ export default class ChannelPlaceholder {
 	 * @param user The user you want to get the subscription data for.
 	 */
 	async getSubscriptionBy(user: UserIdResolvable) {
-		return this._client.channels.getChannelSubscriptionByUser(this, user);
+		return this._client.kraken.channels.getChannelSubscriptionByUser(this, user);
 	}
 
 	/**

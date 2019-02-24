@@ -1,8 +1,8 @@
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import ChannelPlaceholder from '../Channel/ChannelPlaceholder';
-import { UserIdResolvable } from '../../Toolkit/UserTools';
-import NoSubscriptionProgramError from '../../Errors/NoSubscriptionProgramError';
-import TwitchClient from '../../TwitchClient';
+import { UserIdResolvable } from '../../../Toolkit/UserTools';
+import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import TwitchClient from '../../../TwitchClient';
 
 /** @private */
 export interface UserData {
@@ -93,7 +93,7 @@ export default class User {
 	 * Retrieves the channel data of the user.
 	 */
 	async getChannel() {
-		return this._client.channels.getChannel(this);
+		return this._client.kraken.channels.getChannel(this);
 	}
 
 	/**
@@ -121,7 +121,7 @@ export default class User {
 	 * @param channel The channel you want to get the subscription data for.
 	 */
 	async getSubscriptionTo(channel: UserIdResolvable) {
-		return this._client.users.getSubscriptionData(this, channel);
+		return this._client.kraken.users.getSubscriptionData(this, channel);
 	}
 
 	/**
@@ -150,7 +150,7 @@ export default class User {
 	 * @param orderDirection The direction to order in - ascending or descending.
 	 */
 	async getFollows(page?: number, limit?: number, orderBy?: 'created_at' | 'last_broadcast' | 'login', orderDirection?: 'asc' | 'desc') {
-		return this._client.users.getFollowedChannels(this, page, limit, orderBy, orderDirection);
+		return this._client.kraken.users.getFollowedChannels(this, page, limit, orderBy, orderDirection);
 	}
 
 	/**
@@ -159,7 +159,7 @@ export default class User {
 	 * @param channel The channel to retrieve the follow data for.
 	 */
 	async getFollowTo(channel: UserIdResolvable) {
-		return this._client.users.getFollowedChannel(this, channel);
+		return this._client.kraken.users.getFollowedChannel(this, channel);
 	}
 
 	/**
@@ -179,7 +179,7 @@ export default class User {
 	 * Follows the channel with the authenticated user.
 	 */
 	async follow() {
-		const currentUser = await this._client.users.getMe();
+		const currentUser = await this._client.kraken.users.getMe();
 		return currentUser.followChannel(this);
 	}
 
@@ -187,7 +187,7 @@ export default class User {
 	 * Unfollows the channel with the authenticated user.
 	 */
 	async unfollow() {
-		const currentUser = await this._client.users.getMe();
+		const currentUser = await this._client.kraken.users.getMe();
 		return currentUser.unfollowChannel(this);
 	}
 
@@ -195,6 +195,6 @@ export default class User {
 	 * Retrieves the emotes the user can use.
 	 */
 	async getEmotes() {
-		return this._client.users.getUserEmotes(this);
+		return this._client.kraken.users.getUserEmotes(this);
 	}
 }

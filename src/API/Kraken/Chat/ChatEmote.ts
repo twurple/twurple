@@ -1,5 +1,5 @@
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
-import TwitchClient from '../../TwitchClient';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import TwitchClient from '../../../TwitchClient';
 
 /** @private */
 export interface ChatEmoteData {

@@ -1,6 +1,6 @@
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import Channel, { ChannelData } from '../Channel/Channel';
-import TwitchClient from '../../TwitchClient';
+import TwitchClient from '../../../TwitchClient';
 
 /**
  * The possible sizes for a stream preview.

@@ -177,7 +177,7 @@ export default class HelixUser {
 	 * Follows the channel.
 	 */
 	async follow() {
-		const currentUser = await this._client.users.getMe();
+		const currentUser = await this._client.kraken.users.getMe();
 		return currentUser.followChannel(this);
 	}
 
@@ -185,7 +185,7 @@ export default class HelixUser {
 	 * Unfollows the channel.
 	 */
 	async unfollow() {
-		const currentUser = await this._client.users.getMe();
+		const currentUser = await this._client.kraken.users.getMe();
 		return currentUser.unfollowChannel(this);
 	}
 }

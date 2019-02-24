@@ -14,7 +14,7 @@ This method should now return a full `AccessToken` object instead of the access 
 
 The `AuthorizationError` used only for this purpose was removed too.
 
-## Remove the pagination parameter in `HelixClipAPI`
+## Remove the pagination parameter in usages of `HelixClipAPI`
 
 The second parameter named `pagination` in the methods `.getClipsForBroadcaster` and `.getClipsForGame` was a relic from 0.x days. They did not work at all. If you still used it, you need to remove it - it got replaced by a new parameter that enables you to filter the clips by creation date.
 
@@ -25,3 +25,11 @@ Whenever a request returned an error that was not caught by the library, a `Stat
 ## Remove promise usage from some Helix game and video API methods
 
 The methods `HelixGameApi#getTopGames`, `HelixVideoApi#getVideosByUser` and `HelixVideoApi#getVideosByGame` were unnecessarily flagged `async` and thus returned `Promise`s. This mistake was rectified in 2.x, so you need to clean up any excess `.then` or `await` usage for these methods.
+
+## \[Deprecation\] Move all Kraken usage to `client.kraken`
+
+`client.bits`, `client.channels`, `client.chat`, `client.search`, `client.streams` and `client.users` have all been deprecated and scheduled for removal in version 3.0. Please use `client.kraken.*` instead. The names didn't change.
+
+## \[Deprecation\] Use `client.badges` instead of `client.chat` for the badges methods
+
+The methods `client.chat.getGlobalBadges` and `client.chat.getChannelBadges` were misplaced in the `ChatAPI` class. They have been moved to their own namespace outside of the new Kraken namespace, `client.badges`. Both `client.chat.get*Badges` and `client.kraken.chat.get*Badges` will still work, but have been scheduled for removal in 3.0.

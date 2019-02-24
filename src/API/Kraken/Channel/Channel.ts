@@ -1,5 +1,5 @@
 import ChannelPlaceholder, { ChannelPlaceholderData } from './ChannelPlaceholder';
-import TwitchClient from '../../TwitchClient';
+import TwitchClient from '../../../TwitchClient';
 import { ChannelUpdateData } from './ChannelAPI';
 
 /** @private */
@@ -48,7 +48,7 @@ export default class Channel extends ChannelPlaceholder {
 	 * Updates the game, title or delay of a channel or toggles the channel feed.
 	 */
 	async update(data: ChannelUpdateData) {
-		return this._client.channels.updateChannel(this, data);
+		return this._client.kraken.channels.updateChannel(this, data);
 	}
 
 	/**

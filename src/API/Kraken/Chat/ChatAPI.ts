@@ -1,8 +1,6 @@
-import BaseAPI from '../BaseAPI';
-import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
-import { TwitchAPICallType } from '../../TwitchClient';
-import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
-import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
+import BaseAPI from '../../BaseAPI';
+import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
+import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { ChatEmoteData } from './ChatEmote';
 import ChatEmoteList from './ChatEmoteList';
 import ChatRoom, { ChatRoomData } from './ChatRoom';
@@ -22,37 +20,23 @@ import ChatRoom, { ChatRoomData } from './ChatRoom';
 export default class ChatAPI extends BaseAPI {
 	/**
 	 * Retrieves all globally applicable chat badges.
+	 *
+	 * @deprecated Use {@BadgesAPI#getGlobalBadges} instead.
 	 */
-	@Cached(3600)
 	async getGlobalBadges() {
-		const data = await this._client.callAPI<ChatBadgeListData>({
-			url: 'https://badges.twitch.tv/v1/badges/global/display',
-			type: TwitchAPICallType.Custom
-		});
-
-		return new ChatBadgeList(data, this._client);
+		return this._client.badges.getGlobalBadges();
 	}
 
 	/**
 	 * Retrieves all applicable chat badges for a given channel.
 	 *
+	 * @deprecated Use {@BadgesAPI#getGlobalBadges} instead.
+	 *
 	 * @param channel The channel to retrieve the chat badges for.
 	 * @param includeGlobal Whether to include global badges in the result list.
 	 */
-	@Cached(3600)
 	async getChannelBadges(channel: UserIdResolvable, includeGlobal: boolean = true) {
-		const data = await this._client.callAPI<{ badge_sets: ChatBadgeListData }>({
-			url: `https://badges.twitch.tv/badges/channel/${UserTools.getUserId(channel)}/display`,
-			type: TwitchAPICallType.Custom
-		});
-
-		const channelBadges = new ChatBadgeList(data.badge_sets, this._client);
-
-		if (includeGlobal) {
-			return channelBadges._merge(await this.getGlobalBadges());
-		}
-
-		return channelBadges;
+		return this._client.badges.getChannelBadges(channel, includeGlobal);
 	}
 
 	/**

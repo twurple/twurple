@@ -1,6 +1,6 @@
-import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
-import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
-import BaseAPI from '../BaseAPI';
+import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
+import BaseAPI from '../../BaseAPI';
 import Stream, { StreamData, StreamDataWrapper, StreamType } from './Stream';
 
 /**

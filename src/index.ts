@@ -18,25 +18,25 @@ import RefreshableAuthProvider from './Auth/RefreshableAuthProvider';
 export { AuthProvider, StaticAuthProvider, RefreshableAuthProvider };
 
 import AccessToken from './API/AccessToken';
-import Subscription from './API/Subscription';
+import Subscription from './API/Kraken/Subscription';
 import TokenInfo from './API/TokenInfo';
 
 export { AccessToken, Subscription, TokenInfo };
 
-import CheermoteList, { CheermoteBackground, CheermoteState, CheermoteScale } from './API/Bits/CheermoteList';
+import CheermoteList, { CheermoteBackground, CheermoteState, CheermoteScale } from './API/Kraken/Bits/CheermoteList';
 
 export { CheermoteList, CheermoteBackground, CheermoteState, CheermoteScale };
 
-import Channel from './API/Channel/Channel';
-import ChannelFollow from './API/Channel/ChannelFollow';
-import ChannelPlaceholder from './API/Channel/ChannelPlaceholder';
-import ChannelSubscription from './API/Channel/ChannelSubscription';
-import EmoteSetList from './API/Channel/EmoteSetList';
-import PrivilegedChannel from './API/Channel/PrivilegedChannel';
+import Channel from './API/Kraken/Channel/Channel';
+import ChannelFollow from './API/Kraken/Channel/ChannelFollow';
+import ChannelPlaceholder from './API/Kraken/Channel/ChannelPlaceholder';
+import ChannelSubscription from './API/Kraken/Channel/ChannelSubscription';
+import EmoteSetList from './API/Kraken/Channel/EmoteSetList';
+import PrivilegedChannel from './API/Kraken/Channel/PrivilegedChannel';
 
 export { Channel, ChannelFollow, ChannelPlaceholder, ChannelSubscription, EmoteSetList, PrivilegedChannel };
 
-import Stream, { StreamType } from './API/Stream/Stream';
+import Stream, { StreamType } from './API/Kraken/Stream/Stream';
 
 export { Stream, StreamType };
 
@@ -45,11 +45,11 @@ import ChattersList from './API/Unsupported/ChattersList';
 
 export { ChannelEvent, ChattersList };
 
-import PrivilegedUser from './API/User/PrivilegedUser';
-import User from './API/User/User';
-import UserBlock from './API/User/UserBlock';
-import UserFollow from './API/User/UserFollow';
-import UserSubscription from './API/User/UserSubscription';
+import PrivilegedUser from './API/Kraken/User/PrivilegedUser';
+import User from './API/Kraken/User/User';
+import UserBlock from './API/Kraken/User/UserBlock';
+import UserFollow from './API/Kraken/User/UserFollow';
+import UserSubscription from './API/Kraken/User/UserSubscription';
 
 export { PrivilegedUser, User, UserBlock, UserFollow, UserSubscription };
 

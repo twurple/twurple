@@ -1,6 +1,6 @@
 /** @private */
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
-import TwitchClient from '../../TwitchClient';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import TwitchClient from '../../../TwitchClient';
 
 export type ChatRoomRole = 'EVERYONE' | 'SUBSCRIBER' | 'MODERATOR';
 
@@ -41,7 +41,7 @@ export default class ChatRoom {
 	 * Retrieves the user data of the chat room owner.
 	 */
 	async getOwner() {
-		return this._client.users.getUser(this._data.owner_id);
+		return this._client.kraken.users.getUser(this._data.owner_id);
 	}
 
 	/**

@@ -1,6 +1,6 @@
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import User, { UserData } from './User';
-import TwitchClient from '../../TwitchClient';
+import TwitchClient from '../../../TwitchClient';
 
 /** @private */
 export interface UserBlockData {

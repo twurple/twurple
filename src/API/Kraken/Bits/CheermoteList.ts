@@ -1,7 +1,7 @@
-import TwitchClient from '../../TwitchClient';
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
-import ObjectTools from '../../Toolkit/ObjectTools';
-import HellFreezesOverError from '../../Errors/HellFreezesOverError';
+import TwitchClient from '../../../TwitchClient';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import ObjectTools from '../../../Toolkit/ObjectTools';
+import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 
 /**
  * The type of background a cheermote is supposed to appear on.

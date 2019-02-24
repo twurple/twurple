@@ -2,7 +2,7 @@ import * as qs from 'qs';
 import AuthProvider from './Auth/AuthProvider';
 import { Cacheable, CachedGetter } from './Toolkit/Decorators/Cache';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
-import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Bits/CheermoteList';
+import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
@@ -10,14 +10,10 @@ import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider'
 import ConfigError from './Errors/ConfigError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 
-import BitsAPI from './API/Bits/BitsAPI';
-import ChannelAPI from './API/Channel/ChannelAPI';
-import ChatAPI from './API/Chat/ChatAPI';
+import KrakenAPIGroup from './API/Kraken/KrakenAPIGroup';
 import HelixAPIGroup from './API/Helix/HelixAPIGroup';
-import SearchAPI from './API/Search/SearchAPI';
-import StreamAPI from './API/Stream/StreamAPI';
+import BadgesAPI from './API/Badges/BadgesAPI';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
-import UserAPI from './API/User/UserAPI';
 
 import * as fetchPonyfill from 'fetch-ponyfill';
 
@@ -404,52 +400,11 @@ export default class TwitchClient {
 	}
 
 	/**
-	 * The API methods that deal with bits.
+	 * A group of Kraken API methods.
 	 */
 	@CachedGetter()
-	get bits() {
-		return new BitsAPI(this);
-	}
-
-	/**
-	 * The API methods that deal with channels.
-	 */
-	@CachedGetter()
-	get channels() {
-		return new ChannelAPI(this);
-	}
-
-	/**
-	 * The API methods that deal with chat.
-	 */
-
-	@CachedGetter()
-	get chat() {
-		return new ChatAPI(this);
-	}
-
-	/**
-	 * The API methods that deal with searching.
-	 */
-	@CachedGetter()
-	get search() {
-		return new SearchAPI(this);
-	}
-
-	/**
-	 * The API methods that deal with streams.
-	 */
-	@CachedGetter()
-	get streams() {
-		return new StreamAPI(this);
-	}
-
-	/**
-	 * The API methods that deal with users.
-	 */
-	@CachedGetter()
-	get users() {
-		return new UserAPI(this);
+	get kraken() {
+		return new KrakenAPIGroup(this);
 	}
 
 	/**
@@ -461,10 +416,72 @@ export default class TwitchClient {
 	}
 
 	/**
-	 * Different API methods that are not officially supported by Twitch.
+	 * The API methods that deal with badges.
+	 */
+	@CachedGetter()
+	get badges() {
+		return new BadgesAPI(this);
+	}
+
+	/**
+	 * Various API methods that are not officially supported by Twitch.
 	 */
 	@CachedGetter()
 	get unsupported() {
 		return new UnsupportedAPI(this);
+	}
+
+	/**
+	 * The API methods that deal with bits.
+	 *
+	 * @deprecated Use `.kraken.bits` instead.
+	 */
+	get bits() {
+		return this.kraken.bits;
+	}
+
+	/**
+	 * The API methods that deal with channels.
+	 *
+	 * @deprecated Use `.kraken.channels` instead.
+	 */
+	get channels() {
+		return this.kraken.channels;
+	}
+
+	/**
+	 * The API methods that deal with chat.
+	 *
+	 * @deprecated Use `.kraken.chat` instead.
+	 */
+	get chat() {
+		return this.kraken.chat;
+	}
+
+	/**
+	 * The API methods that deal with searching.
+	 *
+	 * @deprecated Use `.kraken.search` instead.
+	 */
+	get search() {
+		return this.kraken.search;
+	}
+
+	/**
+	 * The API methods that deal with streams.
+	 *
+	 * @deprecated Use `.kraken.streams` instead.
+	 */
+	get streams() {
+		return this.kraken.streams;
+	}
+
+	/**
+	 * The API methods that deal with users.
+	 *
+	 * @deprecated Use `.kraken.users` instead.
+	 */
+	get users() {
+		return this.kraken.users;
 	}
 }
