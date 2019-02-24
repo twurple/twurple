@@ -16,4 +16,3 @@ jobs:
         - stage: Publish docs
           if: type = push AND fork = false AND tag IS blank
           script: scripts/travis/publishDocs.sh
-
