@@ -6,12 +6,12 @@ import BaseAPI from '../../BaseAPI';
 /**
  * The API methods that deal with Bits/Cheermotes.
  *
- * Can be accessed using `client.bits` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.bits` on a {@TwitchClient} instance.
  *
  * ## Example
  * ```ts
  * const client = TwitchClient.withCredentials(clientId, accessToken);
- * const cheermotes = await client.bits.getCheermotes();
+ * const cheermotes = await client.kraken.bits.getCheermotes();
  * ```
  */
 @Cacheable

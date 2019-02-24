@@ -4,6 +4,17 @@ import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
 import { TwitchAPICallType } from '../../TwitchClient';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
 
+/**
+ * The API methods that deal with badges.
+ *
+ * Can be accessed using `client.badges` on a {@TwitchClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const cheermotes = await client.badges.getGlobalBadges();
+ * ```
+ */
 export default class BadgesAPI extends BaseAPI {
 	/**
 	 * Retrieves all globally applicable chat badges.

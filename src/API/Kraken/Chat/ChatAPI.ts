@@ -8,12 +8,12 @@ import ChatRoom, { ChatRoomData } from './ChatRoom';
 /**
  * The API methods that deal with chat and chatrooms.
  *
- * Can be accessed using `client.chat` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.chat` on a {@TwitchClient} instance.
  *
  * ## Example
  * ```ts
  * const client = TwitchClient.withCredentials(clientId, accessToken);
- * const channel = await client.chat.getBadges('125328655');
+ * const channel = await client.kraken.chat.getBadges('125328655');
  * ```
  */
 @Cacheable

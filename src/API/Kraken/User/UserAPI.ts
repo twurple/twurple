@@ -15,12 +15,12 @@ import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
 /**
  * The API methods that deal with users.
  *
- * Can be accessed using `client.users` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.users` on a {@TwitchClient} instance.
  *
  * ## Example
  * ```ts
  * const client = TwitchClient.withCredentials(clientId, accessToken);
- * const user = await client.users.getUser('125328655');
+ * const user = await client.kraken.users.getUser('125328655');
  * ```
  */
 @Cacheable

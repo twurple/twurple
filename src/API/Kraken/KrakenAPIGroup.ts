@@ -7,6 +7,11 @@ import SearchAPI from './Search/SearchAPI';
 import StreamAPI from './Stream/StreamAPI';
 import UserAPI from './User/UserAPI';
 
+/**
+ * Groups all API calls available in Kraken v5.
+ *
+ * Can be accessed using {@TwitchClient#kraken}.
+ */
 @Cacheable
 export default class KrakenAPIGroup extends BaseAPI {
 	/**
