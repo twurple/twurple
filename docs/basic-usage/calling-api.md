@@ -30,7 +30,7 @@ In Helix, some resources are paginated using a cursor. To faciliate easy paginat
 
 ```typescript
 async function getAllClipsForBroadcaster(userId: string) {
-	const request = twitchClient.helix.getClipsForBroadcaster(userId);
+	const request = twitchClient.helix.clips.getClipsForBroadcaster(userId);
 	let page: HelixClip[];
 	const result: HelixClip[] = [];
 
@@ -46,7 +46,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 
 ```typescript
 async function getAllClipsForBroadcaster(userId: string) {
-	const request = twitchClient.helix.getClipsForBroadcaster(userId);
+	const request = twitchClient.helix.clips.getClipsForBroadcaster(userId);
 
 	return request.getAll();
 }
@@ -56,7 +56,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 
 ```typescript
 async function findClipFromBroadcasterWithTitle(userId: string, searchTerm: string) {
-	for await (const clip of twitchClient.helix.getClipsForBroadcaster(userId)) {
+	for await (const clip of twitchClient.helix.clips.getClipsForBroadcaster(userId)) {
 		if (clip.title.includes(searchTerm)) {
 			return clip;
 		}
