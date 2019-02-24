@@ -32,6 +32,17 @@
 					"file": "basic-usage/calling-api.md"
 				}
 			]
+		},
+		{
+			"name": "upgrading",
+			"title": "Upgrading",
+			"articles": [
+				{
+					"name": "v1-to-v2",
+					"title": "Upgrading from 1.x to 2.x",
+					"file": "upgrading/v1-to-v2.md"
+				}
+			]
 		}
 	]
 }

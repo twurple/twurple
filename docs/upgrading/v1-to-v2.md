@@ -1,5 +1,3 @@
-# Upgrading from 1.x to 2.x
-
 ## Handle `TwitchClient.withCredentials` now returning a Promise and having an additional argument
 
 The `StaticAuthProvider` that is created when you use `TwitchClient.withCredentials` now throws when any scopes are requested that are not initially passed to it. Because of that, a new parameter was added to `TwitchClient.withCredentials` that determines the initial scopes. If this parameter is not given, the scopes are automatically determined using a call to the Twitch API. Since this parameter was added before the `refreshConfig` parameter, it needs to be added when you need auto-refreshing (set it to `undefined` if you don't need it).
