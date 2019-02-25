@@ -1,5 +1,5 @@
 import BaseAPI from '../BaseAPI';
-import { Cached } from '../../Toolkit/Decorators/Cache';
+import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
 import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
 import { TwitchAPICallType } from '../../TwitchClient';
 import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
@@ -15,6 +15,7 @@ import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
  * const cheermotes = await client.badges.getGlobalBadges();
  * ```
  */
+@Cacheable
 export default class BadgesAPI extends BaseAPI {
 	/**
 	 * Retrieves all globally applicable chat badges.
