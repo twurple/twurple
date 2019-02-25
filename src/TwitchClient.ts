@@ -251,10 +251,10 @@ export default class TwitchClient {
 	/**
 	 * Retrieves an access token for the authentication provider.
 	 *
-	 * @param scope
+	 * @param scopes The scopes to request.
 	 */
-	async getAccessToken(scope?: string) {
-		return this._config.authProvider.getAccessToken(scope);
+	async getAccessToken(scopes?: string | string[]) {
+		return this._config.authProvider.getAccessToken(scopes);
 	}
 
 	/**
