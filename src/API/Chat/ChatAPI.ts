@@ -42,7 +42,7 @@ export default class ChatAPI extends BaseAPI {
 	@Cached(3600)
 	async getChannelBadges(channel: UserIdResolvable, includeGlobal: boolean = true) {
 		const data = await this._client.callAPI<{ badge_sets: ChatBadgeListData }>({
-			url: `https://badges.twitch.tv/badges/channel/${UserTools.getUserId(channel)}/display`,
+			url: `https://badges.twitch.tv/v1/badges/channels/${UserTools.getUserId(channel)}/display`,
 			type: TwitchAPICallType.Custom
 		});
 
