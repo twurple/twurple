@@ -84,3 +84,7 @@ export { HelixFollow, HelixPrivilegedUser, HelixUser, HelixBroadcasterType, Heli
 import HelixVideo from './API/Helix/Video/HelixVideo';
 
 export { HelixVideo };
+
+import { extractUserId, extractUserName } from './Toolkit/UserTools';
+
+export { extractUserId, extractUserName };

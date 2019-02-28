@@ -1,5 +1,5 @@
 import BaseAPI from '../../BaseAPI';
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
 
 /**
@@ -84,7 +84,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	private async _sendUserFollowsHubRequest(mode: HubMode, direction: 'from' | 'to', user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 
 		return this.sendHubRequest({
 			mode,
@@ -142,7 +142,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	private async _sendStreamChangeHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 
 		return this.sendHubRequest({
 			mode,
@@ -176,7 +176,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	private async _sendUserChangeHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions, withEmail: boolean = false) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 
 		return this.sendHubRequest({
 			mode,

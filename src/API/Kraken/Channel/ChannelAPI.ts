@@ -1,7 +1,7 @@
 import { Cacheable, Cached, ClearsCache } from '../../../Toolkit/Decorators/Cache';
 import BaseAPI from '../../BaseAPI';
 import Channel from './Channel';
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import ChannelSubscription, { ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
 import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
 import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
@@ -67,7 +67,7 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getChannel(user: UserIdResolvable) {
-		return new Channel(await this._client.callAPI({ url: `channels/${UserTools.getUserId(user)}` }), this._client);
+		return new Channel(await this._client.callAPI({ url: `channels/${extractUserId(user)}` }), this._client);
 	}
 
 	/**
@@ -78,7 +78,7 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	@ClearsCache<ChannelAPI>('getChannel', 1)
 	async updateChannel(channel: UserIdResolvable, data: ChannelUpdateData) {
-		const channelId = UserTools.getUserId(channel);
+		const channelId = extractUserId(channel);
 		await this._client.callAPI({
 			url: `channels/${channelId}`,
 			method: 'PUT',
@@ -94,7 +94,7 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getChannelEditors(channel: UserIdResolvable): Promise<User[]> {
-		const channelId = UserTools.getUserId(channel);
+		const channelId = extractUserId(channel);
 		const data = await this._client.callAPI({
 			url: `channels/${channelId}/editors`,
 			scope: 'channel_read'
@@ -116,7 +116,7 @@ export default class ChannelAPI extends BaseAPI {
 		page?: number, limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
 	): Promise<ChannelFollow[]> {
-		const channelId = UserTools.getUserId(channel);
+		const channelId = extractUserId(channel);
 
 		const query: Record<string, string> = { limit: limit.toString() };
 		if (page) {
@@ -170,7 +170,7 @@ export default class ChannelAPI extends BaseAPI {
 		page?: number, limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
 	): Promise<ChannelSubscriptionsResponse> {
-		const channelId = UserTools.getUserId(channel);
+		const channelId = extractUserId(channel);
 
 		const query: Record<string, string> = { limit: limit.toString() };
 
@@ -210,8 +210,8 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getChannelSubscriptionByUser(channel: UserIdResolvable, byUser: UserIdResolvable) {
-		const channelId = UserTools.getUserId(channel);
-		const userId = UserTools.getUserId(byUser);
+		const channelId = extractUserId(channel);
+		const userId = extractUserId(byUser);
 
 		try {
 			return new ChannelSubscription(
@@ -241,7 +241,7 @@ export default class ChannelAPI extends BaseAPI {
 	 * @param length The length of the commercial.
 	 */
 	async startChannelCommercial(channel: UserIdResolvable, length: CommercialLength) {
-		const channelId = UserTools.getUserId(channel);
+		const channelId = extractUserId(channel);
 		return this._client.callAPI<void>({
 			url: `channels/${channelId}/commercial`,
 			method: 'POST',
@@ -257,7 +257,7 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	@ClearsCache<ChannelAPI>('getMyChannel')
 	async resetChannelStreamKey(channel: UserIdResolvable) {
-		const channelId = UserTools.getUserId(channel);
+		const channelId = extractUserId(channel);
 		return this._client.callAPI<PrivilegedChannelData>({
 			url: `channels/${channelId}/stream_key`,
 			method: 'DELETE',

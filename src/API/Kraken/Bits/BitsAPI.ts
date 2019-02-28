@@ -1,4 +1,4 @@
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
 import CheermoteList, { CheermoteListData } from './CheermoteList';
 import BaseAPI from '../../BaseAPI';
@@ -26,7 +26,7 @@ export default class BitsAPI extends BaseAPI {
 	async getCheermotes(channel?: UserIdResolvable) {
 		const query: Record<string, string> = {};
 		if (channel) {
-			query.channel_id = UserTools.getUserId(channel);
+			query.channel_id = extractUserId(channel);
 		}
 
 		const data = await this._client.callAPI<CheermoteListData>({ url: 'bits/actions', query });

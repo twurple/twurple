@@ -2,7 +2,7 @@ import BaseAPI from '../BaseAPI';
 import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
 import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
 import { TwitchAPICallType } from '../../TwitchClient';
-import UserTools, { UserIdResolvable } from '../../Toolkit/UserTools';
+import { extractUserId, UserIdResolvable } from '../../Toolkit/UserTools';
 
 /**
  * The API methods that deal with badges.
@@ -39,7 +39,7 @@ export default class BadgesAPI extends BaseAPI {
 	@Cached(3600)
 	async getChannelBadges(channel: UserIdResolvable, includeGlobal: boolean = true) {
 		const data = await this._client.callAPI<{ badge_sets: ChatBadgeListData }>({
-			url: `https://badges.twitch.tv/v1/badges/channels/${UserTools.getUserId(channel)}/display`,
+			url: `https://badges.twitch.tv/v1/badges/channels/${extractUserId(channel)}/display`,
 			type: TwitchAPICallType.Custom
 		});
 

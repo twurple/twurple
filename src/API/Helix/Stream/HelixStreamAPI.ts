@@ -2,7 +2,7 @@ import BaseAPI from '../../BaseAPI';
 import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixStreamMarkerWithVideo, { HelixStreamMarkerVideoData } from './HelixStreamMarkerWithVideo';
 import HelixResponse from '../HelixResponse';
 import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
@@ -96,10 +96,10 @@ export default class HelixStreamAPI extends BaseAPI {
 	/**
 	 * Retrieves the current stream for the given user name.
 	 *
-	 * @param userName The user name to retrieve the stream for.
+	 * @param user The user name to retrieve the stream for.
 	 */
-	async getStreamByUserName(userName: string) {
-		const req = this.getStreams({ userName });
+	async getStreamByUserName(user: UserNameResolvable) {
+		const req = this.getStreams({ userName: extractUserName(user) });
 		const streams = await req.getAll();
 
 		return streams.length ? streams[0] : null;
@@ -111,7 +111,7 @@ export default class HelixStreamAPI extends BaseAPI {
 	 * @param user The user ID to retrieve the stream for.
 	 */
 	async getStreamByUserId(user: UserIdResolvable) {
-		const req = this.getStreams({ userId: UserTools.getUserId(user) });
+		const req = this.getStreams({ userId: extractUserId(user) });
 		const streams = await req.getAll();
 
 		return streams.length ? streams[0] : null;
@@ -143,7 +143,7 @@ export default class HelixStreamAPI extends BaseAPI {
 	 * @param user The user to list the stream markers for.
 	 */
 	getStreamMarkersForUser(user: UserIdResolvable) {
-		return this._getStreamMarkers('user_id', UserTools.getUserId(user));
+		return this._getStreamMarkers('user_id', extractUserId(user));
 	}
 
 	/**

@@ -1,6 +1,6 @@
 import BaseAPI from '../../BaseAPI';
 import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { ChatEmoteData } from './ChatEmote';
 import ChatEmoteList from './ChatEmoteList';
 import ChatRoom, { ChatRoomData } from './ChatRoom';
@@ -68,7 +68,7 @@ export default class ChatAPI extends BaseAPI {
 	@Cached(3600)
 	async getChatRoomsForChannel(channel: UserIdResolvable) {
 		const data = await this._client.callAPI<{ rooms: ChatRoomData[] }>({
-			url: `chat/${UserTools.getUserId(channel)}/rooms`
+			url: `chat/${extractUserId(channel)}/rooms`
 		});
 
 		return data.rooms.map(room => new ChatRoom(room, this._client));

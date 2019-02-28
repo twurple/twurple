@@ -1,4 +1,4 @@
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
 import BaseAPI from '../../BaseAPI';
 import Stream, { StreamData, StreamDataWrapper, StreamType } from './Stream';
@@ -23,7 +23,7 @@ export default class StreamAPI extends BaseAPI {
 	 */
 	@Cached(60)
 	async getStreamByChannel(channel: UserIdResolvable) {
-		const channelId = UserTools.getUserId(channel);
+		const channelId = extractUserId(channel);
 		const data = await this._client.callAPI<StreamDataWrapper>({ url: `streams/${channelId}` });
 
 		return data.stream ? new Stream(data.stream, this._client) : null;

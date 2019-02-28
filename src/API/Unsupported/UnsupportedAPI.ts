@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
 import BaseAPI from '../BaseAPI';
 import ChattersList, { ChattersListData } from './ChattersList';
-import UserTools, { UserIdResolvable, UserNameResolvable } from '../../Toolkit/UserTools';
+import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../Toolkit/UserTools';
 import ChannelEvent, { ChannelEventData, ChannelEventAPIResult } from './ChannelEvent';
 import { TwitchAPICallType } from '../../TwitchClient';
 
@@ -27,7 +27,7 @@ export default class UnsupportedAPI extends BaseAPI {
 	 */
 	@Cached(60)
 	async getChatters(channel: UserNameResolvable) {
-		const channelName = UserTools.getUserName(channel);
+		const channelName = extractUserName(channel);
 
 		const data: ChattersListData = await this._client.callAPI({
 			url: `https://tmi.twitch.tv/group/user/${channelName}/chatters`,
@@ -43,7 +43,7 @@ export default class UnsupportedAPI extends BaseAPI {
 	 */
 	@Cached(60)
 	async getEvents(channel: UserIdResolvable) {
-		const channelId = UserTools.getUserId(channel);
+		const channelId = extractUserId(channel);
 		const data = await this._client.callAPI<ChannelEventAPIResult>({ url: `channels/${channelId}/events` });
 		return data.events.map((event: ChannelEventData) => new ChannelEvent(event, this._client));
 	}

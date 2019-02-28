@@ -3,7 +3,7 @@ import { TwitchAPICallType } from '../../../TwitchClient';
 import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixVideo, { HelixVideoData, HelixVideoType } from './HelixVideo';
 import HelixPagination from '../HelixPagination';
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
 
 /** @private */
@@ -86,7 +86,7 @@ export default class HelixVideoAPI extends BaseAPI {
 	 * @param filter Additional filters for the result set.
 	 */
 	getVideosByUser(user: UserIdResolvable, filter: HelixVideoFilter = {}) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 		return this._getVideos('user_id', userId, filter);
 	}
 

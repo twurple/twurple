@@ -3,7 +3,7 @@ import BaseAPI from '../../BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
 import User, { UserData } from './User';
 import ObjectTools from '../../../Toolkit/ObjectTools';
-import UserTools, { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import EmoteSetList from '../Channel/EmoteSetList';
 import UserSubscription from './UserSubscription';
 import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
@@ -42,7 +42,7 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getUser(userId: UserIdResolvable) {
-		const userData = await this._client.callAPI({ url: `users/${UserTools.getUserId(userId)}` });
+		const userData = await this._client.callAPI({ url: `users/${extractUserId(userId)}` });
 		if (!userData) {
 			throw new HellFreezesOverError('Could not get authenticated user');
 		}
@@ -105,7 +105,7 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getUserEmotes(user: UserIdResolvable) {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 
 		const data = await this._client.callAPI({ url: `users/${userId}/emotes`, scope: 'user_subscriptions' });
 		return new EmoteSetList(data.emoticon_sets);
@@ -119,8 +119,8 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getSubscriptionData(user: UserIdResolvable, toChannel: UserIdResolvable) {
-		const userId = UserTools.getUserId(user);
-		const channelId = UserTools.getUserId(toChannel);
+		const userId = extractUserId(user);
+		const channelId = extractUserId(toChannel);
 
 		try {
 			return new UserSubscription(
@@ -158,7 +158,7 @@ export default class UserAPI extends BaseAPI {
 		page?: number, limit: number = 25,
 		orderBy?: string, orderDirection?: 'asc' | 'desc'
 	): Promise<UserFollow[]> {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 		const query: Record<string, string> = {};
 
 		if (page) {
@@ -190,8 +190,8 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@Cached(300)
 	async getFollowedChannel(user: UserIdResolvable, channel: UserIdResolvable) {
-		const userId = UserTools.getUserId(user);
-		const channelId = UserTools.getUserId(channel);
+		const userId = extractUserId(user);
+		const channelId = extractUserId(channel);
 		try {
 			const data = await this._client.callAPI({ url: `users/${userId}/follows/channels/${channelId}` });
 			return new UserFollow(data, this._client);
@@ -216,8 +216,8 @@ export default class UserAPI extends BaseAPI {
 	@ClearsCache<UserAPI>('getFollowedChannels', 1)
 	@ClearsCache<UserAPI>('getFollowedChannel', 2)
 	async followChannel(user: UserIdResolvable, channel: UserIdResolvable, notifications?: boolean) {
-		const userId = UserTools.getUserId(user);
-		const channelId = UserTools.getUserId(channel);
+		const userId = extractUserId(user);
+		const channelId = extractUserId(channel);
 		const data = await this._client.callAPI({
 			url: `users/${userId}/follows/channels/${channelId}`,
 			method: 'PUT',
@@ -236,8 +236,8 @@ export default class UserAPI extends BaseAPI {
 	@ClearsCache<UserAPI>('getFollowedChannels', 1)
 	@ClearsCache<UserAPI>('getFollowedChannel', 2)
 	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable) {
-		const userId = UserTools.getUserId(user);
-		const channelId = UserTools.getUserId(channel);
+		const userId = extractUserId(user);
+		const channelId = extractUserId(channel);
 		await this._client.callAPI({
 			url: `users/${userId}/follows/channels/${channelId}`,
 			scope: 'user_follows_edit',
@@ -254,7 +254,7 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getBlockedUsers(user: UserIdResolvable, page?: number, limit: number = 25): Promise<UserBlock[]> {
-		const userId = UserTools.getUserId(user);
+		const userId = extractUserId(user);
 		const query: Record<string, string> = { limit: limit.toString() };
 
 		if (page) {
@@ -276,8 +276,8 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@ClearsCache<UserAPI>('getBlockedUsers', 1)
 	async blockUser(user: UserIdResolvable, userToBlock: UserIdResolvable) {
-		const userId = UserTools.getUserId(user);
-		const userIdToBlock = UserTools.getUserId(userToBlock);
+		const userId = extractUserId(user);
+		const userIdToBlock = extractUserId(userToBlock);
 		const data = await this._client.callAPI({
 			url: `users/${userId}/blocks/${userIdToBlock}`,
 			method: 'PUT',
@@ -294,8 +294,8 @@ export default class UserAPI extends BaseAPI {
 	 */
 	@ClearsCache<UserAPI>('getBlockedUsers', 1)
 	async unblockUser(user: UserIdResolvable, userToUnblock: UserIdResolvable) {
-		const userId = UserTools.getUserId(user);
-		const userIdToUnblock = UserTools.getUserId(userToUnblock);
+		const userId = extractUserId(user);
+		const userIdToUnblock = extractUserId(userToUnblock);
 		await this._client.callAPI({
 			url: `users/${userId}/blocks/${userIdToUnblock}`,
 			method: 'DELETE',

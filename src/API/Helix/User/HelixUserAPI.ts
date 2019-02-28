@@ -2,7 +2,7 @@ import BaseAPI from '../../BaseAPI';
 import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixUser, { HelixUserData } from './HelixUser';
 import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
-import UserTools, { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
@@ -50,7 +50,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param userIds The user IDs you want to look up.
 	 */
 	async getUsersByIds(userIds: UserIdResolvable[]) {
-		return this._getUsers(UserLookupType.Id, userIds.map(id => UserTools.getUserId(id)));
+		return this._getUsers(UserLookupType.Id, userIds.map(extractUserId));
 	}
 
 	/**
@@ -59,7 +59,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param userNames The user names you want to look up.
 	 */
 	async getUsersByNames(userNames: UserNameResolvable[]) {
-		return this._getUsers(UserLookupType.Login, userNames.map(name => UserTools.getUserName(name)));
+		return this._getUsers(UserLookupType.Login, userNames.map(extractUserName));
 	}
 
 	/**
@@ -68,7 +68,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param userId The user ID you want to look up.
 	 */
 	async getUserById(userId: UserIdResolvable) {
-		const users = await this._getUsers(UserLookupType.Id, UserTools.getUserId(userId));
+		const users = await this._getUsers(UserLookupType.Id, extractUserId(userId));
 		return users.length ? users[0] : null;
 	}
 
@@ -78,7 +78,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 * @param userName The user name you want to look up.
 	 */
 	async getUserByName(userName: UserNameResolvable) {
-		const users = await this._getUsers(UserLookupType.Login, UserTools.getUserName(userName));
+		const users = await this._getUsers(UserLookupType.Login, extractUserName(userName));
 		return users.length ? users[0] : null;
 	}
 
@@ -129,11 +129,11 @@ export default class HelixUserAPI extends BaseAPI {
 		const query: Record<string, string | undefined> = {};
 		let hasUserIdParam = false;
 		if (filter.user) {
-			query.from_id = UserTools.getUserId(filter.user);
+			query.from_id = extractUserId(filter.user);
 			hasUserIdParam = true;
 		}
 		if (filter.followedUser) {
-			query.to_id = UserTools.getUserId(filter.followedUser);
+			query.to_id = extractUserId(filter.followedUser);
 			hasUserIdParam = true;
 		}
 
