@@ -85,6 +85,6 @@ import HelixVideo from './API/Helix/Video/HelixVideo';
 
 export { HelixVideo };
 
-import { extractUserId, extractUserName } from './Toolkit/UserTools';
+import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
 
-export { extractUserId, extractUserName };
+export { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable };
