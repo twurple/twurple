@@ -83,19 +83,21 @@ export default class HelixVideoAPI extends BaseAPI {
 	 * Retrieves the videos of the given user.
 	 *
 	 * @param user The user you want to retrieve videos from.
+	 * @param filter Additional filters for the result set.
 	 */
-	getVideosByUser(user: UserIdResolvable) {
+	getVideosByUser(user: UserIdResolvable, filter: HelixVideoFilter = {}) {
 		const userId = UserTools.getUserId(user);
-		return this._getVideos('user_id', userId);
+		return this._getVideos('user_id', userId, filter);
 	}
 
 	/**
 	 * Retrieves the videos of the given game.
 	 *
 	 * @param gameId The game you want to retrieve videos from.
+	 * @param filter Additional filters for the result set.
 	 */
-	getVideosByGame(gameId: string) {
-		return this._getVideos('game_id', gameId);
+	getVideosByGame(gameId: string, filter: HelixVideoFilter = {}) {
+		return this._getVideos('game_id', gameId, filter);
 	}
 
 	private _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}) {
