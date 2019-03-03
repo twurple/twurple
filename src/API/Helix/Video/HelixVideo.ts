@@ -1,4 +1,4 @@
-import { CachedGetter, NonEnumerable } from '../../../Toolkit/Decorators';
+import { Cacheable, CachedGetter, NonEnumerable } from '../../../Toolkit/Decorators';
 import TwitchClient from '../../../TwitchClient';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 
@@ -24,6 +24,7 @@ export interface HelixVideoData {
 /**
  * A video on Twitch.
  */
+@Cacheable
 export default class HelixVideo {
 	/** @private */
 	@NonEnumerable protected readonly _client: TwitchClient;
