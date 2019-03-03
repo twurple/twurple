@@ -1,7 +1,7 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../../../TwitchClient';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
-import { CachedGetter } from '../../../Toolkit/Decorators/Cache';
+import { Cacheable, CachedGetter } from '../../../Toolkit/Decorators/Cache';
 
 export type HelixVideoViewableStatus = 'public' | 'private';
 export type HelixVideoType = 'upload' | 'archive' | 'highlight';
@@ -26,6 +26,7 @@ export interface HelixVideoData {
 /**
  * A video on Twitch.
  */
+@Cacheable
 export default class HelixVideo {
 	/** @private */
 	@NonEnumerable protected readonly _client: TwitchClient;

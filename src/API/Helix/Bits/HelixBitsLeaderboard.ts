@@ -3,7 +3,7 @@ import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../../../TwitchClient';
 import HelixBitsLeaderboardEntry, { HelixBitsLeaderboardEntryData } from './HelixBitsLeaderboardEntry';
 import HelixResponse from '../HelixResponse';
-import { CachedGetter } from '../../../Toolkit/Decorators/Cache';
+import { Cacheable, CachedGetter } from '../../../Toolkit/Decorators/Cache';
 
 /** @private */
 export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLeaderboardEntryData> {
@@ -14,6 +14,7 @@ export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLea
 /**
  * A leaderboard where the users who used the most bits in a channel are listed.
  */
+@Cacheable
 export default class HelixBitsLeaderboard {
 	/** @private */
 	@NonEnumerable protected readonly _client: TwitchClient;
