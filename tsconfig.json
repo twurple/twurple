@@ -1,12 +1,10 @@
 {
 	"compilerOptions": {
-		"outDir": "lib",
 		"module": "commonjs",
 		"target": "es5",
 		"lib": ["dom", "es6", "es2017", "esnext.asynciterable"],
 		"sourceMap": true,
 		"moduleResolution": "node",
-		"rootDir": "src",
 		"declaration": true,
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitReturns": true,
@@ -20,7 +18,6 @@
 	},
 	"exclude": [
 		"node_modules",
-		"lib",
-		"../ircv3"
+		"lib"
 	]
 }

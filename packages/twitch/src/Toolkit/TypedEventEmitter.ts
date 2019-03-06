@@ -77,6 +77,7 @@ export class EventEmitter {
 
 			if (this._eventListeners.has(event)) {
 				const listeners = this._eventListeners.get(event)!;
+				// noinspection JSUnusedAssignment
 				let idx = 0;
 				// tslint:disable-next-line:no-conditional-assignment
 				while (!listener || (idx = listeners.indexOf(listener)) !== -1) {

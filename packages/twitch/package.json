@@ -1,0 +1,30 @@
+{
+  "name": "twitch",
+  "version": "2.0.0-pre.12",
+  "description": "Interact with Twitch's API.",
+  "main": "lib",
+  "types": "lib/index",
+  "repository": "github:d-fischer/twitch",
+  "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@types/qs": "^6.5.1",
+    "fetch-ponyfill": "^6.0.2",
+    "qs": "^6.6.0",
+    "top-package": "^1.0.0",
+    "tslib": "^1.9.3"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "scripts/npm"
+  ],
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "rebuild": "rimraf lib && yarn run build",
+    "docs": "documen.ts",
+    "postinstall": "node ./scripts/npm/postinstall.js"
+  }
+}

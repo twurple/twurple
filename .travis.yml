@@ -15,4 +15,4 @@ jobs:
     include:
         - stage: Publish docs
           if: type = push AND fork = false AND tag IS blank
-          script: scripts/travis/publishDocs.sh
+          script: lerna exec '/bin/bash -c "test -f scripts/travis/publishDocs.sh && scripts/travis/publishDocs.sh"'
