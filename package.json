@@ -19,8 +19,8 @@
   "scripts": {
     "lint": "tslint --project .",
     "clean": "lerna run clean",
-    "build": "tsc",
-    "rebuild": "rimraf lib && yarn run build",
-    "docs": "documen.ts"
+    "build": "lerna run build",
+    "rebuild": "lerna run rebuild",
+    "docs": "lerna run docs"
   }
 }
