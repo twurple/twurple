@@ -100,6 +100,8 @@ export default class SingleUserPubSubClient {
 			throw new Error('PubSub authentication failed');
 		}
 
+		// for some reason, on travis (only there!), tslint seems to think this is wrong
+		// tslint:disable-next-line:no-unnecessary-type-assertion
 		const userId = tokenInfo.userId!;
 
 		return { userId, accessToken };
