@@ -18,7 +18,6 @@
   },
   "scripts": {
     "lint": "tslint --project .",
-    "clean": "lerna run clean",
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "docs": "lerna run docs"

@@ -21,7 +21,6 @@
     "scripts/npm"
   ],
   "scripts": {
-    "clean": "rimraf lib",
     "build": "tsc",
     "rebuild": "rimraf lib && yarn run build",
     "docs": "documen.ts",
