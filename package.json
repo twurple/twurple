@@ -20,6 +20,7 @@
     "lint": "tslint --project .",
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
-    "docs": "lerna run docs"
+    "docs": "lerna run docs",
+    "lerna": "lerna"
   }
 }

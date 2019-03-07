@@ -10,8 +10,11 @@ node_js:
 cache: yarn
 
 script:
+    - set -e
+    - yarn run lerna bootstrap
     - yarn run lint
     - yarn run build
+    - set +e
 
 jobs:
     include:
