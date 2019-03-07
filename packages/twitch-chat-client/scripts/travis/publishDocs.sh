@@ -6,9 +6,9 @@ REPO_USER="${TRAVIS_REPO_SLUG%/*}"
 REPO_NAME="${TRAVIS_REPO_SLUG#*/}"
 
 if [[ $TRAVIS_BRANCH = "master" ]]; then
-	REPO_FULL_NAME="${REPO_NAME}"
+	REPO_FULL_NAME="$(basename "$PWD")"
 else
-	REPO_FULL_NAME="${REPO_NAME}@${TRAVIS_BRANCH}"
+	REPO_FULL_NAME="$(basename "$PWD")@${TRAVIS_BRANCH}"
 fi
 
 npm run docs -- --base-url "/${REPO_FULL_NAME}" --repo-branch "${TRAVIS_BRANCH}"
