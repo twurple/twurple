@@ -34,4 +34,11 @@ export default class ChannelFollow {
 	get hasNotifications() {
 		return this._data.notifications;
 	}
+
+	/**
+	 * The date when the user followed.
+	 */
+	get followDate() {
+		return new Date(this._data.created_at);
+	}
 }
