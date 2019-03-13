@@ -1,6 +1,6 @@
 {
   "name": "twitch-webhooks",
-  "version": "2.0.0-pre.0",
+  "version": "2.0.0-pre.1",
   "description": "Listen to events on Twitch via their WebHooks API.",
   "main": "lib",
   "types": "lib/index",
@@ -20,7 +20,7 @@
     "uuid": "^3.3.2"
   },
   "devDependencies": {
-    "twitch": "^2.0.0-pre.12"
+    "twitch": "^2.0.0-pre.13"
   },
   "peerDependencies": {
     "twitch": "^2.0.0-pre.12"
