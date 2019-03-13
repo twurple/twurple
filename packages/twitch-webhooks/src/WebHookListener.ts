@@ -177,7 +177,7 @@ export default class WebHookListener {
 		return subscription;
 	}
 
-	async subscribeToStreamChanges(user: UserIdResolvable, handler: (follow: HelixStream) => void) {
+	async subscribeToStreamChanges(user: UserIdResolvable, handler: (stream?: HelixStream) => void) {
 		const userId = extractUserId(user);
 
 		const subscription = new StreamChangeSubscription(userId, handler, this);
