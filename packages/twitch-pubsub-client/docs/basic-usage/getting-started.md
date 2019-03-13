@@ -10,16 +10,14 @@ or using npm:
 
 ## Importing the library
 
-Most of the time, you only to import need the {@PubSubClient} class.
-
 Using ES2015 modules:
 
 ```typescript
-import { PubSubClient } from 'twitch-pubsub-client';
+import PubSubClient from 'twitch-pubsub-client';
 ```
 
 Using CommonJS modules:
 
 ```typescript
-const PubSubClient = require('twitch-pubsub-client').PubSubClient;
+const PubSubClient = require('twitch-pubsub-client').default;
 ```
