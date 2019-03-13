@@ -20,4 +20,4 @@ jobs:
     include:
         - stage: Publish docs
           if: type = push AND fork = false AND tag IS blank
-          script: lerna bootstrap && lerna run build && lerna exec --concurrency 1 '/bin/bash -c "test -f scripts/travis/publishDocs.sh && scripts/travis/publishDocs.sh"'
+          script: lerna bootstrap && lerna run build && lerna exec --concurrency 1 '/bin/bash -c "if [ -f scripts/travis/publishDocs.sh ]; then scripts/travis/publishDocs.sh; fi"'
