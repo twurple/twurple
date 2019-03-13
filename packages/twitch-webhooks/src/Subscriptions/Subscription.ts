@@ -9,7 +9,7 @@ export default abstract class Subscription<T = any> {
 	private _verified: boolean = false;
 	protected _id?: string;
 	protected _secret: string;
-	private _refreshTimer?: NodeJS.Timeout;
+	private _refreshTimer?: NodeJS.Timer;
 
 	constructor(protected _handler: (obj: T) => void, protected _client: WebHookListener) {
 	}
