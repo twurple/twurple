@@ -24,10 +24,8 @@
     "lib"
   ],
   "scripts": {
-    "lint": "tslint --project .",
     "build": "tsc",
     "rebuild": "rimraf lib && yarn run build",
-    "prepare": "yarn run lint && yarn run rebuild",
     "docs": "documen.ts"
   }
 }
