@@ -13,7 +13,6 @@ fi
 
 npm run docs -- --base-url "/${REPO_FULL_NAME}" --repo-branch "${TRAVIS_BRANCH}"
 
-
 git clone https://${GH_TOKEN}@github.com/${REPO_USER}/${REPO_USER}.github.io.git docRepo
 rm -rfv docRepo/${REPO_FULL_NAME}
 mv -fv generatedDocs docRepo/${REPO_FULL_NAME}
