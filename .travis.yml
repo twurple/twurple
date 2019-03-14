@@ -1,5 +1,7 @@
 language: node_js
 
+dist: xenial
+
 node_js:
     - "8"
     - "10"
@@ -8,11 +10,14 @@ node_js:
 cache: yarn
 
 script:
-    - npm run lint
-    - npm run build
+    - set -e
+    - yarn run lerna bootstrap
+    - yarn run lint
+    - yarn run build
+    - set +e
 
 jobs:
     include:
         - stage: Publish docs
           if: type = push AND fork = false AND tag IS blank
-          script: scripts/travis/publishDocs.sh
+          script: lerna bootstrap && lerna run build && lerna exec --concurrency 1 '/bin/bash -c "if [ -f scripts/travis/publishDocs.sh ]; then scripts/travis/publishDocs.sh; fi"'

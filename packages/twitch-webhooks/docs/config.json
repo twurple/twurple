@@ -1,0 +1,32 @@
+{
+	"inputDirs": [
+		"src",
+		"types"
+	],
+	"outputDir": "generatedDocs",
+	"mode": "html",
+	"routerMode": "htmlSuffix",
+	"baseUrl": "/twitch-webhooks",
+	"repoUser": "d-fischer",
+	"repoName": "twitch-webhooks",
+	"indexTitle": "Twitch.js WebHook Listener",
+	"indexFile": "index.md",
+	"categories": [
+		{
+			"name": "basic-usage",
+			"title": "Basic usage",
+			"articles": [
+				{
+					"name": "getting-started",
+					"title": "Getting started",
+					"file": "basic-usage/getting-started.md"
+				},
+				{
+					"name": "listening-to-events",
+					"title": "Listening to events",
+					"file": "basic-usage/listening-to-events.md"
+				}
+			]
+		}
+	]
+}

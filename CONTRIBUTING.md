@@ -34,21 +34,15 @@ Then install the dependencies. We use yarn as our package manager, so to make su
 
 	yarn
 
-After fixing the bug you wanted to fix, or implementing a new feature, you have to both lint and build the package.
-
-You can do both separately:
+After fixing the bug you wanted to fix, or implementing a new feature, you have to both lint and build the package:
 
 	yarn run lint && yarn run build
-
-or, for your convenience, just run the `prepare` job that does both:
-
-	yarn run prepare
 
 ### Documentation & Examples
 
 Documentation contributions are always welcome.
 
-The documentation is automatically built with [documen.ts](https://github.com/d-fischer/documen.ts) from the `docs/` folder.
+The documentation is automatically built with [documen.ts](https://github.com/d-fischer/documen.ts) from the packages' `docs/` folders.
 If you want to create a new documentation page, please reflect the outline structure in the file structure and remember to add it to `docs/config.json` as well.
 
 ### Sending a Pull Request

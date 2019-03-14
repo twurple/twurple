@@ -27,6 +27,7 @@
 
 // tslint:disable:max-classes-per-file
 
+/** @private */
 export class Listener {
 	constructor(
 		public owner: EventEmitter,
@@ -40,6 +41,7 @@ export class Listener {
 	}
 }
 
+/** @private */
 export class EventEmitter {
 	private readonly _eventListeners: Map<Function, Function[]>;
 
@@ -98,9 +100,6 @@ export class EventEmitter {
 		}
 	}
 
-	/**
-	 * @typeparam T The event handler signature.
-	 */
 	registerEvent<T extends Function>() {
 		const eventBinder = (handler: T) => this.addListener(eventBinder, handler);
 
