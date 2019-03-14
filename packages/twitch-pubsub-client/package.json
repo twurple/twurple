@@ -16,7 +16,7 @@
     "twitch": "^2.0.0"
   },
   "peerDependencies": {
-    "twitch": "^2.0.0-pre.12"
+    "twitch": "^2.0.0"
   },
   "files": [
     "LICENSE",
