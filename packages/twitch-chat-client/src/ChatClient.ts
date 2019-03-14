@@ -906,7 +906,7 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(UserTools.toChannelName(channel), `/host ${target}`);
+			this.say(channel, `/host ${target}`);
 		});
 	}
 
@@ -932,7 +932,7 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(UserTools.toChannelName(channel), '/unhost');
+			this.say(channel, '/unhost');
 		});
 	}
 
@@ -946,7 +946,11 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
 	unhostOutside(channel: string = this._nick) {
-		this.say(UserTools.toChannelName(channel), '/unhost');
+		this.say(channel, '/unhost');
+	}
+
+	say(channel: string, message: string) {
+		super.say(UserTools.toChannelName(channel), message);
 	}
 
 	async join(channel: string) {
