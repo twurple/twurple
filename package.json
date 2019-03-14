@@ -1,41 +1,26 @@
 {
-  "name": "twitch",
-  "version": "1.3.6",
-  "description": "Interact with Twitch's API.",
-  "main": "lib",
-  "types": "lib/index",
+  "workspaces": [
+    "packages/*"
+  ],
+  "private": true,
+  "name": "twitch-workspace",
   "repository": "github:d-fischer/twitch",
   "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@d-fischer/documen.ts": "^0.2.11",
+    "@d-fischer/documen.ts": "^0.4.9",
     "@types/node": "^8.0.19",
-    "@types/request": "2.0.0",
-    "@types/request-promise-native": "^1.0.6",
+    "lerna": "^3.13.1",
     "rimraf": "^2.6.2",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^4.1.1",
-    "typescript": "~3.0.1"
+    "typescript": "~3.2.4"
   },
-  "dependencies": {
-    "request": "^2.81.0",
-    "request-promise-native": "^1.0.4",
-    "top-package": "^1.0.0",
-    "tslib": "^1.9.3"
-  },
-  "files": [
-    "LICENSE",
-    "README.md",
-    "lib",
-    "scripts/npm"
-  ],
   "scripts": {
     "lint": "tslint --project .",
-    "clean": "rimraf lib",
-    "build": "tsc",
-    "rebuild": "rimraf lib && yarn run build",
-    "docs": "documen.ts",
-    "prepare": "yarn run lint && yarn run rebuild",
-    "postinstall": "node ./scripts/npm/postinstall.js"
+    "build": "lerna run build",
+    "rebuild": "lerna run rebuild",
+    "docs": "lerna run docs",
+    "lerna": "lerna"
   }
 }

@@ -1,0 +1,48 @@
+{
+	"inputDirs": ["src"],
+	"outputDir": "generatedDocs",
+	"mode": "html",
+	"routerMode": "htmlSuffix",
+	"baseUrl": "/twitch",
+
+	"indexTitle": "Welcome to Twitch.js",
+	"indexFile": "index.md",
+
+	"repoUser": "d-fischer",
+	"repoName": "twitch",
+
+	"categories": [
+		{
+			"name": "basic-usage",
+			"title": "Basic usage",
+			"articles": [
+				{
+					"name": "getting-started",
+					"title": "Getting started",
+					"file": "basic-usage/getting-started.md"
+				},
+				{
+					"name": "creating-instance",
+					"title": "Creating a client instance",
+					"file": "basic-usage/creating-instance.md"
+				},
+				{
+					"name": "calling-api",
+					"title": "Calling the Twitch API",
+					"file": "basic-usage/calling-api.md"
+				}
+			]
+		},
+		{
+			"name": "upgrading",
+			"title": "Upgrading",
+			"articles": [
+				{
+					"name": "v1-to-v2",
+					"title": "Upgrading from 1.x to 2.x",
+					"file": "upgrading/v1-to-v2.md"
+				}
+			]
+		}
+	]
+}

@@ -1,0 +1,31 @@
+{
+  "name": "twitch-pubsub-client",
+  "version": "2.0.0-pre.4",
+  "description": "Listen to events using the Twitch PubSub interface.",
+  "main": "lib",
+  "types": "lib/index",
+  "repository": "github:d-fischer/twitch-pubsub-client",
+  "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "@d-fischer/logger": "^0.2.0",
+    "@types/ws": "^4.0.0",
+    "universal-websocket-client": "^1.0.2"
+  },
+  "devDependencies": {
+    "twitch": "^2.0.0-pre.13"
+  },
+  "peerDependencies": {
+    "twitch": "^2.0.0-pre.12"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "rebuild": "rimraf lib && yarn run build",
+    "docs": "documen.ts"
+  }
+}
