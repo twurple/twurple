@@ -9,6 +9,8 @@ node_js:
 
 cache: yarn
 
+if: tag IS blank
+
 script:
     - set -e
     - yarn run lerna bootstrap
