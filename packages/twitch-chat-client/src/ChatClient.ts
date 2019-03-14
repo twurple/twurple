@@ -868,7 +868,7 @@ export default class ChatClient extends IRCClient {
 					break;
 				}
 
-				case null: {
+				case undefined: {
 					// this might be one of these weird authentication error notices that don't have a msg-id...
 					if (message === 'Login authentication failed'
 						|| message === 'Improperly formatted AUTH'
