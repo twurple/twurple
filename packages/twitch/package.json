@@ -4,7 +4,11 @@
   "description": "Interact with Twitch's API.",
   "main": "lib",
   "types": "lib/index",
-  "repository": "github:d-fischer/twitch",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d-fischer/twitch.git",
+    "directory": "packages/twitch"
+  },,
   "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
   "license": "MIT",
   "dependencies": {

@@ -4,7 +4,11 @@
   "description": "Listen to events using the Twitch PubSub interface.",
   "main": "lib",
   "types": "lib/index",
-  "repository": "github:d-fischer/twitch-pubsub-client",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d-fischer/twitch.git",
+    "directory": "packages/twitch-pubsub-client"
+  },
   "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
   "license": "MIT",
   "dependencies": {
