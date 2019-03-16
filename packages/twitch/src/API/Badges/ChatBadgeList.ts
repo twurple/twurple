@@ -23,8 +23,10 @@ export default class ChatBadgeList {
 	 * Names of all badge sets in the list.
 	 */
 	get badgeSetNames() {
-    if (!('badge_set' in this._data)) return [];
-      return Object.keys(this._data.badge_set);
+		if (!('badge_set' in this._data)) {
+			return [];
+		}
+		return Object.keys(this._data.badge_set);
 	}
 
 	/**
