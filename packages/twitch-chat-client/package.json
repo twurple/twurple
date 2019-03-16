@@ -4,7 +4,11 @@
   "description": "Interact with the Twitch Messaging Interface (aka Twitch chat).",
   "main": "lib",
   "types": "lib/index",
-  "repository": "github:d-fischer/twitch",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d-fischer/twitch.git",
+    "directory": "packages/twitch-chat-client"
+  },
   "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
   "license": "MIT",
   "dependencies": {
