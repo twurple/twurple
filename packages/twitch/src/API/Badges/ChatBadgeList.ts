@@ -3,9 +3,7 @@ import TwitchClient from '../../TwitchClient';
 import ChatBadgeSet, { ChatBadgeSetData } from './ChatBadgeSet';
 
 /** @private */
-export interface ChatBadgeListData {
-	versions: Record<string, ChatBadgeSetData>;
-}
+export type ChatBadgeListData = Record<string, ChatBadgeSetData>;
 
 /**
  * A list of badge sets.
@@ -23,7 +21,7 @@ export default class ChatBadgeList {
 	 * Names of all badge sets in the list.
 	 */
 	get badgeSetNames() {
-		return Object.keys(this._data.versions);
+		return Object.keys(this._data);
 	}
 
 	/**
@@ -32,7 +30,7 @@ export default class ChatBadgeList {
 	 * @param name The name of the badge set.
 	 */
 	getBadgeSet(name: string) {
-		return new ChatBadgeSet(this._data.versions[name], this._client);
+		return new ChatBadgeSet(this._data[name], this._client);
 	}
 
 	/** @private */

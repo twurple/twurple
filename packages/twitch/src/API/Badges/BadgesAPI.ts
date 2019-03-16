@@ -22,12 +22,12 @@ export default class BadgesAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getGlobalBadges() {
-		const data = await this._client.callAPI<ChatBadgeListData>({
+		const data = await this._client.callAPI<{ badge_sets: ChatBadgeListData }>({
 			url: 'https://badges.twitch.tv/v1/badges/global/display',
 			type: TwitchAPICallType.Custom
 		});
 
-		return new ChatBadgeList(data, this._client);
+		return new ChatBadgeList(data.badge_sets, this._client);
 	}
 
 	/**
