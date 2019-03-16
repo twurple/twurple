@@ -4,7 +4,7 @@ import ChatBadgeSet, { ChatBadgeSetData } from './ChatBadgeSet';
 
 /** @private */
 export interface ChatBadgeListData {
-	versions: Record<string, ChatBadgeSetData>;
+	badge_set: Record<string, ChatBadgeSetData>;
 }
 
 /**
@@ -23,7 +23,8 @@ export default class ChatBadgeList {
 	 * Names of all badge sets in the list.
 	 */
 	get badgeSetNames() {
-		return Object.keys(this._data.versions);
+    if (!('badge_set' in this._data)) return [];
+      return Object.keys(this._data.badge_set);
 	}
 
 	/**
@@ -32,7 +33,7 @@ export default class ChatBadgeList {
 	 * @param name The name of the badge set.
 	 */
 	getBadgeSet(name: string) {
-		return new ChatBadgeSet(this._data.versions[name], this._client);
+		return new ChatBadgeSet(this._data.badge_set[name], this._client);
 	}
 
 	/** @private */
