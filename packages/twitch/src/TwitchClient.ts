@@ -177,11 +177,11 @@ export default class TwitchClient {
 			}
 			scopes = tokenData.scopes;
 		}
-		if (refreshConfig) {
-			return new this({ ...config, authProvider: new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig) });
-		} else {
-			return new this({ ...config, authProvider: new StaticAuthProvider(clientId, accessToken, scopes) });
-		}
+		const authProvider = refreshConfig
+			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig)
+			: new StaticAuthProvider(clientId, accessToken, scopes);
+
+		return new this({ ...config, authProvider });
 	}
 
 	/**
@@ -194,8 +194,12 @@ export default class TwitchClient {
 	 *
 	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	static withClientCredentials(clientId: string, clientSecret: string, accessToken?: string, config: Partial<TwitchConfig> = {}) {
-		return new this({ ...config, authProvider: new ClientCredentialsAuthProvider(clientId, clientSecret) });
+	static withClientCredentials(clientId: string, clientSecret?: string, accessToken?: string, config: Partial<TwitchConfig> = {}) {
+		const authProvider = clientSecret
+			? new ClientCredentialsAuthProvider(clientId, clientSecret)
+			: new StaticAuthProvider(clientId);
+
+		return new this({ ...config, authProvider });
 	}
 
 	/**
