@@ -315,8 +315,10 @@ export default class TwitchClient {
 		let body: string | undefined;
 		if (options.body) {
 			body = qs.stringify(options.body);
+			headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		} else if (options.jsonBody) {
 			body = JSON.stringify(options.jsonBody);
+			headers.append('Content-Type', 'application/json');
 		}
 
 		if (clientId) {
@@ -337,6 +339,11 @@ export default class TwitchClient {
 
 		if (!response.ok) {
 			throw new HTTPStatusCodeError(response.status, response.statusText, await response.json());
+		}
+
+		if (response.status === 201 || response.status === 202) {
+			// tslint:disable-next-line:no-any
+			return undefined as any as T; // oof
 		}
 
 		return response.json();
