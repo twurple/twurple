@@ -1,4 +1,4 @@
-import TwitchClient, { TwitchAPICallOptions } from '../../TwitchClient';
+import TwitchClient, { TwitchAPICallOptions, TwitchAPICallType } from '../../TwitchClient';
 import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
 import { HelixPaginatedResponse } from './HelixResponse';
 
@@ -44,6 +44,7 @@ export default class HelixPaginatedRequest<D, T> {
 	/** @private */
 	protected async _fetchData(additionalOptions: Partial<TwitchAPICallOptions> = {}) {
 		return this._client.callAPI<HelixPaginatedResponse<D>>({
+			type: TwitchAPICallType.Helix,
 			...this._callOptions,
 			...additionalOptions,
 			query: {

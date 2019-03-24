@@ -78,7 +78,6 @@ export default class HelixStreamAPI extends BaseAPI {
 		return new HelixPaginatedRequest(
 			{
 				url: 'streams',
-				type: TwitchAPICallType.Helix,
 				query: {
 					community_id: filter.community,
 					game_id: filter.game,
@@ -121,7 +120,6 @@ export default class HelixStreamAPI extends BaseAPI {
 		return new HelixPaginatedRequest(
 			{
 				url: 'streams/markers',
-				type: TwitchAPICallType.Helix,
 				query: {
 					[queryType]: id
 				},

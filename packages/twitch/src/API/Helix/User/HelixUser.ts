@@ -1,6 +1,7 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import TwitchClient from '../../../TwitchClient';
+import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
 
 /**
  * The type of a broadcaster.
@@ -61,7 +62,7 @@ export interface HelixUserData {
 }
 
 /**
- * A Twitch user/channel.
+ * A Twitch user.
  */
 export default class HelixUser {
 	/** @private */
@@ -134,28 +135,28 @@ export default class HelixUser {
 	}
 
 	/**
-	 * The total number of views of the channel.
+	 * The total number of views of the user's channel.
 	 */
 	get views() {
 		return this._data.view_count;
 	}
 
 	/**
-	 * Retrieves a list of channels the user follows.
+	 * Retrieves a list of broadcasters the user follows.
 	 */
 	getFollows() {
 		return this._client.helix.users.getFollows({ user: this });
 	}
 
 	/**
-	 * Retrieves the follow data of the user to the given channel.
+	 * Retrieves the follow data of the user to the given broadcaster.
 	 *
-	 * @param channel
+	 * @param broadcaster The broadcaster to check the follow to.
 	 */
-	async getFollowTo(channel: UserIdResolvable) {
+	async getFollowTo(broadcaster: UserIdResolvable) {
 		const params = {
 			user: this.id,
-			followedUser: channel
+			followedUser: broadcaster
 		};
 
 		const req = this._client.helix.users.getFollows(params);
@@ -165,16 +166,16 @@ export default class HelixUser {
 	}
 
 	/**
-	 * Checks whether the user is following the given channel.
+	 * Checks whether the user is following the given broadcaster.
 	 *
-	 * @param channel The channel to check for the user's follow.
+	 * @param broadcaster The broadcaster to check the user's follow to.
 	 */
-	async follows(channel: UserIdResolvable) {
-		return await this.getFollowTo(channel) !== null;
+	async follows(broadcaster: UserIdResolvable) {
+		return await this.getFollowTo(broadcaster) !== null;
 	}
 
 	/**
-	 * Follows the channel.
+	 * Follows the broadcaster.
 	 */
 	async follow() {
 		const currentUser = await this._client.kraken.users.getMe();
@@ -182,10 +183,36 @@ export default class HelixUser {
 	}
 
 	/**
-	 * Unfollows the channel.
+	 * Unfollows the broadcaster.
 	 */
 	async unfollow() {
 		const currentUser = await this._client.kraken.users.getMe();
 		return currentUser.unfollowChannel(this);
+	}
+
+	/**
+	 * Retrieves the subscription data for the user to the given broadcaster, or `null` if the user is not subscribed.
+	 *
+	 * @param broadcaster The broadcaster you want to get the subscription data for.
+	 */
+	async getSubscriptionTo(broadcaster: UserIdResolvable) {
+		return this._client.helix.subscriptions.getSubscriptionForUser(broadcaster, this);
+	}
+
+	/**
+	 * Checks whether the user is subscribed to the given broadcaster.
+	 *
+	 * @param broadcaster The broadcaster you want to check the subscription for.
+	 */
+	async isSubscribedTo(broadcaster: UserIdResolvable) {
+		try {
+			return await this.getSubscriptionTo(broadcaster) !== null;
+		} catch (e) {
+			if (e instanceof NoSubscriptionProgramError) {
+				return false;
+			}
+
+			throw e;
+		}
 	}
 }

@@ -12,7 +12,7 @@ export interface HelixFollowFilter {
 	user?: UserIdResolvable;
 
 	/**
-	 * The followed user/channel.
+	 * The followed user.
 	 */
 	followedUser?: UserIdResolvable;
 }
@@ -25,7 +25,7 @@ export interface HelixFollowData {
 }
 
 /**
- * A relation of a user following another user/channel.
+ * A relation of a user following a broadcaster.
  */
 export default class HelixFollow {
 	/** @private */
@@ -51,21 +51,21 @@ export default class HelixFollow {
 	}
 
 	/**
-	 * The user ID of the followed user/channel.
+	 * The user ID of the followed broadcaster.
 	 */
 	get followedUserId() {
 		return this._data.to_id;
 	}
 
 	/**
-	 * Retrieves the data of the followed user/channel.
+	 * Retrieves the data of the followed broadcaster.
 	 */
 	async getFollowedUser() {
 		return this._client.helix.users.getUserById(this._data.to_id);
 	}
 
 	/**
-	 * The date when the user followed the channel.
+	 * The date when the user followed the broadcaster.
 	 */
 	get followDate() {
 		return new Date(this._data.followed_at);

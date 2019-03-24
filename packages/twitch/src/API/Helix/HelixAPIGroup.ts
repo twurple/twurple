@@ -1,11 +1,12 @@
 import BaseAPI from '../BaseAPI';
 import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
 
-import HelixStreamAPI from './Stream/HelixStreamAPI';
-import HelixUserAPI from './User/HelixUserAPI';
 import HelixBitsAPI from './Bits/HelixBitsAPI';
 import HelixClipAPI from './Clip/HelixClipAPI';
 import HelixGameAPI from './Game/HelixGameAPI';
+import HelixStreamAPI from './Stream/HelixStreamAPI';
+import HelixSubscriptionAPI from './Subscriptions/HelixSubscriptionAPI';
+import HelixUserAPI from './User/HelixUserAPI';
 import HelixVideoAPI from './Video/HelixVideoAPI';
 import HelixWebHooksAPI from './WebHooks/HelixWebHooksAPI';
 
@@ -46,6 +47,14 @@ export default class HelixAPIGroup extends BaseAPI {
 	@CachedGetter()
 	get streams() {
 		return new HelixStreamAPI(this._client);
+	}
+
+	/**
+	 * The Helix subscription API methods.
+	 */
+	@CachedGetter()
+	get subscriptions() {
+		return new HelixSubscriptionAPI(this._client);
 	}
 
 	/**

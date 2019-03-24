@@ -22,7 +22,7 @@ export interface HelixClipIdFilter extends HelixClipFilter {
  */
 export interface HelixClipCreateParams {
 	/**
-	 * The ID of the channel of which you want to create a clip.
+	 * The ID of the broadcaster of which you want to create a clip.
 	 */
 	channelId: string;
 
@@ -106,9 +106,7 @@ export default class HelixClipAPI extends BaseAPI {
 
 		return new HelixPaginatedRequest(
 			{
-				type: TwitchAPICallType.Helix,
 				url: 'clips',
-				method: 'GET',
 				query: {
 					[filterType]: ids,
 					started_at: startDate,

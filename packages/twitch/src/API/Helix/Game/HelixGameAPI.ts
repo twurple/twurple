@@ -72,7 +72,6 @@ export default class HelixGameAPI extends BaseAPI {
 	getTopGames() {
 		return new HelixPaginatedRequest(
 			{
-				type: TwitchAPICallType.Helix,
 				url: 'games/top'
 			},
 			this._client,

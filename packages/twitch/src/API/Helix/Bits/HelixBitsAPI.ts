@@ -58,7 +58,6 @@ export default class HelixBitsAPI extends BaseAPI {
 		const result = await this._client.callAPI<HelixBitsLeaderboardResponse>({
 			type: TwitchAPICallType.Helix,
 			url: 'bits/leaderboard',
-			method: 'GET',
 			scope: 'bits:read',
 			query: {
 				count: count.toString(),

@@ -143,7 +143,6 @@ export default class HelixUserAPI extends BaseAPI {
 
 		return new HelixPaginatedRequestWithTotal(
 			{
-				type: TwitchAPICallType.Helix,
 				url: 'users/follows',
 				query
 			},

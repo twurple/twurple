@@ -12,7 +12,7 @@ export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLea
 }
 
 /**
- * A leaderboard where the users who used the most bits in a channel are listed.
+ * A leaderboard where the users who used the most bits to a broadcaster are listed.
  */
 @Cacheable
 export default class HelixBitsLeaderboard {

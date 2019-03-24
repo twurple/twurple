@@ -104,7 +104,6 @@ export default class HelixVideoAPI extends BaseAPI {
 		const { language, period, orderBy, type } = filter;
 		return new HelixPaginatedRequest(
 			{
-				type: TwitchAPICallType.Helix,
 				url: 'videos',
 				query: {
 					[filterType]: filterValues,
