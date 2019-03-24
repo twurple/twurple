@@ -32,7 +32,7 @@ export default class AccessToken {
 	}
 
 	/**
-	 * The time when the access token expires.
+	 * The time when the access token will expire.
 	 *
 	 * May be `null`, in which case the token does not expire.
 	 * This can only be the case with very old Client IDs.

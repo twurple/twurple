@@ -6,6 +6,7 @@ import { Cacheable, CachedGetter } from '../../../Toolkit/Decorators/Cache';
 export type HelixVideoViewableStatus = 'public' | 'private';
 export type HelixVideoType = 'upload' | 'archive' | 'highlight';
 
+/** @private */
 export interface HelixVideoData {
 	id: string;
 	user_id: string;

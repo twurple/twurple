@@ -70,7 +70,9 @@ export default class TokenInfo {
 	}
 
 	/**
-	 * The expiry date of the token. If this returns null, it means that the token is either invalid or never expires (happens with old client IDs).
+	 * The time when the token will expire.
+	 *
+	 * If this returns null, it means that the token is either invalid or never expires (happens with old client IDs).
 	 */
 	get expiryDate() {
 		if (!this._data.valid || !this._data.expires_in) {

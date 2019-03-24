@@ -1,6 +1,8 @@
 import BaseAPI from '../../BaseAPI';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
+import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
+import HelixWebHookSubscription, { HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
 
 /**
  * The properties describing where and how long a WebHook notification is sent, and how it is signed.
@@ -62,7 +64,21 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  */
 export default class HelixWebHooksAPI extends BaseAPI {
 	/**
-	 * Send an arbitrary request to subscribe to or unsubscribe from an event.
+	 * Retrieves the current WebHook subscriptions for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 */
+	async getSubscriptions() {
+		return new HelixPaginatedRequestWithTotal(
+			{
+				url: 'webhooks/subscriptions'
+			},
+			this._client,
+			(data: HelixWebHookSubscriptionData) => new HelixWebHookSubscription(data, this._client));
+	}
+
+	/**
+	 * Sends an arbitrary request to subscribe to or unsubscribe from an event.
 	 *
 	 * @expandParams
 	 */
@@ -94,7 +110,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Subscribe to events representing a user following other users.
+	 * Subscribes to events representing a user following other users.
 	 *
 	 * @expandParams
 	 *
@@ -106,7 +122,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Subscribe to events representing a user being followed by other users.
+	 * Subscribes to events representing a user being followed by other users.
 	 *
 	 * @expandParams
 	 *
@@ -118,7 +134,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Unsubscribe from events representing a user following other users.
+	 * Unsubscribes from events representing a user following other users.
 	 *
 	 * @expandParams
 	 *
@@ -130,7 +146,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Unsubscribe from events representing a user being followed by other users.
+	 * Unsubscribes from events representing a user being followed by other users.
 	 *
 	 * @expandParams
 	 *
@@ -152,7 +168,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Subscribe to events representing a stream changing, e.g. going live, offline or changing its title.
+	 * Subscribes to events representing a stream changing, e.g. going live, offline or changing its title.
 	 *
 	 * @expandParams
 	 *
@@ -164,7 +180,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Unsubscribe from events representing a stream changing, e.g. going live, offline or changing its title.
+	 * Unsubscribes from events representing a stream changing, e.g. going live, offline or changing its title.
 	 *
 	 * @expandParams
 	 *
@@ -187,7 +203,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Subscribe to events representing a user changing a public setting or their email address.
+	 * Subscribes to events representing a user changing a public setting or their email address.
 	 *
 	 * @expandParams
 	 *
@@ -200,7 +216,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Unsubscribe from events representing a user changing a public setting or their email address.
+	 * Unsubscribes from events representing a user changing a public setting or their email address.
 	 *
 	 * @expandParams
 	 *
