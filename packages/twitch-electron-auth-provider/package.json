@@ -1,0 +1,25 @@
+{
+  "name": "twitch-electron-auth-provider",
+  "version": "2.0.0",
+  "main": "lib",
+  "types": "lib/index",
+  "repository": "github:d-fischer/twitch",
+  "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "rebuild": "rimraf lib && yarn run build"
+  },
+  "dependencies": {
+    "@types/qs": "^6.5.2",
+    "qs": "^6.7.0",
+    "tslib": "^1.9.3"
+  },
+  "devDependencies": {
+    "twitch": "^2.1.0"
+  },
+  "peerDependencies": {
+    "electron": "^4.1.1",
+    "twitch": "^2.0.0"
+  }
+}
