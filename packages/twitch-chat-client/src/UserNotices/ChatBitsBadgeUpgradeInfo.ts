@@ -8,7 +8,7 @@ export default interface ChatBitsBadgeUpgradeInfo {
 	displayName: string;
 
 	/**
-	 * The new bits tier threshold that was achieved.
+	 * The new bits badge threshold that was achieved.
 	 */
 	threshold: number;
 }
