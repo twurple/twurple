@@ -1,6 +1,6 @@
 {
   "name": "twitch-electron-auth-provider",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Obtain auth tokens for Twitch using an Electron popup.",
   "main": "lib",
   "types": "lib/index",

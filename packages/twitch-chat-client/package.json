@@ -1,6 +1,6 @@
 {
   "name": "twitch-chat-client",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Interact with the Twitch Messaging Interface (aka Twitch chat).",
   "main": "lib",
   "types": "lib/index",
