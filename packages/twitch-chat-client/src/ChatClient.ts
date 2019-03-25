@@ -547,7 +547,6 @@ export default class ChatClient extends IRCClient {
 				case 'subgift':
 				case 'anonsubgift': {
 					const plan = tags.get('msg-param-sub-plan')!;
-					const streakMonths = tags.get('msg-param-streak-months');
 					const isAnon = messageType === 'anonsubgift';
 					const subInfo: ChatSubGiftInfo = {
 						displayName: tags.get('msg-param-recipient-display-name')!,
@@ -557,8 +556,7 @@ export default class ChatClient extends IRCClient {
 						plan,
 						planName: tags.get('msg-param-sub-plan-name')!,
 						isPrime: plan === 'Prime',
-						months: Number(tags.get('msg-param-cumulative-months')),
-						streak: streakMonths ? Number(streakMonths) : undefined
+						months: Number(tags.get('msg-param-months'))
 					};
 					this.emit(this.onSubGift, channel, tags.get('msg-param-recipient-user-name')!, subInfo, userNotice);
 					break;
