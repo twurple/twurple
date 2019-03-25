@@ -84,7 +84,7 @@ export default class ChatClient extends IRCClient {
 		/(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
 	/** @private */
-	@NonEnumerable readonly _twitchClient: TwitchClient;
+	@NonEnumerable readonly _twitchClient?: TwitchClient;
 
 	/**
 	 * Fires when a user is timed out from a channel.
@@ -393,14 +393,14 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @expandParams
 	 *
-	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
+	 * @param twitchClient Currently deprecated and ignored. You can safely pass undefined here.
 	 * @param options
 	 */
-	static anonymous(twitchClient: TwitchClient, options: ChatClientOptions = {}) {
+	static anonymous(twitchClient?: TwitchClient, options: ChatClientOptions = {}) {
 		const randomSuffix = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
 		const userName = `justinfan${randomSuffix}`;
 
-		return new this(twitchClient, {
+		return new this(undefined, {
 			...options,
 			userName
 		});
@@ -414,7 +414,7 @@ export default class ChatClient extends IRCClient {
 	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
 	 * @param options
 	 */
-	constructor(twitchClient: TwitchClient, options: ChatClientOptionsWithAuth) {
+	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptionsWithAuth) {
 		super({
 			connection: {
 				hostName: options.rawIrc ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
