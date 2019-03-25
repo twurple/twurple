@@ -19,13 +19,13 @@ export default class Whisper extends Message<WhisperParams> {
 		}
 	};
 
-	get userInfo(): ChatUser {
+	get userInfo() {
 		return new ChatUser(this._prefix!.nick, this._tags);
 	}
 
-	get emoteOffsets(): Map<string, string[]> {
+	get emoteOffsets() {
 		if (!this._tags) {
-			return new Map;
+			return new Map<string, string[]>();
 		}
 
 		return parseEmotes(this._tags.get('emotes'));

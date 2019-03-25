@@ -3,7 +3,7 @@ import { Listener } from 'ircv3/lib/TypedEventEmitter';
 import TwitchClient from 'twitch';
 import { LogLevel } from '@d-fischer/logger';
 
-import ChatSubInfo, { ChatSubGiftInfo } from './ChatSubInfo';
+import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
 import UserTools from './Toolkit/UserTools';
 
 import TwitchTagsCapability from './Capabilities/TwitchTags/';
@@ -18,9 +18,10 @@ import UserNotice from './Capabilities/TwitchCommands/MessageTypes/UserNotice';
 import Whisper from './Capabilities/TwitchCommands/MessageTypes/Whisper';
 import { NonEnumerable } from './Toolkit/Decorators';
 import TwitchPrivateMessage from './StandardCommands/PrivateMessage';
-import ChatRaidInfo from './ChatRaidInfo';
-import ChatRitualInfo from './ChatRitualInfo';
-import ChatCommunitySubInfo from './ChatCommunitySubInfo';
+import ChatRaidInfo from './UserNotices/ChatRaidInfo';
+import ChatRitualInfo from './UserNotices/ChatRitualInfo';
+import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
+import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
 
 /**
  * Options for a chat client.
@@ -107,6 +108,17 @@ export default class ChatClient extends IRCClient {
 	 * @param reason The reason for the ban.
 	 */
 	onBan: (handler: (channel: string, user: string, reason: string) => void) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user upgrades their bits badge in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the bits badge was upgraded.
+	 * @param user The user that has upgraded their bits badge.
+	 * @param ritualInfo Additional information about the upgrade.
+	 * @param msg The raw message that was received.
+	 */
+	onBitsBadgeUpgrade: (handler: (channel: string, user: string, upgradeInfo: ChatBitsBadgeUpgradeInfo, msg: UserNotice) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when the chat of a channel is cleared.
@@ -588,6 +600,14 @@ export default class ChatClient extends IRCClient {
 						message
 					};
 					this.emit(this.onRitual, channel, tags.get('login')!, ritualInfo, userNotice);
+					break;
+				}
+				case 'bitsbadgetier': {
+					const badgeUpgradeInfo: ChatBitsBadgeUpgradeInfo = {
+						displayName: tags.get('display-name')!,
+						threshold: Number(tags.get('msg-param-threshold'))
+					};
+					this.emit(this.onBitsBadgeUpgrade, channel, tags.get('login')!, badgeUpgradeInfo, userNotice);
 					break;
 				}
 				default: {

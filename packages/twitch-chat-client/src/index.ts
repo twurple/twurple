@@ -6,7 +6,7 @@ import TwitchPrivateMessage from './StandardCommands/PrivateMessage';
 
 export { TwitchPrivateMessage as PrivateMessage };
 
-import ChatSubInfo, { ChatSubGiftInfo } from './ChatSubInfo';
+import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
 
 export { ChatSubInfo, ChatSubGiftInfo };
 
