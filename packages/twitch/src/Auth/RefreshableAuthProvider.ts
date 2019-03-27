@@ -69,12 +69,12 @@ export default class RefreshableAuthProvider implements AuthProvider {
 	 *
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessToken(scopes?: string|string[]) {
+	async getAccessToken(scopes?: string | string[]) {
 		if (typeof scopes === 'string') {
 			scopes = scopes.split(' ');
 		}
 		const oldToken = await this._childProvider.getAccessToken();
-		if (scopes && scopes.some(scope => !this.currentScopes.includes(scope))) {
+		if (oldToken && scopes && scopes.some(scope => !this.currentScopes.includes(scope))) {
 			// requesting a new scope should be delegated down...
 			const newToken = await this._childProvider.getAccessToken(scopes);
 			// ...but if the token doesn't change, carry on
@@ -95,7 +95,14 @@ export default class RefreshableAuthProvider implements AuthProvider {
 			}
 		}
 
-		return this.refresh();
+		const refreshedToken = await this.refresh();
+
+		if (oldToken) {
+			return refreshedToken;
+		}
+
+		// need to check again for scopes after refreshing, in case a refresh token was passed without an access token
+		return this._childProvider.getAccessToken(scopes);
 	}
 
 	/**

@@ -1,6 +1,7 @@
 import AuthProvider from './AuthProvider';
 import { NonEnumerable } from '../Toolkit/Decorators/NonEnumerable';
 import AccessToken from '../API/AccessToken';
+import TwitchClient from '../TwitchClient';
 
 /**
  * An auth provider that always returns the same initially given credentials.
@@ -12,7 +13,7 @@ import AccessToken from '../API/AccessToken';
 export default class StaticAuthProvider implements AuthProvider {
 	@NonEnumerable private readonly _clientId: string;
 	@NonEnumerable private _accessToken?: AccessToken;
-	private readonly _scopes: string[] = [];
+	private _scopes?: string[];
 
 	/**
 	 * Creates a new auth provider with static credentials.
@@ -25,10 +26,10 @@ export default class StaticAuthProvider implements AuthProvider {
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param scopes The scopes this token has.
 	 */
-	constructor(clientId: string, accessToken?: string, scopes: string[] = []) {
+	constructor(clientId: string, accessToken?: string, scopes?: string[]) {
 		this._clientId = clientId || '';
 		if (accessToken) {
-			this._accessToken = new AccessToken({ access_token: accessToken, scope: scopes.join(' '), refresh_token: '' });
+			this._accessToken = new AccessToken({ access_token: accessToken, scope: scopes ? scopes.join(' ') : '', refresh_token: '' });
 			this._scopes = scopes;
 		}
 	}
@@ -43,10 +44,20 @@ export default class StaticAuthProvider implements AuthProvider {
 	 */
 	async getAccessToken(scopes?: string | string[]) {
 		if (scopes) {
+			if (!this._scopes) {
+				if (!this._accessToken) {
+					throw new Error('Auth provider has not been initialized with a token yet and is requesting scopes');
+				}
+				const tokenInfo = await TwitchClient.getTokenInfo(this._clientId, this._accessToken.accessToken);
+				if (!tokenInfo.valid) {
+					throw new Error('Auth provider has been initialized with an invalid token');
+				}
+				this._scopes = tokenInfo.scopes;
+			}
 			if (typeof scopes === 'string') {
 				scopes = scopes.split(' ');
 			}
-			if (scopes.some(scope => !this._scopes.includes(scope))) {
+			if (scopes.some(scope => !this._scopes!.includes(scope))) {
 				throw new Error(`This token does not have the requested scopes (${scopes.join(', ')}) and can not be upgraded`);
 			}
 		}
@@ -70,6 +81,6 @@ export default class StaticAuthProvider implements AuthProvider {
 	 * The scopes that are currently available using the access token.
 	 */
 	get currentScopes() {
-		return this._scopes;
+		return this._scopes || [];
 	}
 }
