@@ -57,6 +57,13 @@ export interface ChatClientOptions {
 	 * Whether to connect to IRC directly instead of using the WebSocket servers.
 	 */
 	rawIrc?: boolean;
+
+	/**
+	 * Whether to receive JOIN and PART messages from Twitch chat.
+	 *
+	 * This is currently on by default, but will change to off by default in version 3.0.
+	 */
+	useMembership?: boolean;
 }
 
 /**
@@ -426,16 +433,16 @@ export default class ChatClient extends IRCClient {
 	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
 	 * @param options
 	 */
-	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptionsWithAuth) {
+	constructor(twitchClient: TwitchClient | undefined, { userName, token, rawIrc = false, disableSsl = false, logLevel, useMembership = true }: ChatClientOptionsWithAuth) {
 		super({
 			connection: {
-				hostName: options.rawIrc ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
-				nick: options.userName.toLowerCase(),
-				password: options.token && `oauth:${options.token.replace(/^oauth:/, '')}`,
-				secure: !options.disableSsl
+				hostName: rawIrc ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
+				nick: userName.toLowerCase(),
+				password: token && `oauth:${token.replace(/^oauth:/, '')}`,
+				secure: !disableSsl
 			},
-			webSocket: !options.rawIrc,
-			logLevel: options.logLevel,
+			webSocket: !rawIrc,
+			logLevel: logLevel,
 			nonConformingCommands: ['004']
 		});
 
@@ -444,7 +451,9 @@ export default class ChatClient extends IRCClient {
 		// tslint:disable:no-floating-promises
 		this.registerCapability(TwitchTagsCapability);
 		this.registerCapability(TwitchCommandsCapability);
-		this.registerCapability(TwitchMembershipCapability);
+		if (useMembership) {
+			this.registerCapability(TwitchMembershipCapability);
+		}
 		// tslint:enable:no-floating-promises
 
 		this.onMessage(ClearChat, ({ params: { channel, user }, tags }) => {
