@@ -50,24 +50,42 @@ export interface ChatClientOptions {
 	 * Whether to disable the secure connection using SSL.
 	 *
 	 * You should not use this except for debugging purposes.
+	 *
+	 * @deprecated Use the `.ssl` property instead.
 	 */
 	disableSsl?: boolean;
 
 	/**
+	 * Whether to connect securely using SSL.
+	 *
+	 * You should not disable this except for debugging purposes.
+	 */
+	ssl?: boolean;
+
+	/**
 	 * Whether to connect to IRC directly instead of using the WebSocket servers.
+	 *
+	 * @deprecated Use the `.webSocket` property instead.
 	 */
 	rawIrc?: boolean;
+
+	/**
+	 * Whether to use a WebSocket to connect to chat.
+	 */
+	webSocket?: boolean;
 
 	/**
 	 * Whether to receive JOIN and PART messages from Twitch chat.
 	 *
 	 * This is currently on by default, but will change to off by default in version 3.0.
 	 */
-	useMembership?: boolean;
+	requestMembershipEvents?: boolean;
 }
 
 /**
  * Options for a chat client, including authentication details.
+ *
+ * @inheritDoc
  */
 export interface ChatClientOptionsWithAuth extends ChatClientOptions {
 	/**
@@ -433,16 +451,19 @@ export default class ChatClient extends IRCClient {
 	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
 	 * @param options
 	 */
-	constructor(twitchClient: TwitchClient | undefined, { userName, token, rawIrc = false, disableSsl = false, logLevel, useMembership = true }: ChatClientOptionsWithAuth) {
+	constructor(
+		twitchClient: TwitchClient | undefined,
+		options: ChatClientOptionsWithAuth
+	) {
 		super({
 			connection: {
-				hostName: rawIrc ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
-				nick: userName.toLowerCase(),
-				password: token && `oauth:${token.replace(/^oauth:/, '')}`,
-				secure: !disableSsl
+				hostName: (options.webSocket === undefined ? !options.rawIrc : options.webSocket) ? 'irc-ws.chat.twitch.tv' : 'irc.chat.twitch.tv',
+				nick: options.userName.toLowerCase(),
+				password: options.token && `oauth:${options.token.replace(/^oauth:/, '')}`,
+				secure: options.ssl === undefined ? !options.disableSsl : options.ssl
 			},
-			webSocket: !rawIrc,
-			logLevel: logLevel,
+			webSocket: (options.webSocket === undefined ? !options.rawIrc : options.webSocket),
+			logLevel: options.logLevel,
 			nonConformingCommands: ['004']
 		});
 
@@ -451,7 +472,7 @@ export default class ChatClient extends IRCClient {
 		// tslint:disable:no-floating-promises
 		this.registerCapability(TwitchTagsCapability);
 		this.registerCapability(TwitchCommandsCapability);
-		if (useMembership) {
+		if (options.requestMembershipEvents) {
 			this.registerCapability(TwitchMembershipCapability);
 		}
 		// tslint:enable:no-floating-promises
