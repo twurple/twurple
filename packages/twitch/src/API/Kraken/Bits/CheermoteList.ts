@@ -220,10 +220,18 @@ export default class CheermoteList {
 		};
 	}
 
+	/**
+	 * Gets all possible cheermote names.
+	 */
 	getPossibleNames() {
 		return Object.keys(this._data);
 	}
 
+	/**
+	 * Parses all the cheermotes out of a message.
+	 *
+	 * @param message The message.
+	 */
 	parseMessage(message: string) {
 		const result: MessageCheermote[] = [];
 
@@ -249,6 +257,12 @@ export default class CheermoteList {
 		return result;
 	}
 
+	/**
+	 * Transforms all the cheermotes in a message and returns an array of all the message parts.
+	 *
+	 * @param message The message.
+	 * @param transformer A function that transforms a message part into an arbitrary structure.
+	 */
 	transformCheerMessage<T>(message: string, transformer: (displayInfo: MessageCheermote) => (string | T)) {
 		const result: Array<string | T> = [];
 
