@@ -2,12 +2,6 @@ import { PrivateMessage } from 'ircv3/lib/Message/MessageTypes/Commands/';
 import ChatUser from '../ChatUser';
 import { parseEmotes } from '../Toolkit/ChatTools';
 
-export interface MessageCheermote {
-	name: string;
-	amount: number;
-	position: number;
-}
-
 class TwitchPrivateMessage extends PrivateMessage {
 	get userInfo() {
 		return new ChatUser(this._prefix!.nick, this._tags);

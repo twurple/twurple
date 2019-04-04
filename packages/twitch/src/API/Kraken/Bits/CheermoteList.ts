@@ -148,6 +148,36 @@ export interface CheermoteDisplayInfo {
 }
 
 /**
+ * A description of a specific cheermote parsed from a message.
+ */
+export interface MessageCheermote {
+	/**
+	 * The name of the cheermote.
+	 */
+	name: string;
+
+	/**
+	 * The amount of bits for the cheermote.
+	 */
+	amount: number;
+
+	/**
+	 * The position of the cheermote in the text, zero based.
+	 */
+	position: number;
+
+	/**
+	 * The length of the cheermote in the text.
+	 */
+	length: number;
+
+	/**
+	 * Information on how the cheermote is supposed to be displayed.
+	 */
+	displayInfo: CheermoteDisplayInfo;
+}
+
+/**
  * A list of cheermotes you can use globally or in a specific channel, depending on how you fetched the list.
  */
 export default class CheermoteList {
@@ -192,5 +222,49 @@ export default class CheermoteList {
 
 	getPossibleNames() {
 		return Object.keys(this._data);
+	}
+
+	parseMessage(message: string) {
+		const result: MessageCheermote[] = [];
+
+		const names = this.getPossibleNames();
+		// TODO fix this regex so it works in firefox, which does not support lookbehind
+		const re = new RegExp('(?<=^|\\s)([a-z]+)(\\d+)(?=\\s|$)', 'gi');
+		let match: RegExpExecArray | null;
+		// tslint:disable-next-line:no-conditional-assignment
+		while (match = re.exec(message)) {
+			const name = match[1].toLowerCase();
+			if (names.includes(name)) {
+				const amount = Number(match[2]);
+				result.push({
+					name,
+					amount,
+					position: match.index,
+					length: match[0].length,
+					displayInfo: this.getCheermoteDisplayInfo(name, amount)
+				});
+			}
+		}
+
+		return result;
+	}
+
+	transformCheerMessage<T>(message: string, transformer: (displayInfo: MessageCheermote) => (string | T)) {
+		const result: Array<string | T> = [];
+
+		let currentPosition = 0;
+		for (const foundCheermote of this.parseMessage(message)) {
+			if (currentPosition < foundCheermote.position) {
+				result.push(message.substring(currentPosition, foundCheermote.position));
+			}
+			result.push(transformer(foundCheermote));
+			currentPosition = foundCheermote.position + foundCheermote.length;
+		}
+
+		if (currentPosition < message.length) {
+			result.push(message.substr(currentPosition));
+		}
+
+		return result;
 	}
 }
