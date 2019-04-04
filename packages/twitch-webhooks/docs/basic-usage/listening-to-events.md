@@ -14,7 +14,7 @@ After that, you can subscribe to all supported events using this listener:
 ```typescript
 import { HelixStream } from 'twitch';
 
-const subscription = await listener.listenToStreamChanges(userId, async (stream?: HelixStream) => {
+const subscription = await listener.subscribeToStreamChanges(userId, async (stream?: HelixStream) => {
 	if (stream) {
 		console.log(`${stream.userDisplayName} just went live with title: ${stream.title}`);
 	} else {
