@@ -20,7 +20,7 @@
     "twitch": "^2.2.0"
   },
   "peerDependencies": {
-    "twitch": "^2.0.0"
+    "twitch": "^2.2.0"
   },
   "files": [
     "LICENSE",
