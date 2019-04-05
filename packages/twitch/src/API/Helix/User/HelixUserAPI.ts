@@ -33,17 +33,6 @@ export interface HelixUserUpdate {
  * ```
  */
 export default class HelixUserAPI extends BaseAPI {
-	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
-		const query: Record<string, string | string[] | undefined> = { [lookupType]: param };
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixUserData>>({
-			type: TwitchAPICallType.Helix,
-			url: 'users',
-			query
-		});
-
-		return result.data.map(userData => new HelixUser(userData, this._client));
-	}
-
 	/**
 	 * Retrieves the user data for the given list of user IDs.
 	 *
@@ -149,5 +138,16 @@ export default class HelixUserAPI extends BaseAPI {
 			this._client,
 			(data: HelixFollowData) => new HelixFollow(data, this._client)
 		);
+	}
+
+	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
+		const query: Record<string, string | string[] | undefined> = { [lookupType]: param };
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixUserData>>({
+			type: TwitchAPICallType.Helix,
+			url: 'users',
+			query
+		});
+
+		return result.data.map(userData => new HelixUser(userData, this._client));
 	}
 }

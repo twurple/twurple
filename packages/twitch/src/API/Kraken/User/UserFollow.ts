@@ -21,7 +21,7 @@ export default class UserFollow {
 	}
 
 	/**
-	 * The date when the user followed the channel
+	 * The date when the user followed the channel.
 	 */
 	get followDate() {
 		return new Date(this._data.created_at);

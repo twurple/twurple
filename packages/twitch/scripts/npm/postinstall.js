@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
-const {getTopPackageDependencies} = require('top-package');
+/* eslint-disable no-console,@typescript-eslint/no-require-imports */
+
+const { getTopPackageDependencies } = require('top-package');
 
 const argvJson = process.env.npm_config_argv;
 if (!argvJson) {

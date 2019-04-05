@@ -91,6 +91,7 @@ export default class ChannelEvent {
 
 	/**
 	 * Generates a URL to the cover image of the event with the given dimensions.
+	 *
 	 * @param width The width of the image.
 	 * @param height The height of the image.
 	 */

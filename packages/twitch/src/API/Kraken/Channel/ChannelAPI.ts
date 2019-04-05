@@ -165,38 +165,6 @@ export default class ChannelAPI extends BaseAPI {
 		return data._total;
 	}
 
-	private async _getChannelSubscriptions(
-		channel: UserIdResolvable,
-		page?: number, limit: number = 25,
-		orderDirection?: 'asc' | 'desc'
-	): Promise<ChannelSubscriptionsResponse> {
-		const channelId = extractUserId(channel);
-
-		const query: Record<string, string> = { limit: limit.toString() };
-
-		if (page) {
-			query.offset = ((page - 1) * limit).toString();
-		}
-
-		if (orderDirection) {
-			query.direction = orderDirection;
-		}
-
-		try {
-			return await this._client.callAPI({
-				url: `channels/${channelId}/subscriptions`,
-				query,
-				scope: 'channel_subscriptions'
-			});
-		} catch (e) {
-			if (e instanceof HTTPStatusCodeError && e.statusCode === 422) {
-				throw new NoSubscriptionProgramError(channelId);
-			}
-
-			throw e;
-		}
-	}
-
 	/**
 	 * Retrieves the subscription data for the given user to a given channel.
 	 *
@@ -263,5 +231,37 @@ export default class ChannelAPI extends BaseAPI {
 			method: 'DELETE',
 			scope: 'channel_stream'
 		});
+	}
+
+	private async _getChannelSubscriptions(
+		channel: UserIdResolvable,
+		page?: number, limit: number = 25,
+		orderDirection?: 'asc' | 'desc'
+	): Promise<ChannelSubscriptionsResponse> {
+		const channelId = extractUserId(channel);
+
+		const query: Record<string, string> = { limit: limit.toString() };
+
+		if (page) {
+			query.offset = ((page - 1) * limit).toString();
+		}
+
+		if (orderDirection) {
+			query.direction = orderDirection;
+		}
+
+		try {
+			return await this._client.callAPI({
+				url: `channels/${channelId}/subscriptions`,
+				query,
+				scope: 'channel_subscriptions'
+			});
+		} catch (e) {
+			if (e instanceof HTTPStatusCodeError && e.statusCode === 422) {
+				throw new NoSubscriptionProgramError(channelId);
+			}
+
+			throw e;
+		}
 	}
 }

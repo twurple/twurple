@@ -4,7 +4,7 @@ import TwitchClient from 'twitch';
 import { LogLevel } from '@d-fischer/logger';
 
 import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
-import UserTools from './Toolkit/UserTools';
+import { toChannelName, toUserName } from './Toolkit/UserTools';
 
 import TwitchTagsCapability from './Capabilities/TwitchTags/';
 import TwitchCommandsCapability from './Capabilities/TwitchCommands/';
@@ -641,6 +641,7 @@ export default class ChatClient extends IRCClient {
 					break;
 				}
 				default: {
+					// eslint-disable-next-line no-console
 					console.warn(`Unrecognized usernotice ID: ${messageType}`);
 				}
 			}
@@ -671,7 +672,7 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'bad_ban_broadcaster': {
-					this.emit(this._onBanResult, channel, UserTools.toUserName(channel), messageType);
+					this.emit(this._onBanResult, channel, toUserName(channel), messageType);
 					break;
 				}
 
@@ -876,7 +877,7 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'bad_timeout_broadcaster': {
-					this.emit(this._onTimeoutResult, channel, UserTools.toUserName(channel), undefined, undefined, messageType);
+					this.emit(this._onTimeoutResult, channel, toUserName(channel), undefined, undefined, messageType);
 					break;
 				}
 
@@ -902,9 +903,15 @@ export default class ChatClient extends IRCClient {
 				case 'followers_on_zero':
 				case 'followers_off':
 				case 'slow_on':
-				case 'slow_off':
+				case 'slow_off': {
+					break;
+				}
+
 				// ...and CLEARCHAT...
-				case 'timeout_success':
+				case 'timeout_success': {
+					break;
+				}
+
 				// ...and HOSTTARGET
 				case 'host_off':
 				case 'host_on':
@@ -928,6 +935,7 @@ export default class ChatClient extends IRCClient {
 
 				default: {
 					if (!messageType || messageType.substr(0, 6) !== 'usage_') {
+						// eslint-disable-next-line no-console
 						console.warn(`Unrecognized notice ID: '${messageType}'`);
 					}
 				}
@@ -942,10 +950,10 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
 	 */
 	async host(target: string, channel: string = this._nick) {
-		channel = UserTools.toUserName(channel);
+		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onHostResult((chan, error) => {
-				if (UserTools.toUserName(chan) === channel) {
+				if (toUserName(chan) === channel) {
 					if (error) {
 						reject(error);
 					} else {
@@ -968,10 +976,10 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
 	async unhost(channel: string = this._nick) {
-		channel = UserTools.toUserName(channel);
+		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onUnhostResult((chan, error) => {
-				if (UserTools.toUserName(chan) === channel) {
+				if (toUserName(chan) === channel) {
 					if (error) {
 						reject(error);
 					} else {
@@ -998,11 +1006,11 @@ export default class ChatClient extends IRCClient {
 	}
 
 	say(channel: string, message: string) {
-		super.say(UserTools.toChannelName(channel), message);
+		super.say(toChannelName(channel), message);
 	}
 
 	async join(channel: string) {
-		channel = UserTools.toChannelName(channel);
+		channel = toChannelName(channel);
 		return new Promise<void>((resolve, reject) => {
 			let timer: NodeJS.Timer;
 			const e = this._onJoinResult((chan, state, error) => {

@@ -1,7 +1,8 @@
 import * as publicIp from 'public-ip';
 import * as portFinder from 'portfinder';
 import { PolkaRequest, PolkaResponse } from 'polka';
-// tslint:disable-next-line:no-duplicate-imports factory method is namespace root
+// factory method is namespace root
+// eslint-disable-next-line no-duplicate-imports
 import * as polka from 'polka';
 import * as https from 'https';
 import TwitchClient, { extractUserId, HelixFollow, HelixStream, HelixUser, UserIdResolvable } from 'twitch';
@@ -61,37 +62,6 @@ export default class WebHookListener {
 	}
 
 	private constructor(private readonly _config: WebHookListenerComputedConfig, /** @private */ readonly _twitchClient: TwitchClient) {
-	}
-
-	private _handleVerification(req: PolkaRequest, res: PolkaResponse) {
-		const subscription = this._subscriptions.get(req.params.id);
-		if (subscription) {
-			if (req.query['hub.mode'] === 'subscribe') {
-				subscription.verify();
-				res.writeHead(202);
-				res.end(req.query['hub.challenge']);
-			} else {
-				this._subscriptions.delete(req.params.id);
-				res.writeHead(200);
-				res.end();
-			}
-		} else {
-			res.writeHead(410);
-			res.end();
-		}
-	}
-
-	private async _handleNotification(req: PolkaRequest, res: PolkaResponse) {
-		const body = await getRawBody(req, true);
-		const subscription = this._subscriptions.get(req.params.id);
-		if (subscription) {
-			subscription.handleData(body, req.headers['x-hub-signature']! as string);
-			res.writeHead(202);
-			res.end();
-		} else {
-			res.writeHead(410);
-			res.end();
-		}
 	}
 
 	listen() {
@@ -199,5 +169,36 @@ export default class WebHookListener {
 	/** @private */
 	_dropSubscription(id: string) {
 		this._subscriptions.delete(id);
+	}
+
+	private _handleVerification(req: PolkaRequest, res: PolkaResponse) {
+		const subscription = this._subscriptions.get(req.params.id);
+		if (subscription) {
+			if (req.query['hub.mode'] === 'subscribe') {
+				subscription.verify();
+				res.writeHead(202);
+				res.end(req.query['hub.challenge']);
+			} else {
+				this._subscriptions.delete(req.params.id);
+				res.writeHead(200);
+				res.end();
+			}
+		} else {
+			res.writeHead(410);
+			res.end();
+		}
+	}
+
+	private async _handleNotification(req: PolkaRequest, res: PolkaResponse) {
+		const body = await getRawBody(req, true);
+		const subscription = this._subscriptions.get(req.params.id);
+		if (subscription) {
+			subscription.handleData(body, req.headers['x-hub-signature']! as string);
+			res.writeHead(202);
+			res.end();
+		} else {
+			res.writeHead(410);
+			res.end();
+		}
 	}
 }

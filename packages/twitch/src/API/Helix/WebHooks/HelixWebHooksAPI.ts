@@ -99,16 +99,6 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		});
 	}
 
-	private async _sendUserFollowsHubRequest(mode: HubMode, direction: 'from' | 'to', user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
-		const userId = extractUserId(user);
-
-		return this.sendHubRequest({
-			mode,
-			topicUrl: `https://api.twitch.tv/helix/users/follows?first=1&${direction}_id=${userId}`,
-			...options
-		});
-	}
-
 	/**
 	 * Subscribes to events representing a user following other users.
 	 *
@@ -157,16 +147,6 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		return this._sendUserFollowsHubRequest('unsubscribe', 'to', user, options);
 	}
 
-	private async _sendStreamChangeHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
-		const userId = extractUserId(user);
-
-		return this.sendHubRequest({
-			mode,
-			topicUrl: `https://api.twitch.tv/helix/streams?user_id=${userId}`,
-			...options
-		});
-	}
-
 	/**
 	 * Subscribes to events representing a stream changing, e.g. going live, offline or changing its title.
 	 *
@@ -189,17 +169,6 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 */
 	async unsubscribeFromStreamChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
 		return this._sendStreamChangeHubRequest('unsubscribe', user, options);
-	}
-
-	private async _sendUserChangeHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions, withEmail: boolean = false) {
-		const userId = extractUserId(user);
-
-		return this.sendHubRequest({
-			mode,
-			topicUrl: `https://api.twitch.tv/helix/users?id=${userId}`,
-			scope: withEmail ? 'user:read:email' : undefined,
-			...options
-		});
 	}
 
 	/**
@@ -225,5 +194,36 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 */
 	async unsubscribeFromUserChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
 		return this._sendUserChangeHubRequest('unsubscribe', user, options);
+	}
+
+	private async _sendUserFollowsHubRequest(mode: HubMode, direction: 'from' | 'to', user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		const userId = extractUserId(user);
+
+		return this.sendHubRequest({
+			mode,
+			topicUrl: `https://api.twitch.tv/helix/users/follows?first=1&${direction}_id=${userId}`,
+			...options
+		});
+	}
+
+	private async _sendStreamChangeHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		const userId = extractUserId(user);
+
+		return this.sendHubRequest({
+			mode,
+			topicUrl: `https://api.twitch.tv/helix/streams?user_id=${userId}`,
+			...options
+		});
+	}
+
+	private async _sendUserChangeHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions, withEmail: boolean = false) {
+		const userId = extractUserId(user);
+
+		return this.sendHubRequest({
+			mode,
+			topicUrl: `https://api.twitch.tv/helix/users?id=${userId}`,
+			scope: withEmail ? 'user:read:email' : undefined,
+			...options
+		});
 	}
 }

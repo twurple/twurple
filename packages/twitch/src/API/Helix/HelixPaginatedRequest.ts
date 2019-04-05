@@ -41,35 +41,6 @@ export default class HelixPaginatedRequest<D, T> {
 		return this._currentData ? this._currentData.data : undefined;
 	}
 
-	/** @private */
-	protected async _fetchData(additionalOptions: Partial<TwitchAPICallOptions> = {}) {
-		return this._client.callAPI<HelixPaginatedResponse<D>>({
-			type: TwitchAPICallType.Helix,
-			...this._callOptions,
-			...additionalOptions,
-			query: {
-				...this._callOptions.query,
-				after: this._currentCursor,
-				first: '100',
-				...additionalOptions.query
-			}
-		});
-	}
-
-	/** @private */
-	protected _processResult(result: HelixPaginatedResponse<D>) {
-		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
-		this._currentData = result;
-
-		return result.data.reduce(
-			(acc, elem) => {
-				const mapped = this._mapper(elem);
-				return Array.isArray(mapped) ? [...acc, ...mapped] : [...acc, mapped];
-			},
-			[]
-		);
-	}
-
 	/**
 	 * Retrieves and returns the next available page of data associated to the requested resource, or an empty array if there are no more available pages.
 	 */
@@ -122,9 +93,37 @@ export default class HelixPaginatedRequest<D, T> {
 	reset() {
 		this._currentCursor = undefined;
 	}
+
+	/** @private */
+	protected async _fetchData(additionalOptions: Partial<TwitchAPICallOptions> = {}) {
+		return this._client.callAPI<HelixPaginatedResponse<D>>({
+			type: TwitchAPICallType.Helix,
+			...this._callOptions,
+			...additionalOptions,
+			query: {
+				...this._callOptions.query,
+				after: this._currentCursor,
+				first: '100',
+				...additionalOptions.query
+			}
+		});
+	}
+
+	/** @private */
+	protected _processResult(result: HelixPaginatedResponse<D>) {
+		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
+		this._currentData = result;
+
+		return result.data.reduce(
+			(acc, elem) => {
+				const mapped = this._mapper(elem);
+				return Array.isArray(mapped) ? [...acc, ...mapped] : [...acc, mapped];
+			},
+			[]
+		);
+	}
 }
 
-// tslint:disable-next-line:strict-type-predicates
 if (typeof Symbol === 'function' && typeof Symbol.asyncIterator === 'symbol') {
 	Object.defineProperty(HelixPaginatedRequest.prototype, Symbol.asyncIterator, {
 		value: async function* <D, T>(this: HelixPaginatedRequest<D, T>) {

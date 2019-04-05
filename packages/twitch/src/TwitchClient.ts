@@ -124,7 +124,7 @@ export interface TwitchAPICallOptions {
 	 *
 	 * If `body` is also given, this will be ignored.
 	 */
-	// tslint:disable-next-line:no-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	jsonBody?: any;
 
 	/**
@@ -203,99 +203,6 @@ export default class TwitchClient {
 	}
 
 	/**
-	 * Creates a new Twitch client instance.
-	 *
-	 * @param config Configuration for the client instance.
-	 */
-	constructor(config: Partial<TwitchConfig>) {
-		const { authProvider, ...restConfig } = config;
-		if (!authProvider) {
-			throw new ConfigError('No auth provider given');
-		}
-
-		this._config = {
-			preAuth: false,
-			initialScopes: [],
-			cheermotes: {
-				defaultBackground: CheermoteBackground.dark,
-				defaultState: CheermoteState.animated,
-				defaultScale: CheermoteScale.x1
-			},
-			authProvider,
-			...restConfig
-		};
-
-		if (this._config.preAuth) {
-			// tslint:disable-next-line:no-floating-promises
-			authProvider.getAccessToken(this._config.initialScopes || []);
-		}
-	}
-
-	/**
-	 * Retrieves information about your access token.
-	 */
-	async getTokenInfo() {
-		const data = await this.callAPI<TokenInfoData>({ url: '/' });
-		return new TokenInfo(data.token);
-	}
-
-	/**
-	 * Retrieves information about an access token.
-	 *
-	 * @param clientId The client ID of your application.
-	 * @param accessToken The access token to get the information of.
-	 *
-	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
-	 */
-	static async getTokenInfo(clientId: string, accessToken: string) {
-		const data = await this.callAPI<TokenInfoData>({ url: '/' }, clientId, accessToken);
-		return new TokenInfo(data.token);
-	}
-
-	/**
-	 * Retrieves an access token for the authentication provider.
-	 *
-	 * @param scopes The scopes to request.
-	 */
-	async getAccessToken(scopes?: string | string[]) {
-		return this._config.authProvider.getAccessToken(scopes);
-	}
-
-	/**
-	 * Makes a call to the Twitch API using your access token.
-	 *
-	 * @param options The configuration of the call.
-	 */
-	// tslint:disable-next-line:no-any
-	async callAPI<T = any>(options: TwitchAPICallOptions) {
-		const { authProvider } = this._config;
-		let accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : []);
-		if (!accessToken) {
-			return TwitchClient.callAPI<T>(options, authProvider.clientId);
-		}
-
-		if (accessToken.isExpired && authProvider.refresh) {
-			accessToken = await authProvider.refresh();
-		}
-
-		return TwitchClient.callAPI<T>(options, authProvider.clientId, accessToken.accessToken);
-	}
-
-	private static _getUrl(url: string, type?: TwitchAPICallType) {
-		type = type === undefined ? TwitchAPICallType.Kraken : type;
-		switch (type) {
-			case TwitchAPICallType.Kraken:
-			case TwitchAPICallType.Helix:
-				const typeName = type === TwitchAPICallType.Kraken ? 'kraken' : 'helix';
-				return `https://api.twitch.tv/${typeName}/${url.replace(/^\//, '')}`;
-			case TwitchAPICallType.Custom:
-				return url;
-			default:
-				return url; // wat
-		}
-	}
-
-	/**
 	 * Makes a call to the Twitch API using given credetials.
 	 *
 	 * @param options The configuration of the call.
@@ -304,7 +211,7 @@ export default class TwitchClient {
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
-	// tslint:disable-next-line:no-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async callAPI<T = any>(options: TwitchAPICallOptions, clientId?: string, accessToken?: string): Promise<T> {
 		const url = this._getUrl(options.url, options.type);
 		const params = qs.stringify(options.query, { arrayFormat: 'repeat' });
@@ -342,7 +249,7 @@ export default class TwitchClient {
 		}
 
 		if (response.status === 201 || response.status === 202) {
-			// tslint:disable-next-line:no-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			return undefined as any as T; // oof
 		}
 
@@ -408,6 +315,85 @@ export default class TwitchClient {
 				refresh_token: refreshToken
 			}
 		}));
+	}
+
+	/**
+	 * Retrieves information about an access token.
+	 *
+	 * @param clientId The client ID of your application.
+	 * @param accessToken The access token to get the information of.
+	 *
+	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
+	 */
+	static async getTokenInfo(clientId: string, accessToken: string) {
+		const data = await this.callAPI<TokenInfoData>({ url: '/' }, clientId, accessToken);
+		return new TokenInfo(data.token);
+	}
+
+	/**
+	 * Creates a new Twitch client instance.
+	 *
+	 * @param config Configuration for the client instance.
+	 */
+	constructor(config: Partial<TwitchConfig>) {
+		const { authProvider, ...restConfig } = config;
+		if (!authProvider) {
+			throw new ConfigError('No auth provider given');
+		}
+
+		this._config = {
+			preAuth: false,
+			initialScopes: [],
+			cheermotes: {
+				defaultBackground: CheermoteBackground.dark,
+				defaultState: CheermoteState.animated,
+				defaultScale: CheermoteScale.x1
+			},
+			authProvider,
+			...restConfig
+		};
+
+		if (this._config.preAuth) {
+			// tslint:disable-next-line:no-floating-promises
+			authProvider.getAccessToken(this._config.initialScopes || []);
+		}
+	}
+
+	/**
+	 * Retrieves information about your access token.
+	 */
+	async getTokenInfo() {
+		const data = await this.callAPI<TokenInfoData>({ url: '/' });
+		return new TokenInfo(data.token);
+	}
+
+	/**
+	 * Retrieves an access token for the authentication provider.
+	 *
+	 * @param scopes The scopes to request.
+	 */
+	async getAccessToken(scopes?: string | string[]) {
+		return this._config.authProvider.getAccessToken(scopes);
+	}
+
+	/**
+	 * Makes a call to the Twitch API using your access token.
+	 *
+	 * @param options The configuration of the call.
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async callAPI<T = any>(options: TwitchAPICallOptions) {
+		const { authProvider } = this._config;
+		let accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : []);
+		if (!accessToken) {
+			return TwitchClient.callAPI<T>(options, authProvider.clientId);
+		}
+
+		if (accessToken.isExpired && authProvider.refresh) {
+			accessToken = await authProvider.refresh();
+		}
+
+		return TwitchClient.callAPI<T>(options, authProvider.clientId, accessToken.accessToken);
 	}
 
 	/**
@@ -494,5 +480,19 @@ export default class TwitchClient {
 	 */
 	get users() {
 		return this.kraken.users;
+	}
+
+	private static _getUrl(url: string, type?: TwitchAPICallType) {
+		type = type === undefined ? TwitchAPICallType.Kraken : type;
+		switch (type) {
+			case TwitchAPICallType.Kraken:
+			case TwitchAPICallType.Helix:
+				const typeName = type === TwitchAPICallType.Kraken ? 'kraken' : 'helix';
+				return `https://api.twitch.tv/${typeName}/${url.replace(/^\//, '')}`;
+			case TwitchAPICallType.Custom:
+				return url;
+			default:
+				return url; // wat
+		}
 	}
 }

@@ -2,7 +2,7 @@ import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../../Toolkit/Dec
 import BaseAPI from '../../BaseAPI';
 import PrivilegedUser from './PrivilegedUser';
 import User, { UserData } from './User';
-import ObjectTools from '../../../Toolkit/ObjectTools';
+import { entriesToObject, indexBy, mapObject } from '../../../Toolkit/ObjectTools';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import EmoteSetList from '../Channel/EmoteSetList';
 import UserSubscription from './UserSubscription';
@@ -81,8 +81,8 @@ export default class UserAPI extends BaseAPI {
 		this._cleanUserCache();
 		userNames = userNames.map(name => name.toLowerCase());
 		const cachedEntries = Array.from(this._userByNameCache.entries()).filter(([key]) => userNames.includes(key));
-		const cachedObject = ObjectTools.entriesToObject(cachedEntries);
-		const cachedUsers = ObjectTools.map(cachedObject, (entry: CacheEntry<User>) => entry.value);
+		const cachedObject = entriesToObject(cachedEntries);
+		const cachedUsers = mapObject(cachedObject, (entry: CacheEntry<User>) => entry.value);
 		const toFetch = userNames.filter(name => !(name in cachedUsers));
 		if (!toFetch.length) {
 			return cachedUsers;
@@ -93,7 +93,7 @@ export default class UserAPI extends BaseAPI {
 			value: user,
 			expires: Date.now() + 3600 * 1000
 		}));
-		const users = ObjectTools.indexBy(usersArr, 'name');
+		const users = indexBy(usersArr, 'name');
 
 		return { ...cachedUsers, ...users };
 	}

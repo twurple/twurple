@@ -8,15 +8,15 @@ export default class FollowsToUserSubscription extends Subscription<HelixFollow>
 		super(handler, client);
 	}
 
+	transformData(response: HelixResponse<HelixFollowData>) {
+		return new HelixFollow(response.data[0], this._client._twitchClient);
+	}
+
 	protected async _subscribe() {
 		return this._client._twitchClient.helix.webHooks.subscribeToUserFollowsTo(this._userId, this._options);
 	}
 
 	protected async _unsubscribe() {
 		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserFollowsTo(this._userId, this._options);
-	}
-
-	transformData(response: HelixResponse<HelixFollowData>) {
-		return new HelixFollow(response.data[0], this._client._twitchClient);
 	}
 }

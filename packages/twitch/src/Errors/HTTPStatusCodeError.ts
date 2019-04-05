@@ -5,7 +5,7 @@ import CustomError from './CustomError';
  */
 export default class HTTPStatusCodeError extends CustomError {
 	private readonly _statusCode: number;
-	// tslint:disable-next-line:no-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	private readonly _body: any;
 
 	/** @private */

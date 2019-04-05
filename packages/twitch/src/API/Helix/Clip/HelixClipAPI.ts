@@ -101,23 +101,6 @@ export default class HelixClipAPI extends BaseAPI {
 		return clips.length ? clips[0] : null;
 	}
 
-	private _getClips(params: HelixClipIdFilter) {
-		const { filterType, ids, startDate, endDate } = params;
-
-		return new HelixPaginatedRequest(
-			{
-				url: 'clips',
-				query: {
-					[filterType]: ids,
-					started_at: startDate,
-					ended_at: endDate
-				}
-			},
-			this._client,
-			(data: HelixClipData) => new HelixClip(data, this._client)
-		);
-	}
-
 	/**
 	 * Creates a clip of a running stream.
 	 *
@@ -139,5 +122,22 @@ export default class HelixClipAPI extends BaseAPI {
 		});
 
 		return result.data[0].id;
+	}
+
+	private _getClips(params: HelixClipIdFilter) {
+		const { filterType, ids, startDate, endDate } = params;
+
+		return new HelixPaginatedRequest(
+			{
+				url: 'clips',
+				query: {
+					[filterType]: ids,
+					started_at: startDate,
+					ended_at: endDate
+				}
+			},
+			this._client,
+			(data: HelixClipData) => new HelixClip(data, this._client)
+		);
 	}
 }

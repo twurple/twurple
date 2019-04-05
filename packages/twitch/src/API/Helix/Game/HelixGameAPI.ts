@@ -57,6 +57,19 @@ export default class HelixGameAPI extends BaseAPI {
 		return games.length ? games[0] : null;
 	}
 
+	/**
+	 * Retrieves a list of the most viewed games at the moment.
+	 */
+	getTopGames() {
+		return new HelixPaginatedRequest(
+			{
+				url: 'games/top'
+			},
+			this._client,
+			(data: HelixGameData) => new HelixGame(data, this._client)
+		);
+	}
+
 	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
 		const data = await this._client.callAPI<HelixResponse<HelixGameData>>({
 			type: TwitchAPICallType.Helix,
@@ -67,15 +80,5 @@ export default class HelixGameAPI extends BaseAPI {
 		});
 
 		return data.data.map(entry => new HelixGame(entry, this._client));
-	}
-
-	getTopGames() {
-		return new HelixPaginatedRequest(
-			{
-				url: 'games/top'
-			},
-			this._client,
-			(data: HelixGameData) => new HelixGame(data, this._client)
-		);
 	}
 }

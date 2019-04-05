@@ -1,12 +1,42 @@
 import { Constructor } from '../Types';
 
-// tslint:disable:only-arrow-functions
-
 /** @private */
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface CacheEntry<T = any> {
 	value: T;
 	expires: number;
+}
+
+/** @private */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createCacheKey(propName: string, params: any[], prefix?: boolean) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/promise-function-async
+	function createSingleCacheKey(param: any) {
+		// noinspection FallThroughInSwitchStatementJS
+		switch (typeof param) {
+			case 'undefined': {
+				return '';
+			}
+			case 'object': {
+				if (param === null) {
+					return '';
+				}
+				if ('cacheKey' in param) {
+					return param.cacheKey;
+				}
+				const objKey = JSON.stringify(param);
+				if (objKey !== '{}') {
+					return objKey;
+				}
+			}
+			// fallthrough
+			default: {
+				return param.toString();
+			}
+		}
+	}
+
+	return [propName, ...params.map(createSingleCacheKey)].join('/') + (prefix ? '/' : '');
 }
 
 /** @private */
@@ -67,44 +97,12 @@ export function Cacheable<T extends Constructor>(cls: T) {
 }
 
 /** @private */
-// tslint:disable-next-line:no-any
-export function createCacheKey(propName: string, params: any[], prefix?: boolean) {
-	// tslint:disable-next-line:no-any
-	function createSingleCacheKey(param: any) {
-		// noinspection FallThroughInSwitchStatementJS
-		switch (typeof param) {
-			case 'undefined': {
-				return '';
-			}
-			case 'object': {
-				if (param === null) {
-					return '';
-				}
-				if ('cacheKey' in param) {
-					return param.cacheKey;
-				}
-				const objKey = JSON.stringify(param);
-				if (objKey !== '{}') {
-					return objKey;
-				}
-			}
-			// tslint:disable-next-line:no-switch-case-fall-through
-			default: {
-				return param.toString();
-			}
-		}
-	}
-
-	return [propName, ...params.map(createSingleCacheKey)].join('/') + (prefix ? '/' : '');
-}
-
-/** @private */
 export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean = false) {
-	// tslint:disable-next-line:no-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
 		const origFn = descriptor.value;
 
-		// tslint:disable-next-line:no-any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		descriptor.value = async function (this: any, ...params: any[]) {
 			const cacheKey = createCacheKey(propName, params);
 			const cachedValue = this.getFromCache(cacheKey);
@@ -126,13 +124,12 @@ export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean 
 
 /** @private */
 export function CachedGetter(timeInSeconds: number = Infinity) {
-	// tslint:disable-next-line:no-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
 		if (descriptor.get) {
-			// tslint:disable-next-line:no-unbound-method
 			const origFn = descriptor.get;
 
-			// tslint:disable-next-line:no-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/promise-function-async
 			descriptor.get = function (this: any, ...params: any[]) {
 				const cacheKey = createCacheKey(propName, params);
 				const cachedValue = this.getFromCache(cacheKey);
@@ -153,11 +150,11 @@ export function CachedGetter(timeInSeconds: number = Infinity) {
 
 /** @private */
 export function ClearsCache<T>(cacheName: keyof T, numberOfArguments?: number) {
-	// tslint:disable-next-line:no-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
 		const origFn = descriptor.value;
 
-		// tslint:disable-next-line:no-any
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		descriptor.value = async function (this: any, ...params: any[]) {
 			const result = await origFn.apply(this, params);
 			const args = numberOfArguments === undefined ? params.slice() : params.slice(0, numberOfArguments);

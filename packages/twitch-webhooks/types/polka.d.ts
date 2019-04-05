@@ -1,11 +1,10 @@
-
 declare module 'polka' {
 	import * as  Router from 'trouter';
 	import * as http from 'http';
 	import * as https from 'https';
 	import * as net from 'net';
 
-	// tslint:disable-next-line:no-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
 
 	interface PolkaOptions {
@@ -34,9 +33,9 @@ declare module 'polka' {
 			listen(path: string, backlog?: number, listeningListener?: Function): this;
 			listen(path: string, listeningListener?: Function): this;
 			listen(options: net.ListenOptions, listeningListener?: Function): this;
-			// tslint:disable-next-line:no-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			listen(handle: any, backlog?: number, listeningListener?: Function): this;
-			// tslint:disable-next-line:no-any
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			listen(handle: any, listeningListener?: Function): this;
 
 			handler(req: http.IncomingMessage, res: http.ServerResponse, info: object): void;
@@ -47,7 +46,7 @@ declare module 'polka' {
 			query: Record<string, string>;
 		}
 
-		// tslint:disable-next-line:no-empty-interface
+		// eslint-disable-next-line @typescript-eslint/no-empty-interface
 		interface PolkaResponse extends http.ServerResponse {}
 	}
 	function polka(options?: PolkaOptions): polka.Polka;

@@ -1,9 +1,9 @@
-// tslint:disable:no-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare module 'trouter' {
-	type Match = {
-		params: {[key: string]: any};
+	interface Match {
+		params: Record<string, any>;
 		handlers: any[];
-	};
+	}
 
 	namespace Trouter {}
 

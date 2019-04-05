@@ -1,7 +1,7 @@
 import TwitchClient from '../../../TwitchClient';
 import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
-import ObjectTools from '../../../Toolkit/ObjectTools';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
+import { indexBy } from '../../../Toolkit/ObjectTools';
 
 /**
  * The type of background a cheermote is supposed to appear on.
@@ -187,7 +187,7 @@ export default class CheermoteList {
 	/** @private */
 	constructor(data: CheermoteActionData[], client: TwitchClient) {
 		this._client = client;
-		this._data = ObjectTools.indexBy(data, action => action.prefix.toLowerCase());
+		this._data = indexBy(data, action => action.prefix.toLowerCase());
 	}
 
 	/**
@@ -239,7 +239,7 @@ export default class CheermoteList {
 		// TODO fix this regex so it works in firefox, which does not support lookbehind
 		const re = new RegExp('(?<=^|\\s)([a-z]+)(\\d+)(?=\\s|$)', 'gi');
 		let match: RegExpExecArray | null;
-		// tslint:disable-next-line:no-conditional-assignment
+		// eslint-disable-next-line no-cond-assign
 		while (match = re.exec(message)) {
 			const name = match[1].toLowerCase();
 			if (names.includes(name)) {

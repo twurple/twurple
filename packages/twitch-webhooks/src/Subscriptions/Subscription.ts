@@ -4,7 +4,7 @@ import * as randomstring from 'randomstring';
 import * as crypto from 'crypto';
 import { HelixWebHookHubRequestOptions } from 'twitch/lib/API/Helix/WebHooks/HelixWebHooksAPI';
 
-// tslint:disable-next-line:no-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default abstract class Subscription<T = any> {
 	private _verified: boolean = false;
 	protected _id?: string;
@@ -51,15 +51,6 @@ export default abstract class Subscription<T = any> {
 		}
 	}
 
-	private async _createNewSubscription() {
-		const oldId = this._id;
-		this.generateNewCredentials();
-		if (oldId) {
-			this._client._changeIdOfSubscription(oldId, this._id!);
-		}
-		await this._subscribe();
-	}
-
 	async start() {
 		if (this._refreshTimer) {
 			clearInterval(this._refreshTimer);
@@ -81,6 +72,15 @@ export default abstract class Subscription<T = any> {
 		await this._unsubscribe();
 		this._client._dropSubscription(this._id!);
 		this._id = undefined;
+	}
+
+	private async _createNewSubscription() {
+		const oldId = this._id;
+		this.generateNewCredentials();
+		if (oldId) {
+			this._client._changeIdOfSubscription(oldId, this._id!);
+		}
+		await this._subscribe();
 	}
 
 	protected abstract _subscribe(): Promise<void>;

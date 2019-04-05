@@ -1,5 +1,5 @@
 import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
-import ArrayTools from '../../Toolkit/ArrayTools';
+import { flatten } from '../../Toolkit/ArrayTools';
 
 /** @private */
 export interface ChattersListData {
@@ -21,7 +21,7 @@ export default class ChattersList {
 	 */
 	@CachedGetter()
 	get allChatters() {
-		return ArrayTools.flatten(Object.values(this._data.chatters));
+		return flatten(Object.values(this._data.chatters));
 	}
 
 	/**
@@ -29,6 +29,6 @@ export default class ChattersList {
 	 */
 	@CachedGetter()
 	get allChattersWithStatus() {
-		return new Map(ArrayTools.flatten(Object.entries(this._data.chatters).map(([status, names]) => names.map<[string, string]>(name => [name, status]))));
+		return new Map(flatten(Object.entries(this._data.chatters).map(([status, names]) => names.map<[string, string]>(name => [name, status]))));
 	}
 }

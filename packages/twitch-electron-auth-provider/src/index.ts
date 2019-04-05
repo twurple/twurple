@@ -70,7 +70,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 						return;
 					}
 				}
-				// tslint:disable-next-line:no-any
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				const params: any = url.hash ? qs.parse(url.hash.substr(1)) : url.searchParams;
 
 				if (params.error || params.access_token) {

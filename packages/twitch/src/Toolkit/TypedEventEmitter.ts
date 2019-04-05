@@ -25,7 +25,7 @@
 // This file was taken from https://github.com/tenry92/typed-event-emitter/blob/master/index.ts (+ added more type information)
 // We can't use the published npm package because it doesn't compile down to es5, which causes errors with the super() call we need to use
 
-// tslint:disable:max-classes-per-file
+/* eslint-disable max-classes-per-file */
 
 export class Listener {
 	constructor(
@@ -65,21 +65,18 @@ export class EventEmitter {
 	removeListener(id: Listener): void;
 	removeListener(event: Function, listener?: Function): void;
 
-	removeListener() {
+	removeListener(idOrEvent?: Listener | Function, listener?: Function) {
 		if (arguments.length === 0) {
 			this._eventListeners.clear();
-		} else if (arguments.length === 1 && typeof arguments[0] === 'object') {
-			const id: Listener = arguments[0];
+		} else if (arguments.length === 1 && typeof idOrEvent === 'object') {
+			const id: Listener = idOrEvent;
 			this.removeListener(id.event, id.listener);
-		} else if (arguments.length >= 1) {
-			const event: Function = arguments[0];
-			const listener: Function = arguments[1];
+		} else if (idOrEvent) {
+			const event = idOrEvent as Function;
 
 			if (this._eventListeners.has(event)) {
 				const listeners = this._eventListeners.get(event)!;
-				// noinspection JSUnusedAssignment
 				let idx = 0;
-				// tslint:disable-next-line:no-conditional-assignment
 				while (!listener || (idx = listeners.indexOf(listener)) !== -1) {
 					listeners.splice(idx, 1);
 				}
@@ -87,24 +84,21 @@ export class EventEmitter {
 		}
 	}
 
+	registerEvent<T extends Function>() {
+		const eventBinder = (handler: T) => this.addListener(eventBinder, handler);
+
+		return eventBinder;
+	}
+
 	/**
 	 * Emit event. Calls all bound listeners with args.
 	 */
-	// tslint:disable-next-line:no-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	protected emit(event: Function, ...args: any[]) {
 		if (this._eventListeners.has(event)) {
 			for (const listener of this._eventListeners.get(event)!) {
 				listener(...args);
 			}
 		}
-	}
-
-	/**
-	 * @typeparam T The event handler signature.
-	 */
-	registerEvent<T extends Function>() {
-		const eventBinder = (handler: T) => this.addListener(eventBinder, handler);
-
-		return eventBinder;
 	}
 }

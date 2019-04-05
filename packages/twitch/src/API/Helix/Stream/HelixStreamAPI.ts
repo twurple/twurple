@@ -116,25 +116,6 @@ export default class HelixStreamAPI extends BaseAPI {
 		return streams.length ? streams[0] : null;
 	}
 
-	private _getStreamMarkers(queryType: string, id: string) {
-		return new HelixPaginatedRequest(
-			{
-				url: 'streams/markers',
-				query: {
-					[queryType]: id
-				},
-				scope: 'user:read:broadcast'
-			},
-			this._client,
-			(data: HelixStreamGetMarkersResult) => data.videos.reduce(
-				(result, video) => [...result, ...video.markers.map(
-					marker => new HelixStreamMarkerWithVideo(marker, video.video_id, this._client)
-				)],
-				[]
-			)
-		);
-	}
-
 	/**
 	 * Retrieves a list of all stream markers for an user.
 	 *
@@ -175,5 +156,24 @@ export default class HelixStreamAPI extends BaseAPI {
 
 			throw e;
 		}
+	}
+
+	private _getStreamMarkers(queryType: string, id: string) {
+		return new HelixPaginatedRequest(
+			{
+				url: 'streams/markers',
+				query: {
+					[queryType]: id
+				},
+				scope: 'user:read:broadcast'
+			},
+			this._client,
+			(data: HelixStreamGetMarkersResult) => data.videos.reduce(
+				(result, video) => [...result, ...video.markers.map(
+					marker => new HelixStreamMarkerWithVideo(marker, video.video_id, this._client)
+				)],
+				[]
+			)
+		);
 	}
 }

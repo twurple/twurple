@@ -82,44 +82,6 @@ export default class SingleUserPubSubClient {
 		});
 	}
 
-	private async _getUserData(scope?: string) {
-		const tokenData = await this._twitchClient._config.authProvider.getAccessToken(scope);
-		let accessToken: string | undefined;
-		let tokenInfo: TokenInfo | undefined;
-
-		if (tokenData) {
-			accessToken = tokenData.accessToken;
-			tokenInfo = await this._twitchClient.getTokenInfo();
-		}
-
-		if (!(tokenInfo && tokenInfo.valid) && this._twitchClient._config.authProvider.refresh) {
-			accessToken = (await this._twitchClient._config.authProvider.refresh()).accessToken;
-			tokenInfo = await this._twitchClient.getTokenInfo();
-		}
-		if (!(tokenInfo && tokenInfo.valid) || !accessToken) {
-			throw new Error('PubSub authentication failed');
-		}
-
-		// for some reason, on travis (only there!), tslint seems to think this is wrong
-		// tslint:disable-next-line:no-unnecessary-type-assertion
-		const userId = tokenInfo.userId!;
-
-		return { userId, accessToken };
-	}
-
-	private async _addListener<T extends PubSubMessage>(type: string, callback: (message: T) => void, scope?: string, ...additionalParams: string[]) {
-		await this._pubSubClient.connect();
-		const { userId, accessToken } = await this._getUserData(scope);
-		const listener = new PubSubListener(type, userId, callback, this);
-		if (this._listeners.has(type)) {
-			this._listeners.get(type)!.push(listener);
-		} else {
-			this._listeners.set(type, [listener]);
-			await this._pubSubClient.listen([type, userId, ...additionalParams].join('.'), accessToken);
-		}
-		return listener;
-	}
-
 	/**
 	 * Adds a listener to bits events to the client.
 	 *
@@ -192,5 +154,41 @@ export default class SingleUserPubSubClient {
 				this._listeners.set(listener.type, newListeners);
 			}
 		}
+	}
+
+	private async _getUserData(scope?: string) {
+		const tokenData = await this._twitchClient._config.authProvider.getAccessToken(scope);
+		let accessToken: string | undefined;
+		let tokenInfo: TokenInfo | undefined;
+
+		if (tokenData) {
+			accessToken = tokenData.accessToken;
+			tokenInfo = await this._twitchClient.getTokenInfo();
+		}
+
+		if (!(tokenInfo && tokenInfo.valid) && this._twitchClient._config.authProvider.refresh) {
+			accessToken = (await this._twitchClient._config.authProvider.refresh()).accessToken;
+			tokenInfo = await this._twitchClient.getTokenInfo();
+		}
+		if (!(tokenInfo && tokenInfo.valid) || !accessToken) {
+			throw new Error('PubSub authentication failed');
+		}
+
+		const userId = tokenInfo.userId!;
+
+		return { userId, accessToken };
+	}
+
+	private async _addListener<T extends PubSubMessage>(type: string, callback: (message: T) => void, scope?: string, ...additionalParams: string[]) {
+		await this._pubSubClient.connect();
+		const { userId, accessToken } = await this._getUserData(scope);
+		const listener = new PubSubListener(type, userId, callback, this);
+		if (this._listeners.has(type)) {
+			this._listeners.get(type)!.push(listener);
+		} else {
+			this._listeners.set(type, [listener]);
+			await this._pubSubClient.listen([type, userId, ...additionalParams].join('.'), accessToken);
+		}
+		return listener;
 	}
 }

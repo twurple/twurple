@@ -8,15 +8,15 @@ export default class UserChangeSubscription extends Subscription<HelixUser> {
 		super(handler, client);
 	}
 
+	transformData(response: HelixResponse<HelixUserData>) {
+		return new HelixUser(response.data[0], this._client._twitchClient);
+	}
+
 	protected async _subscribe() {
 		return this._client._twitchClient.helix.webHooks.subscribeToUserChanges(this._userId, this._options, this._withEmail);
 	}
 
 	protected async _unsubscribe() {
 		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserChanges(this._userId, this._options);
-	}
-
-	transformData(response: HelixResponse<HelixUserData>) {
-		return new HelixUser(response.data[0], this._client._twitchClient);
 	}
 }
