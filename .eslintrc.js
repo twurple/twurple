@@ -63,7 +63,8 @@ module.exports = {
 		'@typescript-eslint/no-useless-constructor': 'error',
 		'@typescript-eslint/prefer-function-type': 'error',
 		'@typescript-eslint/prefer-interface': 'error',
-		'@typescript-eslint/promise-function-async': 'error',
+		// seems to find lots of false positives...
+		// '@typescript-eslint/promise-function-async': 'error',
 		'@typescript-eslint/restrict-plus-operands': 'error',
 		// does not exist (yet?)
 		// '@typescript-eslint/typedef': 'error',

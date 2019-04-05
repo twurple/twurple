@@ -10,7 +10,7 @@ export interface CacheEntry<T = any> {
 /** @private */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createCacheKey(propName: string, params: any[], prefix?: boolean) {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/promise-function-async
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	function createSingleCacheKey(param: any) {
 		// noinspection FallThroughInSwitchStatementJS
 		switch (typeof param) {
@@ -129,7 +129,7 @@ export function CachedGetter(timeInSeconds: number = Infinity) {
 		if (descriptor.get) {
 			const origFn = descriptor.get;
 
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/promise-function-async
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			descriptor.get = function (this: any, ...params: any[]) {
 				const cacheKey = createCacheKey(propName, params);
 				const cachedValue = this.getFromCache(cacheKey);
