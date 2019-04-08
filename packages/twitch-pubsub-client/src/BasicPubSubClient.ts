@@ -230,10 +230,10 @@ export default class BasicPubSubClient extends EventEmitter {
 	private async _resendListens() {
 		const topicsByToken = Array.from(this._topics.entries()).reduce(
 			(result, [topic, token]) => {
-				if (!result.has(token)) {
-					result.set(token, [topic]);
-				} else {
+				if (result.has(token)) {
 					result.get(token)!.push(topic);
+				} else {
+					result.set(token, [topic]);
 				}
 
 				return result;

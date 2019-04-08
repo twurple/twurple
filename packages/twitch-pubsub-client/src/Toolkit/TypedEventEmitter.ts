@@ -50,10 +50,10 @@ export class EventEmitter {
 	}
 
 	on(event: Function, listener: Function) {
-		if (!this._eventListeners.has(event)) {
-			this._eventListeners.set(event, [listener]);
-		} else {
+		if (this._eventListeners.has(event)) {
 			this._eventListeners.get(event)!.push(listener);
+		} else {
+			this._eventListeners.set(event, [listener]);
 		}
 
 		return new Listener(this, event, listener);

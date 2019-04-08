@@ -481,13 +481,13 @@ export default class ChatClient extends IRCClient {
 			if (user) {
 				const duration = tags.get('ban-duration');
 				const reason = tags.get('ban-reason');
-				if (duration !== undefined) {
+				if (duration === undefined) {
+					// ban
+					this.emit(this.onBan, channel, user, reason);
+				} else {
 					// timeout
 					this.emit(this.onTimeout, channel, user, reason, Number(duration));
 					this.emit(this._onTimeoutResult, channel, user, reason, Number(duration));
-				} else {
-					// ban
-					this.emit(this.onBan, channel, user, reason);
 				}
 			} else {
 				// full chat clear
@@ -502,7 +502,7 @@ export default class ChatClient extends IRCClient {
 				this.emit(this.onUnhost, channel);
 			} else {
 				const numViewers = Number(viewers);
-				this.emit(this.onHost, channel, target, !isNaN(numViewers) ? numViewers : undefined);
+				this.emit(this.onHost, channel, target, isNaN(numViewers) ? undefined : numViewers);
 			}
 		});
 
@@ -521,7 +521,7 @@ export default class ChatClient extends IRCClient {
 				// 3 = how many viewers (not always present)
 				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
 				if (match) {
-					this.emit(this.onHosted, channel, match[1], Boolean(match[2]), match[3] !== '' ? Number(match[3]) : undefined);
+					this.emit(this.onHosted, channel, match[1], Boolean(match[2]), match[3] === '' ? undefined : Number(match[3]));
 				}
 			}
 		});
@@ -536,15 +536,15 @@ export default class ChatClient extends IRCClient {
 
 			if (tags.has('slow')) {
 				const slowDelay = Number(tags.get('slow'));
-				if (!slowDelay) {
-					this.emit(this._onSlowOffResult, channel);
-					if (!isInitial) {
-						this.emit(this.onSlow, channel, false);
-					}
-				} else {
+				if (slowDelay) {
 					this.emit(this._onSlowResult, channel, slowDelay);
 					if (!isInitial) {
 						this.emit(this.onSlow, channel, true, slowDelay);
+					}
+				} else {
+					this.emit(this._onSlowOffResult, channel);
+					if (!isInitial) {
+						this.emit(this.onSlow, channel, false);
 					}
 				}
 			}

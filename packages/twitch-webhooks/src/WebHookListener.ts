@@ -53,7 +53,7 @@ export default class WebHookListener {
 				ssl: config.ssl,
 				reverseProxy: {
 					port: reverseProxy.port || listenerPort,
-					ssl: (reverseProxy.ssl !== undefined) ? reverseProxy.ssl : !!config.ssl,
+					ssl: reverseProxy.ssl === undefined ? !!config.ssl : reverseProxy.ssl,
 					pathPrefix: reverseProxy.pathPrefix || ''
 				}
 			},

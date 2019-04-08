@@ -14,14 +14,14 @@ export default class PubSubClient {
 
 	async registerUserListener(twitchClient: TwitchClient, user?: UserIdResolvable) {
 		let userId;
-		if (!user) {
+		if (user) {
+			userId = extractUserId(user);
+		} else {
 			const tokenInfo = await twitchClient.getTokenInfo();
 			if (!tokenInfo.userId) {
 				throw new Error('Passed a Twitch client that is not bound to a user');
 			}
 			userId = tokenInfo.userId;
-		} else {
-			userId = extractUserId(user);
 		}
 
 		this._userClients.set(userId, new SingleUserPubSubClient({ twitchClient: twitchClient, pubSubClient: this._rootClient }));

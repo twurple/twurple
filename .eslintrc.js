@@ -144,6 +144,7 @@ module.exports = {
 		'no-irregular-whitespace': 'error',
 		'no-labels': 'error',
 		'no-multiple-empty-lines': 'error',
+		'no-negated-condition': 'error',
 		'no-new': 'error',
 		'no-new-wrappers': 'error',
 		'no-prototype-builtins': 'error',
