@@ -267,7 +267,7 @@ export default class ChatClient extends IRCClient {
 	 * @param ritualInfo Additional information about the ritual.
 	 * @param msg The raw message that was received.
 	 */
-	onRitual: (handler: (channel: string, user: string, ritualInfo: ChatRaidInfo, msg: UserNotice) => void) => Listener = this.registerEvent();
+	onRitual: (handler: (channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when slow mode is toggled in a channel.
