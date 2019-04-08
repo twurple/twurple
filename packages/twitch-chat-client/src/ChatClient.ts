@@ -501,7 +501,8 @@ export default class ChatClient extends IRCClient {
 				// unhost
 				this.emit(this.onUnhost, channel);
 			} else {
-				this.emit(this.onHost, channel, target, viewers ? Number(viewers) : undefined);
+				const numViewers = Number(viewers);
+				this.emit(this.onHost, channel, target, !isNaN(numViewers) ? numViewers : undefined);
 			}
 		});
 
