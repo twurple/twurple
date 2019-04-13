@@ -348,10 +348,9 @@ export default class ChatClient extends IRCClient {
 
 	/**
 	 * @eventListener
-	 * @param targetThe channel that a command without sufficient permissions was executed on
-	 * @maram message The message response from the twitch chat server
+	 * @param target The channel that a command without sufficient permissions was executed on
+	 * @maram message The message response from the server
 	 */
-
 	onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
 
 	// override for specific class
