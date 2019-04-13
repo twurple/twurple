@@ -348,7 +348,7 @@ export default class ChatClient extends IRCClient {
 
 	/**
 	 * @eventListener
-	 * @param target The channel that a command without sufficient permissions was executed on
+	 * @param channel The channel that a command without sufficient permissions was executed on
 	 * @maram message The message response from the server
 	 */
 	onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
