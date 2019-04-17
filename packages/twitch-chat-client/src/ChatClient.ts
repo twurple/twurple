@@ -347,9 +347,11 @@ export default class ChatClient extends IRCClient {
 	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
 
 	/**
+	 * Fires when you tried to execute a command you don't have sufficient permission for.
+	 *
 	 * @eventListener
-	 * @param channel The channel that a command without sufficient permissions was executed on
-	 * @maram message The message response from the server
+	 * @param channel The channel that a command without sufficient permissions was executed on.
+	 * @maram message The message text.
 	 */
 	onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
 
