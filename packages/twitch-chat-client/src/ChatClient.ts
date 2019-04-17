@@ -346,6 +346,13 @@ export default class ChatClient extends IRCClient {
 	 */
 	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
 
+	/**
+	 * @eventListener
+	 * @param channel The channel that a command without sufficient permissions was executed on
+	 * @maram message The message response from the server
+	 */
+	onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
+
 	// override for specific class
 	/**
 	 * Fires when a user sends a message to a channel.
@@ -921,6 +928,11 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'unrecognized_cmd': {
+					break;
+				}
+
+				case 'no_permission': {
+					this.emit(this.onNoPermission, channel, message);
 					break;
 				}
 
