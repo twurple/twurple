@@ -11,7 +11,7 @@ import { extractUserId, UserIdResolvable } from '../../Toolkit/UserTools';
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = await TwitchClient.withCredentials(clientId, accessToken);
  * const cheermotes = await client.badges.getGlobalBadges();
  * ```
  */

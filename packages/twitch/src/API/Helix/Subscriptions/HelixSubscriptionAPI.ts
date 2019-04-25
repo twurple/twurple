@@ -11,7 +11,7 @@ import HelixResponse from '../HelixResponse';
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = await TwitchClient.withCredentials(clientId, accessToken);
  * const subscriptions = await client.helix.subscriptions.getSubscriptionsForUsers('61369223', '125328655');
  * ```
  */
