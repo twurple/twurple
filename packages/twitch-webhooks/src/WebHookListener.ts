@@ -82,7 +82,7 @@ export default class WebHookListener {
 		this._server.add('POST', '/:id', (req, res) => { this._handleNotification(req, res); });
 		this._server.listen(this._config.port);
 
-		for (const [, sub] of this._subscriptions) {
+		for (const sub of [...this._subscriptions.values()]) {
 			// tslint:disable-next-line:no-floating-promises
 			sub.start();
 		}
@@ -96,7 +96,7 @@ export default class WebHookListener {
 		this._server.server.close();
 		this._server = undefined;
 
-		for (const [, sub] of this._subscriptions) {
+		for (const sub of [...this._subscriptions.values()]) {
 			// tslint:disable-next-line:no-floating-promises
 			sub.stop();
 		}
