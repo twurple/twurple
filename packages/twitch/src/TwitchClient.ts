@@ -428,60 +428,6 @@ export default class TwitchClient {
 		return new UnsupportedAPI(this);
 	}
 
-	/**
-	 * The API methods that deal with bits.
-	 *
-	 * @deprecated Use `.kraken.bits` instead.
-	 */
-	get bits() {
-		return this.kraken.bits;
-	}
-
-	/**
-	 * The API methods that deal with channels.
-	 *
-	 * @deprecated Use `.kraken.channels` instead.
-	 */
-	get channels() {
-		return this.kraken.channels;
-	}
-
-	/**
-	 * The API methods that deal with chat.
-	 *
-	 * @deprecated Use `.kraken.chat` instead.
-	 */
-	get chat() {
-		return this.kraken.chat;
-	}
-
-	/**
-	 * The API methods that deal with searching.
-	 *
-	 * @deprecated Use `.kraken.search` instead.
-	 */
-	get search() {
-		return this.kraken.search;
-	}
-
-	/**
-	 * The API methods that deal with streams.
-	 *
-	 * @deprecated Use `.kraken.streams` instead.
-	 */
-	get streams() {
-		return this.kraken.streams;
-	}
-
-	/**
-	 * The API methods that deal with users.
-	 *
-	 * @deprecated Use `.kraken.users` instead.
-	 */
-	get users() {
-		return this.kraken.users;
-	}
-
 	private static _getUrl(url: string, type?: TwitchAPICallType) {
 		type = type === undefined ? TwitchAPICallType.Kraken : type;
 		switch (type) {
