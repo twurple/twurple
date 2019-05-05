@@ -21,12 +21,16 @@ export default class BitsAPI extends BaseAPI {
 	 *
 	 * @param channel The channel you want to retrieve the available cheermotes for.
 	 * If not given, this method retrieves a list of globally available cheermotes.
+	 * @param includeSponsored Whether to include sponsored cheermotes in the list.
 	 */
 	@Cached(3600)
-	async getCheermotes(channel?: UserIdResolvable) {
+	async getCheermotes(channel?: UserIdResolvable, includeSponsored: boolean = true) {
 		const query: Record<string, string> = {};
 		if (channel) {
 			query.channel_id = extractUserId(channel);
+		}
+		if (includeSponsored) {
+			query.include_sponsored = 'true';
 		}
 
 		const data = await this._client.callAPI<CheermoteListData>({ url: 'bits/actions', query });
