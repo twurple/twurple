@@ -481,7 +481,8 @@ export default class ChatClient extends IRCClient {
 		// tslint:disable:no-floating-promises
 		this.registerCapability(TwitchTagsCapability);
 		this.registerCapability(TwitchCommandsCapability);
-		if (options.requestMembershipEvents) {
+		// eslint-disable-next-line no-restricted-syntax
+		if (options.requestMembershipEvents !== false) {
 			this.registerCapability(TwitchMembershipCapability);
 		}
 		// tslint:enable:no-floating-promises
