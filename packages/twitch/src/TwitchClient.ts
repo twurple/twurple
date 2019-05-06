@@ -171,9 +171,16 @@ export default class TwitchClient {
 	 */
 	static async withCredentials(clientId: string, accessToken?: string, scopes?: string[], refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
 		if (!scopes && accessToken) {
-			const tokenData = await this.getTokenInfo(clientId, accessToken);
+			let tokenData = await this.getTokenInfo(clientId, accessToken);
 			if (!tokenData.valid) {
-				throw new ConfigError('Supplied an invalid access token to retrieve scopes with');
+				if (refreshConfig) {
+					const newToken = await this.refreshAccessToken(clientId, refreshConfig.clientSecret, refreshConfig.refreshToken);
+					accessToken = newToken.accessToken;
+					tokenData = await this.getTokenInfo(clientId, accessToken);
+				}
+				if (!tokenData.valid) {
+					throw new ConfigError('Supplied an invalid access token to retrieve scopes with');
+				}
 			}
 			scopes = tokenData.scopes;
 		}
