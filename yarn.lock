@@ -5020,10 +5020,10 @@ ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
   integrity sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
 
-ircv3@^0.14.3:
-  version "0.14.3"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.14.3.tgz#67eaa2cdb2b02facce9b526125a32b872b505ff4"
-  integrity sha512-SbWJvuFd3PPYAAb5ssTcigN3ovZYNcahCp1J2QitdJyPERrawRvP9HBzuqei7nNW9K4DjYbd9933DDQweYXtTQ==
+ircv3@^0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.15.1.tgz#c2553fe75adb9b6edf6117fecf407c61e9fa807f"
+  integrity sha512-tOld+METB/irYrZQitHL0ZEAkVd2xAp2XcJwnw2EONYdMhGBfjjuHtGy7L2wZeHOjEp2PdTkIL8VKg0pO33oYA==
   dependencies:
     "@d-fischer/logger" "^0.1.1"
     "@types/clone" "^0.1.30"
@@ -9373,10 +9373,15 @@ typedoc@^0.14.2:
     typedoc-default-themes "^0.5.0"
     typescript "3.2.x"
 
-typescript@3.2.x, typescript@~3.2.1, typescript@~3.2.4:
+typescript@3.2.x, typescript@~3.2.1:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.2.4.tgz#c585cb952912263d915b462726ce244ba510ef3d"
   integrity sha512-0RNDbSdEokBeEAkgNbxJ+BLwSManFy9TeXz8uW+48j/xhEXv1ePME60olyzw2XzUqUBNAYFeJadIqAgNqIACwg==
+
+typescript@~3.4.1:
+  version "3.4.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.4.5.tgz#2d2618d10bb566572b8d7aad5180d84257d70a99"
+  integrity sha512-YycBxUb49UUhdNMU5aJ7z5Ej2XGmaIBL0x34vZ82fn3hGvD+bgrMrVDpatgz2f7YxUMJxMkbWxJZeAvDxVe7Vw==
 
 ua-parser-js@^0.7.18:
   version "0.7.19"

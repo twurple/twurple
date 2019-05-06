@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/logger": "^0.1.0",
-    "ircv3": "^0.14.3",
+    "ircv3": "^0.15.1",
     "tslib": "^1.9.3"
   },
   "devDependencies": {

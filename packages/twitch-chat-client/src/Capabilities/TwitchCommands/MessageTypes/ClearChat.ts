@@ -1,21 +1,16 @@
-import { Message, MessageParam, MessageParamSpec } from 'ircv3';
+import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
 
 /** @private */
-export interface ClearChatParams {
-	channel: MessageParam;
-	user: MessageParam;
-}
+@MessageType('CLEARCHAT')
+export default class ClearChat extends Message<ClearChat> {
+	@MessageParamDefinition({
+		type: 'channel'
+	})
+	channel!: MessageParam;
 
-/** @private */
-export default class ClearChat extends Message<ClearChatParams> {
-	static readonly COMMAND = 'CLEARCHAT';
-	static readonly PARAM_SPEC: MessageParamSpec<ClearChat> = {
-		channel: {
-			type: 'channel'
-		},
-		user: {
-			trailing: true,
-			optional: true
-		}
-	};
+	@MessageParamDefinition({
+		trailing: true,
+		optional: true
+	})
+	user!: MessageParam;
 }
