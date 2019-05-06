@@ -21,7 +21,7 @@
   },
   "peerDependencies": {
     "electron": "^4.1.1",
-    "twitch": "^2.0.0"
+    "twitch": "^3.0.0-pre.1"
   },
   "files": [
     "LICENSE",
