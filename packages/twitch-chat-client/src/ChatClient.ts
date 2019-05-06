@@ -47,27 +47,11 @@ export interface ChatClientOptions {
 	logLevel?: LogLevel;
 
 	/**
-	 * Whether to disable the secure connection using SSL.
-	 *
-	 * You should not use this except for debugging purposes.
-	 *
-	 * @deprecated Use the `.ssl` property instead.
-	 */
-	disableSsl?: boolean;
-
-	/**
 	 * Whether to connect securely using SSL.
 	 *
 	 * You should not disable this except for debugging purposes.
 	 */
 	ssl?: boolean;
-
-	/**
-	 * Whether to connect to IRC directly instead of using the WebSocket servers.
-	 *
-	 * @deprecated Use the `.webSocket` property instead.
-	 */
-	rawIrc?: boolean;
 
 	/**
 	 * Whether to use a WebSocket to connect to chat.
@@ -464,17 +448,19 @@ export default class ChatClient extends IRCClient {
 		twitchClient: TwitchClient | undefined,
 		options: ChatClientOptionsWithAuth
 	) {
+		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
-				hostName: (options.webSocket === undefined ? !options.rawIrc : options.webSocket) ? 'irc-ws.chat.twitch.tv' : 'irc.chat.twitch.tv',
+				hostName: options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
 				nick: options.userName.toLowerCase(),
 				password: options.token && `oauth:${options.token.replace(/^oauth:/, '')}`,
-				secure: options.ssl === undefined ? !options.disableSsl : options.ssl
+				secure: options.ssl !== false
 			},
-			webSocket: (options.webSocket === undefined ? !options.rawIrc : options.webSocket),
+			webSocket: options.webSocket !== false,
 			logLevel: options.logLevel,
 			nonConformingCommands: ['004']
 		});
+		/* eslint-enable no-restricted-syntax */
 
 		this._twitchClient = twitchClient;
 

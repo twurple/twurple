@@ -17,7 +17,3 @@ export { ChatSubInfo, ChatSubGiftInfo, ChatCommunitySubInfo, ChatRaidInfo, ChatR
 import ChatUser from './ChatUser';
 
 export { ChatUser };
-
-import { parseBits } from './Toolkit/ChatTools';
-
-export { parseBits };
