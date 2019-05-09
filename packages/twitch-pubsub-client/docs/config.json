@@ -1,16 +1,17 @@
 {
-	"inputDirs": [
-		"src",
-		"types"
-	],
+	"inputDirs": ["src", "types"],
 	"outputDir": "generatedDocs",
 	"mode": "html",
 	"routerMode": "htmlSuffix",
 	"baseUrl": "/twitch-pubsub-client",
+
 	"repoUser": "d-fischer",
-	"repoName": "twitch-pubsub-client",
+	"repoName": "twitch",
+	"repoBaseFolder": "packages/twitch-pubsub-client/src",
+
 	"indexTitle": "Twitch.js PubSub Client",
 	"indexFile": "index.md",
+
 	"categories": [
 		{
 			"name": "basic-usage",

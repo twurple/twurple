@@ -6,10 +6,12 @@
 	"baseUrl": "/twitch-chat-client",
 
 	"repoUser": "d-fischer",
-	"repoName": "twitch-chat-client",
+	"repoName": "twitch",
+	"repoBaseFolder": "packages/twitch-chat-client/src",
 
 	"indexTitle": "Twitch.js Chat Client",
 	"indexFile": "index.md",
+
 	"categories": [
 		{
 			"name": "basic-usage",

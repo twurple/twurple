@@ -5,11 +5,12 @@
 	"routerMode": "htmlSuffix",
 	"baseUrl": "/twitch",
 
-	"indexTitle": "Welcome to Twitch.js",
-	"indexFile": "index.md",
-
 	"repoUser": "d-fischer",
 	"repoName": "twitch",
+	"repoBaseFolder": "packages/twitch/src",
+
+	"indexTitle": "Welcome to Twitch.js",
+	"indexFile": "index.md",
 
 	"categories": [
 		{
