@@ -1,16 +1,17 @@
 {
-	"inputDirs": [
-		"src",
-		"types"
-	],
+	"inputDirs": ["src", "types"],
 	"outputDir": "generatedDocs",
 	"mode": "html",
 	"routerMode": "htmlSuffix",
 	"baseUrl": "/twitch-webhooks",
+
 	"repoUser": "d-fischer",
-	"repoName": "twitch-webhooks",
+	"repoName": "twitch",
+	"repoBaseFolder": "packages/twitch-webhooks/src",
+
 	"indexTitle": "Twitch.js WebHook Listener",
 	"indexFile": "index.md",
+
 	"categories": [
 		{
 			"name": "basic-usage",
