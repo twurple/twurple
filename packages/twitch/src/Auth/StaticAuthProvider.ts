@@ -43,7 +43,7 @@ export default class StaticAuthProvider implements AuthProvider {
 	 * @param scopes The requested scopes.
 	 */
 	async getAccessToken(scopes?: string | string[]) {
-		if (scopes) {
+		if (scopes && scopes.length > 0) {
 			if (!this._scopes) {
 				if (!this._accessToken) {
 					throw new Error('Auth provider has not been initialized with a token yet and is requesting scopes');

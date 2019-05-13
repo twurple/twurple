@@ -58,7 +58,7 @@ export interface TwitchConfig {
 	/**
 	 * The scopes to request with the initial request, even if it's not necessary for the request.
 	 */
-	initialScopes: string[];
+	initialScopes?: string[];
 
 	/**
 	 * Default values for fetched cheermotes.
@@ -196,12 +196,11 @@ export default class TwitchClient {
 	 *
 	 * @param clientId The client ID of your application.
 	 * @param clientSecret The client secret of your application.
-	 * @param accessToken The app access token to set initially.
 	 * @param config Additional configuration to pass to the constructor.
 	 *
 	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	static withClientCredentials(clientId: string, clientSecret?: string, accessToken?: string, config: Partial<TwitchConfig> = {}) {
+	static withClientCredentials(clientId: string, clientSecret?: string, config: Partial<TwitchConfig> = {}) {
 		const authProvider = clientSecret
 			? new ClientCredentialsAuthProvider(clientId, clientSecret)
 			: new StaticAuthProvider(clientId);
@@ -350,7 +349,6 @@ export default class TwitchClient {
 
 		this._config = {
 			preAuth: false,
-			initialScopes: [],
 			cheermotes: {
 				defaultBackground: CheermoteBackground.dark,
 				defaultState: CheermoteState.animated,
@@ -362,7 +360,7 @@ export default class TwitchClient {
 
 		if (this._config.preAuth) {
 			// tslint:disable-next-line:no-floating-promises
-			authProvider.getAccessToken(this._config.initialScopes || []);
+			authProvider.getAccessToken(this._config.initialScopes);
 		}
 	}
 
@@ -391,7 +389,7 @@ export default class TwitchClient {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async callAPI<T = any>(options: TwitchAPICallOptions) {
 		const { authProvider } = this._config;
-		let accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : []);
+		let accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : undefined);
 		if (!accessToken) {
 			return TwitchClient.callAPI<T>(options, authProvider.clientId);
 		}
