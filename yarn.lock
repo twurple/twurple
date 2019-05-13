@@ -5039,10 +5039,10 @@ ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
   integrity sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
 
-ircv3@^0.15.1:
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.15.1.tgz#c2553fe75adb9b6edf6117fecf407c61e9fa807f"
-  integrity sha512-tOld+METB/irYrZQitHL0ZEAkVd2xAp2XcJwnw2EONYdMhGBfjjuHtGy7L2wZeHOjEp2PdTkIL8VKg0pO33oYA==
+ircv3@^0.15.3:
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.15.3.tgz#39a37b96bb8b5da91bc08715622992db0016845d"
+  integrity sha512-yZ4TQGwx4AWQ/cwTunusbzyTGcFP2R9EjBppwXJJFU27Ar9Q75PRnNM4Z3DimiXh3CaBClRlIXHSmL5ZhDfx9A==
   dependencies:
     "@d-fischer/logger" "^0.1.1"
     "@types/clone" "^0.1.30"
