@@ -141,14 +141,14 @@ export default class HelixStreamAPI extends BaseAPI {
 	 */
 	async createStreamMarker() {
 		try {
-			const data = await this._client.callAPI<HelixResponse<HelixStreamMarkerData>>({
+			const result = await this._client.callAPI<HelixResponse<HelixStreamMarkerData>>({
 				url: 'streams/markers',
 				method: 'POST',
 				type: TwitchAPICallType.Helix,
 				scope: 'user:edit:broadcast'
 			});
 
-			return new HelixStreamMarker(data.data[0], this._client);
+			return new HelixStreamMarker(result.data[0], this._client);
 		} catch (e) {
 			if ((e instanceof HTTPStatusCodeError) && e.statusCode === 404) {
 				throw new StreamNotLiveError();

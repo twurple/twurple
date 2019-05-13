@@ -71,7 +71,7 @@ export default class HelixGameAPI extends BaseAPI {
 	}
 
 	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
-		const data = await this._client.callAPI<HelixResponse<HelixGameData>>({
+		const result = await this._client.callAPI<HelixResponse<HelixGameData>>({
 			type: TwitchAPICallType.Helix,
 			url: 'games',
 			query: {
@@ -79,6 +79,6 @@ export default class HelixGameAPI extends BaseAPI {
 			}
 		});
 
-		return data.data.map(entry => new HelixGame(entry, this._client));
+		return result.data.map(entry => new HelixGame(entry, this._client));
 	}
 }
