@@ -20,7 +20,9 @@ export interface HelixFollowFilter {
 /** @private */
 export interface HelixFollowData {
 	from_id: string;
+	from_name: string;
 	to_id: string;
+	to_name: string;
 	followed_at: string;
 }
 
@@ -44,6 +46,13 @@ export default class HelixFollow {
 	}
 
 	/**
+	 * The display name of the following user.
+	 */
+	get userDisplayName() {
+		return this._data.from_name;
+	}
+
+	/**
 	 * Retrieves the data of the following user.
 	 */
 	async getUser() {
@@ -55,6 +64,13 @@ export default class HelixFollow {
 	 */
 	get followedUserId() {
 		return this._data.to_id;
+	}
+
+	/**
+	 * The display name of the followed user.
+	 */
+	get followedUserDisplayName() {
+		return this._data.to_name;
 	}
 
 	/**
