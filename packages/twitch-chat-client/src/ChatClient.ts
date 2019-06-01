@@ -618,9 +618,9 @@ export default class ChatClient extends IRCClient {
 				case 'submysterygift': {
 					const isAnon = messageType === 'anonsubmysterygift';
 					const communitySubInfo: ChatCommunitySubInfo = {
-						gifter: isAnon ? tags.get('login')! : undefined,
-						gifterDisplayName: isAnon ? tags.get('display-name')! : undefined,
-						gifterGiftCount: isAnon ? Number(tags.get('msg-param-sender-count')!) : undefined,
+						gifter: isAnon ? undefined : tags.get('login')!,
+						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
+						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
 						count: Number(tags.get('msg-param-mass-gift-count')!),
 						plan: tags.get('msg-param-sub-plan')!
 					};
