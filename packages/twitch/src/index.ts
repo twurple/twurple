@@ -18,10 +18,13 @@ import RefreshableAuthProvider from './Auth/RefreshableAuthProvider';
 export { AuthProvider, StaticAuthProvider, RefreshableAuthProvider };
 
 import AccessToken from './API/AccessToken';
-import Subscription from './API/Kraken/Subscription';
 import TokenInfo from './API/TokenInfo';
 
-export { AccessToken, Subscription, TokenInfo };
+export { AccessToken, TokenInfo };
+
+import Subscription from './API/Kraken/Subscription';
+
+export { Subscription };
 
 import CheermoteList, { CheermoteBackground, CheermoteState, CheermoteScale } from './API/Kraken/Bits/CheermoteList';
 
@@ -84,6 +87,12 @@ export { HelixFollow, HelixPrivilegedUser, HelixUser, HelixBroadcasterType, Heli
 import HelixVideo from './API/Helix/Video/HelixVideo';
 
 export { HelixVideo };
+
+import ChatBadgeList from './API/Badges/ChatBadgeList';
+import ChatBadgeSet from './API/Badges/ChatBadgeSet';
+import ChatBadgeVersion from './API/Badges/ChatBadgeVersion';
+
+export { ChatBadgeList, ChatBadgeSet, ChatBadgeVersion };
 
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
 
