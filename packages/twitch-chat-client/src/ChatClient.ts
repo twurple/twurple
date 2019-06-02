@@ -586,10 +586,11 @@ export default class ChatClient extends IRCClient {
 				case 'subgift':
 				case 'anonsubgift': {
 					const plan = tags.get('msg-param-sub-plan')!;
-					const isAnon = messageType === 'anonsubgift';
+					const gifter = tags.get('login');
+					const isAnon = messageType === 'anonsubgift' || gifter === 'ananonymousgifter';
 					const subInfo: ChatSubGiftInfo = {
 						displayName: tags.get('msg-param-recipient-display-name')!,
-						gifter: isAnon ? undefined : tags.get('login')!,
+						gifter: isAnon ? undefined : gifter,
 						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
 						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
 						plan,
@@ -602,9 +603,10 @@ export default class ChatClient extends IRCClient {
 				}
 				case 'anonsubmysterygift':
 				case 'submysterygift': {
-					const isAnon = messageType === 'anonsubmysterygift';
+					const gifter = tags.get('login');
+					const isAnon = messageType === 'anonsubmysterygift' || gifter === 'ananonymousgifter';
 					const communitySubInfo: ChatCommunitySubInfo = {
-						gifter: isAnon ? undefined : tags.get('login')!,
+						gifter: isAnon ? undefined : gifter,
 						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
 						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
 						count: Number(tags.get('msg-param-mass-gift-count')!),
