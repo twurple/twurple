@@ -67,7 +67,7 @@ export default class HelixStream {
 	 * The user's display name.
 	 */
 	get userDisplayName() {
-		return this._data.user_id;
+		return this._data.user_name;
 	}
 
 	/**
