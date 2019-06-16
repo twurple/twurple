@@ -2,7 +2,8 @@ import BaseAPI from '../../BaseAPI';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixClip, { HelixClipData } from './HelixClip';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixResponse from '../HelixResponse';
+import { HelixPaginatedResponse } from '../HelixResponse';
+import HelixPaginatedResult from '../HelixPaginatedResult';
 
 /** @private */
 export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
@@ -134,10 +135,12 @@ export default class HelixClipAPI extends BaseAPI {
 	 * @param ids The clip IDs.
 	 */
 	async getClipsByIds(ids: string[]) {
-		return this._getClips({
+		const result = await this._getClips({
 			filterType: 'id',
 			ids
 		});
+
+		return result.data;
 	}
 
 	/**
@@ -173,10 +176,10 @@ export default class HelixClipAPI extends BaseAPI {
 		return result.data[0].id;
 	}
 
-	private async _getClips(params: HelixClipIdFilter) {
+	private async _getClips(params: HelixClipIdFilter): Promise<HelixPaginatedResult<HelixClip>> {
 		const { filterType, ids, startDate, endDate, limit = 20 } = params;
 
-		const result = await this._client.callAPI<HelixResponse<HelixClipData>>({
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixClipData>>({
 			type: TwitchAPICallType.Helix,
 			url: 'clips',
 			query: {
@@ -187,7 +190,10 @@ export default class HelixClipAPI extends BaseAPI {
 			}
 		});
 
-		return result.data.map(data => new HelixClip(data, this._client));
+		return {
+			data: result.data.map(data => new HelixClip(data, this._client)),
+			cursor: result.pagination && result.pagination.cursor
+		};
 	}
 
 	private _getClipsPaginated(params: HelixClipIdFilter) {
