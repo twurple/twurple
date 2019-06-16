@@ -62,7 +62,7 @@ export default class HelixGameAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of the most viewed games at the moment.
 	 */
-	async getTopGames(pagination: HelixPagination): Promise<HelixPaginatedResult<HelixGame>> {
+	async getTopGames(pagination: HelixPagination = {}): Promise<HelixPaginatedResult<HelixGame>> {
 		const { after, before, limit } = pagination;
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixGameData>>({
 			type: TwitchAPICallType.Helix,
