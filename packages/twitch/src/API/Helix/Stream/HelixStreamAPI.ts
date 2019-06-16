@@ -1,13 +1,14 @@
 import BaseAPI from '../../BaseAPI';
 import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
-import { TwitchAPICallType } from '../../../TwitchClient';
+import TwitchClient, { TwitchAPICallType } from '../../../TwitchClient';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import HelixStreamMarkerWithVideo, { HelixStreamMarkerVideoData } from './HelixStreamMarkerWithVideo';
-import HelixResponse from '../HelixResponse';
+import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
 import StreamNotLiveError from '../../../Errors/StreamNotLiveError';
 import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
+import HelixPagination from '../HelixPagination';
 
 /**
  * Filters for the streams request.
@@ -44,6 +45,12 @@ export interface HelixStreamFilter {
 	userName?: string | string[];
 }
 
+/**
+ * @inheritDoc
+ */
+export interface HelixPaginatedStreamFilter extends HelixStreamFilter, HelixPagination {
+}
+
 /** @private */
 interface HelixStreamGetMarkersResultVideo {
 	video_id: string;
@@ -74,7 +81,35 @@ export default class HelixStreamAPI extends BaseAPI {
 	 *
 	 * @expandParams
 	 */
-	getStreams(filter: HelixStreamFilter = {}) {
+	async getStreams(filter: HelixPaginatedStreamFilter = {}) {
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamData>>({
+			url: 'streams',
+			type: TwitchAPICallType.Helix,
+			query: {
+				after: filter.after,
+				before: filter.before,
+				first: filter.limit,
+				community_id: filter.community,
+				game_id: filter.game,
+				language: filter.language,
+				type: filter.type,
+				user_id: filter.userId,
+				user_login: filter.userName
+			}
+		});
+
+		return {
+			data: result.data.map(streamData => new HelixStream(streamData, this._client)),
+			cursor: result.pagination && result.pagination.cursor
+		};
+	}
+
+	/**
+	 * Creates a paginator for streams.
+	 *
+	 * @expandParams
+	 */
+	getStreamsPaginated(filter: HelixStreamFilter = {}) {
 		return new HelixPaginatedRequest(
 			{
 				url: 'streams',
@@ -98,10 +133,9 @@ export default class HelixStreamAPI extends BaseAPI {
 	 * @param user The user name to retrieve the stream for.
 	 */
 	async getStreamByUserName(user: UserNameResolvable) {
-		const req = this.getStreams({ userName: extractUserName(user) });
-		const streams = await req.getAll();
+		const result = await this.getStreams({ userName: extractUserName(user) });
 
-		return streams.length ? streams[0] : null;
+		return result.data.length ? result.data[0] : null;
 	}
 
 	/**
@@ -110,10 +144,9 @@ export default class HelixStreamAPI extends BaseAPI {
 	 * @param user The user ID to retrieve the stream for.
 	 */
 	async getStreamByUserId(user: UserIdResolvable) {
-		const req = this.getStreams({ userId: extractUserId(user) });
-		const streams = await req.getAll();
+		const result = await this.getStreams({ userId: extractUserId(user) });
 
-		return streams.length ? streams[0] : null;
+		return result.data.length ? result.data[0] : null;
 	}
 
 	/**
@@ -121,8 +154,17 @@ export default class HelixStreamAPI extends BaseAPI {
 	 *
 	 * @param user The user to list the stream markers for.
 	 */
-	getStreamMarkersForUser(user: UserIdResolvable) {
+	async getStreamMarkersForUser(user: UserIdResolvable) {
 		return this._getStreamMarkers('user_id', extractUserId(user));
+	}
+
+	/**
+	 * Creates a paginator for all stream markers for an user.
+	 *
+	 * @param user The user to list the stream markers for.
+	 */
+	getStreamMarkersForUserPaginated(user: UserIdResolvable) {
+		return this._getStreamMarkersPaginated('user_id', extractUserId(user));
 	}
 
 	/**
@@ -130,8 +172,17 @@ export default class HelixStreamAPI extends BaseAPI {
 	 *
 	 * @param videoId The video to list the stream markers for.
 	 */
-	getStreamMarkersForVideo(videoId: string) {
+	async getStreamMarkersForVideo(videoId: string) {
 		return this._getStreamMarkers('video_id', videoId);
+	}
+
+	/**
+	 * Creates a paginator for all stream markers for a video.
+	 *
+	 * @param videoId The video to list the stream markers for.
+	 */
+	getStreamMarkersForVideoPaginated(videoId: string) {
+		return this._getStreamMarkersPaginated('video_id', videoId);
 	}
 
 	/**
@@ -158,7 +209,23 @@ export default class HelixStreamAPI extends BaseAPI {
 		}
 	}
 
-	private _getStreamMarkers(queryType: string, id: string) {
+	private async _getStreamMarkers(queryType: string, id: string) {
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamGetMarkersResult>>({
+			url: 'streams/markers',
+			type: TwitchAPICallType.Helix,
+			query: {
+				[queryType]: id
+			},
+			scope: 'user:read:broadcast'
+		});
+
+		return {
+			data: result.data.map(HelixStreamAPI._mapGetStreamMarkersResult.bind(this._client)),
+			cursor: result.pagination && result.pagination.cursor
+		};
+	}
+
+	private _getStreamMarkersPaginated(queryType: string, id: string) {
 		return new HelixPaginatedRequest(
 			{
 				url: 'streams/markers',
@@ -168,12 +235,16 @@ export default class HelixStreamAPI extends BaseAPI {
 				scope: 'user:read:broadcast'
 			},
 			this._client,
-			(data: HelixStreamGetMarkersResult) => data.videos.reduce(
-				(result, video) => [...result, ...video.markers.map(
-					marker => new HelixStreamMarkerWithVideo(marker, video.video_id, this._client)
-				)],
-				[]
-			)
+			HelixStreamAPI._mapGetStreamMarkersResult.bind(this._client)
 		);
+	}
+
+	private static _mapGetStreamMarkersResult(this: TwitchClient, data: HelixStreamGetMarkersResult) {
+		return data.videos.reduce(
+			(result, video) => [...result, ...video.markers.map(
+				marker => new HelixStreamMarkerWithVideo(marker, video.video_id, this)
+			)],
+			[]
+		)
 	}
 }
