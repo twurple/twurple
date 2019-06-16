@@ -57,9 +57,10 @@ import UserSubscription from './API/Kraken/User/UserSubscription';
 export { PrivilegedUser, User, UserBlock, UserFollow, UserSubscription };
 
 import HelixPaginatedRequest from './API/Helix/HelixPaginatedRequest';
+import HelixPaginatedResult, { HelixPaginatedResultWithTotal } from './API/Helix/HelixPaginatedResult';
 import HelixResponse from './API/Helix/HelixResponse';
 
-export { HelixPaginatedRequest, HelixResponse };
+export { HelixPaginatedRequest, HelixPaginatedResult, HelixPaginatedResultWithTotal, HelixResponse };
 
 import HelixBitsLeaderboard from './API/Helix/Bits/HelixBitsLeaderboard';
 import HelixBitsLeaderboardEntry from './API/Helix/Bits/HelixBitsLeaderboardEntry';
