@@ -9,6 +9,8 @@ import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
 import StreamNotLiveError from '../../../Errors/StreamNotLiveError';
 import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
 import HelixPagination from '../HelixPagination';
+import HelixPaginatedResult from '../HelixPaginatedResult';
+import { flatten } from '../../../Toolkit/ArrayTools';
 
 /**
  * Filters for the streams request.
@@ -209,7 +211,7 @@ export default class HelixStreamAPI extends BaseAPI {
 		}
 	}
 
-	private async _getStreamMarkers(queryType: string, id: string) {
+	private async _getStreamMarkers(queryType: string, id: string): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamGetMarkersResult>>({
 			url: 'streams/markers',
 			type: TwitchAPICallType.Helix,
@@ -220,7 +222,7 @@ export default class HelixStreamAPI extends BaseAPI {
 		});
 
 		return {
-			data: result.data.map(HelixStreamAPI._mapGetStreamMarkersResult.bind(this._client)),
+			data: flatten(result.data.map(HelixStreamAPI._mapGetStreamMarkersResult.bind(this._client))),
 			cursor: result.pagination && result.pagination.cursor
 		};
 	}
@@ -240,7 +242,7 @@ export default class HelixStreamAPI extends BaseAPI {
 	}
 
 	private static _mapGetStreamMarkersResult(this: TwitchClient, data: HelixStreamGetMarkersResult) {
-		return data.videos.reduce(
+		return data.videos.reduce<HelixStreamMarkerWithVideo[]>(
 			(result, video) => [...result, ...video.markers.map(
 				marker => new HelixStreamMarkerWithVideo(marker, video.video_id, this)
 			)],
