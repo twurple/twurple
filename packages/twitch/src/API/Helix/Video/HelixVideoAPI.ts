@@ -5,9 +5,10 @@ import HelixVideo, { HelixVideoData, HelixVideoType } from './HelixVideo';
 import HelixPagination from '../HelixPagination';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import HelixPaginatedResult from '../HelixPaginatedResult';
 
 /** @private */
-export type HelixVideoFilterType = 'user_id' | 'game_id';
+export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
 
 /** @private */
 export type HelixVideoFilterPeriod = 'all' | 'day' | 'week' | 'month';
@@ -58,15 +59,9 @@ export default class HelixVideoAPI extends BaseAPI {
 	 * @param ids The video IDs you want to look up.
 	 */
 	async getVideosByIds(ids: string | string[]) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixVideoData>>({
-			type: TwitchAPICallType.Helix,
-			url: 'videos',
-			query: {
-				id: ids
-			}
-		});
+		const result = await this._getVideos('id', ids);
 
-		return result.data.map(data => new HelixVideo(data, this._client));
+		return result.data;
 	}
 
 	/**
@@ -85,9 +80,20 @@ export default class HelixVideoAPI extends BaseAPI {
 	 * @param user The user you want to retrieve videos from.
 	 * @param filter Additional filters for the result set.
 	 */
-	getVideosByUser(user: UserIdResolvable, filter: HelixVideoFilter = {}) {
+	async getVideosByUser(user: UserIdResolvable, filter: HelixVideoFilter = {}) {
 		const userId = extractUserId(user);
 		return this._getVideos('user_id', userId, filter);
+	}
+
+	/**
+	 * Creates a paginator for videos of the given user.
+	 *
+	 * @param user The user you want to retrieve videos from.
+	 * @param filter Additional filters for the result set.
+	 */
+	getVideosByUserPaginated(user: UserIdResolvable, filter: HelixVideoFilter = {}) {
+		const userId = extractUserId(user);
+		return this._getVideosPaginated('user_id', userId, filter);
 	}
 
 	/**
@@ -96,25 +102,52 @@ export default class HelixVideoAPI extends BaseAPI {
 	 * @param gameId The game you want to retrieve videos from.
 	 * @param filter Additional filters for the result set.
 	 */
-	getVideosByGame(gameId: string, filter: HelixVideoFilter = {}) {
+	async getVideosByGame(gameId: string, filter: HelixVideoFilter = {}) {
 		return this._getVideos('game_id', gameId, filter);
 	}
 
-	private _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}) {
-		const { language, period, orderBy, type } = filter;
+	/**
+	 * Creates a paginator for videos of the given game.
+	 *
+	 * @param gameId The game you want to retrieve videos from.
+	 * @param filter Additional filters for the result set.
+	 */
+	getVideosByGamePaginated(gameId: string, filter: HelixVideoFilter = {}) {
+		return this._getVideosPaginated('game_id', gameId, filter);
+	}
+
+	private async _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixVideoData>>({
+			url: 'videos',
+			type: TwitchAPICallType.Helix,
+			query: HelixVideoAPI._makeVideosQuery(filterType, filterValues, filter)
+		});
+
+		return {
+			data: result.data.map(data => new HelixVideo(data, this._client)),
+			cursor: result.pagination && result.pagination.cursor
+		};
+	}
+
+	private _getVideosPaginated(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}) {
 		return new HelixPaginatedRequest(
 			{
 				url: 'videos',
-				query: {
-					[filterType]: filterValues,
-					language,
-					period,
-					sort: orderBy,
-					type
-				}
+				query: HelixVideoAPI._makeVideosQuery(filterType, filterValues, filter)
 			},
 			this._client,
 			(data: HelixVideoData) => new HelixVideo(data, this._client)
 		);
+	}
+
+	private static _makeVideosQuery(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}) {
+		const { language, period, orderBy, type } = filter;
+		return {
+			[filterType]: filterValues,
+			language,
+			period,
+			sort: orderBy,
+			type
+		}
 	}
 }
