@@ -142,6 +142,13 @@ export default class HelixUser {
 	}
 
 	/**
+	 * Retrieves the channel's stream data.
+	 */
+	async getStream() {
+		return this._client.helix.streams.getStreamByUserId(this);
+	}
+
+	/**
 	 * Retrieves a list of broadcasters the user follows.
 	 */
 	getFollows() {
