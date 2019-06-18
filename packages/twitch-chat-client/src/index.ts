@@ -17,3 +17,7 @@ export { ChatSubInfo, ChatSubGiftInfo, ChatCommunitySubInfo, ChatRaidInfo, ChatR
 import ChatUser from './ChatUser';
 
 export { ChatUser };
+
+import { LogLevel } from '@d-fischer/logger';
+
+export { LogLevel };
