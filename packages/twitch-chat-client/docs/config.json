@@ -44,6 +44,17 @@
 					"file": "upgrading/v1-to-v2.md"
 				}
 			]
+		},
+		{
+			"name": "examples",
+			"title": "Examples",
+			"articles": [
+				{
+					"name": "auto-thanks",
+					"title": "Auth thanks",
+					"file": "examples/auto-thanks.md"
+				}
+			]
 		}
 	]
 }
