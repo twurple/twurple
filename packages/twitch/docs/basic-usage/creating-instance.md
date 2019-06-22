@@ -22,7 +22,7 @@ const twitchClient = await TwitchClient.withCredentials(clientId, accessToken, u
 }});
 ```
 
-There's a more elaborated example on how to make auto refreshing work in the [twitch-chat-client documentation](https://d-fischer.github.io/twitch-chat-client/docs/example/auto-thanks).
+There's a more elaborated example on how to make auto refreshing work in the [twitch-chat-client documentation](https://d-fischer.github.io/twitch-chat-client/docs/example/basic-bot.html).
 
 If you don't need any client scopes, you may also create the client using client credentials:
 

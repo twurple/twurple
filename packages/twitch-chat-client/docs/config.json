@@ -50,9 +50,9 @@
 			"title": "Examples",
 			"articles": [
 				{
-					"name": "auto-thanks",
-					"title": "Auth thanks",
-					"file": "examples/auto-thanks.md"
+					"name": "basic-bot",
+					"title": "Basic bot",
+					"file": "examples/basic-bot.md"
 				}
 			]
 		}
