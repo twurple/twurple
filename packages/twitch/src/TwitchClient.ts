@@ -254,7 +254,7 @@ export default class TwitchClient {
 			throw new HTTPStatusCodeError(response.status, response.statusText, await response.json());
 		}
 
-		if (response.status === 201 || response.status === 202) {
+		if (response.status === 204) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			return undefined as any as T; // oof
 		}
