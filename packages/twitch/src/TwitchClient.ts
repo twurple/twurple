@@ -259,7 +259,14 @@ export default class TwitchClient {
 			return undefined as any as T; // oof
 		}
 
-		return response.json();
+		const text = await response.text();
+
+		if (!text) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return undefined as any as T; // mega oof - twitch doesn't return a response when it should
+		}
+
+		return JSON.parse(text);
 	}
 
 	/**
