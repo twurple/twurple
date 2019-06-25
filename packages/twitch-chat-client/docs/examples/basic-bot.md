@@ -54,7 +54,7 @@ import TwitchClient from 'twitch';
 import ChatClient from 'twitch-chat-client';
 ```
 
-Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routing inside an immediately executed inline function expression.
+Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an immediately executed inline function expression.
 
 ```typescript
 (async () => {
