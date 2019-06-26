@@ -137,7 +137,7 @@ export interface TwitchAPICallOptions {
 	 *
 	 * If `type` is not `'kraken'`, this will be ignored.
 	 *
-	 * Note that v3 will be removed at the end of 2018 and v5 will be the only Kraken version left, so you should only use this option if you want to rewrite everything in a few months.
+	 * Note that v3 will be removed at some point and v5 will be the only Kraken version left, so you should only use this option if you want to rewrite everything in a few months.
 	 *
 	 * Internally, only v5 and Helix are used.
 	 */
