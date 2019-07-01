@@ -1,7 +1,7 @@
-import { Client as IRCClient } from 'ircv3';
+import IRCClient from 'ircv3';
 import { Listener } from 'ircv3/lib/TypedEventEmitter';
 import TwitchClient from 'twitch';
-import { LogLevel } from '@d-fischer/logger';
+import Logger, { LogLevel } from '@d-fischer/logger';
 
 import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
@@ -67,23 +67,6 @@ export interface ChatClientOptions {
 }
 
 /**
- * Options for a chat client, including authentication details.
- *
- * @inheritDoc
- */
-export interface ChatClientOptionsWithAuth extends ChatClientOptions {
-	/**
-	 * The user name you want to connect with.
-	 */
-	userName: string;
-
-	/**
-	 * The token to use for connecting.
-	 */
-	token?: string;
-}
-
-/**
  * An interface to Twitch chat.
  *
  * @inheritDoc
@@ -95,6 +78,13 @@ export default class ChatClient extends IRCClient {
 
 	/** @private */
 	@NonEnumerable readonly _twitchClient?: TwitchClient;
+
+	private readonly _useLegacyScopes: boolean;
+	private readonly _readOnly: boolean;
+
+	private _authFailureMessage?: string;
+
+	private _chatLogger = new Logger({ name: 'twitch-chat' });
 
 	/**
 	 * Fires when a user is timed out from a channel.
@@ -339,6 +329,15 @@ export default class ChatClient extends IRCClient {
 	 */
 	onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
 
+	/**
+	 * Fires when authentication fails.
+	 *
+	 * @eventListener
+	 * @param channel The channel that a command without sufficient permissions was executed on.
+	 * @maram message The message text.
+	 */
+	onAuthenticationFailure: (handler: (message: string) => void) => Listener = this.registerEvent();
+
 	// override for specific class
 	/**
 	 * Fires when a user sends a message to a channel.
@@ -385,6 +384,7 @@ export default class ChatClient extends IRCClient {
 	private readonly _onSlowOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 	private readonly _onSubsOnlyResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
 	private readonly _onSubsOnlyOffResult: (handler: (channel: string, error?: string) => void) => Listener = this.registerEvent();
+	private readonly _onIntermediateAuthenticationFailure: (handler: (message: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Creates a new Twitch chat client with the user info from the TwitchClient instance.
@@ -395,27 +395,7 @@ export default class ChatClient extends IRCClient {
 	 * @param options
 	 */
 	static async forTwitchClient(twitchClient: TwitchClient, options: ChatClientOptions = {}) {
-		let scopes: string[];
-		if (options.legacyScopes) {
-			scopes = ['chat_login'];
-		} else if (options.readOnly) {
-			scopes = ['chat:read'];
-		} else {
-			scopes = ['chat:read', 'chat:edit'];
-		}
-		const accessToken = await twitchClient.getAccessToken(scopes);
-		if (accessToken) {
-			const token = await twitchClient.getTokenInfo();
-			if (token.valid) {
-				return new this(twitchClient, {
-					...options,
-					userName: token.userName!,
-					token: accessToken.accessToken
-				});
-			}
-		}
-
-		throw new Error('trying to get chat client for invalid token');
+		return new this(twitchClient, options);
 	}
 
 	/**
@@ -423,17 +403,10 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @expandParams
 	 *
-	 * @param twitchClient Currently deprecated and ignored. You can safely pass undefined here.
 	 * @param options
 	 */
-	static anonymous(twitchClient?: TwitchClient, options: ChatClientOptions = {}) {
-		const randomSuffix = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
-		const userName = `justinfan${randomSuffix}`;
-
-		return new this(undefined, {
-			...options,
-			userName
-		});
+	static anonymous(options: ChatClientOptions = {}) {
+		return new this(undefined, options);
 	}
 
 	/**
@@ -446,15 +419,16 @@ export default class ChatClient extends IRCClient {
 	 */
 	constructor(
 		twitchClient: TwitchClient | undefined,
-		options: ChatClientOptionsWithAuth
+		options: ChatClientOptions
 	) {
 		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
 				hostName: options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
-				nick: options.userName.toLowerCase(),
-				password: options.token && `oauth:${options.token.replace(/^oauth:/, '')}`,
 				secure: options.ssl !== false
+			},
+			credentials: {
+				nick: ''
 			},
 			webSocket: options.webSocket !== false,
 			logLevel: options.logLevel,
@@ -463,6 +437,9 @@ export default class ChatClient extends IRCClient {
 		/* eslint-enable no-restricted-syntax */
 
 		this._twitchClient = twitchClient;
+
+		this._useLegacyScopes = !!options.legacyScopes;
+		this._readOnly = !!options.readOnly;
 
 		// tslint:disable:no-floating-promises
 		this.registerCapability(TwitchTagsCapability);
@@ -666,7 +643,7 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'bad_ban_self': {
-					this.emit(this._onBanResult, channel, this._userName, messageType);
+					this.emit(this._onBanResult, channel, this._credentials.nick, messageType);
 					break;
 				}
 
@@ -871,7 +848,7 @@ export default class ChatClient extends IRCClient {
 
 				// timeout (only fails, success is handled by CLEARCHAT)
 				case 'bad_timeout_self': {
-					this.emit(this._onTimeoutResult, channel, this._userName, undefined, undefined, messageType);
+					this.emit(this._onTimeoutResult, channel, this._credentials.nick, undefined, undefined, messageType);
 					break;
 				}
 
@@ -932,6 +909,7 @@ export default class ChatClient extends IRCClient {
 					if (message === 'Login authentication failed'
 						|| message === 'Improperly formatted AUTH'
 						|| message === 'Invalid NICK') {
+						this.emit(this.onAuthenticationFailure, message);
 						this._connection.disconnect();
 					}
 					break;
@@ -947,13 +925,90 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	async connect() {
+		if (this._twitchClient) {
+			let scopes: string[];
+			if (this._useLegacyScopes) {
+				scopes = ['chat_login'];
+			} else if (this._readOnly) {
+				scopes = ['chat:read'];
+			} else {
+				scopes = ['chat:read', 'chat:edit'];
+			}
+			const accessToken = await this._twitchClient.getAccessToken(scopes);
+			let validToken = false;
+			if (accessToken) {
+				const token = await this._twitchClient.getTokenInfo();
+				if (token.valid) {
+					this._updateCredentials({
+						nick: token.userName!,
+						password: `oauth:${accessToken.accessToken}`
+					});
+					validToken = true;
+				}
+			}
+			if (!validToken) {
+				this._chatLogger.warning('Token unexpectedly invalid; trying to refresh');
+
+				const newToken = await this._twitchClient.refreshAccessToken();
+
+				if (newToken) {
+					const token = await this._twitchClient.getTokenInfo();
+					if (token.valid) {
+						this._updateCredentials({
+							nick: token.userName!,
+							password: `oauth:${newToken.accessToken}`
+						});
+						validToken = true;
+					}
+				}
+			}
+
+			if (!validToken) {
+				throw new Error('Could not retreive a valid token');
+			}
+		} else {
+			this._updateCredentials({
+				nick: ChatClient._generateJustinfanNick(),
+				password: undefined
+			})
+		}
+
+		let authListener: Listener | undefined = this._onIntermediateAuthenticationFailure(async message => {
+			this._chatLogger.warning('Token unexpectedly expired; trying to refresh');
+			if (authListener) {
+				this.removeListener(authListener);
+			}
+			authListener = undefined;
+			if (this._twitchClient) {
+				const newToken = await this._twitchClient.refreshAccessToken();
+				if (newToken) {
+					this._updateCredentials({
+						password: `oauth:${newToken.accessToken}`
+					});
+					this.quit();
+					authListener = this._onIntermediateAuthenticationFailure(newMessage => {
+						this._authFailureMessage = newMessage;
+						this.emit(this.onAuthenticationFailure, newMessage);
+					});
+					this._authFailureMessage = undefined;
+					await super.connect();
+					return;
+				}
+			}
+			this._authFailureMessage = message;
+			this.emit(this.onAuthenticationFailure, message);
+		});
+		await super.connect();
+	}
+
 	/**
 	 * Hosts a channel on another channel.
 	 *
 	 * @param target The host target, i.e. the channel that is being hosted.
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
 	 */
-	async host(target: string, channel: string = this._nick) {
+	async host(target: string, channel: string = this._credentials.nick) {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onHostResult((chan, error) => {
@@ -979,7 +1034,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
-	async unhost(channel: string = this._nick) {
+	async unhost(channel: string = this._credentials.nick) {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onUnhostResult((chan, error) => {
@@ -1005,14 +1060,25 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
-	unhostOutside(channel: string = this._nick) {
+	unhostOutside(channel: string = this._credentials.nick) {
 		this.say(channel, '/unhost');
 	}
 
+	/**
+	 * Sends a message to a channel.
+	 *
+	 * @param channel The channel to send the message to.
+	 * @param message The message to send.
+	 */
 	say(channel: string, message: string) {
 		super.say(toChannelName(channel), message);
 	}
 
+	/**
+	 * Joins a channel.
+	 *
+	 * @param channel The channel to join.
+	 */
 	async join(channel: string) {
 		channel = toChannelName(channel);
 		return new Promise<void>((resolve, reject) => {
@@ -1039,6 +1105,9 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	/**
+	 * Disconnects from the chat server.
+	 */
 	async quit() {
 		return new Promise<void>(resolve => {
 			const handler = () => {
@@ -1050,8 +1119,42 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	/**
+	 * Waits for authentication (or "registration" in IRC terms) to finish.
+	 */
+	async waitForRegistration() {
+		if (this._registered) {
+			return;
+		}
+
+		if (this._authFailureMessage) {
+			throw new Error(`Registration failed. Response from Twitch: ${this._authFailureMessage}`);
+		}
+
+		let authListener: Listener | undefined;
+		try {
+			await Promise.race([
+				new Promise<never>((resolve, reject) => {
+					authListener = this.onAuthenticationFailure(message => {
+						reject(Error(`Registration failed. Response from Twitch: ${message}`));
+					});
+				}),
+				super.waitForRegistration()
+			]);
+		} finally {
+			if (authListener) {
+				this.removeListener(authListener);
+			}
+		}
+	}
+
 	protected registerCoreMessageTypes() {
 		super.registerCoreMessageTypes();
 		this.registerMessageType(TwitchPrivateMessage);
+	}
+
+	private static _generateJustinfanNick() {
+		const randomSuffix = Math.floor(Math.random() * 100000).toString().padStart(5, '0');
+		return `justinfan${randomSuffix}`;
 	}
 }

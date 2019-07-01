@@ -389,6 +389,13 @@ export default class TwitchClient {
 	}
 
 	/**
+	 * Forces the authentication provider to refresh the access token, if possible.
+	 */
+	async refreshAccessToken() {
+		return this._config.authProvider.refresh && this._config.authProvider.refresh();
+	}
+
+	/**
 	 * Makes a call to the Twitch API using your access token.
 	 *
 	 * @param options The configuration of the call.
