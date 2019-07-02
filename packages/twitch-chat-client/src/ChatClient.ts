@@ -82,6 +82,7 @@ export default class ChatClient extends IRCClient {
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;
 
+	private _authRetrying = false;
 	private _authFailureMessage?: string;
 
 	private _chatLogger = new Logger({ name: 'twitch-chat' });
@@ -449,6 +450,33 @@ export default class ChatClient extends IRCClient {
 			this.registerCapability(TwitchMembershipCapability);
 		}
 		// tslint:enable:no-floating-promises
+
+		// reconnect with refreshed token
+		this._onIntermediateAuthenticationFailure(async message => {
+			if (this._authRetrying) {
+				this._authRetrying = false;
+				this._authFailureMessage = message;
+				this.emit(this.onAuthenticationFailure, message);
+				return;
+			}
+			this._chatLogger.warning('Token unexpectedly expired; trying to refresh');
+			if (this._twitchClient) {
+				this._authRetrying = true;
+				const newToken = await this._twitchClient.refreshAccessToken();
+				if (newToken) {
+					this._updateCredentials({
+						password: `oauth:${newToken.accessToken}`
+					});
+					this.quit();
+					this._authFailureMessage = undefined;
+					await super.connect();
+					return;
+				}
+			}
+			this._authRetrying = false;
+			this._authFailureMessage = message;
+			this.emit(this.onAuthenticationFailure, message);
+		});
 
 		this.onMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
@@ -935,37 +963,45 @@ export default class ChatClient extends IRCClient {
 			} else {
 				scopes = ['chat:read', 'chat:edit'];
 			}
-			const accessToken = await this._twitchClient.getAccessToken(scopes);
 			let validToken = false;
-			if (accessToken) {
-				const token = await this._twitchClient.getTokenInfo();
-				if (token.valid) {
-					this._updateCredentials({
-						nick: token.userName!,
-						password: `oauth:${accessToken.accessToken}`
-					});
-					validToken = true;
-				}
-			}
-			if (!validToken) {
-				this._chatLogger.warning('Token unexpectedly invalid; trying to refresh');
-
-				const newToken = await this._twitchClient.refreshAccessToken();
-
-				if (newToken) {
+			try {
+				const accessToken = await this._twitchClient.getAccessToken(scopes);
+				if (accessToken) {
 					const token = await this._twitchClient.getTokenInfo();
 					if (token.valid) {
 						this._updateCredentials({
 							nick: token.userName!,
-							password: `oauth:${newToken.accessToken}`
+							password: `oauth:${accessToken.accessToken}`
 						});
 						validToken = true;
 					}
 				}
+			} catch (e) {
+				this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+			}
+			if (!validToken) {
+				this._chatLogger.warning('No valid token available; trying to refresh');
+
+				try {
+					const newToken = await this._twitchClient.refreshAccessToken();
+
+					if (newToken) {
+						const token = await this._twitchClient.getTokenInfo();
+						if (token.valid) {
+							this._updateCredentials({
+								nick: token.userName!,
+								password: `oauth:${newToken.accessToken}`
+							});
+							validToken = true;
+						}
+					}
+				} catch (e) {
+					this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+				}
 			}
 
 			if (!validToken) {
-				throw new Error('Could not retreive a valid token');
+				throw new Error('Could not retrieve a valid token');
 			}
 		} else {
 			this._updateCredentials({
@@ -974,31 +1010,6 @@ export default class ChatClient extends IRCClient {
 			})
 		}
 
-		let authListener: Listener | undefined = this._onIntermediateAuthenticationFailure(async message => {
-			this._chatLogger.warning('Token unexpectedly expired; trying to refresh');
-			if (authListener) {
-				this.removeListener(authListener);
-			}
-			authListener = undefined;
-			if (this._twitchClient) {
-				const newToken = await this._twitchClient.refreshAccessToken();
-				if (newToken) {
-					this._updateCredentials({
-						password: `oauth:${newToken.accessToken}`
-					});
-					this.quit();
-					authListener = this._onIntermediateAuthenticationFailure(newMessage => {
-						this._authFailureMessage = newMessage;
-						this.emit(this.onAuthenticationFailure, newMessage);
-					});
-					this._authFailureMessage = undefined;
-					await super.connect();
-					return;
-				}
-			}
-			this._authFailureMessage = message;
-			this.emit(this.onAuthenticationFailure, message);
-		});
 		await super.connect();
 	}
 
