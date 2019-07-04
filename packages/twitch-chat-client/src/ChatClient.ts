@@ -60,8 +60,6 @@ export interface ChatClientOptions {
 
 	/**
 	 * Whether to receive JOIN and PART messages from Twitch chat.
-	 *
-	 * This is currently on by default, but will change to off by default in version 3.0.
 	 */
 	requestMembershipEvents?: boolean;
 }
@@ -445,8 +443,7 @@ export default class ChatClient extends IRCClient {
 		// tslint:disable:no-floating-promises
 		this.registerCapability(TwitchTagsCapability);
 		this.registerCapability(TwitchCommandsCapability);
-		// eslint-disable-next-line no-restricted-syntax
-		if (options.requestMembershipEvents !== false) {
+		if (options.requestMembershipEvents) {
 			this.registerCapability(TwitchMembershipCapability);
 		}
 		// tslint:enable:no-floating-promises
