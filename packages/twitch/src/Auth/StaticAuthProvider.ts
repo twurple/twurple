@@ -8,7 +8,7 @@ import TwitchClient from '../TwitchClient';
  *
  * You are advised to roll your own auth provider that can handle scope upgrades,
  * or to plan ahead and supply only access tokens that account for all scopes
- * you will ever need (not recommended).
+ * you will ever need.
  */
 export default class StaticAuthProvider implements AuthProvider {
 	@NonEnumerable private readonly _clientId: string;
