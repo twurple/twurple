@@ -2,7 +2,8 @@ import BaseAPI from '../../BaseAPI';
 import { extractUserId, TwitchAPICallType, UserIdResolvable } from '../../..';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
 import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
-import HelixResponse from '../HelixResponse';
+import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
+import HelixPaginatedResult from '../HelixPaginatedResult';
 
 /**
  * The Helix API methods that deal with subscriptions.
@@ -21,7 +22,26 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 */
-	getSubscriptions(broadcaster: UserIdResolvable) {
+	async getSubscriptions(broadcaster: UserIdResolvable): Promise<HelixPaginatedResult<HelixSubscription>> {
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixSubscriptionData>>({
+			url: 'subscriptions',
+			query: {
+				broadcaster_id: extractUserId(broadcaster)
+			}
+		});
+
+		return {
+			data: result.data.map(data => new HelixSubscription(data, this._client)),
+			cursor: result.pagination && result.pagination.cursor
+		};
+	}
+
+	/**
+	 * Creates a paginator for all subscriptions to a given broadcaster.
+	 *
+	 * @param broadcaster The broadcaster to list subscriptions to.
+	 */
+	getSubscriptionsPaginated(broadcaster: UserIdResolvable) {
 		return new HelixPaginatedRequest(
 			{
 				url: 'subscriptions',

@@ -1,5 +1,5 @@
 import BaseAPI from '../../BaseAPI';
-import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
+import HelixResponse, { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '../HelixResponse';
 import HelixUser, { HelixUserData } from './HelixUser';
 import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
@@ -7,6 +7,7 @@ import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
+import { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 
 /** @private */
 export enum UserLookupType {
@@ -114,7 +115,41 @@ export default class HelixUserAPI extends BaseAPI {
 	 *
 	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
 	 */
-	getFollows(filter: HelixFollowFilter) {
+	async getFollows(filter: HelixFollowFilter): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
+		const query = HelixUserAPI._makeFollowsQuery(filter);
+
+		const result = await this._client.callAPI<HelixPaginatedResponseWithTotal<HelixFollowData>>({
+			url: 'users/follows',
+			type: TwitchAPICallType.Helix,
+			query
+		});
+
+		return {
+			data: result.data.map(data => new HelixFollow(data, this._client)),
+			cursor: result.pagination!.cursor,
+			total: result.total
+		};
+	}
+
+	/**
+	 * Creates a paginator for follow relations.
+	 *
+	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
+	 */
+	getFollowsPaginated(filter: HelixFollowFilter) {
+		const query = HelixUserAPI._makeFollowsQuery(filter);
+
+		return new HelixPaginatedRequestWithTotal(
+			{
+				url: 'users/follows',
+				query
+			},
+			this._client,
+			(data: HelixFollowData) => new HelixFollow(data, this._client)
+		);
+	}
+
+	private static _makeFollowsQuery(filter: HelixFollowFilter) {
 		const query: Record<string, string | undefined> = {};
 		let hasUserIdParam = false;
 		if (filter.user) {
@@ -130,14 +165,7 @@ export default class HelixUserAPI extends BaseAPI {
 			throw new TypeError('At least one of user and followedUser have to be set');
 		}
 
-		return new HelixPaginatedRequestWithTotal(
-			{
-				url: 'users/follows',
-				query
-			},
-			this._client,
-			(data: HelixFollowData) => new HelixFollow(data, this._client)
-		);
+		return query;
 	}
 
 	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {

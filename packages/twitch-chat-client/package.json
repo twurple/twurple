@@ -1,6 +1,6 @@
 {
   "name": "twitch-chat-client",
-  "version": "2.3.11",
+  "version": "3.0.0-pre.10",
   "description": "Interact with the Twitch Messaging Interface (aka Twitch chat).",
   "main": "lib",
   "types": "lib/index",
@@ -13,14 +13,14 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/logger": "^0.1.0",
-    "ircv3": "^0.14.3",
+    "ircv3": "^0.17.3",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "twitch": "^2.2.8"
+    "twitch": "^3.0.0-pre.7"
   },
   "peerDependencies": {
-    "twitch": "^2.2.0"
+    "twitch": "^3.0.0-pre.1"
   },
   "files": [
     "LICENSE",

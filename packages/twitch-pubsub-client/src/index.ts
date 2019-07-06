@@ -15,3 +15,7 @@ import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 
 export { PubSubMessage, PubSubBitsMessage, PubSubBitsBadgeUnlockMessage, PubSubSubscriptionMessage, PubSubWhisperMessage };
+
+import { LogLevel } from '@d-fischer/logger';
+
+export { LogLevel };

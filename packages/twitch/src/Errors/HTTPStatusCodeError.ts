@@ -9,7 +9,8 @@ export default class HTTPStatusCodeError extends CustomError {
 	private readonly _body: any;
 
 	/** @private */
-	constructor(statusCode: number, statusText: string, body: string) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	constructor(statusCode: number, statusText: string, body: any) {
 		super(`Encountered HTTP status code ${statusCode}: ${statusText}\n\nBody:\n${JSON.stringify(body, null, 2)}`);
 		this._statusCode = statusCode;
 		this._body = body;

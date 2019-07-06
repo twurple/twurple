@@ -18,6 +18,6 @@ import ChatUser from './ChatUser';
 
 export { ChatUser };
 
-import { parseBits } from './Toolkit/ChatTools';
+import { LogLevel } from '@d-fischer/logger';
 
-export { parseBits };
+export { LogLevel };

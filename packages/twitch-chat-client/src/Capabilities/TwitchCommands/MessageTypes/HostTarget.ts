@@ -1,21 +1,16 @@
-import { Message, MessageParam, MessageParamSpec } from 'ircv3';
-
-/** @private */
-export interface HostTargetParams {
-	channel: MessageParam;
-	targetAndViewers: MessageParam;
-}
+import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
 
 // this command has no *useful* parameters, all information is in tags
 /** @private */
-export default class HostTarget extends Message<HostTargetParams> {
-	static readonly COMMAND = 'HOSTTARGET';
-	static readonly PARAM_SPEC: MessageParamSpec<HostTarget> = {
-		channel: {
-			type: 'channel'
-		},
-		targetAndViewers: {
-			trailing: true
-		}
-	};
+@MessageType('HOSTTARGET')
+export default class HostTarget extends Message<HostTarget> {
+	@MessageParamDefinition({
+		type: 'channel'
+	})
+	channel!: MessageParam;
+
+	@MessageParamDefinition({
+		trailing: true
+	})
+	targetAndViewers!: MessageParam;
 }

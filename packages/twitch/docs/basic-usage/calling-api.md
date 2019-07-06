@@ -1,14 +1,14 @@
 The API methods are namespaced into the different API sections like Kraken and Helix, and below that, into the different subresources like `/users` and `/streams`.
 
-In Kraken, all the API methods are `async` and thus can be `await`ed. Here's a quick example:
+All API methods are `async` and thus can be `await`ed. Here's a quick example:
 
 ```typescript
 async function isStreamLive(userName: string) {
-	const user = await twitchClient.kraken.users.getUserByName(userName);
+	const user = await twitchClient.helix.users.getUserByName(userName);
 	if (!user) {
 		return false;
 	}
-	return await twitchClient.kraken.streams.getStreamByChannel(user.id) !== null;
+	return await twitchClient.helix.streams.getStreamByUserId(user.id) !== null;
 }
 ```
 
@@ -16,7 +16,7 @@ We make extensive use of convenience methods that fetch related resources, so th
 
 ```typescript
 async function isStreamLive(userName: string) {
-	const user = await twitchClient.kraken.users.getUserByName(userName);
+	const user = await twitchClient.helix.users.getUserByName(userName);
 	if (!user) {
 		return false;
 	}
@@ -24,13 +24,13 @@ async function isStreamLive(userName: string) {
 }
 ```
 
-In Helix, some resources are paginated using a cursor. To faciliate easy pagination, the results of these calls are wrapped in a {@HelixPaginatedRequest} object. There are multiple ways to use this object to get your results.
+In Helix, some resources are paginated using a cursor. To faciliate easy pagination, there are special methods suffixed with `Paginated` that wrap the result in a {@HelixPaginatedRequest} object. There are multiple ways to use this object to get your results.
 
 - Using `getNext()`:
 
 ```typescript
 async function getAllClipsForBroadcaster(userId: string) {
-	const request = twitchClient.helix.clips.getClipsForBroadcaster(userId);
+	const request = twitchClient.helix.clips.getClipsForBroadcasterPaginated(userId);
 	let page: HelixClip[];
 	const result: HelixClip[] = [];
 
@@ -46,7 +46,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 
 ```typescript
 async function getAllClipsForBroadcaster(userId: string) {
-	const request = twitchClient.helix.clips.getClipsForBroadcaster(userId);
+	const request = twitchClient.helix.clips.getClipsForBroadcasterPaginated(userId);
 
 	return request.getAll();
 }
@@ -56,7 +56,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 
 ```typescript
 async function findClipFromBroadcasterWithTitle(userId: string, searchTerm: string) {
-	for await (const clip of twitchClient.helix.clips.getClipsForBroadcaster(userId)) {
+	for await (const clip of twitchClient.helix.clips.getClipsForBroadcasterPaginated(userId)) {
 		if (clip.title.includes(searchTerm)) {
 			return clip;
 		}

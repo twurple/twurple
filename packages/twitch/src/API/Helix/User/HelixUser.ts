@@ -142,6 +142,13 @@ export default class HelixUser {
 	}
 
 	/**
+	 * Retrieves the channel's stream data.
+	 */
+	async getStream() {
+		return this._client.helix.streams.getStreamByUserId(this);
+	}
+
+	/**
 	 * Retrieves a list of broadcasters the user follows.
 	 */
 	getFollows() {
@@ -159,8 +166,7 @@ export default class HelixUser {
 			followedUser: broadcaster
 		};
 
-		const req = this._client.helix.users.getFollows(params);
-		const result = await req.getAll();
+		const { data: result } = await this._client.helix.users.getFollows(params);
 
 		return result.length ? result[0] : null;
 	}

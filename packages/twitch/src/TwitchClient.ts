@@ -137,7 +137,7 @@ export interface TwitchAPICallOptions {
 	 *
 	 * If `type` is not `'kraken'`, this will be ignored.
 	 *
-	 * Note that v3 will be removed at the end of 2018 and v5 will be the only Kraken version left, so you should only use this option if you want to rewrite everything in a few months.
+	 * Note that v3 will be removed at some point and v5 will be the only Kraken version left, so you should only use this option if you want to rewrite everything in a few months.
 	 *
 	 * Internally, only v5 and Helix are used.
 	 */
@@ -389,6 +389,13 @@ export default class TwitchClient {
 	}
 
 	/**
+	 * Forces the authentication provider to refresh the access token, if possible.
+	 */
+	async refreshAccessToken() {
+		return this._config.authProvider.refresh && this._config.authProvider.refresh();
+	}
+
+	/**
 	 * Makes a call to the Twitch API using your access token.
 	 *
 	 * @param options The configuration of the call.
@@ -438,60 +445,6 @@ export default class TwitchClient {
 	@CachedGetter()
 	get unsupported() {
 		return new UnsupportedAPI(this);
-	}
-
-	/**
-	 * The API methods that deal with bits.
-	 *
-	 * @deprecated Use `.kraken.bits` instead.
-	 */
-	get bits() {
-		return this.kraken.bits;
-	}
-
-	/**
-	 * The API methods that deal with channels.
-	 *
-	 * @deprecated Use `.kraken.channels` instead.
-	 */
-	get channels() {
-		return this.kraken.channels;
-	}
-
-	/**
-	 * The API methods that deal with chat.
-	 *
-	 * @deprecated Use `.kraken.chat` instead.
-	 */
-	get chat() {
-		return this.kraken.chat;
-	}
-
-	/**
-	 * The API methods that deal with searching.
-	 *
-	 * @deprecated Use `.kraken.search` instead.
-	 */
-	get search() {
-		return this.kraken.search;
-	}
-
-	/**
-	 * The API methods that deal with streams.
-	 *
-	 * @deprecated Use `.kraken.streams` instead.
-	 */
-	get streams() {
-		return this.kraken.streams;
-	}
-
-	/**
-	 * The API methods that deal with users.
-	 *
-	 * @deprecated Use `.kraken.users` instead.
-	 */
-	get users() {
-		return this.kraken.users;
 	}
 
 	private static _getUrl(url: string, type?: TwitchAPICallType) {

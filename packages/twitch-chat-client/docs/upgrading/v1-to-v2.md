@@ -6,6 +6,6 @@ This option is now necessary because the core client was made stricter in terms 
 
 ## Use the new method for parsing bits out of a message
 
-The message objects returned by the events were completely decoupled from the chat client itself. Thus, if you used ${PrivateMessage#getSeparateBits} before, this method was removed as it relied on the client being available for fetching the possible cheermotes in the channel.
+The message objects returned by the events have been completely decoupled from the chat client itself. Thus, if you used `PrivateMessage#getSeparateBits` before, this method was removed as it relied on the client being available for fetching the possible cheermotes in the channel.
 
-You now need to use the separately exported function `parseBits` instead.
+You now need to use `CheermoteList#parseMessage` from the core package instead.

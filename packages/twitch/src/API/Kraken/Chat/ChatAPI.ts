@@ -19,27 +19,6 @@ import ChatRoom, { ChatRoomData } from './ChatRoom';
 @Cacheable
 export default class ChatAPI extends BaseAPI {
 	/**
-	 * Retrieves all globally applicable chat badges.
-	 *
-	 * @deprecated Use {@BadgesAPI#getGlobalBadges} instead.
-	 */
-	async getGlobalBadges() {
-		return this._client.badges.getGlobalBadges();
-	}
-
-	/**
-	 * Retrieves all applicable chat badges for a given channel.
-	 *
-	 * @deprecated Use {@BadgesAPI#getGlobalBadges} instead.
-	 *
-	 * @param channel The channel to retrieve the chat badges for.
-	 * @param includeGlobal Whether to include global badges in the result list.
-	 */
-	async getChannelBadges(channel: UserIdResolvable, includeGlobal: boolean = true) {
-		return this._client.badges.getChannelBadges(channel, includeGlobal);
-	}
-
-	/**
 	 * Retrieves a list of emotes for a given list of enote set IDs.
 	 *
 	 * @param emotesets The list of emote set IDs, either as array of strings or as a comma separated string.

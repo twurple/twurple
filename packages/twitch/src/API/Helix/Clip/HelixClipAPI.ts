@@ -2,13 +2,28 @@ import BaseAPI from '../../BaseAPI';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import HelixClip, { HelixClipData } from './HelixClip';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import { HelixPaginatedResponse } from '../HelixResponse';
+import HelixPaginatedResult from '../HelixPaginatedResult';
 
 /** @private */
 export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
 
+/**
+ * Filters for clip queries.
+ */
 export interface HelixClipFilter {
+	/**
+	 * The earliest date to find clips for.
+	 */
 	startDate?: string;
+	/**
+	 * The latest date to find clips for.
+	 */
 	endDate?: string;
+	/**
+	 * The maximum number of results to retrieve. Defaults to 20.
+	 */
+	limit?: number;
 }
 
 /** @private */
@@ -53,28 +68,64 @@ export default class HelixClipAPI extends BaseAPI {
 	/**
 	 * Retrieves the latest clips for the specified broadcaster.
 	 *
-	 * @param id The broadcaster's user ID.
-	 * @param filter Additional filters.
+	 * @param userId The broadcaster's user ID.
+	 * @param filter
+	 *
+	 * @expandParams
 	 */
-	getClipsForBroadcaster(id: string, filter: HelixClipFilter = {}) {
+	async getClipsForBroadcaster(userId: string, filter: HelixClipFilter = {}) {
 		return this._getClips({
 			...filter,
 			filterType: 'broadcaster_id',
-			ids: id
+			ids: userId
+		});
+	}
+
+	/**
+	 * Creates a paginator for the latest clips for the specified broadcaster.
+	 *
+	 * @param userId The broadcaster's user ID.
+	 * @param filter
+	 *
+	 * @expandParams
+	 */
+	getClipsForBroadcasterPaginated(userId: string, filter: HelixClipFilter = {}) {
+		return this._getClipsPaginated({
+			...filter,
+			filterType: 'broadcaster_id',
+			ids: userId
 		});
 	}
 
 	/**
 	 * Retrieves the latest clips for the specified game.
 	 *
-	 * @param id The game ID.
-	 * @param filter Additional filters.
+	 * @param gameId The game ID.
+	 * @param filter
+	 *
+	 * @expandParams
 	 */
-	getClipsForGame(id: string, filter: HelixClipFilter = {}) {
+	async getClipsForGame(gameId: string, filter: HelixClipFilter = {}) {
 		return this._getClips({
 			...filter,
 			filterType: 'game_id',
-			ids: id
+			ids: gameId
+		});
+	}
+
+	/**
+	 * Creates a paginator for the latest clips for the specified game.
+	 *
+	 * @param gameId The game ID.
+	 * @param filter
+	 *
+	 * @expandParams
+	 */
+	getClipsForGamePaginated(gameId: string, filter: HelixClipFilter = {}) {
+		return this._getClipsPaginated({
+			...filter,
+			filterType: 'game_id',
+			ids: gameId
 		});
 	}
 
@@ -83,11 +134,13 @@ export default class HelixClipAPI extends BaseAPI {
 	 *
 	 * @param ids The clip IDs.
 	 */
-	getClipsByIds(ids: string[]) {
-		return this._getClips({
+	async getClipsByIds(ids: string[]) {
+		const result = await this._getClips({
 			filterType: 'id',
 			ids
 		});
+
+		return result.data;
 	}
 
 	/**
@@ -96,8 +149,7 @@ export default class HelixClipAPI extends BaseAPI {
 	 * @param id The clip ID.
 	 */
 	async getClipById(id: string) {
-		const req = this.getClipsByIds([id]);
-		const clips = await req.getAll();
+		const clips = await this.getClipsByIds([id]);
 		return clips.length ? clips[0] : null;
 	}
 
@@ -124,7 +176,27 @@ export default class HelixClipAPI extends BaseAPI {
 		return result.data[0].id;
 	}
 
-	private _getClips(params: HelixClipIdFilter) {
+	private async _getClips(params: HelixClipIdFilter): Promise<HelixPaginatedResult<HelixClip>> {
+		const { filterType, ids, startDate, endDate, limit = 20 } = params;
+
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixClipData>>({
+			type: TwitchAPICallType.Helix,
+			url: 'clips',
+			query: {
+				[filterType]: ids,
+				started_at: startDate,
+				ended_at: endDate,
+				first: limit.toString()
+			}
+		});
+
+		return {
+			data: result.data.map(data => new HelixClip(data, this._client)),
+			cursor: result.pagination && result.pagination.cursor
+		};
+	}
+
+	private _getClipsPaginated(params: HelixClipIdFilter) {
 		const { filterType, ids, startDate, endDate } = params;
 
 		return new HelixPaginatedRequest(

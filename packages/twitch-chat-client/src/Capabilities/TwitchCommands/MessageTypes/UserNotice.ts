@@ -1,25 +1,20 @@
-import { Message, MessageParam, MessageParamSpec } from 'ircv3';
+import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
 import ChatUser from '../../../ChatUser';
 import { parseEmotes } from '../../../Toolkit/ChatTools';
 
 /** @private */
-export interface UserNoticeParams {
-	channel: MessageParam;
-	message: MessageParam;
-}
+@MessageType('USERNOTICE')
+export default class UserNotice extends Message<UserNotice, 'userInfo' | 'emoteOffsets'> {
+	@MessageParamDefinition({
+		type: 'channel'
+	})
+	channel!: MessageParam;
 
-/** @private */
-export default class UserNotice extends Message<UserNoticeParams> {
-	static readonly COMMAND = 'USERNOTICE';
-	static readonly PARAM_SPEC: MessageParamSpec<UserNotice> = {
-		channel: {
-			type: 'channel'
-		},
-		message: {
-			trailing: true,
-			optional: true
-		}
-	};
+	@MessageParamDefinition({
+		trailing: true,
+		optional: true
+	})
+	message!: MessageParam;
 
 	get userInfo() {
 		return new ChatUser(this._prefix!.nick, this._tags);

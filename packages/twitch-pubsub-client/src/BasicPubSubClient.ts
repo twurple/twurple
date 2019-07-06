@@ -192,16 +192,6 @@ export default class BasicPubSubClient extends EventEmitter {
 
 	/**
 	 * Reconnects to the PubSub interface.
-	 *
-	 * @deprecated Use {@BasicPubSubClient#reconnect} instead.
-	 */
-	async _reconnect() {
-		this.disconnect();
-		await this.connect();
-	}
-
-	/**
-	 * Reconnects to the PubSub interface.
 	 */
 	async reconnect() {
 		this.disconnect();

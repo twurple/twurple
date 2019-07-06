@@ -1,16 +1,10 @@
-import { Message, MessageParam, MessageParamSpec } from 'ircv3';
+import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
 
 /** @private */
-export interface UserStateParams {
-	channel: MessageParam;
-}
-
-/** @private */
-export default class UserState extends Message<UserStateParams> {
-	static readonly COMMAND = 'USERSTATE';
-	static readonly PARAM_SPEC: MessageParamSpec<UserState> = {
-		channel: {
-			type: 'channel'
-		}
-	};
+@MessageType('USERSTATE')
+export default class UserState extends Message<UserState> {
+	@MessageParamDefinition({
+		type: 'channel'
+	})
+	type!: MessageParam;
 }
