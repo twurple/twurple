@@ -22,4 +22,7 @@ jobs:
     include:
         - stage: Publish docs
           if: type = push AND fork = false AND tag IS blank
+          branches:
+            except:
+            - /^dependabot\//
           script: lerna bootstrap && lerna run build && lerna exec --concurrency 1 '/bin/bash -c "if [ -f scripts/travis/publishDocs.sh ]; then scripts/travis/publishDocs.sh; fi"'
