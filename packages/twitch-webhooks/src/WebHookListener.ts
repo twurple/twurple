@@ -1,12 +1,9 @@
-import * as publicIp from 'public-ip';
-import * as portFinder from 'portfinder';
-import { PolkaRequest, PolkaResponse } from 'polka';
-// factory method is namespace root
-// eslint-disable-next-line no-duplicate-imports
-import * as polka from 'polka';
-import * as https from 'https';
+import  publicIp from 'public-ip';
+import portFinder from 'portfinder';
+import polka, { PolkaRequest, PolkaResponse } from 'polka';
+import https from 'https';
 import TwitchClient, { extractUserId, HelixFollow, HelixStream, HelixUser, UserIdResolvable } from 'twitch';
-import * as getRawBody from 'raw-body';
+import getRawBody from 'raw-body';
 
 import Subscription from './Subscriptions/Subscription';
 import UserChangeSubscription from './Subscriptions/UserChangeSubscription';

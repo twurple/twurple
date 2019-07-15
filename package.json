@@ -9,6 +9,7 @@
   "license": "MIT",
   "devDependencies": {
     "@d-fischer/documen.ts": "^0.5.3",
+    "@types/jest": "^24.0.15",
     "@types/node": "^8.0.19",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
     "@typescript-eslint/parser": "^1.11.0",
@@ -19,8 +20,11 @@
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsdoc": "^4.8.0",
     "eslint-plugin-node": "^8.0.1",
+    "jest": "^24.8.0",
+    "jest-environment-node": "^24.8.0",
     "lerna": "^3.13.1",
     "rimraf": "^2.6.2",
+    "ts-jest": "^24.0.2",
     "typescript": "~3.5.1"
   },
   "scripts": {
@@ -29,6 +33,6 @@
     "rebuild": "lerna run rebuild",
     "docs": "lerna run docs",
     "lerna": "lerna",
-    "prepare": "cd node_modules/typedoc && npm install && cd ../.."
+    "prepare": "cd node_modules/typedoc && npm install --production && cd ../.."
   }
 }

@@ -1,4 +1,4 @@
-import * as qs from 'qs';
+import qs from 'qs';
 import AuthProvider from './Auth/AuthProvider';
 import { Cacheable, CachedGetter } from './Toolkit/Decorators/Cache';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
@@ -15,7 +15,7 @@ import HelixAPIGroup from './API/Helix/HelixAPIGroup';
 import BadgesAPI from './API/Badges/BadgesAPI';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
 
-import * as fetchPonyfill from 'fetch-ponyfill';
+import fetchPonyfill from 'fetch-ponyfill';
 
 const { fetch, Headers } = fetchPonyfill();
 

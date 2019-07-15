@@ -1,7 +1,7 @@
-import TwitchClient, { TwitchAPICallType } from './TwitchClient';
+import TwitchClient, { TwitchAPICallOptions, TwitchAPICallType } from './TwitchClient';
 
 export default TwitchClient;
-export { TwitchAPICallType };
+export { TwitchAPICallOptions, TwitchAPICallType };
 
 import ConfigError from './Errors/ConfigError';
 import HellFreezesOverError from './Errors/HellFreezesOverError';

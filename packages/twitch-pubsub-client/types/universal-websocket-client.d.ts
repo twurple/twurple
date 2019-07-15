@@ -1,5 +1,5 @@
 declare module 'universal-websocket-client' {
-	import * as WebSocket from 'ws';
+	import WebSocket from 'ws';
 
 	export = WebSocket;
 }

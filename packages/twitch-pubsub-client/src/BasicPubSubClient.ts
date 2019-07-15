@@ -1,4 +1,4 @@
-import * as WebSocket from 'universal-websocket-client';
+import WebSocket from 'universal-websocket-client';
 import { EventEmitter, Listener } from './Toolkit/TypedEventEmitter';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 import { PubSubMessageData } from './Messages/PubSubMessage';

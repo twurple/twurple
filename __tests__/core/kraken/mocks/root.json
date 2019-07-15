@@ -1,0 +1,16 @@
+{
+	"token": {
+		"valid": true,
+		"authorization": {
+			"scopes": [
+				"bits:read"
+			],
+			"created_at": "2019-07-06T18:43:24Z",
+			"updated_at": "2019-07-06T18:43:24Z"
+		},
+		"user_name": "satisfiedpear",
+		"user_id": "125328655",
+		"client_id": "foo",
+		"expires_in": 1337
+	}
+}

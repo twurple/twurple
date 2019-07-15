@@ -1,8 +1,8 @@
 declare module 'polka' {
-	import * as  Router from 'trouter';
-	import * as http from 'http';
-	import * as https from 'https';
-	import * as net from 'net';
+	import  Router from 'trouter';
+	import http from 'http';
+	import https from 'https';
+	import net from 'net';
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;

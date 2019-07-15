@@ -11,3 +11,5 @@ node_modules/
 /packages/*/generatedDocs
 /packages/*/lib
 /packages/*/docs.json
+/.env*
+!/.env.example

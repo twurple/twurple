@@ -1,7 +1,7 @@
 import WebHookListener from '../WebHookListener';
-import * as uuidv1 from 'uuid/v1';
-import * as randomstring from 'randomstring';
-import * as crypto from 'crypto';
+import uuidv1 from 'uuid/v1';
+import randomstring from 'randomstring';
+import crypto from 'crypto';
 import { HelixWebHookHubRequestOptions } from 'twitch/lib/API/Helix/WebHooks/HelixWebHooksAPI';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
