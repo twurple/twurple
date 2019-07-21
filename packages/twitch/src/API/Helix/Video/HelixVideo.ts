@@ -55,7 +55,7 @@ export default class HelixVideo {
 	 * The display name of the user who created the video.
 	 */
 	get userDisplayName() {
-		return this._data.user_id;
+		return this._data.user_name;
 	}
 
 	/**
