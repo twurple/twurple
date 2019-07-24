@@ -15,7 +15,7 @@ export interface TeamData {
 }
 
 /**
- * A Twitch user.
+ * A Twitch team.
  */
 export default class Team {
 	/** @private */
