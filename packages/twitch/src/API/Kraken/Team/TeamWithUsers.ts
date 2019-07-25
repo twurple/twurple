@@ -1,5 +1,5 @@
-import Team, { TeamData } from './Team';
-import { UserData } from '../User/User';
+import Team, {TeamData} from './Team';
+import User, {UserData} from '../User/User';
 import TwitchClient from '../../../TwitchClient';
 
 /** @private */
@@ -7,7 +7,7 @@ export interface TeamUsersData extends TeamData {
 	users: UserData[];
 }
 
-export default class TeamUsers extends Team {
+export default class TeamWithUsers extends Team {
 	/** @private */
 	constructor(/** @private */ protected _data: TeamUsersData, client: TwitchClient) {
 		super(_data, client);
@@ -16,7 +16,8 @@ export default class TeamUsers extends Team {
 	/**
 	 * The list of users in the team.
 	 */
-	get users() {
-		return this._data.users;
+	async users(): Promise<User[]> {
+		const users = this._data.users.map((data: UserData) => new User(data, this._client));
+		return new Promise(resolve => resolve(users));
 	}
 }

@@ -1,5 +1,6 @@
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import {NonEnumerable} from '../../../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../../../TwitchClient';
+import User from "../User/User";
 
 /** @private */
 export interface TeamData {
@@ -26,11 +27,6 @@ export default class Team {
 		this._client = client;
 	}
 
-	/** @private */
-	get cacheKey() {
-		return this._data._id;
-	}
-
 	/**
 	 * The ID of the team.
 	 */
@@ -53,7 +49,7 @@ export default class Team {
 	}
 
 	/**
-	 * The date when the team was created, i.e. when they registered on Twitch.
+	 * The date when the team was created/
 	 */
 	get creationDate() {
 		return new Date(this._data.created_at);
@@ -92,5 +88,11 @@ export default class Team {
 	 */
 	get logoUrl() {
 		return this._data.logo;
+	}
+
+	async users(): Promise<User[]> {
+		const team = await this._client.kraken.teams.getTeamByName(this.name);
+		const users = await team.users();
+		return users;
 	}
 }

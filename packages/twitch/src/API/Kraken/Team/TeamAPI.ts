@@ -1,8 +1,7 @@
 import BaseAPI from '../../BaseAPI';
 import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
 import Team, { TeamData } from './Team';
-import TeamUsers from './TeamUsers';
-import User, { UserData } from '../User/User';
+import TeamWithUsers from './TeamWithUsers';
 
 /**
  * The API methods that deal with teams.
@@ -12,7 +11,7 @@ import User, { UserData } from '../User/User';
  * ## Example
  * ```ts
  * const client = await TwitchClient.withCredentials(clientId, accessToken);
- * const team = await client.kraken.teams.getTeam('staff');
+ * const team = await client.kraken.teams.getTeamByName('staff');
  * ```
  */
 @Cacheable
@@ -25,7 +24,7 @@ export default class TeamAPI extends BaseAPI {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	@Cached(3600)
-	async getTeam(
+	async getTeams(
 		page?: number, limit: number = 25,
 	): Promise<TeamData[]> {
 		const query: Record<string, string> = {};
@@ -40,7 +39,7 @@ export default class TeamAPI extends BaseAPI {
 			url: 'teams', query
 		});
 
-		return data.teams.map((follow: TeamData) => new Team(follow, this._client));
+		return data.teams.map((team: TeamData) => new Team(team, this._client));
 	}
 
 	/**
@@ -49,9 +48,8 @@ export default class TeamAPI extends BaseAPI {
 	 * @param team The team name you want to look up.
 	 */
 	@Cached(3600)
-	async getTeamByName(team: string) {
+	async getTeamByName(team: string): Promise<TeamWithUsers> {
 		const teamData = await this._client.callAPI({ url: `teams/${team}` });
-		teamData.users = teamData.users.map((data: UserData) => new User(data, this._client));
-		return new TeamUsers(teamData, this._client);
+		return new TeamWithUsers(teamData, this._client);
 	}
 }
