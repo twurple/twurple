@@ -1,7 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import * as qs from 'qs';
 import { AccessToken, AuthProvider } from 'twitch';
-import WindowClosedError from './window-closed-error';
+import WindowClosedError from './WindowClosedError';
 
 export interface TwitchClientCredentials {
 	clientId: string;
