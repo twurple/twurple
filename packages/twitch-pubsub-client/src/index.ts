@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-exported */
 import PubSubClient from './PubSubClient';
 import BasicPubSubClient from './BasicPubSubClient';
 import SingleUserPubSubClient from './SingleUserPubSubClient';

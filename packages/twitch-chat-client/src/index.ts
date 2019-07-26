@@ -1,8 +1,9 @@
+/* eslint-disable filenames/match-exported */
 import ChatClient from './ChatClient';
 
 export default ChatClient;
 
-import TwitchPrivateMessage from './StandardCommands/PrivateMessage';
+import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
 
 export { TwitchPrivateMessage as PrivateMessage };
 
