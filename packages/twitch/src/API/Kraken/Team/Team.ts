@@ -1,6 +1,5 @@
 import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../../../TwitchClient';
-import User from '../User/User';
 
 /** @private */
 export interface TeamData {
@@ -90,9 +89,8 @@ export default class Team {
 		return this._data.logo;
 	}
 
-	async users(): Promise<User[]> {
+	async getUsers() {
 		const team = await this._client.kraken.teams.getTeamByName(this.name);
-		const users = await team.users();
-		return users;
+		return team.getUsers();
 	}
 }
