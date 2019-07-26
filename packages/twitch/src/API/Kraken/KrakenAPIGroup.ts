@@ -6,6 +6,7 @@ import ChatAPI from './Chat/ChatAPI';
 import SearchAPI from './Search/SearchAPI';
 import StreamAPI from './Stream/StreamAPI';
 import UserAPI from './User/UserAPI';
+import TeamAPI from './Team/TeamAPI';
 
 /**
  * Groups all API calls available in Kraken v5.
@@ -60,5 +61,13 @@ export default class KrakenAPIGroup extends BaseAPI {
 	@CachedGetter()
 	get users() {
 		return new UserAPI(this._client);
+	}
+
+	/**
+	 * The API methods that deal with teams.
+	 */
+	@CachedGetter()
+	get teams() {
+		return new TeamAPI(this._client);
 	}
 }
