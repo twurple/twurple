@@ -9,11 +9,6 @@ export interface TwitchClientCredentials {
 
 interface BaseOptions {
 	/**
-	 * If `true` and the user closes the window prior to logging in, exit the application.  Default: `false`.
-	 */
-	exitAppWhenClosedAndNotDone?: boolean;
-
-	/**
 	 * If `true`, if the user presses Esc, the window will close.  Default `true`.
 	 */
 	escapeToClose?: boolean;
@@ -52,21 +47,24 @@ interface WindowOptions {
 type Options<T extends WindowOptions | WindowStyleOptions = WindowStyleOptions> = BaseOptions & T;
 
 const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> = {
-	exitAppWhenClosedAndNotDone: false,
 	escapeToClose: true,
 	closeOnLogin: true,
 };
 
+export class WindowClosedError extends Error {
+	constructor() {
+		super('Window was closed');
+	}
+}
+
 export default class ElectronAuthProvider implements AuthProvider {
 	private _accessToken?: AccessToken;
 	private readonly _currentScopes = new Set<string>();
-	private readonly _clientCredentials: TwitchClientCredentials;
 	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
 
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions>);
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowOptions>);
-	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions> | Options<WindowOptions>) {
-		this._clientCredentials = clientCredentials;
+	constructor(private readonly _clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions> | Options<WindowOptions>) {
 		this._options = Object.assign({}, defaultOptions, options);
 	}
 
@@ -114,10 +112,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 
 			authWindow.on('closed', () => {
 				if (!done) {
-					reject(new Error('window was closed'));
-					if (this._options.exitAppWhenClosedAndNotDone) {
-						process.exit(0);
-					}
+					reject(new WindowClosedError());
 				}
 			});
 

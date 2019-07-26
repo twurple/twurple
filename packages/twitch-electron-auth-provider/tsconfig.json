@@ -3,7 +3,6 @@
 	"compilerOptions": {
 		"rootDir": "src",
 		"outDir": "lib",
-		"sourceMap": true,
 	},
 	"exclude": [
 		"node_modules",
