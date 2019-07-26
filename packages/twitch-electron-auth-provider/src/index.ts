@@ -26,7 +26,7 @@ interface WindowOptions {
 	 * A custom `BrowserWindow` in which the loading will occur.
 	 *
 	 * @default
-	 * {
+	 *	{
 	 *		width: 800,
 	 *		height: 600,
 	 *		show: false,
