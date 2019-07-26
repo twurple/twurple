@@ -1,6 +1,6 @@
-import {NonEnumerable} from '../../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../../../TwitchClient';
-import User from "../User/User";
+import User from '../User/User';
 
 /** @private */
 export interface TeamData {
@@ -49,7 +49,7 @@ export default class Team {
 	}
 
 	/**
-	 * The date when the team was created/
+	 * The date when the team was created.
 	 */
 	get creationDate() {
 		return new Date(this._data.created_at);
