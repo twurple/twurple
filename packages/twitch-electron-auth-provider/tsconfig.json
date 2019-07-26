@@ -2,7 +2,8 @@
 	"extends": "../../tsconfig",
 	"compilerOptions": {
 		"rootDir": "src",
-		"outDir": "lib"
+		"outDir": "lib",
+		"sourceMap": true,
 	},
 	"exclude": [
 		"node_modules",

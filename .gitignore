@@ -11,3 +11,4 @@ node_modules/
 /packages/*/generatedDocs
 /packages/*/lib
 /packages/*/docs.json
+*.code-workspace
