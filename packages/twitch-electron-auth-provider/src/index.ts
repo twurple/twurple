@@ -1,17 +1,66 @@
-import { AccessToken, AuthProvider } from 'twitch';
-import { BrowserWindow } from 'electron';
+import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import * as qs from 'qs';
+import { AccessToken, AuthProvider } from 'twitch';
+import WindowClosedError from './WindowClosedError';
 
 export interface TwitchClientCredentials {
 	clientId: string;
 	redirectURI: string;
 }
 
+interface BaseOptions {
+	/**
+	 * If `true`, if the user presses Esc, the window will close.  Default `true`.
+	 */
+	escapeToClose?: boolean;
+}
+
+interface WindowStyleOptions {
+	/**
+	 * Options passed to the `BrowserWindow` constructor, primarily for styling.
+	 */
+	windowOptions?: BrowserWindowConstructorOptions;
+}
+
+interface WindowOptions {
+	/**
+	 * A custom `BrowserWindow` in which the loading will occur.
+	 *
+	 * @default
+	 *	{
+	 *		width: 800,
+	 *		height: 600,
+	 *		show: false,
+	 *		modal: true,
+	 *		webPreferences: {
+	 *			nodeIntegration: false
+	 *		}
+	 *	}
+	 */
+	window: BrowserWindow;
+
+	/**
+	 * Close the `BrowserWindow` after the user has logged in.  Default: `true`.
+	 */
+	closeOnLogin?: boolean;
+}
+
+type Options<T extends WindowOptions | WindowStyleOptions = WindowStyleOptions> = BaseOptions & T;
+
+const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> = {
+	escapeToClose: true,
+	closeOnLogin: true
+};
+
 export default class ElectronAuthProvider implements AuthProvider {
 	private _accessToken?: AccessToken;
-	private readonly _currentScopes: Set<string> = new Set();
+	private readonly _currentScopes = new Set<string>();
+	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
 
-	constructor(private readonly _clientCredentials: TwitchClientCredentials) {
+	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions>);
+	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowOptions>);
+	constructor(private readonly _clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions> | Options<WindowOptions>) {
+		this._options = { ...defaultOptions, ...options };
 	}
 
 	get clientId() {
@@ -24,13 +73,17 @@ export default class ElectronAuthProvider implements AuthProvider {
 
 	async getAccessToken(scopes?: string | string[]) {
 		return new Promise<AccessToken>((resolve, reject) => {
-			if (this._accessToken || !scopes) {
+			if (this._accessToken && (!scopes || !scopes.length)) {
 				resolve(this._accessToken);
 				return;
 			}
+
 			if (typeof scopes === 'string') {
 				scopes = [scopes];
+			} else if (!scopes) {
+				scopes = []
 			}
+
 			if (scopes.every(scope => this._currentScopes.has(scope))) {
 				resolve(this._accessToken);
 				return;
@@ -38,9 +91,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 
 			const redir = encodeURIComponent(this._clientCredentials.redirectURI);
 			const authUrl = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${this.clientId}&redirect_uri=${redir}&scope=${scopes.join(' ')}`;
-			let done = false;
-
-			const authWindow = new BrowserWindow({
+			const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
 				width: 800,
 				height: 600,
 				show: false,
@@ -48,15 +99,31 @@ export default class ElectronAuthProvider implements AuthProvider {
 				webPreferences: {
 					nodeIntegration: false
 				}
-			});
-			authWindow.loadURL(authUrl);
-			authWindow.show();
+			};
+			let done = false;
+			const authWindow = this._options.window || new BrowserWindow(Object.assign(defaultBrowserWindowOptions, this._options.windowOptions));
+
+			authWindow.webContents.once('did-finish-load', () => authWindow.show());
 
 			authWindow.on('closed', () => {
 				if (!done) {
-					reject(new Error('window was closed'));
+					reject(new WindowClosedError());
 				}
 			});
+
+			if (this._options.escapeToClose) {
+				authWindow.webContents.on('before-input-event', (_, input) => {
+					switch (input.key) {
+						case 'Esc':
+						case 'Escape':
+							authWindow.close();
+							break;
+
+						default:
+							break;
+					}
+				});
+			}
 
 			authWindow.webContents.session.webRequest.onBeforeRequest({ urls: [this._clientCredentials.redirectURI] }, (details, callback) => {
 				const url = new URL(details.url);
@@ -75,8 +142,12 @@ export default class ElectronAuthProvider implements AuthProvider {
 
 				if (params.error || params.access_token) {
 					done = true;
-					authWindow.destroy();
+
+					if (this._options.closeOnLogin) {
+						authWindow.destroy();
+					}
 				}
+
 				if (params.error) {
 					reject(new Error(`Error received from Twitch: ${params.error}`));
 				} else if (params.access_token) {
@@ -91,8 +162,12 @@ export default class ElectronAuthProvider implements AuthProvider {
 					});
 					resolve(this._accessToken);
 				}
+
 				callback({ cancel: true });
 			});
+
+			// do this last so there is no race condition
+			authWindow.loadURL(authUrl);
 		});
 	}
 
