@@ -80,7 +80,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 
 	async getAccessToken(scopes?: string | string[]) {
 		return new Promise<AccessToken>((resolve, reject) => {
-			if (this._accessToken && !scopes) {
+			if (this._accessToken && (!scopes || !scopes.length)) {
 				resolve(this._accessToken);
 				return;
 			}
