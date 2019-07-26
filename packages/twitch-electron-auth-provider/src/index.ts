@@ -1,6 +1,7 @@
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import * as qs from 'qs';
 import { AccessToken, AuthProvider } from 'twitch';
+import WindowClosedError from './window-closed-error';
 
 export interface TwitchClientCredentials {
 	clientId: string;
@@ -48,14 +49,8 @@ type Options<T extends WindowOptions | WindowStyleOptions = WindowStyleOptions> 
 
 const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> = {
 	escapeToClose: true,
-	closeOnLogin: true,
+	closeOnLogin: true
 };
-
-export class WindowClosedError extends Error {
-	constructor() {
-		super('Window was closed');
-	}
-}
 
 export default class ElectronAuthProvider implements AuthProvider {
 	private _accessToken?: AccessToken;
@@ -65,7 +60,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions>);
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowOptions>);
 	constructor(private readonly _clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions> | Options<WindowOptions>) {
-		this._options = Object.assign({}, defaultOptions, options);
+		this._options = { ...defaultOptions, ...options };
 	}
 
 	get clientId() {
@@ -122,6 +117,9 @@ export default class ElectronAuthProvider implements AuthProvider {
 						case 'Esc':
 						case 'Escape':
 							authWindow.close();
+							break;
+
+						default:
 							break;
 					}
 				});
