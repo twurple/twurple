@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-exported */
 import TwitchClient, { TwitchAPICallType } from './TwitchClient';
 
 export default TwitchClient;

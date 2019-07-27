@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-exported */
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import * as qs from 'qs';
 import { AccessToken, AuthProvider } from 'twitch';

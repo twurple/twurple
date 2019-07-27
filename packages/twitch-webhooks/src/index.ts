@@ -1,3 +1,4 @@
+/* eslint-disable filenames/match-exported */
 import WebHookListener from './WebHookListener';
 
 export default WebHookListener;

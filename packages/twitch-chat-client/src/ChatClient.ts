@@ -6,18 +6,18 @@ import Logger, { LogLevel } from '@d-fischer/logger';
 import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
 
-import TwitchTagsCapability from './Capabilities/TwitchTags/';
-import TwitchCommandsCapability from './Capabilities/TwitchCommands/';
-import TwitchMembershipCapability from './Capabilities/TwitchMembership';
+import TwitchTagsCapability from './Capabilities/TwitchTagsCapability';
+import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
+import TwitchMembershipCapability from './Capabilities/TwitchMembershipCapability';
 
 import { ChannelJoin, ChannelPart, Notice } from 'ircv3/lib/Message/MessageTypes/Commands/';
-import ClearChat from './Capabilities/TwitchCommands/MessageTypes/ClearChat';
-import HostTarget from './Capabilities/TwitchCommands/MessageTypes/HostTarget';
-import RoomState from './Capabilities/TwitchCommands/MessageTypes/RoomState';
-import UserNotice from './Capabilities/TwitchCommands/MessageTypes/UserNotice';
-import Whisper from './Capabilities/TwitchCommands/MessageTypes/Whisper';
+import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
+import HostTarget from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
+import RoomState from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
+import UserNotice from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
+import Whisper from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
 import { NonEnumerable } from './Toolkit/Decorators';
-import TwitchPrivateMessage from './StandardCommands/PrivateMessage';
+import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
 import ChatRaidInfo from './UserNotices/ChatRaidInfo';
 import ChatRitualInfo from './UserNotices/ChatRitualInfo';
 import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';

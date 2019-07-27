@@ -9,6 +9,7 @@ module.exports = {
 	},
 	plugins: [
 		'@typescript-eslint',
+		'filenames',
 		'fp',
 		'import',
 		'jsdoc',
@@ -94,6 +95,7 @@ module.exports = {
 			}
 		],
 		'eol-last': ['error', 'always'],
+		'filenames/match-exported': 'error',
 		'fp/no-delete': 'error',
 		'guard-for-in': 'error',
 		'import/no-unassigned-import': 'error',
