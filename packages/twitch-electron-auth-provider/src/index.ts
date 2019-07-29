@@ -74,18 +74,13 @@ export default class ElectronAuthProvider implements AuthProvider {
 
 	async getAccessToken(scopes?: string | string[]) {
 		return new Promise<AccessToken>((resolve, reject) => {
-			if (this._accessToken && (!scopes || !scopes.length)) {
-				resolve(this._accessToken);
-				return;
-			}
-
 			if (typeof scopes === 'string') {
 				scopes = [scopes];
 			} else if (!scopes) {
 				scopes = []
 			}
 
-			if (scopes.every(scope => this._currentScopes.has(scope))) {
+			if (this._accessToken && scopes.every(scope => this._currentScopes.has(scope))) {
 				resolve(this._accessToken);
 				return;
 			}
