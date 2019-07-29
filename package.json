@@ -21,6 +21,7 @@
     "eslint-plugin-jsdoc": "^4.8.0",
     "eslint-plugin-node": "^8.0.1",
     "lerna": "^3.13.1",
+    "recursive-install": "^1.4.0",
     "rimraf": "^2.6.2",
     "typescript": "~3.5.1"
   },
@@ -29,6 +30,7 @@
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "docs": "lerna run docs",
-    "lerna": "lerna"
+    "lerna": "lerna",
+    "postinstall": "npm-recursive-install --skip-root"
   }
 }
