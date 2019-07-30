@@ -19,7 +19,7 @@ export type HelixVideoSort = 'time' | 'trending' | 'views';
 /**
  * Filters for the videos request.
  */
-export interface HelixVideoFilter extends HelixPagination {
+export interface HelixVideoFilter {
 	/**
 	 * The language of the videos.
 	 */
@@ -39,6 +39,12 @@ export interface HelixVideoFilter extends HelixPagination {
 	 * The type of the videos.
 	 */
 	type?: HelixVideoType | 'all';
+}
+
+/**
+ * @inheritDoc
+ */
+export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagination {
 }
 
 /**
@@ -116,11 +122,16 @@ export default class HelixVideoAPI extends BaseAPI {
 		return this._getVideosPaginated('game_id', gameId, filter);
 	}
 
-	private async _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
+	private async _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixPaginatedVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixVideoData>>({
 			url: 'videos',
 			type: TwitchAPICallType.Helix,
-			query: HelixVideoAPI._makeVideosQuery(filterType, filterValues, filter)
+			query: {
+				...HelixVideoAPI._makeVideosQuery(filterType, filterValues, filter),
+				first: filter.limit,
+				after: filter.after,
+				before: filter.before
+			}
 		});
 
 		return {
