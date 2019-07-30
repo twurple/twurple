@@ -24,7 +24,7 @@ export interface StreamDataWrapper {
 
 /** @private */
 export interface StreamData {
-	_id: string;
+	_id: string | number;
 	game: string;
 	viewers: number;
 	video_height: number;
@@ -77,7 +77,7 @@ export default class Stream {
 	 * The ID of the stream.
 	 */
 	get id() {
-		return this._data._id;
+		return this._data._id.toString();
 	}
 
 	/**
