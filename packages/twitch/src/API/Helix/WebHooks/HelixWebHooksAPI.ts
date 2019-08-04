@@ -201,6 +201,30 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		return this._sendUserChangeHubRequest('unsubscribe', user, options);
 	}
 
+	/**
+	 * Subscribes to events representing a channel subscription or unsubscription.
+	 *
+	 * @expandParams
+	 *
+	 * @param user The user for which to get notifications about subscriptions and unsubscriptions to their channel.
+	 * @param options
+	 */
+	async subscribeToUserSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		return this._sendUserSubscriptionHubRequest('subscribe', user, options);
+	}
+
+	/**
+	 * Unsubscribes from events representing a channel subscription or unsubscription.
+	 *
+	 * @expandParams
+	 *
+	 * @param user The user for which to get notifications about subscriptions and unsubscriptions to their channel.
+	 * @param options
+	 */
+	async unsubscribeFromUserSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		return this._sendUserSubscriptionHubRequest('unsubscribe', user, options);
+	}
+
 	private async _sendUserFollowsHubRequest(
 		mode: HubMode,
 		direction: 'from' | 'to',
@@ -244,5 +268,15 @@ export default class HelixWebHooksAPI extends BaseAPI {
 			scope: withEmail ? 'user:read:email' : undefined,
 			...options
 		});
+	}
+
+	private async _sendUserSubscriptionHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		const userId = extractUserId(user);
+
+		return this.sendHubRequest({
+			mode,
+			topicUrl: `https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=${userId}&first=1`,
+			...options
+		})
 	}
 }
