@@ -49,4 +49,8 @@ export default class HelixSubscriptionEvent extends HelixSubscription {
   get eventVersion() {
     return this._event_data.version;
   }
+
+  get eventMessage() {
+    return this._event_data.event_data.message || null;
+  }
 }
