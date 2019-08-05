@@ -209,7 +209,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 * @param user The user for which to get notifications about subscriptions and unsubscriptions to their channel.
 	 * @param options
 	 */
-	async subscribeToUserSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async subscribeToSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
 		return this._sendUserSubscriptionHubRequest('subscribe', user, options);
 	}
 
@@ -221,7 +221,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 * @param user The user for which to get notifications about subscriptions and unsubscriptions to their channel.
 	 * @param options
 	 */
-	async unsubscribeFromUserSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
 		return this._sendUserSubscriptionHubRequest('unsubscribe', user, options);
 	}
 

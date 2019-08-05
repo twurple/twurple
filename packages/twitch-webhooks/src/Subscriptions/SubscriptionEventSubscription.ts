@@ -3,7 +3,7 @@ import { HelixResponse } from 'twitch';
 import WebHookListener from '../WebHookListener';
 import HelixSubscriptionEvent, { HelixSubscriptionEventData } from 'twitch/lib/API/Helix/Subscriptions/HelixSubscriptionEvent';
 
-export default class SubscriptionsToUserSubscription extends Subscription<HelixSubscriptionEvent> {
+export default class SubscriptionEventSubscription extends Subscription<HelixSubscriptionEvent> {
   constructor(private readonly _userId: string, handler: (data: HelixSubscriptionEvent) => void, client: WebHookListener) {
     super(handler, client);
   }
@@ -13,10 +13,10 @@ export default class SubscriptionsToUserSubscription extends Subscription<HelixS
   }
 
   protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToUserSubscriptionEvents(this._userId, this._options);
+		return this._client._twitchClient.helix.webHooks.subscribeToSubscriptionEvents(this._userId, this._options);
 	}
 
 	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserSubscriptionEvents(this._userId, this._options);
+		return this._client._twitchClient.helix.webHooks.unsubscribeFromSubscriptionEvents(this._userId, this._options);
 	}
 }
