@@ -15,6 +15,7 @@ script:
     - set -e
     - yarn run lerna bootstrap
     - yarn run lint
+    - yarn run prettier:check
     - yarn run build
     - set +e
 
