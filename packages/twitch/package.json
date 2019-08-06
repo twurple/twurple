@@ -2,6 +2,15 @@
   "name": "twitch",
   "version": "3.1.1",
   "description": "Interact with Twitch's API.",
+  "keywords": [
+    "twitch",
+    "api",
+    "stream",
+    "kraken",
+    "helix",
+    "chatters",
+    "bot"
+  ],
   "main": "lib",
   "types": "lib/index",
   "repository": {
