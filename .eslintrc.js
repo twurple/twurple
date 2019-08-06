@@ -81,6 +81,24 @@ module.exports = {
 				allowSingleLine: true
 			}
 		],
+		'camelcase': 'off',
+		'@typescript-eslint/camelcase': ['error', {
+			// only allow stuff Twitch uses
+			'allow': [
+				'_(id|name)$',
+				'user_login',
+				'client_secret',
+				'redirect_uri',
+				'(created|updated|started|ended)_at',
+				'(access|refresh|auth)_token',
+				'has_delay',
+				'include_sponsored',
+				'x1_5',
+				'stream_(key|type)',
+				'broadcaster_language',
+				'grant_type'
+			]
+		}],
 		'comma-dangle': ['error', 'never'],
 		'consistent-return': 'error',
 		'curly': 'error',
