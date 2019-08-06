@@ -1,5 +1,5 @@
 import * as WebSocket from 'universal-websocket-client';
-import { EventEmitter, Listener } from './Toolkit/TypedEventEmitter';
+import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 import Logger, { LogLevel } from '@d-fischer/logger';
