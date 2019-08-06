@@ -1,27 +1,24 @@
-import IRCClient from 'ircv3';
-import { Listener } from 'ircv3/lib/TypedEventEmitter';
-import TwitchClient from 'twitch';
 import Logger, { LogLevel } from '@d-fischer/logger';
-
-import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
-import { toChannelName, toUserName } from './Toolkit/UserTools';
-
-import TwitchTagsCapability from './Capabilities/TwitchTagsCapability';
-import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
-import TwitchMembershipCapability from './Capabilities/TwitchMembershipCapability';
-
+import { Listener } from '@d-fischer/typed-event-emitter';
+import IRCClient from 'ircv3';
 import { ChannelJoin, ChannelPart, Notice } from 'ircv3/lib/Message/MessageTypes/Commands/';
+import TwitchClient from 'twitch';
+import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
 import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import HostTarget from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
 import RoomState from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
 import UserNotice from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
 import Whisper from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
-import { NonEnumerable } from './Toolkit/Decorators';
+import TwitchMembershipCapability from './Capabilities/TwitchMembershipCapability';
+import TwitchTagsCapability from './Capabilities/TwitchTagsCapability';
 import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
+import { NonEnumerable } from './Toolkit/Decorators';
+import { toChannelName, toUserName } from './Toolkit/UserTools';
+import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
+import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
 import ChatRaidInfo from './UserNotices/ChatRaidInfo';
 import ChatRitualInfo from './UserNotices/ChatRitualInfo';
-import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
-import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
+import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
 
 /**
  * Options for a chat client.
@@ -380,7 +377,7 @@ export default class ChatClient extends IRCClient {
 		handler: (channel: string, user: string, error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onTimeoutResult: (
-		handler: (channel: string, user: string, duration?: number, reason?: string, error?: string) => void
+		handler: (channel: string, user: string, reason?: string, duration?: number, error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onUnbanResult: (
 		handler: (channel: string, user: string, error?: string) => void
@@ -725,7 +722,9 @@ export default class ChatClient extends IRCClient {
 				case 'already_banned': {
 					const match = message.split(' ');
 					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
-					this.emit(this._onBanResult, channel, user, messageType);
+					if (user) {
+						this.emit(this._onBanResult, channel, user, messageType);
+					}
 					break;
 				}
 
@@ -743,14 +742,18 @@ export default class ChatClient extends IRCClient {
 				case 'bad_ban_global_mod':
 				case 'bad_ban_staff': {
 					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
-					this.emit(this._onBanResult, channel, match ? match[1].toLowerCase() : undefined, messageType);
+					if (match) {
+						this.emit(this._onBanResult, channel, match[1].toLowerCase(), messageType);
+					}
 					break;
 				}
 
 				case 'ban_success': {
 					const match = message.split(' ');
 					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
-					this.emit(this._onBanResult, channel, user);
+					if (user) {
+						this.emit(this._onBanResult, channel, user);
+					}
 					break;
 				}
 
@@ -758,14 +761,18 @@ export default class ChatClient extends IRCClient {
 				case 'bad_unban_no_ban': {
 					const match = message.split(' ');
 					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
-					this.emit(this._onUnbanResult, channel, user, messageType);
+					if (user) {
+						this.emit(this._onUnbanResult, channel, user, messageType);
+					}
 					break;
 				}
 
 				case 'unban_success': {
 					const match = message.split(' ');
 					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
-					this.emit(this._onUnbanResult, channel, user);
+					if (user) {
+						this.emit(this._onUnbanResult, channel, user);
+					}
 					break;
 				}
 
@@ -848,13 +855,17 @@ export default class ChatClient extends IRCClient {
 				case 'bad_mod_mod': {
 					const match = message.split(' ');
 					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
-					this.emit(this._onModResult, channel, user, messageType);
+					if (user) {
+						this.emit(this._onModResult, channel, user, messageType);
+					}
 					break;
 				}
 
 				case 'mod_success': {
 					const match = message.match(/^You have added (\w+) /);
-					this.emit(this._onModResult, channel, match ? match[1] : undefined);
+					if (match) {
+						this.emit(this._onModResult, channel, match[1]);
+					}
 					break;
 				}
 
@@ -862,13 +873,17 @@ export default class ChatClient extends IRCClient {
 				case 'bad_unmod_mod': {
 					const match = message.split(' ');
 					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
-					this.emit(this._onUnmodResult, channel, user, messageType);
+					if (user) {
+						this.emit(this._onUnmodResult, channel, user, messageType);
+					}
 					break;
 				}
 
 				case 'unmod_success': {
 					const match = message.match(/^You have removed (\w+) /);
-					this.emit(this._onUnmodResult, channel, match ? match[1] : undefined);
+					if (match) {
+						this.emit(this._onUnmodResult, channel, match[1]);
+					}
 					break;
 				}
 
@@ -955,14 +970,16 @@ export default class ChatClient extends IRCClient {
 				case 'bad_timeout_global_mod':
 				case 'bad_timeout_staff': {
 					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
-					this.emit(
-						this._onTimeoutResult,
-						channel,
-						match ? match[1].toLowerCase() : undefined,
-						undefined,
-						undefined,
-						messageType
-					);
+					if (match) {
+						this.emit(
+							this._onTimeoutResult,
+							channel,
+							match[1].toLowerCase(),
+							undefined,
+							undefined,
+							messageType
+						);
+					}
 					break;
 				}
 
