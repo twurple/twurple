@@ -16,7 +16,6 @@ import TeamWithUsers from './TeamWithUsers';
  */
 @Cacheable
 export default class TeamAPI extends BaseAPI {
-
 	/**
 	 * Get a list of teams.
 	 *
@@ -24,9 +23,7 @@ export default class TeamAPI extends BaseAPI {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	@Cached(3600)
-	async getTeams(
-		page?: number, limit: number = 25,
-	): Promise<TeamData[]> {
+	async getTeams(page?: number, limit: number = 25): Promise<TeamData[]> {
 		const query: Record<string, string> = {};
 
 		if (page) {
@@ -36,7 +33,8 @@ export default class TeamAPI extends BaseAPI {
 		query.limit = limit.toString();
 
 		const data = await this._client.callAPI({
-			url: 'teams', query
+			url: 'teams',
+			query
 		});
 
 		return data.teams.map((team: TeamData) => new Team(team, this._client));

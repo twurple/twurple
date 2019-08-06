@@ -151,7 +151,7 @@ export default class HelixUser {
 	/**
 	 * Retrieves a list of broadcasters the user follows.
 	 */
-	getFollows() {
+	async getFollows() {
 		return this._client.helix.users.getFollows({ user: this });
 	}
 
@@ -177,7 +177,7 @@ export default class HelixUser {
 	 * @param broadcaster The broadcaster to check the user's follow to.
 	 */
 	async follows(broadcaster: UserIdResolvable) {
-		return await this.getFollowTo(broadcaster) !== null;
+		return (await this.getFollowTo(broadcaster)) !== null;
 	}
 
 	/**
@@ -212,7 +212,7 @@ export default class HelixUser {
 	 */
 	async isSubscribedTo(broadcaster: UserIdResolvable) {
 		try {
-			return await this.getSubscriptionTo(broadcaster) !== null;
+			return (await this.getSubscriptionTo(broadcaster)) !== null;
 		} catch (e) {
 			if (e instanceof NoSubscriptionProgramError) {
 				return false;

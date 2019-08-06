@@ -50,8 +50,7 @@ export interface HelixStreamFilter {
 /**
  * @inheritDoc
  */
-export interface HelixPaginatedStreamFilter extends HelixStreamFilter, HelixPagination {
-}
+export interface HelixPaginatedStreamFilter extends HelixStreamFilter, HelixPagination {}
 
 /** @private */
 interface HelixStreamGetMarkersResultVideo {
@@ -203,7 +202,7 @@ export default class HelixStreamAPI extends BaseAPI {
 
 			return new HelixStreamMarker(result.data[0], this._client);
 		} catch (e) {
-			if ((e instanceof HTTPStatusCodeError) && e.statusCode === 404) {
+			if (e instanceof HTTPStatusCodeError && e.statusCode === 404) {
 				throw new StreamNotLiveError();
 			}
 
@@ -211,7 +210,10 @@ export default class HelixStreamAPI extends BaseAPI {
 		}
 	}
 
-	private async _getStreamMarkers(queryType: string, id: string): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
+	private async _getStreamMarkers(
+		queryType: string,
+		id: string
+	): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamGetMarkersResult>>({
 			url: 'streams/markers',
 			type: TwitchAPICallType.Helix,
@@ -243,10 +245,11 @@ export default class HelixStreamAPI extends BaseAPI {
 
 	private static _mapGetStreamMarkersResult(this: TwitchClient, data: HelixStreamGetMarkersResult) {
 		return data.videos.reduce<HelixStreamMarkerWithVideo[]>(
-			(result, video) => [...result, ...video.markers.map(
-				marker => new HelixStreamMarkerWithVideo(marker, video.video_id, this)
-			)],
+			(result, video) => [
+				...result,
+				...video.markers.map(marker => new HelixStreamMarkerWithVideo(marker, video.video_id, this))
+			],
 			[]
-		)
+		);
 	}
 }

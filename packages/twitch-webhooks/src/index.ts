@@ -9,4 +9,10 @@ import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription
 import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
 import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
 
-export { Subscription, FollowsFromUserSubscription, FollowsToUserSubscription, StreamChangeSubscription, UserChangeSubscription };
+export {
+	Subscription,
+	FollowsFromUserSubscription,
+	FollowsToUserSubscription,
+	StreamChangeSubscription,
+	UserChangeSubscription
+};

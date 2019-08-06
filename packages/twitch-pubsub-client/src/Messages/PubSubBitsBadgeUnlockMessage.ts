@@ -3,7 +3,8 @@ import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchClient from 'twitch';
 import { MakeOptional } from '../Toolkit/Types';
 
-export interface PubSubBitsBadgeUnlockMessageContent extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
+export interface PubSubBitsBadgeUnlockMessageContent
+	extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
 	chat_message: string;
 	badge_tier: number;
 }

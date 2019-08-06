@@ -44,8 +44,7 @@ export interface HelixVideoFilter {
 /**
  * @inheritDoc
  */
-export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagination {
-}
+export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagination {}
 
 /**
  * The Helix API methods that deal with videos.
@@ -122,7 +121,11 @@ export default class HelixVideoAPI extends BaseAPI {
 		return this._getVideosPaginated('game_id', gameId, filter);
 	}
 
-	private async _getVideos(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixPaginatedVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
+	private async _getVideos(
+		filterType: HelixVideoFilterType,
+		filterValues: string | string[],
+		filter: HelixPaginatedVideoFilter = {}
+	): Promise<HelixPaginatedResult<HelixVideo>> {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixVideoData>>({
 			url: 'videos',
 			type: TwitchAPICallType.Helix,
@@ -140,7 +143,11 @@ export default class HelixVideoAPI extends BaseAPI {
 		};
 	}
 
-	private _getVideosPaginated(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}) {
+	private _getVideosPaginated(
+		filterType: HelixVideoFilterType,
+		filterValues: string | string[],
+		filter: HelixVideoFilter = {}
+	) {
 		return new HelixPaginatedRequest(
 			{
 				url: 'videos',
@@ -151,7 +158,11 @@ export default class HelixVideoAPI extends BaseAPI {
 		);
 	}
 
-	private static _makeVideosQuery(filterType: HelixVideoFilterType, filterValues: string | string[], filter: HelixVideoFilter = {}) {
+	private static _makeVideosQuery(
+		filterType: HelixVideoFilterType,
+		filterValues: string | string[],
+		filter: HelixVideoFilter = {}
+	) {
 		const { language, period, orderBy, type } = filter;
 		return {
 			[filterType]: filterValues,
@@ -159,6 +170,6 @@ export default class HelixVideoAPI extends BaseAPI {
 			period,
 			sort: orderBy,
 			type
-		}
+		};
 	}
 }

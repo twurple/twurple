@@ -50,7 +50,8 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 				}
 			},
 			this._client,
-			(data: HelixSubscriptionData) => new HelixSubscription(data, this._client));
+			(data: HelixSubscriptionData) => new HelixSubscription(data, this._client)
+		);
 	}
 
 	/**

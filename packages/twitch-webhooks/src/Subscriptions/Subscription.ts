@@ -11,8 +11,7 @@ export default abstract class Subscription<T = any> {
 	protected _secret: string;
 	private _refreshTimer?: NodeJS.Timer;
 
-	constructor(protected _handler: (obj: T) => void, protected _client: WebHookListener) {
-	}
+	constructor(protected _handler: (obj: T) => void, protected _client: WebHookListener) {}
 
 	get verified() {
 		return this._verified;
@@ -42,7 +41,8 @@ export default abstract class Subscription<T = any> {
 	handleData(data: string, algoAndSignature: string) {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 
-		const hash = crypto.createHmac(algorithm, this._secret)
+		const hash = crypto
+			.createHmac(algorithm, this._secret)
 			.update(data)
 			.digest('hex');
 
@@ -56,12 +56,9 @@ export default abstract class Subscription<T = any> {
 			clearInterval(this._refreshTimer);
 		}
 		await this._createNewSubscription();
-		this._refreshTimer = setInterval(
-			async () => {
-				await this._createNewSubscription();
-			},
-			86400000
-		);
+		this._refreshTimer = setInterval(async () => {
+			await this._createNewSubscription();
+		}, 86400000);
 	}
 
 	async stop() {

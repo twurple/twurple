@@ -12,7 +12,11 @@ export default class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginated
 	 * Retrieves and returns the total number of entities existing in the queried result set.
 	 */
 	async getTotalCount() {
-		const data = this._currentData || await this._fetchData({ query: { first: '1', after: undefined } }) as HelixPaginatedResponseWithTotal<D>;
+		const data =
+			this._currentData ||
+			((await this._fetchData({ query: { first: '1', after: undefined } })) as HelixPaginatedResponseWithTotal<
+				D
+			>);
 
 		return data.total;
 	}

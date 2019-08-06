@@ -7,42 +7,43 @@ export interface CacheEntry<T = any> {
 	expires: number;
 }
 
+// does not return async; eslint false positive
+// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/promise-function-async
+function createSingleCacheKey(param: any) {
+	// noinspection FallThroughInSwitchStatementJS
+	switch (typeof param) {
+		case 'undefined': {
+			return '';
+		}
+		case 'object': {
+			if (param === null) {
+				return '';
+			}
+			if ('cacheKey' in param) {
+				return param.cacheKey;
+			}
+			const objKey = JSON.stringify(param);
+			if (objKey !== '{}') {
+				return objKey;
+			}
+		}
+		// fallthrough
+		default: {
+			return param.toString();
+		}
+	}
+}
+
 /** @private */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function createCacheKey(propName: string, params: any[], prefix?: boolean) {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	function createSingleCacheKey(param: any) {
-		// noinspection FallThroughInSwitchStatementJS
-		switch (typeof param) {
-			case 'undefined': {
-				return '';
-			}
-			case 'object': {
-				if (param === null) {
-					return '';
-				}
-				if ('cacheKey' in param) {
-					return param.cacheKey;
-				}
-				const objKey = JSON.stringify(param);
-				if (objKey !== '{}') {
-					return objKey;
-				}
-			}
-			// fallthrough
-			default: {
-				return param.toString();
-			}
-		}
-	}
-
 	return [propName, ...params.map(createSingleCacheKey)].join('/') + (prefix ? '/' : '');
 }
 
 /** @private */
 export function Cacheable<T extends Constructor>(cls: T) {
 	return class extends cls {
-		cache: Map<string, CacheEntry> = new Map;
+		cache: Map<string, CacheEntry> = new Map();
 
 		getFromCache(cacheKey: string): {} | undefined {
 			this._cleanCache();
@@ -59,7 +60,8 @@ export function Cacheable<T extends Constructor>(cls: T) {
 
 		setCache(cacheKey: string, value: {}, timeInSeconds: number) {
 			this.cache.set(cacheKey, {
-				value, expires: Date.now() + (timeInSeconds * 1000)
+				value,
+				expires: Date.now() + timeInSeconds * 1000
 			});
 		}
 
@@ -99,11 +101,11 @@ export function Cacheable<T extends Constructor>(cls: T) {
 /** @private */
 export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean = false) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
+	return function(target: any, propName: string, descriptor: PropertyDescriptor) {
 		const origFn = descriptor.value;
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		descriptor.value = async function (this: any, ...params: any[]) {
+		descriptor.value = async function(this: any, ...params: any[]) {
 			const cacheKey = createCacheKey(propName, params);
 			const cachedValue = this.getFromCache(cacheKey);
 
@@ -125,12 +127,14 @@ export function Cached(timeInSeconds: number = Infinity, cacheFailures: boolean 
 /** @private */
 export function CachedGetter(timeInSeconds: number = Infinity) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
+	return function(target: any, propName: string, descriptor: PropertyDescriptor) {
 		if (descriptor.get) {
+			// eslint-disable-next-line @typescript-eslint/unbound-method
 			const origFn = descriptor.get;
 
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			descriptor.get = function (this: any, ...params: any[]) {
+			// does not return async; eslint false positive
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/promise-function-async,@typescript-eslint/unbound-method
+			descriptor.get = function(this: any, ...params: any[]) {
 				const cacheKey = createCacheKey(propName, params);
 				const cachedValue = this.getFromCache(cacheKey);
 
@@ -151,11 +155,11 @@ export function CachedGetter(timeInSeconds: number = Infinity) {
 /** @private */
 export function ClearsCache<T>(cacheName: keyof T, numberOfArguments?: number) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	return function (target: any, propName: string, descriptor: PropertyDescriptor) {
+	return function(target: any, propName: string, descriptor: PropertyDescriptor) {
 		const origFn = descriptor.value;
 
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		descriptor.value = async function (this: any, ...params: any[]) {
+		descriptor.value = async function(this: any, ...params: any[]) {
 			const result = await origFn.apply(this, params);
 			const args = numberOfArguments === undefined ? params.slice() : params.slice(0, numberOfArguments);
 			this.removeFromCache([cacheName, ...args], true);

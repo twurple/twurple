@@ -29,7 +29,11 @@ export default class StaticAuthProvider implements AuthProvider {
 	constructor(clientId: string, accessToken?: string, scopes?: string[]) {
 		this._clientId = clientId || '';
 		if (accessToken) {
-			this._accessToken = new AccessToken({ access_token: accessToken, scope: scopes ? scopes.join(' ') : '', refresh_token: '' });
+			this._accessToken = new AccessToken({
+				access_token: accessToken,
+				scope: scopes ? scopes.join(' ') : '',
+				refresh_token: ''
+			});
 			this._scopes = scopes;
 		}
 	}
@@ -58,7 +62,9 @@ export default class StaticAuthProvider implements AuthProvider {
 				scopes = scopes.split(' ');
 			}
 			if (scopes.some(scope => !this._scopes!.includes(scope))) {
-				throw new Error(`This token does not have the requested scopes (${scopes.join(', ')}) and can not be upgraded`);
+				throw new Error(
+					`This token does not have the requested scopes (${scopes.join(', ')}) and can not be upgraded`
+				);
 			}
 		}
 

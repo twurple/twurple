@@ -169,12 +169,22 @@ export default class TwitchClient {
 	 *
 	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	static async withCredentials(clientId: string, accessToken?: string, scopes?: string[], refreshConfig?: RefreshConfig, config: Partial<TwitchConfig> = {}) {
+	static async withCredentials(
+		clientId: string,
+		accessToken?: string,
+		scopes?: string[],
+		refreshConfig?: RefreshConfig,
+		config: Partial<TwitchConfig> = {}
+	) {
 		if (!scopes && accessToken) {
 			let tokenData = await this.getTokenInfo(clientId, accessToken);
 			if (!tokenData.valid) {
 				if (refreshConfig) {
-					const newToken = await this.refreshAccessToken(clientId, refreshConfig.clientSecret, refreshConfig.refreshToken);
+					const newToken = await this.refreshAccessToken(
+						clientId,
+						refreshConfig.clientSecret,
+						refreshConfig.refreshToken
+					);
 					accessToken = newToken.accessToken;
 					tokenData = await this.getTokenInfo(clientId, accessToken);
 				}
@@ -239,7 +249,10 @@ export default class TwitchClient {
 		}
 
 		if (accessToken) {
-			headers.append('Authorization', `${options.type === TwitchAPICallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`);
+			headers.append(
+				'Authorization',
+				`${options.type === TwitchAPICallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`
+			);
 		}
 
 		const requestOptions: RequestInit = {
@@ -256,14 +269,14 @@ export default class TwitchClient {
 
 		if (response.status === 204) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return undefined as any as T; // oof
+			return (undefined as any) as T; // oof
 		}
 
 		const text = await response.text();
 
 		if (!text) {
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return undefined as any as T; // mega oof - twitch doesn't return a response when it should
+			return (undefined as any) as T; // mega oof - twitch doesn't return a response when it should
 		}
 
 		return JSON.parse(text);
@@ -278,17 +291,19 @@ export default class TwitchClient {
 	 * @param redirectUri The redirect URI. This serves no real purpose here, but must still match with the redirect URI you configured in the Twitch Developer dashboard.
 	 */
 	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string) {
-		return new AccessToken(await this.callAPI<AccessTokenData>({
-			url: 'oauth2/token',
-			method: 'POST',
-			query: {
-				grant_type: 'authorization_code',
-				client_id: clientId,
-				client_secret: clientSecret,
-				code,
-				redirect_uri: redirectUri
-			}
-		}));
+		return new AccessToken(
+			await this.callAPI<AccessTokenData>({
+				url: 'oauth2/token',
+				method: 'POST',
+				query: {
+					grant_type: 'authorization_code',
+					client_id: clientId,
+					client_secret: clientSecret,
+					code,
+					redirect_uri: redirectUri
+				}
+			})
+		);
 	}
 
 	/**
@@ -299,15 +314,17 @@ export default class TwitchClient {
 	 * @param clientSecret
 	 */
 	static async getAppAccessToken(clientId: string, clientSecret: string) {
-		return new AccessToken(await this.callAPI<AccessTokenData>({
-			url: 'oauth2/token',
-			method: 'POST',
-			query: {
-				grant_type: 'client_credentials',
-				client_id: clientId,
-				client_secret: clientSecret
-			}
-		}));
+		return new AccessToken(
+			await this.callAPI<AccessTokenData>({
+				url: 'oauth2/token',
+				method: 'POST',
+				query: {
+					grant_type: 'client_credentials',
+					client_id: clientId,
+					client_secret: clientSecret
+				}
+			})
+		);
 	}
 
 	/**
@@ -318,16 +335,18 @@ export default class TwitchClient {
 	 * @param refreshToken The refresh token.
 	 */
 	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string) {
-		return new AccessToken(await this.callAPI<AccessTokenData>({
-			url: 'oauth2/token',
-			method: 'POST',
-			query: {
-				grant_type: 'refresh_token',
-				client_id: clientId,
-				client_secret: clientSecret,
-				refresh_token: refreshToken
-			}
-		}));
+		return new AccessToken(
+			await this.callAPI<AccessTokenData>({
+				url: 'oauth2/token',
+				method: 'POST',
+				query: {
+					grant_type: 'refresh_token',
+					client_id: clientId,
+					client_secret: clientSecret,
+					refresh_token: refreshToken
+				}
+			})
+		);
 	}
 
 	/**

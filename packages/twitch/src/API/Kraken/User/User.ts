@@ -131,7 +131,7 @@ export default class User {
 	 */
 	async isSubscribedTo(channel: UserIdResolvable) {
 		try {
-			return await this.getSubscriptionTo(channel) !== null;
+			return (await this.getSubscriptionTo(channel)) !== null;
 		} catch (e) {
 			if (e instanceof NoSubscriptionProgramError) {
 				return false;
@@ -149,7 +149,12 @@ export default class User {
 	 * @param orderBy The field to order by.
 	 * @param orderDirection The direction to order in - ascending or descending.
 	 */
-	async getFollows(page?: number, limit?: number, orderBy?: 'created_at' | 'last_broadcast' | 'login', orderDirection?: 'asc' | 'desc') {
+	async getFollows(
+		page?: number,
+		limit?: number,
+		orderBy?: 'created_at' | 'last_broadcast' | 'login',
+		orderDirection?: 'asc' | 'desc'
+	) {
 		return this._client.kraken.users.getFollowedChannels(this, page, limit, orderBy, orderDirection);
 	}
 
@@ -169,7 +174,7 @@ export default class User {
 	 */
 	async follows(channel: UserIdResolvable) {
 		try {
-			return await this.getFollowTo(channel) !== null;
+			return (await this.getFollowTo(channel)) !== null;
 		} catch (e) {
 			throw e;
 		}

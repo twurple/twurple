@@ -151,14 +151,16 @@ export default class HelixVideo {
 		if (!parts) {
 			throw new HellFreezesOverError(`Could not parse duration string: ${this._data.duration}`);
 		}
-		return parts.map(part => {
-			const partialMatch = part.match(/(\d+)([hms])/);
-			if (!partialMatch) {
-				throw new HellFreezesOverError(`Could not parse partial duration string: ${part}`);
-			}
+		return parts
+			.map(part => {
+				const partialMatch = part.match(/(\d+)([hms])/);
+				if (!partialMatch) {
+					throw new HellFreezesOverError(`Could not parse partial duration string: ${part}`);
+				}
 
-			const [, num, unit] = partialMatch;
-			return parseInt(num, 10) * { h: 3600, m: 60, s: 1 }[unit];
-		}).reduce((a, b) => a + b);
+				const [, num, unit] = partialMatch;
+				return parseInt(num, 10) * { h: 3600, m: 60, s: 1 }[unit];
+			})
+			.reduce((a, b) => a + b);
 	}
 }

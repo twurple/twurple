@@ -52,7 +52,11 @@ export interface PubSubMessagePacket {
 }
 
 /** @private */
-export type PubSubIncomingPacket = PubSubPongPacket | PubSubReconnectPacket | PubSubResponsePacket | PubSubMessagePacket;
+export type PubSubIncomingPacket =
+	| PubSubPongPacket
+	| PubSubReconnectPacket
+	| PubSubResponsePacket
+	| PubSubMessagePacket;
 /** @private */
 export type PubSubNoncedOutgoingPacket = PubSubListenPacket | PubSubUnlistenPacket;
 /** @private */

@@ -8,7 +8,7 @@ export default class ChatUser {
 	/** @private */
 	constructor(userName: string, userData: Map<string, string> | undefined) {
 		this._userName = userName.toLowerCase();
-		this._userData = userData ? new Map(userData) : new Map;
+		this._userData = userData ? new Map(userData) : new Map();
 	}
 
 	/**
@@ -41,7 +41,7 @@ export default class ChatUser {
 		const badgesStr = this._userData.get('badges');
 
 		if (!badgesStr) {
-			return new Map;
+			return new Map();
 		}
 
 		return new Map(badgesStr.split(',').map(badge => badge.split('/', 2) as [string, string]));

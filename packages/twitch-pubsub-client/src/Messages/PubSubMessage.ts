@@ -28,8 +28,18 @@ export interface PubSubChatMessage {
 	emotes: PubSubChatMessageEmote[];
 }
 
-type PubSubMessageData = PubSubBitsMessageData | PubSubBitsBadgeUnlockMessageData | PubSubChatModActionMessageData | PubSubSubscriptionMessageData | PubSubWhisperMessageData;
+type PubSubMessageData =
+	| PubSubBitsMessageData
+	| PubSubBitsBadgeUnlockMessageData
+	| PubSubChatModActionMessageData
+	| PubSubSubscriptionMessageData
+	| PubSubWhisperMessageData;
 export { PubSubMessageData };
 
-type PubSubMessage = PubSubBitsMessage | PubSubBitsBadgeUnlockMessage | PubSubChatModActionMessage | PubSubSubscriptionMessage | PubSubWhisperMessage;
+type PubSubMessage =
+	| PubSubBitsMessage
+	| PubSubBitsBadgeUnlockMessage
+	| PubSubChatModActionMessage
+	| PubSubSubscriptionMessage
+	| PubSubWhisperMessage;
 export default PubSubMessage;

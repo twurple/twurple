@@ -12,18 +12,19 @@ module.exports = {
 		'filenames',
 		'fp',
 		'import',
-		'jsdoc',
-		'node'
+		'jsdoc'
 	],
 	rules: {
 		'@typescript-eslint/adjacent-overload-signatures': 'error',
 		'@typescript-eslint/array-type': ['error', 'array-simple'],
 		'@typescript-eslint/class-name-casing': 'error',
-		// currently not the same kind of options as tslint member-access
-		// track https://github.com/typescript-eslint/typescript-eslint/pull/322
-		// '@typescript-eslint/explicit-member-accessibility': 'error',
+		'@typescript-eslint/explicit-member-accessibility': ['error', {
+			accessibility: 'no-public',
+			overrides: {
+				parameterProperties: 'explicit'
+			}
+		}],
 		'@typescript-eslint/interface-name-prefix': ['error', 'never'],
-		'@typescript-eslint/member-delimiter-style': 'error',
 		'@typescript-eslint/member-ordering': [
 			'error',
 			{
@@ -64,23 +65,12 @@ module.exports = {
 		'@typescript-eslint/no-useless-constructor': 'error',
 		'@typescript-eslint/prefer-function-type': 'error',
 		'@typescript-eslint/prefer-interface': 'error',
-		// seems to find lots of false positives...
-		// '@typescript-eslint/promise-function-async': 'error',
+		'@typescript-eslint/promise-function-async': 'error',
 		'@typescript-eslint/restrict-plus-operands': 'error',
-		// does not exist (yet?)
-		// '@typescript-eslint/typedef': 'error',
-		'@typescript-eslint/type-annotation-spacing': 'error',
 		// in master, but not released yet!
-		// '@typescript-eslint/unbound-method': 'error',
+		// '@typescript-eslint/typedef': 'error',
+		'@typescript-eslint/unbound-method': 'error',
 		'arrow-body-style': ['error', 'as-needed'],
-		'arrow-parens': ['error', 'as-needed'],
-		'brace-style': [
-			'error',
-			'1tbs',
-			{
-				allowSingleLine: true
-			}
-		],
 		'camelcase': 'off',
 		'@typescript-eslint/camelcase': ['error', {
 			// only allow stuff Twitch uses
@@ -99,9 +89,7 @@ module.exports = {
 				'grant_type'
 			]
 		}],
-		'comma-dangle': ['error', 'never'],
 		'consistent-return': 'error',
-		'curly': 'error',
 		'default-case': 'error',
 		// not a thing right now
 		// 'deprecation': 'error',
@@ -117,23 +105,6 @@ module.exports = {
 		'fp/no-delete': 'error',
 		'guard-for-in': 'error',
 		'import/no-unassigned-import': 'error',
-		'indent': [
-			'error',
-			'tab',
-			{
-				SwitchCase: 1,
-				VariableDeclarator: 'first',
-				FunctionDeclaration: {
-					parameters: 'first'
-				},
-				FunctionExpression: {
-					parameters: 'first'
-				},
-				CallExpression: {
-					arguments: 'first'
-				}
-			}
-		],
 		'jsdoc/check-alignment': 'error',
 		'jsdoc/check-indentation': 'error',
 		// errors with ts
@@ -141,9 +112,7 @@ module.exports = {
 		// 'jsdoc/require-param': 'error',
 		'jsdoc/check-tag-names': 'error',
 		'jsdoc/newline-after-description': ['error', 'always'],
-		'linebreak-style': ['error', 'unix'],
 		'max-classes-per-file': ['error', 1],
-		'max-len': ['error', 200],
 		'no-bitwise': 'error',
 		'no-caller': 'error',
 		'no-cond-assign': 'error',
@@ -163,7 +132,6 @@ module.exports = {
 		],
 		'no-irregular-whitespace': 'error',
 		'no-labels': 'error',
-		'no-multiple-empty-lines': 'error',
 		'no-negated-condition': 'error',
 		'no-new': 'error',
 		'no-new-wrappers': 'error',
@@ -172,22 +140,23 @@ module.exports = {
 		'no-restricted-syntax': [
 			'error',
 			{
-				'selector': 'BinaryExpression[operator=/^[!=]==?$/][left.raw=/^(true|false)$/], BinaryExpression[operator=/^[!=]==?$/][right.raw=/^(true|false)$/]',
-				'message': 'Don\'t compare for equality against boolean literals'
+				selector: 'BinaryExpression[operator=/^[!=]==?$/][left.raw=/^(true|false)$/], BinaryExpression[operator=/^[!=]==?$/][right.raw=/^(true|false)$/]',
+				message: 'Don\'t compare for equality against boolean literals'
+			},
+			{
+				selector: 'SequenceExpression',
+				message: 'The comma operator is confusing and a common mistake. Don’t use it!'
 			}
 		],
 		'no-return-await': 'error',
-		'no-sequences': 'error',
 		'no-shadow': 'error',
 		'no-sparse-arrays': 'error',
 		'no-throw-literal': 'error',
-		'no-trailing-spaces': 'error',
+		'no-unexpected-multiline': 'error',
 		'no-unneeded-ternary': 'error',
 		'no-unsafe-finally': 'error',
 		'no-use-before-define': 'error',
 		'no-var': 'error',
-		'node/no-unpublished-import': 'error',
-		'object-curly-spacing': ['error', 'always'],
 		'prefer-arrow-callback': [
 			'error',
 			{
@@ -204,29 +173,10 @@ module.exports = {
 		'prefer-object-spread': 'error',
 		'prefer-rest-params': 'error',
 		'prefer-template': 'error',
-		'quotes': [
-			'error',
-			'single',
-			{
-				avoidEscape: true
-			}
-		],
-		'quote-props': ['error', 'as-needed'],
 		'radix': [
 			'error',
 			'always'
 		],
-		// breaks TS interfaces :(
-		// 'semi': ['error', 'always'],
-		'space-before-function-paren': [
-			'error',
-			{
-				anonymous: 'always',
-				named: 'never',
-				asyncArrow: 'always',
-			}
-		],
-		'space-in-parens': ['error', 'never'],
 		'spaced-comment': [
 			'error',
 			'always',

@@ -31,7 +31,9 @@ export default class ChatEmoteList {
 	 */
 	@Cached()
 	getAllFromSet(setId: number) {
-		return this._data.filter(emote => emote.emoticon_set === setId).map(emote => new ChatEmote(emote, this._client));
+		return this._data
+			.filter(emote => emote.emoticon_set === setId)
+			.map(emote => new ChatEmote(emote, this._client));
 	}
 
 	/**

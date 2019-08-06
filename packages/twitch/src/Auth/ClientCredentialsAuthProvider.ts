@@ -49,7 +49,7 @@ export default class ClientCredentialsAuthProvider implements AuthProvider {
 	 * Retrieves a new app access token.
 	 */
 	async refresh() {
-		return this._token = await TwitchClient.getAppAccessToken(this._clientId, this._clientSecret);
+		return (this._token = await TwitchClient.getAppAccessToken(this._clientId, this._clientSecret));
 	}
 
 	/** @private */

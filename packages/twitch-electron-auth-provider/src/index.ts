@@ -60,7 +60,10 @@ export default class ElectronAuthProvider implements AuthProvider {
 
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions>);
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowOptions>);
-	constructor(private readonly _clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions> | Options<WindowOptions>) {
+	constructor(
+		private readonly _clientCredentials: TwitchClientCredentials,
+		options?: Options<WindowStyleOptions> | Options<WindowOptions>
+	) {
 		this._options = { ...defaultOptions, ...options };
 	}
 
@@ -77,7 +80,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 			if (typeof scopes === 'string') {
 				scopes = [scopes];
 			} else if (!scopes) {
-				scopes = []
+				scopes = [];
 			}
 
 			if (this._accessToken && scopes.every(scope => this._currentScopes.has(scope))) {
@@ -86,7 +89,9 @@ export default class ElectronAuthProvider implements AuthProvider {
 			}
 
 			const redir = encodeURIComponent(this._clientCredentials.redirectURI);
-			const authUrl = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${this.clientId}&redirect_uri=${redir}&scope=${scopes.join(' ')}`;
+			const authUrl = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${
+				this.clientId
+			}&redirect_uri=${redir}&scope=${scopes.join(' ')}`;
 			const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
 				width: 800,
 				height: 600,
@@ -97,7 +102,9 @@ export default class ElectronAuthProvider implements AuthProvider {
 				}
 			};
 			let done = false;
-			const authWindow = this._options.window || new BrowserWindow(Object.assign(defaultBrowserWindowOptions, this._options.windowOptions));
+			const authWindow =
+				this._options.window ||
+				new BrowserWindow(Object.assign(defaultBrowserWindowOptions, this._options.windowOptions));
 
 			authWindow.webContents.once('did-finish-load', () => authWindow.show());
 
@@ -121,46 +128,49 @@ export default class ElectronAuthProvider implements AuthProvider {
 				});
 			}
 
-			authWindow.webContents.session.webRequest.onBeforeRequest({ urls: [this._clientCredentials.redirectURI] }, (details, callback) => {
-				const url = new URL(details.url);
-				const match = url.origin + url.pathname;
+			authWindow.webContents.session.webRequest.onBeforeRequest(
+				{ urls: [this._clientCredentials.redirectURI] },
+				(details, callback) => {
+					const url = new URL(details.url);
+					const match = url.origin + url.pathname;
 
-				// sometimes, electron seems to intercept too much... we catch this here
-				if (match !== this._clientCredentials.redirectURI) {
-					// the trailing slash might be too much in the pathname
-					if (url.pathname !== '/' || url.origin !== this._clientCredentials.redirectURI) {
-						callback({});
-						return;
+					// sometimes, electron seems to intercept too much... we catch this here
+					if (match !== this._clientCredentials.redirectURI) {
+						// the trailing slash might be too much in the pathname
+						if (url.pathname !== '/' || url.origin !== this._clientCredentials.redirectURI) {
+							callback({});
+							return;
+						}
 					}
-				}
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				const params: any = url.hash ? qs.parse(url.hash.substr(1)) : url.searchParams;
+					// eslint-disable-next-line @typescript-eslint/no-explicit-any
+					const params: any = url.hash ? qs.parse(url.hash.substr(1)) : url.searchParams;
 
-				if (params.error || params.access_token) {
-					done = true;
+					if (params.error || params.access_token) {
+						done = true;
 
-					if (this._options.closeOnLogin) {
-						authWindow.destroy();
+						if (this._options.closeOnLogin) {
+							authWindow.destroy();
+						}
 					}
-				}
 
-				if (params.error) {
-					reject(new Error(`Error received from Twitch: ${params.error}`));
-				} else if (params.access_token) {
-					const accessToken = params.access_token as string;
-					for (const scope of scopes!) {
-						this._currentScopes.add(scope);
+					if (params.error) {
+						reject(new Error(`Error received from Twitch: ${params.error}`));
+					} else if (params.access_token) {
+						const accessToken = params.access_token as string;
+						for (const scope of scopes!) {
+							this._currentScopes.add(scope);
+						}
+						this._accessToken = new AccessToken({
+							access_token: accessToken,
+							scope: this.currentScopes.join(' '),
+							refresh_token: ''
+						});
+						resolve(this._accessToken);
 					}
-					this._accessToken = new AccessToken({
-						access_token: accessToken,
-						scope: this.currentScopes.join(' '),
-						refresh_token: ''
-					});
-					resolve(this._accessToken);
-				}
 
-				callback({ cancel: true });
-			});
+					callback({ cancel: true });
+				}
+			);
 
 			// do this last so there is no race condition
 			authWindow.loadURL(authUrl);

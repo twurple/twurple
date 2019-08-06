@@ -240,7 +240,7 @@ export default class CheermoteList {
 		const re = new RegExp('(?<=^|\\s)([a-z]+)(\\d+)(?=\\s|$)', 'gi');
 		let match: RegExpExecArray | null;
 		// eslint-disable-next-line no-cond-assign
-		while (match = re.exec(message)) {
+		while ((match = re.exec(message))) {
 			const name = match[1].toLowerCase();
 			if (names.includes(name)) {
 				const amount = Number(match[2]);
@@ -263,7 +263,7 @@ export default class CheermoteList {
 	 * @param message The message.
 	 * @param transformer A function that transforms a message part into an arbitrary structure.
 	 */
-	transformCheerMessage<T>(message: string, transformer: (displayInfo: MessageCheermote) => (string | T)) {
+	transformCheerMessage<T>(message: string, transformer: (displayInfo: MessageCheermote) => string | T) {
 		const result: Array<string | T> = [];
 
 		let currentPosition = 0;

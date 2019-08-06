@@ -15,8 +15,7 @@ export type EmoteSetListData = Record<string, Emote[]>;
 @Cacheable
 export default class EmoteSetList {
 	/** @private */
-	constructor(private readonly _data: EmoteSetListData) {
-	}
+	constructor(private readonly _data: EmoteSetListData) {}
 
 	/**
 	 * Finds the emote ID for the given emote code.
@@ -27,7 +26,7 @@ export default class EmoteSetList {
 	findEmoteId(emoteCode: string) {
 		for (const emoteSet of Object.values(this._data)) {
 			for (const emote of emoteSet) {
-				if ((new RegExp(emote.code)).test(emoteCode)) {
+				if (new RegExp(emote.code).test(emoteCode)) {
 					return emote.id;
 				}
 			}

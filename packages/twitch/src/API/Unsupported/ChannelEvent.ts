@@ -96,8 +96,6 @@ export default class ChannelEvent {
 	 * @param height The height of the image.
 	 */
 	buildCoverImageUrl(width: number, height: number) {
-		return this._data.cover_image_url
-			.replace('{width}', width.toString())
-			.replace('{height}', height.toString());
+		return this._data.cover_image_url.replace('{width}', width.toString()).replace('{height}', height.toString());
 	}
 }

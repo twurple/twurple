@@ -114,19 +114,16 @@ export default class HelixPaginatedRequest<D, T> {
 		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
 		this._currentData = result;
 
-		return result.data.reduce(
-			(acc, elem) => {
-				const mapped = this._mapper(elem);
-				return Array.isArray(mapped) ? [...acc, ...mapped] : [...acc, mapped];
-			},
-			[]
-		);
+		return result.data.reduce((acc, elem) => {
+			const mapped = this._mapper(elem);
+			return Array.isArray(mapped) ? [...acc, ...mapped] : [...acc, mapped];
+		}, []);
 	}
 }
 
 if (typeof Symbol === 'function' && typeof Symbol.asyncIterator === 'symbol') {
 	Object.defineProperty(HelixPaginatedRequest.prototype, Symbol.asyncIterator, {
-		value: async function* <D, T>(this: HelixPaginatedRequest<D, T>) {
+		value: async function*<D, T>(this: HelixPaginatedRequest<D, T>) {
 			this.reset();
 			while (true) {
 				const data = await this.getNext();

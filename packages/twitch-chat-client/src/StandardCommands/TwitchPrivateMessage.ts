@@ -32,7 +32,7 @@ class TwitchPrivateMessage extends PrivateMessage {
 
 	get emoteOffsets() {
 		if (!this._tags) {
-			return new Map;
+			return new Map();
 		}
 
 		return parseEmotes(this._tags.get('emotes'));

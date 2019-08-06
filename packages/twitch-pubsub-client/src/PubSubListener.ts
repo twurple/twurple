@@ -6,8 +6,12 @@ import PubSubMessage from './Messages/PubSubMessage';
  */
 export default class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	/** @private */
-	constructor(private readonly _type: string, private readonly _userId: string, private readonly _callback: (message: T) => void, private readonly _client: SingleUserPubSubClient) {
-	}
+	constructor(
+		private readonly _type: string,
+		private readonly _userId: string,
+		private readonly _callback: (message: T) => void,
+		private readonly _client: SingleUserPubSubClient
+	) {}
 
 	/**
 	 * The type of the topic.

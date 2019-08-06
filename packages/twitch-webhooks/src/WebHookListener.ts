@@ -44,11 +44,11 @@ export default class WebHookListener {
 	private readonly _subscriptions = new Map<string, Subscription>();
 
 	static async create(client: TwitchClient, config: WebHookListenerConfig = {}) {
-		const listenerPort = config.port || await portFinder.getPortPromise();
+		const listenerPort = config.port || (await portFinder.getPortPromise());
 		const reverseProxy = config.reverseProxy || {};
 		return new WebHookListener(
 			{
-				hostName: config.hostName || await publicIp.v4(),
+				hostName: config.hostName || (await publicIp.v4()),
 				port: listenerPort,
 				ssl: config.ssl,
 				reverseProxy: {
@@ -61,8 +61,10 @@ export default class WebHookListener {
 		);
 	}
 
-	private constructor(private readonly _config: WebHookListenerComputedConfig, /** @private */ readonly _twitchClient: TwitchClient) {
-	}
+	private constructor(
+		private readonly _config: WebHookListenerComputedConfig,
+		/** @private */ readonly _twitchClient: TwitchClient
+	) {}
 
 	listen() {
 		if (this._server) {
@@ -77,9 +79,13 @@ export default class WebHookListener {
 		} else {
 			this._server = polka();
 		}
-		this._server.add('GET', '/:id', (req, res) => { this._handleVerification(req, res); });
+		this._server.add('GET', '/:id', (req, res) => {
+			this._handleVerification(req, res);
+		});
 		// tslint:disable-next-line:no-floating-promises
-		this._server.add('POST', '/:id', (req, res) => { this._handleNotification(req, res); });
+		this._server.add('POST', '/:id', (req, res) => {
+			this._handleNotification(req, res);
+		});
 		this._server.listen(this._config.port);
 
 		for (const sub of [...this._subscriptions.values()]) {
@@ -117,7 +123,11 @@ export default class WebHookListener {
 		return `${protocol}://${hostName}${pathPrefix ? '/' : ''}${pathPrefix}/${id}`;
 	}
 
-	async subscribeToUserChanges(user: UserIdResolvable, handler: (user: HelixUser) => void, withEmail: boolean = false) {
+	async subscribeToUserChanges(
+		user: UserIdResolvable,
+		handler: (user: HelixUser) => void,
+		withEmail: boolean = false
+	) {
 		const userId = extractUserId(user);
 
 		const subscription = new UserChangeSubscription(userId, handler, withEmail, this);

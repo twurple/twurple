@@ -25,7 +25,7 @@ import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
  */
 @Cacheable
 export default class UserAPI extends BaseAPI {
-	private readonly _userByNameCache: Map<string, CacheEntry<User>> = new Map;
+	private readonly _userByNameCache: Map<string, CacheEntry<User>> = new Map();
 
 	/**
 	 * Retrieves the user data of the currently authenticated user.
@@ -89,10 +89,12 @@ export default class UserAPI extends BaseAPI {
 		}
 		const usersData = await this._client.callAPI({ url: 'users', query: { login: toFetch.join(',') } });
 		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
-		usersArr.forEach(user => this._userByNameCache.set(user.name, {
-			value: user,
-			expires: Date.now() + 3600 * 1000
-		}));
+		usersArr.forEach(user =>
+			this._userByNameCache.set(user.name, {
+				value: user,
+				expires: Date.now() + 3600 * 1000
+			})
+		);
 		const users = indexBy(usersArr, 'name');
 
 		return { ...cachedUsers, ...users };
@@ -155,8 +157,10 @@ export default class UserAPI extends BaseAPI {
 	@Cached(300)
 	async getFollowedChannels(
 		user: UserIdResolvable,
-		page?: number, limit: number = 25,
-		orderBy?: string, orderDirection?: 'asc' | 'desc'
+		page?: number,
+		limit: number = 25,
+		orderBy?: string,
+		orderDirection?: 'asc' | 'desc'
 	): Promise<UserFollow[]> {
 		const userId = extractUserId(user);
 		const query: Record<string, string> = {};
@@ -176,7 +180,8 @@ export default class UserAPI extends BaseAPI {
 		}
 
 		const data = await this._client.callAPI({
-			url: `users/${userId}/follows/channels`, query
+			url: `users/${userId}/follows/channels`,
+			query
 		});
 
 		return data.follows.map((follow: UserFollowData) => new UserFollow(follow, this._client));
@@ -262,7 +267,9 @@ export default class UserAPI extends BaseAPI {
 		}
 
 		const data = await this._client.callAPI({
-			url: `users/${userId}/blocks`, query, scope: 'user_blocks_read'
+			url: `users/${userId}/blocks`,
+			query,
+			scope: 'user_blocks_read'
 		});
 
 		return data.blocks.map((block: UserBlockData) => new UserBlock(block, this._client));

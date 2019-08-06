@@ -102,7 +102,7 @@ export default class PubSubSubscriptionMessage {
 	 */
 	async getGifter() {
 		if (!this.isGift) {
-			throw new TypeError('Trying to get the gifter of a subscription that\'s not a gift');
+			throw new TypeError("Trying to get the gifter of a subscription that's not a gift");
 		}
 
 		return this._twitchClient.helix.users.getUserById(this.gifterId!);

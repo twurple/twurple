@@ -40,9 +40,12 @@ export default class StreamAPI extends BaseAPI {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	async getStreams(
-		channels?: string | string[], game?: string, languageCode?: string,
+		channels?: string | string[],
+		game?: string,
+		languageCode?: string,
 		type?: StreamType,
-		page?: number, limit: number = 25
+		page?: number,
+		limit: number = 25
 	) {
 		const query: Record<string, string> = { limit: limit.toString() };
 
@@ -110,7 +113,11 @@ export default class StreamAPI extends BaseAPI {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.callAPI<{ streams: StreamData[] }>({ url: 'streams/followed', query, scope: 'user_read' });
+		const data = await this._client.callAPI<{ streams: StreamData[] }>({
+			url: 'streams/followed',
+			query,
+			scope: 'user_read'
+		});
 
 		return data.streams.map(streamData => new Stream(streamData, this._client));
 	}

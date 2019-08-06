@@ -74,7 +74,8 @@ export default class HelixWebHooksAPI extends BaseAPI {
 				url: 'webhooks/subscriptions'
 			},
 			this._client,
-			(data: HelixWebHookSubscriptionData) => new HelixWebHookSubscription(data, this._client));
+			(data: HelixWebHookSubscriptionData) => new HelixWebHookSubscription(data, this._client)
+		);
 	}
 
 	/**
@@ -180,7 +181,11 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 * @param options
 	 * @param withEmail Whether to subscribe to email address changes. This adds the necessary scope to read the email address to the request.
 	 */
-	async subscribeToUserChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions, withEmail: boolean = false) {
+	async subscribeToUserChanges(
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions,
+		withEmail: boolean = false
+	) {
 		return this._sendUserChangeHubRequest('subscribe', user, options, withEmail);
 	}
 
@@ -196,7 +201,12 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		return this._sendUserChangeHubRequest('unsubscribe', user, options);
 	}
 
-	private async _sendUserFollowsHubRequest(mode: HubMode, direction: 'from' | 'to', user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	private async _sendUserFollowsHubRequest(
+		mode: HubMode,
+		direction: 'from' | 'to',
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	) {
 		const userId = extractUserId(user);
 
 		return this.sendHubRequest({
@@ -206,7 +216,11 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		});
 	}
 
-	private async _sendStreamChangeHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	private async _sendStreamChangeHubRequest(
+		mode: HubMode,
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	) {
 		const userId = extractUserId(user);
 
 		return this.sendHubRequest({
@@ -216,7 +230,12 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		});
 	}
 
-	private async _sendUserChangeHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions, withEmail: boolean = false) {
+	private async _sendUserChangeHubRequest(
+		mode: HubMode,
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions,
+		withEmail: boolean = false
+	) {
 		const userId = extractUserId(user);
 
 		return this.sendHubRequest({

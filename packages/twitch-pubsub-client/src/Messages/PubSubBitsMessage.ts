@@ -8,7 +8,8 @@ export interface PubSubBitsMessageBadgeEntitlement {
 	new_version: number;
 }
 
-export interface PubSubBitsMessageContent extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
+export interface PubSubBitsMessageContent
+	extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
 	chat_message: string;
 	bits_used: number;
 	total_bits_used: number;

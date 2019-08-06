@@ -24,7 +24,10 @@ export default class PubSubClient {
 			userId = tokenInfo.userId;
 		}
 
-		this._userClients.set(userId, new SingleUserPubSubClient({ twitchClient: twitchClient, pubSubClient: this._rootClient }));
+		this._userClients.set(
+			userId,
+			new SingleUserPubSubClient({ twitchClient: twitchClient, pubSubClient: this._rootClient })
+		);
 	}
 
 	getUserListener(user: UserIdResolvable) {
@@ -51,7 +54,11 @@ export default class PubSubClient {
 		return this.getUserListener(user).onWhisper(callback);
 	}
 
-	async onModAction(user: UserIdResolvable, channel: UserIdResolvable, callback: (message: PubSubChatModActionMessage) => void) {
+	async onModAction(
+		user: UserIdResolvable,
+		channel: UserIdResolvable,
+		callback: (message: PubSubChatModActionMessage) => void
+	) {
 		return this.getUserListener(user).onModAction(channel, callback);
 	}
 }

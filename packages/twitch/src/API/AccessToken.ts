@@ -48,7 +48,7 @@ export default class AccessToken {
 		if (!this._data.expires_in) {
 			return false;
 		}
-		return Date.now() > (this._obtainmentDate.getTime() + this._data.expires_in * 1000);
+		return Date.now() > this._obtainmentDate.getTime() + this._data.expires_in * 1000;
 	}
 
 	/**

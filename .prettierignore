@@ -1,0 +1,6 @@
+/packages/*/lib
+/packages/*/generatedDocs
+/packages/*/LICENSE
+*.sh
+*.md
+package.json

@@ -57,7 +57,10 @@ export default class ChannelAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getMyChannel() {
-		return new PrivilegedChannel(await this._client.callAPI({ url: 'channel', scope: 'channel_read' }), this._client);
+		return new PrivilegedChannel(
+			await this._client.callAPI({ url: 'channel', scope: 'channel_read' }),
+			this._client
+		);
 	}
 
 	/**
@@ -113,7 +116,8 @@ export default class ChannelAPI extends BaseAPI {
 	@Cached(30)
 	async getChannelFollowers(
 		channel: UserIdResolvable,
-		page?: number, limit: number = 25,
+		page?: number,
+		limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
 	): Promise<ChannelFollow[]> {
 		const channelId = extractUserId(channel);
@@ -145,7 +149,8 @@ export default class ChannelAPI extends BaseAPI {
 	@Cached(30)
 	async getChannelSubscriptions(
 		channel: UserIdResolvable,
-		page?: number, limit: number = 25,
+		page?: number,
+		limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
 	): Promise<ChannelSubscription[]> {
 		const data = await this._getChannelSubscriptions(channel, page, limit, orderDirection);
@@ -235,7 +240,8 @@ export default class ChannelAPI extends BaseAPI {
 
 	private async _getChannelSubscriptions(
 		channel: UserIdResolvable,
-		page?: number, limit: number = 25,
+		page?: number,
+		limit: number = 25,
 		orderDirection?: 'asc' | 'desc'
 	): Promise<ChannelSubscriptionsResponse> {
 		const channelId = extractUserId(channel);

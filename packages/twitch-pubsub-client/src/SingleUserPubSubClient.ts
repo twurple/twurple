@@ -3,7 +3,9 @@ import BasicPubSubClient from './BasicPubSubClient';
 import { NonEnumerable } from './Toolkit/Decorators';
 import PubSubListener from './PubSubListener';
 import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
-import PubSubBitsBadgeUnlockMessage, { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
+import PubSubBitsBadgeUnlockMessage, {
+	PubSubBitsBadgeUnlockMessageData
+} from './Messages/PubSubBitsBadgeUnlockMessage';
 import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
@@ -37,7 +39,7 @@ export default class SingleUserPubSubClient {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
 	@NonEnumerable private readonly _pubSubClient: BasicPubSubClient;
 
-	private readonly _listeners: Map<string, PubSubListener[]> = new Map;
+	private readonly _listeners: Map<string, PubSubListener[]> = new Map();
 
 	/**
 	 * Creates a new Twitch PubSub client.
@@ -57,15 +59,25 @@ export default class SingleUserPubSubClient {
 						break;
 					}
 					case 'channel-bits-badge-unlocks': {
-						message = new PubSubBitsBadgeUnlockMessage(messageData as PubSubBitsBadgeUnlockMessageData, this._twitchClient);
+						message = new PubSubBitsBadgeUnlockMessage(
+							messageData as PubSubBitsBadgeUnlockMessageData,
+							this._twitchClient
+						);
 						break;
 					}
 					case 'channel-subscribe-events-v1': {
-						message = new PubSubSubscriptionMessage(messageData as PubSubSubscriptionMessageData, this._twitchClient);
+						message = new PubSubSubscriptionMessage(
+							messageData as PubSubSubscriptionMessageData,
+							this._twitchClient
+						);
 						break;
 					}
 					case 'chat_moderator_actions': {
-						message = new PubSubChatModActionMessage(messageData as PubSubChatModActionMessageData, args[1], this._twitchClient);
+						message = new PubSubChatModActionMessage(
+							messageData as PubSubChatModActionMessageData,
+							args[1],
+							this._twitchClient
+						);
 						break;
 					}
 					case 'whispers': {
@@ -179,7 +191,12 @@ export default class SingleUserPubSubClient {
 		return { userId, accessToken };
 	}
 
-	private async _addListener<T extends PubSubMessage>(type: string, callback: (message: T) => void, scope?: string, ...additionalParams: string[]) {
+	private async _addListener<T extends PubSubMessage>(
+		type: string,
+		callback: (message: T) => void,
+		scope?: string,
+		...additionalParams: string[]
+	) {
 		await this._pubSubClient.connect();
 		const { userId, accessToken } = await this._getUserData(scope);
 		const listener = new PubSubListener(type, userId, callback, this);

@@ -95,7 +95,7 @@ export default class ChannelPlaceholder {
 	 */
 	async hasSubscriber(user: UserIdResolvable) {
 		try {
-			return await this.getSubscriptionBy(user) !== null;
+			return (await this.getSubscriptionBy(user)) !== null;
 		} catch (e) {
 			if (e instanceof NoSubscriptionProgramError) {
 				return false;

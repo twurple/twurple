@@ -6,17 +6,19 @@ export interface TokenAuthorization {
 }
 
 /** @private */
-export type TokenStructure = {
-	valid: true;
-	authorization: TokenAuthorization;
-	user_name: string;
-	user_id: string;
-	client_id: string;
-	expires_in?: number;
-} | {
-	valid: false;
-	authorization: null;
-};
+export type TokenStructure =
+	| {
+			valid: true;
+			authorization: TokenAuthorization;
+			user_name: string;
+			user_id: string;
+			client_id: string;
+			expires_in?: number;
+	  }
+	| {
+			valid: false;
+			authorization: null;
+	  };
 
 /** @private */
 export interface TokenInfoData {

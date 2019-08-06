@@ -20,7 +20,11 @@ export default class PubSubChatModActionMessage {
 	@NonEnumerable private readonly _twitchClient: TwitchClient;
 
 	/** @private */
-	constructor(private readonly _data: PubSubChatModActionMessageData, private readonly _channelId: string, twitchClient: TwitchClient) {
+	constructor(
+		private readonly _data: PubSubChatModActionMessageData,
+		private readonly _channelId: string,
+		twitchClient: TwitchClient
+	) {
 		this._twitchClient = twitchClient;
 	}
 

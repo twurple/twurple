@@ -35,7 +35,9 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * @param topic The name of the topic.
 	 * @param message The message data.
 	 */
-	readonly onMessage: (handler: (topic: string, message: PubSubMessageData) => void) => Listener = this.registerEvent();
+	readonly onMessage: (
+		handler: (topic: string, message: PubSubMessageData) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when the client finishes establishing a connection to the PubSub server.
@@ -218,18 +220,15 @@ export default class BasicPubSubClient extends EventEmitter {
 	}
 
 	private async _resendListens() {
-		const topicsByToken = Array.from(this._topics.entries()).reduce(
-			(result, [topic, token]) => {
-				if (result.has(token)) {
-					result.get(token)!.push(topic);
-				} else {
-					result.set(token, [topic]);
-				}
+		const topicsByToken = Array.from(this._topics.entries()).reduce((result, [topic, token]) => {
+			if (result.has(token)) {
+				result.get(token)!.push(topic);
+			} else {
+				result.set(token, [topic]);
+			}
 
-				return result;
-			},
-			new Map<string | undefined, string[]>()
-		);
+			return result;
+		}, new Map<string | undefined, string[]>());
 		return Promise.all(
 			Array.from(topicsByToken.entries()).map(async ([token, topics]) => this._sendListen(topics, token))
 		);
@@ -237,7 +236,9 @@ export default class BasicPubSubClient extends EventEmitter {
 
 	private async _sendNonced<T extends PubSubNoncedOutgoingPacket>(packet: T) {
 		return new Promise<void>((resolve, reject) => {
-			const nonce = Math.random().toString(16).slice(2);
+			const nonce = Math.random()
+				.toString(16)
+				.slice(2);
 
 			this._onResponse((recvNonce, error) => {
 				if (recvNonce === nonce) {
@@ -278,7 +279,9 @@ export default class BasicPubSubClient extends EventEmitter {
 				break;
 			}
 			default: {
-				this._logger.warn(`PubSub connection received unexpected message type: ${(data as PubSubIncomingPacket).type}`);
+				this._logger.warn(
+					`PubSub connection received unexpected message type: ${(data as PubSubIncomingPacket).type}`
+				);
 			}
 		}
 	}
@@ -301,14 +304,11 @@ export default class BasicPubSubClient extends EventEmitter {
 			}
 			this.removeListener(pongListener);
 		});
-		this._pingTimeoutTimer = setTimeout(
-			async () => {
-				this._logger.err('Ping timeout');
-				this.removeListener(pongListener);
-				return this.reconnect();
-			},
-			10000
-		);
+		this._pingTimeoutTimer = setTimeout(async () => {
+			this._logger.err('Ping timeout');
+			this.removeListener(pongListener);
+			return this.reconnect();
+		}, 10000);
 		this._sendPacket({ type: 'PING' });
 	}
 
@@ -330,14 +330,11 @@ export default class BasicPubSubClient extends EventEmitter {
 		if (this._pingCheckTimer) {
 			clearInterval(this._pingCheckTimer);
 		}
-		this._pingCheckTimer = setInterval(
-			() => this._pingCheck(),
-			60000
-		);
+		this._pingCheckTimer = setInterval(() => this._pingCheck(), 60000);
 	}
 
 	// yes, this is just fibonacci with a limit
-	private static * _getReconnectWaitTime(): IterableIterator<number> {
+	private static *_getReconnectWaitTime(): IterableIterator<number> {
 		let current = 0;
 		let next = 1;
 

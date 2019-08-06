@@ -13,8 +13,7 @@ export interface ChattersListData {
 @Cacheable
 export default class ChattersList {
 	/** @private */
-	constructor(private readonly _data: ChattersListData) {
-	}
+	constructor(private readonly _data: ChattersListData) {}
 
 	/**
 	 * A list of user names of all chatters in the chat.
@@ -29,6 +28,12 @@ export default class ChattersList {
 	 */
 	@CachedGetter()
 	get allChattersWithStatus() {
-		return new Map(flatten(Object.entries(this._data.chatters).map(([status, names]) => names.map<[string, string]>(name => [name, status]))));
+		return new Map(
+			flatten(
+				Object.entries(this._data.chatters).map(([status, names]) =>
+					names.map<[string, string]>(name => [name, status])
+				)
+			)
+		);
 	}
 }

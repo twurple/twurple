@@ -1,5 +1,5 @@
 declare module 'polka' {
-	import * as  Router from 'trouter';
+	import * as Router from 'trouter';
 	import * as http from 'http';
 	import * as https from 'https';
 	import * as net from 'net';
