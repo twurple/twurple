@@ -9,7 +9,7 @@
     "url": "https://github.com/d-fischer/twitch.git",
     "directory": "packages/twitch-webhooks"
   },
-  "author": "Daniel Fischer <fischer.daniel94@gmail.com>",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
     "@types/public-ip": "^2.4.0",
