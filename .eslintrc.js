@@ -65,7 +65,12 @@ module.exports = {
 		'@typescript-eslint/no-useless-constructor': 'error',
 		'@typescript-eslint/prefer-function-type': 'error',
 		'@typescript-eslint/prefer-interface': 'error',
-		'@typescript-eslint/promise-function-async': 'error',
+		'@typescript-eslint/promise-function-async': [
+			'error',
+			{
+				'allowAny': true
+			}
+		],
 		'@typescript-eslint/restrict-plus-operands': 'error',
 		// in master, but not released yet!
 		// '@typescript-eslint/typedef': 'error',
