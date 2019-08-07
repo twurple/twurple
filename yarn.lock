@@ -5208,10 +5208,10 @@ ipaddr.js@1.9.0, ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
   integrity sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
 
-ircv3@^0.18.2:
-  version "0.18.2"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.18.2.tgz#4e23c323b78137db02116d8f4ddd49b5680265fa"
-  integrity sha512-v4HwJZuDgGtAXGavLRuWW3E7oOm6ylp3pB+XYob47mjal1vgg8N3b7+nLyEIMPa7kkLpovLy7nARKi/iOgbcug==
+ircv3@^0.18.4:
+  version "0.18.4"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.18.4.tgz#b9475ec33d15a2e187978c52d53f4c66efeadc09"
+  integrity sha512-iP5LR55Bd7wXNyyOqfXiN9I+AH9zh2hy2Fez85kNY9aOWrZeWrpAqjHfUNNyKp/Ak6BP2q/o4KVcnQSxPe7bYA==
   dependencies:
     "@d-fischer/logger" "^0.1.1"
     "@d-fischer/typed-event-emitter" "^2.0.0"
