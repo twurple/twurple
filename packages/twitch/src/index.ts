@@ -1,8 +1,8 @@
 /* eslint-disable filenames/match-exported */
-import TwitchClient, { TwitchAPICallType } from './TwitchClient';
+import TwitchClient, { TwitchAPICallType, TwitchAPICallOptions } from './TwitchClient';
 
 export default TwitchClient;
-export { TwitchAPICallType };
+export { TwitchAPICallType, TwitchAPICallOptions };
 
 import ConfigError from './Errors/ConfigError';
 import HellFreezesOverError from './Errors/HellFreezesOverError';
