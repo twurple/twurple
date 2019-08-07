@@ -1311,6 +1311,13 @@
     "@types/uglify-js" "*"
     source-map "^0.6.0"
 
+"@types/ws@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-3.0.0.tgz#4682a04d385484e73f7d8275cabc8b672d66143c"
+  integrity sha512-izHR5cQvRE6nG828CkNd3pOCIjwZ/poOhxeeLyBWyRoXBDZ2qSA7iEHwp7XFnq7seJk9APpm8iJBau4fAhDY0Q==
+  dependencies:
+    "@types/node" "*"
+
 "@types/ws@^4.0.0":
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-4.0.2.tgz#b29037627dd7ba31ec49a4f1584840422efb856f"
@@ -5201,15 +5208,17 @@ ipaddr.js@1.9.0, ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.0.tgz#37df74e430a0e47550fe54a2defe30d8acd95f65"
   integrity sha512-M4Sjn6N/+O6/IXSJseKqHoFc+5FdGJ22sXqnjTpdZweHK64MzEPAyQZyEU3R/KRv2GLoa7nNtg/C2Ev6m7z+eA==
 
-ircv3@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.18.0.tgz#58d506649beff0e68ad747aaf2b392cc9e53d239"
-  integrity sha512-09/U0FhMPITCLYh4VP4WEPi8OvuJvg1NezlZeSB4J/NFQ591Ea2ML4elmafcl01RoO9Fpf2h7vPUHY/E/amWbA==
+ircv3@^0.18.2:
+  version "0.18.2"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.18.2.tgz#4e23c323b78137db02116d8f4ddd49b5680265fa"
+  integrity sha512-v4HwJZuDgGtAXGavLRuWW3E7oOm6ylp3pB+XYob47mjal1vgg8N3b7+nLyEIMPa7kkLpovLy7nARKi/iOgbcug==
   dependencies:
     "@d-fischer/logger" "^0.1.1"
     "@d-fischer/typed-event-emitter" "^2.0.0"
     "@types/clone" "^0.1.30"
     "@types/escape-string-regexp" "0.0.30"
+    "@types/node" "^8.0.19"
+    "@types/ws" "3.0.0"
     clone "^2.1.2"
     escape-string-regexp "^1.0.5"
     universal-websocket-client "^1.0.1"

@@ -1,8 +1,9 @@
 import Logger, { LogLevel } from '@d-fischer/logger';
 import { Listener } from '@d-fischer/typed-event-emitter';
 import IRCClient from 'ircv3';
-import { ChannelJoin, ChannelPart, Notice } from 'ircv3/lib/Message/MessageTypes/Commands/';
+import { ChannelJoin, ChannelPart, Notice, PrivateMessage } from 'ircv3/lib/Message/MessageTypes/Commands/';
 import TwitchClient from 'twitch';
+import { CommercialLength } from 'twitch/lib/API/Kraken/Channel/ChannelAPI';
 import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
 import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import HostTarget from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -19,6 +20,8 @@ import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
 import ChatRaidInfo from './UserNotices/ChatRaidInfo';
 import ChatRitualInfo from './UserNotices/ChatRitualInfo';
 import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
+
+const GENERIC_CHANNEL = 'twjs';
 
 /**
  * Options for a chat client.
@@ -386,6 +389,9 @@ export default class ChatClient extends IRCClient {
 	private readonly _onCommercialResult: (
 		handler: (channel: string, error?: string) => void
 	) => Listener = this.registerEvent();
+	private readonly _onDeleteMessageResult: (
+		handler: (channel: string, error?: string) => void
+	) => Listener = this.registerEvent();
 	private readonly _onEmoteOnlyResult: (
 		handler: (channel: string, error?: string) => void
 	) => Listener = this.registerEvent();
@@ -433,6 +439,15 @@ export default class ChatClient extends IRCClient {
 	) => Listener = this.registerEvent();
 	private readonly _onSubsOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
+	) => Listener = this.registerEvent();
+	private readonly _onVipResult: (
+		handler: (channel: string, user: string, error?: string) => void
+	) => Listener = this.registerEvent();
+	private readonly _onUnvipResult: (
+		handler: (channel: string, user: string, error?: string) => void
+	) => Listener = this.registerEvent();
+	private readonly _onVipsResult: (
+		handler: (channel: string, vips?: string[], error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onIntermediateAuthenticationFailure: (
 		handler: (message: string) => void
@@ -798,6 +813,19 @@ export default class ChatClient extends IRCClient {
 					break;
 				}
 
+				// delete message
+				case 'bad_delete_message_error':
+				case 'bad_delete_message_broadcaster':
+				case 'bad_delete_message_mod': {
+					this.emit(this._onDeleteMessageResult, channel, messageType);
+					break;
+				}
+
+				case 'delete_message_success': {
+					this.emit(this._onDeleteMessageResult, channel);
+					break;
+				}
+
 				// emote only
 				case 'already_emote_only_on': {
 					this.emit(this._onEmoteOnlyResult, channel, messageType);
@@ -983,6 +1011,56 @@ export default class ChatClient extends IRCClient {
 					break;
 				}
 
+				// vip
+				case 'bad_vip_grantee_banned':
+				case 'bad_vip_grantee_already_vip': {
+					const match = message.split(' ');
+					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					if (user) {
+						this.emit(this._onVipResult, channel, user, messageType);
+					}
+					break;
+				}
+
+				case 'vip_success': {
+					const match = message.match(/^You have added (\w+) /);
+					if (match) {
+						this.emit(this._onVipResult, channel, match[1]);
+					}
+					break;
+				}
+
+				// unvip
+				case 'bad_unvip_grantee_not_vip': {
+					const match = message.split(' ');
+					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					if (user) {
+						this.emit(this._onUnvipResult, channel, user, messageType);
+					}
+					break;
+				}
+
+				case 'unvip_success': {
+					const match = message.match(/^You have removed (\w+) /);
+					if (match) {
+						this.emit(this._onUnvipResult, channel, match[1]);
+					}
+					break;
+				}
+
+				// vips
+				case 'no_vips': {
+					this.emit(this._onVipsResult, channel, []);
+					break;
+				}
+
+				case 'vips_success': {
+					const [, vipList] = message.split(': ');
+					const vips = vipList.split(', ');
+					this.emit(this._onVipsResult, channel, vips);
+					break;
+				}
+
 				case 'cmds_available': {
 					// do we really care?
 					break;
@@ -1102,6 +1180,7 @@ export default class ChatClient extends IRCClient {
 		await super.connect();
 	}
 
+	// TODO swap arguments in 4.0
 	/**
 	 * Hosts a channel on another channel.
 	 *
@@ -1165,6 +1244,515 @@ export default class ChatClient extends IRCClient {
 	}
 
 	/**
+	 * Bans a user from a channel.
+	 *
+	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
+	 *
+	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
+	 * @param user The user to ban from the channel.
+	 * @param reason The reason for the ban.
+	 */
+	async ban(channel: string = this._credentials.nick, user: string, reason: string = '') {
+		channel = toUserName(channel);
+		user = toUserName(user);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onBanResult((_channel, _user, error) => {
+				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/ban ${user} ${reason}`);
+		});
+	}
+
+	/**
+	 * Clears all messages in a channel.
+	 *
+	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
+	 *
+	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
+	 */
+	async clear(channel: string = this._credentials.nick) {
+		channel = toUserName(channel);
+		return new Promise<void>(resolve => {
+			const e = this.onChatClear(_channel => {
+				if (toUserName(_channel) === channel) {
+					resolve();
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/clear');
+		});
+	}
+
+	/**
+	 * Changes your username color.
+	 *
+	 * @param color The hexadecimal code (prefixed with #) or color name to use for your username.
+	 *
+	 * Please note that only Twitch Turbo or Prime users can use hexadecimal codes for arbitrary colors.
+	 *
+	 * If you have neither of those, you can only choose from the following color names:
+	 *
+	 * Blue, BlueViolet, CadetBlue, Chocolate, Coral, DodgerBlue, Firebrick, GoldenRod, Green, HotPink, OrangeRed, Red, SeaGreen, SpringGreen, YellowGreen
+	 */
+	async changeColor(color: string) {
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onColorResult(error => {
+				if (error) {
+					reject(error);
+				} else {
+					resolve();
+				}
+				this.removeListener(e);
+			});
+			this.say(GENERIC_CHANNEL, `/color ${color}`);
+		});
+	}
+
+	/**
+	 * Runs a commercial break on a channel.
+	 *
+	 * @param channel The channel to run the commercial break on.
+	 * @param duration The duration of the commercial break.
+	 */
+	async runCommercial(channel: string, duration: CommercialLength) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onCommercialResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/commercial ${duration}`);
+		});
+	}
+
+	/**
+	 * Deletes a message from a channel.
+	 *
+	 * @param channel The channel to delete the message from.
+	 * @param message The message (as message ID or message object) to delete.
+	 */
+	async deleteMessage(channel: string, message: string | PrivateMessage) {
+		channel = toUserName(channel);
+		const messageId = message instanceof PrivateMessage ? message.tags.get('id') : message;
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onDeleteMessageResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/delete ${messageId}`);
+		});
+	}
+
+	/**
+	 * Enables emote-only mode in a channel.
+	 *
+	 * @param channel The channel to enable emote-only mode in.
+	 */
+	async enableEmoteOnly(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onEmoteOnlyResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/emoteonly');
+		});
+	}
+
+	/**
+	 * Disables emote-only mode in a channel.
+	 *
+	 * @param channel The channel to disable emote-only mode in.
+	 */
+	async disableEmoteOnly(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onEmoteOnlyOffResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/emoteonlyoff');
+		});
+	}
+
+	/**
+	 * Enables followers-only mode in a channel.
+	 *
+	 * @param channel The channel to enable followers-only mode in.
+	 * @param delay The time (in minutes) a user needs to be following before being able to send messages.
+	 */
+	async enableFollowersOnly(channel: string, delay: number = 0) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onFollowersOnlyResult((_channel, _delay, error) => {
+				if (toUserName(_channel) === channel && _delay === delay) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/followers ${delay || ''}`);
+		});
+	}
+
+	/**
+	 * Disables followers-only mode in a channel.
+	 *
+	 * @param channel The channel to disable followers-only mode in.
+	 */
+	async disableFollowersOnly(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onFollowersOnlyOffResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/followersoff');
+		});
+	}
+
+	/**
+	 * Gives a user moderator rights in a channel.
+	 *
+	 * @param channel The channel to give the user moderator rights in.
+	 * @param user The user to give moderator rights.
+	 */
+	async mod(channel: string, user: string) {
+		channel = toUserName(channel);
+		user = toUserName(user);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onModResult((_channel, _user, error) => {
+				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/mod ${user}`);
+		});
+	}
+
+	/**
+	 * Takes moderator rights from a user in a channel.
+	 *
+	 * @param channel The channel to remove the user's moderator rights in.
+	 * @param user The user to take moderator rights from.
+	 */
+	async unmod(channel: string, user: string) {
+		channel = toUserName(channel);
+		user = toUserName(user);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onUnmodResult((_channel, _user, error) => {
+				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/unmod ${user}`);
+		});
+	}
+
+	/**
+	 * Retrieves a list of moderators in a channel.
+	 *
+	 * @param channel The channel to retrieve the moderators of.
+	 */
+	async getMods(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<string[]>(resolve => {
+			const e = this._onModsResult((_channel, mods) => {
+				if (toUserName(_channel) === channel) {
+					resolve(mods);
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/mods');
+		});
+	}
+
+	/**
+	 * Enables r9k mode in a channel.
+	 *
+	 * @param channel The channel to enable r9k mode in.
+	 */
+	async enableR9k(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onR9kResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/r9kbeta');
+		});
+	}
+
+	/**
+	 * Disables r9k mode in a channel.
+	 *
+	 * @param channel The channel to disable r9k mode in.
+	 */
+	async disableR9k(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onR9kOffResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/r9kbetaoff');
+		});
+	}
+
+	/**
+	 * Enables slow mode in a channel.
+	 *
+	 * @param channel The channel to enable slow mode in.
+	 * @param delay The time (in seconds) a user needs to wait between messages.
+	 */
+	async enableSlow(channel: string, delay: number) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onSlowResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/slow');
+		});
+	}
+
+	/**
+	 * Disables slow mode in a channel.
+	 *
+	 * @param channel The channel to disable slow mode in.
+	 */
+	async disableSlow(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onSlowOffResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/slowoff');
+		});
+	}
+
+	/**
+	 * Enables subscribers-only mode in a channel.
+	 *
+	 * @param channel The channel to enable subscribers-only mode in.
+	 */
+	async enableSubsOnly(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onSubsOnlyResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/subscribers');
+		});
+	}
+
+	/**
+	 * Disables subscribers-only mode in a channel.
+	 *
+	 * @param channel The channel to disable subscribers-only mode in.
+	 */
+	async disableSubsOnly(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onSubsOnlyOffResult((_channel, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/subscribersoff');
+		});
+	}
+
+	/**
+	 * Times out a user in a channel and removes all their messages.
+	 *
+	 * @param channel The channel to time out the user in.
+	 * @param user The user to time out.
+	 * @param duration The time (in seconds) until the user can send messages again. Defaults to 1 minute.
+	 * @param reason
+	 */
+	async timeout(channel: string, user: string, duration: number = 60, reason: string = '') {
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onTimeoutResult((_channel, _user, error) => {
+				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/timeout ${user} ${duration} ${reason}`);
+		});
+	}
+
+	/**
+	 * Removes all messages of a user from a channel.
+	 *
+	 * @param channel The channel to purge the user's messages from.
+	 * @param user The user to purge.
+	 * @param reason The reason for the purge.
+	 */
+	async purge(channel: string, user: string, reason: string = '') {
+		return this.timeout(channel, user, 1, reason);
+	}
+
+	/**
+	 * Gives a user VIP status in a channel.
+	 *
+	 * @param channel The channel to give the user VIP status in.
+	 * @param user The user to give VIP status.
+	 */
+	async addVIP(channel: string, user: string) {
+		channel = toUserName(channel);
+		user = toUserName(user);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onVipResult((_channel, _user, error) => {
+				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/vip ${user}`);
+		});
+	}
+
+	/**
+	 * Takes VIP status from a user in a channel.
+	 *
+	 * @param channel The channel to remove the user's VIP status in.
+	 * @param user The user to take VIP status from.
+	 */
+	async removeVIP(channel: string, user: string) {
+		channel = toUserName(channel);
+		user = toUserName(user);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onUnvipResult((_channel, _user, error) => {
+				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/unvip ${user}`);
+		});
+	}
+
+	/**
+	 * Retrieves a list of moderators in a channel.
+	 *
+	 * @param channel The channel to retrieve the moderators of.
+	 */
+	async getVIPs(channel: string) {
+		channel = toUserName(channel);
+		return new Promise<string[]>(resolve => {
+			const e = this._onVipsResult((_channel, vips) => {
+				if (toUserName(_channel) === channel) {
+					resolve(vips);
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, '/vips');
+		});
+	}
+
+	/**
 	 * Sends a message to a channel.
 	 *
 	 * @param channel The channel to send the message to.
@@ -1172,6 +1760,16 @@ export default class ChatClient extends IRCClient {
 	 */
 	say(channel: string, message: string) {
 		super.say(toChannelName(channel), message);
+	}
+
+	/**
+	 * Sends an action message (/me) to a channel.
+	 *
+	 * @param channel The channel to send the message to.
+	 * @param message The message to send.
+	 */
+	action(channel: string, message: string) {
+		super.action(toChannelName(channel), message);
 	}
 
 	/**
