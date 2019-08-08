@@ -25,6 +25,7 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 	async getSubscriptions(broadcaster: UserIdResolvable): Promise<HelixPaginatedResult<HelixSubscription>> {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
+			scope: 'channel:read:subscriptions',
 			query: {
 				broadcaster_id: extractUserId(broadcaster)
 			}
@@ -45,6 +46,7 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 		return new HelixPaginatedRequest(
 			{
 				url: 'subscriptions',
+				scope: 'channel:read:subscriptions',
 				query: {
 					broadcaster_id: extractUserId(broadcaster)
 				}
@@ -63,6 +65,7 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 	async getSubscriptionsForUsers(broadcaster: UserIdResolvable, users: UserIdResolvable[]) {
 		const result = await this._client.callAPI<HelixResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
+			scope: 'channel:read:subscriptions',
 			type: TwitchAPICallType.Helix,
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
