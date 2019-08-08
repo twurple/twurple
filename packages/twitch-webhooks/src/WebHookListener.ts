@@ -5,7 +5,14 @@ import { PolkaRequest, PolkaResponse } from 'polka';
 // eslint-disable-next-line no-duplicate-imports
 import * as polka from 'polka';
 import * as https from 'https';
-import TwitchClient, { extractUserId, HelixFollow, HelixStream, HelixUser, UserIdResolvable } from 'twitch';
+import TwitchClient, {
+	extractUserId,
+	HelixFollow,
+	HelixStream,
+	HelixUser,
+	UserIdResolvable,
+	HelixSubscriptionEvent
+} from 'twitch';
 import * as getRawBody from 'raw-body';
 
 import Subscription from './Subscriptions/Subscription';
@@ -13,6 +20,7 @@ import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
 import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription';
 import FollowsFromUserSubscription from './Subscriptions/FollowsFromUserSubscription';
 import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
+import SubscriptionEventSubscription from './Subscriptions/SubscriptionEventSubscription';
 
 interface WebHookListenerCertificateConfig {
 	key: string;
@@ -161,6 +169,19 @@ export default class WebHookListener {
 		const userId = extractUserId(user);
 
 		const subscription = new StreamChangeSubscription(userId, handler, this);
+		await subscription.start();
+		this._subscriptions.set(subscription.id!, subscription);
+
+		return subscription;
+	}
+
+	async subscribeToSubscriptionEvents(
+		user: UserIdResolvable,
+		handler: (subscription: HelixSubscriptionEvent) => void
+	) {
+		const userId = extractUserId(user);
+
+		const subscription = new SubscriptionEventSubscription(userId, handler, this);
 		await subscription.start();
 		this._subscriptions.set(subscription.id!, subscription);
 

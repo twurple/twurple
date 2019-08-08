@@ -10,6 +10,7 @@ export interface HelixSubscriptionData {
 	tier: string;
 	user_id: string;
 	user_name: string;
+	message?: string;
 }
 
 /**
