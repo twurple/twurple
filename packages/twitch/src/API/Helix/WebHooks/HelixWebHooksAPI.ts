@@ -270,13 +270,17 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		});
 	}
 
-	private async _sendUserSubscriptionHubRequest(mode: HubMode, user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	private async _sendUserSubscriptionHubRequest(
+		mode: HubMode,
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	) {
 		const userId = extractUserId(user);
 
 		return this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=${userId}&first=1`,
 			...options
-		})
+		});
 	}
 }

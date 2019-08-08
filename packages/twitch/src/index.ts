@@ -93,7 +93,7 @@ export { HelixVideo };
 import HelixSubscription from './API/Helix/Subscriptions/HelixSubscription';
 import HelixSubscriptionEvent from './API/Helix/Subscriptions/HelixSubscriptionEvent';
 
-export { HelixSubscription, HelixSubscriptionEvent }
+export { HelixSubscription, HelixSubscriptionEvent };
 
 import ChatBadgeList from './API/Badges/ChatBadgeList';
 import ChatBadgeSet from './API/Badges/ChatBadgeSet';

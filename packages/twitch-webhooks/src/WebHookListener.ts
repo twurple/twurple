@@ -5,7 +5,14 @@ import { PolkaRequest, PolkaResponse } from 'polka';
 // eslint-disable-next-line no-duplicate-imports
 import * as polka from 'polka';
 import * as https from 'https';
-import TwitchClient, { extractUserId, HelixFollow, HelixStream, HelixUser, UserIdResolvable, HelixSubscriptionEvent } from 'twitch';
+import TwitchClient, {
+	extractUserId,
+	HelixFollow,
+	HelixStream,
+	HelixUser,
+	UserIdResolvable,
+	HelixSubscriptionEvent
+} from 'twitch';
 import * as getRawBody from 'raw-body';
 
 import Subscription from './Subscriptions/Subscription';
@@ -168,7 +175,10 @@ export default class WebHookListener {
 		return subscription;
 	}
 
-	async subscribeToSubscriptionEvents(user: UserIdResolvable, handler: (subscription: HelixSubscriptionEvent) => void) {
+	async subscribeToSubscriptionEvents(
+		user: UserIdResolvable,
+		handler: (subscription: HelixSubscriptionEvent) => void
+	) {
 		const userId = extractUserId(user);
 
 		const subscription = new SubscriptionEventSubscription(userId, handler, this);
