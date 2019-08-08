@@ -1,9 +1,11 @@
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import { TwitchAPICallType } from '../../../TwitchClient';
 import BaseAPI from '../../BaseAPI';
-import { extractUserId, TwitchAPICallType, UserIdResolvable } from '../../..';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
-import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixPaginatedResult from '../HelixPaginatedResult';
+import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
+import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
+import HelixSubscriptionEvent, { HelixSubscriptionEventData } from './HelixSubscriptionEvent';
 
 /**
  * The Helix API methods that deal with subscriptions.
@@ -85,5 +87,61 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 	async getSubscriptionForUser(broadcaster: UserIdResolvable, user: UserIdResolvable) {
 		const list = await this.getSubscriptionsForUsers(broadcaster, [user]);
 		return list.length ? list[0] : null;
+	}
+
+	/**
+	 * Retrieves the most recent subscription events for a given broadcaster.
+	 *
+	 * @param broadcaster The broadcaster to retrieve subscription events for.
+	 */
+	async getSubscriptionEventsForBroadcaster(broadcaster: UserIdResolvable) {
+		return this._getSubscriptionEvents('broadcaster_id', extractUserId(broadcaster));
+	}
+
+	/**
+	 * Creates a paginator for the recent subscription events for a given broadcaster.
+	 *
+	 * @param broadcaster The broadcaster to retrieve subscription events for.
+	 */
+	getSubscriptionEventsForBroadcasterPaginated(broadcaster: UserIdResolvable) {
+		return new HelixPaginatedRequest(
+			{
+				url: 'subscriptions/events',
+				scope: 'channel:read:subscriptions',
+				query: {
+					broadcaster_id: extractUserId(broadcaster)
+				}
+			},
+			this._client,
+			(data: HelixSubscriptionEventData) => new HelixSubscriptionEvent(data, this._client)
+		);
+	}
+
+	/**
+	 * Retrieves a single subscription event by ID.
+	 *
+	 * @param id The event ID.
+	 */
+	async getSubscriptionEventById(id: string) {
+		return this._getSubscriptionEvents('id', id);
+	}
+
+	private async _getSubscriptionEvents(
+		by: 'broadcaster_id' | 'id',
+		id: string
+	): Promise<HelixPaginatedResult<HelixSubscriptionEvent>> {
+		const result = await this._client.callAPI<HelixPaginatedResponse<HelixSubscriptionEventData>>({
+			type: TwitchAPICallType.Helix,
+			url: 'subscriptions/events',
+			scope: 'channel:read:subscriptions',
+			query: {
+				[by]: id
+			}
+		});
+
+		return {
+			data: result.data.map(data => new HelixSubscriptionEvent(data, this._client)),
+			cursor: result.pagination && result.pagination.cursor
+		};
 	}
 }
