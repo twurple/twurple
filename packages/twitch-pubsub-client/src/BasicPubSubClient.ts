@@ -60,7 +60,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * @eventListener
 	 * @param ping The time the ping request was sent to the PubSub server.
 	 */
-	readonly onPong:  (handler: (ping: number) => void) => Listener = this.registerEvent();
+	readonly onPong: (handler: (ping: number) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Creates a new PubSub client.
