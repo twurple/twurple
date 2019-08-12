@@ -1,6 +1,10 @@
 /packages/*/lib
 /packages/*/generatedDocs
 /packages/*/LICENSE
+/packages/*/docs.json
 *.sh
 *.md
 package.json
+/docs*.json
+/generatedDocs
+/.yalc

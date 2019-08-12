@@ -13,3 +13,7 @@ node_modules/
 /packages/*/docs.json
 package-lock.json
 *.code-workspace
+/docs*.json
+/generatedDocs
+yalc.lock
+/.yalc
