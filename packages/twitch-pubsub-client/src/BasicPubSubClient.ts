@@ -55,6 +55,14 @@ export default class BasicPubSubClient extends EventEmitter {
 	readonly onDisconnect: (handler: (isError: boolean) => void) => Listener = this.registerEvent();
 
 	/**
+	 * Fires when the client receives a pong message from the PubSub server.
+	 *
+	 * @eventListener
+	 * @param ping The time the ping request was sent to the PubSub server.
+	 */
+	readonly onPong: (handler: (ping: number) => void) => Listener = this.registerEvent();
+
+	/**
 	 * Creates a new PubSub client.
 	 *
 	 * @param logLevel The level of logging to use for the PubSub client.
@@ -298,6 +306,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	private _pingCheck() {
 		const now = Date.now();
 		const pongListener = this._onPong(() => {
+			this.emit(this.onPong, now);
 			this._logger.debug1(`Current ping: ${Date.now() - now}ms`);
 			if (this._pingTimeoutTimer) {
 				clearTimeout(this._pingTimeoutTimer);
