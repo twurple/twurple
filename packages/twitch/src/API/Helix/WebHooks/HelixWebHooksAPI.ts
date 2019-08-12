@@ -280,6 +280,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		return this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=${userId}&first=1`,
+			scope: 'channel:read:subscriptions',
 			...options
 		});
 	}

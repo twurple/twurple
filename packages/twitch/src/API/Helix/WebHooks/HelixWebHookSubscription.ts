@@ -40,4 +40,15 @@ export default class HelixWebHookSubscription {
 	get expiryDate() {
 		return new Date(this._data.expires_at);
 	}
+
+	/**
+	 * Unsubscribe from the WebHook.
+	 */
+	async unsubscribe() {
+		return this._client.helix.webHooks.sendHubRequest({
+			mode: 'unsubscribe',
+			topicUrl: this.topicUrl,
+			callbackUrl: this.callbackUrl
+		});
+	}
 }
