@@ -66,6 +66,8 @@ export default class TokenInfo {
 
 	/**
 	 * Whether the token is valid or not.
+	 *
+	 * @deprecated This will be replaced with an exception soon; you can already add a try-catch for this future case.
 	 */
 	get valid() {
 		return this._data.valid;
@@ -75,6 +77,8 @@ export default class TokenInfo {
 	 * The time when the token will expire.
 	 *
 	 * If this returns null, it means that the token is either invalid or never expires (happens with old client IDs).
+	 *
+	 * @deprecated There is no replacement planned (yet) because expires_in does not exist in the new validate resource
 	 */
 	get expiryDate() {
 		if (!this._data.valid || !this._data.expires_in) {

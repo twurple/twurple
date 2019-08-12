@@ -368,7 +368,7 @@ export default class TwitchClient {
 	 */
 	static async getTokenInfo(clientId: string, accessToken: string) {
 		const data = await this.callAPI<TokenInfoData>(
-			{ type: TwitchAPICallType.Auth, url: 'validate' },
+			{ type: TwitchAPICallType.Kraken, url: '/' },
 			clientId,
 			accessToken
 		);
