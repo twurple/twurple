@@ -8,9 +8,10 @@ export default class UserChangeSubscription extends Subscription<HelixUser> {
 		private readonly _userId: string,
 		handler: (data: HelixUser) => void,
 		private readonly _withEmail: boolean,
-		client: WebHookListener
+		client: WebHookListener,
+		validityInSeconds = 100000
 	) {
-		super(handler, client);
+		super(handler, client, validityInSeconds);
 	}
 
 	transformData(response: HelixResponse<HelixUserData>) {

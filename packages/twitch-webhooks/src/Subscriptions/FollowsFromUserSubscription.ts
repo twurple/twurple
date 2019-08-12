@@ -4,8 +4,13 @@ import WebHookListener from '../WebHookListener';
 import { HelixFollowData } from 'twitch/lib/API/Helix/User/HelixFollow';
 
 export default class FollowsFromUserSubscription extends Subscription<HelixFollow> {
-	constructor(private readonly _userId: string, handler: (data: HelixFollow) => void, client: WebHookListener) {
-		super(handler, client);
+	constructor(
+		private readonly _userId: string,
+		handler: (data: HelixFollow) => void,
+		client: WebHookListener,
+		validityInSeconds = 100000
+	) {
+		super(handler, client, validityInSeconds);
 	}
 
 	transformData(response: HelixResponse<HelixFollowData>) {

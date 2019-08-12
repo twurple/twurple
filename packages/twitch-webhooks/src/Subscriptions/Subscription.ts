@@ -11,7 +11,11 @@ export default abstract class Subscription<T = any> {
 	protected _secret: string;
 	private _refreshTimer?: NodeJS.Timer;
 
-	constructor(protected _handler: (obj: T) => void, protected _client: WebHookListener) {}
+	constructor(
+		protected _handler: (obj: T) => void,
+		protected _client: WebHookListener,
+		private _validityInSeconds: number = 100000
+	) {}
 
 	get verified() {
 		return this._verified;
@@ -34,7 +38,7 @@ export default abstract class Subscription<T = any> {
 		return {
 			callbackUrl: this._client.buildHookUrl(this._id!),
 			secret: this._secret,
-			validityInSeconds: 100000
+			validityInSeconds: this._validityInSeconds
 		};
 	}
 
@@ -58,7 +62,7 @@ export default abstract class Subscription<T = any> {
 		await this._createNewSubscription();
 		this._refreshTimer = setInterval(async () => {
 			await this._createNewSubscription();
-		}, 86400000);
+		}, this._validityInSeconds * 800); // refresh a little bit faster than we could theoretically make work, but in millis
 	}
 
 	async stop() {

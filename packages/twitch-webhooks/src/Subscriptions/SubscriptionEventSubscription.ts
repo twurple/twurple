@@ -7,9 +7,10 @@ export default class SubscriptionEventSubscription extends Subscription<HelixSub
 	constructor(
 		private readonly _userId: string,
 		handler: (data: HelixSubscriptionEvent) => void,
-		client: WebHookListener
+		client: WebHookListener,
+		validityInSeconds = 100000
 	) {
-		super(handler, client);
+		super(handler, client, validityInSeconds);
 	}
 
 	transformData(response: HelixResponse<HelixSubscriptionEventData>) {

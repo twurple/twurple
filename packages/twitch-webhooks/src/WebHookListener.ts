@@ -38,6 +38,7 @@ interface WebHookListenerConfig {
 	port?: number;
 	ssl?: WebHookListenerCertificateConfig;
 	reverseProxy?: WebHookListenerReverseProxyConfig;
+	hookValidity?: number;
 }
 
 interface WebHookListenerComputedConfig {
@@ -45,6 +46,7 @@ interface WebHookListenerComputedConfig {
 	port: number;
 	ssl?: WebHookListenerCertificateConfig;
 	reverseProxy: Required<WebHookListenerReverseProxyConfig>;
+	hookValidity?: number;
 }
 
 export default class WebHookListener {
@@ -63,7 +65,8 @@ export default class WebHookListener {
 					port: reverseProxy.port || listenerPort,
 					ssl: reverseProxy.ssl === undefined ? !!config.ssl : reverseProxy.ssl,
 					pathPrefix: reverseProxy.pathPrefix || ''
-				}
+				},
+				hookValidity: config.hookValidity
 			},
 			client
 		);
@@ -134,41 +137,54 @@ export default class WebHookListener {
 	async subscribeToUserChanges(
 		user: UserIdResolvable,
 		handler: (user: HelixUser) => void,
-		withEmail: boolean = false
+		withEmail: boolean = false,
+		validityInSeconds = this._config.hookValidity
 	) {
 		const userId = extractUserId(user);
 
-		const subscription = new UserChangeSubscription(userId, handler, withEmail, this);
+		const subscription = new UserChangeSubscription(userId, handler, withEmail, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id!, subscription);
 
 		return subscription;
 	}
 
-	async subscribeToFollowsToUser(user: UserIdResolvable, handler: (follow: HelixFollow) => void) {
+	async subscribeToFollowsToUser(
+		user: UserIdResolvable,
+		handler: (follow: HelixFollow) => void,
+		validityInSeconds = this._config.hookValidity
+	) {
 		const userId = extractUserId(user);
 
-		const subscription = new FollowsToUserSubscription(userId, handler, this);
+		const subscription = new FollowsToUserSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id!, subscription);
 
 		return subscription;
 	}
 
-	async subscribeToFollowsFromUser(user: UserIdResolvable, handler: (follow: HelixFollow) => void) {
+	async subscribeToFollowsFromUser(
+		user: UserIdResolvable,
+		handler: (follow: HelixFollow) => void,
+		validityInSeconds = this._config.hookValidity
+	) {
 		const userId = extractUserId(user);
 
-		const subscription = new FollowsFromUserSubscription(userId, handler, this);
+		const subscription = new FollowsFromUserSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id!, subscription);
 
 		return subscription;
 	}
 
-	async subscribeToStreamChanges(user: UserIdResolvable, handler: (stream?: HelixStream) => void) {
+	async subscribeToStreamChanges(
+		user: UserIdResolvable,
+		handler: (stream?: HelixStream) => void,
+		validityInSeconds = this._config.hookValidity
+	) {
 		const userId = extractUserId(user);
 
-		const subscription = new StreamChangeSubscription(userId, handler, this);
+		const subscription = new StreamChangeSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id!, subscription);
 
@@ -177,11 +193,12 @@ export default class WebHookListener {
 
 	async subscribeToSubscriptionEvents(
 		user: UserIdResolvable,
-		handler: (subscription: HelixSubscriptionEvent) => void
+		handler: (subscription: HelixSubscriptionEvent) => void,
+		validityInSeconds = this._config.hookValidity
 	) {
 		const userId = extractUserId(user);
 
-		const subscription = new SubscriptionEventSubscription(userId, handler, this);
+		const subscription = new SubscriptionEventSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id!, subscription);
 
