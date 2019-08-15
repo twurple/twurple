@@ -27,8 +27,7 @@
     "public-ip": "^3.0.0",
     "randomstring": "^1.1.5",
     "raw-body": "^2.3.3",
-    "tslib": "^1.9.3",
-    "uuid": "^3.3.2"
+    "tslib": "^1.9.3"
   },
   "devDependencies": {
     "twitch": "^3.4.1"

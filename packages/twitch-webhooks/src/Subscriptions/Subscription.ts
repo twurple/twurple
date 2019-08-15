@@ -1,13 +1,14 @@
 import WebHookListener from '../WebHookListener';
-import * as uuidv1 from 'uuid/v1';
 import * as randomstring from 'randomstring';
 import * as crypto from 'crypto';
 import { HelixWebHookHubRequestOptions } from 'twitch/lib/API/Helix/WebHooks/HelixWebHooksAPI';
 
+/**
+ * @hideProtected
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default abstract class Subscription<T = any> {
 	private _verified: boolean = false;
-	protected _id?: string;
 	protected _secret: string;
 	private _refreshTimer?: NodeJS.Timer;
 
@@ -21,28 +22,26 @@ export default abstract class Subscription<T = any> {
 		return this._verified;
 	}
 
-	verify() {
+	/** @private */
+	_verify() {
 		this._verified = true;
 	}
 
-	generateNewCredentials() {
-		this._id = uuidv1();
+	/** @private */
+	_generateNewCredentials() {
 		this._secret = randomstring.generate(16);
-	}
-
-	get id() {
-		return this._id;
 	}
 
 	protected get _options(): HelixWebHookHubRequestOptions {
 		return {
-			callbackUrl: this._client.buildHookUrl(this._id!),
+			callbackUrl: this._client.buildHookUrl(this.id),
 			secret: this._secret,
 			validityInSeconds: this._validityInSeconds
 		};
 	}
 
-	handleData(data: string, algoAndSignature: string) {
+	/** @private */
+	_handleData(data: string, algoAndSignature: string) {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 
 		const hash = crypto
@@ -71,22 +70,19 @@ export default abstract class Subscription<T = any> {
 			this._refreshTimer = undefined;
 		}
 		await this._unsubscribe();
-		this._client._dropSubscription(this._id!);
-		this._id = undefined;
+		this._client._dropSubscription(this.id);
 	}
 
 	private async _createNewSubscription() {
-		const oldId = this._id;
-		this.generateNewCredentials();
-		if (oldId) {
-			this._client._changeIdOfSubscription(oldId, this._id!);
-		}
+		this._generateNewCredentials();
 		await this._subscribe();
 	}
+
+	abstract get id(): string;
 
 	protected abstract _subscribe(): Promise<void>;
 
 	protected abstract _unsubscribe(): Promise<void>;
 
-	abstract transformData(response: object): T;
+	protected abstract transformData(response: object): T;
 }

@@ -3,6 +3,10 @@ import { HelixResponse, HelixStream } from 'twitch';
 import WebHookListener from '../WebHookListener';
 import { HelixStreamData } from 'twitch/lib/API/Helix/Stream/HelixStream';
 
+/**
+ * @inheritDoc
+ * @hideProtected
+ */
 export default class StreamChangeSubscription extends Subscription<HelixStream | undefined> {
 	constructor(
 		private readonly _userId: string,
@@ -13,7 +17,11 @@ export default class StreamChangeSubscription extends Subscription<HelixStream |
 		super(handler, client, validityInSeconds);
 	}
 
-	transformData(response: HelixResponse<HelixStreamData>) {
+	get id() {
+		return `stream.change.${this._userId}`;
+	}
+
+	protected transformData(response: HelixResponse<HelixStreamData>) {
 		if (!response.data.length) {
 			return undefined;
 		}

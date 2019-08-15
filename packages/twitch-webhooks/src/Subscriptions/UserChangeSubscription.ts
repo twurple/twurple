@@ -3,6 +3,10 @@ import { HelixResponse, HelixUser } from 'twitch';
 import WebHookListener from '../WebHookListener';
 import { HelixUserData } from 'twitch/lib/API/Helix/User/HelixUser';
 
+/**
+ * @inheritDoc
+ * @hideProtected
+ */
 export default class UserChangeSubscription extends Subscription<HelixUser> {
 	constructor(
 		private readonly _userId: string,
@@ -14,7 +18,11 @@ export default class UserChangeSubscription extends Subscription<HelixUser> {
 		super(handler, client, validityInSeconds);
 	}
 
-	transformData(response: HelixResponse<HelixUserData>) {
+	get id() {
+		return `user.change.${this._userId}`;
+	}
+
+	protected transformData(response: HelixResponse<HelixUserData>) {
 		return new HelixUser(response.data[0], this._client._twitchClient);
 	}
 

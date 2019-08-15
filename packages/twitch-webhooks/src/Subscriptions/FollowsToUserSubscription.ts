@@ -3,6 +3,10 @@ import { HelixFollow, HelixResponse } from 'twitch';
 import WebHookListener from '../WebHookListener';
 import { HelixFollowData } from 'twitch/lib/API/Helix/User/HelixFollow';
 
+/**
+ * @inheritDoc
+ * @hideProtected
+ */
 export default class FollowsToUserSubscription extends Subscription<HelixFollow> {
 	constructor(
 		private readonly _userId: string,
@@ -13,7 +17,11 @@ export default class FollowsToUserSubscription extends Subscription<HelixFollow>
 		super(handler, client, validityInSeconds);
 	}
 
-	transformData(response: HelixResponse<HelixFollowData>) {
+	get id() {
+		return `follows.to.${this._userId}`;
+	}
+
+	protected transformData(response: HelixResponse<HelixFollowData>) {
 		return new HelixFollow(response.data[0], this._client._twitchClient);
 	}
 

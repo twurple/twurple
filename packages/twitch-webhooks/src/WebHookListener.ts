@@ -144,7 +144,7 @@ export default class WebHookListener {
 
 		const subscription = new UserChangeSubscription(userId, handler, withEmail, this, validityInSeconds);
 		await subscription.start();
-		this._subscriptions.set(subscription.id!, subscription);
+		this._subscriptions.set(subscription.id, subscription);
 
 		return subscription;
 	}
@@ -158,7 +158,7 @@ export default class WebHookListener {
 
 		const subscription = new FollowsToUserSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
-		this._subscriptions.set(subscription.id!, subscription);
+		this._subscriptions.set(subscription.id, subscription);
 
 		return subscription;
 	}
@@ -172,7 +172,7 @@ export default class WebHookListener {
 
 		const subscription = new FollowsFromUserSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
-		this._subscriptions.set(subscription.id!, subscription);
+		this._subscriptions.set(subscription.id, subscription);
 
 		return subscription;
 	}
@@ -186,7 +186,7 @@ export default class WebHookListener {
 
 		const subscription = new StreamChangeSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
-		this._subscriptions.set(subscription.id!, subscription);
+		this._subscriptions.set(subscription.id, subscription);
 
 		return subscription;
 	}
@@ -200,7 +200,7 @@ export default class WebHookListener {
 
 		const subscription = new SubscriptionEventSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
-		this._subscriptions.set(subscription.id!, subscription);
+		this._subscriptions.set(subscription.id, subscription);
 
 		return subscription;
 	}
@@ -223,7 +223,7 @@ export default class WebHookListener {
 		const subscription = this._subscriptions.get(req.params.id);
 		if (subscription) {
 			if (req.query['hub.mode'] === 'subscribe') {
-				subscription.verify();
+				subscription._verify();
 				res.writeHead(202);
 				res.end(req.query['hub.challenge']);
 			} else {
@@ -241,9 +241,9 @@ export default class WebHookListener {
 		const body = await getRawBody(req, true);
 		const subscription = this._subscriptions.get(req.params.id);
 		if (subscription) {
-			subscription.handleData(body, req.headers['x-hub-signature']! as string);
 			res.writeHead(202);
 			res.end();
+			subscription._handleData(body, req.headers['x-hub-signature']! as string);
 		} else {
 			res.writeHead(410);
 			res.end();
