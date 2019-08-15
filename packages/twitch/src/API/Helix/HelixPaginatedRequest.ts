@@ -2,6 +2,11 @@ import TwitchClient, { TwitchAPICallOptions, TwitchAPICallType } from '../../Twi
 import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
 import { HelixPaginatedResponse } from './HelixResponse';
 
+if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.for('Symbol.asyncIterator');
+}
+
 /**
  * Represents a request to the new Twitch API (Helix) that utilizes a cursor to paginate through its results.
  *
@@ -19,6 +24,9 @@ export default class HelixPaginatedRequest<D, T> {
 
 	/** @private */
 	protected _currentCursor?: string;
+
+	/** @private */
+	protected _isFinished = false;
 
 	/** @private */
 	protected _currentData?: HelixPaginatedResponse<D>;
@@ -45,9 +53,14 @@ export default class HelixPaginatedRequest<D, T> {
 	 * Retrieves and returns the next available page of data associated to the requested resource, or an empty array if there are no more available pages.
 	 */
 	async getNext() {
+		if (this._isFinished) {
+			return [];
+		}
+
 		const result = await this._fetchData();
 
 		if (!result.data.length) {
+			this._isFinished = true;
 			return [];
 		}
 
@@ -92,6 +105,19 @@ export default class HelixPaginatedRequest<D, T> {
 	 */
 	reset() {
 		this._currentCursor = undefined;
+		this._isFinished = false;
+		this._currentData = undefined;
+	}
+
+	async *[Symbol.asyncIterator]() {
+		this.reset();
+		while (true) {
+			const data = await this.getNext();
+			if (!data.length) {
+				break;
+			}
+			yield* data[Symbol.iterator]();
+		}
 	}
 
 	/** @private */
@@ -112,6 +138,9 @@ export default class HelixPaginatedRequest<D, T> {
 	/** @private */
 	protected _processResult(result: HelixPaginatedResponse<D>) {
 		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
+		if (this._currentCursor === undefined) {
+			this._isFinished = true;
+		}
 		this._currentData = result;
 
 		return result.data.reduce((acc, elem) => {
@@ -119,19 +148,4 @@ export default class HelixPaginatedRequest<D, T> {
 			return Array.isArray(mapped) ? [...acc, ...mapped] : [...acc, mapped];
 		}, []);
 	}
-}
-
-if (typeof Symbol === 'function' && typeof Symbol.asyncIterator === 'symbol') {
-	Object.defineProperty(HelixPaginatedRequest.prototype, Symbol.asyncIterator, {
-		value: async function*<D, T>(this: HelixPaginatedRequest<D, T>) {
-			this.reset();
-			while (true) {
-				const data = await this.getNext();
-				if (!data.length) {
-					break;
-				}
-				yield* data[Symbol.iterator]();
-			}
-		}
-	});
 }

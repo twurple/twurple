@@ -94,7 +94,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 				'hub.mode': mode,
 				'hub.topic': topicUrl,
 				'hub.callback': callbackUrl,
-				'hub.lease_seconds': validityInSeconds.toString(),
+				'hub.lease_seconds': mode === 'subscribe' ? validityInSeconds.toString() : undefined,
 				'hub.secret': secret
 			}
 		});
