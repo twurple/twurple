@@ -23,4 +23,4 @@ jobs:
     include:
         - stage: Publish docs
           if: type = push AND fork = false AND tag IS blank AND branch = master
-          script: lerna bootstrap && lerna run build && scripts/travis/publishDocs.sh"'
+          script: lerna bootstrap && lerna run build && scripts/travis/publishDocs.sh
