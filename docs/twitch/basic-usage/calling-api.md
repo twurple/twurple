@@ -34,7 +34,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 	let page: HelixClip[];
 	const result: HelixClip[] = [];
 
-	while (page = await request.getNext()) {
+	while ((page = await request.getNext()).length) {
 		result.push(...page);
 	}
 

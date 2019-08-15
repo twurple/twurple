@@ -1,6 +1,6 @@
 ## Handle {@TwitchClient#withCredentials} now returning a Promise and having an additional argument
 
-The {@StaticAuthProvider} that is created when you use @{TwitchClient#withCredentials} now throws when any scopes are requested that are not initially passed to it.
+The {@StaticAuthProvider} that is created when you use {@TwitchClient#withCredentials} now throws when any scopes are requested that are not initially passed to it.
 
 Because of that, a new parameter was added to {@TwitchClient#withCredentials} that determines the initial scopes.
 
@@ -38,7 +38,7 @@ Because of this, you should not rely on the types of these errors.
 
 ## Remove promise usage from some Helix game and video API methods
 
-The methods {@HelixGameApi#getTopGames}, {@HelixVideoApi#getVideosByUser} and {@HelixVideoApi#getVideosByGame} were unnecessarily flagged `async` and thus returned `Promise` objects.
+The methods {@HelixGameAPI#getTopGames}, {@HelixVideoAPI#getVideosByUser} and {@HelixVideoAPI#getVideosByGame} were unnecessarily flagged `async` and thus returned `Promise` objects.
 This mistake was corrected in 2.x, so you need to clean up any excess `.then` or `await` usage for these methods.
 
 ## \[Deprecation\] Move all Kraken usage to `client.kraken`

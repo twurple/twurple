@@ -1,0 +1,171 @@
+{
+	"inputDirs": ["src", "types"],
+	"outputDir": "generatedDocs",
+	"mode": "html",
+	"routerMode": "htmlSuffix",
+
+	"repoUser": "d-fischer",
+	"repoName": "twitch",
+	"monorepoRoot": "packages",
+	"ignoredPackages": ["twitch-electron-auth-provider"],
+
+	"packages": {
+		"twitch": {
+			"indexTitle": "Welcome to Twitch.js",
+			"indexFile": "twitch/index.md",
+
+			"categories": [
+				{
+					"name": "basic-usage",
+					"title": "Basic usage",
+					"articles": [
+						{
+							"name": "getting-started",
+							"title": "Getting started",
+							"file": "twitch/basic-usage/getting-started.md"
+						},
+						{
+							"name": "creating-instance",
+							"title": "Creating a client instance",
+							"file": "twitch/basic-usage/creating-instance.md"
+						},
+						{
+							"name": "calling-api",
+							"title": "Calling the Twitch API",
+							"file": "twitch/basic-usage/calling-api.md"
+						}
+					]
+				},
+				{
+					"name": "upgrading",
+					"title": "Upgrading",
+					"articles": [
+						{
+							"name": "v1-to-v2",
+							"title": "Upgrading from 1.x to 2.x",
+							"file": "twitch/upgrading/v1-to-v2.md"
+						},
+						{
+							"name": "v2-to-v3",
+							"title": "Upgrading from 2.x to 3.x",
+							"file": "twitch/upgrading/v2-to-v3.md"
+						}
+					]
+				}
+			]
+		},
+		"twitch-chat-client": {
+			"indexTitle": "Twitch.js Chat Client",
+			"indexFile": "twitch-chat-client/index.md",
+
+			"categories": [
+				{
+					"name": "basic-usage",
+					"title": "Basic usage",
+					"articles": [
+						{
+							"name": "getting-started",
+							"title": "Getting started",
+							"file": "twitch-chat-client/basic-usage/getting-started.md"
+						},
+						{
+							"name": "connecting-to-chat",
+							"title": "Connecting to Chat",
+							"file": "twitch-chat-client/basic-usage/connecting-to-chat.md"
+						},
+						{
+							"name": "listening-to-events",
+							"title": "Listening to events",
+							"file": "twitch-chat-client/basic-usage/listening-to-events.md"
+						}
+					]
+				},
+				{
+					"name": "upgrading",
+					"title": "Upgrading",
+					"articles": [
+						{
+							"name": "v1-to-v2",
+							"title": "Upgrading from 1.x to 2.x",
+							"file": "twitch-chat-client/upgrading/v1-to-v2.md"
+						},
+						{
+							"name": "v2-to-v3",
+							"title": "Upgrading from 2.x to 3.x",
+							"file": "twitch-chat-client/upgrading/v2-to-v3.md"
+						}
+					]
+				},
+				{
+					"name": "examples",
+					"title": "Examples",
+					"articles": [
+						{
+							"name": "basic-bot",
+							"title": "Basic bot",
+							"file": "twitch-chat-client/examples/basic-bot.md"
+						}
+					]
+				}
+			]
+		},
+		"twitch-pubsub-client": {
+			"indexTitle": "Twitch.js PubSub Client",
+			"indexFile": "twitch-pubsub-client/index.md",
+
+			"categories": [
+				{
+					"name": "basic-usage",
+					"title": "Basic usage",
+					"articles": [
+						{
+							"name": "getting-started",
+							"title": "Getting started",
+							"file": "twitch-pubsub-client/basic-usage/getting-started.md"
+						},
+						{
+							"name": "listening-to-topics",
+							"title": "Listening to topics",
+							"file": "twitch-pubsub-client/basic-usage/listening-to-topics.md"
+						}
+					]
+				},
+				{
+					"name": "upgrading",
+					"title": "Upgrading",
+					"articles": [
+						{
+							"name": "v1-to-v2",
+							"title": "Upgrading from 1.x to 2.x",
+							"file": "twitch-pubsub-client/upgrading/v1-to-v2.md"
+						}
+					]
+				}
+			]
+		},
+
+		"twitch-webhooks": {
+			"indexTitle": "Twitch.js WebHook Listener",
+			"indexFile": "twitch-webhooks/index.md",
+
+			"categories": [
+				{
+					"name": "basic-usage",
+					"title": "Basic usage",
+					"articles": [
+						{
+							"name": "getting-started",
+							"title": "Getting started",
+							"file": "twitch-webhooks/basic-usage/getting-started.md"
+						},
+						{
+							"name": "listening-to-events",
+							"title": "Listening to events",
+							"file": "twitch-webhooks/basic-usage/listening-to-events.md"
+						}
+					]
+				}
+			]
+		}
+	}
+}
