@@ -1,6 +1,6 @@
 {
   "name": "twitch-webhooks",
-  "version": "3.4.2",
+  "version": "3.4.3",
   "description": "Listen to events on Twitch via their WebHooks API.",
   "keywords": [
     "twitch",
@@ -29,7 +29,7 @@
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "twitch": "^3.4.1"
+    "twitch": "^3.4.2"
   },
   "peerDependencies": {
     "twitch": "^3.0.0"
