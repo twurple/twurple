@@ -452,6 +452,9 @@ export default class ChatClient extends IRCClient {
 	private readonly _onIntermediateAuthenticationFailure: (
 		handler: (message: string) => void
 	) => Listener = this.registerEvent();
+	private readonly _onMessageRatelimit: (
+		handler: (channel: string, message: string) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Creates a new Twitch chat client with the user info from the TwitchClient instance.
@@ -1094,6 +1097,11 @@ export default class ChatClient extends IRCClient {
 
 				case 'no_permission': {
 					this.emit(this.onNoPermission, channel, message);
+					break;
+				}
+
+				case 'msg_ratelimit': {
+					this.emit(this._onMessageRatelimit, channel, message);
 					break;
 				}
 
