@@ -335,16 +335,25 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @eventListener
 	 * @param channel The channel that a command without sufficient permissions was executed on.
-	 * @maram message The message text.
+	 * @param message The message text.
 	 */
 	onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a message you tried to send gets rejected by the ratelimiter.
+	 *
+	 * @eventListener
+	 * @param channel The channel that was attempted to send to.
+	 * @param message The message text.
+	 */
+	onMessageRatelimit: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when authentication fails.
 	 *
 	 * @eventListener
 	 * @param channel The channel that a command without sufficient permissions was executed on.
-	 * @maram message The message text.
+	 * @param message The message text.
 	 */
 	onAuthenticationFailure: (handler: (message: string) => void) => Listener = this.registerEvent();
 
@@ -451,9 +460,6 @@ export default class ChatClient extends IRCClient {
 	) => Listener = this.registerEvent();
 	private readonly _onIntermediateAuthenticationFailure: (
 		handler: (message: string) => void
-	) => Listener = this.registerEvent();
-	private readonly _onMessageRatelimit: (
-		handler: (channel: string, message: string) => void
 	) => Listener = this.registerEvent();
 
 	/**
@@ -1101,7 +1107,7 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'msg_ratelimit': {
-					this.emit(this._onMessageRatelimit, channel, message);
+					this.emit(this.onMessageRatelimit, channel, message);
 					break;
 				}
 
