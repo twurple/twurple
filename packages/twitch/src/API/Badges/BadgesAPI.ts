@@ -46,7 +46,7 @@ export default class BadgesAPI extends BaseAPI {
 		const channelBadges = new ChatBadgeList(data.badge_sets, this._client);
 
 		if (includeGlobal) {
-			return channelBadges._merge(await this.getGlobalBadges());
+			return (await this.getGlobalBadges())._merge(channelBadges);
 		}
 
 		return channelBadges;
