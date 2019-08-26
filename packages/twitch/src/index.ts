@@ -27,9 +27,14 @@ import Subscription from './API/Kraken/Subscription';
 
 export { Subscription };
 
-import CheermoteList, { CheermoteBackground, CheermoteState, CheermoteScale } from './API/Kraken/Bits/CheermoteList';
+import CheermoteList, {
+	CheermoteBackground,
+	CheermoteDisplayInfo,
+	CheermoteScale,
+	CheermoteState
+} from './API/Kraken/Bits/CheermoteList';
 
-export { CheermoteList, CheermoteBackground, CheermoteState, CheermoteScale };
+export { CheermoteList, CheermoteBackground, CheermoteDisplayInfo, CheermoteScale, CheermoteState };
 
 import Channel from './API/Kraken/Channel/Channel';
 import ChannelFollow from './API/Kraken/Channel/ChannelFollow';
