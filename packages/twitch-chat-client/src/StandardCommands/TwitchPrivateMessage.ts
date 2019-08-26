@@ -4,14 +4,14 @@ import ChatUser from '../ChatUser';
 import { parseEmotes } from '../Toolkit/ChatTools';
 import { utf8Length, utf8Substring } from '../Toolkit/StringTools';
 
-interface ParsedMessageTextPart {
+export interface ParsedMessageTextPart {
 	type: 'text';
 	position: number;
 	length: number;
 	text: string;
 }
 
-interface ParsedMessageCheerPart {
+export interface ParsedMessageCheerPart {
 	type: 'cheer';
 	position: number;
 	length: number;
@@ -20,7 +20,7 @@ interface ParsedMessageCheerPart {
 	displayInfo: CheermoteDisplayInfo;
 }
 
-interface ParsedMessageEmotePart {
+export interface ParsedMessageEmotePart {
 	type: 'emote';
 	position: number;
 	length: number;
