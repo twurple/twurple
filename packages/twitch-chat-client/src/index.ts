@@ -3,9 +3,9 @@ import ChatClient from './ChatClient';
 
 export default ChatClient;
 
-import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
+import TwitchPrivateMessage, { ParsedMessagePart } from './StandardCommands/TwitchPrivateMessage';
 
-export { TwitchPrivateMessage as PrivateMessage };
+export { TwitchPrivateMessage as PrivateMessage, ParsedMessagePart };
 
 import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
 import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
