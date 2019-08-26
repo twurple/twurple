@@ -102,9 +102,9 @@ export { HelixSubscription, HelixSubscriptionEvent };
 
 import ChatBadgeList from './API/Badges/ChatBadgeList';
 import ChatBadgeSet from './API/Badges/ChatBadgeSet';
-import ChatBadgeVersion from './API/Badges/ChatBadgeVersion';
+import ChatBadgeVersion, { ChatBadgeScale } from './API/Badges/ChatBadgeVersion';
 
-export { ChatBadgeList, ChatBadgeSet, ChatBadgeVersion };
+export { ChatBadgeList, ChatBadgeSet, ChatBadgeVersion, ChatBadgeScale };
 
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
 
