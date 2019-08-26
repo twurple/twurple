@@ -41,7 +41,7 @@ export default class ChatUser {
 		const badgesStr = this._userData.get('badges');
 
 		if (!badgesStr) {
-			return new Map();
+			return new Map<string, string>();
 		}
 
 		return new Map(badgesStr.split(',').map(badge => badge.split('/', 2) as [string, string]));
