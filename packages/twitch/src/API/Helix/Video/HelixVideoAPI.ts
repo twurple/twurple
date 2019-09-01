@@ -85,7 +85,7 @@ export default class HelixVideoAPI extends BaseAPI {
 	 * @param user The user you want to retrieve videos from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getVideosByUser(user: UserIdResolvable, filter: HelixPaginatedVideoFilter  = {}) {
+	async getVideosByUser(user: UserIdResolvable, filter: HelixPaginatedVideoFilter = {}) {
 		const userId = extractUserId(user);
 		return this._getVideos('user_id', userId, filter);
 	}
