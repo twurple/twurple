@@ -12,6 +12,7 @@ import UserNotice from './Capabilities/TwitchCommandsCapability/MessageTypes/Use
 import Whisper from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
 import TwitchMembershipCapability from './Capabilities/TwitchMembershipCapability';
 import TwitchTagsCapability from './Capabilities/TwitchTagsCapability';
+import ClearMsg from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
 import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
 import { NonEnumerable } from './Toolkit/Decorators';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
@@ -205,6 +206,20 @@ export default class ChatClient extends IRCClient {
 	 * @param user The user that left.
 	 */
 	onPart: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a single message is removed from a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the message was removed.
+	 * @param messageId The ID of the message that was removed.
+	 * @param msg The raw message that was received.
+	 *
+	 * This is *not* the message that was removed. The text of the message is available using `msg.params.message` though.
+	 */
+	onMessageRemove: (
+		handler: (channel: string, messageId: string, msg: ClearMsg) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when R9K mode is toggled in a channel.
@@ -565,6 +580,14 @@ export default class ChatClient extends IRCClient {
 				// full chat clear
 				this.emit(this.onChatClear, channel);
 			}
+		});
+
+		this.onMessage(ClearMsg, msg => {
+			const {
+				params: { channel },
+				targetMessageId
+			} = msg;
+			this.emit(this.onMessageRemove, channel, targetMessageId, msg);
 		});
 
 		this.onMessage(HostTarget, ({ params: { channel, targetAndViewers } }) => {
