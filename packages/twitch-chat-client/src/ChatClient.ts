@@ -1810,6 +1810,16 @@ export default class ChatClient extends IRCClient {
 	}
 
 	/**
+	 * Sends a whisper message to another user.
+	 *
+	 * @param user The user to send the message to.
+	 * @param message The message to send.
+	 */
+	whisper(user: string, message: string) {
+		super.say(GENERIC_CHANNEL, `/w ${toUserName(user)} ${message}`);
+	}
+
+	/**
 	 * Joins a channel.
 	 *
 	 * @param channel The channel to join.
