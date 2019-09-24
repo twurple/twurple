@@ -42,8 +42,9 @@ import ChannelPlaceholder from './API/Kraken/Channel/ChannelPlaceholder';
 import ChannelSubscription from './API/Kraken/Channel/ChannelSubscription';
 import EmoteSetList from './API/Kraken/Channel/EmoteSetList';
 import PrivilegedChannel from './API/Kraken/Channel/PrivilegedChannel';
+import { CommercialLength } from './API/Kraken/Channel/ChannelAPI';
 
-export { Channel, ChannelFollow, ChannelPlaceholder, ChannelSubscription, EmoteSetList, PrivilegedChannel };
+export { Channel, ChannelFollow, ChannelPlaceholder, ChannelSubscription, EmoteSetList, PrivilegedChannel, CommercialLength };
 
 import Stream, { StreamType } from './API/Kraken/Stream/Stream';
 
