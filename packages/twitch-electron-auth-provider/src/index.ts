@@ -162,7 +162,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 						}
 						this._accessToken = new AccessToken({
 							access_token: accessToken,
-							scope: this.currentScopes.join(' '),
+							scope: this.currentScopes,
 							refresh_token: ''
 						});
 						resolve(this._accessToken);
