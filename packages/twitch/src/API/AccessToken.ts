@@ -3,7 +3,7 @@ export interface AccessTokenData {
 	access_token: string;
 	refresh_token: string;
 	expires_in?: number;
-	scope: string;
+	scope?: string[];
 }
 
 /**
@@ -55,6 +55,6 @@ export default class AccessToken {
 	 * The scope the access token is valid for, i.e. what this token enables you to do.
 	 */
 	get scope() {
-		return this._data.scope.split(' ');
+		return this._data.scope || [];
 	}
 }
