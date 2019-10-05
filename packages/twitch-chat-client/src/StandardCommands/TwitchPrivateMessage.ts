@@ -73,7 +73,8 @@ class TwitchPrivateMessage extends PrivateMessage {
 	}
 
 	parseEmotesAndBits(cheermotes: CheermoteList): ParsedMessagePart[] {
-		const foundCheermotes = cheermotes.parseMessage(this.params.message);
+		const messageText = this.params.message;
+		const foundCheermotes = cheermotes.parseMessage(messageText);
 		const foundEmotesAndCheermotes: ParsedMessagePart[] = [
 			...this._parseEmotePositions(),
 			...foundCheermotes.map(
@@ -90,7 +91,7 @@ class TwitchPrivateMessage extends PrivateMessage {
 
 		foundEmotesAndCheermotes.sort((a, b) => a.position - b.position);
 
-		return foundEmotesAndCheermotes;
+		return this._fillTextPositions(messageText, foundEmotesAndCheermotes);
 	}
 
 	private _parseEmotePositions() {
