@@ -75,4 +75,11 @@ export default class ChatUser {
 	get isMod() {
 		return this.badges.has('moderator');
 	}
+
+	/**
+	 * Whether the user is a VIP in the channel.
+	 */
+	get isVip() {
+		return this.badges.has('vip');
+	}
 }
