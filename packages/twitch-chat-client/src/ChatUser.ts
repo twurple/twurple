@@ -66,7 +66,14 @@ export default class ChatUser {
 	 * Whether the user is subscribed to the channel.
 	 */
 	get isSubscriber() {
-		return this.badges.has('subscriber');
+		return this.badges.has('subscriber') || this.isFounder;
+	}
+
+	/**
+	 * Whether the user is a Founder of the channel.
+	 */
+	get isFounder() {
+		return this.badges.has('founder');
 	}
 
 	/**
