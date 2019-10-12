@@ -62,3 +62,33 @@ export interface ChatSubGiftInfo extends ChatSubInfo {
 	 */
 	gifterGiftCount?: number;
 }
+
+/**
+ * Information about a subsription extension.
+ * @inheritDoc
+ */
+export interface ChatSubExtendInfo {
+	/**
+	 * The display name of the subscribing user.
+	 */
+	displayName: string;
+
+	/**
+	 * The plan ID of the subscription.
+	 *
+	 * Tier 1, 2, 3 are '1000', '2000', '3000' respectively, and a Twitch Prime subscription is called 'Prime'.
+	 */
+	plan: string;
+
+	/**
+	 * The number of total months of subscriptions for the channel.
+	 */
+	months: number;
+
+	/**
+	 * The month when the subscription will now end.
+	 *
+	 * 1 corresponds to January, and 12 means December.
+	 */
+	endMonth: number;
+}

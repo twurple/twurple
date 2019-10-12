@@ -19,7 +19,7 @@ import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
 import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
 import ChatRaidInfo from './UserNotices/ChatRaidInfo';
 import ChatRitualInfo from './UserNotices/ChatRitualInfo';
-import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
+import ChatSubInfo, { ChatSubExtendInfo, ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
 
 const GENERIC_CHANNEL = 'twjs';
 
@@ -332,6 +332,19 @@ export default class ChatClient extends IRCClient {
 	 */
 	onCommunitySub: (
 		handler: (channel: string, user: string, subInfo: ChatCommunitySubInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user extends their subscription using a Sub Token.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the subscription was extended.
+	 * @param user The user that extended their subscription.
+	 * @param subInfo Additional information about the subscription extension.
+	 * @param msg The raw message that was received.
+	 */
+	onSubExtend: (
+		handler: (channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
 	/**
@@ -746,9 +759,18 @@ export default class ChatClient extends IRCClient {
 					this.emit(this.onBitsBadgeUpgrade, channel, tags.get('login')!, badgeUpgradeInfo, userNotice);
 					break;
 				}
+				case 'extendsub': {
+					const extendInfo: ChatSubExtendInfo = {
+						displayName: tags.get('display-name')!,
+						plan: tags.get('msg-param-sub-plan')!,
+						months: Number(tags.get('msg-param-cumulative-months')),
+						endMonth: Number(tags.get('msg-param-sub-benefit-end-month'))
+					};
+					this.emit(this.onSubExtend, channel, tags.get('login')!, extendInfo, userNotice);
+					break;
+				}
 				default: {
-					// eslint-disable-next-line no-console
-					console.warn(`Unrecognized usernotice ID: ${messageType}`);
+					this._chatLogger.warn(`Unrecognized usernotice ID: ${messageType}`);
 				}
 			}
 		});
@@ -1148,8 +1170,7 @@ export default class ChatClient extends IRCClient {
 
 				default: {
 					if (!messageType || messageType.substr(0, 6) !== 'usage_') {
-						// eslint-disable-next-line no-console
-						console.warn(`Unrecognized notice ID: '${messageType}'`);
+						this._chatLogger.warn(`Unrecognized notice ID: '${messageType}'`);
 					}
 				}
 			}
