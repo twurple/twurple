@@ -82,7 +82,7 @@ export default class HelixStreamAPI extends BaseAPI {
 	 *
 	 * @expandParams
 	 */
-	async getStreams(filter: HelixPaginatedStreamFilter = {}) {
+	async getStreams(filter: HelixPaginatedStreamFilter = {}): Promise<HelixPaginatedResult<HelixStream>> {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamData>>({
 			url: 'streams',
 			type: TwitchAPICallType.Helix,
