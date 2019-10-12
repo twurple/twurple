@@ -90,12 +90,9 @@ export default class ChatClient extends IRCClient {
 	 * @eventListener
 	 * @param channel The channel the user is timed out from.
 	 * @param user The timed out user.
-	 * @param reason The reason for the timeout.
 	 * @param duration The duration of the timeout, in seconds.
 	 */
-	onTimeout: (
-		handler: (channel: string, user: string, reason: string, duration: number) => void
-	) => Listener = this.registerEvent();
+	onTimeout: (handler: (channel: string, user: string, duration: number) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user is permanently banned from a channel.
@@ -103,9 +100,8 @@ export default class ChatClient extends IRCClient {
 	 * @eventListener
 	 * @param channel The channel the user is banned from.
 	 * @param user The banned user.
-	 * @param reason The reason for the ban.
 	 */
-	onBan: (handler: (channel: string, user: string, reason: string) => void) => Listener = this.registerEvent();
+	onBan: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user upgrades their bits badge in a channel.
@@ -416,7 +412,7 @@ export default class ChatClient extends IRCClient {
 		handler: (channel: string, user: string, error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onTimeoutResult: (
-		handler: (channel: string, user: string, reason?: string, duration?: number, error?: string) => void
+		handler: (channel: string, user: string, duration?: number, error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onUnbanResult: (
 		handler: (channel: string, user: string, error?: string) => void
@@ -579,14 +575,13 @@ export default class ChatClient extends IRCClient {
 		this.onMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
 				const duration = tags.get('ban-duration');
-				const reason = tags.get('ban-reason');
 				if (duration === undefined) {
 					// ban
-					this.emit(this.onBan, channel, user, reason);
+					this.emit(this.onBan, channel, user);
 				} else {
 					// timeout
-					this.emit(this.onTimeout, channel, user, reason, Number(duration));
-					this.emit(this._onTimeoutResult, channel, user, reason, Number(duration));
+					this.emit(this.onTimeout, channel, user, Number(duration));
+					this.emit(this._onTimeoutResult, channel, user, Number(duration));
 				}
 			} else {
 				// full chat clear
@@ -1031,19 +1026,12 @@ export default class ChatClient extends IRCClient {
 
 				// timeout (only fails, success is handled by CLEARCHAT)
 				case 'bad_timeout_self': {
-					this.emit(
-						this._onTimeoutResult,
-						channel,
-						this._credentials.nick,
-						undefined,
-						undefined,
-						messageType
-					);
+					this.emit(this._onTimeoutResult, channel, this._credentials.nick, undefined, messageType);
 					break;
 				}
 
 				case 'bad_timeout_broadcaster': {
-					this.emit(this._onTimeoutResult, channel, toUserName(channel), undefined, undefined, messageType);
+					this.emit(this._onTimeoutResult, channel, toUserName(channel), undefined, messageType);
 					break;
 				}
 
@@ -1052,14 +1040,7 @@ export default class ChatClient extends IRCClient {
 				case 'bad_timeout_staff': {
 					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
 					if (match) {
-						this.emit(
-							this._onTimeoutResult,
-							channel,
-							match[1].toLowerCase(),
-							undefined,
-							undefined,
-							messageType
-						);
+						this.emit(this._onTimeoutResult, channel, match[1].toLowerCase(), undefined, messageType);
 					}
 					break;
 				}
