@@ -367,12 +367,19 @@ export default class TwitchClient {
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
 	static async getTokenInfo(clientId: string, accessToken: string) {
-		const data = await this.callAPI<TokenInfoData>(
-			{ type: TwitchAPICallType.Kraken, url: '/' },
-			clientId,
-			accessToken
-		);
-		return new TokenInfo(data.token);
+		try {
+			const data = await this.callAPI<TokenInfoData>(
+				{ type: TwitchAPICallType.Auth, url: 'validate' },
+				clientId,
+				accessToken
+			);
+			return new TokenInfo(data);
+		} catch (e) {
+			if (e instanceof HTTPStatusCodeError && e.statusCode === 401) {
+				return new TokenInfo();
+			}
+			throw e;
+		}
 	}
 
 	/**
@@ -407,8 +414,15 @@ export default class TwitchClient {
 	 * Retrieves information about your access token.
 	 */
 	async getTokenInfo() {
-		const data = await this.callAPI<TokenInfoData>({ url: '/' });
-		return new TokenInfo(data.token);
+		try {
+			const data = await this.callAPI<TokenInfoData>({ type: TwitchAPICallType.Auth, url: 'validate' });
+			return new TokenInfo(data);
+		} catch (e) {
+			if (e instanceof HTTPStatusCodeError && e.statusCode === 401) {
+				return new TokenInfo();
+			}
+			throw e;
+		}
 	}
 
 	/**
