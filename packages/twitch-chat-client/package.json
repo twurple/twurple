@@ -1,6 +1,6 @@
 {
   "name": "twitch-chat-client",
-  "version": "3.5.6",
+  "version": "3.5.7",
   "description": "Interact with the Twitch Messaging Interface (aka Twitch chat).",
   "keywords": [
     "twitch",
