@@ -79,10 +79,10 @@ export default class ChatClient extends IRCClient {
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;
 
-	private _authRetrying = false;
+	private _authVerified = false;
 	private _authFailureMessage?: string;
 
-	private _chatLogger = new Logger({ name: 'twitch-chat' });
+	private _chatLogger: Logger;
 
 	/**
 	 * Fires when a user is timed out from a channel.
@@ -485,9 +485,6 @@ export default class ChatClient extends IRCClient {
 	private readonly _onVipsResult: (
 		handler: (channel: string, vips?: string[], error?: string) => void
 	) => Listener = this.registerEvent();
-	private readonly _onIntermediateAuthenticationFailure: (
-		handler: (message: string) => void
-	) => Listener = this.registerEvent();
 
 	/**
 	 * Creates a new Twitch chat client with the user info from the TwitchClient instance.
@@ -536,6 +533,8 @@ export default class ChatClient extends IRCClient {
 		});
 		/* eslint-enable no-restricted-syntax */
 
+		this._chatLogger = new Logger({ name: 'twitch-chat', emoji: true, minLevel: options.logLevel });
+
 		this._twitchClient = twitchClient;
 
 		this._useLegacyScopes = !!options.legacyScopes;
@@ -549,31 +548,9 @@ export default class ChatClient extends IRCClient {
 		}
 		// tslint:enable:no-floating-promises
 
-		// reconnect with refreshed token
-		this._onIntermediateAuthenticationFailure(async message => {
-			if (this._authRetrying) {
-				this._authRetrying = false;
-				this._authFailureMessage = message;
-				this.emit(this.onAuthenticationFailure, message);
-				return;
-			}
-			this._chatLogger.warning('Token unexpectedly expired; trying to refresh');
-			if (this._twitchClient) {
-				this._authRetrying = true;
-				const newToken = await this._twitchClient.refreshAccessToken();
-				if (newToken) {
-					this._updateCredentials({
-						password: `oauth:${newToken.accessToken}`
-					});
-					this.quit();
-					this._authFailureMessage = undefined;
-					await super.connect();
-					return;
-				}
-			}
-			this._authRetrying = false;
-			this._authFailureMessage = message;
-			this.emit(this.onAuthenticationFailure, message);
+		this.onRegister(() => {
+			this._authVerified = true;
+			this._authFailureMessage = undefined;
 		});
 
 		this.onMessage(ClearChat, ({ params: { channel, user }, tags }) => {
@@ -1162,8 +1139,10 @@ export default class ChatClient extends IRCClient {
 						message === 'Improperly formatted AUTH' ||
 						message === 'Invalid NICK'
 					) {
+						this._authVerified = false;
+						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
-						this._connection.disconnect();
+						this._connection!.disconnect();
 					}
 					break;
 				}
@@ -1178,56 +1157,7 @@ export default class ChatClient extends IRCClient {
 	}
 
 	async connect() {
-		if (this._twitchClient) {
-			let scopes: string[];
-			if (this._useLegacyScopes) {
-				scopes = ['chat_login'];
-			} else if (this._readOnly) {
-				scopes = ['chat:read'];
-			} else {
-				scopes = ['chat:read', 'chat:edit'];
-			}
-			let validToken = false;
-			try {
-				const accessToken = await this._twitchClient.getAccessToken(scopes);
-				if (accessToken) {
-					const token = await this._twitchClient.getTokenInfo();
-					if (token.valid) {
-						this._updateCredentials({
-							nick: token.userName!,
-							password: `oauth:${accessToken.accessToken}`
-						});
-						validToken = true;
-					}
-				}
-			} catch (e) {
-				this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
-			}
-			if (!validToken) {
-				this._chatLogger.warning('No valid token available; trying to refresh');
-
-				try {
-					const newToken = await this._twitchClient.refreshAccessToken();
-
-					if (newToken) {
-						const token = await this._twitchClient.getTokenInfo();
-						if (token.valid) {
-							this._updateCredentials({
-								nick: token.userName!,
-								password: `oauth:${newToken.accessToken}`
-							});
-							validToken = true;
-						}
-					}
-				} catch (e) {
-					this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
-				}
-			}
-
-			if (!validToken) {
-				throw new Error('Could not retrieve a valid token');
-			}
-		} else {
+		if (!this._twitchClient) {
 			this._updateCredentials({
 				nick: ChatClient._generateJustinfanNick(),
 				password: undefined
@@ -1872,12 +1802,14 @@ export default class ChatClient extends IRCClient {
 	 */
 	async quit() {
 		return new Promise<void>(resolve => {
-			const handler = () => {
-				this._connection.removeListener('disconnect', handler);
-				resolve();
-			};
-			this._connection.addListener('disconnect', handler);
-			this._connection.disconnect();
+			if (this._connection) {
+				const handler = () => {
+					this._connection!.removeListener('disconnect', handler);
+					resolve();
+				};
+				this._connection.addListener('disconnect', handler);
+				this._connection.disconnect();
+			}
 		});
 	}
 
@@ -1913,6 +1845,62 @@ export default class ChatClient extends IRCClient {
 	protected registerCoreMessageTypes() {
 		super.registerCoreMessageTypes();
 		this.registerMessageType(TwitchPrivateMessage);
+	}
+
+	protected async getPassword(currentPassword?: string): Promise<string | undefined> {
+		if (!this._twitchClient) {
+			return undefined;
+		}
+
+		if (currentPassword && this._authVerified) {
+			this._chatLogger.debug2('Password assumed to be correct from last connection');
+			return currentPassword;
+		}
+
+		let scopes: string[];
+		if (this._useLegacyScopes) {
+			scopes = ['chat_login'];
+		} else if (this._readOnly) {
+			scopes = ['chat:read'];
+		} else {
+			scopes = ['chat:read', 'chat:edit'];
+		}
+
+		try {
+			const accessToken = await this._twitchClient.getAccessToken(scopes);
+			if (accessToken) {
+				const token = await this._twitchClient.getTokenInfo();
+				if (token.valid) {
+					this._updateCredentials({
+						nick: token.userName!
+					});
+					return `oauth:${accessToken.accessToken}`;
+				}
+			}
+		} catch (e) {
+			this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+		}
+
+		this._chatLogger.warning('No valid token available; trying to refresh');
+
+		try {
+			const newToken = await this._twitchClient.refreshAccessToken();
+
+			if (newToken) {
+				const token = await this._twitchClient.getTokenInfo();
+				if (token.valid) {
+					this._updateCredentials({
+						nick: token.userName!
+					});
+					return `oauth:${newToken.accessToken}`;
+				}
+			}
+		} catch (e) {
+			this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+		}
+
+		this._authVerified = false;
+		throw new Error('Could not retrieve a valid token');
 	}
 
 	private static _generateJustinfanNick() {
