@@ -17,9 +17,15 @@ import { NonEnumerable } from './Toolkit/Decorators';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
 import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
 import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
+import ChatPrimeCommunityGiftInfo from './UserNotices/ChatPrimeCommunityGiftInfo';
 import ChatRaidInfo from './UserNotices/ChatRaidInfo';
 import ChatRitualInfo from './UserNotices/ChatRitualInfo';
-import ChatSubInfo, { ChatSubExtendInfo, ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
+import ChatSubInfo, {
+	ChatSubExtendInfo,
+	ChatSubGiftInfo,
+	ChatSubGiftUpgradeInfo,
+	ChatSubUpgradeInfo
+} from './UserNotices/ChatSubInfo';
 
 const GENERIC_CHANNEL = 'twjs';
 
@@ -251,6 +257,15 @@ export default class ChatClient extends IRCClient {
 	) => Listener = this.registerEvent();
 
 	/**
+	 * Fires when a user cancels a raid.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the raid was cancelled.
+	 * @param msg The raw message that was received.
+	 */
+	onRaidCancel: (handler: (channel: string, msg: UserNotice) => void) => Listener = this.registerEvent();
+
+	/**
 	 * Fires when a user performs a "ritual" in a channel.
 	 *
 	 * @eventListener
@@ -345,6 +360,47 @@ export default class ChatClient extends IRCClient {
 	 */
 	onSubExtend: (
 		handler: (channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user upgrades their Prime subscription to a paid subscription in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the subscription was upgraded.
+	 * @param user The user that upgraded their subscription.
+	 * @param subInfo Additional information about the subscription upgrade.
+	 * @param msg The raw message that was received.
+	 */
+	onPrimePaidUpgrade: (
+		handler: (channel: string, user: string, subInfo: ChatSubUpgradeInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user upgrades their gift subscription to a paid subscription in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the subscription was upgraded.
+	 * @param user The user that upgraded their subscription.
+	 * @param subInfo Additional information about the subscription upgrade.
+	 * @param msg The raw message that was received.
+	 */
+	onGiftPaidUpgrade: (
+		handler: (channel: string, user: string, subInfo: ChatSubGiftUpgradeInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user gifts a Twitch Prime benefit to the channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the benefit was gifted.
+	 * @param user The user that received the gift.
+	 *
+	 * **WARNING:** This is a *display name* and thus will not work as an identifier for the API (login) in some cases.
+	 * @param subInfo Additional information about the gift.
+	 * @param msg The raw message that was received.
+	 */
+	onPrimeCommunityGift: (
+		handler: (channel: string, user: string, subInfo: ChatPrimeCommunityGiftInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
 	/**
@@ -709,7 +765,40 @@ export default class ChatClient extends IRCClient {
 						count: Number(tags.get('msg-param-mass-gift-count')!),
 						plan: tags.get('msg-param-sub-plan')!
 					};
-					this.emit(this.onCommunitySub, channel, tags.get('login'), communitySubInfo, userNotice);
+					this.emit(this.onCommunitySub, channel, tags.get('login')!, communitySubInfo, userNotice);
+					break;
+				}
+				case 'primepaidupgrade': {
+					const upgradeInfo: ChatSubUpgradeInfo = {
+						displayName: tags.get('display-name')!,
+						plan: tags.get('msg-param-sub-plan')!
+					};
+					this.emit(this.onPrimePaidUpgrade, channel, tags.get('login')!, upgradeInfo, userNotice);
+					break;
+				}
+				case 'giftpaidupgrade': {
+					const upgradeInfo: ChatSubGiftUpgradeInfo = {
+						displayName: tags.get('display-name')!,
+						plan: tags.get('msg-param-sub-plan')!,
+						gifter: tags.get('msg-param-sender-login')!,
+						gifterDisplayName: tags.get('msg-param-sender-name')!
+					};
+					this.emit(this.onGiftPaidUpgrade, channel, tags.get('login')!, upgradeInfo, userNotice);
+					break;
+				}
+				case 'primecommunitygiftreceived': {
+					const giftInfo: ChatPrimeCommunityGiftInfo = {
+						name: tags.get('msg-param-gift-name')!,
+						gifter: tags.get('login')!,
+						gifterDisplayName: tags.get('display-name')!
+					};
+					this.emit(
+						this.onPrimeCommunityGift,
+						channel,
+						tags.get('msg-param-recipient')!,
+						giftInfo,
+						userNotice
+					);
 					break;
 				}
 				case 'raid': {
@@ -718,6 +807,10 @@ export default class ChatClient extends IRCClient {
 						viewerCount: Number(tags.get('msg-param-viewerCount'))
 					};
 					this.emit(this.onRaid, channel, tags.get('login')!, raidInfo, userNotice);
+					break;
+				}
+				case 'unraid': {
+					this.emit(this.onRaidCancel, channel, userNotice);
 					break;
 				}
 				case 'ritual': {
