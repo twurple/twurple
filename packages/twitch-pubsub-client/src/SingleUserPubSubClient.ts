@@ -1,4 +1,4 @@
-import TwitchClient, { extractUserId, TokenInfo, UserIdResolvable } from 'twitch';
+import TwitchClient, { extractUserId, InvalidTokenError, UserIdResolvable } from 'twitch';
 import BasicPubSubClient from './BasicPubSubClient';
 import { NonEnumerable } from './Toolkit/Decorators';
 import PubSubListener from './PubSubListener';
@@ -169,26 +169,46 @@ export default class SingleUserPubSubClient {
 	}
 
 	private async _getUserData(scope?: string) {
-		const tokenData = await this._twitchClient._config.authProvider.getAccessToken(scope);
-		let accessToken: string | undefined;
-		let tokenInfo: TokenInfo | undefined;
+		const tokenData = await this._twitchClient.getAccessToken(scope);
+
+		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		if (tokenData) {
-			accessToken = tokenData.accessToken;
-			tokenInfo = await this._twitchClient.getTokenInfo();
+			try {
+				const accessToken = tokenData.accessToken;
+				const { userId } = await this._twitchClient.getTokenInfo();
+				return {
+					userId,
+					accessToken
+				};
+			} catch (e) {
+				if (e instanceof InvalidTokenError) {
+					lastTokenError = e;
+				} else {
+					throw e;
+				}
+			}
 		}
 
-		if (!(tokenInfo && tokenInfo.valid) && this._twitchClient._config.authProvider.refresh) {
-			accessToken = (await this._twitchClient._config.authProvider.refresh()).accessToken;
-			tokenInfo = await this._twitchClient.getTokenInfo();
-		}
-		if (!(tokenInfo && tokenInfo.valid) || !accessToken) {
-			throw new Error('PubSub authentication failed');
+		try {
+			const newTokenInfo = await this._twitchClient.refreshAccessToken();
+			if (newTokenInfo) {
+				const accessToken = newTokenInfo.accessToken;
+				const { userId } = await this._twitchClient.getTokenInfo();
+				return {
+					userId,
+					accessToken
+				};
+			}
+		} catch (e) {
+			if (e instanceof InvalidTokenError) {
+				lastTokenError = e;
+			} else {
+				throw e;
+			}
 		}
 
-		const userId = tokenInfo.userId!;
-
-		return { userId, accessToken };
+		throw lastTokenError || new Error('PubSub authentication failed');
 	}
 
 	private async _addListener<T extends PubSubMessage>(

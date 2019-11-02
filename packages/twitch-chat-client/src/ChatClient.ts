@@ -2,7 +2,7 @@ import Logger, { LogLevel } from '@d-fischer/logger';
 import { Listener } from '@d-fischer/typed-event-emitter';
 import IRCClient from 'ircv3';
 import { ChannelJoin, ChannelPart, Notice, PrivateMessage } from 'ircv3/lib/Message/MessageTypes/Commands/';
-import TwitchClient, { CommercialLength } from 'twitch';
+import TwitchClient, { CommercialLength, InvalidTokenError } from 'twitch';
 import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
 import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import HostTarget from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -1940,19 +1940,23 @@ export default class ChatClient extends IRCClient {
 			scopes = ['chat:read', 'chat:edit'];
 		}
 
+		let lastTokenError: InvalidTokenError | undefined = undefined;
+
 		try {
 			const accessToken = await this._twitchClient.getAccessToken(scopes);
 			if (accessToken) {
 				const token = await this._twitchClient.getTokenInfo();
-				if (token.valid) {
-					this._updateCredentials({
-						nick: token.userName!
-					});
-					return `oauth:${accessToken.accessToken}`;
-				}
+				this._updateCredentials({
+					nick: token.userName!
+				});
+				return `oauth:${accessToken.accessToken}`;
 			}
 		} catch (e) {
-			this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+			if (e instanceof InvalidTokenError) {
+				lastTokenError = e;
+			} else {
+				this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+			}
 		}
 
 		this._chatLogger.warning('No valid token available; trying to refresh');
@@ -1962,19 +1966,21 @@ export default class ChatClient extends IRCClient {
 
 			if (newToken) {
 				const token = await this._twitchClient.getTokenInfo();
-				if (token.valid) {
-					this._updateCredentials({
-						nick: token.userName!
-					});
-					return `oauth:${newToken.accessToken}`;
-				}
+				this._updateCredentials({
+					nick: token.userName!
+				});
+				return `oauth:${newToken.accessToken}`;
 			}
 		} catch (e) {
-			this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+			if (e instanceof InvalidTokenError) {
+				lastTokenError = e;
+			} else {
+				this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+			}
 		}
 
 		this._authVerified = false;
-		throw new Error('Could not retrieve a valid token');
+		throw lastTokenError || new Error('Could not retrieve a valid token');
 	}
 
 	private static _generateJustinfanNick() {

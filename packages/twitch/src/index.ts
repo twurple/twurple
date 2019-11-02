@@ -7,10 +7,18 @@ export { TwitchAPICallType, TwitchAPICallOptions };
 import ConfigError from './Errors/ConfigError';
 import HellFreezesOverError from './Errors/HellFreezesOverError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
+import InvalidTokenError from './Errors/InvalidTokenError';
 import NoSubscriptionProgramError from './Errors/NoSubscriptionProgramError';
 import StreamNotLiveError from './Errors/StreamNotLiveError';
 
-export { ConfigError, HellFreezesOverError, HTTPStatusCodeError, NoSubscriptionProgramError, StreamNotLiveError };
+export {
+	ConfigError,
+	HellFreezesOverError,
+	HTTPStatusCodeError,
+	InvalidTokenError,
+	NoSubscriptionProgramError,
+	StreamNotLiveError
+};
 
 import AuthProvider from './Auth/AuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';

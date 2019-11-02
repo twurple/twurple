@@ -53,9 +53,6 @@ export default class StaticAuthProvider implements AuthProvider {
 					throw new Error('Auth provider has not been initialized with a token yet and is requesting scopes');
 				}
 				const tokenInfo = await TwitchClient.getTokenInfo(this._clientId, this._accessToken.accessToken);
-				if (!tokenInfo.valid) {
-					throw new Error('Auth provider has been initialized with an invalid token');
-				}
 				this._scopes = tokenInfo.scopes;
 			}
 			if (typeof scopes === 'string') {

@@ -199,7 +199,7 @@ export default class CheermoteList {
 	 */
 	getCheermoteDisplayInfo(name: string, bits: number, format: Partial<CheermoteFormat> = {}): CheermoteDisplayInfo {
 		name = name.toLowerCase();
-		const cheermoteDefaults = this._client._config.cheermotes;
+		const cheermoteDefaults = this._client.cheermoteDefaults;
 		const fullOptions: CheermoteFormat = {
 			background: cheermoteDefaults.defaultBackground,
 			state: cheermoteDefaults.defaultState,

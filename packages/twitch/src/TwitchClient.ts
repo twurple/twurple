@@ -1,5 +1,6 @@
 import * as qs from 'qs';
 import AuthProvider from './Auth/AuthProvider';
+import InvalidTokenError from './Errors/InvalidTokenError';
 import { Cacheable, CachedGetter } from './Toolkit/Decorators/Cache';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
@@ -154,8 +155,7 @@ export interface TwitchAPICallOptions {
  */
 @Cacheable
 export default class TwitchClient {
-	/** @private */
-	readonly _config: TwitchConfig;
+	private readonly _config: TwitchConfig;
 
 	/**
 	 * Creates a new instance with fixed credentials.
@@ -182,9 +182,11 @@ export default class TwitchClient {
 		config: Partial<TwitchConfig> = {}
 	) {
 		if (!scopes && accessToken) {
-			let tokenData = await this.getTokenInfo(clientId, accessToken);
-			if (!tokenData.valid) {
-				if (refreshConfig) {
+			let tokenData;
+			try {
+				tokenData = await this.getTokenInfo(clientId, accessToken);
+			} catch (e) {
+				if (e instanceof InvalidTokenError && refreshConfig) {
 					const newToken = await this.refreshAccessToken(
 						clientId,
 						refreshConfig.clientSecret,
@@ -192,9 +194,8 @@ export default class TwitchClient {
 					);
 					accessToken = newToken.accessToken;
 					tokenData = await this.getTokenInfo(clientId, accessToken);
-				}
-				if (!tokenData.valid) {
-					throw new ConfigError('Supplied an invalid access token to retrieve scopes with');
+				} else {
+					throw e;
 				}
 			}
 			scopes = tokenData.scopes;
@@ -376,7 +377,7 @@ export default class TwitchClient {
 			return new TokenInfo(data);
 		} catch (e) {
 			if (e instanceof HTTPStatusCodeError && e.statusCode === 401) {
-				return new TokenInfo();
+				throw new InvalidTokenError();
 			}
 			throw e;
 		}
@@ -419,7 +420,7 @@ export default class TwitchClient {
 			return new TokenInfo(data);
 		} catch (e) {
 			if (e instanceof HTTPStatusCodeError && e.statusCode === 401) {
-				return new TokenInfo();
+				throw new InvalidTokenError();
 			}
 			throw e;
 		}
@@ -459,6 +460,13 @@ export default class TwitchClient {
 		}
 
 		return TwitchClient.callAPI<T>(options, authProvider.clientId, accessToken.accessToken);
+	}
+
+	/**
+	 * The default specs for cheermotes.
+	 */
+	get cheermoteDefaults() {
+		return this._config.cheermotes;
 	}
 
 	/**

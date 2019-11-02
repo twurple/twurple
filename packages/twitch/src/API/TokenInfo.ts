@@ -14,7 +14,7 @@ export default class TokenInfo {
 	private readonly _obtainmentDate: Date;
 
 	/** @private */
-	constructor(private readonly _data?: TokenInfoData) {
+	constructor(private readonly _data: TokenInfoData) {
 		this._obtainmentDate = new Date();
 	}
 
@@ -22,37 +22,28 @@ export default class TokenInfo {
 	 * The client ID.
 	 */
 	get clientId() {
-		return this._data ? this._data.client_id : null;
+		return this._data.client_id;
 	}
 
 	/**
 	 * The ID of the authenticated user.
 	 */
 	get userId() {
-		return this._data ? this._data.user_id : null;
+		return this._data.user_id;
 	}
 
 	/**
 	 * The user name of the authenticated user.
 	 */
 	get userName() {
-		return this._data ? this._data.login : null;
+		return this._data.login;
 	}
 
 	/**
 	 * The scopes for which this token is valid.
 	 */
 	get scopes() {
-		return this._data ? this._data.scopes : [];
-	}
-
-	/**
-	 * Whether the token is valid or not.
-	 *
-	 * @deprecated This will be replaced with an exception soon; you can already add a try-catch for this future case.
-	 */
-	get valid() {
-		return !!this._data;
+		return this._data.scopes;
 	}
 
 	/**
@@ -61,7 +52,7 @@ export default class TokenInfo {
 	 * If this returns null, it means that the token is either invalid or never expires (happens with old client IDs).
 	 */
 	get expiryDate() {
-		if (!this._data || !this._data.expires_in) {
+		if (!this._data.expires_in) {
 			return null;
 		}
 
