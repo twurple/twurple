@@ -64,6 +64,39 @@ export interface ChatSubGiftInfo extends ChatSubInfo {
 }
 
 /**
+ * Information about a subscription that was upgraded from a Prime subscription.
+ */
+export interface ChatSubUpgradeInfo {
+	/**
+	 * The display name of the subscribing user.
+	 */
+	displayName: string;
+
+	/**
+	 * The plan ID of the subscription.
+	 *
+	 * Tier 1, 2, 3 are '1000', '2000', '3000' respectively, and a Twitch Prime subscription is called 'Prime'.
+	 */
+	plan: string;
+}
+
+/**
+ * Information about a subscription that was upgraded from a gift.
+ * @inheritDoc
+ */
+export interface ChatSubGiftUpgradeInfo extends ChatSubUpgradeInfo {
+	/**
+	 * The name of the user that gifted the original subscription.
+	 */
+	gifter: string;
+
+	/**
+	 * The display name of the user that gifted the original subscription.
+	 */
+	gifterDisplayName: string;
+}
+
+/**
  * Information about a subsription extension.
  * @inheritDoc
  */

@@ -17,9 +17,15 @@ import { NonEnumerable } from './Toolkit/Decorators';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
 import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
 import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
+import ChatPrimeCommunityGiftInfo from './UserNotices/ChatPrimeCommunityGiftInfo';
 import ChatRaidInfo from './UserNotices/ChatRaidInfo';
 import ChatRitualInfo from './UserNotices/ChatRitualInfo';
-import ChatSubInfo, { ChatSubExtendInfo, ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
+import ChatSubInfo, {
+	ChatSubExtendInfo,
+	ChatSubGiftInfo,
+	ChatSubGiftUpgradeInfo,
+	ChatSubUpgradeInfo
+} from './UserNotices/ChatSubInfo';
 
 const GENERIC_CHANNEL = 'twjs';
 
@@ -79,10 +85,10 @@ export default class ChatClient extends IRCClient {
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;
 
-	private _authRetrying = false;
+	private _authVerified = false;
 	private _authFailureMessage?: string;
 
-	private _chatLogger = new Logger({ name: 'twitch-chat' });
+	private _chatLogger: Logger;
 
 	/**
 	 * Fires when a user is timed out from a channel.
@@ -247,6 +253,15 @@ export default class ChatClient extends IRCClient {
 	) => Listener = this.registerEvent();
 
 	/**
+	 * Fires when a user cancels a raid.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the raid was cancelled.
+	 * @param msg The raw message that was received.
+	 */
+	onRaidCancel: (handler: (channel: string, msg: UserNotice) => void) => Listener = this.registerEvent();
+
+	/**
 	 * Fires when a user performs a "ritual" in a channel.
 	 *
 	 * @eventListener
@@ -341,6 +356,47 @@ export default class ChatClient extends IRCClient {
 	 */
 	onSubExtend: (
 		handler: (channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user upgrades their Prime subscription to a paid subscription in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the subscription was upgraded.
+	 * @param user The user that upgraded their subscription.
+	 * @param subInfo Additional information about the subscription upgrade.
+	 * @param msg The raw message that was received.
+	 */
+	onPrimePaidUpgrade: (
+		handler: (channel: string, user: string, subInfo: ChatSubUpgradeInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user upgrades their gift subscription to a paid subscription in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the subscription was upgraded.
+	 * @param user The user that upgraded their subscription.
+	 * @param subInfo Additional information about the subscription upgrade.
+	 * @param msg The raw message that was received.
+	 */
+	onGiftPaidUpgrade: (
+		handler: (channel: string, user: string, subInfo: ChatSubGiftUpgradeInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user gifts a Twitch Prime benefit to the channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the benefit was gifted.
+	 * @param user The user that received the gift.
+	 *
+	 * **WARNING:** This is a *display name* and thus will not work as an identifier for the API (login) in some cases.
+	 * @param subInfo Additional information about the gift.
+	 * @param msg The raw message that was received.
+	 */
+	onPrimeCommunityGift: (
+		handler: (channel: string, user: string, subInfo: ChatPrimeCommunityGiftInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
 	/**
@@ -481,9 +537,6 @@ export default class ChatClient extends IRCClient {
 	private readonly _onVipsResult: (
 		handler: (channel: string, vips?: string[], error?: string) => void
 	) => Listener = this.registerEvent();
-	private readonly _onIntermediateAuthenticationFailure: (
-		handler: (message: string) => void
-	) => Listener = this.registerEvent();
 
 	/**
 	 * Creates a new Twitch chat client with the user info from the TwitchClient instance.
@@ -532,6 +585,8 @@ export default class ChatClient extends IRCClient {
 		});
 		/* eslint-enable no-restricted-syntax */
 
+		this._chatLogger = new Logger({ name: 'twitch-chat', emoji: true, minLevel: options.logLevel });
+
 		this._twitchClient = twitchClient;
 
 		this._useLegacyScopes = !!options.legacyScopes;
@@ -545,31 +600,9 @@ export default class ChatClient extends IRCClient {
 		}
 		// tslint:enable:no-floating-promises
 
-		// reconnect with refreshed token
-		this._onIntermediateAuthenticationFailure(async message => {
-			if (this._authRetrying) {
-				this._authRetrying = false;
-				this._authFailureMessage = message;
-				this.emit(this.onAuthenticationFailure, message);
-				return;
-			}
-			this._chatLogger.warning('Token unexpectedly expired; trying to refresh');
-			if (this._twitchClient) {
-				this._authRetrying = true;
-				const newToken = await this._twitchClient.refreshAccessToken();
-				if (newToken) {
-					this._updateCredentials({
-						password: `oauth:${newToken.accessToken}`
-					});
-					this.quit();
-					this._authFailureMessage = undefined;
-					await super.connect();
-					return;
-				}
-			}
-			this._authRetrying = false;
-			this._authFailureMessage = message;
-			this.emit(this.onAuthenticationFailure, message);
+		this.onRegister(() => {
+			this._authVerified = true;
+			this._authFailureMessage = undefined;
 		});
 
 		this.onMessage(ClearChat, ({ params: { channel, user }, tags }) => {
@@ -727,7 +760,40 @@ export default class ChatClient extends IRCClient {
 						count: Number(tags.get('msg-param-mass-gift-count')!),
 						plan: tags.get('msg-param-sub-plan')!
 					};
-					this.emit(this.onCommunitySub, channel, tags.get('login'), communitySubInfo, userNotice);
+					this.emit(this.onCommunitySub, channel, tags.get('login')!, communitySubInfo, userNotice);
+					break;
+				}
+				case 'primepaidupgrade': {
+					const upgradeInfo: ChatSubUpgradeInfo = {
+						displayName: tags.get('display-name')!,
+						plan: tags.get('msg-param-sub-plan')!
+					};
+					this.emit(this.onPrimePaidUpgrade, channel, tags.get('login')!, upgradeInfo, userNotice);
+					break;
+				}
+				case 'giftpaidupgrade': {
+					const upgradeInfo: ChatSubGiftUpgradeInfo = {
+						displayName: tags.get('display-name')!,
+						plan: tags.get('msg-param-sub-plan')!,
+						gifter: tags.get('msg-param-sender-login')!,
+						gifterDisplayName: tags.get('msg-param-sender-name')!
+					};
+					this.emit(this.onGiftPaidUpgrade, channel, tags.get('login')!, upgradeInfo, userNotice);
+					break;
+				}
+				case 'primecommunitygiftreceived': {
+					const giftInfo: ChatPrimeCommunityGiftInfo = {
+						name: tags.get('msg-param-gift-name')!,
+						gifter: tags.get('login')!,
+						gifterDisplayName: tags.get('display-name')!
+					};
+					this.emit(
+						this.onPrimeCommunityGift,
+						channel,
+						tags.get('msg-param-recipient')!,
+						giftInfo,
+						userNotice
+					);
 					break;
 				}
 				case 'raid': {
@@ -736,6 +802,10 @@ export default class ChatClient extends IRCClient {
 						viewerCount: Number(tags.get('msg-param-viewerCount'))
 					};
 					this.emit(this.onRaid, channel, tags.get('login')!, raidInfo, userNotice);
+					break;
+				}
+				case 'unraid': {
+					this.emit(this.onRaidCancel, channel, userNotice);
 					break;
 				}
 				case 'ritual': {
@@ -1143,8 +1213,10 @@ export default class ChatClient extends IRCClient {
 						message === 'Improperly formatted AUTH' ||
 						message === 'Invalid NICK'
 					) {
+						this._authVerified = false;
+						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
-						this._connection.disconnect();
+						this._connection!.disconnect();
 					}
 					break;
 				}
@@ -1159,56 +1231,7 @@ export default class ChatClient extends IRCClient {
 	}
 
 	async connect() {
-		if (this._twitchClient) {
-			let scopes: string[];
-			if (this._useLegacyScopes) {
-				scopes = ['chat_login'];
-			} else if (this._readOnly) {
-				scopes = ['chat:read'];
-			} else {
-				scopes = ['chat:read', 'chat:edit'];
-			}
-			let validToken = false;
-			try {
-				const accessToken = await this._twitchClient.getAccessToken(scopes);
-				if (accessToken) {
-					const token = await this._twitchClient.getTokenInfo();
-					if (token.valid) {
-						this._updateCredentials({
-							nick: token.userName!,
-							password: `oauth:${accessToken.accessToken}`
-						});
-						validToken = true;
-					}
-				}
-			} catch (e) {
-				this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
-			}
-			if (!validToken) {
-				this._chatLogger.warning('No valid token available; trying to refresh');
-
-				try {
-					const newToken = await this._twitchClient.refreshAccessToken();
-
-					if (newToken) {
-						const token = await this._twitchClient.getTokenInfo();
-						if (token.valid) {
-							this._updateCredentials({
-								nick: token.userName!,
-								password: `oauth:${newToken.accessToken}`
-							});
-							validToken = true;
-						}
-					}
-				} catch (e) {
-					this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
-				}
-			}
-
-			if (!validToken) {
-				throw new Error('Could not retrieve a valid token');
-			}
-		} else {
+		if (!this._twitchClient) {
 			this._updateCredentials({
 				nick: ChatClient._generateJustinfanNick(),
 				password: undefined
@@ -1853,12 +1876,14 @@ export default class ChatClient extends IRCClient {
 	 */
 	async quit() {
 		return new Promise<void>(resolve => {
-			const handler = () => {
-				this._connection.removeListener('disconnect', handler);
-				resolve();
-			};
-			this._connection.addListener('disconnect', handler);
-			this._connection.disconnect();
+			if (this._connection) {
+				const handler = () => {
+					this._connection!.removeListener('disconnect', handler);
+					resolve();
+				};
+				this._connection.addListener('disconnect', handler);
+				this._connection.disconnect();
+			}
 		});
 	}
 
@@ -1894,6 +1919,62 @@ export default class ChatClient extends IRCClient {
 	protected registerCoreMessageTypes() {
 		super.registerCoreMessageTypes();
 		this.registerMessageType(TwitchPrivateMessage);
+	}
+
+	protected async getPassword(currentPassword?: string): Promise<string | undefined> {
+		if (!this._twitchClient) {
+			return undefined;
+		}
+
+		if (currentPassword && this._authVerified) {
+			this._chatLogger.debug2('Password assumed to be correct from last connection');
+			return currentPassword;
+		}
+
+		let scopes: string[];
+		if (this._useLegacyScopes) {
+			scopes = ['chat_login'];
+		} else if (this._readOnly) {
+			scopes = ['chat:read'];
+		} else {
+			scopes = ['chat:read', 'chat:edit'];
+		}
+
+		try {
+			const accessToken = await this._twitchClient.getAccessToken(scopes);
+			if (accessToken) {
+				const token = await this._twitchClient.getTokenInfo();
+				if (token.valid) {
+					this._updateCredentials({
+						nick: token.userName!
+					});
+					return `oauth:${accessToken.accessToken}`;
+				}
+			}
+		} catch (e) {
+			this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+		}
+
+		this._chatLogger.warning('No valid token available; trying to refresh');
+
+		try {
+			const newToken = await this._twitchClient.refreshAccessToken();
+
+			if (newToken) {
+				const token = await this._twitchClient.getTokenInfo();
+				if (token.valid) {
+					this._updateCredentials({
+						nick: token.userName!
+					});
+					return `oauth:${newToken.accessToken}`;
+				}
+			}
+		} catch (e) {
+			this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+		}
+
+		this._authVerified = false;
+		throw new Error('Could not retrieve a valid token');
 	}
 
 	private static _generateJustinfanNick() {

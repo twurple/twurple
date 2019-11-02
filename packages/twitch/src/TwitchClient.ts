@@ -253,7 +253,7 @@ export default class TwitchClient {
 			headers.append('Content-Type', 'application/json');
 		}
 
-		if (clientId) {
+		if (clientId && type !== TwitchAPICallType.Auth) {
 			headers.append('Client-ID', clientId);
 		}
 

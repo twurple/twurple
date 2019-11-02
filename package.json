@@ -19,8 +19,11 @@
     "eslint-plugin-fp": "^2.3.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-jsdoc": "^4.8.0",
+    "husky": "^3.0.9",
     "lerna": "^3.13.1",
+    "lint-staged": "^9.4.2",
     "prettier": "^1.18.2",
+    "pretty-quick": "^2.0.0",
     "rimraf": "^2.6.2",
     "typescript": "~3.5.1"
   },
@@ -32,5 +35,20 @@
     "rebuild": "lerna run rebuild",
     "docs": "documen.ts",
     "lerna": "lerna"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,css,json,md}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix",
+      "git add"
+    ]
   }
 }
