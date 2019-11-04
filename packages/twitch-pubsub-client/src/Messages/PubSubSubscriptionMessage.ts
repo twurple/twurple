@@ -100,9 +100,9 @@ export default class PubSubSubscriptionMessage {
 	}
 
 	/**
-	 * The message sent with the subscription
+	 * The message sent with the subscription.
 	 *
-	 * Returns null if the subscription is a gift subscription
+	 * Returns null if the subscription is a gift subscription.
 	 */
 	get message() {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift' ? null : this._data.sub_message;
