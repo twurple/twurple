@@ -38,8 +38,8 @@ export default class PubSubSubscriptionMessage {
 	 * The ID of the user subscribing to the channel.
 	 */
 	get userId() {
-		return this.isGift || this.isAnonymous
-			? (this._data as PubSubSubscriptionGiftDetail).recipient_id
+		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
+			? this._data.recipient_id
 			: this._data.user_id;
 	}
 
@@ -47,8 +47,8 @@ export default class PubSubSubscriptionMessage {
 	 * The name of the user subscribing to the channel.
 	 */
 	get userName() {
-		return this.isGift || this.isAnonymous
-			? (this._data as PubSubSubscriptionGiftDetail).recipient_user_name
+		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
+			? this._data.recipient_user_name
 			: this._data.user_name;
 	}
 
@@ -56,8 +56,8 @@ export default class PubSubSubscriptionMessage {
 	 * The display name of the user subscribing to the channel.
 	 */
 	get userDisplayName() {
-		return this.isGift || this.isAnonymous
-			? (this._data as PubSubSubscriptionGiftDetail).recipient_display_name
+		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
+			? this._data.recipient_display_name
 			: this._data.display_name;
 	}
 
@@ -67,7 +67,9 @@ export default class PubSubSubscriptionMessage {
 	 * Returns 0 if a gift sub or the streaks months.
 	 */
 	get streakMonths() {
-		return this.isGift || this.isAnonymous ? 0 : this._data['streak-months'];
+		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
+			? 0
+			: this._data['streak-months'];
 	}
 
 	/**
@@ -76,8 +78,8 @@ export default class PubSubSubscriptionMessage {
 	 * Returns the months if a gift sub or the cumulative months.
 	 */
 	get cumulativeMonths() {
-		return this.isGift || this.isAnonymous
-			? (this._data as PubSubSubscriptionGiftDetail).months
+		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
+			? this._data.months
 			: this._data['cumulative-months'];
 	}
 
@@ -91,7 +93,7 @@ export default class PubSubSubscriptionMessage {
 	}
 
 	/**
-	 * The time the user subscribed
+	 * The time the user subscribed.
 	 */
 	get time() {
 		return new Date(this._data.time);
@@ -103,7 +105,7 @@ export default class PubSubSubscriptionMessage {
 	 * Returns null if the subscription is a gift subscription
 	 */
 	get message() {
-		return this.isGift || this.isAnonymous ? null : this._data.sub_message;
+		return this._data.context === 'subgift' || this._data.context === 'anonsubgift' ? null : this._data.sub_message;
 	}
 
 	/**
