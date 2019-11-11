@@ -159,7 +159,7 @@ export default class ChatClient extends IRCClient {
 	 * @param target The channel that is being hosted.
 	 * @param viewers The number of viewers in the hosting channel.
 	 *
-	 *   If you're not logged in as the owner of the channel, this is undefined.
+	 * If you're not logged in as the owner of the channel, this is undefined.
 	 */
 	onHost: (handler: (channel: string, target: string, viewers?: number) => void) => Listener = this.registerEvent();
 

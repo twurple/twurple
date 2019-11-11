@@ -32,7 +32,7 @@
     "twitch": "^4.0.0-pre.0"
   },
   "peerDependencies": {
-    "twitch": "^3.0.0"
+    "twitch": "^4.0.0"
   },
   "files": [
     "LICENSE",

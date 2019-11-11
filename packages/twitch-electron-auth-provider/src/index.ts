@@ -28,6 +28,7 @@ interface WindowOptions {
 	 * A custom `BrowserWindow` in which the loading will occur.
 	 *
 	 * @default
+	 * ```js
 	 *	{
 	 *		width: 800,
 	 *		height: 600,
@@ -37,6 +38,7 @@ interface WindowOptions {
 	 *			nodeIntegration: false
 	 *		}
 	 *	}
+	 *```
 	 */
 	window: BrowserWindow;
 

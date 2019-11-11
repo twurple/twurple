@@ -73,11 +73,6 @@ export default abstract class Subscription<T = any> {
 		this._client._dropSubscription(this.id);
 	}
 
-	private async _createNewSubscription() {
-		this._generateNewCredentials();
-		await this._subscribe();
-	}
-
 	abstract get id(): string;
 
 	protected abstract _subscribe(): Promise<void>;
@@ -85,4 +80,9 @@ export default abstract class Subscription<T = any> {
 	protected abstract _unsubscribe(): Promise<void>;
 
 	protected abstract transformData(response: object): T;
+
+	private async _createNewSubscription() {
+		this._generateNewCredentials();
+		await this._subscribe();
+	}
 }

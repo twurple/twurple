@@ -9,7 +9,7 @@ declare module 'trouter' {
 
 	class Trouter {
 		/**
-		 * @constructor Initializes a new Trouter instance. Currently accepts no options.
+		 * @class Initializes a new Trouter instance. Currently accepts no options.
 		 */
 		constructor(opts?: {});
 

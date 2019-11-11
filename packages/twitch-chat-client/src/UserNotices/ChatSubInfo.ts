@@ -44,6 +44,7 @@ export default interface ChatSubInfo {
 
 /**
  * Information about a subscription that was gifted.
+ *
  * @inheritDoc
  */
 export interface ChatSubGiftInfo extends ChatSubInfo {
@@ -82,6 +83,7 @@ export interface ChatSubUpgradeInfo {
 
 /**
  * Information about a subscription that was upgraded from a gift.
+ *
  * @inheritDoc
  */
 export interface ChatSubGiftUpgradeInfo extends ChatSubUpgradeInfo {
@@ -98,6 +100,7 @@ export interface ChatSubGiftUpgradeInfo extends ChatSubUpgradeInfo {
 
 /**
  * Information about a subsription extension.
+ *
  * @inheritDoc
  */
 export interface ChatSubExtendInfo {
