@@ -22,12 +22,6 @@ module.exports = {
 					'grant_type'
 				]
 			}
-		],
-		'jsdoc/check-tag-names': [
-			'error',
-			{
-				definedTags: ['inheritDoc', 'expandParams', 'hideProtected', 'eventListener']
-			}
 		]
 	},
 	settings: {
