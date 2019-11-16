@@ -9,7 +9,10 @@ const listener = await WebHookListener.create(twitchClient, {port: 8090});
 listener.listen();
 ```
 
-After that, you can subscribe to all supported events using this listener:
+Please note that the port you supply needs to be **available from the outside**.
+If you are testing locally, you may need to forward the port to your development machine.
+
+When your listener is set up, you can subscribe to all supported events using this listener:
 
 ```typescript
 import { HelixStream } from 'twitch';
