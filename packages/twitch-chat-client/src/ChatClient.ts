@@ -440,6 +440,15 @@ export default class ChatClient extends IRCClient {
 	 */
 	onAuthenticationFailure: (handler: (message: string) => void) => Listener = this.registerEvent();
 
+	/**
+	 * Fires when sending a message fails.
+	 *
+	 * @eventListener
+	 * @param channel The channel that rejected the message.
+	 * @param reason The reason for the failure, e.g. you're banned (msg_banned)
+	 */
+	onMessageFailed: (handler: (channel: string, reason: string) => void) => Listener = this.registerEvent();
+
 	// override for specific class
 	/**
 	 * Fires when a user sends a message to a channel.
@@ -1222,6 +1231,11 @@ export default class ChatClient extends IRCClient {
 
 				case 'msg_ratelimit': {
 					this.emit(this.onMessageRatelimit, channel, message);
+					break;
+				}
+
+				case 'msg_banned': {
+					this.emit(this.onMessageFailed, channel, messageType);
 					break;
 				}
 
