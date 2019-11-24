@@ -1125,6 +1125,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/deprecate@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@types/deprecate/-/deprecate-1.1.0.tgz#43ea861eea4e95fd9431d6a74bafa2b374c741c5"
+  integrity sha512-sIUw8GIc7MyNi7HUtCavaxYBOsQWpPkYS7YeiCnOemt+SR9+TkBR44gCrcqT3SHYzwS7279vx4/AVvhxRSxVLA==
+  dependencies:
+    "@types/node" "*"
+
 "@types/escape-string-regexp@0.0.30":
   version "0.0.30"
   resolved "https://registry.yarnpkg.com/@types/escape-string-regexp/-/escape-string-regexp-0.0.30.tgz#8cfaf0b5d2e46943d6efd77d3f4d18bfa1c9f225"
@@ -3171,6 +3178,11 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+
+deprecate@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/deprecate/-/deprecate-1.1.1.tgz#4632e981fc815eeaf00be945a40359c0f8bf9913"
+  integrity sha512-ZGDXefq1xknT292LnorMY5s8UVU08/WKdzDZCUT6t9JzsiMSP4uzUhgpqugffNVcT5WC6wMBiSQ+LFjlv3v7iQ==
 
 deprecation@^2.0.0:
   version "2.3.1"

@@ -21,10 +21,12 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/logger": "^0.1.0",
+    "deprecate": "^1.1.1",
     "ircv3": "^0.19.3",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
+    "@types/deprecate": "^1.1.0",
     "twitch": "^4.0.0-pre.0"
   },
   "peerDependencies": {

@@ -1,5 +1,6 @@
 import Logger, { LogLevel } from '@d-fischer/logger';
 import { Listener } from '@d-fischer/typed-event-emitter';
+import * as deprecate from 'deprecate';
 import IRCClient from 'ircv3';
 import { ChannelJoin, ChannelPart, Notice, PrivateMessage } from 'ircv3/lib/Message/MessageTypes/Commands/';
 import TwitchClient, { CommercialLength, InvalidTokenError } from 'twitch';
@@ -1904,8 +1905,14 @@ export default class ChatClient extends IRCClient {
 
 	/**
 	 * Waits for authentication (or "registration" in IRC terms) to finish.
+	 *
+	 * @deprecated Use the `onRegister` event instead.
 	 */
 	async waitForRegistration() {
+		deprecate(
+			'[twitch-chat-client] ChatClient#waitForRegistration is deprecated; use the `onRegister` event instead'
+		);
+
 		if (this._registered) {
 			return;
 		}
