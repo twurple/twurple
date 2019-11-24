@@ -8,6 +8,11 @@ export default interface ChatCommunitySubInfo {
 	gifter?: string;
 
 	/**
+	 * The user ID of the user that gifted the subscription(s).
+	 */
+	gifterUserId?: string;
+
+	/**
 	 * The display name of the user that gifted the subscription(s).
 	 */
 	gifterDisplayName?: string;
