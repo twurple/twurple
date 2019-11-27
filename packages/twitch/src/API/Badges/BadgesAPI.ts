@@ -1,8 +1,8 @@
-import BaseAPI from '../BaseAPI';
-import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
-import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
-import { TwitchAPICallType } from '../../TwitchClient';
+import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../Toolkit/UserTools';
+import { TwitchAPICallType } from '../../TwitchClient';
+import BaseAPI from '../BaseAPI';
+import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
 
 /**
  * The API methods that deal with badges.

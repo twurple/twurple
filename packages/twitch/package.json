@@ -21,8 +21,10 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
+    "@d-fischer/cache-decorators": "^1.0.1",
     "@d-fischer/logger": "^0.2.0",
     "@d-fischer/rate-limiter": "^0.1.0",
+    "@d-fischer/shared-utils": "^1.0.1",
     "@types/promise.allsettled": "^1.0.2",
     "@types/qs": "^6.5.1",
     "fetch-ponyfill": "^6.0.2",

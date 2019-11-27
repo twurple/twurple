@@ -30,6 +30,15 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@d-fischer/cache-decorators@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/cache-decorators/-/cache-decorators-1.0.1.tgz#c6c50871c58164f7ae48c640d57945bf93b8f48c"
+  integrity sha512-r64XzX2EPPDN/Dgo/glkwNePGAnUBj8kxbmVTUPjVC9cpm1ioC4RwB8ZK+CI80ODaHsuaE6jOSSLuviVKumxPQ==
+  dependencies:
+    "@d-fischer/shared-utils" "^1.0.1"
+    "@types/node" "^12.12.14"
+    tslib "^1.10.0"
+
 "@d-fischer/documen.ts@^0.8.1":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.8.1.tgz#bc7254b5bb3352758457d4b5246c544f1380aad0"
@@ -131,6 +140,14 @@
     "@types/promise.allsettled" "^1.0.2"
     promise.allsettled "^1.0.1"
     tslib "^1.9.3"
+
+"@d-fischer/shared-utils@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-1.0.1.tgz#24c9102a9ec8bf8d1a52242c3a5ec14ff9e1d8fa"
+  integrity sha512-7KzGUylJvB9lt4zeFZVu/2UtLegYEkA9FQ40+Rql6dzyvB2zYNgIz5HjlEGlGaPndUnV6xa8lEmlXslywnp2Gw==
+  dependencies:
+    "@types/node" "^12.12.14"
+    tslib "^1.10.0"
 
 "@d-fischer/typed-event-emitter@^2.0.0":
   version "2.0.0"
@@ -1209,6 +1226,11 @@
   version "10.17.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.5.tgz#c1920150f7b90708a7d0f3add12a06bc9123c055"
   integrity sha512-RElZIr/7JreF1eY6oD5RF3kpmdcreuQPjg5ri4oQ5g9sq7YWU8HkfB3eH8GwAwxf5OaCh0VPi7r4N/yoTGelrA==
+
+"@types/node@^12.12.14":
+  version "12.12.14"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.14.tgz#1c1d6e3c75dba466e0326948d56e8bd72a1903d2"
+  integrity sha512-u/SJDyXwuihpwjXy7hOOghagLEV1KdAST6syfnOk6QZAMzZuWZqXy5aYYZbh8Jdpd4escVFP0MvftHNDb9pruA==
 
 "@types/node@^12.12.5":
   version "12.12.12"

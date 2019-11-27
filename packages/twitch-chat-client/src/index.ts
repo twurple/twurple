@@ -3,7 +3,8 @@ import ChatClient from './ChatClient';
 
 export default ChatClient;
 
-import TwitchPrivateMessage, {
+export {
+	default as PrivateMessage,
 	ParsedMessagePart,
 	ParsedMessageCheerPart,
 	ParsedMessageEmotePart,
@@ -11,25 +12,19 @@ import TwitchPrivateMessage, {
 } from './StandardCommands/TwitchPrivateMessage';
 
 export {
-	TwitchPrivateMessage as PrivateMessage,
-	ParsedMessagePart,
-	ParsedMessageCheerPart,
-	ParsedMessageEmotePart,
-	ParsedMessageTextPart
-};
+	ChatSubGiftInfo,
+	ChatSubGiftUpgradeInfo,
+	ChatSubUpgradeInfo,
+	ChatSubExtendInfo,
+	default as ChatSubInfo
+} from './UserNotices/ChatSubInfo';
+export { default as ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
+export { default as ChatRaidInfo } from './UserNotices/ChatRaidInfo';
+export { default as ChatRitualInfo } from './UserNotices/ChatRitualInfo';
+export { default as ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
 
-import ChatSubInfo, { ChatSubGiftInfo } from './UserNotices/ChatSubInfo';
-import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
-import ChatRaidInfo from './UserNotices/ChatRaidInfo';
-import ChatRitualInfo from './UserNotices/ChatRitualInfo';
-import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
+export { default as ChatUser } from './ChatUser';
 
-export { ChatSubInfo, ChatSubGiftInfo, ChatCommunitySubInfo, ChatRaidInfo, ChatRitualInfo, ChatBitsBadgeUpgradeInfo };
+export { LogLevel } from '@d-fischer/logger';
 
-import ChatUser from './ChatUser';
-
-export { ChatUser };
-
-import { LogLevel } from '@d-fischer/logger';
-
-export { LogLevel };
+export { toChannelName, toUserName } from './Toolkit/UserTools';

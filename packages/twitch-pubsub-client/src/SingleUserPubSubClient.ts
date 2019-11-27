@@ -1,16 +1,16 @@
+import { LogLevel } from '@d-fischer/logger';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient, { extractUserId, InvalidTokenError, UserIdResolvable } from 'twitch';
 import BasicPubSubClient from './BasicPubSubClient';
-import { NonEnumerable } from './Toolkit/Decorators';
-import PubSubListener from './PubSubListener';
-import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
 import PubSubBitsBadgeUnlockMessage, {
 	PubSubBitsBadgeUnlockMessageData
 } from './Messages/PubSubBitsBadgeUnlockMessage';
+import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
 import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
+import PubSubMessage from './Messages/PubSubMessage';
 import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
-import PubSubMessage from './Messages/PubSubMessage';
-import { LogLevel } from '@d-fischer/logger';
+import PubSubListener from './PubSubListener';
 
 /**
  * Options for creating the single-user PubSub client.

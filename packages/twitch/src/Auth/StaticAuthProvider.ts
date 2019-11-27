@@ -1,7 +1,7 @@
-import AuthProvider from './AuthProvider';
-import { NonEnumerable } from '../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import AccessToken from '../API/AccessToken';
 import TwitchClient from '../TwitchClient';
+import AuthProvider from './AuthProvider';
 
 /**
  * An auth provider that always returns the same initially given credentials.

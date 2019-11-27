@@ -1,9 +1,9 @@
-import * as WebSocket from 'universal-websocket-client';
-import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
-import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
-import { PubSubMessageData } from './Messages/PubSubMessage';
 import Logger, { LogLevel } from '@d-fischer/logger';
-import { NonEnumerable } from './Toolkit/Decorators';
+import { NonEnumerable } from '@d-fischer/shared-utils';
+import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
+import * as WebSocket from 'universal-websocket-client';
+import { PubSubMessageData } from './Messages/PubSubMessage';
+import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
 /**
  * A client for the Twitch PubSub interface.

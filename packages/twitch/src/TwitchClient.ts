@@ -1,24 +1,26 @@
+import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { LogLevel } from '@d-fischer/logger';
-
-import { fetch } from './Toolkit/Fetch';
 import * as qs from 'qs';
+
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import BadgesAPI from './API/Badges/BadgesAPI';
 import HelixAPIGroup from './API/Helix/HelixAPIGroup';
 import HelixRateLimiter from './API/Helix/HelixRateLimiter';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
-
 import KrakenAPIGroup from './API/Kraken/KrakenAPIGroup';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
+
 import AuthProvider from './Auth/AuthProvider';
 import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
+
 import ConfigError from './Errors/ConfigError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 import InvalidTokenError from './Errors/InvalidTokenError';
-import { Cacheable, CachedGetter } from './Toolkit/Decorators/Cache';
+
+import { fetch } from './Toolkit/Fetch';
 
 /**
  * Default configuration for the cheermote API.

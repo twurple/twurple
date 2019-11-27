@@ -1,4 +1,5 @@
 import Logger, { LogLevel } from '@d-fischer/logger';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
 import * as deprecate from 'deprecate';
 import IRCClient from 'ircv3';
@@ -14,7 +15,6 @@ import TwitchMembershipCapability from './Capabilities/TwitchMembershipCapabilit
 import TwitchTagsCapability from './Capabilities/TwitchTagsCapability';
 import ClearMsg from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
 import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
-import { NonEnumerable } from './Toolkit/Decorators';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
 import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
 import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';

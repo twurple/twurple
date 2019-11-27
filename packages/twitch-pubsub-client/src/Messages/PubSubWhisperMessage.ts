@@ -1,6 +1,6 @@
-import { NonEnumerable } from '../Toolkit/Decorators';
-import { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient, { HelixUserType } from 'twitch';
+import { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
 export interface PubSubWhisperTags {
 	login: string;

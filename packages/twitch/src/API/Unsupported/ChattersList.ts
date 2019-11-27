@@ -1,5 +1,5 @@
-import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
-import { flatten } from '../../Toolkit/ArrayTools';
+import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import { flatten } from '@d-fischer/shared-utils';
 
 /** @private */
 export interface ChattersListData {

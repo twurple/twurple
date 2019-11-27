@@ -1,7 +1,7 @@
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '@d-fischer/shared-utils';
+import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import TwitchClient from '../../../TwitchClient';
-import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
 
 /**
  * The type of a broadcaster.

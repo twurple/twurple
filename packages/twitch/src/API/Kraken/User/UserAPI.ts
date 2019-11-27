@@ -1,16 +1,16 @@
-import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../../Toolkit/Decorators/Cache';
-import BaseAPI from '../../BaseAPI';
-import PrivilegedUser from './PrivilegedUser';
-import User, { UserData } from './User';
-import { entriesToObject, indexBy, mapObject } from '../../../Toolkit/ObjectTools';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import EmoteSetList from '../Channel/EmoteSetList';
-import UserSubscription from './UserSubscription';
-import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
-import UserFollow, { UserFollowData } from './UserFollow';
-import UserBlock, { UserBlockData } from './UserBlock';
+import { Cacheable, Cached, CacheEntry, ClearsCache } from '@d-fischer/cache-decorators';
+import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
+import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import BaseAPI from '../../BaseAPI';
+import EmoteSetList from '../Channel/EmoteSetList';
+import PrivilegedUser from './PrivilegedUser';
+import User, { UserData } from './User';
+import UserBlock, { UserBlockData } from './UserBlock';
+import UserFollow, { UserFollowData } from './UserFollow';
+import UserSubscription from './UserSubscription';
 
 /**
  * The API methods that deal with users.

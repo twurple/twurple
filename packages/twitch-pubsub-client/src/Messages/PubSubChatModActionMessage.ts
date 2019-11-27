@@ -1,4 +1,4 @@
-import { NonEnumerable } from '../Toolkit/Decorators';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from 'twitch';
 
 export interface PubSubChatModActionMessageContent {

@@ -1,12 +1,12 @@
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient, { extractUserId, UserIdResolvable } from 'twitch';
-import SingleUserPubSubClient from './SingleUserPubSubClient';
 import BasicPubSubClient from './BasicPubSubClient';
-import { NonEnumerable } from './Toolkit/Decorators';
-import PubSubBitsMessage from './Messages/PubSubBitsMessage';
 import PubSubBitsBadgeUnlockMessage from './Messages/PubSubBitsBadgeUnlockMessage';
+import PubSubBitsMessage from './Messages/PubSubBitsMessage';
 import PubSubChatModActionMessage from './Messages/PubSubChatModActionMessage';
 import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
+import SingleUserPubSubClient from './SingleUserPubSubClient';
 
 export default class PubSubClient {
 	@NonEnumerable private readonly _rootClient = new BasicPubSubClient();

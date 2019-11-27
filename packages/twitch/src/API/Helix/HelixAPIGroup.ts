@@ -1,5 +1,5 @@
+import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import BaseAPI from '../BaseAPI';
-import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
 
 import HelixBitsAPI from './Bits/HelixBitsAPI';
 import HelixClipAPI from './Clip/HelixClipAPI';

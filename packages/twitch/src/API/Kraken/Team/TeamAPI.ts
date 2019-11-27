@@ -1,5 +1,5 @@
+import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import BaseAPI from '../../BaseAPI';
-import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
 import Team, { TeamData } from './Team';
 import TeamWithUsers from './TeamWithUsers';
 

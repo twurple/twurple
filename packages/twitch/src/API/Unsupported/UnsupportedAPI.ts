@@ -1,9 +1,9 @@
-import { Cacheable, Cached } from '../../Toolkit/Decorators/Cache';
-import BaseAPI from '../BaseAPI';
-import ChattersList, { ChattersListData } from './ChattersList';
+import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../Toolkit/UserTools';
-import ChannelEvent, { ChannelEventData, ChannelEventAPIResult } from './ChannelEvent';
 import { TwitchAPICallType } from '../../TwitchClient';
+import BaseAPI from '../BaseAPI';
+import ChannelEvent, { ChannelEventAPIResult, ChannelEventData } from './ChannelEvent';
+import ChattersList, { ChattersListData } from './ChattersList';
 
 /**
  * Different API methods that are not officially supported by Twitch.

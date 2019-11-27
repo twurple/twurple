@@ -1,6 +1,6 @@
-import BaseAPI from '../../BaseAPI';
-import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
+import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import BaseAPI from '../../BaseAPI';
 import { ChatEmoteData } from './ChatEmote';
 import ChatEmoteList from './ChatEmoteList';
 import ChatRoom, { ChatRoomData } from './ChatRoom';

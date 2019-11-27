@@ -1,7 +1,7 @@
+import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
-import CheermoteList, { CheermoteListData } from './CheermoteList';
 import BaseAPI from '../../BaseAPI';
+import CheermoteList, { CheermoteListData } from './CheermoteList';
 
 /**
  * The API methods that deal with Bits/Cheermotes.

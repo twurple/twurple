@@ -1,4 +1,4 @@
-import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
+import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 
 /** @private */
 export interface Emote {

@@ -1,16 +1,16 @@
-import BaseAPI from '../../BaseAPI';
-import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
-import TwitchClient, { TwitchAPICallType } from '../../../TwitchClient';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
-import HelixStreamMarkerWithVideo, { HelixStreamMarkerVideoData } from './HelixStreamMarkerWithVideo';
-import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
-import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
-import StreamNotLiveError from '../../../Errors/StreamNotLiveError';
+import { flatten } from '@d-fischer/shared-utils';
 import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
-import HelixPagination from '../HelixPagination';
+import StreamNotLiveError from '../../../Errors/StreamNotLiveError';
+import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
+import TwitchClient, { TwitchAPICallType } from '../../../TwitchClient';
+import BaseAPI from '../../BaseAPI';
+import HelixPaginatedRequest from '../HelixPaginatedRequest';
 import HelixPaginatedResult from '../HelixPaginatedResult';
-import { flatten } from '../../../Toolkit/ArrayTools';
+import HelixPagination from '../HelixPagination';
+import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
+import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
+import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
+import HelixStreamMarkerWithVideo, { HelixStreamMarkerVideoData } from './HelixStreamMarkerWithVideo';
 
 /**
  * Filters for the streams request.

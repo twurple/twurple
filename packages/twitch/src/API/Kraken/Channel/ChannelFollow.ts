@@ -1,6 +1,6 @@
-import User, { UserData } from '../User/User';
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from '../../../TwitchClient';
+import User, { UserData } from '../User/User';
 
 /** @private */
 export interface ChannelFollowData {

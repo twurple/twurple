@@ -1,8 +1,8 @@
+import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
 import { PrivateMessage } from 'ircv3/lib/Message/MessageTypes/Commands/';
 import { CheermoteDisplayInfo, CheermoteList } from 'twitch';
 import ChatUser from '../ChatUser';
 import { parseEmotes } from '../Toolkit/ChatTools';
-import { utf8Length, utf8Substring } from '../Toolkit/StringTools';
 
 export interface ParsedMessageTextPart {
 	type: 'text';
