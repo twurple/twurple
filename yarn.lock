@@ -141,10 +141,10 @@
     promise.allsettled "^1.0.1"
     tslib "^1.9.3"
 
-"@d-fischer/shared-utils@^1.0.1", "@d-fischer/shared-utils@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-1.2.0.tgz#23452e9c646285dc1b52688cf4b9809e6a413fbb"
-  integrity sha512-I0eQP3LRcDgh0D0IE3adWkple0levijeDxbIzk+u1hzcYwwrA5JRKOKCwMKbpYDM4BOV2vCl7oltHeu7V1nOdg==
+"@d-fischer/shared-utils@^1.0.1", "@d-fischer/shared-utils@^1.2.0", "@d-fischer/shared-utils@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-1.2.1.tgz#3571aede001e59a5121048e34e0254c58574e78e"
+  integrity sha512-zL1Q0mItWmwWauaRFmKkDuadvuP5Eo9qRhMrCIhIVLfX2/A/FVrECCfhpkptCXh6erxAkjIxaQDqdNQGKYUx9A==
   dependencies:
     "@types/node" "^12.12.14"
     tslib "^1.10.0"
@@ -5202,13 +5202,13 @@ ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.20.0.tgz#b1131cd50d5e5769c158807384b53236b2b25347"
-  integrity sha512-DEqMSYThZJ/FK1aLDHR0NtGKFJUOSgt6HddcjBvqcwRhWyVWmVFFMTwpr0O9++Tn5J6RwzTvxcO2+rmXVZHrjg==
+ircv3@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.20.1.tgz#c386c40135ff54b1fbe79bbe6674eb471410600b"
+  integrity sha512-yFRa5hBsA9VTpVpGCYqz9LgM5It6TAlNAqAtD55XklAyddbSqBpw5REbAqGXezvI3Fz0ptxclRgUcVD4DBr5ew==
   dependencies:
     "@d-fischer/logger" "^0.2.0"
-    "@d-fischer/shared-utils" "^1.2.0"
+    "@d-fischer/shared-utils" "^1.2.1"
     "@d-fischer/typed-event-emitter" "^2.0.0"
     "@types/clone" "^0.1.30"
     "@types/escape-string-regexp" "^2.0.1"
