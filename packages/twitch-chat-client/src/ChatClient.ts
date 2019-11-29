@@ -1,5 +1,5 @@
 import Logger, { LogLevel } from '@d-fischer/logger';
-import { NonEnumerable } from '@d-fischer/shared-utils';
+import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
 import * as deprecate from 'deprecate';
 import IRCClient from 'ircv3';
@@ -69,6 +69,13 @@ export interface ChatClientOptions {
 	 * Whether to receive JOIN and PART messages from Twitch chat.
 	 */
 	requestMembershipEvents?: boolean;
+
+	/**
+	 * Channels to join after connecting.
+	 *
+	 * May also be a function (sync or async) that returns a list of channels.
+	 */
+	channels?: ResolvableValue<string[]>;
 }
 
 /**
@@ -591,7 +598,8 @@ export default class ChatClient extends IRCClient {
 			},
 			webSocket: options.webSocket !== false,
 			logLevel: options.logLevel,
-			nonConformingCommands: ['004']
+			nonConformingCommands: ['004'],
+			channels: options.channels
 		});
 		/* eslint-enable no-restricted-syntax */
 
