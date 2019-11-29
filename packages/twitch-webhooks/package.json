@@ -19,11 +19,11 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
-    "@types/public-ip": "^2.4.0",
+    "@types/public-ip": "^3.1.0",
     "@types/randomstring": "^1.1.6",
     "polka": "^0.5.1",
     "portfinder": "^1.0.20",
-    "public-ip": "^3.0.0",
+    "public-ip": "^4.0.0",
     "randomstring": "^1.1.5",
     "raw-body": "^2.3.3",
     "tslib": "^1.9.3"
