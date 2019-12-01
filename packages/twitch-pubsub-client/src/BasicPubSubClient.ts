@@ -164,22 +164,13 @@ export default class BasicPubSubClient extends EventEmitter {
 				this._connecting = false;
 				const wasInitialConnect = this._initialConnect;
 				this._initialConnect = false;
-				this.emit(this.onDisconnect, !wasClean && !this._manualDisconnect);
-				if (!wasClean) {
-					if (this._manualDisconnect) {
-						this._manualDisconnect = false;
-						this._logger.info('Successfully disconnected');
-					} else {
-						this._logger.err(`Connection unexpectedly closed: [${code}] ${reason}`);
-						if (wasInitialConnect) {
-							reject();
-						}
-						if (!this._retryDelayGenerator) {
-							this._retryDelayGenerator = BasicPubSubClient._getReconnectWaitTime();
-						}
-						const delay = this._retryDelayGenerator.next().value;
-						this._logger.info(`Reconnecting in ${delay} seconds`);
-						this._retryTimer = setTimeout(async () => this.connect(), delay * 1000);
+				if (wasClean) {
+					this._handleDisconnect();
+				} else {
+					const err = new Error(`[${code}] ${reason}`);
+					this._handleDisconnect(err);
+					if (wasInitialConnect) {
+						reject(err);
 					}
 				}
 			};
@@ -198,6 +189,7 @@ export default class BasicPubSubClient extends EventEmitter {
 		if (this._socket) {
 			this._manualDisconnect = true;
 			this._socket.close();
+			this._socket = undefined;
 		}
 	}
 
@@ -207,6 +199,29 @@ export default class BasicPubSubClient extends EventEmitter {
 	async reconnect() {
 		this.disconnect();
 		await this.connect();
+	}
+
+	private _handleDisconnect(error?: Error) {
+		const manually = this._manualDisconnect;
+		this.emit(this.onDisconnect, !this._manualDisconnect);
+		this._manualDisconnect = false;
+
+		if (manually) {
+			this._manualDisconnect = false;
+			this._logger.info('Successfully disconnected');
+		} else {
+			if (error) {
+				this._logger.err(`Connection unexpectedly closed: ${error.message}`);
+			} else {
+				this._logger.err('Connection unexpectedly closed');
+			}
+			if (!this._retryDelayGenerator) {
+				this._retryDelayGenerator = BasicPubSubClient._getReconnectWaitTime();
+			}
+			const delay = this._retryDelayGenerator.next().value;
+			this._logger.info(`Reconnecting in ${delay} seconds`);
+			this._retryTimer = setTimeout(async () => this.connect(), delay * 1000);
+		}
 	}
 
 	private async _sendListen(topics: string[], accessToken?: string) {
