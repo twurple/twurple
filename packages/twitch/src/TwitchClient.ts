@@ -20,7 +20,7 @@ import ConfigError from './Errors/ConfigError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 import InvalidTokenError from './Errors/InvalidTokenError';
 
-import { fetch } from './Toolkit/Fetch';
+import { fetch, Headers } from './Toolkit/Fetch';
 
 /**
  * Default configuration for the cheermote API.
