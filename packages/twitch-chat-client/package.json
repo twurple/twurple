@@ -11,7 +11,7 @@
     "events"
   ],
   "main": "lib",
-  "types": "lib/index",
+  "types": "lib",
   "repository": {
     "type": "git",
     "url": "https://github.com/d-fischer/twitch.git",

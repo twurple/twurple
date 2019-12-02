@@ -201,7 +201,7 @@ export default class TwitchClient {
 		if (!scopes && accessToken) {
 			let tokenData;
 			try {
-				tokenData = await this.getTokenInfo(clientId, accessToken);
+				tokenData = await this.getTokenInfo(accessToken, clientId);
 			} catch (e) {
 				if (e instanceof InvalidTokenError && refreshConfig) {
 					const newToken = await this.refreshAccessToken(
@@ -210,7 +210,7 @@ export default class TwitchClient {
 						refreshConfig.refreshToken
 					);
 					accessToken = newToken.accessToken;
-					tokenData = await this.getTokenInfo(clientId, accessToken);
+					tokenData = await this.getTokenInfo(accessToken, clientId);
 				} else {
 					throw e;
 				}
@@ -335,7 +335,7 @@ export default class TwitchClient {
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
-	static async getTokenInfo(clientId: string, accessToken: string) {
+	static async getTokenInfo(accessToken: string, clientId?: string) {
 		try {
 			const data = await this.callAPI<TokenInfoData>(
 				{ type: TwitchAPICallType.Auth, url: 'validate' },
