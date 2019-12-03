@@ -563,7 +563,7 @@ export default class ChatClient extends IRCClient {
 	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
 	 * @param options
 	 */
-	static async forTwitchClient(twitchClient: TwitchClient, options: ChatClientOptions = {}) {
+	static forTwitchClient(twitchClient: TwitchClient, options: ChatClientOptions = {}) {
 		return new this(twitchClient, options);
 	}
 
