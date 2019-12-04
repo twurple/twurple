@@ -113,7 +113,7 @@ export default class SingleUserPubSubClient {
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
 	 */
 	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void) {
-		return this._addListener('channel-bits-badge-unlocks', callback);
+		return this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
 	}
 
 	/**
@@ -147,7 +147,7 @@ export default class SingleUserPubSubClient {
 	 * It receives a {@PubSubChatModActionMessage} object.
 	 */
 	async onModAction(channelId: UserIdResolvable, callback: (message: PubSubChatModActionMessage) => void) {
-		return this._addListener('chat_moderator_actions', callback, undefined, extractUserId(channelId));
+		return this._addListener('chat_moderator_actions', callback, 'channel:moderate', extractUserId(channelId));
 	}
 
 	/**
