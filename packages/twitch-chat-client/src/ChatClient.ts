@@ -1918,7 +1918,8 @@ export default class ChatClient extends IRCClient {
 	 */
 	async waitForRegistration() {
 		deprecate(
-			'[twitch-chat-client] ChatClient#waitForRegistration is deprecated; use the `onRegister` event instead. To join channels after connecting, use the `channels` option.'
+			'[twitch-chat-client] ChatClient#waitForRegistration',
+			'Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.'
 		);
 
 		if (this._registered) {
