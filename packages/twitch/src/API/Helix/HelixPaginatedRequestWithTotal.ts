@@ -14,9 +14,7 @@ export default class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginated
 	async getTotalCount() {
 		const data =
 			this._currentData ||
-			((await this._fetchData({ query: { first: '20', after: undefined } })) as HelixPaginatedResponseWithTotal<
-				D
-			>);
+			((await this._fetchData({ query: { after: undefined } })) as HelixPaginatedResponseWithTotal<D>);
 		return data.total;
 	}
 }
