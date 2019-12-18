@@ -3,6 +3,7 @@ import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
 
 import HelixBitsAPI from './Bits/HelixBitsAPI';
 import HelixClipAPI from './Clip/HelixClipAPI';
+import HelixExtensionsAPI from './Extensions/HelixExtensionsAPI';
 import HelixGameAPI from './Game/HelixGameAPI';
 import HelixStreamAPI from './Stream/HelixStreamAPI';
 import HelixSubscriptionAPI from './Subscriptions/HelixSubscriptionAPI';
@@ -31,6 +32,14 @@ export default class HelixAPIGroup extends BaseAPI {
 	@CachedGetter()
 	get clips() {
 		return new HelixClipAPI(this._client);
+	}
+
+	/**
+	 * The Helix extensions API methods.
+	 */
+	@CachedGetter()
+	get extensions() {
+		return new HelixExtensionsAPI(this._client);
 	}
 
 	/**

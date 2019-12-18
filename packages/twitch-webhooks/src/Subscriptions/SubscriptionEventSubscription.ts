@@ -1,13 +1,14 @@
-import Subscription from './Subscription';
 import { HelixResponse, HelixSubscriptionEvent } from 'twitch';
-import WebHookListener from '../WebHookListener';
 import { HelixSubscriptionEventData } from 'twitch/lib/API/Helix/Subscriptions/HelixSubscriptionEvent';
+import WebHookListener from '../WebHookListener';
+import Subscription from './Subscription';
 
 /**
  * @inheritDoc
  * @hideProtected
  */
 export default class SubscriptionEventSubscription extends Subscription<HelixSubscriptionEvent> {
+	/** @private */
 	constructor(
 		private readonly _userId: string,
 		handler: (data: HelixSubscriptionEvent) => void,

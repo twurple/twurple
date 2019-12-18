@@ -1,6 +1,6 @@
-import BaseAPI from '../../BaseAPI';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
+import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
 import HelixWebHookSubscription, { HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
 
@@ -210,7 +210,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 * @param options
 	 */
 	async subscribeToSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
-		return this._sendUserSubscriptionHubRequest('subscribe', user, options);
+		return this._sendSubscriptionEventsHubRequest('subscribe', user, options);
 	}
 
 	/**
@@ -218,11 +218,35 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 *
 	 * @expandParams
 	 *
-	 * @param user The user for which to get notifications about subscriptions and unsubscriptions to their channel.
+	 * @param user The user for which not to get any more notifications about subscriptions and unsubscriptions to their channel.
 	 * @param options
 	 */
 	async unsubscribeFromSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
-		return this._sendUserSubscriptionHubRequest('unsubscribe', user, options);
+		return this._sendSubscriptionEventsHubRequest('unsubscribe', user, options);
+	}
+
+	/**
+	 * Subscribes to extension transactions.
+	 *
+	 * @expandParams
+	 *
+	 * @param extensionId The extension ID for which to get notifications about transactions.
+	 * @param options
+	 */
+	async subscribeToExtensionTransactions(extensionId: string, options: HelixWebHookHubRequestOptions) {
+		return this._sendExtensionTransactionsHubRequest('subscribe', extensionId, options);
+	}
+
+	/**
+	 * Unsubscribes from extension transactions.
+	 *
+	 * @expandParams
+	 *
+	 * @param extensionId The extension ID for which not to get any more notifications about transactions.
+	 * @param options
+	 */
+	async unsubscribeFromExtensionTransactions(extensionId: string, options: HelixWebHookHubRequestOptions) {
+		return this._sendExtensionTransactionsHubRequest('unsubscribe', extensionId, options);
 	}
 
 	private async _sendUserFollowsHubRequest(
@@ -270,7 +294,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		});
 	}
 
-	private async _sendUserSubscriptionHubRequest(
+	private async _sendSubscriptionEventsHubRequest(
 		mode: HubMode,
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
@@ -281,6 +305,18 @@ export default class HelixWebHooksAPI extends BaseAPI {
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=${userId}&first=1`,
 			scope: 'channel:read:subscriptions',
+			...options
+		});
+	}
+
+	private async _sendExtensionTransactionsHubRequest(
+		mode: HubMode,
+		extensionId: string,
+		options: HelixWebHookHubRequestOptions
+	) {
+		return this.sendHubRequest({
+			mode,
+			topicUrl: `https://api.twitch.tv/helix/extenstions/transactions?extension_id=${extensionId}&first=1`,
 			...options
 		});
 	}
