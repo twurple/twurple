@@ -1264,14 +1264,13 @@ export default class ChatClient extends IRCClient {
 		await super.connect();
 	}
 
-	// TODO swap arguments in 4.0
 	/**
 	 * Hosts a channel on another channel.
 	 *
 	 * @param target The host target, i.e. the channel that is being hosted.
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
 	 */
-	async host(target: string, channel: string = this._credentials.nick) {
+	async host(channel: string = this._credentials.nick, target: string) {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onHostResult((chan, error) => {
