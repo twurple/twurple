@@ -1,7 +1,7 @@
-import WebHookListener from '../WebHookListener';
-import * as randomstring from 'randomstring';
 import * as crypto from 'crypto';
+import * as randomstring from 'randomstring';
 import { HelixWebHookHubRequestOptions } from 'twitch/lib/API/Helix/WebHooks/HelixWebHooksAPI';
+import WebHookListener from '../WebHookListener';
 
 /**
  * @hideProtected
@@ -12,6 +12,7 @@ export default abstract class Subscription<T = any> {
 	protected _secret: string;
 	private _refreshTimer?: NodeJS.Timer;
 
+	/** @private */
 	constructor(
 		protected _handler: (obj: T) => void,
 		protected _client: WebHookListener,

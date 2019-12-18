@@ -1,13 +1,14 @@
-import Subscription from './Subscription';
 import { HelixFollow, HelixResponse } from 'twitch';
-import WebHookListener from '../WebHookListener';
 import { HelixFollowData } from 'twitch/lib/API/Helix/User/HelixFollow';
+import WebHookListener from '../WebHookListener';
+import Subscription from './Subscription';
 
 /**
  * @inheritDoc
  * @hideProtected
  */
 export default class FollowsToUserSubscription extends Subscription<HelixFollow> {
+	/** @private */
 	constructor(
 		private readonly _userId: string,
 		handler: (data: HelixFollow) => void,
