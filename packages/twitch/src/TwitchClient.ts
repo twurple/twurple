@@ -191,32 +191,13 @@ export default class TwitchClient {
 	 *
 	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	static async withCredentials(
+	static withCredentials(
 		clientId: string,
 		accessToken?: string,
 		scopes?: string[],
 		refreshConfig?: RefreshConfig,
 		config: Partial<TwitchConfig> = {}
 	) {
-		if (!scopes && accessToken) {
-			let tokenData;
-			try {
-				tokenData = await this.getTokenInfo(accessToken, clientId);
-			} catch (e) {
-				if (e instanceof InvalidTokenError && refreshConfig) {
-					const newToken = await this.refreshAccessToken(
-						clientId,
-						refreshConfig.clientSecret,
-						refreshConfig.refreshToken
-					);
-					accessToken = newToken.accessToken;
-					tokenData = await this.getTokenInfo(accessToken, clientId);
-				} else {
-					throw e;
-				}
-			}
-			scopes = tokenData.scopes;
-		}
 		const authProvider = refreshConfig
 			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig)
 			: new StaticAuthProvider(clientId, accessToken, scopes);
