@@ -8,6 +8,7 @@ import PubSubBitsBadgeUnlockMessage, {
 import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
 import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 import PubSubMessage from './Messages/PubSubMessage';
+import PubSubRedemptionMessage, { PubSubRedemptionMessageData } from './Messages/PubSubRedemptionMessage';
 import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import PubSubListener from './PubSubListener';
@@ -65,6 +66,13 @@ export default class SingleUserPubSubClient {
 						);
 						break;
 					}
+					case 'channel-points-channel-v1': {
+						message = new PubSubRedemptionMessage(
+							messageData as PubSubRedemptionMessageData,
+							this._twitchClient
+						);
+						break;
+					}
 					case 'channel-subscribe-events-v1': {
 						message = new PubSubSubscriptionMessage(
 							messageData as PubSubSubscriptionMessageData,
@@ -108,12 +116,23 @@ export default class SingleUserPubSubClient {
 	/**
 	 * Adds a listener to bits badge unlock events to the client.
 	 *
-	 * @param callback A function to be called when a bits event happens in the user's channel.
+	 * @param callback A function to be called when a bit badge is unlocked in the user's channel.
 	 *
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
 	 */
 	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void) {
 		return this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
+	}
+
+	/**
+	 * Adds a listener to redemption events to the client.
+	 *
+	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
+	 *
+	 * It receives a {@PubSubBitsRedemptionMessage} object.
+	 */
+	async onRedemption(callback: (message: PubSubRedemptionMessage) => void) {
+		return this._addListener('channel-points-channel-v1', callback, 'channel:read:subscriptions');
 	}
 
 	/**
@@ -130,7 +149,7 @@ export default class SingleUserPubSubClient {
 	/**
 	 * Adds a listener to whisper events to the client.
 	 *
-	 * @param callback A function to be called when a whisper event is sent to the user.
+	 * @param callback A function to be called when a whisper is sent to the user.
 	 *
 	 * It receives a {@PubSubWhisperMessage} object.
 	 */
