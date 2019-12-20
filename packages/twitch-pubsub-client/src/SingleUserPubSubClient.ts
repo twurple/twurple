@@ -132,7 +132,7 @@ export default class SingleUserPubSubClient {
 	 * It receives a {@PubSubBitsRedemptionMessage} object.
 	 */
 	async onRedemption(callback: (message: PubSubRedemptionMessage) => void) {
-		return this._addListener('channel-points-channel-v1', callback, 'channel:read:subscriptions');
+		return this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');
 	}
 
 	/**
