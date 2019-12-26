@@ -52,14 +52,14 @@ export interface ChatClientOptions {
 	/**
 	 * The minimum log level of messages that will be sent from the underlying IRC client.
 	 *
-	 * @deprecated Use logger.logLevel instead.
+	 * @deprecated Use logger.minLevel instead.
 	 */
 	logLevel?: LogLevel;
 
 	/**
 	 * Options to pass to the logger.
 	 */
-	logger?: LoggerOptions;
+	logger?: Partial<LoggerOptions>;
 
 	/**
 	 * Whether to connect securely using SSL.
