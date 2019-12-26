@@ -1,4 +1,5 @@
 import Logger, { LogLevel } from '@d-fischer/logger';
+import LoggerOptions from '@d-fischer/logger/lib/LoggerOptions';
 import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
 import * as deprecate from 'deprecate';
@@ -50,8 +51,15 @@ export interface ChatClientOptions {
 
 	/**
 	 * The minimum log level of messages that will be sent from the underlying IRC client.
+	 *
+	 * @deprecated Use logger.logLevel instead.
 	 */
 	logLevel?: LogLevel;
+
+	/**
+	 * Options to pass to the logger.
+	 */
+	logger?: LoggerOptions;
 
 	/**
 	 * Whether to connect securely using SSL.
@@ -603,7 +611,12 @@ export default class ChatClient extends IRCClient {
 		});
 		/* eslint-enable no-restricted-syntax */
 
-		this._chatLogger = new Logger({ name: 'twitch-chat', emoji: true, minLevel: options.logLevel });
+		this._chatLogger = new Logger({
+			name: 'twitch-chat',
+			emoji: true,
+			minLevel: options.logLevel,
+			...(options.logger ?? {})
+		});
 
 		this._twitchClient = twitchClient;
 
