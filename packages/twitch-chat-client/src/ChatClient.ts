@@ -594,7 +594,7 @@ export default class ChatClient extends IRCClient {
 	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
 	 * @param options
 	 */
-	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptions) {
+	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptions = {}) {
 		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
@@ -605,7 +605,10 @@ export default class ChatClient extends IRCClient {
 				nick: ''
 			},
 			webSocket: options.webSocket !== false,
-			logLevel: options.logLevel,
+			logger: {
+				minLevel: options.logLevel,
+				...(options.logger ?? {})
+			},
 			nonConformingCommands: ['004'],
 			channels: options.channels
 		});
