@@ -9,6 +9,7 @@ import EmoteSetList from '../Channel/EmoteSetList';
 import PrivilegedUser from './PrivilegedUser';
 import User, { UserData } from './User';
 import UserBlock, { UserBlockData } from './UserBlock';
+import { UserChatInfo, UserChatInfoData } from './UserChatInfo';
 import UserFollow, { UserFollowData } from './UserFollow';
 import UserSubscription from './UserSubscription';
 
@@ -98,6 +99,19 @@ export default class UserAPI extends BaseAPI {
 		const users = indexBy(usersArr, 'name');
 
 		return { ...cachedUsers, ...users };
+	}
+
+	/**
+	 * Retrieves information about the user's chat appearance and privileges.
+	 *
+	 * @param user The user you want to get chat info for.
+	 */
+	@Cached(3600)
+	async getChatInfo(user: UserIdResolvable) {
+		const userId = extractUserId(user);
+
+		const data = await this._client.callAPI<UserChatInfoData>({ url: `users/${userId}/chat` });
+		return new UserChatInfo(data, this._client);
 	}
 
 	/**
