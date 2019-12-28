@@ -1,16 +1,17 @@
-import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../../Toolkit/Decorators/Cache';
-import BaseAPI from '../../BaseAPI';
-import PrivilegedUser from './PrivilegedUser';
-import User, { UserData } from './User';
-import { entriesToObject, indexBy, mapObject } from '../../../Toolkit/ObjectTools';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import EmoteSetList from '../Channel/EmoteSetList';
-import UserSubscription from './UserSubscription';
-import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
-import UserFollow, { UserFollowData } from './UserFollow';
-import UserBlock, { UserBlockData } from './UserBlock';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
+import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../../Toolkit/Decorators/Cache';
+import { entriesToObject, indexBy, mapObject } from '../../../Toolkit/ObjectTools';
+import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import BaseAPI from '../../BaseAPI';
+import EmoteSetList from '../Channel/EmoteSetList';
+import PrivilegedUser from './PrivilegedUser';
+import User, { UserData } from './User';
+import UserBlock, { UserBlockData } from './UserBlock';
+import UserChatInfo, { UserChatInfoData } from './UserChatInfo';
+import UserFollow, { UserFollowData } from './UserFollow';
+import UserSubscription from './UserSubscription';
 
 /**
  * The API methods that deal with users.
@@ -98,6 +99,19 @@ export default class UserAPI extends BaseAPI {
 		const users = indexBy(usersArr, 'name');
 
 		return { ...cachedUsers, ...users };
+	}
+
+	/**
+	 * Retrieves information about the user's chat appearance and privileges.
+	 *
+	 * @param user The user you want to get chat info for.
+	 */
+	@Cached(3600)
+	async getChatInfo(user: UserIdResolvable) {
+		const userId = extractUserId(user);
+
+		const data = await this._client.callAPI<UserChatInfoData>({ url: `users/${userId}/chat` });
+		return new UserChatInfo(data, this._client);
 	}
 
 	/**
