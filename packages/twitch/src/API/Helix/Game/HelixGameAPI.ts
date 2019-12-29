@@ -1,10 +1,10 @@
-import BaseAPI from '../../BaseAPI';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import HelixGame, { HelixGameData } from './HelixGame';
+import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
-import HelixPagination from '../HelixPagination';
 import HelixPaginatedResult from '../HelixPaginatedResult';
+import HelixPagination, { makePaginationQuery } from '../HelixPagination';
+import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
+import HelixGame, { HelixGameData } from './HelixGame';
 
 /** @private */
 export type HelixGameFilterType = 'id' | 'name';
@@ -61,17 +61,14 @@ export default class HelixGameAPI extends BaseAPI {
 
 	/**
 	 * Retrieves a list of the most viewed games at the moment.
+	 *
+	 * @param pagination Pagination info.
 	 */
-	async getTopGames(pagination: HelixPagination = {}): Promise<HelixPaginatedResult<HelixGame>> {
-		const { after, before, limit } = pagination;
+	async getTopGames(pagination?: HelixPagination): Promise<HelixPaginatedResult<HelixGame>> {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixGameData>>({
 			type: TwitchAPICallType.Helix,
 			url: 'games/top',
-			query: {
-				after,
-				before,
-				first: limit
-			}
+			query: makePaginationQuery(pagination)
 		});
 
 		return {

@@ -1,26 +1,29 @@
-import * as publicIp from 'public-ip';
-import * as portFinder from 'portfinder';
-import { PolkaRequest, PolkaResponse } from 'polka';
-// factory method is namespace root
-// eslint-disable-next-line no-duplicate-imports
-import * as polka from 'polka';
 import * as https from 'https';
+import { PolkaRequest, PolkaResponse } from 'polka';
+import * as portFinder from 'portfinder';
+import * as publicIp from 'public-ip';
+import * as getRawBody from 'raw-body';
 import TwitchClient, {
 	extractUserId,
+	HelixBanEvent,
 	HelixFollow,
+	HelixModeratorEvent,
 	HelixStream,
+	HelixSubscriptionEvent,
 	HelixUser,
-	UserIdResolvable,
-	HelixSubscriptionEvent
+	UserIdResolvable
 } from 'twitch';
-import * as getRawBody from 'raw-body';
-
-import Subscription from './Subscriptions/Subscription';
-import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
-import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription';
+import BanEventSubscription from './Subscriptions/BanEventSubscription';
 import FollowsFromUserSubscription from './Subscriptions/FollowsFromUserSubscription';
+import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription';
+import ModeratorEventSubscription from './Subscriptions/ModeratorEventSubscription';
 import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
+import Subscription from './Subscriptions/Subscription';
 import SubscriptionEventSubscription from './Subscriptions/SubscriptionEventSubscription';
+import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+import polka = require('polka');
 
 interface WebHookListenerCertificateConfig {
 	key: string;
@@ -199,6 +202,38 @@ export default class WebHookListener {
 		const userId = extractUserId(user);
 
 		const subscription = new SubscriptionEventSubscription(userId, handler, this, validityInSeconds);
+		await subscription.start();
+		this._subscriptions.set(subscription.id, subscription);
+
+		return subscription;
+	}
+
+	async subscribeToBanEvents(
+		broadcaster: UserIdResolvable,
+		handler: (subscription: HelixBanEvent) => void,
+		user?: UserIdResolvable,
+		validityInSeconds = this._config.hookValidity
+	) {
+		const broadcasterId = extractUserId(broadcaster);
+		const userId = user ? extractUserId(user) : undefined;
+
+		const subscription = new BanEventSubscription(broadcasterId, handler, this, userId, validityInSeconds);
+		await subscription.start();
+		this._subscriptions.set(subscription.id, subscription);
+
+		return subscription;
+	}
+
+	async subscribeToModeratorEvents(
+		broadcaster: UserIdResolvable,
+		handler: (subscription: HelixModeratorEvent) => void,
+		user?: UserIdResolvable,
+		validityInSeconds = this._config.hookValidity
+	) {
+		const broadcasterId = extractUserId(broadcaster);
+		const userId = user ? extractUserId(user) : undefined;
+
+		const subscription = new ModeratorEventSubscription(broadcasterId, handler, this, userId, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id, subscription);
 

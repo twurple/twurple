@@ -1,5 +1,6 @@
-import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
 import TwitchClient from '../../../TwitchClient';
+import { HelixEventData } from '../HelixEvent';
+import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
 
 /**
  * The different types a subscription event can have.
@@ -22,13 +23,7 @@ export enum HelixSubscriptionEventType {
 }
 
 /** @private */
-export interface HelixSubscriptionEventData {
-	id: string;
-	event_type: HelixSubscriptionEventType;
-	event_timestamp: string;
-	version: string;
-	event_data: HelixSubscriptionData;
-}
+export type HelixSubscriptionEventData = HelixEventData<HelixSubscriptionData, HelixSubscriptionEventType>;
 
 /**
  * An event that indicates the change of a subscription status, i.e. subscribing, unsubscribing or sending the monthly notification.

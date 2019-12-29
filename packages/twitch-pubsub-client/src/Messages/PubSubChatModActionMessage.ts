@@ -1,5 +1,5 @@
-import { NonEnumerable } from '../Toolkit/Decorators';
 import TwitchClient from 'twitch';
+import { NonEnumerable } from '../Toolkit/Decorators';
 
 export interface PubSubChatModActionMessageContent {
 	type: string;
@@ -36,7 +36,7 @@ export default class PubSubChatModActionMessage {
 	}
 
 	/**
-	 * Retrieves more info about the channel where the action was performed.
+	 * Retrieves more data about the channel where the action was performed.
 	 */
 	async getChannel() {
 		return this._twitchClient.helix.users.getUserById(this._channelId);
