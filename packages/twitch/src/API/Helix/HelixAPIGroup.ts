@@ -5,6 +5,7 @@ import HelixBitsAPI from './Bits/HelixBitsAPI';
 import HelixClipAPI from './Clip/HelixClipAPI';
 import HelixExtensionsAPI from './Extensions/HelixExtensionsAPI';
 import HelixGameAPI from './Game/HelixGameAPI';
+import HelixModerationAPI from './Moderation/HelixModerationAPI';
 import HelixStreamAPI from './Stream/HelixStreamAPI';
 import HelixSubscriptionAPI from './Subscriptions/HelixSubscriptionAPI';
 import HelixUserAPI from './User/HelixUserAPI';
@@ -48,6 +49,14 @@ export default class HelixAPIGroup extends BaseAPI {
 	@CachedGetter()
 	get games() {
 		return new HelixGameAPI(this._client);
+	}
+
+	/**
+	 * The Helix moderation API methods.
+	 */
+	@CachedGetter()
+	get moderation() {
+		return new HelixModerationAPI(this._client);
 	}
 
 	/**

@@ -102,6 +102,13 @@ import HelixGame from './API/Helix/Game/HelixGame';
 
 export { HelixGame };
 
+import HelixBan from './API/Helix/Moderation/HelixBan';
+import HelixBanEvent from './API/Helix/Moderation/HelixBanEvent';
+import HelixModerator from './API/Helix/Moderation/HelixModerator';
+import HelixModeratorEvent from './API/Helix/Moderation/HelixModeratorEvent';
+
+export { HelixBan, HelixBanEvent, HelixModerator, HelixModeratorEvent };
+
 import HelixStream, { HelixStreamType } from './API/Helix/Stream/HelixStream';
 
 export { HelixStream, HelixStreamType };

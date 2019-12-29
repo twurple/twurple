@@ -249,6 +249,122 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		return this._sendExtensionTransactionsHubRequest('unsubscribe', extensionId, options);
 	}
 
+	/**
+	 * Subscribes to events representing a ban or unban.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster for which to get notifications about bans or unbans in their channel.
+	 * @param options
+	 */
+	async subscribeToBanEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		return this._sendBanEventsHubRequest('subscribe', broadcaster, options);
+	}
+
+	/**
+	 * Unsubscribes from events representing a ban or unban.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster for which not to get any more notifications about bans or unbans in their channel.
+	 * @param options
+	 */
+	async unsubscribeFromBanEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		return this._sendBanEventsHubRequest('unsubscribe', broadcaster, options);
+	}
+
+	/**
+	 * Subscribes to events representing a ban or unban.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster for which to get notifications about bans or unbans in their channel.
+	 * @param user The user that is being banned or unbanned.
+	 * @param options
+	 */
+	async subscribeToBanEventsForUser(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	) {
+		return this._sendBanEventsHubRequest('subscribe', broadcaster, options, user);
+	}
+
+	/**
+	 * Unsubscribes from events representing a ban or unban.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster for which not to get any more notifications about bans or unbans in their channel.
+	 * @param user The user that is being banned or unbanned.
+	 * @param options
+	 */
+	async unsubscribeFromBanEventsForUser(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	) {
+		return this._sendBanEventsHubRequest('unsubscribe', broadcaster, options, user);
+	}
+
+	/**
+	 * Subscribes to events representing a user gaining or losing moderator privileges in a channel.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster for which to get notifications about moderator changes in their channel.
+	 * @param options
+	 */
+	async subscribeToModeratorEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		return this._sendModeratorEventsHubRequest('subscribe', broadcaster, options);
+	}
+
+	/**
+	 * Unsubscribes from events representing a user gaining or losing moderator privileges in a channel.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster for which not to get any more notifications about moderator changes in their channel.
+	 * @param options
+	 */
+	async unsubscribeFromModeratorEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		return this._sendModeratorEventsHubRequest('unsubscribe', broadcaster, options);
+	}
+
+	/**
+	 * Subscribes to events representing a user gaining or losing moderator privileges in a channel.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster for which to get notifications about moderator changes in their channel.
+	 * @param user The user that is being banned or unbanned.
+	 * @param options
+	 */
+	async subscribeToModeratorEventsForUser(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	) {
+		return this._sendModeratorEventsHubRequest('subscribe', broadcaster, options, user);
+	}
+
+	/**
+	 * Unsubscribes from events representing a user gaining or losing moderator privileges in a channel.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster for which not to get any more notifications about moderator changes in their channel.
+	 * @param user The user that is being banned or unbanned.
+	 * @param options
+	 */
+	async unsubscribeFromModeratorEventsForUser(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	) {
+		return this._sendModeratorEventsHubRequest('unsubscribe', broadcaster, options, user);
+	}
+
 	private async _sendUserFollowsHubRequest(
 		mode: HubMode,
 		direction: 'from' | 'to',
@@ -317,6 +433,48 @@ export default class HelixWebHooksAPI extends BaseAPI {
 		return this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/extenstions/transactions?extension_id=${extensionId}&first=1`,
+			...options
+		});
+	}
+
+	private async _sendBanEventsHubRequest(
+		mode: HubMode,
+		broadcaster: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions,
+		user?: UserIdResolvable
+	) {
+		const broadcasterId = extractUserId(broadcaster);
+		let topicUrl = `https://api.twitch.tv/helix/moderation/banned/events?broadcaster_id=${broadcasterId}&first=1`;
+
+		if (user) {
+			topicUrl += `&user_id=${extractUserId(user)}`;
+		}
+
+		return this.sendHubRequest({
+			mode,
+			topicUrl,
+			scope: 'moderation:read',
+			...options
+		});
+	}
+
+	private async _sendModeratorEventsHubRequest(
+		mode: HubMode,
+		broadcaster: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions,
+		user?: UserIdResolvable
+	) {
+		const broadcasterId = extractUserId(broadcaster);
+		let topicUrl = `https://api.twitch.tv/helix/moderation/moderators/events?broadcaster_id=${broadcasterId}&first=1`;
+
+		if (user) {
+			topicUrl += `&user_id=${extractUserId(user)}`;
+		}
+
+		return this.sendHubRequest({
+			mode,
+			topicUrl,
+			scope: 'moderation:read',
 			...options
 		});
 	}

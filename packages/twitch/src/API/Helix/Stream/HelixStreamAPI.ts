@@ -6,7 +6,7 @@ import TwitchClient, { TwitchAPICallType } from '../../../TwitchClient';
 import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
 import HelixPaginatedResult from '../HelixPaginatedResult';
-import HelixPagination from '../HelixPagination';
+import HelixPagination, { makePaginationQuery } from '../HelixPagination';
 import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
 import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
@@ -87,9 +87,7 @@ export default class HelixStreamAPI extends BaseAPI {
 			url: 'streams',
 			type: TwitchAPICallType.Helix,
 			query: {
-				after: filter.after,
-				before: filter.before,
-				first: filter.limit,
+				...makePaginationQuery(filter),
 				community_id: filter.community,
 				game_id: filter.game,
 				language: filter.language,

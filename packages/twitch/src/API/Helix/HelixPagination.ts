@@ -1,19 +1,35 @@
 /**
- * Base pagination parameters for Helix requests.
+ * Base forward pagination parameters for Helix requests.
  */
-export default interface HelixPagination {
-	/**
-	 * A cursor to get the following page of.
-	 */
-	after?: string;
-
-	/**
-	 * A cursor to get the previous page of.
-	 */
-	before?: string;
-
+export interface HelixForwardPagination {
 	/**
 	 * The number of results per page.
 	 */
 	limit?: string;
+
+	/**
+	 * A cursor to get the following page of.
+	 */
+	after?: string;
+}
+
+/**
+ * Base pagination parameters for Helix requests.
+ *
+ * @inheritDoc
+ */
+export default interface HelixPagination extends HelixForwardPagination {
+	/**
+	 * A cursor to get the previous page of.
+	 */
+	before?: string;
+}
+
+/** @private */
+export function makePaginationQuery({ after, before, limit }: HelixPagination = {}) {
+	return {
+		after,
+		before,
+		first: limit
+	};
 }

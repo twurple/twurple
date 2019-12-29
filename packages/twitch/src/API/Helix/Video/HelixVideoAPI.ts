@@ -1,11 +1,11 @@
-import BaseAPI from '../../BaseAPI';
-import { TwitchAPICallType } from '../../../TwitchClient';
-import { HelixPaginatedResponse } from '../HelixResponse';
-import HelixVideo, { HelixVideoData, HelixVideoType } from './HelixVideo';
-import HelixPagination from '../HelixPagination';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import { TwitchAPICallType } from '../../../TwitchClient';
+import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
 import HelixPaginatedResult from '../HelixPaginatedResult';
+import HelixPagination, { makePaginationQuery } from '../HelixPagination';
+import { HelixPaginatedResponse } from '../HelixResponse';
+import HelixVideo, { HelixVideoData, HelixVideoType } from './HelixVideo';
 
 /** @private */
 export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
@@ -131,9 +131,7 @@ export default class HelixVideoAPI extends BaseAPI {
 			type: TwitchAPICallType.Helix,
 			query: {
 				...HelixVideoAPI._makeVideosQuery(filterType, filterValues, filter),
-				first: filter.limit,
-				after: filter.after,
-				before: filter.before
+				...makePaginationQuery(filter)
 			}
 		});
 

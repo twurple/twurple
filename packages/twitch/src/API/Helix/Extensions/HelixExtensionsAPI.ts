@@ -2,7 +2,7 @@ import { TwitchAPICallType } from '../../../TwitchClient';
 import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
 import HelixPaginatedResult from '../HelixPaginatedResult';
-import HelixPagination from '../HelixPagination';
+import HelixPagination, { makePaginationQuery } from '../HelixPagination';
 import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixExtensionTransaction, { HelixExtensionTransactionData } from './HelixExtensionTransaction';
 
@@ -46,9 +46,7 @@ export default class HelixExtensionsAPI extends BaseAPI {
 			query: {
 				extension_id: extensionId,
 				id: filter.transactionIds,
-				first: filter.limit,
-				after: filter.after,
-				before: filter.before
+				...makePaginationQuery(filter)
 			}
 		});
 
