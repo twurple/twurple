@@ -1,6 +1,6 @@
 {
   "name": "easy-twitch-bot",
-  "version": "4.0.0-pre.12",
+  "version": "4.0.0-pre.13",
   "description": "A simplified framework to get a chat bot running easily.",
   "keywords": [
     "twitch",
@@ -21,8 +21,8 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/shared-utils": "^1.2.1",
-    "twitch": "^4.0.0-pre.12",
-    "twitch-chat-client": "^4.0.0-pre.12"
+    "twitch": "^4.0.0-pre.13",
+    "twitch-chat-client": "^4.0.0-pre.13"
   },
   "files": [
     "LICENSE",
