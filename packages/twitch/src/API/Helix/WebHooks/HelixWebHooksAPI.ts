@@ -432,7 +432,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	) {
 		return this.sendHubRequest({
 			mode,
-			topicUrl: `https://api.twitch.tv/helix/extenstions/transactions?extension_id=${extensionId}&first=1`,
+			topicUrl: `https://api.twitch.tv/helix/extensions/transactions?extension_id=${extensionId}&first=1`,
 			...options
 		});
 	}
