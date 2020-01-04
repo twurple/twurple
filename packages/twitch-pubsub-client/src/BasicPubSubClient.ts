@@ -1,7 +1,7 @@
+import { Connection, WebSocketConnection } from '@d-fischer/connection';
 import Logger, { LogLevel } from '@d-fischer/logger';
 import { NonEnumerable } from '@d-fischer/shared-utils';
 import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
-import * as WebSocket from 'universal-websocket-client';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
@@ -9,21 +9,20 @@ import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket 
  * A client for the Twitch PubSub interface.
  */
 export default class BasicPubSubClient extends EventEmitter {
-	private _socket?: WebSocket;
 	@NonEnumerable private readonly _logger: Logger;
 
 	// topic => token
 	@NonEnumerable private readonly _topics = new Map<string, string | undefined>();
 
-	private _connecting: boolean = false;
-	private _connected: boolean = false;
-	private _manualDisconnect: boolean = false;
-	private _initialConnect: boolean = false;
+	private _connection?: Connection;
 
+	private _pingOnInactivity: number = 60;
+	private _pingTimeout: number = 60;
 	private _pingCheckTimer?: NodeJS.Timer;
 	private _pingTimeoutTimer?: NodeJS.Timer;
-	private _retryTimer?: NodeJS.Timer;
+
 	private _retryDelayGenerator?: IterableIterator<number>;
+	private _retryTimer?: NodeJS.Timer;
 
 	private readonly _onPong: (handler: () => void) => Listener = this.registerEvent();
 	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener = this.registerEvent();
@@ -52,7 +51,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * @eventListener
 	 * @param isError Whether the cause of the disconnection was an error. A reconnect will be attempted if this is true.
 	 */
-	readonly onDisconnect: (handler: (isError: boolean) => void) => Listener = this.registerEvent();
+	readonly onDisconnect: (handler: (isError: boolean, reason?: Error) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when the client receives a pong message from the PubSub server.
@@ -91,7 +90,7 @@ export default class BasicPubSubClient extends EventEmitter {
 			this._topics.set(topic, accessToken);
 		}
 
-		if (this._connected) {
+		if (this.isConnected) {
 			await this._sendListen(topics, accessToken);
 		}
 	}
@@ -110,7 +109,7 @@ export default class BasicPubSubClient extends EventEmitter {
 			this._topics.delete(topic);
 		}
 
-		if (this._connected) {
+		if (this.isConnected) {
 			await this._sendUnlisten(topics);
 		}
 	}
@@ -119,61 +118,57 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * Connects to the PubSub interface.
 	 */
 	async connect() {
+		this.setupConnection();
 		this._logger.info('Connecting...');
-		return new Promise<void>((resolve, reject) => {
-			if (this._connected) {
-				resolve();
-				return;
+		await this._connection!.connect();
+	}
+
+	setupConnection() {
+		this._connection = new WebSocketConnection({ hostName: 'pubsub-edge.twitch.tv', secure: true });
+
+		this._connection.on('connect', async () => {
+			this._retryDelayGenerator = undefined;
+			this._logger.info('Connection established');
+			await this._resendListens();
+			if (this._topics.size) {
+				this._logger.info('Listened to previously registered topics');
+				this._logger.debug2(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
 			}
-			this._connecting = true;
-			this._initialConnect = true;
-			this._socket = new WebSocket('wss://pubsub-edge.twitch.tv');
+			this._startPingCheckTimer();
+			this.emit(this.onConnect);
+		});
 
-			this._socket.onopen = async () => {
-				this._connected = true;
-				this._connecting = false;
-				this._initialConnect = false;
-				this._retryDelayGenerator = undefined;
-				this._startPingCheckTimer();
-				this._logger.info('Connection established');
-				await this._resendListens();
-				if (this._topics.size) {
-					this._logger.info('Listened to previously registered topics');
-					this._logger.debug2(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
-				}
-				this.emit(this.onConnect);
-				resolve();
-			};
+		this._connection.on('lineReceived', (line: string) => {
+			this._receiveMessage(line);
+			this._startPingCheckTimer();
+		});
 
-			this._socket.onmessage = ({ data }: { data: WebSocket.Data }) => {
-				this._receiveMessage(data.toString());
-			};
-
-			// The following empty error callback needs to exist so connection errors are passed down to `onclose` down below - otherwise the process just crashes instead
-			this._socket.onerror = () => {};
-
-			this._socket.onclose = ({ wasClean, code, reason }) => {
-				if (this._pingCheckTimer) {
-					clearInterval(this._pingCheckTimer);
-				}
-				if (this._pingTimeoutTimer) {
-					clearTimeout(this._pingTimeoutTimer);
-				}
-				this._socket = undefined;
-				this._connected = false;
-				this._connecting = false;
-				const wasInitialConnect = this._initialConnect;
-				this._initialConnect = false;
-				if (wasClean) {
-					this._handleDisconnect();
+		this._connection.on('disconnect', (manually: boolean, reason?: Error) => {
+			if (this._pingCheckTimer) {
+				clearTimeout(this._pingCheckTimer);
+			}
+			if (this._pingTimeoutTimer) {
+				clearTimeout(this._pingTimeoutTimer);
+			}
+			if (manually) {
+				this._logger.info('Disconnected successfully');
+			} else {
+				if (reason) {
+					this._logger.err(`Disconnected unexpectedly: ${reason.message}`);
 				} else {
-					const err = new Error(`[${code}] ${reason}`);
-					this._handleDisconnect(err);
-					if (wasInitialConnect) {
-						reject(err);
-					}
+					this._logger.err('Disconnected unexpectedly');
 				}
-			};
+			}
+			this.emit(this.onDisconnect, manually, reason);
+			this._connection = undefined;
+			if (!manually) {
+				if (!this._retryDelayGenerator) {
+					this._retryDelayGenerator = BasicPubSubClient._getReconnectWaitTime();
+				}
+				const delay = this._retryDelayGenerator.next().value;
+				this._logger.info(`Reconnecting in ${delay} seconds`);
+				this._retryTimer = setTimeout(async () => this.connect(), delay * 1000);
+			}
 		});
 	}
 
@@ -186,11 +181,7 @@ export default class BasicPubSubClient extends EventEmitter {
 			clearInterval(this._retryTimer);
 		}
 		this._retryDelayGenerator = undefined;
-		if (this._socket) {
-			this._manualDisconnect = true;
-			this._socket.close();
-			this._socket = undefined;
-		}
+		this._connection?.disconnect();
 	}
 
 	/**
@@ -199,29 +190,6 @@ export default class BasicPubSubClient extends EventEmitter {
 	async reconnect() {
 		this.disconnect();
 		await this.connect();
-	}
-
-	private _handleDisconnect(error?: Error) {
-		const manually = this._manualDisconnect;
-		this.emit(this.onDisconnect, !this._manualDisconnect);
-		this._manualDisconnect = false;
-
-		if (manually) {
-			this._manualDisconnect = false;
-			this._logger.info('Successfully disconnected');
-		} else {
-			if (error) {
-				this._logger.err(`Connection unexpectedly closed: ${error.message}`);
-			} else {
-				this._logger.err('Connection unexpectedly closed');
-			}
-			if (!this._retryDelayGenerator) {
-				this._retryDelayGenerator = BasicPubSubClient._getReconnectWaitTime();
-			}
-			const delay = this._retryDelayGenerator.next().value;
-			this._logger.info(`Reconnecting in ${delay} seconds`);
-			this._retryTimer = setTimeout(async () => this.connect(), delay * 1000);
-		}
 	}
 
 	private async _sendListen(topics: string[], accessToken?: string) {
@@ -314,9 +282,7 @@ export default class BasicPubSubClient extends EventEmitter {
 		const dataStr = JSON.stringify(data);
 		this._logger.debug2(`Sending message: ${dataStr}`);
 
-		if (this._socket && this._connected) {
-			this._socket.send(dataStr);
-		}
+		this._connection?.sendLine(dataStr);
 	}
 
 	private _pingCheck() {
@@ -334,7 +300,7 @@ export default class BasicPubSubClient extends EventEmitter {
 			this._logger.err('Ping timeout');
 			this.removeListener(pongListener);
 			return this.reconnect();
-		}, 10000);
+		}, this._pingTimeout * 1000);
 		this._sendPacket({ type: 'PING' });
 	}
 
@@ -342,21 +308,21 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * Checks whether the client is currently connecting to the server.
 	 */
 	protected get isConnecting() {
-		return this._connecting;
+		return this._connection ? this._connection.isConnecting : false;
 	}
 
 	/**
 	 * Checks whether the client is currently connected to the server.
 	 */
 	protected get isConnected() {
-		return this._connected;
+		return this._connection ? this._connection.isConnected : false;
 	}
 
 	private _startPingCheckTimer() {
 		if (this._pingCheckTimer) {
 			clearInterval(this._pingCheckTimer);
 		}
-		this._pingCheckTimer = setInterval(() => this._pingCheck(), 60000);
+		this._pingCheckTimer = setInterval(() => this._pingCheck(), this._pingOnInactivity * 1000);
 	}
 
 	// yes, this is just fibonacci with a limit
