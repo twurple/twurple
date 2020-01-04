@@ -19,7 +19,7 @@ if [[ $TRAVIS_BRANCH = "master" ]]; then
 	GLOBIGNORE="branches" rm -rfv docRepo/*
 	mv -fv generatedDocs/* docRepo/
 else
-	rm -rfv "docRepo/branches/${TRAVIS_BRANCH}/*"
+	rm -rfv docRepo/branches/"${TRAVIS_BRANCH}"/*
 	mkdir -pv "docRepo/branches/${TRAVIS_BRANCH}"
 	mv -fv generatedDocs/* "docRepo/branches/${TRAVIS_BRANCH}"
 fi
