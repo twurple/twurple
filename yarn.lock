@@ -40,9 +40,9 @@
     tslib "^1.10.0"
 
 "@d-fischer/connection@^1.0.1", "@d-fischer/connection@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-1.0.2.tgz#673b4b20a38ba2110b011f0fcac2d9588a2837f3"
-  integrity sha512-Q2O1oblJ5qwdEL7GGofYv2CnrCqAqqV9ccd+mMa3ex6lJhW/LVFJPIvfO0Ey6XdhS0RgOL0AGvevhWV6Cua/rw==
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-1.0.3.tgz#2031b566ed907a15a4e5a1995b6661b99065cd67"
+  integrity sha512-e4z9wNbKjgUk4wKqsWASdJIUNJTZvUPjdrtAgq6vCCJgpUkMlcY21V0cm1FO/x0Yj8j6qrGaG8rolhDs+IVFmg==
   dependencies:
     "@types/node" "^12.12.14"
     "@types/ws" "^6.0.4"
