@@ -1265,7 +1265,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==
 
-"@types/node@*", "@types/node@>= 8", "@types/node@^12.0.12", "@types/node@^12.12.12", "@types/node@^12.12.5", "@types/node@^12.12.7", "@types/node@^12.12.14":
+"@types/node@*", "@types/node@>= 8", "@types/node@^12.0.12", "@types/node@^12.12.12", "@types/node@^12.12.14", "@types/node@^12.12.5", "@types/node@^12.12.7":
   version "12.12.24"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.24.tgz#d4606afd8cf6c609036b854360367d1b2c78931f"
   integrity sha512-1Ciqv9pqwVtW6FsIUKSZNB82E5Cu1I2bBTj1xuIHXLe/1zYLl3956Nbhg2MzSYHVfl9/rmanjbQIb7LibfCnug==
@@ -5304,10 +5304,10 @@ ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.21.2:
-  version "0.21.2"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.21.2.tgz#0c523f44e11e0be384f409ad50273281da0eb221"
-  integrity sha512-UEP5Edk45PAt9vB9ZgBHRRB0u2D3KCfXAYAHYjG8WHI47qV9zs3mayM24J/svI/1/H3H1cFLm+W6ATXG6EBz4g==
+ircv3@^0.21.3:
+  version "0.21.3"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.21.3.tgz#f2c775f17f8b2556598bcd246dd33f5acc4360cf"
+  integrity sha512-oVesZ9A7Ie0j5pCBiFcFHH2LumhdT0Qs9qnON+0U5Vi1TmQolFMUNNthn88p/QCwb0COp7+DwA9UrFX/tm0XxQ==
   dependencies:
     "@d-fischer/connection" "^2.0.0"
     "@d-fischer/logger" "^0.2.0"

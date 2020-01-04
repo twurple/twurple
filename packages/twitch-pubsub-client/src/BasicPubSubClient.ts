@@ -138,7 +138,7 @@ export default class BasicPubSubClient extends EventEmitter {
 			this.emit(this.onConnect);
 		});
 
-		this._connection.on('lineReceived', (line: string) => {
+		this._connection.on('receive', (line: string) => {
 			this._receiveMessage(line);
 			this._startPingCheckTimer();
 		});
