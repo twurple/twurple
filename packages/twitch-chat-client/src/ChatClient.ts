@@ -516,7 +516,7 @@ export default class ChatClient extends IRCClient {
 	) => Listener = this.registerEvent();
 	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerEvent();
 	private readonly _onCommercialResult: (
-		handler: (channel: string, error?: string) => void
+		handler: (channel: string, error?: string, message?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onDeleteMessageResult: (
 		handler: (channel: string, error?: string) => void
@@ -999,12 +999,12 @@ export default class ChatClient extends IRCClient {
 
 				// commercial
 				case 'bad_commercial_error': {
-					this.emit(this._onCommercialResult, channel, messageType);
+					this.emit(this._onCommercialResult, channel, messageType, message);
 					break;
 				}
 
 				case 'commercial_success': {
-					this.emit(this._onCommercialResult, channel);
+					this.emit(this._onCommercialResult, channel, undefined, message);
 					break;
 				}
 
