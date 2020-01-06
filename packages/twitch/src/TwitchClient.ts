@@ -505,6 +505,11 @@ export default class TwitchClient {
 		return new UnsupportedAPI(this);
 	}
 
+	/** @private */
+	_getAuthProvider() {
+		return this._config.authProvider;
+	}
+
 	private async _callAPIInternal(options: TwitchAPICallOptions, clientId?: string, accessToken?: string) {
 		if (options.type === TwitchAPICallType.Helix) {
 			return this._helixRateLimiter.request({ options, clientId, accessToken });

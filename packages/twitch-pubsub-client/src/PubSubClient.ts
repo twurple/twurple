@@ -10,8 +10,12 @@ import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 import SingleUserPubSubClient from './SingleUserPubSubClient';
 
 export default class PubSubClient {
-	@NonEnumerable private readonly _rootClient = new BasicPubSubClient();
+	@NonEnumerable private readonly _rootClient: BasicPubSubClient;
 	@NonEnumerable private readonly _userClients = new Map<string, SingleUserPubSubClient>();
+
+	constructor(rootClient?: BasicPubSubClient) {
+		this._rootClient = rootClient ?? new BasicPubSubClient();
+	}
 
 	async registerUserListener(twitchClient: TwitchClient, user?: UserIdResolvable) {
 		let userId;

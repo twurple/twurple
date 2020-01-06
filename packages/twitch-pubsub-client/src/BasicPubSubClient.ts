@@ -1,9 +1,32 @@
 import { Connection, WebSocketConnection } from '@d-fischer/connection';
 import Logger, { LogLevel } from '@d-fischer/logger';
-import { NonEnumerable } from '@d-fischer/shared-utils';
+import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
+import TwitchClient, { AuthProvider, HellFreezesOverError, InvalidTokenError } from 'twitch';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
+
+interface NullTokenResolvable {
+	type: 'null';
+}
+
+interface StaticTokenResolvable {
+	type: 'static';
+	token: string;
+}
+
+interface FunctionTokenResolvable {
+	type: 'function';
+	function: () => string | Promise<string>;
+}
+
+interface ProviderTokenResolvable {
+	type: 'provider';
+	provider: AuthProvider;
+	scopes: string[];
+}
+
+type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTokenResolvable | ProviderTokenResolvable;
 
 /**
  * A client for the Twitch PubSub interface.
@@ -12,7 +35,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	@NonEnumerable private readonly _logger: Logger;
 
 	// topic => token
-	@NonEnumerable private readonly _topics = new Map<string, string | undefined>();
+	@NonEnumerable private readonly _topics = new Map<string, TokenResolvable>();
 
 	private _connection?: Connection;
 
@@ -79,19 +102,25 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * Listens to one or more topics.
 	 *
 	 * @param topics A topic or a list of topics to listen to.
-	 * @param accessToken An access token. Only necessary for some topics.
+	 * @param resolvable An access token, and AuthProvider or a function that returns a token. Only necessary for some topics.
+	 * @param scope The scope necessary for the topic(s).
 	 */
-	async listen(topics: string | string[], accessToken?: string) {
+	async listen(
+		topics: string | string[],
+		resolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
+		scope?: string
+	) {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
 
+		const wrapped = this._wrapResolvable(resolvable, scope);
 		for (const topic of topics) {
-			this._topics.set(topic, accessToken);
+			this._topics.set(topic, wrapped);
 		}
 
 		if (this.isConnected) {
-			await this._sendListen(topics, accessToken);
+			await this._sendListen(topics, await this._resolveToken(wrapped));
 		}
 	}
 
@@ -211,16 +240,127 @@ export default class BasicPubSubClient extends EventEmitter {
 		});
 	}
 
-	private async _resendListens() {
-		const topicsByToken = Array.from(this._topics.entries()).reduce((result, [topic, token]) => {
-			if (result.has(token)) {
-				result.get(token)!.push(topic);
-			} else {
-				result.set(token, [topic]);
+	private _wrapResolvable(
+		resolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
+		scope?: string
+	): TokenResolvable {
+		switch (typeof resolvable) {
+			case 'object': {
+				if (resolvable === null) {
+					return {
+						type: 'null'
+					};
+				}
+				if ('type' in resolvable) {
+					return resolvable;
+				}
+				return {
+					type: 'provider',
+					provider: resolvable,
+					scopes: scope ? [scope] : []
+				};
 			}
+			case 'string': {
+				return {
+					type: 'static',
+					token: resolvable
+				};
+			}
+			case 'function': {
+				return {
+					type: 'function',
+					function: resolvable
+				};
+			}
+			case 'undefined': {
+				return {
+					type: 'null'
+				};
+			}
+			default: {
+				throw new HellFreezesOverError(`Passed unknown type to wrapResolvable: ${typeof resolvable}`);
+			}
+		}
+	}
 
-			return result;
-		}, new Map<string | undefined, string[]>());
+	private async _resolveToken(resolvable: TokenResolvable): Promise<string | undefined> {
+		switch (resolvable.type) {
+			case 'provider': {
+				const { provider, scopes } = resolvable;
+				let lastTokenError: InvalidTokenError | undefined = undefined;
+
+				try {
+					const accessToken = await provider.getAccessToken(scopes);
+					if (accessToken) {
+						// check validity
+						await TwitchClient.getTokenInfo(accessToken.accessToken);
+						return accessToken.accessToken;
+					}
+				} catch (e) {
+					if (e instanceof InvalidTokenError) {
+						lastTokenError = e;
+					} else {
+						this._logger.err(`Retrieving an access token failed: ${e.message}`);
+					}
+				}
+
+				this._logger.warning('No valid token available; trying to refresh');
+
+				if (provider.refresh) {
+					try {
+						const newToken = await provider.refresh();
+
+						if (newToken) {
+							// check validity
+							await TwitchClient.getTokenInfo(newToken.accessToken);
+							return newToken.accessToken;
+						}
+					} catch (e) {
+						if (e instanceof InvalidTokenError) {
+							lastTokenError = e;
+						} else {
+							this._logger.err(`Refreshing the access token failed: ${e.message}`);
+						}
+					}
+				}
+
+				throw lastTokenError || new Error('Could not retrieve a valid token');
+			}
+			case 'function': {
+				return resolvable.function();
+			}
+			case 'static': {
+				return resolvable.token;
+			}
+			case 'null': {
+				return undefined;
+			}
+			default: {
+				throw new HellFreezesOverError(
+					`Passed unknown type to resolveToken: ${(resolvable as TokenResolvable).type}`
+				);
+			}
+		}
+	}
+
+	private async _resendListens() {
+		const topicsByTokenResolvable = new Map<TokenResolvable, string[]>();
+		for (const [topic, tokenResolvable] of this._topics) {
+			if (topicsByTokenResolvable.has(tokenResolvable)) {
+				topicsByTokenResolvable.get(tokenResolvable)!.push(topic);
+			} else {
+				topicsByTokenResolvable.set(tokenResolvable, [topic]);
+			}
+		}
+		const topicsByToken = new Map<string | undefined, string[]>();
+		for (const [tokenResolvable, topics] of topicsByTokenResolvable) {
+			const token = await this._resolveToken(tokenResolvable);
+			if (topicsByToken.has(token)) {
+				topicsByToken.get(token)!.push(...topics);
+			} else {
+				topicsByToken.set(token, topics);
+			}
+		}
 		return Promise.all(
 			Array.from(topicsByToken.entries()).map(async ([token, topics]) => this._sendListen(topics, token))
 		);

@@ -187,19 +187,15 @@ export default class SingleUserPubSubClient {
 		}
 	}
 
-	private async _getUserData(scope?: string) {
-		const tokenData = await this._twitchClient.getAccessToken(scope);
+	private async _getUserId(): Promise<string> {
+		const tokenData = await this._twitchClient.getAccessToken();
 
 		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		if (tokenData) {
 			try {
-				const accessToken = tokenData.accessToken;
 				const { userId } = await this._twitchClient.getTokenInfo();
-				return {
-					userId,
-					accessToken
-				};
+				return userId;
 			} catch (e) {
 				if (e instanceof InvalidTokenError) {
 					lastTokenError = e;
@@ -212,12 +208,8 @@ export default class SingleUserPubSubClient {
 		try {
 			const newTokenInfo = await this._twitchClient.refreshAccessToken();
 			if (newTokenInfo) {
-				const accessToken = newTokenInfo.accessToken;
 				const { userId } = await this._twitchClient.getTokenInfo();
-				return {
-					userId,
-					accessToken
-				};
+				return userId;
 			}
 		} catch (e) {
 			if (e instanceof InvalidTokenError) {
@@ -237,13 +229,17 @@ export default class SingleUserPubSubClient {
 		...additionalParams: string[]
 	) {
 		await this._pubSubClient.connect();
-		const { userId, accessToken } = await this._getUserData(scope);
+		const userId = await this._getUserId();
 		const listener = new PubSubListener(type, userId, callback, this);
 		if (this._listeners.has(type)) {
 			this._listeners.get(type)!.push(listener);
 		} else {
 			this._listeners.set(type, [listener]);
-			await this._pubSubClient.listen([type, userId, ...additionalParams].join('.'), accessToken);
+			await this._pubSubClient.listen(
+				[type, userId, ...additionalParams].join('.'),
+				this._twitchClient._getAuthProvider(),
+				scope
+			);
 		}
 		return listener;
 	}
