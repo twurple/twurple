@@ -42,6 +42,8 @@ export default class SingleUserPubSubClient {
 
 	private readonly _listeners: Map<string, PubSubListener[]> = new Map();
 
+	private _userId?: string;
+
 	/**
 	 * Creates a new Twitch PubSub client.
 	 *
@@ -50,9 +52,9 @@ export default class SingleUserPubSubClient {
 	constructor({ twitchClient, pubSubClient, logLevel = LogLevel.WARNING }: SingleUserPubSubClientOptions) {
 		this._twitchClient = twitchClient;
 		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
-		this._pubSubClient.onMessage((topic, messageData) => {
-			const [type, ...args] = topic.split('.');
-			if (this._listeners.has(type)) {
+		this._pubSubClient.onMessage(async (topic, messageData) => {
+			const [type, userId, ...args] = topic.split('.');
+			if (this._listeners.has(type) && userId === (await this._getUserId())) {
 				let message: PubSubMessage;
 				switch (type) {
 					case 'channel-bits-events-v2': {
@@ -83,7 +85,7 @@ export default class SingleUserPubSubClient {
 					case 'chat_moderator_actions': {
 						message = new PubSubChatModActionMessage(
 							messageData as PubSubChatModActionMessageData,
-							args[1],
+							args[0],
 							this._twitchClient
 						);
 						break;
@@ -188,6 +190,10 @@ export default class SingleUserPubSubClient {
 	}
 
 	private async _getUserId(): Promise<string> {
+		if (this._userId) {
+			return this._userId;
+		}
+
 		const tokenData = await this._twitchClient.getAccessToken();
 
 		let lastTokenError: InvalidTokenError | undefined = undefined;
@@ -195,7 +201,7 @@ export default class SingleUserPubSubClient {
 		if (tokenData) {
 			try {
 				const { userId } = await this._twitchClient.getTokenInfo();
-				return userId;
+				return (this._userId = userId);
 			} catch (e) {
 				if (e instanceof InvalidTokenError) {
 					lastTokenError = e;
@@ -209,7 +215,7 @@ export default class SingleUserPubSubClient {
 			const newTokenInfo = await this._twitchClient.refreshAccessToken();
 			if (newTokenInfo) {
 				const { userId } = await this._twitchClient.getTokenInfo();
-				return userId;
+				return (this._userId = userId);
 			}
 		} catch (e) {
 			if (e instanceof InvalidTokenError) {
