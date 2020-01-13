@@ -50,9 +50,9 @@ export default class SingleUserPubSubClient {
 	constructor({ twitchClient, pubSubClient, logLevel = LogLevel.WARNING }: SingleUserPubSubClientOptions) {
 		this._twitchClient = twitchClient;
 		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
-		this._pubSubClient.onMessage((topic, messageData) => {
-			const [type, ...args] = topic.split('.');
-			if (this._listeners.has(type)) {
+		this._pubSubClient.onMessage(async (topic, messageData) => {
+			const [type, userId, ...args] = topic.split('.');
+			if (this._listeners.has(type) && userId === (await this._getUserData()).userId) {
 				let message: PubSubMessage;
 				switch (type) {
 					case 'channel-bits-events-v2': {
@@ -83,7 +83,7 @@ export default class SingleUserPubSubClient {
 					case 'chat_moderator_actions': {
 						message = new PubSubChatModActionMessage(
 							messageData as PubSubChatModActionMessageData,
-							args[1],
+							args[0],
 							this._twitchClient
 						);
 						break;
