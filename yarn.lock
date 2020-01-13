@@ -39,10 +39,10 @@
     "@types/node" "^12.12.14"
     tslib "^1.10.0"
 
-"@d-fischer/connection@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-2.0.0.tgz#6482f21e3464b3c8cb65cb3748eda6961683e7a7"
-  integrity sha512-VDUANjnbv8CWDLD8wVbv24byiYHiaqw8SiT74znNl5gJBhybF4lJ5ZAl+P2e1bq5j8mMPqaRFp7jipJq/E5k0Q==
+"@d-fischer/connection@^2.0.0", "@d-fischer/connection@^2.0.1":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-2.0.1.tgz#4326aff9f1d23b0d9a2977ac3903f08e6f676c5a"
+  integrity sha512-8Jv1rN+J0nvHDlFPzjfDZpw7vlEOcQzJI2yL5I2TK8GRWjL9ZB8cIalAEIiDduMf+tWlF78lRRuPu2pvVlBQYg==
   dependencies:
     "@types/node" "^12.12.14"
     "@types/ws" "^6.0.4"

@@ -147,9 +147,11 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * Connects to the PubSub interface.
 	 */
 	async connect() {
-		this.setupConnection();
-		this._logger.info('Connecting...');
-		await this._connection!.connect();
+		if (!this._connection?.isConnected && !this._connection?.isConnecting) {
+			this.setupConnection();
+			this._logger.info('Connecting...');
+			await this._connection!.connect();
+		}
 	}
 
 	setupConnection() {
