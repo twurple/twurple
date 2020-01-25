@@ -1,21 +1,20 @@
+import * as fetchPonyfill from 'fetch-ponyfill';
 import * as qs from 'qs';
-import AuthProvider from './Auth/AuthProvider';
-import { Cacheable, CachedGetter } from './Toolkit/Decorators/Cache';
-import TokenInfo, { TokenInfoData } from './API/TokenInfo';
-import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
 import AccessToken, { AccessTokenData } from './API/AccessToken';
-import StaticAuthProvider from './Auth/StaticAuthProvider';
-import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
-import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider';
-import ConfigError from './Errors/ConfigError';
-import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
+import BadgesAPI from './API/Badges/BadgesAPI';
+import HelixAPIGroup from './API/Helix/HelixAPIGroup';
+import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
 
 import KrakenAPIGroup from './API/Kraken/KrakenAPIGroup';
-import HelixAPIGroup from './API/Helix/HelixAPIGroup';
-import BadgesAPI from './API/Badges/BadgesAPI';
+import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
-
-import * as fetchPonyfill from 'fetch-ponyfill';
+import AuthProvider from './Auth/AuthProvider';
+import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider';
+import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
+import StaticAuthProvider from './Auth/StaticAuthProvider';
+import ConfigError from './Errors/ConfigError';
+import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
+import { Cacheable, CachedGetter } from './Toolkit/Decorators/Cache';
 
 const { fetch, Headers } = fetchPonyfill();
 
@@ -181,17 +180,20 @@ export default class TwitchClient {
 		refreshConfig?: RefreshConfig,
 		config: Partial<TwitchConfig> = {}
 	) {
+		let passedAccessToken: string | AccessToken | undefined = accessToken;
 		if (!scopes && accessToken) {
 			let tokenData = await this.getTokenInfo(clientId, accessToken);
 			if (!tokenData.valid) {
 				if (refreshConfig) {
-					const newToken = await this.refreshAccessToken(
+					passedAccessToken = await this.refreshAccessToken(
 						clientId,
 						refreshConfig.clientSecret,
 						refreshConfig.refreshToken
 					);
-					accessToken = newToken.accessToken;
-					tokenData = await this.getTokenInfo(clientId, accessToken);
+					if (refreshConfig.onRefresh) {
+						refreshConfig.onRefresh(passedAccessToken);
+					}
+					tokenData = await this.getTokenInfo(clientId, passedAccessToken.accessToken);
 				}
 				if (!tokenData.valid) {
 					throw new ConfigError('Supplied an invalid access token to retrieve scopes with');
@@ -200,8 +202,8 @@ export default class TwitchClient {
 			scopes = tokenData.scopes;
 		}
 		const authProvider = refreshConfig
-			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig)
-			: new StaticAuthProvider(clientId, accessToken, scopes);
+			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, passedAccessToken, scopes), refreshConfig)
+			: new StaticAuthProvider(clientId, passedAccessToken, scopes);
 
 		return new this({ ...config, authProvider });
 	}

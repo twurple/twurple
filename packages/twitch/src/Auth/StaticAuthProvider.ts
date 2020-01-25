@@ -1,7 +1,7 @@
-import AuthProvider from './AuthProvider';
-import { NonEnumerable } from '../Toolkit/Decorators/NonEnumerable';
 import AccessToken from '../API/AccessToken';
+import { NonEnumerable } from '../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../TwitchClient';
+import AuthProvider from './AuthProvider';
 
 /**
  * An auth provider that always returns the same initially given credentials.
@@ -26,14 +26,17 @@ export default class StaticAuthProvider implements AuthProvider {
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param scopes The scopes this token has.
 	 */
-	constructor(clientId: string, accessToken?: string, scopes: string[] = []) {
+	constructor(clientId: string, accessToken?: string | AccessToken, scopes: string[] = []) {
 		this._clientId = clientId || '';
 		if (accessToken) {
-			this._accessToken = new AccessToken({
-				access_token: accessToken,
-				scope: scopes,
-				refresh_token: ''
-			});
+			this._accessToken =
+				typeof accessToken === 'string'
+					? new AccessToken({
+							access_token: accessToken,
+							scope: scopes,
+							refresh_token: ''
+					  })
+					: accessToken;
 			this._scopes = scopes;
 		}
 	}
