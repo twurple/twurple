@@ -1,6 +1,6 @@
 {
   "name": "twitch",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "description": "Interact with Twitch's API.",
   "keywords": [
     "twitch",

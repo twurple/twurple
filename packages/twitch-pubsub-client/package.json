@@ -1,6 +1,6 @@
 {
   "name": "twitch-pubsub-client",
-  "version": "3.7.0",
+  "version": "3.7.1",
   "description": "Listen to events using the Twitch PubSub interface.",
   "keywords": [
     "twitch",
@@ -24,7 +24,7 @@
     "universal-websocket-client": "^1.0.2"
   },
   "devDependencies": {
-    "twitch": "^3.7.0"
+    "twitch": "^3.7.1"
   },
   "peerDependencies": {
     "twitch": "^3.0.0"
