@@ -1,6 +1,6 @@
 # Twitch.js
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Installation
@@ -44,6 +44,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/lafiosca"><img src="https://avatars2.githubusercontent.com/u/9442662?v=4" width="100px;" alt=""/><br /><sub><b>Joe Lafiosca</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=lafiosca" title="Code">💻</a></td>
     <td align="center"><a href="https://gu3.st"><img src="https://avatars2.githubusercontent.com/u/375232?v=4" width="100px;" alt=""/><br /><sub><b>Dustin Dawes</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=gu3st" title="Code">💻</a></td>
     <td align="center"><a href="http://abb.ink"><img src="https://avatars3.githubusercontent.com/u/2461972?v=4" width="100px;" alt=""/><br /><sub><b>Jasper Abbink</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=jabbink" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/lclc98"><img src="https://avatars2.githubusercontent.com/u/1905336?v=4" width="100px;" alt=""/><br /><sub><b>lclc98</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=lclc98" title="Code">💻</a></td>
   </tr>
 </table>
 
