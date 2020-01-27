@@ -1986,6 +1986,8 @@ export default class ChatClient extends IRCClient {
 
 	/**
 	 * Waits for authentication (or "registration" in IRC terms) to finish.
+	 *
+	 * @deprecated Use the `onRegister` event instead.
 	 */
 	async waitForRegistration() {
 		if (this._registered) {

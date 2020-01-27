@@ -80,12 +80,11 @@ Using the `TwitchClient` instance we just created, we can easily create a `ChatC
 const chatClient = await ChatClient.forTwitchClient(twitchClient);
 ```
 
-Now, you can connect to your chat.
+Now, you can connect to the chat server, and after the connection and login process has finished, join your channel.
 
 ```typescript
 await chatClient.connect();
-await chatClient.waitForRegistration();
-await chatClient.join('satisfiedpear');
+chatClient.onRegister(() => chatClient.join('satisfiedpear'));
 ```
 
 You can join multiple channels - all you have to do is repeat that last line with another channel name.
@@ -220,8 +219,7 @@ import * as fs from 'fs-extra';
     const chatClient = await ChatClient.forTwitchClient(twitchClient);
 
     await chatClient.connect();
-    await chatClient.waitForRegistration();
-    await chatClient.join('satisfiedpear');
+    chatClient.onRegister(() => chatClient.join('satisfiedpear'));
 
     chatClient.onPrivmsg((channel, user, message) => {
         if (message === '!ping') {
