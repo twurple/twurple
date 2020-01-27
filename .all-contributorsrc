@@ -6,6 +6,21 @@
   "commit": false,
   "contributors": [
     {
+      "login": "d-fischer",
+      "name": "Daniel Fischer",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/5854687?v=4",
+      "profile": "https://github.com/d-fischer",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "infra",
+        "maintenance",
+        "review",
+        "tool"
+      ]
+    },
+    {
       "login": "freaktechnik",
       "name": "Martin Giger",
       "avatar_url": "https://avatars0.githubusercontent.com/u/640949?v=4",
@@ -94,21 +109,6 @@
       "profile": "http://ashuvidz.com",
       "contributions": [
         "code"
-      ]
-    },
-    {
-      "login": "d-fischer",
-      "name": "Daniel Fischer",
-      "avatar_url": "https://avatars3.githubusercontent.com/u/5854687?v=4",
-      "profile": "https://github.com/d-fischer",
-      "contributions": [
-        "code",
-        "doc",
-        "example",
-        "infra",
-        "maintenance",
-        "review",
-        "tool"
       ]
     }
   ],
