@@ -1,6 +1,6 @@
 # Twitch.js
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Installation
@@ -41,6 +41,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://humanoids.be"><img src="https://avatars0.githubusercontent.com/u/640949?v=4" width="100px;" alt=""/><br /><sub><b>Martin Giger</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=freaktechnik" title="Code">💻</a> <a href="#question-freaktechnik" title="Answering Questions">💬</a></td>
     <td align="center"><a href="https://github.com/JakubKohout"><img src="https://avatars0.githubusercontent.com/u/339965?v=4" width="100px;" alt=""/><br /><sub><b>Jakub Kohout</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=JakubKohout" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/lafiosca"><img src="https://avatars2.githubusercontent.com/u/9442662?v=4" width="100px;" alt=""/><br /><sub><b>Joe Lafiosca</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=lafiosca" title="Code">💻</a></td>
   </tr>
 </table>
 
