@@ -68,6 +68,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "devakira",
+      "name": "Akira",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/19719195?v=4",
+      "profile": "https://streamcord.io/",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
