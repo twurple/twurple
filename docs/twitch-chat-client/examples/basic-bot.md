@@ -74,21 +74,13 @@ const twitchClient = await TwitchClient.withCredentials(clientId, accessToken);
 
 ## 4. Connect to chat
 
-Using the `TwitchClient` instance we just created, we can easily create a `ChatClient` instance.
+Using the `TwitchClient` instance we just created, we can easily create a `ChatClient` instance and connect to the chat server.
+The given channels will automatically be joined after connecting.
 
 ```typescript
-const chatClient = await ChatClient.forTwitchClient(twitchClient);
-```
-
-Now, you can connect to your chat.
-
-```typescript
+const chatClient = await ChatClient.forTwitchClient(twitchClient, { channels: ['satisfiedpear'] });
 await chatClient.connect();
-await chatClient.waitForRegistration();
-await chatClient.join('satisfiedpear');
 ```
-
-You can join multiple channels - all you have to do is repeat that last line with another channel name.
 
 Now you can run your code and see your bot sitting in your channel. But we want it to do something!
 
