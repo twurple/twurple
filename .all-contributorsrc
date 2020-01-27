@@ -1,0 +1,25 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "freaktechnik",
+      "name": "Martin Giger",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/640949?v=4",
+      "profile": "https://humanoids.be",
+      "contributions": [
+        "code",
+        "question"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "twitch",
+  "projectOwner": "d-fischer",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
