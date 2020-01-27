@@ -1,6 +1,6 @@
 # Twitch.js
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-8-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Installation
@@ -46,6 +46,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://abb.ink"><img src="https://avatars3.githubusercontent.com/u/2461972?v=4" width="100px;" alt=""/><br /><sub><b>Jasper Abbink</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=jabbink" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/lclc98"><img src="https://avatars2.githubusercontent.com/u/1905336?v=4" width="100px;" alt=""/><br /><sub><b>lclc98</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=lclc98" title="Code">💻</a></td>
     <td align="center"><a href="http://dfdx.us"><img src="https://avatars0.githubusercontent.com/u/3087358?v=4" width="100px;" alt=""/><br /><sub><b>Haley Hitch</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=dfoverdx" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://streamcord.io/"><img src="https://avatars3.githubusercontent.com/u/19719195?v=4" width="100px;" alt=""/><br /><sub><b>Akira</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=devakira" title="Code">💻</a></td>
   </tr>
 </table>
 
