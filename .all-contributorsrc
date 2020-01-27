@@ -95,6 +95,21 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "d-fischer",
+      "name": "Daniel Fischer",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/5854687?v=4",
+      "profile": "https://github.com/d-fischer",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "infra",
+        "maintenance",
+        "review",
+        "tool"
+      ]
     }
   ],
   "contributorsPerLine": 7,
