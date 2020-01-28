@@ -209,11 +209,8 @@ import * as fs from 'fs-extra';
         }
     });
 
-    const chatClient = await ChatClient.forTwitchClient(twitchClient);
-
+    const chatClient = await ChatClient.forTwitchClient(twitchClient, { channels: ['satisfiedpear'] });
     await chatClient.connect();
-    await chatClient.waitForRegistration();
-    await chatClient.join('satisfiedpear');
 
     chatClient.onPrivmsg((channel, user, message) => {
         if (message === '!ping') {
