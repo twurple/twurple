@@ -1345,8 +1345,6 @@ export default class ChatClient extends IRCClient {
 	/**
 	 * Bans a user from a channel.
 	 *
-	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
-	 *
 	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
 	 * @param user The user to ban from the channel.
 	 * @param reason The reason for the ban.
@@ -1371,8 +1369,6 @@ export default class ChatClient extends IRCClient {
 
 	/**
 	 * Clears all messages in a channel.
-	 *
-	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
 	 *
 	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
 	 */
