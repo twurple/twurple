@@ -11,7 +11,7 @@ else
 	BASE_URL="/branches/${TRAVIS_BRANCH}/"
 fi
 
-npm run docs -- --base-url "${BASE_URL}"
+npm run docs -- --base-url "${BASE_URL}" --repo-branch "${TRAVIS_BRANCH}"
 
 git clone "https://${GH_TOKEN}@github.com/${REPO_USER}/${REPO_USER}.github.io.git" docRepo
 
