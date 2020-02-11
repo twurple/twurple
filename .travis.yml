@@ -22,5 +22,5 @@ script:
 jobs:
     include:
         - stage: Publish docs
-          if: type = push AND fork = false AND tag IS blank AND !(branch =~ /^dependabot\//)
+          if: type = push AND fork = false AND tag IS blank AND !(branch =~ /^dependabot\//) AND !(branch =~ /^all-contributors\//)
           script: lerna bootstrap && lerna run build && scripts/travis/publishDocs.sh

@@ -16,8 +16,12 @@ npm run docs -- --base-url "${BASE_URL}" --repo-branch "${TRAVIS_BRANCH}"
 git clone "https://${GH_TOKEN}@github.com/${REPO_USER}/${REPO_USER}.github.io.git" docRepo
 
 if [[ $TRAVIS_BRANCH = "master" ]]; then
-	GLOBIGNORE="branches" rm -rfv docRepo/*
-	mv -fv generatedDocs/* docRepo/
+	(
+		export GLOBIGNORE="branches"
+		shopt -u dotglob
+		rm -rfv docRepo/*
+		mv -fv generatedDocs/* docRepo/
+	)
 else
 	rm -rfv docRepo/branches/"${TRAVIS_BRANCH}"/*
 	mkdir -pv "docRepo/branches/${TRAVIS_BRANCH}"
