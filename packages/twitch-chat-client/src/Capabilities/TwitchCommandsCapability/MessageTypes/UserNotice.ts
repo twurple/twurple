@@ -17,7 +17,11 @@ export default class UserNotice extends Message<UserNotice, 'userInfo' | 'emoteO
 	message!: MessageParam;
 
 	get userInfo() {
-		return new ChatUser(this._prefix!.nick, this._tags);
+		return new ChatUser(this._tags.get('login')!, this._tags);
+	}
+
+	get channelId() {
+		return this._tags.get('room-id') || null;
 	}
 
 	get emoteOffsets() {
