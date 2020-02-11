@@ -213,6 +213,7 @@ export default class BasicPubSubClient extends EventEmitter {
 		}
 		this._retryDelayGenerator = undefined;
 		this._connection?.disconnect();
+		this._connection = undefined;
 	}
 
 	/**
