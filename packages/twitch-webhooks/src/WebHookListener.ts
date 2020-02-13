@@ -244,7 +244,7 @@ export default class WebHookListener {
 
 	async subscribeToExtensionTransactions(
 		extensionId: string,
-		handler: (subscription: HelixModeratorEvent) => void,
+		handler: (transaction: HelixExtensionTransaction) => void,
 		validityInSeconds = this._config.hookValidity
 	) {
 		const subscription = new ExtensionTransactionSubscription(extensionId, handler, this, validityInSeconds);
