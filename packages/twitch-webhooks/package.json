@@ -1,6 +1,6 @@
 {
   "name": "twitch-webhooks",
-  "version": "4.0.0-pre.18",
+  "version": "4.0.0-pre.21",
   "description": "Listen to events on Twitch via their WebHooks API.",
   "keywords": [
     "twitch",
