@@ -21,6 +21,7 @@ import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
 import Subscription from './Subscriptions/Subscription';
 import SubscriptionEventSubscription from './Subscriptions/SubscriptionEventSubscription';
 import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
+import ExtensionTransactionSubscription from './Subscriptions/ExtensionTransactionSubscription';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 import polka = require('polka');
@@ -234,6 +235,18 @@ export default class WebHookListener {
 		const userId = user ? extractUserId(user) : undefined;
 
 		const subscription = new ModeratorEventSubscription(broadcasterId, handler, this, userId, validityInSeconds);
+		await subscription.start();
+		this._subscriptions.set(subscription.id, subscription);
+
+		return subscription;
+	}
+
+	async subscribeToExtensionSubscription(
+		extensionId: string,
+		handler: (subscription: HelixModeratorEvent) => void,
+		validityInSeconds = this._config.hookValidity
+	) {
+		const subscription = new ExtensionTransactionSubscription(extensionId, handler, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id, subscription);
 
