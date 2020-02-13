@@ -243,13 +243,11 @@ export default class WebHookListener {
 	}
 
 	async subscribeToExtensionTransactions(
-		broadcaster: UserIdResolvable,
-		handler: (transaction: HelixExtensionTransaction) => void,
+		extensionId: string,
+		handler: (subscription: HelixModeratorEvent) => void,
 		validityInSeconds = this._config.hookValidity
 	) {
-		const broadcasterId = extractUserId(broadcaster);
-
-		const subscription = new ExtensionTransactionSubscription(broadcasterId, handler, this, validityInSeconds);
+		const subscription = new ExtensionTransactionSubscription(extensionId, handler, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id, subscription);
 
