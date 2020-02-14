@@ -18,7 +18,7 @@ export enum HelixModeratorEventType {
 }
 
 /** @private */
-interface HelixModeratorEventDetail extends HelixModeratorData {
+export interface HelixModeratorEventDetail extends HelixModeratorData {
 	broadcaster_id: string;
 	broadcaster_name: string;
 }

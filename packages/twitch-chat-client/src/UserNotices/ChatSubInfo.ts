@@ -3,6 +3,11 @@
  */
 export default interface ChatSubInfo {
 	/**
+	 * The user ID of the subscribing user.
+	 */
+	userId: string;
+
+	/**
 	 * The display name of the subscribing user.
 	 */
 	displayName: string;
@@ -54,6 +59,11 @@ export interface ChatSubGiftInfo extends ChatSubInfo {
 	gifter?: string;
 
 	/**
+	 * The user ID of the user that gifted the subscription.
+	 */
+	gifterUserId?: string;
+
+	/**
 	 * The display name of the user that gifted the subscription.
 	 */
 	gifterDisplayName?: string;
@@ -68,6 +78,11 @@ export interface ChatSubGiftInfo extends ChatSubInfo {
  * Information about a subscription that was upgraded from a Prime subscription.
  */
 export interface ChatSubUpgradeInfo {
+	/**
+	 * The user ID of the subscribing user.
+	 */
+	userId: string;
+
 	/**
 	 * The display name of the subscribing user.
 	 */
@@ -100,10 +115,13 @@ export interface ChatSubGiftUpgradeInfo extends ChatSubUpgradeInfo {
 
 /**
  * Information about a subsription extension.
- *
- * @inheritDoc
  */
 export interface ChatSubExtendInfo {
+	/**
+	 * The user ID of the subscribing user.
+	 */
+	userId: string;
+
 	/**
 	 * The display name of the subscribing user.
 	 */

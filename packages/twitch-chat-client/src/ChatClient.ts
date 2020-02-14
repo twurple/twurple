@@ -18,10 +18,12 @@ import ClearMsg from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg'
 import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
 import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
+import ChatCommunityPayForwardInfo from './UserNotices/ChatCommunityPayForwardInfo';
 import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
 import ChatPrimeCommunityGiftInfo from './UserNotices/ChatPrimeCommunityGiftInfo';
 import ChatRaidInfo from './UserNotices/ChatRaidInfo';
 import ChatRitualInfo from './UserNotices/ChatRitualInfo';
+import ChatStandardPayForwardInfo from './UserNotices/ChatStandardPayForwardInfo';
 import ChatSubInfo, {
 	ChatSubExtendInfo,
 	ChatSubGiftInfo,
@@ -416,6 +418,32 @@ export default class ChatClient extends IRCClient {
 	) => Listener = this.registerEvent();
 
 	/**
+	 * Fires when a user pays forward a subscription that was gifted to them to a specific user.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the gift was forwarded.
+	 * @param user The user that forwarded the gift.
+	 * @param forwardInfo Additional information about the gift.
+	 * @param msg The raw message that was received.
+	 */
+	onStandardPayForward: (
+		handler: (channel: string, user: string, forwardInfo: ChatStandardPayForwardInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user pays forward a subscription that was gifted to them to the community.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the gift was forwarded.
+	 * @param user The user that forwarded the gift.
+	 * @param forwardInfo Additional information about the gift.
+	 * @param msg The raw message that was received.
+	 */
+	onCommunityPayForward: (
+		handler: (channel: string, user: string, forwardInfo: ChatCommunityPayForwardInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
 	 * Fires when receiving a whisper from another user.
 	 *
 	 * @eventListener
@@ -754,6 +782,7 @@ export default class ChatClient extends IRCClient {
 					const plan = tags.get('msg-param-sub-plan')!;
 					const streakMonths = tags.get('msg-param-streak-months');
 					const subInfo: ChatSubInfo = {
+						userId: tags.get('user-id')!,
 						displayName: tags.get('display-name')!,
 						plan,
 						planName: tags.get('msg-param-sub-plan-name')!,
@@ -771,8 +800,10 @@ export default class ChatClient extends IRCClient {
 					const gifter = tags.get('login');
 					const isAnon = messageType === 'anonsubgift' || gifter === 'ananonymousgifter';
 					const subInfo: ChatSubGiftInfo = {
+						userId: tags.get('msg-param-recipient-id')!,
 						displayName: tags.get('msg-param-recipient-display-name')!,
 						gifter: isAnon ? undefined : gifter,
+						gifterUserId: isAnon ? undefined : tags.get('user-id')!,
 						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
 						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
 						plan,
@@ -789,6 +820,7 @@ export default class ChatClient extends IRCClient {
 					const isAnon = messageType === 'anonsubmysterygift' || gifter === 'ananonymousgifter';
 					const communitySubInfo: ChatCommunitySubInfo = {
 						gifter: isAnon ? undefined : gifter,
+						gifterUserId: isAnon ? undefined : tags.get('user-id')!,
 						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
 						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
 						count: Number(tags.get('msg-param-mass-gift-count')!),
@@ -799,6 +831,7 @@ export default class ChatClient extends IRCClient {
 				}
 				case 'primepaidupgrade': {
 					const upgradeInfo: ChatSubUpgradeInfo = {
+						userId: tags.get('user-id')!,
 						displayName: tags.get('display-name')!,
 						plan: tags.get('msg-param-sub-plan')!
 					};
@@ -807,12 +840,41 @@ export default class ChatClient extends IRCClient {
 				}
 				case 'giftpaidupgrade': {
 					const upgradeInfo: ChatSubGiftUpgradeInfo = {
+						userId: tags.get('user-id')!,
 						displayName: tags.get('display-name')!,
 						plan: tags.get('msg-param-sub-plan')!,
 						gifter: tags.get('msg-param-sender-login')!,
 						gifterDisplayName: tags.get('msg-param-sender-name')!
 					};
 					this.emit(this.onGiftPaidUpgrade, channel, tags.get('login')!, upgradeInfo, userNotice);
+					break;
+				}
+				case 'standardpayforward': {
+					const wasAnon = tags.get('msg-param-prior-gifter-anonymous') === 'true';
+					const forwardInfo: ChatStandardPayForwardInfo = {
+						userId: tags.get('user-id')!,
+						displayName: tags.get('display-name')!,
+						originalGifterUserId: wasAnon ? undefined : tags.get('msg-param-prior-gifter-id')!,
+						originalGifterDisplayName: wasAnon
+							? undefined
+							: tags.get('msg-param-prior-gifter-display-name')!,
+						recipientUserId: tags.get('msg-param-recipient-id')!,
+						recipientDisplayName: tags.get('msg-param-recipient-display-name')!
+					};
+					this.emit(this.onStandardPayForward, channel, tags.get('login')!, forwardInfo, userNotice);
+					break;
+				}
+				case 'communitypayforward': {
+					const wasAnon = tags.get('msg-param-prior-gifter-anonymous') === 'true';
+					const forwardInfo: ChatCommunityPayForwardInfo = {
+						userId: tags.get('user-id')!,
+						displayName: tags.get('display-name')!,
+						originalGifterUserId: wasAnon ? undefined : tags.get('msg-param-prior-gifter-id')!,
+						originalGifterDisplayName: wasAnon
+							? undefined
+							: tags.get('msg-param-prior-gifter-display-name')!
+					};
+					this.emit(this.onCommunityPayForward, channel, tags.get('login')!, forwardInfo, userNotice);
 					break;
 				}
 				case 'primecommunitygiftreceived': {
@@ -860,6 +922,7 @@ export default class ChatClient extends IRCClient {
 				}
 				case 'extendsub': {
 					const extendInfo: ChatSubExtendInfo = {
+						userId: tags.get('user-id')!,
 						displayName: tags.get('display-name')!,
 						plan: tags.get('msg-param-sub-plan')!,
 						months: Number(tags.get('msg-param-cumulative-months')),

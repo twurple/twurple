@@ -1,0 +1,139 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "d-fischer",
+      "name": "Daniel Fischer",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/5854687?v=4",
+      "profile": "https://github.com/d-fischer",
+      "contributions": [
+        "code",
+        "doc",
+        "example",
+        "infra",
+        "maintenance",
+        "review",
+        "tool"
+      ]
+    },
+    {
+      "login": "freaktechnik",
+      "name": "Martin Giger",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/640949?v=4",
+      "profile": "https://humanoids.be",
+      "contributions": [
+        "code",
+        "question"
+      ]
+    },
+    {
+      "login": "JakubKohout",
+      "name": "Jakub Kohout",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/339965?v=4",
+      "profile": "https://github.com/JakubKohout",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lafiosca",
+      "name": "Joe Lafiosca",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/9442662?v=4",
+      "profile": "https://github.com/lafiosca",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "gu3st",
+      "name": "Dustin Dawes",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/375232?v=4",
+      "profile": "https://gu3.st",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "jabbink",
+      "name": "Jasper Abbink",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/2461972?v=4",
+      "profile": "http://abb.ink",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "lclc98",
+      "name": "lclc98",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/1905336?v=4",
+      "profile": "https://github.com/lclc98",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "dfoverdx",
+      "name": "Haley Hitch",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/3087358?v=4",
+      "profile": "http://dfdx.us",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "devakira",
+      "name": "Akira",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/19719195?v=4",
+      "profile": "https://streamcord.io/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Robinlemon",
+      "name": "Lewis Gibson",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/12851394?v=4",
+      "profile": "https://twitter.com/Robinlemonz",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "vyrtualsynthese",
+      "name": "VyrtualSynthese",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/4967868?v=4",
+      "profile": "http://ashuvidz.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Spidy88",
+      "name": "Nick Ferraro",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/1076168?v=4",
+      "profile": "https://github.com/Spidy88",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "AlcaDesign",
+      "name": "Jacob Foster",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/7132646?v=4",
+      "profile": "https://alca.tv",
+      "contributions": [
+        "question"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "twitch",
+  "projectOwner": "d-fischer",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}

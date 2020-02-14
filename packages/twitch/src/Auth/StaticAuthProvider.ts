@@ -26,14 +26,17 @@ export default class StaticAuthProvider implements AuthProvider {
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param scopes The scopes this token has.
 	 */
-	constructor(clientId: string, accessToken?: string, scopes?: string[]) {
+	constructor(clientId: string, accessToken?: string | AccessToken, scopes?: string[]) {
 		this._clientId = clientId || '';
 		if (accessToken) {
-			this._accessToken = new AccessToken({
-				access_token: accessToken,
-				scope: scopes,
-				refresh_token: ''
-			});
+			this._accessToken =
+				typeof accessToken === 'string'
+					? new AccessToken({
+							access_token: accessToken,
+							scope: scopes,
+							refresh_token: ''
+					  })
+					: accessToken;
 			this._scopes = scopes;
 		}
 	}

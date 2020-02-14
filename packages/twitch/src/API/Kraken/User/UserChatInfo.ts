@@ -20,7 +20,7 @@ export interface UserChatInfoData {
 /**
  * Information about a user's chat appearance and privileges.
  */
-export class UserChatInfo {
+export default class UserChatInfo {
 	@NonEnumerable private readonly _client: TwitchClient;
 
 	/** @private */

@@ -18,7 +18,7 @@ export enum HelixBanEventType {
 }
 
 /** @private */
-interface HelixBanEventDetail extends HelixBanData {
+export interface HelixBanEventDetail extends HelixBanData {
 	broadcaster_id: string;
 	broadcaster_name: string;
 }
