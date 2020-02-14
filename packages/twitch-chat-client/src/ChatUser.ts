@@ -48,6 +48,19 @@ export default class ChatUser {
 	}
 
 	/**
+	 * The badge info of the user. Returned as a map that maps the badge category to the detail.
+	 */
+	get badgeInfo() {
+		const badgeInfoStr = this._userData.get('badge-info');
+
+		if (!badgeInfoStr) {
+			return new Map<string, string>();
+		}
+
+		return new Map(badgeInfoStr.split(',').map(badge => badge.split('/', 2) as [string, string]));
+	}
+
+	/**
 	 * The ID of the user.
 	 */
 	get userId() {
