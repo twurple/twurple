@@ -9,7 +9,7 @@ import EmoteSetList from '../Channel/EmoteSetList';
 import PrivilegedUser from './PrivilegedUser';
 import User, { UserData } from './User';
 import UserBlock, { UserBlockData } from './UserBlock';
-import { UserChatInfo, UserChatInfoData } from './UserChatInfo';
+import UserChatInfo, { UserChatInfoData } from './UserChatInfo';
 import UserFollow, { UserFollowData } from './UserFollow';
 import UserSubscription from './UserSubscription';
 
