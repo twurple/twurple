@@ -1,5 +1,5 @@
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from 'twitch';
-import { NonEnumerable } from '../Toolkit/Decorators';
 
 export interface PubSubRedemptionMessageUserData {
 	id: string;

@@ -1,5 +1,5 @@
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import AccessToken from '../API/AccessToken';
-import { NonEnumerable } from '../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../TwitchClient';
 import AuthProvider from './AuthProvider';
 
@@ -26,7 +26,7 @@ export default class StaticAuthProvider implements AuthProvider {
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param scopes The scopes this token has.
 	 */
-	constructor(clientId: string, accessToken?: string | AccessToken, scopes: string[] = []) {
+	constructor(clientId: string, accessToken?: string | AccessToken, scopes?: string[]) {
 		this._clientId = clientId || '';
 		if (accessToken) {
 			this._accessToken =
@@ -55,10 +55,7 @@ export default class StaticAuthProvider implements AuthProvider {
 				if (!this._accessToken) {
 					throw new Error('Auth provider has not been initialized with a token yet and is requesting scopes');
 				}
-				const tokenInfo = await TwitchClient.getTokenInfo(this._clientId, this._accessToken.accessToken);
-				if (!tokenInfo.valid) {
-					throw new Error('Auth provider has been initialized with an invalid token');
-				}
+				const tokenInfo = await TwitchClient.getTokenInfo(this._accessToken.accessToken, this._clientId);
 				this._scopes = tokenInfo.scopes;
 			}
 			if (typeof scopes === 'string') {

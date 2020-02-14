@@ -1,22 +1,26 @@
-import * as fetchPonyfill from 'fetch-ponyfill';
+import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import { LogLevel } from '@d-fischer/logger';
 import * as qs from 'qs';
+
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import BadgesAPI from './API/Badges/BadgesAPI';
 import HelixAPIGroup from './API/Helix/HelixAPIGroup';
+import HelixRateLimiter from './API/Helix/HelixRateLimiter';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
-
 import KrakenAPIGroup from './API/Kraken/KrakenAPIGroup';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
+
 import AuthProvider from './Auth/AuthProvider';
 import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
+
 import ConfigError from './Errors/ConfigError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
-import { Cacheable, CachedGetter } from './Toolkit/Decorators/Cache';
+import InvalidTokenError from './Errors/InvalidTokenError';
 
-const { fetch, Headers } = fetchPonyfill();
+import { fetch, Headers } from './Toolkit/Fetch';
 
 /**
  * Default configuration for the cheermote API.
@@ -63,6 +67,11 @@ export interface TwitchConfig {
 	 * Default values for fetched cheermotes.
 	 */
 	cheermotes: TwitchCheermoteConfig;
+
+	/**
+	 * The minimum level of log levels to see. Defaults to critical errors.
+	 */
+	logLevel?: LogLevel;
 }
 
 /**
@@ -149,12 +158,21 @@ export interface TwitchAPICallOptions {
 }
 
 /**
+ * @private
+ */
+export interface TwitchAPICallOptionsInternal {
+	options: TwitchAPICallOptions;
+	clientId?: string;
+	accessToken?: string;
+}
+
+/**
  * The main entry point of this library. Manages API calls and the use of access tokens in these.
  */
 @Cacheable
 export default class TwitchClient {
-	/** @private */
-	readonly _config: TwitchConfig;
+	private readonly _config: TwitchConfig;
+	private readonly _helixRateLimiter: HelixRateLimiter;
 
 	/**
 	 * Creates a new instance with fixed credentials.
@@ -173,37 +191,16 @@ export default class TwitchClient {
 	 *
 	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	static async withCredentials(
+	static withCredentials(
 		clientId: string,
 		accessToken?: string,
 		scopes?: string[],
 		refreshConfig?: RefreshConfig,
 		config: Partial<TwitchConfig> = {}
 	) {
-		let passedAccessToken: string | AccessToken | undefined = accessToken;
-		if (!scopes && accessToken) {
-			let tokenData = await this.getTokenInfo(clientId, accessToken);
-			if (!tokenData.valid) {
-				if (refreshConfig) {
-					passedAccessToken = await this.refreshAccessToken(
-						clientId,
-						refreshConfig.clientSecret,
-						refreshConfig.refreshToken
-					);
-					if (refreshConfig.onRefresh) {
-						refreshConfig.onRefresh(passedAccessToken);
-					}
-					tokenData = await this.getTokenInfo(clientId, passedAccessToken.accessToken);
-				}
-				if (!tokenData.valid) {
-					throw new ConfigError('Supplied an invalid access token to retrieve scopes with');
-				}
-			}
-			scopes = tokenData.scopes;
-		}
 		const authProvider = refreshConfig
-			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, passedAccessToken, scopes), refreshConfig)
-			: new StaticAuthProvider(clientId, passedAccessToken, scopes);
+			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig)
+			: new StaticAuthProvider(clientId, accessToken, scopes);
 
 		return new this({ ...config, authProvider });
 	}
@@ -236,58 +233,9 @@ export default class TwitchClient {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async callAPI<T = any>(options: TwitchAPICallOptions, clientId?: string, accessToken?: string): Promise<T> {
-		const type = options.type === undefined ? TwitchAPICallType.Kraken : options.type;
-		const url = this._getUrl(options.url, type);
-		const params = qs.stringify(options.query, { arrayFormat: 'repeat' });
-		const headers = new Headers({
-			Accept:
-				type === TwitchAPICallType.Kraken
-					? `application/vnd.twitchtv.v${options.version || 5}+json`
-					: 'application/json'
-		});
+		const response = await this._callAPIRaw(options, clientId, accessToken);
 
-		let body: string | undefined;
-		if (options.body) {
-			body = qs.stringify(options.body);
-			headers.append('Content-Type', 'application/x-www-form-urlencoded');
-		} else if (options.jsonBody) {
-			body = JSON.stringify(options.jsonBody);
-			headers.append('Content-Type', 'application/json');
-		}
-
-		if (clientId && type !== TwitchAPICallType.Auth) {
-			headers.append('Client-ID', clientId);
-		}
-
-		if (accessToken) {
-			headers.append('Authorization', `${type === TwitchAPICallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`);
-		}
-
-		const requestOptions: RequestInit = {
-			method: options.method || 'GET',
-			headers,
-			body
-		};
-
-		const response = await fetch(params ? `${url}?${params}` : url, requestOptions);
-
-		if (!response.ok) {
-			throw new HTTPStatusCodeError(response.status, response.statusText, await response.json());
-		}
-
-		if (response.status === 204) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return (undefined as any) as T; // oof
-		}
-
-		const text = await response.text();
-
-		if (!text) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return (undefined as any) as T; // mega oof - twitch doesn't return a response when it should
-		}
-
-		return JSON.parse(text);
+		return this._transformResponse(response);
 	}
 
 	/**
@@ -368,7 +316,7 @@ export default class TwitchClient {
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
-	static async getTokenInfo(clientId: string, accessToken: string) {
+	static async getTokenInfo(accessToken: string, clientId?: string) {
 		try {
 			const data = await this.callAPI<TokenInfoData>(
 				{ type: TwitchAPICallType.Auth, url: 'validate' },
@@ -378,10 +326,54 @@ export default class TwitchClient {
 			return new TokenInfo(data);
 		} catch (e) {
 			if (e instanceof HTTPStatusCodeError && e.statusCode === 401) {
-				return new TokenInfo();
+				throw new InvalidTokenError();
 			}
 			throw e;
 		}
+	}
+
+	/**
+	 * @private
+	 */
+	static async _callAPIRaw(
+		options: TwitchAPICallOptions,
+		clientId?: string,
+		accessToken?: string
+	): Promise<Response> {
+		const type = options.type === undefined ? TwitchAPICallType.Kraken : options.type;
+		const url = this._getUrl(options.url, type);
+		const params = qs.stringify(options.query, { arrayFormat: 'repeat' });
+		const headers = new Headers({
+			Accept:
+				type === TwitchAPICallType.Kraken
+					? `application/vnd.twitchtv.v${options.version || 5}+json`
+					: 'application/json'
+		});
+
+		let body: string | undefined;
+		if (options.body) {
+			body = qs.stringify(options.body);
+			headers.append('Content-Type', 'application/x-www-form-urlencoded');
+		} else if (options.jsonBody) {
+			body = JSON.stringify(options.jsonBody);
+			headers.append('Content-Type', 'application/json');
+		}
+
+		if (clientId && type !== TwitchAPICallType.Auth) {
+			headers.append('Client-ID', clientId);
+		}
+
+		if (accessToken) {
+			headers.append('Authorization', `${type === TwitchAPICallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`);
+		}
+
+		const requestOptions: RequestInit = {
+			method: options.method || 'GET',
+			headers,
+			body
+		};
+
+		return fetch(params ? `${url}?${params}` : url, requestOptions);
 	}
 
 	/**
@@ -394,6 +386,8 @@ export default class TwitchClient {
 		if (!authProvider) {
 			throw new ConfigError('No auth provider given');
 		}
+
+		this._helixRateLimiter = new HelixRateLimiter(config.logLevel || LogLevel.CRITICAL);
 
 		this._config = {
 			preAuth: false,
@@ -421,7 +415,7 @@ export default class TwitchClient {
 			return new TokenInfo(data);
 		} catch (e) {
 			if (e instanceof HTTPStatusCodeError && e.statusCode === 401) {
-				return new TokenInfo();
+				throw new InvalidTokenError();
 			}
 			throw e;
 		}
@@ -460,7 +454,23 @@ export default class TwitchClient {
 			accessToken = await authProvider.refresh();
 		}
 
-		return TwitchClient.callAPI<T>(options, authProvider.clientId, accessToken.accessToken);
+		let response = await this._callAPIInternal(options, authProvider.clientId, accessToken.accessToken);
+		if (response.status === 401 && authProvider.refresh) {
+			await authProvider.refresh();
+			accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : []);
+			if (accessToken) {
+				response = await this._callAPIInternal(options, authProvider.clientId, accessToken.accessToken);
+			}
+		}
+
+		return TwitchClient._transformResponse<T>(response);
+	}
+
+	/**
+	 * The default specs for cheermotes.
+	 */
+	get cheermoteDefaults() {
+		return this._config.cheermotes;
 	}
 
 	/**
@@ -495,6 +505,19 @@ export default class TwitchClient {
 		return new UnsupportedAPI(this);
 	}
 
+	/** @private */
+	_getAuthProvider() {
+		return this._config.authProvider;
+	}
+
+	private async _callAPIInternal(options: TwitchAPICallOptions, clientId?: string, accessToken?: string) {
+		if (options.type === TwitchAPICallType.Helix) {
+			return this._helixRateLimiter.request({ options, clientId, accessToken });
+		}
+
+		return TwitchClient._callAPIRaw(options, clientId, accessToken);
+	}
+
 	private static _getUrl(url: string, type: TwitchAPICallType) {
 		switch (type) {
 			case TwitchAPICallType.Kraken:
@@ -508,5 +531,25 @@ export default class TwitchClient {
 			default:
 				return url; // wat
 		}
+	}
+
+	private static async _transformResponse<T>(response: Response): Promise<T> {
+		if (!response.ok) {
+			throw new HTTPStatusCodeError(response.status, response.statusText, await response.json());
+		}
+
+		if (response.status === 204) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return (undefined as any) as T; // oof
+		}
+
+		const text = await response.text();
+
+		if (!text) {
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			return (undefined as any) as T; // mega oof - twitch doesn't return a response when it should
+		}
+
+		return JSON.parse(text);
 	}
 }

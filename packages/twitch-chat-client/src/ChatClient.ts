@@ -1,8 +1,11 @@
 import Logger, { LogLevel } from '@d-fischer/logger';
+import LoggerOptions from '@d-fischer/logger/lib/LoggerOptions';
+import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
+import * as deprecate from 'deprecate';
 import IRCClient from 'ircv3';
 import { ChannelJoin, ChannelPart, Notice, PrivateMessage } from 'ircv3/lib/Message/MessageTypes/Commands/';
-import TwitchClient, { CommercialLength } from 'twitch';
+import TwitchClient, { CommercialLength, InvalidTokenError } from 'twitch';
 import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
 import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import HostTarget from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -13,7 +16,6 @@ import TwitchMembershipCapability from './Capabilities/TwitchMembershipCapabilit
 import TwitchTagsCapability from './Capabilities/TwitchTagsCapability';
 import ClearMsg from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
 import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
-import { NonEnumerable } from './Toolkit/Decorators';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
 import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
 import ChatCommunityPayForwardInfo from './UserNotices/ChatCommunityPayForwardInfo';
@@ -51,8 +53,15 @@ export interface ChatClientOptions {
 
 	/**
 	 * The minimum log level of messages that will be sent from the underlying IRC client.
+	 *
+	 * @deprecated Use logger.minLevel instead.
 	 */
 	logLevel?: LogLevel;
+
+	/**
+	 * Options to pass to the logger.
+	 */
+	logger?: Partial<LoggerOptions>;
 
 	/**
 	 * Whether to connect securely using SSL.
@@ -70,6 +79,13 @@ export interface ChatClientOptions {
 	 * Whether to receive JOIN and PART messages from Twitch chat.
 	 */
 	requestMembershipEvents?: boolean;
+
+	/**
+	 * Channels to join after connecting.
+	 *
+	 * May also be a function (sync or async) that returns a list of channels.
+	 */
+	channels?: ResolvableValue<string[]>;
 }
 
 /**
@@ -98,12 +114,9 @@ export default class ChatClient extends IRCClient {
 	 * @eventListener
 	 * @param channel The channel the user is timed out from.
 	 * @param user The timed out user.
-	 * @param reason The reason for the timeout.
 	 * @param duration The duration of the timeout, in seconds.
 	 */
-	onTimeout: (
-		handler: (channel: string, user: string, reason: string, duration: number) => void
-	) => Listener = this.registerEvent();
+	onTimeout: (handler: (channel: string, user: string, duration: number) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user is permanently banned from a channel.
@@ -111,9 +124,8 @@ export default class ChatClient extends IRCClient {
 	 * @eventListener
 	 * @param channel The channel the user is banned from.
 	 * @param user The banned user.
-	 * @param reason The reason for the ban.
 	 */
-	onBan: (handler: (channel: string, user: string, reason: string) => void) => Listener = this.registerEvent();
+	onBan: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user upgrades their bits badge in a channel.
@@ -165,7 +177,7 @@ export default class ChatClient extends IRCClient {
 	 * @param target The channel that is being hosted.
 	 * @param viewers The number of viewers in the hosting channel.
 	 *
-	 *   If you're not logged in as the owner of the channel, this is undefined.
+	 * If you're not logged in as the owner of the channel, this is undefined.
 	 */
 	onHost: (handler: (channel: string, target: string, viewers?: number) => void) => Listener = this.registerEvent();
 
@@ -509,7 +521,7 @@ export default class ChatClient extends IRCClient {
 		handler: (channel: string, user: string, error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onTimeoutResult: (
-		handler: (channel: string, user: string, reason?: string, duration?: number, error?: string) => void
+		handler: (channel: string, user: string, duration?: number, error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onUnbanResult: (
 		handler: (channel: string, user: string, error?: string) => void
@@ -587,7 +599,7 @@ export default class ChatClient extends IRCClient {
 	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
 	 * @param options
 	 */
-	static async forTwitchClient(twitchClient: TwitchClient, options: ChatClientOptions = {}) {
+	static forTwitchClient(twitchClient: TwitchClient, options: ChatClientOptions = {}) {
 		return new this(twitchClient, options);
 	}
 
@@ -610,7 +622,7 @@ export default class ChatClient extends IRCClient {
 	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
 	 * @param options
 	 */
-	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptions) {
+	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptions = {}) {
 		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
@@ -621,12 +633,21 @@ export default class ChatClient extends IRCClient {
 				nick: ''
 			},
 			webSocket: options.webSocket !== false,
-			logLevel: options.logLevel,
-			nonConformingCommands: ['004']
+			logger: {
+				minLevel: options.logLevel,
+				...(options.logger ?? {})
+			},
+			nonConformingCommands: ['004'],
+			channels: options.channels
 		});
 		/* eslint-enable no-restricted-syntax */
 
-		this._chatLogger = new Logger({ name: 'twitch-chat', emoji: true, minLevel: options.logLevel });
+		this._chatLogger = new Logger({
+			name: 'twitch-chat',
+			emoji: true,
+			minLevel: options.logLevel,
+			...(options.logger ?? {})
+		});
 
 		this._twitchClient = twitchClient;
 
@@ -649,14 +670,13 @@ export default class ChatClient extends IRCClient {
 		this.onMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
 				const duration = tags.get('ban-duration');
-				const reason = tags.get('ban-reason');
 				if (duration === undefined) {
 					// ban
-					this.emit(this.onBan, channel, user, reason);
+					this.emit(this.onBan, channel, user);
 				} else {
 					// timeout
-					this.emit(this.onTimeout, channel, user, reason, Number(duration));
-					this.emit(this._onTimeoutResult, channel, user, reason, Number(duration));
+					this.emit(this.onTimeout, channel, user, Number(duration));
+					this.emit(this._onTimeoutResult, channel, user, Number(duration));
 				}
 			} else {
 				// full chat clear
@@ -1173,19 +1193,12 @@ export default class ChatClient extends IRCClient {
 
 				// timeout (only fails, success is handled by CLEARCHAT)
 				case 'bad_timeout_self': {
-					this.emit(
-						this._onTimeoutResult,
-						channel,
-						this._credentials.nick,
-						undefined,
-						undefined,
-						messageType
-					);
+					this.emit(this._onTimeoutResult, channel, this._credentials.nick, undefined, messageType);
 					break;
 				}
 
 				case 'bad_timeout_broadcaster': {
-					this.emit(this._onTimeoutResult, channel, toUserName(channel), undefined, undefined, messageType);
+					this.emit(this._onTimeoutResult, channel, toUserName(channel), undefined, messageType);
 					break;
 				}
 
@@ -1194,14 +1207,7 @@ export default class ChatClient extends IRCClient {
 				case 'bad_timeout_staff': {
 					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
 					if (match) {
-						this.emit(
-							this._onTimeoutResult,
-							channel,
-							match[1].toLowerCase(),
-							undefined,
-							undefined,
-							messageType
-						);
+						this.emit(this._onTimeoutResult, channel, match[1].toLowerCase(), undefined, messageType);
 					}
 					break;
 				}
@@ -1312,7 +1318,7 @@ export default class ChatClient extends IRCClient {
 						this._authVerified = false;
 						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
-						this._connection!.disconnect();
+						this._connection!.disconnect(false);
 					}
 					break;
 				}
@@ -1337,14 +1343,13 @@ export default class ChatClient extends IRCClient {
 		await super.connect();
 	}
 
-	// TODO swap arguments in 4.0
 	/**
 	 * Hosts a channel on another channel.
 	 *
 	 * @param target The host target, i.e. the channel that is being hosted.
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
 	 */
-	async host(target: string, channel: string = this._credentials.nick) {
+	async host(channel: string = this._credentials.nick, target: string) {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onHostResult((chan, error) => {
@@ -1403,8 +1408,6 @@ export default class ChatClient extends IRCClient {
 	/**
 	 * Bans a user from a channel.
 	 *
-	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
-	 *
 	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
 	 * @param user The user to ban from the channel.
 	 * @param reason The reason for the ban.
@@ -1429,8 +1432,6 @@ export default class ChatClient extends IRCClient {
 
 	/**
 	 * Clears all messages in a channel.
-	 *
-	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
 	 *
 	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
 	 */
@@ -1987,9 +1988,14 @@ export default class ChatClient extends IRCClient {
 	/**
 	 * Waits for authentication (or "registration" in IRC terms) to finish.
 	 *
-	 * @deprecated Use the `onRegister` event instead.
+	 * @deprecated Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.
 	 */
 	async waitForRegistration() {
+		deprecate(
+			'[twitch-chat-client] ChatClient#waitForRegistration',
+			'Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.'
+		);
+
 		if (this._registered) {
 			return;
 		}
@@ -2039,19 +2045,23 @@ export default class ChatClient extends IRCClient {
 			scopes = ['chat:read', 'chat:edit'];
 		}
 
+		let lastTokenError: InvalidTokenError | undefined = undefined;
+
 		try {
 			const accessToken = await this._twitchClient.getAccessToken(scopes);
 			if (accessToken) {
 				const token = await this._twitchClient.getTokenInfo();
-				if (token.valid) {
-					this._updateCredentials({
-						nick: token.userName!
-					});
-					return `oauth:${accessToken.accessToken}`;
-				}
+				this._updateCredentials({
+					nick: token.userName!
+				});
+				return `oauth:${accessToken.accessToken}`;
 			}
 		} catch (e) {
-			this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+			if (e instanceof InvalidTokenError) {
+				lastTokenError = e;
+			} else {
+				this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+			}
 		}
 
 		this._chatLogger.warning('No valid token available; trying to refresh');
@@ -2061,19 +2071,21 @@ export default class ChatClient extends IRCClient {
 
 			if (newToken) {
 				const token = await this._twitchClient.getTokenInfo();
-				if (token.valid) {
-					this._updateCredentials({
-						nick: token.userName!
-					});
-					return `oauth:${newToken.accessToken}`;
-				}
+				this._updateCredentials({
+					nick: token.userName!
+				});
+				return `oauth:${newToken.accessToken}`;
 			}
 		} catch (e) {
-			this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+			if (e instanceof InvalidTokenError) {
+				lastTokenError = e;
+			} else {
+				this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+			}
 		}
 
 		this._authVerified = false;
-		throw new Error('Could not retrieve a valid token');
+		throw lastTokenError || new Error('Could not retrieve a valid token');
 	}
 
 	private static _generateJustinfanNick() {

@@ -1,6 +1,6 @@
+import { flatten } from '@d-fischer/shared-utils';
 import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
 import StreamNotLiveError from '../../../Errors/StreamNotLiveError';
-import { flatten } from '../../../Toolkit/ArrayTools';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import TwitchClient, { TwitchAPICallType } from '../../../TwitchClient';
 import BaseAPI from '../../BaseAPI';

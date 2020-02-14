@@ -1,7 +1,7 @@
-import AuthProvider from './AuthProvider';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import AccessToken from '../API/AccessToken';
-import { NonEnumerable } from '../Toolkit/Decorators/NonEnumerable';
 import TwitchClient from '../TwitchClient';
+import AuthProvider from './AuthProvider';
 
 /**
  * Configuration for the {@RefreshableAuthProvider}.

@@ -1,5 +1,5 @@
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient, { TwitchAPICallOptions, TwitchAPICallType } from '../../TwitchClient';
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
 import { HelixPaginatedResponse } from './HelixResponse';
 
 if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {

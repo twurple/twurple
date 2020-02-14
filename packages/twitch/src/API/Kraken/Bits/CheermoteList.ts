@@ -1,7 +1,6 @@
-import TwitchClient from '../../../TwitchClient';
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import { indexBy, NonEnumerable } from '@d-fischer/shared-utils';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
-import { indexBy } from '../../../Toolkit/ObjectTools';
+import TwitchClient from '../../../TwitchClient';
 
 /**
  * The type of background a cheermote is supposed to appear on.
@@ -199,7 +198,7 @@ export default class CheermoteList {
 	 */
 	getCheermoteDisplayInfo(name: string, bits: number, format: Partial<CheermoteFormat> = {}): CheermoteDisplayInfo {
 		name = name.toLowerCase();
-		const cheermoteDefaults = this._client._config.cheermotes;
+		const cheermoteDefaults = this._client.cheermoteDefaults;
 		const fullOptions: CheermoteFormat = {
 			background: cheermoteDefaults.defaultBackground,
 			state: cheermoteDefaults.defaultState,

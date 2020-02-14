@@ -1,8 +1,8 @@
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
-import ChannelPlaceholder from '../Channel/ChannelPlaceholder';
-import { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import TwitchClient from '../../../TwitchClient';
+import ChannelPlaceholder from '../Channel/ChannelPlaceholder';
 
 /** @private */
 export interface UserData {

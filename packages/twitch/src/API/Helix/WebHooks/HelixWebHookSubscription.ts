@@ -1,5 +1,5 @@
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from '../../../TwitchClient';
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
 
 /** @private */
 export interface HelixWebHookSubscriptionData {

@@ -1,8 +1,8 @@
+import { Cacheable, Cached, CacheEntry, ClearsCache } from '@d-fischer/cache-decorators';
+import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
 import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
-import { Cacheable, Cached, CacheEntry, ClearsCache } from '../../../Toolkit/Decorators/Cache';
-import { entriesToObject, indexBy, mapObject } from '../../../Toolkit/ObjectTools';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import BaseAPI from '../../BaseAPI';
 import EmoteSetList from '../Channel/EmoteSetList';

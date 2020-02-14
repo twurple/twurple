@@ -79,7 +79,7 @@ export default class WebHookListener {
 
 	private constructor(
 		private readonly _config: WebHookListenerComputedConfig,
-		/** @private */ readonly _twitchClient: TwitchClient
+		/** @private */ public readonly _twitchClient: TwitchClient
 	) {}
 
 	listen() {

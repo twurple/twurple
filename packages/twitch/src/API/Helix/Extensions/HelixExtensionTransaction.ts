@@ -1,4 +1,4 @@
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from '../../../TwitchClient';
 import HelixExtensionProductData from './HelixExtensionProductData';
 
@@ -10,7 +10,7 @@ export interface HelixExtensionTransactionData {
 	broadcaster_name: string;
 	user_id: string;
 	user_name: string;
-	product_type: string; // TODO string union?
+	product_type: 'BITS_IN_EXTENSION';
 	product_data: HelixExtensionProductData;
 }
 
@@ -82,7 +82,7 @@ export default class HelixExtensionTransaction {
 	}
 
 	/**
-	 * The product type.
+	 * The product type. Currently always BITS_IN_EXTENSION.
 	 */
 	get productType() {
 		return this._data.product_type;

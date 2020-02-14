@@ -1,4 +1,4 @@
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
 import TwitchClient from '../../../TwitchClient';
 

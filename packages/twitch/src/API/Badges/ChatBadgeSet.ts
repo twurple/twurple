@@ -1,6 +1,6 @@
-import ChatBadgeVersion, { ChatBadgeVersionData } from './ChatBadgeVersion';
-import { NonEnumerable } from '../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from '../../TwitchClient';
+import ChatBadgeVersion, { ChatBadgeVersionData } from './ChatBadgeVersion';
 
 /** @private */
 export interface ChatBadgeSetData {

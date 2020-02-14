@@ -1,5 +1,5 @@
 /** @private */
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from '../../../TwitchClient';
 
 export type ChatRoomRole = 'EVERYONE' | 'SUBSCRIBER' | 'MODERATOR';

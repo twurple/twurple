@@ -1,12 +1,12 @@
+import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import BaseAPI from '../BaseAPI';
-import { Cacheable, CachedGetter } from '../../Toolkit/Decorators/Cache';
 import BitsAPI from './Bits/BitsAPI';
 import ChannelAPI from './Channel/ChannelAPI';
 import ChatAPI from './Chat/ChatAPI';
 import SearchAPI from './Search/SearchAPI';
 import StreamAPI from './Stream/StreamAPI';
-import UserAPI from './User/UserAPI';
 import TeamAPI from './Team/TeamAPI';
+import UserAPI from './User/UserAPI';
 
 /**
  * Groups all API calls available in Kraken v5.

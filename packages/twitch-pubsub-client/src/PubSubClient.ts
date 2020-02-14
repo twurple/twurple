@@ -1,3 +1,4 @@
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient, { extractUserId, UserIdResolvable } from 'twitch';
 import BasicPubSubClient from './BasicPubSubClient';
 import PubSubBitsBadgeUnlockMessage from './Messages/PubSubBitsBadgeUnlockMessage';
@@ -7,11 +8,14 @@ import PubSubRedemptionMessage from './Messages/PubSubRedemptionMessage';
 import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 import SingleUserPubSubClient from './SingleUserPubSubClient';
-import { NonEnumerable } from './Toolkit/Decorators';
 
 export default class PubSubClient {
-	@NonEnumerable private readonly _rootClient = new BasicPubSubClient();
+	@NonEnumerable private readonly _rootClient: BasicPubSubClient;
 	@NonEnumerable private readonly _userClients = new Map<string, SingleUserPubSubClient>();
+
+	constructor(rootClient?: BasicPubSubClient) {
+		this._rootClient = rootClient ?? new BasicPubSubClient();
+	}
 
 	async registerUserListener(twitchClient: TwitchClient, user?: UserIdResolvable) {
 		let userId;

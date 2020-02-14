@@ -1,5 +1,5 @@
+import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { Cacheable, Cached } from '../../../Toolkit/Decorators/Cache';
 import BaseAPI from '../../BaseAPI';
 import Stream, { StreamData, StreamDataWrapper, StreamType } from './Stream';
 

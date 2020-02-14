@@ -1,7 +1,6 @@
-import { PubSubBasicMessageInfo } from './PubSubMessage';
-import { NonEnumerable } from '../Toolkit/Decorators';
+import { MakeOptional, NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from 'twitch';
-import { MakeOptional } from '../Toolkit/Types';
+import { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsMessageBadgeEntitlement {
 	previous_version: number;

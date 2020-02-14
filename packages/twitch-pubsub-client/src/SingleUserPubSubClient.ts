@@ -1,5 +1,6 @@
 import { LogLevel } from '@d-fischer/logger';
-import TwitchClient, { extractUserId, TokenInfo, UserIdResolvable } from 'twitch';
+import { NonEnumerable } from '@d-fischer/shared-utils';
+import TwitchClient, { extractUserId, InvalidTokenError, UserIdResolvable } from 'twitch';
 import BasicPubSubClient from './BasicPubSubClient';
 import PubSubBitsBadgeUnlockMessage, {
 	PubSubBitsBadgeUnlockMessageData
@@ -11,7 +12,6 @@ import PubSubRedemptionMessage, { PubSubRedemptionMessageData } from './Messages
 import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import PubSubListener from './PubSubListener';
-import { NonEnumerable } from './Toolkit/Decorators';
 
 /**
  * Options for creating the single-user PubSub client.
@@ -42,6 +42,8 @@ export default class SingleUserPubSubClient {
 
 	private readonly _listeners: Map<string, PubSubListener[]> = new Map();
 
+	private _userId?: string;
+
 	/**
 	 * Creates a new Twitch PubSub client.
 	 *
@@ -52,7 +54,7 @@ export default class SingleUserPubSubClient {
 		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
 		this._pubSubClient.onMessage(async (topic, messageData) => {
 			const [type, userId, ...args] = topic.split('.');
-			if (this._listeners.has(type) && userId === (await this._getUserData()).userId) {
+			if (this._listeners.has(type) && userId === (await this._getUserId())) {
 				let message: PubSubMessage;
 				switch (type) {
 					case 'channel-bits-events-v2': {
@@ -121,7 +123,7 @@ export default class SingleUserPubSubClient {
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
 	 */
 	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void) {
-		return this._addListener('channel-bits-badge-unlocks', callback);
+		return this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
 	}
 
 	/**
@@ -166,7 +168,7 @@ export default class SingleUserPubSubClient {
 	 * It receives a {@PubSubChatModActionMessage} object.
 	 */
 	async onModAction(channelId: UserIdResolvable, callback: (message: PubSubChatModActionMessage) => void) {
-		return this._addListener('chat_moderator_actions', callback, undefined, extractUserId(channelId));
+		return this._addListener('chat_moderator_actions', callback, 'channel:moderate', extractUserId(channelId));
 	}
 
 	/**
@@ -187,27 +189,43 @@ export default class SingleUserPubSubClient {
 		}
 	}
 
-	private async _getUserData(scope?: string) {
-		const tokenData = await this._twitchClient._config.authProvider.getAccessToken(scope);
-		let accessToken: string | undefined;
-		let tokenInfo: TokenInfo | undefined;
+	private async _getUserId(): Promise<string> {
+		if (this._userId) {
+			return this._userId;
+		}
+
+		const tokenData = await this._twitchClient.getAccessToken();
+
+		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		if (tokenData) {
-			accessToken = tokenData.accessToken;
-			tokenInfo = await this._twitchClient.getTokenInfo();
+			try {
+				const { userId } = await this._twitchClient.getTokenInfo();
+				return (this._userId = userId);
+			} catch (e) {
+				if (e instanceof InvalidTokenError) {
+					lastTokenError = e;
+				} else {
+					throw e;
+				}
+			}
 		}
 
-		if (!(tokenInfo && tokenInfo.valid) && this._twitchClient._config.authProvider.refresh) {
-			accessToken = (await this._twitchClient._config.authProvider.refresh()).accessToken;
-			tokenInfo = await this._twitchClient.getTokenInfo();
-		}
-		if (!(tokenInfo && tokenInfo.valid) || !accessToken) {
-			throw new Error('PubSub authentication failed');
+		try {
+			const newTokenInfo = await this._twitchClient.refreshAccessToken();
+			if (newTokenInfo) {
+				const { userId } = await this._twitchClient.getTokenInfo();
+				return (this._userId = userId);
+			}
+		} catch (e) {
+			if (e instanceof InvalidTokenError) {
+				lastTokenError = e;
+			} else {
+				throw e;
+			}
 		}
 
-		const userId = tokenInfo.userId!;
-
-		return { userId, accessToken };
+		throw lastTokenError || new Error('PubSub authentication failed');
 	}
 
 	private async _addListener<T extends PubSubMessage>(
@@ -217,13 +235,17 @@ export default class SingleUserPubSubClient {
 		...additionalParams: string[]
 	) {
 		await this._pubSubClient.connect();
-		const { userId, accessToken } = await this._getUserData(scope);
+		const userId = await this._getUserId();
 		const listener = new PubSubListener(type, userId, callback, this);
 		if (this._listeners.has(type)) {
 			this._listeners.get(type)!.push(listener);
 		} else {
 			this._listeners.set(type, [listener]);
-			await this._pubSubClient.listen([type, userId, ...additionalParams].join('.'), accessToken);
+			await this._pubSubClient.listen(
+				[type, userId, ...additionalParams].join('.'),
+				this._twitchClient._getAuthProvider(),
+				scope
+			);
 		}
 		return listener;
 	}

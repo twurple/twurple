@@ -1,7 +1,7 @@
-import { NonEnumerable } from '../../../Toolkit/Decorators/NonEnumerable';
+import { Cacheable, Cached, CachedGetter } from '@d-fischer/cache-decorators';
+import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient from '../../../TwitchClient';
 import ChatEmote, { ChatEmoteData } from './ChatEmote';
-import { Cacheable, Cached, CachedGetter } from '../../../Toolkit/Decorators/Cache';
 
 /**
  * A list of emotes.
