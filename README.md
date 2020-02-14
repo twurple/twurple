@@ -1,6 +1,6 @@
 # Twitch.js
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## Installation
@@ -54,6 +54,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="http://ashuvidz.com"><img src="https://avatars3.githubusercontent.com/u/4967868?v=4" width="100px;" alt=""/><br /><sub><b>VyrtualSynthese</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=vyrtualsynthese" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Spidy88"><img src="https://avatars1.githubusercontent.com/u/1076168?v=4" width="100px;" alt=""/><br /><sub><b>Nick Ferraro</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=Spidy88" title="Code">💻</a></td>
     <td align="center"><a href="https://alca.tv"><img src="https://avatars2.githubusercontent.com/u/7132646?v=4" width="100px;" alt=""/><br /><sub><b>Jacob Foster</b></sub></a><br /><a href="#question-AlcaDesign" title="Answering Questions">💬</a></td>
+    <td align="center"><a href="http://blerp.com"><img src="https://avatars2.githubusercontent.com/u/10217999?v=4" width="100px;" alt=""/><br /><sub><b>Aaron Kc Hsu</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=aaronkchsu" title="Code">💻</a></td>
   </tr>
 </table>
 
