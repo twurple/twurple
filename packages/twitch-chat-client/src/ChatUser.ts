@@ -11,8 +11,7 @@ export default class ChatUser {
 		this._userData = userData ? new Map(userData) : new Map();
 	}
 
-	/** @private */
-	_parseBadgesLike(badgesLikeStr?: string): Map<string, string> {
+	private _parseBadgesLike(badgesLikeStr?: string): Map<string, string> {
 		if (!badgesLikeStr) {
 			return new Map<string, string>();
 		}
