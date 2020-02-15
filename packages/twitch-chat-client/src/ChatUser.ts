@@ -11,6 +11,14 @@ export default class ChatUser {
 		this._userData = userData ? new Map(userData) : new Map();
 	}
 
+	private _parseBadgesLike(badgesLikeStr?: string): Map<string, string> {
+		if (!badgesLikeStr) {
+			return new Map<string, string>();
+		}
+
+		return new Map(badgesLikeStr.split(',').map(badge => badge.split('/', 2) as [string, string]));
+	}
+
 	/**
 	 * The name of the user.
 	 */
@@ -40,11 +48,16 @@ export default class ChatUser {
 	get badges() {
 		const badgesStr = this._userData.get('badges');
 
-		if (!badgesStr) {
-			return new Map<string, string>();
-		}
+		return this._parseBadgesLike(badgesStr);
+	}
 
-		return new Map(badgesStr.split(',').map(badge => badge.split('/', 2) as [string, string]));
+	/**
+	 * The badge info of the user. Returned as a map that maps the badge category to the detail.
+	 */
+	get badgeInfo() {
+		const badgeInfoStr = this._userData.get('badge-info');
+
+		return this._parseBadgesLike(badgeInfoStr);
 	}
 
 	/**
