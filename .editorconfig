@@ -7,6 +7,9 @@ charset = utf-8
 indent_style = tab
 max_line_length = 200
 
+[*.json]
+indent_style = tab
+
 [package.json]
 indent_style = space
 indent_size = 2

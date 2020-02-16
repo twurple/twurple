@@ -3,17 +3,14 @@
 	"outputDir": "generatedDocs",
 	"mode": "html",
 	"routerMode": "htmlSuffix",
-
 	"repoUser": "d-fischer",
 	"repoName": "twitch",
 	"monorepoRoot": "packages",
 	"ignoredPackages": ["twitch-electron-auth-provider"],
-
 	"packages": {
 		"twitch": {
 			"indexTitle": "Welcome to Twitch.js",
 			"indexFile": "twitch/index.md",
-
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -41,14 +38,19 @@
 					"title": "Upgrading",
 					"articles": [
 						{
-							"name": "v1-to-v2",
-							"title": "Upgrading from 1.x to 2.x",
-							"file": "twitch/upgrading/v1-to-v2.md"
+							"name": "v2",
+							"title": "Upgrading to 2.x",
+							"externalLink": "https://github.com/d-fischer/twitch/releases/tag/twitch@2.0.0"
 						},
 						{
-							"name": "v2-to-v3",
-							"title": "Upgrading from 2.x to 3.x",
-							"file": "twitch/upgrading/v2-to-v3.md"
+							"name": "v3",
+							"title": "Upgrading to 3.x",
+							"externalLink": "https://github.com/d-fischer/twitch/releases/tag/twitch@3.0.0"
+						},
+						{
+							"name": "v4",
+							"title": "Upgrading to 4.x",
+							"externalLink": "https://github.com/d-fischer/twitch/releases/tag/v4.0.0"
 						}
 					]
 				}
@@ -57,7 +59,6 @@
 		"twitch-chat-client": {
 			"indexTitle": "Twitch.js Chat Client",
 			"indexFile": "twitch-chat-client/index.md",
-
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -85,14 +86,19 @@
 					"title": "Upgrading",
 					"articles": [
 						{
-							"name": "v1-to-v2",
-							"title": "Upgrading from 1.x to 2.x",
-							"file": "twitch-chat-client/upgrading/v1-to-v2.md"
+							"name": "v2",
+							"title": "Upgrading to 2.x",
+							"externalLink": "https://github.com/d-fischer/twitch/releases/tag/twitch@2.0.0"
 						},
 						{
-							"name": "v2-to-v3",
-							"title": "Upgrading from 2.x to 3.x",
-							"file": "twitch-chat-client/upgrading/v2-to-v3.md"
+							"name": "v3",
+							"title": "Upgrading to 3.x",
+							"externalLink": "https://github.com/d-fischer/twitch/releases/tag/twitch@3.0.0"
+						},
+						{
+							"name": "v4",
+							"title": "Upgrading to 4.x",
+							"externalLink": "https://github.com/d-fischer/twitch/releases/tag/v4.0.0"
 						}
 					]
 				},
@@ -112,7 +118,6 @@
 		"twitch-pubsub-client": {
 			"indexTitle": "Twitch.js PubSub Client",
 			"indexFile": "twitch-pubsub-client/index.md",
-
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -135,19 +140,22 @@
 					"title": "Upgrading",
 					"articles": [
 						{
-							"name": "v1-to-v2",
-							"title": "Upgrading from 1.x to 2.x",
-							"file": "twitch-pubsub-client/upgrading/v1-to-v2.md"
+							"name": "v2",
+							"title": "Upgrading to 2.x",
+							"externalLink": "https://github.com/d-fischer/twitch/releases/tag/twitch@2.0.0"
+						},
+						{
+							"name": "v4",
+							"title": "Upgrading to 4.x",
+							"externalLink": "https://github.com/d-fischer/twitch/releases/tag/v4.0.0"
 						}
 					]
 				}
 			]
 		},
-
 		"twitch-webhooks": {
 			"indexTitle": "Twitch.js WebHook Listener",
 			"indexFile": "twitch-webhooks/index.md",
-
 			"categories": [
 				{
 					"name": "basic-usage",
