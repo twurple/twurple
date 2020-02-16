@@ -28,6 +28,7 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
+			type: TwitchAPICallType.Helix,
 			query: {
 				broadcaster_id: extractUserId(broadcaster)
 			}
