@@ -2,7 +2,7 @@ import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixPaginatedResult from '../HelixPaginatedResult';
+import { createPaginatedResult } from '../HelixPaginatedResult';
 import { HelixForwardPagination, makePaginationQuery } from '../HelixPagination';
 import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixBan, { HelixBanData } from './HelixBan';
@@ -48,7 +48,7 @@ export default class HelixModerationAPI extends BaseAPI {
 	 * @param channel The channel to retrieve the banned users from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getBannedUsers(channel: UserIdResolvable, filter?: HelixBanFilter): Promise<HelixPaginatedResult<HelixBan>> {
+	async getBannedUsers(channel: UserIdResolvable, filter?: HelixBanFilter) {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixBanData>>({
 			type: TwitchAPICallType.Helix,
 			url: 'moderation/banned',
@@ -60,10 +60,7 @@ export default class HelixModerationAPI extends BaseAPI {
 			}
 		});
 
-		return {
-			data: result.data.map(data => new HelixBan(data, this._client)),
-			cursor: result.pagination?.cursor
-		};
+		return createPaginatedResult(result, HelixBan, this._client);
 	}
 
 	/**
@@ -147,10 +144,7 @@ export default class HelixModerationAPI extends BaseAPI {
 	 * @param channel The channel to retrieve moderators from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getModerators(
-		channel: UserIdResolvable,
-		filter?: HelixModeratorFilter
-	): Promise<HelixPaginatedResult<HelixModerator>> {
+	async getModerators(channel: UserIdResolvable, filter?: HelixModeratorFilter) {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixModeratorData>>({
 			type: TwitchAPICallType.Helix,
 			url: 'moderation/moderators',
@@ -162,10 +156,7 @@ export default class HelixModerationAPI extends BaseAPI {
 			}
 		});
 
-		return {
-			data: result.data.map(data => new HelixModerator(data, this._client)),
-			cursor: result.pagination?.cursor
-		};
+		return createPaginatedResult(result, HelixModerator, this._client);
 	}
 
 	/**
@@ -218,10 +209,7 @@ export default class HelixModerationAPI extends BaseAPI {
 			}
 		});
 
-		return {
-			data: result.data.map(data => new HelixModeratorEvent(data, this._client)),
-			cursor: result.pagination?.cursor
-		};
+		return createPaginatedResult(result, HelixModeratorEvent, this._client);
 	}
 
 	/**

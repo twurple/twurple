@@ -1,7 +1,7 @@
 import { TwitchAPICallType } from '../../../TwitchClient';
 import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixPaginatedResult from '../HelixPaginatedResult';
+import { createPaginatedResult } from '../HelixPaginatedResult';
 import HelixPagination, { makePaginationQuery } from '../HelixPagination';
 import { HelixPaginatedResponse } from '../HelixResponse';
 import HelixExtensionTransaction, { HelixExtensionTransactionData } from './HelixExtensionTransaction';
@@ -36,10 +36,7 @@ export default class HelixExtensionsAPI extends BaseAPI {
 	 * @param extensionId The ID of the extension to retrieve transactions for.
 	 * @param filter Additional filters.
 	 */
-	async getExtensionTransactions(
-		extensionId: string,
-		filter: HelixExtensionTransactionsPaginatedFilter = {}
-	): Promise<HelixPaginatedResult<HelixExtensionTransaction>> {
+	async getExtensionTransactions(extensionId: string, filter: HelixExtensionTransactionsPaginatedFilter = {}) {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixExtensionTransactionData>>({
 			type: TwitchAPICallType.Helix,
 			url: 'extensions/transactions',
@@ -50,10 +47,7 @@ export default class HelixExtensionsAPI extends BaseAPI {
 			}
 		});
 
-		return {
-			data: result.data.map(transactionData => new HelixExtensionTransaction(transactionData, this._client)),
-			cursor: result.pagination?.cursor
-		};
+		return createPaginatedResult(result, HelixExtensionTransaction, this._client);
 	}
 
 	/**

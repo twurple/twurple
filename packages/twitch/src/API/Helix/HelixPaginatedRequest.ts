@@ -33,7 +33,7 @@ export default class HelixPaginatedRequest<D, T> {
 
 	/** @private */
 	constructor(
-		private readonly _callOptions: TwitchAPICallOptions,
+		private readonly _callOptions: Omit<TwitchAPICallOptions, 'type'>,
 		client: TwitchClient,
 		private readonly _mapper: (data: D) => T | T[]
 	) {

@@ -2,7 +2,7 @@ import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
 import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixPaginatedResult from '../HelixPaginatedResult';
+import { createPaginatedResult } from '../HelixPaginatedResult';
 import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
 import HelixSubscriptionEvent, { HelixSubscriptionEventData } from './HelixSubscriptionEvent';
@@ -24,7 +24,7 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 */
-	async getSubscriptions(broadcaster: UserIdResolvable): Promise<HelixPaginatedResult<HelixSubscription>> {
+	async getSubscriptions(broadcaster: UserIdResolvable) {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
@@ -34,10 +34,7 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 			}
 		});
 
-		return {
-			data: result.data.map(data => new HelixSubscription(data, this._client)),
-			cursor: result.pagination && result.pagination.cursor
-		};
+		return createPaginatedResult(result, HelixSubscription, this._client);
 	}
 
 	/**
@@ -127,10 +124,7 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 		return this._getSubscriptionEvents('id', id);
 	}
 
-	private async _getSubscriptionEvents(
-		by: 'broadcaster_id' | 'id',
-		id: string
-	): Promise<HelixPaginatedResult<HelixSubscriptionEvent>> {
+	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string) {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixSubscriptionEventData>>({
 			type: TwitchAPICallType.Helix,
 			url: 'subscriptions/events',
@@ -140,9 +134,6 @@ export default class HelixSubscriptionAPI extends BaseAPI {
 			}
 		});
 
-		return {
-			data: result.data.map(data => new HelixSubscriptionEvent(data, this._client)),
-			cursor: result.pagination && result.pagination.cursor
-		};
+		return createPaginatedResult(result, HelixSubscriptionEvent, this._client);
 	}
 }

@@ -1,13 +1,13 @@
-import BaseAPI from '../../BaseAPI';
-import HelixResponse, { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '../HelixResponse';
-import HelixUser, { HelixUserData } from './HelixUser';
-import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
-import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
-import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
-import { TwitchAPICallType } from '../../../TwitchClient';
-import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
-import { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
+import { TwitchAPICallType } from '../../../TwitchClient';
+import BaseAPI from '../../BaseAPI';
+import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
+import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import HelixResponse, { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '../HelixResponse';
+import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
+import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
+import HelixUser, { HelixUserData } from './HelixUser';
 
 /** @private */
 export enum UserLookupType {
@@ -115,7 +115,7 @@ export default class HelixUserAPI extends BaseAPI {
 	 *
 	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
 	 */
-	async getFollows(filter: HelixFollowFilter): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
+	async getFollows(filter: HelixFollowFilter) {
 		const query = HelixUserAPI._makeFollowsQuery(filter);
 
 		const result = await this._client.callAPI<HelixPaginatedResponseWithTotal<HelixFollowData>>({
@@ -124,11 +124,7 @@ export default class HelixUserAPI extends BaseAPI {
 			query
 		});
 
-		return {
-			data: result.data.map(data => new HelixFollow(data, this._client)),
-			cursor: result.pagination!.cursor,
-			total: result.total
-		};
+		return createPaginatedResultWithTotal(result, HelixFollow, this._client);
 	}
 
 	/**

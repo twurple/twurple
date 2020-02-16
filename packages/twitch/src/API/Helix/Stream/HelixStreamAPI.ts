@@ -5,7 +5,7 @@ import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } 
 import TwitchClient, { TwitchAPICallType } from '../../../TwitchClient';
 import BaseAPI from '../../BaseAPI';
 import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixPaginatedResult from '../HelixPaginatedResult';
+import HelixPaginatedResult, { createPaginatedResult } from '../HelixPaginatedResult';
 import HelixPagination, { makePaginationQuery } from '../HelixPagination';
 import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
 import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
@@ -82,7 +82,7 @@ export default class HelixStreamAPI extends BaseAPI {
 	 *
 	 * @expandParams
 	 */
-	async getStreams(filter: HelixPaginatedStreamFilter = {}): Promise<HelixPaginatedResult<HelixStream>> {
+	async getStreams(filter: HelixPaginatedStreamFilter = {}) {
 		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamData>>({
 			url: 'streams',
 			type: TwitchAPICallType.Helix,
@@ -97,10 +97,7 @@ export default class HelixStreamAPI extends BaseAPI {
 			}
 		});
 
-		return {
-			data: result.data.map(streamData => new HelixStream(streamData, this._client)),
-			cursor: result.pagination && result.pagination.cursor
-		};
+		return createPaginatedResult(result, HelixStream, this._client);
 	}
 
 	/**
