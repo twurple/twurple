@@ -56,10 +56,16 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  *
  * Can be accessed using `client.helix.webHooks` on a {@TwitchClient} instance.
  *
+ * ## Before using these methods...
+ *
+ * All of the methods in this class assume that you are already running a working WebHook listener at the given callback URL.
+ *
+ * If you don't already have one, we recommend use of the `twitch-webhooks` library, which handles subscribing and unsubscribing to these topics automatically.
+ *
  * ## Example
  * ```ts
  * const client = await TwitchClient.withCredentials(clientId, accessToken);
- * const accepted = await client.helix.webHooks.subscribeHook('https://api.twitch.tv/helix/streams?user_id=125328655', 'https://example.com');
+ * const accepted = await client.helix.webHooks.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
 export default class HelixWebHooksAPI extends BaseAPI {
