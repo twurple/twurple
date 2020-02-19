@@ -10,7 +10,7 @@ import TeamWithUsers from './TeamWithUsers';
  *
  * ## Example
  * ```ts
- * const client = await TwitchClient.withCredentials(clientId, accessToken);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const team = await client.kraken.teams.getTeamByName('staff');
  * ```
  */

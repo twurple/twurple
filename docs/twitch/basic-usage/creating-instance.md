@@ -5,7 +5,7 @@ import TwitchClient from 'twitch';
 
 const clientId = '123abc';
 const accessToken = 'def456';
-const twitchClient = await TwitchClient.withCredentials(clientId, accessToken);
+const twitchClient = TwitchClient.withCredentials(clientId, accessToken);
 ```
 
 You can also have the client refresh the tokens automatically if necessary by supplying the `refreshConfig` parameter containing the necessary data:
@@ -17,7 +17,7 @@ const clientId = '123abc';
 const accessToken = 'def456';
 const clientSecret = 'foobar';
 const refreshToken = '999999';
-const twitchClient = await TwitchClient.withCredentials(clientId, accessToken, undefined, {clientSecret, refreshToken, onRefresh: (token: AccessToken) => {
+const twitchClient = TwitchClient.withCredentials(clientId, accessToken, undefined, {clientSecret, refreshToken, onRefresh: (token: AccessToken) => {
 	// do things with the new token data, e.g. save them in your database
 }});
 ```

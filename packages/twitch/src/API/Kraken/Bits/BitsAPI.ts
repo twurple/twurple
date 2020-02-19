@@ -10,7 +10,7 @@ import CheermoteList, { CheermoteListData } from './CheermoteList';
  *
  * ## Example
  * ```ts
- * const client = await TwitchClient.withCredentials(clientId, accessToken);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const cheermotes = await client.kraken.bits.getCheermotes();
  * ```
  */

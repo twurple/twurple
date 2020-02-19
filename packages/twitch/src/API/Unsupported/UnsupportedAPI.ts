@@ -12,7 +12,7 @@ import ChattersList, { ChattersListData } from './ChattersList';
  *
  * ## Example
  * ```ts
- * const client = await TwitchClient.withCredentials(clientId, accessToken);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const events = await client.unsupported.getEvents('125328655');
  * ```
  */

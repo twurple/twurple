@@ -27,7 +27,7 @@ export default class Bot {
 		} else if (auth) {
 			if (typeof auth === 'string') {
 				const info = await TwitchClient.getTokenInfo(auth);
-				twitchClient = await TwitchClient.withCredentials(info.clientId, auth, info.scopes);
+				twitchClient = TwitchClient.withCredentials(info.clientId, auth, info.scopes);
 			} else {
 				twitchClient = new TwitchClient({ authProvider: auth });
 			}

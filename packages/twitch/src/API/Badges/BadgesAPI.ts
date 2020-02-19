@@ -11,7 +11,7 @@ import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
  *
  * ## Example
  * ```ts
- * const client = await TwitchClient.withCredentials(clientId, accessToken);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const cheermotes = await client.badges.getGlobalBadges();
  * ```
  */

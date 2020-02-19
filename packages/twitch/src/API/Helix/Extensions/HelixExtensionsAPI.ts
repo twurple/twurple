@@ -25,7 +25,7 @@ interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensionTransa
  *
  * ## Example
  * ```ts
- * const client = await TwitchClient.withCredentials(clientId, accessToken);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const transactions = await client.helix.extionsions.getExtensionTransactions('abcd');
  * ```
  */

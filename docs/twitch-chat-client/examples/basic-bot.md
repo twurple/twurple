@@ -69,7 +69,7 @@ Now, we can construct a `TwitchClient` instance:
 ```typescript
 const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
 const accessToken = '0123456789abcdefghijABCDEFGHIJ';
-const twitchClient = await TwitchClient.withCredentials(clientId, accessToken);
+const twitchClient = TwitchClient.withCredentials(clientId, accessToken);
 ```
 
 ## 4. Connect to chat
@@ -161,7 +161,7 @@ import * as fs from 'fs-extra';
 
 // inside the async function again
 const tokenData = JSON.parse(await fs.readFile('./tokens.json'));
-const twitchClient = await TwitchClient.withCredentials(clientId, tokenData.accessToken, undefined, {
+const twitchClient = TwitchClient.withCredentials(clientId, tokenData.accessToken, undefined, {
         clientSecret,
         refreshToken: tokenData.refreshToken,
         expiry: tokenData.expiryTimestamp === null ? null : new Date(tokenData.expiryTimestamp),
@@ -195,7 +195,7 @@ import * as fs from 'fs-extra';
     const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
     const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
     const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
-    const twitchClient = await TwitchClient.withCredentials(clientId, tokenData.accessToken, undefined, {
+    const twitchClient = TwitchClient.withCredentials(clientId, tokenData.accessToken, undefined, {
         clientSecret,
         refreshToken: tokenData.refreshToken,
         expiry: tokenData.expiryTimestamp === null ? null : new Date(tokenData.expiryTimestamp),

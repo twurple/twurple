@@ -53,7 +53,7 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
  *
  * ## Example
  * ```ts
- * const client = await TwitchClient.withCredentials(clientId, accessToken);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const videos = await client.helix.videos.getVideosByUser('125328655');
  * ```
  */

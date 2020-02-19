@@ -10,7 +10,7 @@ import Stream, { StreamData, StreamDataWrapper, StreamType } from './Stream';
  *
  * ## Example
  * ```ts
- * const client = await TwitchClient.withCredentials(clientId, accessToken);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const stream = await client.kraken.streams.getStreamByChannel('125328655');
  * ```
  */

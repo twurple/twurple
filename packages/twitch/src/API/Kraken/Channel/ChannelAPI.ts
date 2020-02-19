@@ -46,7 +46,7 @@ export type CommercialLength = 30 | 60 | 90 | 120 | 150 | 180;
  *
  * ## Example
  * ```ts
- * const client = await TwitchClient.withCredentials(clientId, accessToken);
+ * const client = TwitchClient.withCredentials(clientId, accessToken);
  * const channel = await client.kraken.channels.getMyChannel();
  * ```
  */
