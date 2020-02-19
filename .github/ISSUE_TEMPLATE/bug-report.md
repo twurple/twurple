@@ -4,6 +4,12 @@ about: If something isn't working as expected 🤔.
 
 ---
 
+<!--
+Before you report a bug, please check the FAQ to see whether the behavior is actually desired or already known:
+https://d-fischer.github.io/twitch/docs/basic-usage/faq.html
+Also, please check whether an issue already exists for the behavior you're experiencing.
+-->
+
 ## Bug Report
 
 ### Code
