@@ -30,6 +30,11 @@
 							"name": "calling-api",
 							"title": "Calling the Twitch API",
 							"file": "twitch/basic-usage/calling-api.md"
+						},
+						{
+							"name": "faq",
+							"title": "FAQ",
+							"file": "twitch/basic-usage/faq.md"
 						}
 					]
 				},
@@ -170,6 +175,17 @@
 							"name": "listening-to-events",
 							"title": "Listening to events",
 							"file": "twitch-webhooks/basic-usage/listening-to-events.md"
+						}
+					]
+				},
+				{
+					"name": "special-hosting",
+					"title": "Special hosting",
+					"articles": [
+						{
+							"name": "ngrok",
+							"title": "Testing locally using ngrok",
+							"file": "twitch-webhooks/special-hosting/ngrok.md"
 						}
 					]
 				}
