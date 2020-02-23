@@ -3,13 +3,7 @@ import ChatClient from './ChatClient';
 
 export default ChatClient;
 
-export {
-	default as PrivateMessage,
-	ParsedMessagePart,
-	ParsedMessageCheerPart,
-	ParsedMessageEmotePart,
-	ParsedMessageTextPart
-} from './StandardCommands/TwitchPrivateMessage';
+export { default as PrivateMessage } from './StandardCommands/TwitchPrivateMessage';
 
 export {
 	ChatSubGiftInfo,
@@ -28,3 +22,7 @@ export { default as ChatUser } from './ChatUser';
 export { LogLevel } from '@d-fischer/logger';
 
 export { toChannelName, toUserName } from './Toolkit/UserTools';
+export { ParsedMessagePart } from './Toolkit/EmoteTools';
+export { ParsedMessageEmotePart } from './Toolkit/EmoteTools';
+export { ParsedMessageCheerPart } from './Toolkit/EmoteTools';
+export { ParsedMessageTextPart } from './Toolkit/EmoteTools';

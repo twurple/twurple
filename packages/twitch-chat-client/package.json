@@ -23,7 +23,7 @@
     "@d-fischer/logger": "^0.2.3",
     "@d-fischer/shared-utils": "^1.2.0",
     "deprecate": "^1.1.1",
-    "ircv3": "^0.21.5",
+    "ircv3": "^0.22.0",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
