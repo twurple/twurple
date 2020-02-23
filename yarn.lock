@@ -122,30 +122,21 @@
     eslint-plugin-import "^2.18.2"
     eslint-plugin-jsdoc "^17.0.1"
 
-"@d-fischer/logger@^0.1.0":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-0.1.1.tgz#efd0e91be7628e45093336a88c826aecfd7e9794"
-  integrity sha512-yRLaaCI8RiSYVa96yf89Wqf/DPk2nYK2OcTNLlvQjgFJUz5VuOzVOM9NKDbGR233HMAyxG8bKda9GyvGYrFr4A==
-  dependencies:
-    chalk "^2.4.1"
-    detect-node "^2.0.4"
-    tslib "^1.9.3"
-
-"@d-fischer/logger@^0.2.0":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-0.2.2.tgz#d5b33e66286e6d58170d5c51bb79559445acb9d0"
-  integrity sha512-IAxmXcLLKyGQRRE86u+AvWOmnkqZJS+JW9/bXn8GtQO+j58FwjaPPhfMCzJ87ek4F1aIJqMwehzk6o4toGgxgg==
+"@d-fischer/logger@^0.2.0", "@d-fischer/logger@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-0.2.3.tgz#79be7c7a5c368be2ba667676386587c6d1fc3c4d"
+  integrity sha512-3iZgtloeLQy/Fw4Jepi7NJVAr5Reu9Hs7H/V8eEZpRMoJQVlSYq9YI8F/sLq7HB//G+CmMobv4MA/miOkskskw==
   dependencies:
     chalk "^3.0.0"
     detect-node "^2.0.4"
     tslib "^1.10.0"
 
-"@d-fischer/rate-limiter@^0.1.0":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@d-fischer/rate-limiter/-/rate-limiter-0.1.1.tgz#6959c50ffc7dafd029d905c83edd4cac436e1fd0"
-  integrity sha512-aweM8S9c5bzFjzhJwIdWIYT5xYVa86bcO8X3riPwEBN0Yl0hf7s+RtiiEl7SwnvUrvS01UpgfmbQQnfiJoTZJg==
+"@d-fischer/rate-limiter@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@d-fischer/rate-limiter/-/rate-limiter-0.1.2.tgz#16ec79a80a199ba3732bf93d128d93e4aca54f99"
+  integrity sha512-rntxcTJzLIIEmYBSDc9+x2mFsphYRWVB9Y+WlKqqnHq9yV2/wNjf7fpet9BR3lvETEQbv/JJ/oc2S0snPbgs+Q==
   dependencies:
-    "@d-fischer/logger" "^0.1.0"
+    "@d-fischer/logger" "^0.2.3"
     "@types/node" "^12.12.5"
     "@types/promise.allsettled" "^1.0.2"
     promise.allsettled "^1.0.1"

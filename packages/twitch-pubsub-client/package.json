@@ -19,7 +19,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/connection": "^2.0.1",
-    "@d-fischer/logger": "^0.2.0",
+    "@d-fischer/logger": "^0.2.3",
     "@d-fischer/shared-utils": "^1.0.1",
     "@d-fischer/typed-event-emitter": "^2.0.0",
     "@types/ws": "^6.0.4"
