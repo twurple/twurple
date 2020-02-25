@@ -16,7 +16,7 @@ cd "$(dirname $0)"
 
 yarn lint
 yarn prettier:check
-yarn build
+yarn rebuild
 
 VERSIONTYPE="${1:-patch}"
 yarn lerna version --no-push --no-commit-hooks --preid pre "$VERSIONTYPE" -m "release version %v"
