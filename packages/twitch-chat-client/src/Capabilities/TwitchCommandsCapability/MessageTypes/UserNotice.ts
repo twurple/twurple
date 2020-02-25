@@ -35,6 +35,11 @@ export default class UserNotice extends Message<UserNotice> {
 
 	parseEmotes() {
 		const messageText = this.params.message;
+
+		if (!messageText) {
+			return [];
+		}
+
 		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
 
 		return fillTextPositions(messageText, foundEmotes);
