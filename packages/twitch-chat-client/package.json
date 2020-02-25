@@ -1,6 +1,6 @@
 {
   "name": "twitch-chat-client",
-  "version": "4.0.3",
+  "version": "4.0.5",
   "description": "Interact with the Twitch Messaging Interface (aka Twitch chat).",
   "keywords": [
     "twitch",
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@types/deprecate": "^1.1.0",
-    "twitch": "^4.0.3"
+    "twitch": "^4.0.5"
   },
   "peerDependencies": {
     "twitch": "^4.0.0"
