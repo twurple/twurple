@@ -1,4 +1,3 @@
-import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { flatten } from '@d-fischer/shared-utils';
 
 /** @private */
@@ -10,7 +9,6 @@ export interface ChattersListData {
 /**
  * A list of chatters in a Twitch chat.
  */
-@Cacheable
 export default class ChattersList {
 	/** @private */
 	constructor(private readonly _data: ChattersListData) {}
@@ -18,7 +16,6 @@ export default class ChattersList {
 	/**
 	 * A list of user names of all chatters in the chat.
 	 */
-	@CachedGetter()
 	get allChatters() {
 		return flatten(Object.values(this._data.chatters));
 	}
@@ -26,7 +23,6 @@ export default class ChattersList {
 	/**
 	 * A map of user names of all chatters in the chat, mapped to their status in the channel.
 	 */
-	@CachedGetter()
 	get allChattersWithStatus() {
 		return new Map(
 			flatten(
