@@ -236,7 +236,7 @@ export default class CheermoteList {
 
 		const names = this.getPossibleNames();
 		// TODO fix this regex so it works in firefox, which does not support lookbehind
-		const re = new RegExp('(?<=^|\\s)([a-z]+)(\\d+)(?=\\s|$)', 'gi');
+		const re = new RegExp('(?<=^|\\s)([a-z0-9]+?)(\\d+)(?=\\s|$)', 'gi');
 		let match: RegExpExecArray | null;
 		// eslint-disable-next-line no-cond-assign
 		while ((match = re.exec(message))) {
