@@ -1,4 +1,4 @@
-import { indexBy, NonEnumerable } from '@d-fischer/shared-utils';
+import { indexBy, NonEnumerable, utf8Length } from '@d-fischer/shared-utils';
 import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
 import TwitchClient from '../../../TwitchClient';
 
@@ -238,7 +238,6 @@ export default class CheermoteList {
 		// TODO fix this regex so it works in firefox, which does not support lookbehind
 		const re = new RegExp('(?<=^|\\s)([a-z0-9]+?)(\\d+)(?=\\s|$)', 'gi');
 		let match: RegExpExecArray | null;
-		// eslint-disable-next-line no-cond-assign
 		while ((match = re.exec(message))) {
 			const name = match[1].toLowerCase();
 			if (names.includes(name)) {
@@ -246,7 +245,7 @@ export default class CheermoteList {
 				result.push({
 					name,
 					amount,
-					position: match.index,
+					position: utf8Length(message.substr(0, match.index)),
 					length: match[0].length,
 					displayInfo: this.getCheermoteDisplayInfo(name, amount)
 				});
