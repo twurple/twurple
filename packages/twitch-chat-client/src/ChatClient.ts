@@ -1969,6 +1969,15 @@ export default class ChatClient extends IRCClient {
 	}
 
 	/**
+	 * Leaves a channel ("part" in IRC terms).
+	 *
+	 * @param channel The channel to leave.
+	 */
+	part(channel: string) {
+		super.part(toChannelName(channel));
+	}
+
+	/**
 	 * Disconnects from the chat server.
 	 */
 	async quit() {
