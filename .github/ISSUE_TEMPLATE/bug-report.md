@@ -34,7 +34,7 @@ or for bigger pieces of code, create a new GitHub repository we can clone to rep
 
 ### Environment
 
-- Version:
-- Node version: <!-- remove if not applicable -->
+- Version: <!-- library versions -->
+- Node version: <!-- `node -v` - remove if not applicable -->
 - Browser version: <!-- remove if not applicable -->
 - Operating system:
