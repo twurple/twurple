@@ -19,7 +19,7 @@ yarn prettier:check
 yarn rebuild
 
 VERSIONTYPE="${1:-patch}"
-yarn lerna version --no-push --no-commit-hooks --preid pre "$VERSIONTYPE" -m "release version %v"
+yarn lerna version --no-push --no-commit-hooks --force-publish --preid pre "$VERSIONTYPE" -m "release version %v"
 case ${VERSIONTYPE} in
 	"pre"*) yarn lerna publish from-package --dist-tag next ;;
 	*) yarn lerna publish from-package ;;
