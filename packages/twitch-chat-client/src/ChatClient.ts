@@ -1819,7 +1819,7 @@ export default class ChatClient extends IRCClient {
 	async timeout(channel: string, user: string, duration: number = 60, reason: string = '') {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
-			const e = this._onTimeoutResult((_channel, _user, error) => {
+			const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
 				if (toUserName(_channel) === channel && toUserName(_user) === user) {
 					if (error) {
 						reject(error);
