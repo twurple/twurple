@@ -1,6 +1,6 @@
 /* eslint-disable filenames/match-exported */
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
-import * as qs from 'qs';
+import { parse } from '@d-fischer/qs';
 import { AccessToken, AuthProvider } from 'twitch';
 import WindowClosedError from './WindowClosedError';
 
@@ -145,7 +145,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 						}
 					}
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					const params: any = url.hash ? qs.parse(url.hash.substr(1)) : url.searchParams;
+					const params: any = url.hash ? parse(url.hash.substr(1)) : url.searchParams;
 
 					if (params.error || params.access_token) {
 						done = true;

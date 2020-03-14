@@ -1,5 +1,5 @@
+import generateRandomString from '@d-fischer/randomstring';
 import * as crypto from 'crypto';
-import * as randomstring from 'randomstring';
 import { HelixWebHookHubRequestOptions } from 'twitch/lib/API/Helix/WebHooks/HelixWebHooksAPI';
 import WebHookListener from '../WebHookListener';
 
@@ -30,7 +30,7 @@ export default abstract class Subscription<T = any> {
 
 	/** @private */
 	_generateNewCredentials() {
-		this._secret = randomstring.generate(16);
+		this._secret = generateRandomString(16);
 	}
 
 	protected get _options(): HelixWebHookHubRequestOptions {

@@ -10,7 +10,14 @@
     "events"
   ],
   "main": "lib",
-  "types": "lib/index",
+  "types": "lib",
+  "module": "es",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/d-fischer/twitch.git",
@@ -19,16 +26,15 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
-    "@types/public-ip": "^3.1.0",
-    "@types/randomstring": "^1.1.6",
-    "polka": "^0.5.1",
-    "portfinder": "^1.0.20",
-    "public-ip": "^4.0.0",
-    "randomstring": "^1.1.5",
-    "raw-body": "^2.3.3",
+    "@d-fischer/portfinder": "^1.0.27",
+    "@d-fischer/public-ip": "^4.0.2",
+    "@d-fischer/randomstring": "^1.1.6",
+    "@d-fischer/raw-body": "^2.4.2",
+    "polka": "^1.0.0-next.11",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
+    "@types/trouter": "^3.1.0",
     "twitch": "^4.0.9"
   },
   "peerDependencies": {
@@ -40,7 +46,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "tsc",
-    "rebuild": "rimraf lib && yarn run build"
+    "build": "ts-hybrid-esm-build",
+    "rebuild": "ts-hybrid-esm-build --clean"
   }
 }

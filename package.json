@@ -11,7 +11,7 @@
     "@d-fischer/documen.ts": "^0.8.4",
     "@d-fischer/eslint-config": "^1.0.3",
     "@types/node": "^12.12.14",
-    "electron": "^7.1.2",
+    "electron": "^8.2.1",
     "eslint": "^6.6.0",
     "eslint-import-resolver-lerna": "^1.1.0",
     "husky": "^3.0.9",
@@ -19,6 +19,7 @@
     "lint-staged": "^9.4.2",
     "prettier": "^1.18.2",
     "rimraf": "^3.0.0",
+    "ts-hybrid-esm-build": "^0.2.3",
     "typescript": "~3.7.4"
   },
   "scripts": {

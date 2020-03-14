@@ -1,55 +1,63 @@
+/* eslint-disable @typescript-eslint/interface-name-prefix,@typescript-eslint/no-explicit-any,@typescript-eslint/array-type */
 declare module 'polka' {
-	import * as Router from 'trouter';
-	import * as http from 'http';
-	import * as https from 'https';
-	import * as net from 'net';
+	import { IncomingMessage, ServerResponse } from 'http';
+	import { Server } from 'net';
+	import * as Trouter from 'trouter';
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
-
-	interface PolkaOptions {
-		server?: http.Server | https.Server;
-		onError?: (err: string | Error, req: http.IncomingMessage, res: http.ServerResponse, next: Function) => void;
-		onNoMatch?: (req: http.IncomingMessage, res: http.ServerResponse) => void;
+	export interface IError extends Error {
+		message: string;
+		code?: number;
+		stack?: string;
+		status?: number;
+		details?: any;
 	}
 
-	namespace polka {
-		type RequestHandler = (req: PolkaRequest, res: PolkaResponse, next: Function) => void;
+	export type NextHandler = (err?: string | IError) => void;
+	export type Middleware<T = Request> = Polka<T> | RequestHandler<T>;
 
-		class Polka extends Router {
-			readonly server: http.Server;
+	export type RequestHandler<T> = (req: T, res: Response, next?: NextHandler) => void;
+	export type ErrorHandler<T = Request> = (err: string | IError, req: T, res: Response, next: NextHandler) => void;
 
-			constructor(opts: PolkaOptions);
-
-			add(method: string, pattern: string, ...fns: RequestHandler[]): this;
-			use(base: string, ...fns: RequestHandler[]): this;
-			use(...fns: RequestHandler[]): this;
-
-			// shamelessly stolen from @types/node's net.Server
-			listen(port?: number, hostname?: string, backlog?: number, listeningListener?: Function): this;
-			listen(port?: number, hostname?: string, listeningListener?: Function): this;
-			listen(port?: number, backlog?: number, listeningListener?: Function): this;
-			listen(port?: number, listeningListener?: Function): this;
-			listen(path: string, backlog?: number, listeningListener?: Function): this;
-			listen(path: string, listeningListener?: Function): this;
-			listen(options: net.ListenOptions, listeningListener?: Function): this;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			listen(handle: any, backlog?: number, listeningListener?: Function): this;
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			listen(handle: any, listeningListener?: Function): this;
-
-			handler(req: http.IncomingMessage, res: http.ServerResponse, info: object): void;
-		}
-
-		interface PolkaRequest extends http.IncomingMessage {
-			params: Record<string, string>;
-			query: Record<string, string>;
-		}
-
-		// eslint-disable-next-line @typescript-eslint/no-empty-interface
-		interface PolkaResponse extends http.ServerResponse {}
+	export interface IOptions<T = Request> {
+		server?: Server;
+		onError?: ErrorHandler<T>;
+		onNoMatch?: RequestHandler<T>;
 	}
-	function polka(options?: PolkaOptions): polka.Polka;
 
-	export = polka;
+	export interface ParsedURL {
+		_raw: string;
+		href: string;
+		path: string;
+		search: null | string;
+		query: null | Record<string, any>;
+	}
+
+	export type Response = ServerResponse;
+
+	export interface Request extends IncomingMessage, ParsedURL {
+		originalUrl: IncomingMessage['url'];
+		params: Record<string, string>;
+		body?: Record<string, any>;
+		_parsedUrl: ParsedURL;
+		_decoded?: true;
+	}
+
+	export interface Polka<T = Request> extends Trouter<RequestHandler<T>> {
+		readonly server: Server;
+		readonly wares: RequestHandler<T>[];
+
+		readonly onError: ErrorHandler<T>;
+		readonly onNoMatch: RequestHandler<T>;
+
+		readonly handler: RequestHandler<T>;
+
+		listen: Server['listen'];
+
+		parse: (req: IncomingMessage) => ParsedURL | void;
+
+		use(...handlers: Middleware<T>[]): this;
+		use(pattern: string, ...handlers: Middleware<T>[]): this;
+	}
+
+	export default function<T = IncomingMessage>(options?: IOptions<T>): Polka<T>;
 }

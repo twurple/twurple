@@ -1,6 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import fetch, { Headers } from '@d-fischer/cross-fetch';
 import { LogLevel } from '@d-fischer/logger';
-import * as qs from 'qs';
+import { stringify } from '@d-fischer/qs';
 
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import BadgesAPI from './API/Badges/BadgesAPI';
@@ -19,8 +20,6 @@ import StaticAuthProvider from './Auth/StaticAuthProvider';
 import ConfigError from './Errors/ConfigError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 import InvalidTokenError from './Errors/InvalidTokenError';
-
-import { fetch, Headers } from './Toolkit/Fetch';
 
 /**
  * Default configuration for the cheermote API.
@@ -342,7 +341,7 @@ export default class TwitchClient {
 	): Promise<Response> {
 		const type = options.type === undefined ? TwitchAPICallType.Kraken : options.type;
 		const url = this._getUrl(options.url, type);
-		const params = qs.stringify(options.query, { arrayFormat: 'repeat' });
+		const params = stringify(options.query, { arrayFormat: 'repeat' });
 		const headers = new Headers({
 			Accept:
 				type === TwitchAPICallType.Kraken
@@ -352,7 +351,7 @@ export default class TwitchClient {
 
 		let body: string | undefined;
 		if (options.body) {
-			body = qs.stringify(options.body);
+			body = stringify(options.body);
 			headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		} else if (options.jsonBody) {
 			body = JSON.stringify(options.jsonBody);

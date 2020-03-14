@@ -1,10 +1,8 @@
-import Logger, { LogLevel } from '@d-fischer/logger';
-import LoggerOptions from '@d-fischer/logger/lib/LoggerOptions';
+import deprecate from '@d-fischer/deprecate';
+import Logger, { LoggerOptions, LogLevel } from '@d-fischer/logger';
 import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
-import * as deprecate from 'deprecate';
-import IRCClient from 'ircv3';
-import { ChannelJoin, ChannelPart, Notice, PrivateMessage } from 'ircv3/lib/Message/MessageTypes/Commands/';
+import IRCClient, { MessageTypes } from 'ircv3';
 import TwitchClient, { CommercialLength, InvalidTokenError } from 'twitch';
 import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
 import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
@@ -703,11 +701,11 @@ export default class ChatClient extends IRCClient {
 			}
 		});
 
-		this.onMessage(ChannelJoin, ({ prefix, params: { channel } }) => {
+		this.onMessage(MessageTypes.Commands.ChannelJoin, ({ prefix, params: { channel } }) => {
 			this.emit(this.onJoin, channel, prefix!.nick);
 		});
 
-		this.onMessage(ChannelPart, ({ prefix, params: { channel } }: ChannelPart) => {
+		this.onMessage(MessageTypes.Commands.ChannelPart, ({ prefix, params: { channel } }) => {
 			this.emit(this.onPart, channel, prefix!.nick);
 		});
 
@@ -941,7 +939,7 @@ export default class ChatClient extends IRCClient {
 			this.emit(this.onWhisper, whisper.prefix!.nick, whisper.params.message, whisper);
 		});
 
-		this.onMessage(Notice, ({ params: { target: channel, message }, tags }) => {
+		this.onMessage(MessageTypes.Commands.Notice, ({ params: { target: channel, message }, tags }) => {
 			const messageType = tags.get('msg-id');
 
 			// this event handler involves a lot of parsing strings you shouldn't parse...
@@ -1502,9 +1500,9 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to delete the message from.
 	 * @param message The message (as message ID or message object) to delete.
 	 */
-	async deleteMessage(channel: string, message: string | PrivateMessage) {
+	async deleteMessage(channel: string, message: string | MessageTypes.Commands.PrivateMessage) {
 		channel = toUserName(channel);
-		const messageId = message instanceof PrivateMessage ? message.tags.get('id') : message;
+		const messageId = message instanceof MessageTypes.Commands.PrivateMessage ? message.tags.get('id') : message;
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onDeleteMessageResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {

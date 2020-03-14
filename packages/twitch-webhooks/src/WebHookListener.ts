@@ -1,8 +1,8 @@
+import { getPortPromise } from '@d-fischer/portfinder';
+import { v4 } from '@d-fischer/public-ip';
+import getRawBody from '@d-fischer/raw-body';
 import * as https from 'https';
-import { PolkaRequest, PolkaResponse } from 'polka';
-import * as portFinder from 'portfinder';
-import * as publicIp from 'public-ip';
-import * as getRawBody from 'raw-body';
+import polka, { Polka, Request, Response } from 'polka';
 import TwitchClient, {
 	extractUserId,
 	HelixBanEvent,
@@ -23,9 +23,6 @@ import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
 import Subscription from './Subscriptions/Subscription';
 import SubscriptionEventSubscription from './Subscriptions/SubscriptionEventSubscription';
 import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
-
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-import polka = require('polka');
 
 interface WebHookListenerCertificateConfig {
 	key: string;
@@ -55,15 +52,15 @@ interface WebHookListenerComputedConfig {
 }
 
 export default class WebHookListener {
-	private _server?: polka.Polka;
+	private _server?: Polka;
 	private readonly _subscriptions = new Map<string, Subscription>();
 
 	static async create(client: TwitchClient, config: WebHookListenerConfig = {}) {
-		const listenerPort = config.port || (await portFinder.getPortPromise());
+		const listenerPort = config.port || (await getPortPromise());
 		const reverseProxy = config.reverseProxy || {};
 		return new WebHookListener(
 			{
-				hostName: config.hostName || (await publicIp.v4()),
+				hostName: config.hostName || (await v4()),
 				port: listenerPort,
 				ssl: config.ssl,
 				reverseProxy: {
@@ -268,10 +265,10 @@ export default class WebHookListener {
 		this._subscriptions.delete(id);
 	}
 
-	private _handleVerification(req: PolkaRequest, res: PolkaResponse) {
+	private _handleVerification(req: Request, res: Response) {
 		const subscription = this._subscriptions.get(req.params.id);
 		if (subscription) {
-			if (req.query['hub.mode'] === 'subscribe') {
+			if (req.query?.['hub.mode'] === 'subscribe') {
 				subscription._verify();
 				res.writeHead(202);
 				res.end(req.query['hub.challenge']);
@@ -286,7 +283,7 @@ export default class WebHookListener {
 		}
 	}
 
-	private async _handleNotification(req: PolkaRequest, res: PolkaResponse) {
+	private async _handleNotification(req: Request, res: Response) {
 		const body = await getRawBody(req, true);
 		const subscription = this._subscriptions.get(req.params.id);
 		if (subscription) {
