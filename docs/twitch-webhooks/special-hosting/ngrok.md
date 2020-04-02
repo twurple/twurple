@@ -30,4 +30,4 @@ Please replace `XXXX.ngrok.io` with the host name you were given and `8090` with
 
 ## 4. Listening to events
 
-Now you can continue to follow the [basic listening help](/docs/basic-usage/listening-to-events).
+Now you can continue to follow the [basic listening help](/twitch-webhooks/docs/basic-usage/listening-to-events).

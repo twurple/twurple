@@ -11,7 +11,7 @@ listener.listen();
 
 Please note that the port you supply needs to be **available from the outside**.
 If you are testing locally, you may need to forward the port to your development machine.
-A very helpful tool for that is [ngrok](/twitch-webhooks/docs/basic-usage/listening-to-events).
+A very helpful tool for that is [ngrok](/twitch-webhooks/docs/special-hosting/ngrok).
 
 When your listener is set up, you can subscribe to all supported events using this listener:
 
