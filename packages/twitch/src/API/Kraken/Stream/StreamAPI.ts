@@ -58,7 +58,7 @@ export default class StreamAPI extends BaseAPI {
 		}
 
 		if (languageCode) {
-			query.broadcaster_language = languageCode;
+			query.language = languageCode;
 		}
 
 		if (type) {
