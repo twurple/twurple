@@ -1893,9 +1893,9 @@ export default class ChatClient extends IRCClient {
 	}
 
 	/**
-	 * Retrieves a list of moderators in a channel.
+	 * Retrieves a list of VIPs in a channel.
 	 *
-	 * @param channel The channel to retrieve the moderators of.
+	 * @param channel The channel to retrieve the VIPs of.
 	 */
 	async getVIPs(channel: string) {
 		channel = toUserName(channel);
