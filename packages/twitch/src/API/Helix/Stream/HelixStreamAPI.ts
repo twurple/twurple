@@ -184,15 +184,19 @@ export default class HelixStreamAPI extends BaseAPI {
 	/**
 	 * Creates a new stream marker.
 	 *
-	 * Only works while your stream is live.
+	 * Only works while the specified user's stream is live.
 	 */
-	async createStreamMarker() {
+	async createStreamMarker(userId: string, description?: string) {
 		try {
 			const result = await this._client.callAPI<HelixResponse<HelixStreamMarkerData>>({
 				url: 'streams/markers',
 				method: 'POST',
 				type: TwitchAPICallType.Helix,
-				scope: 'user:edit:broadcast'
+				scope: 'user:edit:broadcast',
+				query: {
+					user_id: userId,
+					description
+				}
 			});
 
 			return new HelixStreamMarker(result.data[0], this._client);
