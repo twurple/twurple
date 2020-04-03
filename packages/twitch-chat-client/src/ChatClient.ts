@@ -163,7 +163,7 @@ export default class ChatClient extends IRCClient {
 	 * @eventListener
 	 * @param channel The channel where followers-only mode is being toggled.
 	 * @param enabled Whether followers-only mode is being enabled. If false, it's being disabled.
-	 * @param delay The time a user needs to follow the channel to be able to talk. Only available when `enabled === true`.
+	 * @param delay The time (in minutes) a user needs to follow the channel to be able to talk. Only available when `enabled === true`.
 	 */
 	onFollowersOnly: (
 		handler: (channel: string, enabled: boolean, delay?: number) => void
@@ -298,7 +298,7 @@ export default class ChatClient extends IRCClient {
 	 * @eventListener
 	 * @param channel The channel where slow mode is being toggled.
 	 * @param enabled Whether slow mode is being enabled. If false, it's being disabled.
-	 * @param delay The time a user has to wait between sending messages. Only set when enabling slow mode.
+	 * @param delay The time (in seconds) a user has to wait between sending messages. Only set when enabling slow mode.
 	 */
 	onSlow: (handler: (channel: string, enabled: boolean, delay?: number) => void) => Listener = this.registerEvent();
 

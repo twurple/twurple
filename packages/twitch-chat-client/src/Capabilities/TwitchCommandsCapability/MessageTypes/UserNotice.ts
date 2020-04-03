@@ -7,7 +7,6 @@ import {
 	parseEmotePositions
 } from '../../../Toolkit/EmoteTools';
 
-/** @private */
 @MessageType('USERNOTICE')
 export default class UserNotice extends Message<UserNotice> {
 	@MessageParamDefinition({
