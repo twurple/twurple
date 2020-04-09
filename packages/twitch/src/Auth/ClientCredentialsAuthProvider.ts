@@ -35,7 +35,11 @@ export default class ClientCredentialsAuthProvider implements AuthProvider {
 	 */
 	async getAccessToken(scopes?: string | string[]) {
 		if (scopes && scopes.length > 0) {
-			throw new Error('The client credentials flow does not support scopes');
+			throw new Error(
+				`Scope ${
+					typeof scopes === 'string' ? scopes : scopes.join(',')
+				} requested but the client credentials flow does not support scopes`
+			);
 		}
 
 		if (!this._token || this._token.isExpired) {
