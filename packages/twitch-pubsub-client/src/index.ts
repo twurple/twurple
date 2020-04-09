@@ -12,6 +12,8 @@ export * from './PubSubPacket';
 import PubSubMessage from './Messages/PubSubMessage';
 import PubSubBitsMessage from './Messages/PubSubBitsMessage';
 import PubSubBitsBadgeUnlockMessage from './Messages/PubSubBitsBadgeUnlockMessage';
+import PubSubChatModActionMessage from './Messages/PubSubChatModActionMessage';
+import PubSubRedemptionMessage from './Messages/PubSubRedemptionMessage';
 import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
 import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
 
@@ -19,6 +21,8 @@ export {
 	PubSubMessage,
 	PubSubBitsMessage,
 	PubSubBitsBadgeUnlockMessage,
+	PubSubChatModActionMessage,
+	PubSubRedemptionMessage,
 	PubSubSubscriptionMessage,
 	PubSubWhisperMessage
 };
