@@ -61,7 +61,7 @@ export function parseEmotePositions(message: string, emoteOffsets: Map<string, s
 						name,
 						displayInfo: new ChatEmote({
 							code: name,
-							id: emote,
+							id: parseInt(emote, 10),
 							emoticon_set: -1 // eslint-disable-line @typescript-eslint/camelcase
 						})
 					};
