@@ -137,3 +137,7 @@ export { ChatBadgeList, ChatBadgeSet, ChatBadgeVersion, ChatBadgeScale };
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
 
 export { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable };
+
+import ChatEmote from './API/Kraken/Chat/ChatEmote';
+
+export { ChatEmote };
