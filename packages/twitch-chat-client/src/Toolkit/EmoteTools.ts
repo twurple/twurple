@@ -1,5 +1,5 @@
 import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
-import { CheermoteDisplayInfo } from 'twitch';
+import { CheermoteDisplayInfo, ChatEmote } from 'twitch';
 
 export interface ParsedMessageTextPart {
 	type: 'text';
@@ -23,6 +23,7 @@ export interface ParsedMessageEmotePart {
 	length: number;
 	id: string;
 	name: string;
+	displayInfo: ChatEmote;
 }
 
 export type ParsedMessagePart = ParsedMessageTextPart | ParsedMessageCheerPart | ParsedMessageEmotePart;
@@ -50,13 +51,19 @@ export function parseEmotePositions(message: string, emoteOffsets: Map<string, s
 					const [startStr, endStr] = placement.split('-');
 					const start = +startStr;
 					const end = +endStr;
+					const name = utf8Substring(message, start, end + 1);
 
 					return {
 						type: 'emote',
 						position: start,
 						length: end - start + 1,
 						id: emote,
-						name: utf8Substring(message, start, end + 1)
+						name,
+						displayInfo: new ChatEmote({
+							code: name,
+							id: emote,
+							emoticon_set: -1 // eslint-disable-line @typescript-eslint/camelcase
+						})
 					};
 				}
 			)
