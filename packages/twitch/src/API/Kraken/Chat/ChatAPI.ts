@@ -13,7 +13,7 @@ import ChatRoom, { ChatRoomData } from './ChatRoom';
  * ## Example
  * ```ts
  * const client = TwitchClient.withCredentials(clientId, accessToken);
- * const channel = await client.kraken.chat.getBadges('125328655');
+ * const emotes = await client.kraken.chat.getEmotesBySets('1');
  * ```
  */
 @Cacheable
