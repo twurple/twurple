@@ -1,4 +1,4 @@
-First, you have to create an instance of the core Twitch client, as outlined in [its own documentation](/twitch/docs/basic-usage/creating-instance.html).
+First, you have to create an instance of the core Twitch client, as outlined in [its own documentation](/twitch/docs/basic-usage/creating-instance).
 
 Then, using that instance, you create a new {@ChatClient} instance, listen to events and connect it to the Twitch Chat server.
 
