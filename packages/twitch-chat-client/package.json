@@ -47,7 +47,7 @@
     "es"
   ],
   "scripts": {
-    "build": "ts-hybrid-esm-build",
-    "rebuild": "ts-hybrid-esm-build --clean"
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
   }
 }

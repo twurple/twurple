@@ -45,8 +45,8 @@
     "scripts/npm"
   ],
   "scripts": {
-    "build": "ts-hybrid-esm-build",
-    "rebuild": "ts-hybrid-esm-build --clean",
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean",
     "postinstall": "node ./scripts/npm/postinstall.js"
   }
 }

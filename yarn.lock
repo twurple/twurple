@@ -1120,19 +1120,19 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@oclif/command@^1.5.13", "@oclif/command@^1.5.19":
-  version "1.5.20"
-  resolved "https://registry.yarnpkg.com/@oclif/command/-/command-1.5.20.tgz#bb0693586d7d66a457c49b719e394c02ff0169a7"
-  integrity sha512-lzst5RU/STfoutJJv4TLE/cm1WtW3xy6Aqvqy3r1lPsGdNifgbEq4dCOYyc/ZEuhV/IStQLDFTnAlqTdolkz1Q==
+"@oclif/command@^1.5.13", "@oclif/command@^1.5.19", "@oclif/command@^1.5.20":
+  version "1.6.1"
+  resolved "https://registry.yarnpkg.com/@oclif/command/-/command-1.6.1.tgz#774e860f283f32a728377da1c2a90beb8aadf9f5"
+  integrity sha512-pvmMmfGn+zm4e4RwVw63mg9sIaqKqmVsFbImQoUrCO/43UmWzoSHWNXKdgEGigOezWrkZfFucaeZcSbp149OWg==
   dependencies:
-    "@oclif/config" "^1"
+    "@oclif/config" "^1.15.1"
     "@oclif/errors" "^1.2.2"
     "@oclif/parser" "^3.8.3"
-    "@oclif/plugin-help" "^2"
+    "@oclif/plugin-help" "^3"
     debug "^4.1.1"
     semver "^5.6.0"
 
-"@oclif/config@^1", "@oclif/config@^1.14.0":
+"@oclif/config@^1.14.0", "@oclif/config@^1.15.1":
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/@oclif/config/-/config-1.15.1.tgz#39950c70811ab82d75bb3cdb33679ed0a4c21c57"
   integrity sha512-GdyHpEZuWlfU8GSaZoiywtfVBsPcfYn1KuSLT1JTfvZGpPG6vShcGr24YZ3HG2jXUFlIuAqDcYlTzOrqOdTPNQ==
@@ -1167,12 +1167,27 @@
     chalk "^2.4.2"
     tslib "^1.9.3"
 
-"@oclif/plugin-help@^2", "@oclif/plugin-help@^2.2.3":
+"@oclif/plugin-help@^2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@oclif/plugin-help/-/plugin-help-2.2.3.tgz#b993041e92047f0e1762668aab04d6738ac06767"
   integrity sha512-bGHUdo5e7DjPJ0vTeRBMIrfqTRDBfyR5w0MP41u0n3r7YG5p14lvMmiCXxi6WDaP2Hw5nqx3PnkAIntCKZZN7g==
   dependencies:
     "@oclif/command" "^1.5.13"
+    chalk "^2.4.1"
+    indent-string "^4.0.0"
+    lodash.template "^4.4.0"
+    string-width "^3.0.0"
+    strip-ansi "^5.0.0"
+    widest-line "^2.0.1"
+    wrap-ansi "^4.0.0"
+
+"@oclif/plugin-help@^3":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@oclif/plugin-help/-/plugin-help-3.0.0.tgz#7d6433d74b0473a43797c6e0468b503470f23b50"
+  integrity sha512-mrV1O1VXy+ssW0kmIvFYkuEEPYZWKpyqydyHbKa316esAHatsZlrw6cRItf3TuKHTAqeGuXPctPV4mO2e21F9w==
+  dependencies:
+    "@oclif/command" "^1.5.20"
+    "@oclif/config" "^1.15.1"
     chalk "^2.4.1"
     indent-string "^4.0.0"
     lodash.template "^4.4.0"
@@ -9639,22 +9654,6 @@ truncate-utf8-bytes@^1.0.0:
   dependencies:
     utf8-byte-length "^1.0.1"
 
-ts-hybrid-esm-build@^0.2.3:
-  version "0.2.3"
-  resolved "https://registry.yarnpkg.com/ts-hybrid-esm-build/-/ts-hybrid-esm-build-0.2.3.tgz#29dce6308b9eab365a0a113c17d03aab22a56161"
-  integrity sha512-TKKjiQOe7mvYKJ4XVELUIAGMkJymdJjJoUy1k46BVVSMkeP9BiV/GqMnJra1P8JU1amqcHQrQyd9mTBqJaD0Hw==
-  dependencies:
-    "@oclif/command" "^1.5.19"
-    "@oclif/config" "^1.14.0"
-    "@oclif/errors" "^1.2.2"
-    "@oclif/plugin-help" "^2.2.3"
-    "@types/node" "^12.12.14"
-    "@types/rimraf" "^2.0.3"
-    chalk "^3.0.0"
-    rimraf "^3.0.2"
-    tslib "^1.10.0"
-    typescript "~3.8.2"
-
 ts-loader@^7.0.1:
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/ts-loader/-/ts-loader-7.0.1.tgz#ac9ae9eb8f5ebd0aa7b78b44db20691b6e31251b"
@@ -9670,6 +9669,22 @@ tslib@^1.10.0, tslib@^1.11.1, tslib@^1.8.1, tslib@^1.9.0, tslib@^1.9.3:
   version "1.11.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.1.tgz#eb15d128827fbee2841549e171f45ed338ac7e35"
   integrity sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
+
+tsukuru@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/tsukuru/-/tsukuru-0.3.2.tgz#f7f7535a36adda3ab1f362ef30303581a7b233b4"
+  integrity sha512-2yMEA/MEQrz87EJE1rtLR48rvG3+ihbpALR+HE8SvOqoEfa7YiEZD/S2sgROFdMWdmk7XIjG0gFAEHSzp/mS0A==
+  dependencies:
+    "@oclif/command" "^1.5.19"
+    "@oclif/config" "^1.14.0"
+    "@oclif/errors" "^1.2.2"
+    "@oclif/plugin-help" "^2.2.3"
+    "@types/node" "^12.12.14"
+    "@types/rimraf" "^2.0.3"
+    chalk "^3.0.0"
+    rimraf "^3.0.2"
+    tslib "^1.10.0"
+    typescript "~3.8.2"
 
 tsutils@^3.17.1:
   version "3.17.1"
