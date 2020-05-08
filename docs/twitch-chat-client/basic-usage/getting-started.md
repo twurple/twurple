@@ -16,8 +16,8 @@ Using ES2015 modules:
 import ChatClient from 'twitch-chat-client';
 ```
 
-Using CommonJS modules:
+Using CommonJS:
 
 ```typescript
-const ChatClient = require('twitch-chat-client').default;
+const ChatClient = require('twitch-chat-client');
 ```

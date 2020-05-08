@@ -16,8 +16,8 @@ Using ES2015 modules:
 import PubSubClient from 'twitch-pubsub-client';
 ```
 
-Using CommonJS modules:
+Using CommonJS:
 
 ```typescript
-const PubSubClient = require('twitch-pubsub-client').default;
+const PubSubClient = require('twitch-pubsub-client');
 ```
