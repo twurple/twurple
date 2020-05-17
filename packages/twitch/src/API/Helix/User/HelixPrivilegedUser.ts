@@ -7,6 +7,8 @@ export interface HelixPrivilegedUserData extends HelixUserData {
 
 /**
  * A user you have extended privilges for, i.e. yourself.
+ *
+ * @inheritDoc
  */
 export default class HelixPrivilegedUser extends HelixUser {
 	/** @private */
