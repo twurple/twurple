@@ -45,6 +45,13 @@ export default class Channel extends ChannelPlaceholder {
 	}
 
 	/**
+	 * Get the teams of the channel
+	 */
+	async getTeams() {
+		return this._client.kraken.channels.getChannelTeams(this._data._id);
+	}
+
+	/**
 	 * Updates the game, title or delay of a channel or toggles the channel feed.
 	 */
 	async update(data: ChannelUpdateData) {
