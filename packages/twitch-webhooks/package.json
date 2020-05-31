@@ -43,7 +43,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "lib"
+    "lib",
+    "es"
   ],
   "scripts": {
     "build": "tsukuru",
