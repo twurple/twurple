@@ -35,7 +35,7 @@ export default abstract class Subscription<T = any> {
 
 	protected get _options(): HelixWebHookHubRequestOptions {
 		return {
-			callbackUrl: this._client.buildHookUrl(this.id),
+			callbackUrl: this._client._buildHookUrl(this.id),
 			secret: this._secret,
 			validityInSeconds: this._validityInSeconds
 		};

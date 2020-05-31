@@ -115,21 +115,6 @@ export default class WebHookListener {
 		await Promise.all([...this._subscriptions.values()].map(async sub => sub.stop()));
 	}
 
-	buildHookUrl(id: string) {
-		const protocol = this._config.reverseProxy.ssl ? 'https' : 'http';
-
-		let hostName = this._config.hostName;
-
-		if (this._config.reverseProxy.port !== (this._config.reverseProxy.ssl ? 443 : 80)) {
-			hostName += `:${this._config.reverseProxy.port}`;
-		}
-
-		// trim slashes on both ends
-		const pathPrefix = this._config.reverseProxy.pathPrefix.replace(/^\/|\/$/, '');
-
-		return `${protocol}://${hostName}${pathPrefix ? '/' : ''}${pathPrefix}/${id}`;
-	}
-
 	async subscribeToUserChanges(
 		user: UserIdResolvable,
 		handler: (user: HelixUser) => void,
@@ -243,6 +228,22 @@ export default class WebHookListener {
 		this._subscriptions.set(subscription.id, subscription);
 
 		return subscription;
+	}
+
+	/** @private */
+	_buildHookUrl(id: string) {
+		const protocol = this._config.reverseProxy.ssl ? 'https' : 'http';
+
+		let hostName = this._config.hostName;
+
+		if (this._config.reverseProxy.port !== (this._config.reverseProxy.ssl ? 443 : 80)) {
+			hostName += `:${this._config.reverseProxy.port}`;
+		}
+
+		// trim slashes on both ends
+		const pathPrefix = this._config.reverseProxy.pathPrefix.replace(/^\/|\/$/, '');
+
+		return `${protocol}://${hostName}${pathPrefix ? '/' : ''}${pathPrefix}/${id}`;
 	}
 
 	/** @private */
