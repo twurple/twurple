@@ -8,7 +8,7 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "devDependencies": {
-    "@d-fischer/documen.ts": "^0.8.4",
+    "@d-fischer/documen.ts": "^0.8.5",
     "@d-fischer/eslint-config": "^1.0.3",
     "@types/node": "^12.12.14",
     "electron": "^7.1.2",
