@@ -209,6 +209,8 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * The join/part events are cached by the Twitch chat server and will be batched and sent every 30-60 seconds.
 	 *
+	 * Please note that unless you enabled the `requestMembershipEvents` option, this will only react to your own joins.
+	 *
 	 * @eventListener
 	 * @param channel The channel that is being joined.
 	 * @param user The user that joined.
@@ -219,6 +221,8 @@ export default class ChatClient extends IRCClient {
 	 * Fires when a user leaves ("parts") a channel.
 	 *
 	 * The join/part events are cached by the Twitch chat server and will be batched and sent every 30-60 seconds.
+	 *
+	 * Please note that unless you enabled the `requestMembershipEvents` option, this will only react to your own parts.
 	 *
 	 * @eventListener
 	 * @param channel The channel that is being left.
