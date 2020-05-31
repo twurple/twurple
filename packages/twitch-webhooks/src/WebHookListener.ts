@@ -1,8 +1,8 @@
 import { getPortPromise } from '@d-fischer/portfinder';
 import { v4 } from '@d-fischer/public-ip';
 import getRawBody from '@d-fischer/raw-body';
+import { Request, Response, Server } from 'httpanda';
 import * as https from 'https';
-import polka, { Polka, Request, Response } from 'polka';
 import TwitchClient, {
 	extractUserId,
 	HelixBanEvent,
@@ -52,7 +52,7 @@ interface WebHookListenerComputedConfig {
 }
 
 export default class WebHookListener {
-	private _server?: Polka;
+	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();
 
 	static async create(client: TwitchClient, config: WebHookListenerConfig = {}) {
@@ -79,7 +79,7 @@ export default class WebHookListener {
 		/** @private */ public readonly _twitchClient: TwitchClient
 	) {}
 
-	listen() {
+	async listen() {
 		if (this._server) {
 			throw new Error('Trying to listen while already listening');
 		}
@@ -88,37 +88,31 @@ export default class WebHookListener {
 				key: this._config.ssl.key,
 				cert: this._config.ssl.cert
 			});
-			this._server = polka({ server });
+			this._server = new Server({ server });
 		} else {
-			this._server = polka();
+			this._server = new Server();
 		}
-		this._server.add('GET', '/:id', (req, res) => {
+		this._server.get('/:id', (req, res) => {
 			this._handleVerification(req, res);
 		});
 		// tslint:disable-next-line:no-floating-promises
-		this._server.add('POST', '/:id', (req, res) => {
+		this._server.post('/:id', (req, res) => {
 			this._handleNotification(req, res);
 		});
-		this._server.listen(this._config.port);
+		await this._server.listen(this._config.port);
 
-		for (const sub of [...this._subscriptions.values()]) {
-			// tslint:disable-next-line:no-floating-promises
-			sub.start();
-		}
+		await Promise.all([...this._subscriptions.values()].map(async sub => sub.start()));
 	}
 
-	unlisten() {
+	async unlisten() {
 		if (!this._server) {
 			throw new Error('Trying to unlisten while not listening');
 		}
 
-		this._server.server.close();
+		await this._server.close();
 		this._server = undefined;
 
-		for (const sub of [...this._subscriptions.values()]) {
-			// tslint:disable-next-line:no-floating-promises
-			sub.stop();
-		}
+		await Promise.all([...this._subscriptions.values()].map(async sub => sub.stop()));
 	}
 
 	buildHookUrl(id: string) {
