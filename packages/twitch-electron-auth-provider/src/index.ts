@@ -1,7 +1,7 @@
 /* eslint-disable filenames/match-exported */
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 import { parse } from '@d-fischer/qs';
-import { AccessToken, AuthProvider } from 'twitch';
+import { AccessToken, AuthProvider, AuthProviderTokenType } from 'twitch';
 import WindowClosedError from './WindowClosedError';
 
 export interface TwitchClientCredentials {
@@ -59,6 +59,8 @@ export default class ElectronAuthProvider implements AuthProvider {
 	private _accessToken?: AccessToken;
 	private readonly _currentScopes = new Set<string>();
 	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
+
+	readonly tokenType: AuthProviderTokenType = 'user';
 
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions>);
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowOptions>);

@@ -1,7 +1,7 @@
 import { NonEnumerable } from '@d-fischer/shared-utils';
 import AccessToken from '../API/AccessToken';
 import TwitchClient from '../TwitchClient';
-import AuthProvider from './AuthProvider';
+import AuthProvider, { AuthProviderTokenType } from './AuthProvider';
 
 /**
  * An auth provider that retrieve tokens using client credentials.
@@ -10,6 +10,13 @@ export default class ClientCredentialsAuthProvider implements AuthProvider {
 	@NonEnumerable private readonly _clientId: string;
 	@NonEnumerable private readonly _clientSecret: string;
 	@NonEnumerable private _token?: AccessToken;
+
+	/**
+	 * The type of tokens this provider generates.
+	 *
+	 * This auth provider generates app tokens.
+	 */
+	readonly tokenType: AuthProviderTokenType = 'app';
 
 	/**
 	 * Creates a new auth provider to receive an application token with using the client ID and secret.

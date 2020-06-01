@@ -12,7 +12,7 @@ import KrakenAPIGroup from './API/Kraken/KrakenAPIGroup';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
 
-import AuthProvider from './Auth/AuthProvider';
+import AuthProvider, { AuthProviderTokenType } from './Auth/AuthProvider';
 import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
@@ -173,6 +173,7 @@ export default class TwitchClient {
 	private readonly _config: TwitchConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;
 
+	// TODO 5.0: config object!
 	/**
 	 * Creates a new instance with fixed credentials.
 	 *
@@ -189,13 +190,19 @@ export default class TwitchClient {
 	 * @param config Additional configuration to pass to the constructor.
 	 *
 	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
+	 * @param tokenType The type of token you passed.
+	 *
+	 * This should almost always be 'user' (which is the default).
+	 *
+	 * If you're passing 'app' here, please consider using {@TwitchClient.withClientCredentials} instead.
 	 */
 	static withCredentials(
 		clientId: string,
 		accessToken?: string,
 		scopes?: string[],
 		refreshConfig?: RefreshConfig,
-		config: Partial<TwitchConfig> = {}
+		config: Partial<TwitchConfig> = {},
+		tokenType: AuthProviderTokenType = 'user'
 	) {
 		const authProvider = refreshConfig
 			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig)

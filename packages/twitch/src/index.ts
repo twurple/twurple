@@ -20,11 +20,11 @@ export {
 	StreamNotLiveError
 };
 
-import AuthProvider from './Auth/AuthProvider';
+import AuthProvider, { AuthProviderTokenType } from './Auth/AuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
 import RefreshableAuthProvider from './Auth/RefreshableAuthProvider';
 
-export { AuthProvider, StaticAuthProvider, RefreshableAuthProvider };
+export { AuthProvider, AuthProviderTokenType, StaticAuthProvider, RefreshableAuthProvider };
 
 import AccessToken from './API/AccessToken';
 import TokenInfo from './API/TokenInfo';
