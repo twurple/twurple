@@ -45,7 +45,7 @@ export default class Channel extends ChannelPlaceholder {
 	}
 
 	/**
-	 * Get the teams of the channel
+	 * Retrieves a list of the teams of the channel.
 	 */
 	async getTeams() {
 		return this._client.kraken.channels.getChannelTeams(this._data._id);
