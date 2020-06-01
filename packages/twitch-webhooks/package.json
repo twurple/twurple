@@ -9,6 +9,7 @@
     "bot",
     "events"
   ],
+  "sideEffects": false,
   "main": "lib",
   "types": "lib",
   "module": "es",
