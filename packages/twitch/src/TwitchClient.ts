@@ -205,8 +205,11 @@ export default class TwitchClient {
 		tokenType: AuthProviderTokenType = 'user'
 	) {
 		const authProvider = refreshConfig
-			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig)
-			: new StaticAuthProvider(clientId, accessToken, scopes);
+			? new RefreshableAuthProvider(
+					new StaticAuthProvider(clientId, accessToken, scopes, tokenType),
+					refreshConfig
+			  )
+			: new StaticAuthProvider(clientId, accessToken, scopes, tokenType);
 
 		return new this({ ...config, authProvider });
 	}
