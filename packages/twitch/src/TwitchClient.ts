@@ -447,6 +447,13 @@ export default class TwitchClient {
 	}
 
 	/**
+	 * The type of token used by the client.
+	 */
+	get tokenType(): AuthProviderTokenType {
+		return this._config.authProvider.tokenType || 'user';
+	}
+
+	/**
 	 * Makes a call to the Twitch API using your access token.
 	 *
 	 * @param options The configuration of the call.
