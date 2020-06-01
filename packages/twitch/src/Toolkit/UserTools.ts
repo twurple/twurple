@@ -1,9 +1,19 @@
-import User from '../API/Kraken/User/User';
-import ChannelPlaceholder from '../API/Kraken/Channel/ChannelPlaceholder';
-import Channel from '../API/Kraken/Channel/Channel';
 import HelixUser from '../API/Helix/User/HelixUser';
+import Channel from '../API/Kraken/Channel/Channel';
+import ChannelPlaceholder from '../API/Kraken/Channel/ChannelPlaceholder';
+import User from '../API/Kraken/User/User';
 
+/**
+ * A user ID or a user or channel object.
+ *
+ * This is not a user name.
+ * Please use {@HelixUserAPI#getUserByName} to fetch a user object by name.
+ */
 export type UserIdResolvable = string | User | ChannelPlaceholder | HelixUser;
+
+/**
+ * A user name or a user or channel object.
+ */
 export type UserNameResolvable = string | User | Channel | HelixUser;
 
 /**
