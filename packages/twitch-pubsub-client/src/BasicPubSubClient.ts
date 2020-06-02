@@ -94,6 +94,7 @@ export default class BasicPubSubClient extends EventEmitter {
 		super();
 		this._logger = new Logger({
 			name: 'twitch-pubsub-client',
+			emoji: true,
 			minLevel: logLevel
 		});
 	}
@@ -163,7 +164,7 @@ export default class BasicPubSubClient extends EventEmitter {
 			await this._resendListens();
 			if (this._topics.size) {
 				this._logger.info('Listened to previously registered topics');
-				this._logger.debug2(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
+				this._logger.debug(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
 			}
 			this._startPingCheckTimer();
 			this.emit(this.onConnect);
@@ -392,7 +393,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	}
 
 	private _receiveMessage(dataStr: string) {
-		this._logger.debug2(`Received message: ${dataStr}`);
+		this._logger.debug(`Received message: ${dataStr}`);
 		const data: PubSubIncomingPacket = JSON.parse(dataStr);
 
 		switch (data.type) {
@@ -423,7 +424,7 @@ export default class BasicPubSubClient extends EventEmitter {
 
 	private _sendPacket(data: PubSubOutgoingPacket) {
 		const dataStr = JSON.stringify(data);
-		this._logger.debug2(`Sending message: ${dataStr}`);
+		this._logger.debug(`Sending message: ${dataStr}`);
 
 		this._connection?.sendLine(dataStr);
 	}
@@ -433,7 +434,7 @@ export default class BasicPubSubClient extends EventEmitter {
 		const pongListener = this._onPong(() => {
 			const latency = Date.now() - pingTime;
 			this.emit(this.onPong, latency, pingTime);
-			this._logger.debug1(`Current latency: ${latency}ms`);
+			this._logger.info(`Current latency: ${latency}ms`);
 			if (this._pingTimeoutTimer) {
 				clearTimeout(this._pingTimeoutTimer);
 			}

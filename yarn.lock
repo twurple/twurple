@@ -152,10 +152,10 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/klona/-/klona-1.1.5.tgz#f273072fcac6f1078d2ff52e24e1d34c329eca4f"
   integrity sha512-fdXM0iXtYcGbIxpWpUYsUi7cAMw8jXbJ75OJDFuScL/TXrrtMlZ9JOLpsZFVMzgeBOTpHLefG5KydsZEAzj95Q==
 
-"@d-fischer/logger@^1.0.1", "@d-fischer/logger@^1.0.2", "@d-fischer/logger@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-1.0.3.tgz#4d71ab1fa5615c05cd21be0c68894268602e0766"
-  integrity sha512-sn0cvwROo3c+3icCHU3da+otZZOeAV1bfZVmWa7wOmK5x8iCm94h0J/NOPlmin2x+3q2mEJBG6xYFVEFfLTK8w==
+"@d-fischer/logger@^1.0.2", "@d-fischer/logger@^1.0.3", "@d-fischer/logger@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-1.1.1.tgz#e3469a01581dac3f21e9e6f8d4e2ca469f887e2e"
+  integrity sha512-JpK3Pl+8mW5LvsNfeCOJwOKOHX88KI1X4NFWSxSVgfY0KFV9nE478Y0/3ZjlTLJuiaxBEmOLsvhPGtQeDfi4EQ==
   dependencies:
     detect-node "^2.0.4"
     tslib "^1.10.0"

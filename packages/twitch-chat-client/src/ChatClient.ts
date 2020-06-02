@@ -2043,7 +2043,7 @@ export default class ChatClient extends IRCClient {
 		}
 
 		if (currentPassword && this._authVerified) {
-			this._chatLogger.debug2('Password assumed to be correct from last connection');
+			this._chatLogger.debug('Password assumed to be correct from last connection');
 			return currentPassword;
 		}
 

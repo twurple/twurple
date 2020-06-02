@@ -42,7 +42,7 @@ export default abstract class Subscription<T = any> {
 	}
 
 	/** @private */
-	_handleData(data: string, algoAndSignature: string) {
+	_handleData(data: string, algoAndSignature: string): boolean {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 
 		const hash = crypto
@@ -52,7 +52,10 @@ export default abstract class Subscription<T = any> {
 
 		if (hash === signature) {
 			this._handler(this.transformData(JSON.parse(data)));
+			return true;
 		}
+
+		return false;
 	}
 
 	async start() {

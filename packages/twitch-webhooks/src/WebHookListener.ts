@@ -1,6 +1,8 @@
+import Logger, { LoggerOptions } from '@d-fischer/logger';
 import { getPortPromise } from '@d-fischer/portfinder';
 import { v4 } from '@d-fischer/public-ip';
 import getRawBody from '@d-fischer/raw-body';
+import { NextFunction } from 'express';
 import { Request, Response, Server } from 'httpanda';
 import * as https from 'https';
 import TwitchClient, {
@@ -41,6 +43,7 @@ interface WebHookListenerConfig {
 	ssl?: WebHookListenerCertificateConfig;
 	reverseProxy?: WebHookListenerReverseProxyConfig;
 	hookValidity?: number;
+	logger?: Partial<LoggerOptions>;
 }
 
 interface WebHookListenerComputedConfig {
@@ -49,11 +52,13 @@ interface WebHookListenerComputedConfig {
 	ssl?: WebHookListenerCertificateConfig;
 	reverseProxy: Required<WebHookListenerReverseProxyConfig>;
 	hookValidity?: number;
+	logger: LoggerOptions;
 }
 
 export default class WebHookListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();
+	private readonly _logger: Logger;
 
 	static async create(client: TwitchClient, config: WebHookListenerConfig = {}) {
 		const listenerPort = config.port || (await getPortPromise());
@@ -68,7 +73,12 @@ export default class WebHookListener {
 					ssl: reverseProxy.ssl === undefined ? !!config.ssl : reverseProxy.ssl,
 					pathPrefix: reverseProxy.pathPrefix || ''
 				},
-				hookValidity: config.hookValidity
+				hookValidity: config.hookValidity,
+				logger: {
+					name: 'twitch-webhooks',
+					emoji: true,
+					...(config.logger ?? {})
+				}
 			},
 			client
 		);
@@ -77,29 +87,45 @@ export default class WebHookListener {
 	private constructor(
 		private readonly _config: WebHookListenerComputedConfig,
 		/** @private */ public readonly _twitchClient: TwitchClient
-	) {}
+	) {
+		this._logger = new Logger(_config.logger);
+	}
 
 	async listen() {
 		if (this._server) {
 			throw new Error('Trying to listen while already listening');
 		}
+		let server: https.Server | undefined;
 		if (this._config.ssl) {
-			const server = https.createServer({
+			server = https.createServer({
 				key: this._config.ssl.key,
 				cert: this._config.ssl.cert
 			});
-			this._server = new Server({ server });
-		} else {
-			this._server = new Server();
 		}
-		this._server.get('/:id', (req, res) => {
-			this._handleVerification(req, res);
+		this._server = new Server({ server });
+		// needs to be first in chain but run last, for proper logging of status
+		this._server.use((req: Request, res: Response, next: NextFunction) => {
+			setImmediate(() => {
+				this._logger.debug(`${req.method} ${req.path} - ${res.statusCode}`);
+			});
+			next();
 		});
-		// tslint:disable-next-line:no-floating-promises
-		this._server.post('/:id', (req, res) => {
-			this._handleNotification(req, res);
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		this._server.use((e: any, req: Request, res: Response, next: NextFunction) => {
+			if (e.code === 404) {
+				this._logger.warn(`Access to unknown URL/method attempted: ${req.method} ${req.url}`);
+			}
+		});
+		this._server.get('/:id', (req: Request, res: Response, next: NextFunction) => {
+			this._handleVerification(req, res);
+			next();
+		});
+		this._server.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
+			await this._handleNotification(req, res);
+			next();
 		});
 		await this._server.listen(this._config.port);
+		this._logger.info(`Listening on port ${this._config.port}`);
 
 		await Promise.all([...this._subscriptions.values()].map(async sub => sub.start()));
 	}
@@ -261,18 +287,22 @@ export default class WebHookListener {
 	}
 
 	private _handleVerification(req: Request, res: Response) {
-		const subscription = this._subscriptions.get(req.params.id);
+		const { id } = req.params;
+		const subscription = this._subscriptions.get(id);
 		if (subscription) {
 			if (req.query?.['hub.mode'] === 'subscribe') {
 				subscription._verify();
 				res.writeHead(202);
 				res.end(req.query['hub.challenge']);
+				this._logger.debug(`Successfully subscribed to hook: ${id}`);
 			} else {
-				this._subscriptions.delete(req.params.id);
+				this._subscriptions.delete(id);
 				res.writeHead(200);
 				res.end();
+				this._logger.debug(`Successfully unsubscribed from hook: ${id}`);
 			}
 		} else {
+			this._logger.warn(`Verification of unknown hook attempted: ${id}`);
 			res.writeHead(410);
 			res.end();
 		}
@@ -280,12 +310,22 @@ export default class WebHookListener {
 
 	private async _handleNotification(req: Request, res: Response) {
 		const body = await getRawBody(req, true);
-		const subscription = this._subscriptions.get(req.params.id);
+		const { id } = req.params;
+		const subscription = this._subscriptions.get(id);
 		if (subscription) {
 			res.writeHead(202);
 			res.end();
-			subscription._handleData(body, req.headers['x-hub-signature']! as string);
+			if (subscription._handleData(body, req.headers['x-hub-signature']! as string)) {
+				this._logger.debug(`Successfully verified notification signature for hook: ${id}`);
+			} else {
+				this._logger.warn(
+					`Failed to verify notification signature for hook: ${id}. ` +
+						'This might be caused by Twitch still sending notifications with an old secret and is perfectly normal a few times after you just restarted the script.\n' +
+						'If the problem persists over a long period of time, please file an issue.'
+				);
+			}
 		} else {
+			this._logger.warn(`Notification for unknown hook received: ${id}`);
 			res.writeHead(410);
 			res.end();
 		}

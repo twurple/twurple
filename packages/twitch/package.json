@@ -31,7 +31,7 @@
   "dependencies": {
     "@d-fischer/cache-decorators": "^2.0.0",
     "@d-fischer/cross-fetch": "^4.0.1",
-    "@d-fischer/logger": "^1.0.1",
+    "@d-fischer/logger": "^1.1.1",
     "@d-fischer/qs": "^7.0.2",
     "@d-fischer/rate-limiter": "^0.2.4",
     "@d-fischer/shared-utils": "^2.0.0",
