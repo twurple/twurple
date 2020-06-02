@@ -5266,10 +5266,10 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-httpanda@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/httpanda/-/httpanda-0.3.1.tgz#4a1d304a3803c151f9e1362340289cb59e55cd8a"
-  integrity sha512-Iu/pbZX+IVsRYGqQGfBSkgRD0f54fP5/wbB3YHi2pyjTgDslj06NwFAzUMg1o4HX14BpBNPGZkKuyVibEhyXqQ==
+httpanda@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/httpanda/-/httpanda-0.4.0.tgz#b0d692baec1dbb30c6a32e5ff47664db3df906e9"
+  integrity sha512-e7rA4qh1NsCpqRk70O1a7Nm6AZqrw8riicf2Fo4ZWFxY/q8Y0N1PPD5VEawguPmr5wmQ+8E0G+ZK3CmumakCfw==
   dependencies:
     "@types/node" "^14.0.5"
     tslib "^2.0.0"

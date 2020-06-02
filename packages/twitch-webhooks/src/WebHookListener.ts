@@ -2,7 +2,6 @@ import Logger, { LoggerOptions } from '@d-fischer/logger';
 import { getPortPromise } from '@d-fischer/portfinder';
 import { v4 } from '@d-fischer/public-ip';
 import getRawBody from '@d-fischer/raw-body';
-import { NextFunction } from 'express';
 import { Request, Response, Server } from 'httpanda';
 import * as https from 'https';
 import TwitchClient, {
@@ -102,25 +101,27 @@ export default class WebHookListener {
 				cert: this._config.ssl.cert
 			});
 		}
-		this._server = new Server({ server });
+		this._server = new Server({
+			server,
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			onError: (e, req: Request) => {
+				if (e.code === 404) {
+					this._logger.warn(`Access to unknown URL/method attempted: ${req.method} ${req.url}`);
+				}
+			}
+		});
 		// needs to be first in chain but run last, for proper logging of status
-		this._server.use((req: Request, res: Response, next: NextFunction) => {
+		this._server.use((req, res, next) => {
 			setImmediate(() => {
 				this._logger.debug(`${req.method} ${req.path} - ${res.statusCode}`);
 			});
 			next();
 		});
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		this._server.use((e: any, req: Request, res: Response, next: NextFunction) => {
-			if (e.code === 404) {
-				this._logger.warn(`Access to unknown URL/method attempted: ${req.method} ${req.url}`);
-			}
-		});
-		this._server.get('/:id', (req: Request, res: Response, next: NextFunction) => {
+		this._server.get('/:id', (req, res, next) => {
 			this._handleVerification(req, res);
 			next();
 		});
-		this._server.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
+		this._server.post('/:id', async (req, res, next) => {
 			await this._handleNotification(req, res);
 			next();
 		});
