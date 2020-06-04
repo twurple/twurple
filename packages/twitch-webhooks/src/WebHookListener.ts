@@ -291,16 +291,25 @@ export default class WebHookListener {
 		const { id } = req.params;
 		const subscription = this._subscriptions.get(id);
 		if (subscription) {
-			if (req.query?.['hub.mode'] === 'subscribe') {
+			const hubMode = req.query?.['hub.mode'];
+			if (hubMode === 'subscribe') {
 				subscription._verify();
 				res.writeHead(202);
 				res.end(req.query['hub.challenge']);
 				this._logger.debug(`Successfully subscribed to hook: ${id}`);
-			} else {
+			} else if (hubMode === 'unsubscribe') {
 				this._subscriptions.delete(id);
 				res.writeHead(200);
 				res.end();
 				this._logger.debug(`Successfully unsubscribed from hook: ${id}`);
+			} else if (hubMode === 'denied') {
+				this._logger.error(`Subscription denied to hook: ${id} (${req.query['hub.reason']})`);
+				res.writeHead(200);
+				res.end();
+			} else {
+				this._logger.warn(`Unknown hub.mode ${hubMode} for hook: ${id}`);
+				res.writeHead(400);
+				res.end();
 			}
 		} else {
 			this._logger.warn(`Verification of unknown hook attempted: ${id}`);
