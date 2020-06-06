@@ -25,26 +25,94 @@ import Subscription from './Subscriptions/Subscription';
 import SubscriptionEventSubscription from './Subscriptions/SubscriptionEventSubscription';
 import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
 
-interface WebHookListenerCertificateConfig {
+/**
+ * Certificate data used to make the listener server SSL capable.
+ */
+export interface WebHookListenerCertificateConfig {
+	/**
+	 * The private key of your SSL certificate.
+	 */
 	key: string;
+
+	/**
+	 * Your SSL certificate.
+	 */
 	cert: string;
 }
 
-interface WebHookListenerReverseProxyConfig {
+/**
+ * Configuration of a reverse proxy that the listener may be behind.
+ */
+export interface WebHookListenerReverseProxyConfig {
+	/**
+	 * The port your reverse proxy is available under.
+	 */
 	port?: number;
+
+	/**
+	 * Whether your reverse proxy is available using SSL on the given port.
+	 */
 	ssl?: boolean;
+
+	/**
+	 * The path prefix your reverse proxy redirects to the listener.
+	 *
+	 * Please keep in mind that this prefix needs to be stripped from the URL in order for the listener to work properly.
+	 *
+	 * For example, if you make your reverse proxy redirect any requests to https://twitchapp.example.com/hooks to the listener, the proxy needs to transform the URL from `/hooks/:name` to `/:name`.
+	 */
 	pathPrefix?: string;
 }
 
-interface WebHookListenerConfig {
+/**
+ * The configuration of a WebHook listener.
+ */
+export interface WebHookListenerConfig {
+	/**
+	 * The host name the server will be available under.
+	 *
+	 * This is not an URL, but a plain host name, so it shouldn't contain `http://` or `https://` or any slashes.
+	 *
+	 * If not given, your IPv4 address will be automatically determined using a web service.
+	 */
 	hostName?: string;
+
+	/**
+	 * The port the server should listen to, and unless `reverseProxy` configuration is given, also the port it's available under.
+	 *
+	 * If not given, a free port will be automatically determined.
+	 */
 	port?: number;
+
+	/**
+	 * The SSL keychain that should be used to make the server available using a secure connection.
+	 *
+	 * If this is not given and `config.reverseProxy.ssl` is not true, the server will only be available via HTTP.
+	 * This means it can **only listen to unauthenticated topics** (stream changes and follows).
+	 */
 	ssl?: WebHookListenerCertificateConfig;
+
+	/**
+	 * Configuration of a reverse proxy that the listener may be behind.
+	 */
 	reverseProxy?: WebHookListenerReverseProxyConfig;
+
+	/**
+	 * Default validity of a WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	hookValidity?: number;
+
+	/**
+	 * Options to pass to the logger.
+	 */
 	logger?: Partial<LoggerOptions>;
 }
 
+/** @private */
 interface WebHookListenerComputedConfig {
 	hostName: string;
 	port: number;
@@ -54,12 +122,21 @@ interface WebHookListenerComputedConfig {
 	logger: LoggerOptions;
 }
 
+/**
+ * A WebHook listener you can track changes in various channel and user data with.
+ */
 export default class WebHookListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();
 	private readonly _logger: Logger;
 
-	static async create(client: TwitchClient, config: WebHookListenerConfig = {}) {
+	/**
+	 * Creates a new WebHook listener.
+	 *
+	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
+	 * @param config
+	 */
+	static async create(twitchClient: TwitchClient, config: WebHookListenerConfig = {}) {
 		const listenerPort = config.port || (await getPortPromise());
 		const reverseProxy = config.reverseProxy || {};
 		return new WebHookListener(
@@ -79,7 +156,7 @@ export default class WebHookListener {
 					...(config.logger ?? {})
 				}
 			},
-			client
+			twitchClient
 		);
 	}
 
@@ -90,6 +167,9 @@ export default class WebHookListener {
 		this._logger = new Logger(_config.logger);
 	}
 
+	/**
+	 * Starts the backing server and listens to incoming WebHook notifications.
+	 */
 	async listen() {
 		if (this._server) {
 			throw new Error('Trying to listen while already listening');
@@ -131,6 +211,9 @@ export default class WebHookListener {
 		await Promise.all([...this._subscriptions.values()].map(async sub => sub.start()));
 	}
 
+	/**
+	 * Stops the backing server, suspending all active subscriptions.
+	 */
 	async unlisten() {
 		if (!this._server) {
 			throw new Error('Trying to unlisten while not listening');
@@ -139,9 +222,21 @@ export default class WebHookListener {
 		await this._server.close();
 		this._server = undefined;
 
-		await Promise.all([...this._subscriptions.values()].map(async sub => sub.stop()));
+		await Promise.all([...this._subscriptions.values()].map(async sub => sub.suspend()));
 	}
 
+	/**
+	 * Subscribes to events representing a user changing a public setting or their email address.
+	 *
+	 * @param user The user for which to get notifications about changing a setting.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param withEmail Whether to subscribe to email address changes. This requires an additional scope (user:read:email).
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	async subscribeToUserChanges(
 		user: UserIdResolvable,
 		handler: (user: HelixUser) => void,
@@ -157,6 +252,17 @@ export default class WebHookListener {
 		return subscription;
 	}
 
+	/**
+	 * Subscribes to events representing a user being followed by other users.
+	 *
+	 * @param user The user for which to get notifications about the users they will be followed by.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	async subscribeToFollowsToUser(
 		user: UserIdResolvable,
 		handler: (follow: HelixFollow) => void,
@@ -171,6 +277,17 @@ export default class WebHookListener {
 		return subscription;
 	}
 
+	/**
+	 * Subscribes to events representing a user following other users.
+	 *
+	 * @param user The user for which to get notifications about the users they will follow.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	async subscribeToFollowsFromUser(
 		user: UserIdResolvable,
 		handler: (follow: HelixFollow) => void,
@@ -185,6 +302,17 @@ export default class WebHookListener {
 		return subscription;
 	}
 
+	/**
+	 * Subscribes to events representing a stream changing, i.e. going live, offline or changing its title or category.
+	 *
+	 * @param user The user for which to get notifications about their streams changing.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	async subscribeToStreamChanges(
 		user: UserIdResolvable,
 		handler: (stream?: HelixStream) => void,
@@ -199,6 +327,17 @@ export default class WebHookListener {
 		return subscription;
 	}
 
+	/**
+	 * Subscribes to events representing the start or end of a channel subscription.
+	 *
+	 * @param user The user for which to get notifications about subscriptions to their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	async subscribeToSubscriptionEvents(
 		user: UserIdResolvable,
 		handler: (subscriptionEvent: HelixSubscriptionEvent) => void,
@@ -213,6 +352,18 @@ export default class WebHookListener {
 		return subscription;
 	}
 
+	/**
+	 * Subscribes to events representing a ban or unban.
+	 *
+	 * @param broadcaster The broadcaster for which to get notifications about bans or unbans in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param user The user that events will be sent for. If not given, events will be sent for all users.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	async subscribeToBanEvents(
 		broadcaster: UserIdResolvable,
 		handler: (banEvent: HelixBanEvent) => void,
@@ -229,6 +380,18 @@ export default class WebHookListener {
 		return subscription;
 	}
 
+	/**
+	 * Subscribes to events representing a user gaining or losing moderator privileges in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which to get notifications about moderator changes in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param user The user that events will be sent for. If not given, events will be sent for all users.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	async subscribeToModeratorEvents(
 		broadcaster: UserIdResolvable,
 		handler: (modEvent: HelixModeratorEvent) => void,
@@ -245,6 +408,17 @@ export default class WebHookListener {
 		return subscription;
 	}
 
+	/**
+	 * Subscribes to extension transactions.
+	 *
+	 * @param extensionId The extension ID for which to get notifications about transactions.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
 	async subscribeToExtensionTransactions(
 		extensionId: string,
 		handler: (transaction: HelixExtensionTransaction) => void,

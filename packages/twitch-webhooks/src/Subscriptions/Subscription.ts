@@ -7,7 +7,7 @@ import WebHookListener from '../WebHookListener';
  * @hideProtected
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default abstract class Subscription<T = any> {
+export default abstract class Subscription</** @private */ T = any> {
 	private _verified: boolean = false;
 	protected _secret: string;
 	private _refreshTimer?: NodeJS.Timer;
@@ -19,6 +19,9 @@ export default abstract class Subscription<T = any> {
 		private _validityInSeconds: number = 100000
 	) {}
 
+	/**
+	 * Whether the subscription has been verified by Twitch.
+	 */
 	get verified() {
 		return this._verified;
 	}
@@ -58,6 +61,9 @@ export default abstract class Subscription<T = any> {
 		return false;
 	}
 
+	/**
+	 * Activates the subscription.
+	 */
 	async start() {
 		if (this._refreshTimer) {
 			clearInterval(this._refreshTimer);
@@ -68,15 +74,26 @@ export default abstract class Subscription<T = any> {
 		}, this._validityInSeconds * 800); // refresh a little bit faster than we could theoretically make work, but in millis
 	}
 
-	async stop() {
+	/**
+	 * Suspends the subscription, not removing it from the listener.
+	 */
+	async suspend() {
 		if (this._refreshTimer) {
 			clearInterval(this._refreshTimer);
 			this._refreshTimer = undefined;
 		}
 		await this._unsubscribe();
+	}
+
+	/**
+	 * Deactivates the subscription and removes it from the listener.
+	 */
+	async stop() {
+		await this.suspend();
 		this._client._dropSubscription(this.id);
 	}
 
+	/** @private */
 	abstract get id(): string;
 
 	protected abstract _subscribe(): Promise<void>;

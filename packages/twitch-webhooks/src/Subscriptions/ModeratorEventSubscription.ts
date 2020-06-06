@@ -4,11 +4,9 @@ import WebHookListener from '../WebHookListener';
 import Subscription from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
 export default class ModeratorEventSubscription extends Subscription<HelixModeratorEvent> {
-	/** @private */
 	constructor(
 		private readonly _broadcasterId: string,
 		handler: (data: HelixModeratorEvent) => void,

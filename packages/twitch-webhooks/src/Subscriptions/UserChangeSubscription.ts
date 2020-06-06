@@ -4,11 +4,9 @@ import WebHookListener from '../WebHookListener';
 import Subscription from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
 export default class UserChangeSubscription extends Subscription<HelixUser> {
-	/** @private */
 	constructor(
 		private readonly _userId: string,
 		handler: (data: HelixUser) => void,

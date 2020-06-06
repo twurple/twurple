@@ -4,11 +4,9 @@ import WebHookListener from '../WebHookListener';
 import Subscription from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
 export default class StreamChangeSubscription extends Subscription<HelixStream | undefined> {
-	/** @private */
 	constructor(
 		private readonly _userId: string,
 		handler: (data: HelixStream) => void,

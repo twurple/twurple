@@ -4,11 +4,9 @@ import WebHookListener from '../WebHookListener';
 import Subscription from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
 export default class ExtensionTransactionSubscription extends Subscription<HelixExtensionTransaction> {
-	/** @private */
 	constructor(
 		private readonly _extensionId: string,
 		handler: (data: HelixExtensionTransaction) => void,

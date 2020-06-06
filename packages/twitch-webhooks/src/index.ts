@@ -1,18 +1,14 @@
 /* eslint-disable filenames/match-exported */
-import WebHookListener from './WebHookListener';
+import WebHookListener, {
+	WebHookListenerConfig,
+	WebHookListenerCertificateConfig,
+	WebHookListenerReverseProxyConfig
+} from './WebHookListener';
 
 export default WebHookListener;
 
-import Subscription from './Subscriptions/Subscription';
-import FollowsFromUserSubscription from './Subscriptions/FollowsFromUserSubscription';
-import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription';
-import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
-import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
+export { WebHookListenerConfig, WebHookListenerCertificateConfig, WebHookListenerReverseProxyConfig };
 
-export {
-	Subscription,
-	FollowsFromUserSubscription,
-	FollowsToUserSubscription,
-	StreamChangeSubscription,
-	UserChangeSubscription
-};
+import Subscription from './Subscriptions/Subscription';
+
+export { Subscription };
