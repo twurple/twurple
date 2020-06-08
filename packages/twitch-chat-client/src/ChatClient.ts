@@ -1983,17 +1983,7 @@ export default class ChatClient extends IRCClient {
 	 * Disconnects from the chat server.
 	 */
 	async quit() {
-		return new Promise<void>(resolve => {
-			if (this._connection) {
-				const thatConnection = this._connection;
-				const handler = () => {
-					thatConnection.removeListener('disconnect', handler);
-					resolve();
-				};
-				thatConnection.addListener('disconnect', handler);
-				thatConnection.disconnect();
-			}
-		});
+		return this._connection?.disconnect();
 	}
 
 	/**

@@ -39,10 +39,10 @@
     "@types/node" "^12.12.14"
     tslib "^1.10.0"
 
-"@d-fischer/connection@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-3.0.3.tgz#b329c37c84815a45f6d04b0380bd03fdb19c2051"
-  integrity sha512-oRTezAUeFzfFD/pWiHAiYawkFaIPtDmHuFCHzPrSWosnwbV4RvkiwKpkzHqDn7nOg4Y4jYLz9bHeFL6HlykrXw==
+"@d-fischer/connection@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-4.0.0.tgz#f8640c87a0b3197b85b68e4c7c30a67f7d3cca45"
+  integrity sha512-C5QsPXzIPSFouxnrM/5bh6v2GBQ2uAmoZmwFmrbfQigpUW61Lhg+Kr20H/3hrfAKeP49LJHt5lEU2Q1nMARz5g==
   dependencies:
     "@d-fischer/isomorphic-ws" "^5.0.2"
     "@d-fischer/shared-utils" "^2.0.0"
@@ -1452,7 +1452,7 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.13.4.tgz#1581d6c16e3d4803eb079c87d4ac893ee7501c2c"
   integrity sha512-x26ur3dSXgv5AwKS0lNfbjpCakGIduWU1DU91Zz58ONRWrIKGunmZBNv4P7N+e27sJkiGDsw/3fT4AtsqQBrBA==
 
-"@types/node@^12.0.12", "@types/node@^12.12.12", "@types/node@^12.12.14", "@types/node@^12.12.5":
+"@types/node@^12.0.12", "@types/node@^12.12.14", "@types/node@^12.12.5":
   version "12.12.37"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.12.37.tgz#cb4782d847f801fa58316da5b4801ca3a59ae790"
   integrity sha512-4mXKoDptrXAwZErQHrLzpe0FN/0Wmf5JRniSVIdwUrtDf9wnmEV1teCNLBo/TwuXhkK/bVegoEn/wmb+x0AuPg==
@@ -5550,19 +5550,19 @@ ipaddr.js@1.9.1, ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.23.5:
-  version "0.23.5"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.23.5.tgz#449efbabfe7b6e88d666f8a2de0e7349f99c6dae"
-  integrity sha512-J9UGelPIy0kSSSaPZ2nrvrTBONcUxHYtQSPR1ahXNi/JArv4hgLOiOemPAp6Qg7tngBO6bZ6Uq52J+3Z64CSoA==
+ircv3@^0.23.8:
+  version "0.23.8"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.23.8.tgz#587a36ed5452eee3694856d25d03e9ed40a4b364"
+  integrity sha512-MxGP2j4TCsD16hMXUopbnsSlk4vFZRss4lGvILvEjrjeO8zhTTPOAz/97mKcV1XqUdApm1Ax7dTdFH+Swfe1nA==
   dependencies:
-    "@d-fischer/connection" "^3.0.3"
+    "@d-fischer/connection" "^4.0.0"
     "@d-fischer/escape-string-regexp" "^5.0.0"
     "@d-fischer/klona" "^1.1.5"
     "@d-fischer/logger" "^1.0.3"
     "@d-fischer/shared-utils" "^2.0.0"
     "@d-fischer/typed-event-emitter" "^3.0.0"
     "@types/clone" "^0.1.30"
-    "@types/node" "^12.12.12"
+    "@types/node" "^14.0.11"
     clone "^2.1.2"
 
 is-absolute-url@^3.0.3:
