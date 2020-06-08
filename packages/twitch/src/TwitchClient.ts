@@ -232,7 +232,7 @@ export default class TwitchClient {
 	}
 
 	/**
-	 * Makes a call to the Twitch API using given credetials.
+	 * Makes a call to the Twitch API using given credentials.
 	 *
 	 * @param options The configuration of the call.
 	 * @param clientId The client ID of your application.
