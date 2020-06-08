@@ -76,6 +76,13 @@ export default class ChatUser {
 	}
 
 	/**
+	 * Whether the user is the broadcaster.
+	 */
+	get isBroadcaster() {
+		return this.badges.has('broadcaster');
+	}
+
+	/**
 	 * Whether the user is subscribed to the channel.
 	 */
 	get isSubscriber() {
