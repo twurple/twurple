@@ -1,6 +1,6 @@
 {
   "name": "twitch-webhooks",
-  "version": "4.1.0-pre.8",
+  "version": "4.1.0-pre.9",
   "description": "Listen to events on Twitch via their WebHooks API.",
   "keywords": [
     "twitch",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@types/trouter": "^3.1.0",
-    "twitch": "^4.1.0-pre.8"
+    "twitch": "^4.1.0-pre.9"
   },
   "peerDependencies": {
     "twitch": "^4.0.0"
