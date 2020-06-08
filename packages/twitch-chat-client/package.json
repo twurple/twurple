@@ -28,6 +28,7 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
+    "@d-fischer/cache-decorators": "^2.0.0",
     "@d-fischer/deprecate": "^2.0.1",
     "@d-fischer/logger": "^1.1.1",
     "@d-fischer/shared-utils": "^2.0.0",
