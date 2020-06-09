@@ -1,3 +1,5 @@
+/// <reference lib="dom" />
+
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import fetch, { Headers } from '@d-fischer/cross-fetch';
 import { LogLevel } from '@d-fischer/logger';

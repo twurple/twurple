@@ -1,3 +1,5 @@
+/// <reference lib="esnext.asynciterable" />
+
 import { NonEnumerable } from '@d-fischer/shared-utils';
 import TwitchClient, { TwitchAPICallOptions, TwitchAPICallType } from '../../TwitchClient';
 import { HelixPaginatedResponse } from './HelixResponse';
