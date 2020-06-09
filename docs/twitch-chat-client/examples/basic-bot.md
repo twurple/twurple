@@ -78,7 +78,7 @@ Using the `TwitchClient` instance we just created, we can easily create a `ChatC
 The given channels will automatically be joined after connecting.
 
 ```typescript
-const chatClient = await ChatClient.forTwitchClient(twitchClient, { channels: ['satisfiedpear'] });
+const chatClient = ChatClient.forTwitchClient(twitchClient, { channels: ['satisfiedpear'] });
 await chatClient.connect();
 ```
 
@@ -209,7 +209,7 @@ import * as fs from 'fs-extra';
         }
     });
 
-    const chatClient = await ChatClient.forTwitchClient(twitchClient, { channels: ['satisfiedpear'] });
+    const chatClient = ChatClient.forTwitchClient(twitchClient, { channels: ['satisfiedpear'] });
     await chatClient.connect();
 
     chatClient.onPrivmsg((channel, user, message) => {
