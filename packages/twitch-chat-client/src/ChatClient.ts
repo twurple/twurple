@@ -3,7 +3,7 @@ import Logger, { LoggerOptions, LogLevel } from '@d-fischer/logger';
 import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
 import IRCClient, { MessageTypes } from 'ircv3';
-import TwitchClient, { CommercialLength, InvalidTokenError } from 'twitch';
+import TwitchClient, { CommercialLength, InvalidTokenError, InvalidTokenTypeError } from 'twitch';
 import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
 import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import HostTarget from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -643,6 +643,14 @@ export default class ChatClient extends IRCClient {
 			channels: options.channels
 		});
 		/* eslint-enable no-restricted-syntax */
+
+		if (twitchClient?.tokenType === 'app') {
+			throw new InvalidTokenTypeError(
+				'You can not connect to chat using an AuthProvider that supplies app access tokens.\n' +
+					'To get an anonymous, read-only connection, please use `ChatClient.anonymous()`.\n' +
+					'To get a read-write connection, please provide a user access token to your TwitchClient instance, for example using `TwitchClient.withCredentials()`.'
+			);
+		}
 
 		this._chatLogger = new Logger({
 			name: 'twitch-chat',

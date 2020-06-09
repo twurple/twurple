@@ -8,6 +8,7 @@ import ConfigError from './Errors/ConfigError';
 import HellFreezesOverError from './Errors/HellFreezesOverError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 import InvalidTokenError from './Errors/InvalidTokenError';
+import InvalidTokenTypeError from './Errors/InvalidTokenTypeError';
 import NoSubscriptionProgramError from './Errors/NoSubscriptionProgramError';
 import StreamNotLiveError from './Errors/StreamNotLiveError';
 
@@ -16,6 +17,7 @@ export {
 	HellFreezesOverError,
 	HTTPStatusCodeError,
 	InvalidTokenError,
+	InvalidTokenTypeError,
 	NoSubscriptionProgramError,
 	StreamNotLiveError
 };

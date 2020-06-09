@@ -6,6 +6,7 @@ import CustomError from './CustomError';
  * and the given channel does not have a subscription program.
  */
 export default class NoSubscriptionProgramError extends CustomError {
+	/** @private */
 	constructor(channelId: string) {
 		super(`Channel ${channelId} does not have a subscription program`);
 	}
