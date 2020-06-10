@@ -68,10 +68,9 @@ import Stream, { StreamType } from './API/Kraken/Stream/Stream';
 
 export { Stream, StreamType };
 
-import ChannelEvent from './API/Unsupported/ChannelEvent';
 import ChattersList from './API/Unsupported/ChattersList';
 
-export { ChannelEvent, ChattersList };
+export { ChattersList };
 
 import PrivilegedUser from './API/Kraken/User/PrivilegedUser';
 import User from './API/Kraken/User/User';
