@@ -20,7 +20,7 @@ const memberNames = [
 	'^video_banner$',
 	'^channel_feed_enabled$',
 	'^(start|end)_time$',
-	'^((cover|offline|profile)_image|edit|embed|thumbnail|box_art|click)_url$',
+	'^((offline|profile)_image|edit|embed|thumbnail|box_art|click)_url$',
 	'^click_action$',
 	'^(image_)?url_\\dx$',
 	'^emoticon_set$',

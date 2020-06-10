@@ -1,8 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../Toolkit/UserTools';
+import { extractUserName, UserNameResolvable } from '../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../TwitchClient';
 import BaseAPI from '../BaseAPI';
-import ChannelEvent, { ChannelEventAPIResult, ChannelEventData } from './ChannelEvent';
 import ChattersList, { ChattersListData } from './ChattersList';
 
 /**
@@ -34,17 +33,5 @@ export default class UnsupportedAPI extends BaseAPI {
 			type: TwitchAPICallType.Custom
 		});
 		return new ChattersList(data);
-	}
-
-	/**
-	 * Retrieves a list of event planned for the given channel.
-	 *
-	 * @param channel The channel to retrieve the events for.
-	 */
-	@Cached(60)
-	async getEvents(channel: UserIdResolvable) {
-		const channelId = extractUserId(channel);
-		const data = await this._client.callAPI<ChannelEventAPIResult>({ url: `channels/${channelId}/events` });
-		return data.events.map((event: ChannelEventData) => new ChannelEvent(event, this._client));
 	}
 }
