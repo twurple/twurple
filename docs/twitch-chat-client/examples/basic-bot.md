@@ -54,12 +54,14 @@ import TwitchClient from 'twitch';
 import ChatClient from 'twitch-chat-client';
 ```
 
-Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an immediately executed inline function expression.
+Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an async function and running it.
 
 ```typescript
-(async () => {
+async function main() {
 	// code goes here
-})();
+}
+
+main();
 ```
 
 All the following code needs to be inside this function (or at least called from inside it) so we can use `await` and still avoid race conditions.
@@ -153,11 +155,11 @@ To prepare for this, let's move the tokens to a JSON file named `tokens.json`:
 
 I also added a new property called `expiryTimestamp`. It will save the expiry time of the access token so the client can determine when to refresh the token without making a failing call first. If you didn't calculate the expiry timestamp after sending the manual code request (you probably didn't - I wouldn't either), you can initialize it to zero to always make a refresh call in the beginning.
 
-Now, we can parse this JSON file on startup, load the tokens from it and when the tokens refresh, save them back into the same file. For the file I/O, I prefer to use the `fs-extra` package because it provides a promisified interface to the filesystem, unlike the `fs` package shipped with Node, which still uses callbacks.
+Now, we can parse this JSON file on startup, load the tokens from it and when the tokens refresh, save them back into the same file.
 
 ```typescript
 // add to import block before async function
-import * as fs from 'fs-extra';
+import { promises as fs } from 'fs';
 
 // inside the async function again
 const tokenData = JSON.parse(await fs.readFile('./tokens.json'));
@@ -189,9 +191,9 @@ For reference, here's the full code that _should_ be the result of everything we
 ```typescript
 import TwitchClient from 'twitch';
 import ChatClient from 'twitch-chat-client';
-import * as fs from 'fs-extra';
+import { promises as fs } from 'fs';
 
-(async () => {
+async function main() {
     const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
     const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
     const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
@@ -230,5 +232,7 @@ import * as fs from 'fs-extra';
     chatClient.onSubGift((channel, user, subInfo) => {
         chatClient.say(channel, `Thanks to ${subInfo.gifter} for gifting a subscription to ${user}!`);
     });
-})();
+}
+
+main();
 ```
