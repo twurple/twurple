@@ -1212,12 +1212,20 @@ export default class ChatClient extends IRCClient {
 					break;
 				}
 
+				case 'bad_timeout_mod': {
+					const match = message.match(/^You cannot timeout moderator (\w+) unless/);
+					if (match) {
+						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
+					}
+					break;
+				}
+
 				case 'bad_timeout_admin':
 				case 'bad_timeout_global_mod':
 				case 'bad_timeout_staff': {
 					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
 					if (match) {
-						this.emit(this._onTimeoutResult, channel, match[1].toLowerCase(), undefined, messageType);
+						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
 					}
 					break;
 				}
