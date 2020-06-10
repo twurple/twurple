@@ -1,6 +1,6 @@
 /* eslint-disable filenames/match-exported */
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
-import { parse } from '@d-fischer/qs';
+import { parse, stringify } from '@d-fischer/qs';
 import { AccessToken, AuthProvider, AuthProviderTokenType } from 'twitch';
 import WindowClosedError from './WindowClosedError';
 
@@ -55,10 +55,19 @@ const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> 
 	closeOnLogin: true
 };
 
+interface AuthorizeParams {
+	response_type: string;
+	client_id: string;
+	redirect_uri: string;
+	scope: string;
+	force_verify?: boolean;
+}
+
 export default class ElectronAuthProvider implements AuthProvider {
 	private _accessToken?: AccessToken;
 	private readonly _currentScopes = new Set<string>();
 	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
+	private _allowUserChange = false;
 
 	readonly tokenType: AuthProviderTokenType = 'user';
 
@@ -69,6 +78,10 @@ export default class ElectronAuthProvider implements AuthProvider {
 		options?: Options<WindowStyleOptions> | Options<WindowOptions>
 	) {
 		this._options = { ...defaultOptions, ...options };
+	}
+
+	allowUserChange() {
+		this._allowUserChange = true;
 	}
 
 	get clientId() {
@@ -93,9 +106,16 @@ export default class ElectronAuthProvider implements AuthProvider {
 			}
 
 			const redir = encodeURIComponent(this._clientCredentials.redirectURI);
-			const authUrl = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${
-				this.clientId
-			}&redirect_uri=${redir}&scope=${scopes.join(' ')}`;
+			const queryParams: AuthorizeParams = {
+				response_type: 'token',
+				client_id: this.clientId,
+				redirect_uri: redir,
+				scope: scopes.join(' ')
+			};
+			if (this._allowUserChange) {
+				queryParams.force_verify = true;
+			}
+			const authUrl = `https://id.twitch.tv/oauth2/authorize${stringify(queryParams)}`;
 			const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
 				width: 800,
 				height: 600,
@@ -169,6 +189,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 							scope: this.currentScopes,
 							refresh_token: ''
 						});
+						this._allowUserChange = false;
 						resolve(this._accessToken);
 					}
 
