@@ -20,6 +20,7 @@ import ChatCommunityPayForwardInfo from './UserNotices/ChatCommunityPayForwardIn
 import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
 import ChatPrimeCommunityGiftInfo from './UserNotices/ChatPrimeCommunityGiftInfo';
 import ChatRaidInfo from './UserNotices/ChatRaidInfo';
+import ChatRewardGiftInfo from './UserNotices/ChatRewardGiftInfo';
 import ChatRitualInfo from './UserNotices/ChatRitualInfo';
 import ChatStandardPayForwardInfo from './UserNotices/ChatStandardPayForwardInfo';
 import ChatSubInfo, {
@@ -376,6 +377,19 @@ export default class ChatClient extends IRCClient {
 	 */
 	onSubExtend: (
 		handler: (channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user gifts rewards during a special event.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the rewards were gifted.
+	 * @param user The user that gifted the rewards.
+	 * @param rewardGiftInfo Additional information about the reward gift.
+	 * @param msg The raw message that was received.
+	 */
+	onRewardGift: (
+		handler: (channel: string, user: string, rewardGiftInfo: ChatRewardGiftInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
 	/**
@@ -939,6 +953,18 @@ export default class ChatClient extends IRCClient {
 						endMonth: Number(tags.get('msg-param-sub-benefit-end-month'))
 					};
 					this.emit(this.onSubExtend, channel, tags.get('login')!, extendInfo, userNotice);
+					break;
+				}
+				case 'rewardgift': {
+					const rewardGiftInfo: ChatRewardGiftInfo = {
+						domain: tags.get('msg-param-domain')!,
+						gifterId: tags.get('user-id')!,
+						gifterDisplayName: tags.get('display-name')!,
+						count: Number(tags.get('msg-param-selected-count')),
+						gifterGiftCount: Number(tags.get('msg-param-total-reward-count')),
+						triggerType: tags.get('msg-param-trigger-type')!
+					};
+					this.emit(this.onRewardGift, channel, tags.get('login')!, rewardGiftInfo, userNotice);
 					break;
 				}
 				default: {
