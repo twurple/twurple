@@ -5323,10 +5323,10 @@ http-signature@~1.2.0:
     jsprim "^1.2.2"
     sshpk "^1.7.0"
 
-httpanda@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/httpanda/-/httpanda-0.4.0.tgz#b0d692baec1dbb30c6a32e5ff47664db3df906e9"
-  integrity sha512-e7rA4qh1NsCpqRk70O1a7Nm6AZqrw8riicf2Fo4ZWFxY/q8Y0N1PPD5VEawguPmr5wmQ+8E0G+ZK3CmumakCfw==
+httpanda@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/httpanda/-/httpanda-0.4.1.tgz#d3e4fe1235f396a6bd4aebaea5c666dcb15abf44"
+  integrity sha512-jhEZLY2BJI0lWW4mivPRRDuKxpfeWUCBNJ0Z2LfcdmotWhu2/LFv/QkjwTnAOXV+lRE8xQUNNXbRiUvTizV4PQ==
   dependencies:
     "@types/node" "^14.0.5"
     tslib "^2.0.0"
