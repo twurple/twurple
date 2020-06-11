@@ -27,7 +27,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/qs": "^7.0.2",
-    "tslib": "^1.9.3"
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "twitch": "^4.1.0-pre.10"

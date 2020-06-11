@@ -21,7 +21,7 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/shared-utils": "^1.2.1",
+    "@d-fischer/shared-utils": "^2.0.1",
     "twitch": "^4.1.0-pre.10",
     "twitch-chat-client": "^4.1.0-pre.10"
   },

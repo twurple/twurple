@@ -31,10 +31,10 @@
     "@d-fischer/cache-decorators": "^2.0.0",
     "@d-fischer/deprecate": "^2.0.1",
     "@d-fischer/logger": "^1.1.1",
-    "@d-fischer/shared-utils": "^2.0.0",
+    "@d-fischer/shared-utils": "^2.0.1",
     "@d-fischer/typed-event-emitter": "^3.0.0",
-    "ircv3": "^0.23.8",
-    "tslib": "^1.9.3"
+    "ircv3": "^0.23.9",
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
     "twitch": "^4.1.0-pre.10"

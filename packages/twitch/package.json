@@ -34,9 +34,9 @@
     "@d-fischer/logger": "^1.1.1",
     "@d-fischer/qs": "^7.0.2",
     "@d-fischer/rate-limiter": "^0.2.4",
-    "@d-fischer/shared-utils": "^2.0.0",
+    "@d-fischer/shared-utils": "^2.0.1",
     "top-package": "^1.0.0",
-    "tslib": "^1.9.3"
+    "tslib": "^2.0.0"
   },
   "files": [
     "LICENSE",
