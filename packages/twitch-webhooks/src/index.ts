@@ -4,6 +4,10 @@ import WebHookListener, { WebHookListenerCertificateConfig } from './WebHookList
 export default WebHookListener;
 export { WebHookListenerCertificateConfig };
 
+import ConnectCompatibleApp, { ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
+
+export { ConnectCompatibleApp, ConnectCompatibleMiddleware };
+
 import ConnectionAdapter, { CommonConnectionAdapterConfig } from './Adapters/ConnectionAdapter';
 
 export { ConnectionAdapter, CommonConnectionAdapterConfig };

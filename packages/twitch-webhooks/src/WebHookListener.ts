@@ -1,6 +1,6 @@
 import Logger, { LoggerOptions } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
-import { Request, Response, Server } from 'httpanda';
+import { Request, RequestHandler, Response, Server } from 'httpanda';
 import TwitchClient, {
 	extractUserId,
 	HelixBanEvent,
@@ -14,6 +14,7 @@ import TwitchClient, {
 } from 'twitch';
 import ConnectionAdapter from './Adapters/ConnectionAdapter';
 import LegacyAdapter, { WebHookListenerConfig } from './Adapters/LegacyAdapter';
+import ConnectCompatibleApp from './ConnectCompatibleApp';
 import BanEventSubscription from './Subscriptions/BanEventSubscription';
 import ExtensionTransactionSubscription from './Subscriptions/ExtensionTransactionSubscription';
 import FollowsFromUserSubscription from './Subscriptions/FollowsFromUserSubscription';
@@ -126,14 +127,7 @@ export default class WebHookListener {
 			});
 			next();
 		});
-		this._server.get('/:id', (req, res, next) => {
-			this._handleVerification(req, res);
-			next();
-		});
-		this._server.post('/:id', async (req, res, next) => {
-			await this._handleNotification(req, res);
-			next();
-		});
+		this._server.all('/:id', this._createHandleRequest());
 		const listenerPort = await this._adapter.getListenerPort();
 		await this._server.listen(listenerPort);
 		this._logger.info(`Listening on port ${listenerPort}`);
@@ -153,6 +147,29 @@ export default class WebHookListener {
 		this._server = undefined;
 
 		await Promise.all([...this._subscriptions.values()].map(async sub => sub.suspend()));
+	}
+
+	/**
+	 * Applies middleware that handles WebHooks to a connect-compatible app (like express).
+	 *
+	 * @param app The app the middleware should be applied to.
+	 */
+	applyMiddleware(app: ConnectCompatibleApp) {
+		let { pathPrefix } = this._adapter;
+		if (pathPrefix) {
+			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/, '')}`;
+		}
+		const paramParser: RequestHandler = (req, res, next) => {
+			const [, id] = req.path.split('/');
+			req.param = req.params = { id };
+			next();
+		};
+		const requestHandler = this._createHandleRequest();
+		if (pathPrefix) {
+			app.use(pathPrefix, paramParser, requestHandler);
+		} else {
+			app.use(paramParser, requestHandler);
+		}
 	}
 
 	/**
@@ -390,8 +407,19 @@ export default class WebHookListener {
 		this._subscriptions.delete(id);
 	}
 
+	private _createHandleRequest(): RequestHandler {
+		return async (req, res, next) => {
+			if (req.method === 'GET') {
+				this._handleVerification(req, res);
+			} else if (req.method === 'POST') {
+				await this._handleNotification(req, res);
+			}
+			next();
+		};
+	}
+
 	private _handleVerification(req: Request, res: Response) {
-		const { id } = req.params;
+		const { id } = req.param;
 		const subscription = this._subscriptions.get(id);
 		if (subscription) {
 			const hubMode = req.query?.['hub.mode'];
@@ -423,7 +451,7 @@ export default class WebHookListener {
 
 	private async _handleNotification(req: Request, res: Response) {
 		const body = await getRawBody(req, true);
-		const { id } = req.params;
+		const { id } = req.param;
 		const subscription = this._subscriptions.get(id);
 		if (subscription) {
 			res.writeHead(202);
