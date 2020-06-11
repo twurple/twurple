@@ -40,10 +40,7 @@ export default abstract class Subscription</** @private */ T = any> {
 	_handleData(data: string, algoAndSignature: string): boolean {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 
-		const hash = crypto
-			.createHmac(algorithm, this._secret)
-			.update(data)
-			.digest('hex');
+		const hash = crypto.createHmac(algorithm, this._secret).update(data).digest('hex');
 
 		if (hash === signature) {
 			this._handler(this.transformData(JSON.parse(data)));

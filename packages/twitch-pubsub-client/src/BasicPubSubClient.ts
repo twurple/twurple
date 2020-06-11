@@ -372,9 +372,7 @@ export default class BasicPubSubClient extends EventEmitter {
 
 	private async _sendNonced<T extends PubSubNoncedOutgoingPacket>(packet: T) {
 		return new Promise<void>((resolve, reject) => {
-			const nonce = Math.random()
-				.toString(16)
-				.slice(2);
+			const nonce = Math.random().toString(16).slice(2);
 
 			this._onResponse((recvNonce, error) => {
 				if (recvNonce === nonce) {
