@@ -25,10 +25,16 @@ export default class FollowsToUserSubscription extends Subscription<HelixFollow>
 	}
 
 	protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToUserFollowsTo(this._userId, this._options);
+		return this._client._twitchClient.helix.webHooks.subscribeToUserFollowsTo(
+			this._userId,
+			await this._getOptions()
+		);
 	}
 
 	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserFollowsTo(this._userId, this._options);
+		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserFollowsTo(
+			this._userId,
+			await this._getOptions()
+		);
 	}
 }

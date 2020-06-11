@@ -1,13 +1,14 @@
 {
-  "name": "twitch-webhooks",
+  "name": "twitch-webhooks-ngrok",
   "version": "4.1.0-pre.10",
-  "description": "Listen to events on Twitch via their WebHooks API.",
+  "description": "Test your WebHooks locally via ngrok.",
   "keywords": [
     "twitch",
     "webhooks",
     "stream",
     "bot",
-    "events"
+    "events",
+    "ngrok"
   ],
   "sideEffects": false,
   "main": "lib",
@@ -22,26 +23,22 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/d-fischer/twitch.git",
-    "directory": "packages/twitch-webhooks"
+    "directory": "packages/twitch-webhooks-ngrok"
   },
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/logger": "^1.1.1",
     "@d-fischer/portfinder": "^1.0.27",
-    "@d-fischer/public-ip": "^4.0.2",
-    "@d-fischer/randomstring": "^1.1.6",
-    "@d-fischer/raw-body": "^2.4.2",
-    "@d-fischer/shared-utils": "^2.0.1",
-    "httpanda": "^0.4.0",
+    "ngrok": "^3.2.7",
     "tslib": "^1.9.3"
   },
   "devDependencies": {
-    "@types/trouter": "^3.1.0",
-    "twitch": "^4.1.0-pre.10"
+    "twitch": "^4.1.0-pre.10",
+    "twitch-webhooks": "^4.1.0-pre.10"
   },
   "peerDependencies": {
-    "twitch": "^4.0.0"
+    "twitch": "^4.0.0",
+    "twitch-webhooks": "^4.1.0"
   },
   "files": [
     "LICENSE",

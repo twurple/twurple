@@ -28,10 +28,16 @@ export default class StreamChangeSubscription extends Subscription<HelixStream |
 	}
 
 	protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToStreamChanges(this._userId, this._options);
+		return this._client._twitchClient.helix.webHooks.subscribeToStreamChanges(
+			this._userId,
+			await this._getOptions()
+		);
 	}
 
 	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromStreamChanges(this._userId, this._options);
+		return this._client._twitchClient.helix.webHooks.unsubscribeFromStreamChanges(
+			this._userId,
+			await this._getOptions()
+		);
 	}
 }

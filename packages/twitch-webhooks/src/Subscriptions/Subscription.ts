@@ -36,14 +36,6 @@ export default abstract class Subscription</** @private */ T = any> {
 		this._secret = generateRandomString(16);
 	}
 
-	protected get _options(): HelixWebHookHubRequestOptions {
-		return {
-			callbackUrl: this._client._buildHookUrl(this.id),
-			secret: this._secret,
-			validityInSeconds: this._validityInSeconds
-		};
-	}
-
 	/** @private */
 	_handleData(data: string, algoAndSignature: string): boolean {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
@@ -91,6 +83,14 @@ export default abstract class Subscription</** @private */ T = any> {
 	async stop() {
 		await this.suspend();
 		this._client._dropSubscription(this.id);
+	}
+
+	protected async _getOptions(): Promise<HelixWebHookHubRequestOptions> {
+		return {
+			callbackUrl: await this._client._buildHookUrl(this.id),
+			secret: this._secret,
+			validityInSeconds: this._validityInSeconds
+		};
 	}
 
 	/** @private */
