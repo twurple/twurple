@@ -1,6 +1,6 @@
 {
   "name": "twitch-chat-client",
-  "version": "4.1.0-pre.10",
+  "version": "4.1.0-pre.11",
   "description": "Interact with the Twitch Messaging Interface (aka Twitch chat).",
   "keywords": [
     "twitch",
@@ -37,7 +37,7 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "twitch": "^4.1.0-pre.10"
+    "twitch": "^4.1.0-pre.11"
   },
   "peerDependencies": {
     "twitch": "^4.0.0"
