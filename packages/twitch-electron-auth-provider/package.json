@@ -33,7 +33,7 @@
     "twitch": "^4.1.0-pre.10"
   },
   "peerDependencies": {
-    "electron": ">=4.1.1 <9.0.0",
+    "electron": ">=4.1.1 <10.0.0",
     "twitch": "^4.0.0"
   },
   "files": [
