@@ -24,6 +24,11 @@ export interface ReverseProxyAdapterConfig extends CommonConnectionAdapterConfig
 	 * @default ssl ? 443 : 80
 	 */
 	port?: number;
+
+	/**
+	 * The path prefix your reverse proxy redirects to the listener.
+	 */
+	pathPrefix?: string;
 }
 
 /**
@@ -35,6 +40,7 @@ export default class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _connectUsingSsl: boolean;
 	private readonly _port: number;
+	private readonly _pathPrefix?: string;
 
 	/**
 	 * Creates a reverse proxy connection adapter.
@@ -46,6 +52,7 @@ export default class ReverseProxyAdapter extends ConnectionAdapter {
 		this._hostName = options.hostName;
 		this._connectUsingSsl = options.ssl ?? true;
 		this._port = options.port ?? (this._connectUsingSsl ? 443 : 80);
+		this._pathPrefix = options.pathPrefix;
 	}
 
 	/** @protected */
@@ -61,5 +68,10 @@ export default class ReverseProxyAdapter extends ConnectionAdapter {
 	/** @protected */
 	async getHostName(): Promise<string> {
 		return this._hostName;
+	}
+
+	/** @protected */
+	get pathPrefix() {
+		return this._pathPrefix;
 	}
 }
