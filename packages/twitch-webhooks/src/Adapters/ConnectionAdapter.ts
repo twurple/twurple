@@ -40,6 +40,8 @@ export default abstract class ConnectionAdapter {
 
 	/**
 	 * Creates the HTTP server to use for listening to events.
+	 *
+	 * @protected
 	 */
 	createHttpServer(): http.Server {
 		if (this._ssl) {

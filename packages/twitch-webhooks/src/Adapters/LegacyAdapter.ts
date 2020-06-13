@@ -75,6 +75,7 @@ interface WebHookListenerComputedConfig extends CommonConnectionAdapterConfig {
  * A WebHook connection adapter to support the "old style" options.
  *
  * @deprecated Use literally *any* other connection adapter instead.
+ * @hideProtected
  */
 export default class LegacyAdapter extends ConnectionAdapter {
 	/**
