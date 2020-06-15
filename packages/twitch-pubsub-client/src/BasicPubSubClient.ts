@@ -103,19 +103,19 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * Listens to one or more topics.
 	 *
 	 * @param topics A topic or a list of topics to listen to.
-	 * @param resolvable An access token, and AuthProvider or a function that returns a token. Only necessary for some topics.
+	 * @param tokenResolvable An access token, an AuthProvider or a function that returns a token.
 	 * @param scope The scope necessary for the topic(s).
 	 */
 	async listen(
 		topics: string | string[],
-		resolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
+		tokenResolvable: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
 		scope?: string
 	) {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
 
-		const wrapped = this._wrapResolvable(resolvable, scope);
+		const wrapped = this._wrapResolvable(tokenResolvable, scope);
 		for (const topic of topics) {
 			this._topics.set(topic, wrapped);
 		}
