@@ -70,6 +70,11 @@ export interface ChatClientOptions {
 	ssl?: boolean;
 
 	/**
+	 * Custom hostname for connecting to chat.
+	 */
+	hostName?: string;
+
+	/**
 	 * Whether to use a WebSocket to connect to chat.
 	 */
 	webSocket?: boolean;
