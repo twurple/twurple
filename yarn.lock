@@ -9831,10 +9831,10 @@ tslib@^2.0.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.0.tgz#18d13fc2dce04051e20f074cc8387fd8089ce4f3"
   integrity sha512-lTqkx847PI7xEDYJntxZH89L2/aXInsyF2luSafe/+0fHOMjlBNXdH6th7f70qxLDhul7KZK0zC8V5ZIyHl0/g==
 
-tsukuru@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/tsukuru/-/tsukuru-0.4.1.tgz#e60bc057f7aa5087b03a3efd2e0a61e86b651f2c"
-  integrity sha512-RyKRJ9ikAnusJkcbKT/v12PMs23LZbDe5FxpLccojQQrp7ayX5oGHP5wy3lsnyB2/0p73aPvtwrlAVgWFRciNg==
+tsukuru@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/tsukuru/-/tsukuru-0.4.2.tgz#6227d735ff4b7be0ec89476dbff0bfa412d99674"
+  integrity sha512-peiHVnrjlUBoC/5ll5Qx0Yls5L2etFfFH456kn6v28SUn9jTmiwkNirZ+88HzMtblzdL20qMmFrTvSbNnAhkgQ==
   dependencies:
     "@oclif/command" "^1.5.19"
     "@oclif/config" "^1.14.0"

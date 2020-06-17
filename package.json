@@ -19,7 +19,7 @@
     "lint-staged": "^10.2.9",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.0",
-    "tsukuru": "^0.4.1",
+    "tsukuru": "^0.4.2",
     "typescript": "~3.7.4"
   },
   "scripts": {
