@@ -640,9 +640,21 @@ export default class ChatClient extends IRCClient {
 	 */
 	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptions = {}) {
 		/* eslint-disable no-restricted-syntax */
+		let hostName = null;
+
+		if (options.webSocket === false) {
+			hostName = 'irc.chat.twitch.tv';
+		} else {
+			hostName = 'irc-ws.chat.twitch.tv';
+		}
+
+		if (options.hostName) {
+			hostName = options.hostName;
+		}
+
 		super({
 			connection: {
-				hostName: options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
+				hostName,
 				secure: options.ssl !== false
 			},
 			credentials: {
