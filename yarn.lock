@@ -51,6 +51,20 @@
     tslib "^1.10.0"
     ws "^7.2.3"
 
+"@d-fischer/connection@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.0.1.tgz#b3efd213dd6d89671d2032267d7a35643c836df4"
+  integrity sha512-T9HuBlR1JCUjcO+BROLdZMnVj6LI6T6WZU46K/5ngmRVCNtfHXxjq5oSqFzlG23KvS2ORTAPP/NhRLoyIN0PWQ==
+  dependencies:
+    "@d-fischer/isomorphic-ws" "^5.0.2"
+    "@d-fischer/logger" "^1.1.1"
+    "@d-fischer/shared-utils" "^2.1.2"
+    "@d-fischer/typed-event-emitter" "^3.0.1"
+    "@types/node" "^14.0.13"
+    "@types/ws" "^7.2.5"
+    tslib "^2.0.0"
+    ws "^7.3.0"
+
 "@d-fischer/cross-fetch@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@d-fischer/cross-fetch/-/cross-fetch-4.0.1.tgz#884e44bfa3999a76e85d3a64f0629c7f5b56d40d"
@@ -228,10 +242,26 @@
     "@types/node" "^14.0.5"
     tslib "^2.0.0"
 
+"@d-fischer/shared-utils@^2.1.2":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-2.2.0.tgz#8a0c7fe5206ffc8874f2630dcc8892d317a5031d"
+  integrity sha512-JrqI6nEENHoGOnWLqLEhgAjeJQaw3ylP09lnLAAi59rwZfUYFJpNxpWJcnha/56VcXwwFYfqGJiFGFxL7WjdMg==
+  dependencies:
+    "@types/node" "^14.0.5"
+    tslib "^2.0.0"
+
 "@d-fischer/typed-event-emitter@^3.0.0":
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/@d-fischer/typed-event-emitter/-/typed-event-emitter-3.0.0.tgz#2f7afe976c8095c68b735b1315537ce0eac4b472"
   integrity sha512-KAWM+xGkFKKnDj1GZnqcS88jPBEFquuwArsfdPm/pDAVu6FW4/WD53cvDzOnz/1b0uZ46M1tMePf2Nr1LvP51A==
+  dependencies:
+    "@types/node" "^13.11.1"
+    tslib "^1.11.1"
+
+"@d-fischer/typed-event-emitter@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/typed-event-emitter/-/typed-event-emitter-3.0.1.tgz#78117af2261d493bb66039ef639f332e98d97b82"
+  integrity sha512-QlD40ExDLU9y6weJWZ1YmgvnlFboN1iWa9p/rsOZXxZlAwADqpe2Zn96ee2hrYNFbCtx8KQ0/RC4lNdDad6RLw==
   dependencies:
     "@types/node" "^13.11.1"
     tslib "^1.11.1"
@@ -1436,7 +1466,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
   integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
 
-"@types/node@*", "@types/node@>= 8", "@types/node@^14.0.11", "@types/node@^14.0.5":
+"@types/node@*", "@types/node@>= 8", "@types/node@^14.0.11", "@types/node@^14.0.13", "@types/node@^14.0.5":
   version "14.0.13"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.13.tgz#ee1128e881b874c371374c1f72201893616417c9"
   integrity sha512-rouEWBImiRaSJsVA+ITTFM6ZxibuAlTuNOCyxVbwreu6k6+ujs7DfnU9o+PShFhET78pMBl3eH+AGSI5eOTkPA==
@@ -1611,7 +1641,7 @@
     "@types/webpack-sources" "*"
     source-map "^0.6.0"
 
-"@types/ws@^7.2.4":
+"@types/ws@^7.2.4", "@types/ws@^7.2.5":
   version "7.2.5"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-7.2.5.tgz#513f28b04a1ea1aa9dc2cad3f26e8e37c88aae49"
   integrity sha512-4UEih9BI1nBKii385G9id1oFrSkLcClbwtDfcYj8HJLQqZVAtb/42vXVrYvRWCcufNF/a+rZD3MxNwghA7UmCg==
@@ -5592,12 +5622,12 @@ ipaddr.js@1.9.1, ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.23.9:
-  version "0.23.9"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.23.9.tgz#b833c3f61c25fed8635af9e923984a80e6f07ec9"
-  integrity sha512-YriEgH3rRtd/r4JPFvP0CkVa8fhMcZTDLJE3u/abfQYPyT8MymNafkYIgQsj4BmEB6vI1R8SyG5lpt5AdxXRPg==
+ircv3@^0.24.1:
+  version "0.24.1"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.24.1.tgz#23277c997187293a1a8afe884dc057b2996c01e3"
+  integrity sha512-wBKrY/IikmlIaqN0wMf8EYyCLaJn3X1O73OtztKg7pJWoaxymu/g4EgQrZiG/E5wlhdXOna6dtUEVLln39iP7A==
   dependencies:
-    "@d-fischer/connection" "^4.0.0"
+    "@d-fischer/connection" "^6.0.1"
     "@d-fischer/escape-string-regexp" "^5.0.0"
     "@d-fischer/klona" "^1.1.5"
     "@d-fischer/logger" "^1.0.3"
@@ -10562,7 +10592,7 @@ ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^7.2.3:
+ws@^7.2.3, ws@^7.3.0:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.0.tgz#4b2f7f219b3d3737bc1a2fbf145d825b94d38ffd"
   integrity sha512-iFtXzngZVXPGgpTlP1rBqsUK82p9tKqsWRPg5L56egiljujJT3vGAYnHANvFxBieXrTFavhzhxW52jnaWV+w2w==

@@ -1362,7 +1362,7 @@ export default class ChatClient extends IRCClient {
 						this._authVerified = false;
 						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
-						this._connection!.disconnect(false);
+						this._connection!.disconnect();
 					}
 					break;
 				}
