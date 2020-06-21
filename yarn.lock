@@ -39,18 +39,6 @@
     "@types/node" "^12.12.14"
     tslib "^1.10.0"
 
-"@d-fischer/connection@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-4.0.0.tgz#f8640c87a0b3197b85b68e4c7c30a67f7d3cca45"
-  integrity sha512-C5QsPXzIPSFouxnrM/5bh6v2GBQ2uAmoZmwFmrbfQigpUW61Lhg+Kr20H/3hrfAKeP49LJHt5lEU2Q1nMARz5g==
-  dependencies:
-    "@d-fischer/isomorphic-ws" "^5.0.2"
-    "@d-fischer/shared-utils" "^2.0.0"
-    "@types/node" "^12.12.14"
-    "@types/ws" "^7.2.4"
-    tslib "^1.10.0"
-    ws "^7.2.3"
-
 "@d-fischer/connection@^6.0.1":
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.0.1.tgz#b3efd213dd6d89671d2032267d7a35643c836df4"
@@ -1641,7 +1629,7 @@
     "@types/webpack-sources" "*"
     source-map "^0.6.0"
 
-"@types/ws@^7.2.4", "@types/ws@^7.2.5":
+"@types/ws@^7.2.5":
   version "7.2.5"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-7.2.5.tgz#513f28b04a1ea1aa9dc2cad3f26e8e37c88aae49"
   integrity sha512-4UEih9BI1nBKii385G9id1oFrSkLcClbwtDfcYj8HJLQqZVAtb/42vXVrYvRWCcufNF/a+rZD3MxNwghA7UmCg==
@@ -10592,7 +10580,7 @@ ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^7.2.3, ws@^7.3.0:
+ws@^7.3.0:
   version "7.3.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.0.tgz#4b2f7f219b3d3737bc1a2fbf145d825b94d38ffd"
   integrity sha512-iFtXzngZVXPGgpTlP1rBqsUK82p9tKqsWRPg5L56egiljujJT3vGAYnHANvFxBieXrTFavhzhxW52jnaWV+w2w==

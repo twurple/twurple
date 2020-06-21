@@ -26,7 +26,7 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/connection": "^4.0.0",
+    "@d-fischer/connection": "^6.0.1",
     "@d-fischer/logger": "^1.1.1",
     "@d-fischer/shared-utils": "^2.0.1",
     "@d-fischer/typed-event-emitter": "^3.0.0"
