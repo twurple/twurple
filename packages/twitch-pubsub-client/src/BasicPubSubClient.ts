@@ -146,7 +146,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	 */
 	async listen(
 		topics: string | string[],
-		tokenResolvable: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
+		tokenResolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
 		scope?: string
 	) {
 		if (typeof topics === 'string') {
