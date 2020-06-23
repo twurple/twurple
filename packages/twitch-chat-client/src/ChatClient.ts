@@ -647,7 +647,8 @@ export default class ChatClient extends IRCClient {
 		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
-				hostName: options.hostName ?? (options.webSocket === false ? 'irc-ws.chat.twitch.tv' : 'irc.chat.twitch.tv'),
+				hostName:
+					options.hostName ?? (options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv'),
 				secure: options.ssl !== false
 			},
 			credentials: {
