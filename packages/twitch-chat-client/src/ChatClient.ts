@@ -70,6 +70,11 @@ export interface ChatClientOptions {
 	ssl?: boolean;
 
 	/**
+	 * Custom hostname for connecting to chat.
+	 */
+	hostName?: string;
+
+	/**
 	 * Whether to use a WebSocket to connect to chat.
 	 */
 	webSocket?: boolean;
@@ -642,7 +647,8 @@ export default class ChatClient extends IRCClient {
 		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
-				hostName: options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
+				hostName:
+					options.hostName ?? (options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv'),
 				secure: options.ssl !== false
 			},
 			credentials: {
