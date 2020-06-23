@@ -1,18 +1,18 @@
-# Twitch.js - Chat Client
+# Twitch.js - WebHooks ` ngrok` adapter
 
-Interact with the Twitch Messaging Interface (aka Twitch chat).
+Test your WebHooks locally using ngrok.
 
 ## Installation
 
-	yarn add twitch twitch-chat-client
+	yarn add twitch twitch-webhooks-ngrok
 
 or using npm:
 
-	npm install --save twitch twitch-chat-client
+	npm install --save twitch twitch-webhooks-ngrok
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-chat-client)
+A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-webhooks-ngrok)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## If you're getting stuck...

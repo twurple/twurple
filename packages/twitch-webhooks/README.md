@@ -1,18 +1,18 @@
-# Twitch.js - Chat Client
+# Twitch.js - WebHooks listener
 
-Interact with the Twitch Messaging Interface (aka Twitch chat).
+Listen to events on Twitch via their WebHooks API.
 
 ## Installation
 
-	yarn add twitch twitch-chat-client
+	yarn add twitch twitch-webhooks
 
 or using npm:
 
-	npm install --save twitch twitch-chat-client
+	npm install --save twitch twitch-webhooks
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-chat-client)
+A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-webhooks)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## If you're getting stuck...

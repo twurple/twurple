@@ -26,6 +26,7 @@
     "url": "https://github.com/d-fischer/twitch.git",
     "directory": "packages/twitch"
   },
+  "homepage": "https://d-fischer.github.io/twitch",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {

@@ -1,5 +1,7 @@
 # Twitch.js - Bot framework
 
+A simplified framework to get a chat bot running easily.
+
 ## Installation
 
 	yarn add easy-twitch-bot

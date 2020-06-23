@@ -1,7 +1,7 @@
 {
   "name": "twitch-webhooks-ngrok",
   "version": "4.1.0-pre.13",
-  "description": "Test your WebHooks locally via ngrok.",
+  "description": "Test your WebHooks locally using ngrok.",
   "keywords": [
     "twitch",
     "webhooks",
@@ -25,6 +25,7 @@
     "url": "https://github.com/d-fischer/twitch.git",
     "directory": "packages/twitch-webhooks-ngrok"
   },
+  "homepage": "https://d-fischer.github.io/twitch-webhooks-ngrok",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {

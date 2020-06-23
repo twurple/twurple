@@ -23,6 +23,7 @@
     "url": "https://github.com/d-fischer/twitch.git",
     "directory": "packages/twitch-pubsub-client"
   },
+  "homepage": "https://d-fischer.github.io/twitch-pubsub-client",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
