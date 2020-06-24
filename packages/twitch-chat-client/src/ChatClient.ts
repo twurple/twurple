@@ -1775,10 +1775,10 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to enable slow mode in.
 	 * @param delay The time (in seconds) a user needs to wait between messages.
 	 */
-	async enableSlow(channel: string, delay: number) {
+	async enableSlow(channel: string, delay: number = 30) {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
-			const e = this._onSlowResult((_channel, error) => {
+			const e = this._onSlowResult((_channel, _delay, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
 						reject(error);
@@ -1788,7 +1788,7 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/slow');
+			this.say(channel, `/slow ${delay}`);
 		});
 	}
 

@@ -17,9 +17,7 @@ git clone "https://${GH_TOKEN}@github.com/${REPO_USER}/${REPO_USER}.github.io.gi
 
 if [[ $TRAVIS_BRANCH = "master" ]]; then
 	(
-		export GLOBIGNORE="branches"
-		shopt -u dotglob
-		rm -rfv docRepo/*
+		find docRepo -mindepth 1 -maxdepth 1 -not -name branches -not -name .git -exec rm -rfv {} \;
 		mv -fv generatedDocs/* docRepo/
 	)
 else
