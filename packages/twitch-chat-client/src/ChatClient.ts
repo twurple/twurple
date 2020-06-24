@@ -1732,7 +1732,7 @@ export default class ChatClient extends IRCClient {
 	async enableSlow(channel: string, delay: number) {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
-			const e = this._onSlowResult((_channel, error) => {
+			const e = this._onSlowResult((_channel, _delay, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
 						reject(error);
