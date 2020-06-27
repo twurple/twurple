@@ -38,7 +38,7 @@
     "twitch-webhooks": "^4.1.0"
   },
   "peerDependencies": {
-    "twitch": "^4.0.0",
+    "twitch": "^4.1.0",
     "twitch-webhooks": "^4.1.0"
   },
   "files": [
