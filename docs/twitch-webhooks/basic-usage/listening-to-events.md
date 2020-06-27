@@ -23,15 +23,15 @@ let prevStream = await twitchClient.helix.streams.getStreamByUserId(userId);
 
 const subscription = await listener.subscribeToStreamChanges(userId, async (stream?: HelixStream) => {
 	if (stream) {
-        if (!prevStream) {
-    		console.log(`${stream.userDisplayName} just went live with title: ${stream.title}`);
-        }
+		if (!prevStream) {
+			console.log(`${stream.userDisplayName} just went live with title: ${stream.title}`);
+		}
 	} else {
 		// no stream, no display name
 		const user = await twitchClient.helix.users.getUserById(userId);
 		console.log(`${user.displayName} just went offline`);
 	}
-    prevStream = stream;
+	prevStream = stream;
 });
 ```
 
