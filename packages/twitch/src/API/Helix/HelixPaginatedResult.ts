@@ -44,7 +44,7 @@ export function createPaginatedResult<
 	O extends new (data: I, client: TwitchClient) => any
 >(response: HelixPaginatedResponse<I>, type: O, client: TwitchClient): HelixPaginatedResult<ConstructedType<O>> {
 	return {
-		data: response.data.map(data => new type(data, client)),
+		data: response.data?.map(data => new type(data, client)) ?? [],
 		cursor: response.pagination?.cursor
 	};
 }
