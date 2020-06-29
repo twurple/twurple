@@ -1,6 +1,6 @@
 # Twitch.js
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-16-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-17-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A set of libraries that aims to cover all of the existing Twitch APIs.
@@ -66,6 +66,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tr>
     <td align="center"><a href="https://github.com/talk2MeGooseman"><img src="https://avatars3.githubusercontent.com/u/1203718?v=4" width="100px;" alt=""/><br /><sub><b>Erik Guzman</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=talk2MeGooseman" title="Code">💻</a></td>
     <td align="center"><a href="http://trezy.com"><img src="https://avatars2.githubusercontent.com/u/442980?v=4" width="100px;" alt=""/><br /><sub><b>Trezy</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=trezy" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/travtarr"><img src="https://avatars3.githubusercontent.com/u/7989582?v=4" width="100px;" alt=""/><br /><sub><b>Travis Tarr</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=travtarr" title="Code">💻</a></td>
   </tr>
 </table>
 
