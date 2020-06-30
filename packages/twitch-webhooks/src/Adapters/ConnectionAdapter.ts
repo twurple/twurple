@@ -98,7 +98,7 @@ export default abstract class ConnectionAdapter {
 	/**
 	 * The path prefix an external connection needs to reach this server.
 	 *
-	 * Please not that the layer redirecting to this server needs to strip the path prefix in order for this to work.
+	 * Please note that the layer redirecting to this server needs to strip the path prefix in order for this to work.
 	 *
 	 * For example, if this is set to /hooks, an external connection to /hooks/abc should pass /abc as the path to this server.
 	 *

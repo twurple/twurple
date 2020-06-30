@@ -35,7 +35,7 @@ const client = new TwitchClient({
 });
 ```
 
-Please not that this currently only works from the *main thread*.
+Please note that this currently only works from the *main thread*.
 
 To allow the user to "log out" and change to another account, use:
 
