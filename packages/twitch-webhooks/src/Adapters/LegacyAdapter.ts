@@ -1,7 +1,7 @@
 import { getPortPromise } from '@d-fischer/portfinder';
 import { v4 } from '@d-fischer/public-ip';
 import { WebHookConfig, WebHookListenerCertificateConfig } from '../WebHookListener';
-import ConnectionAdapter, { CommonConnectionAdapterConfig } from './ConnectionAdapter';
+import { CommonConnectionAdapterConfig, ConnectionAdapter } from './ConnectionAdapter';
 
 /**
  * The configuration of a reverse proxy that the listener may be behind.
@@ -77,7 +77,7 @@ interface WebHookListenerComputedConfig extends CommonConnectionAdapterConfig {
  * @deprecated Use literally *any* other connection adapter instead.
  * @hideProtected
  */
-export default class LegacyAdapter extends ConnectionAdapter {
+export class LegacyAdapter extends ConnectionAdapter {
 	/**
 	 * Takes the legacy WebHookListenerConfig and creates a connection adapter from it.
 	 *

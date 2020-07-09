@@ -1,6 +1,6 @@
-import User, { UserData } from './User';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import UserFollow from './UserFollow';
+import { User, UserData } from './User';
+import { UserFollow } from './UserFollow';
 
 /** @private */
 export interface UserNotificationFlags {
@@ -22,7 +22,7 @@ export interface PrivilegedUserData extends UserData {
  *
  * @inheritDoc
  */
-export default class PrivilegedUser extends User {
+export class PrivilegedUser extends User {
 	/** @private */
 	protected _data: PrivilegedUserData;
 

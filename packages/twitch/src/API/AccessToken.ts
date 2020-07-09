@@ -9,7 +9,7 @@ export interface AccessTokenData {
 /**
  * Represents the data of an OAuth access token returned by Twitch.
  */
-export default class AccessToken {
+export class AccessToken {
 	private readonly _obtainmentDate: Date;
 
 	/** @private */

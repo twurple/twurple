@@ -1,5 +1,5 @@
-import { MakeOptional, NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
+import { Enumerable, MakeOptional } from '@d-fischer/shared-utils';
+import { TwitchClient } from 'twitch';
 import { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsBadgeUnlockMessageContent
@@ -18,8 +18,8 @@ export interface PubSubBitsBadgeUnlockMessageData {
 /**
  * A message that informs about a user unlocking a new bits badge.
  */
-export default class PubSubBitsBadgeUnlockMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubBitsBadgeUnlockMessage {
+	@Enumerable(false) private readonly _twitchClient: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: PubSubBitsBadgeUnlockMessageData, twitchClient: TwitchClient) {

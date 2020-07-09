@@ -1,14 +1,14 @@
 import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
-import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
-import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import { HTTPStatusCodeError } from '../../../Errors/HTTPStatusCodeError';
+import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import BaseAPI from '../../BaseAPI';
-import User, { UserData } from '../User/User';
-import Channel from './Channel';
-import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
-import ChannelSubscription, { ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
-import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
-import Team, { TeamData } from '../Team/Team';
+import { BaseAPI } from '../../BaseAPI';
+import { Team, TeamData } from '../Team/Team';
+import { User, UserData } from '../User/User';
+import { Channel } from './Channel';
+import { ChannelFollow, ChannelFollowData } from './ChannelFollow';
+import { ChannelSubscription, ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
+import { PrivilegedChannel, PrivilegedChannelData } from './PrivilegedChannel';
 
 /**
  * Channel data to update using {@ChannelAPI#updateChannel}.
@@ -52,7 +52,7 @@ export type CommercialLength = 30 | 60 | 90 | 120 | 150 | 180;
  * ```
  */
 @Cacheable
-export default class ChannelAPI extends BaseAPI {
+export class ChannelAPI extends BaseAPI {
 	/**
 	 * Gets the channel the client is logged in to.
 	 */

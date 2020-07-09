@@ -3,7 +3,7 @@ First, you have to create an instance of the core Twitch client, as outlined in 
 Then, you register that instance with a new {@PubSubClient} instance:
 
 ```typescript
-import PubSubClient from 'twitch-pubsub-client';
+import { PubSubClient } from 'twitch-pubsub-client';
 
 const pubSubClient = new PubSubClient();
 await pubSubClient.registerUserListener(twitchClient);

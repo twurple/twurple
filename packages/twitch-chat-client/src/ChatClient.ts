@@ -1,32 +1,33 @@
 import deprecate from '@d-fischer/deprecate';
-import Logger, { LoggerOptions, LogLevel } from '@d-fischer/logger';
-import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
+import { Logger, LoggerOptions, LogLevel } from '@d-fischer/logger';
+import { Enumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
-import IRCClient, { MessageTypes } from 'ircv3';
-import TwitchClient, { CommercialLength, InvalidTokenError, InvalidTokenTypeError } from 'twitch';
-import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
-import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
-import HostTarget from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
-import RoomState from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
-import UserNotice from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
-import Whisper from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
-import TwitchMembershipCapability from './Capabilities/TwitchMembershipCapability';
-import TwitchTagsCapability from './Capabilities/TwitchTagsCapability';
-import ClearMsg from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
-import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
+import { IRCClient, MessageTypes } from 'ircv3';
+import { CommercialLength, InvalidTokenError, InvalidTokenTypeError, TwitchClient } from 'twitch';
+import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
+import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
+import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
+import { RoomState } from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
+import { UserNotice } from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
+import { Whisper } from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
+import { TwitchMembershipCapability } from './Capabilities/TwitchMembershipCapability';
+import { TwitchTagsCapability } from './Capabilities/TwitchTagsCapability';
+import { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
+import { TwitchPrivateMessage } from './StandardCommands/TwitchPrivateMessage';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
-import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
-import ChatCommunityPayForwardInfo from './UserNotices/ChatCommunityPayForwardInfo';
-import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
-import ChatPrimeCommunityGiftInfo from './UserNotices/ChatPrimeCommunityGiftInfo';
-import ChatRaidInfo from './UserNotices/ChatRaidInfo';
-import ChatRewardGiftInfo from './UserNotices/ChatRewardGiftInfo';
-import ChatRitualInfo from './UserNotices/ChatRitualInfo';
-import ChatStandardPayForwardInfo from './UserNotices/ChatStandardPayForwardInfo';
-import ChatSubInfo, {
+import { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
+import { ChatCommunityPayForwardInfo } from './UserNotices/ChatCommunityPayForwardInfo';
+import { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
+import { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
+import { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
+import { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
+import { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
+import { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
+import {
 	ChatSubExtendInfo,
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
+	ChatSubInfo,
 	ChatSubUpgradeInfo
 } from './UserNotices/ChatSubInfo';
 
@@ -98,11 +99,11 @@ export interface ChatClientOptions {
  * @inheritDoc
  * @hideProtected
  */
-export default class ChatClient extends IRCClient {
+export class ChatClient extends IRCClient {
 	private static readonly HOST_MESSAGE_REGEX = /(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
 	/** @private */
-	@NonEnumerable readonly _twitchClient?: TwitchClient;
+	@Enumerable(false) readonly _twitchClient?: TwitchClient;
 
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;

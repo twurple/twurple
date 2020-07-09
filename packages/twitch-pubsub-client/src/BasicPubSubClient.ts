@@ -1,8 +1,8 @@
 import { Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
-import Logger, { LogLevel } from '@d-fischer/logger';
-import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
+import { Logger, LogLevel } from '@d-fischer/logger';
+import { Enumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
-import TwitchClient, { AuthProvider, HellFreezesOverError, InvalidTokenError } from 'twitch';
+import { AuthProvider, HellFreezesOverError, InvalidTokenError, TwitchClient } from 'twitch';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
@@ -31,11 +31,11 @@ type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTok
 /**
  * A client for the Twitch PubSub interface.
  */
-export default class BasicPubSubClient extends EventEmitter {
-	@NonEnumerable private readonly _logger: Logger;
+export class BasicPubSubClient extends EventEmitter {
+	@Enumerable(false) private readonly _logger: Logger;
 
 	// topic => token
-	@NonEnumerable private readonly _topics = new Map<string, TokenResolvable>();
+	@Enumerable(false) private readonly _topics = new Map<string, TokenResolvable>();
 
 	private _connection: Connection;
 

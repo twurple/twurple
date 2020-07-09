@@ -1,7 +1,7 @@
 /**
  * Information about a subscription.
  */
-export default interface ChatSubInfo {
+export interface ChatSubInfo {
 	/**
 	 * The user ID of the subscribing user.
 	 */

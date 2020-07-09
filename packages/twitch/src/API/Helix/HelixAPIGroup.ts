@@ -1,16 +1,16 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import BaseAPI from '../BaseAPI';
+import { BaseAPI } from '../BaseAPI';
 
-import HelixBitsAPI from './Bits/HelixBitsAPI';
-import HelixClipAPI from './Clip/HelixClipAPI';
-import HelixExtensionsAPI from './Extensions/HelixExtensionsAPI';
-import HelixGameAPI from './Game/HelixGameAPI';
-import HelixModerationAPI from './Moderation/HelixModerationAPI';
-import HelixStreamAPI from './Stream/HelixStreamAPI';
-import HelixSubscriptionAPI from './Subscriptions/HelixSubscriptionAPI';
-import HelixUserAPI from './User/HelixUserAPI';
-import HelixVideoAPI from './Video/HelixVideoAPI';
-import HelixWebHooksAPI from './WebHooks/HelixWebHooksAPI';
+import { HelixBitsAPI } from './Bits/HelixBitsAPI';
+import { HelixClipAPI } from './Clip/HelixClipAPI';
+import { HelixExtensionsAPI } from './Extensions/HelixExtensionsAPI';
+import { HelixGameAPI } from './Game/HelixGameAPI';
+import { HelixModerationAPI } from './Moderation/HelixModerationAPI';
+import { HelixStreamAPI } from './Stream/HelixStreamAPI';
+import { HelixSubscriptionAPI } from './Subscriptions/HelixSubscriptionAPI';
+import { HelixUserAPI } from './User/HelixUserAPI';
+import { HelixVideoAPI } from './Video/HelixVideoAPI';
+import { HelixWebHooksAPI } from './WebHooks/HelixWebHooksAPI';
 
 /**
  * Groups all API calls available in Helix a.k.a. the "New Twitch API".
@@ -18,7 +18,7 @@ import HelixWebHooksAPI from './WebHooks/HelixWebHooksAPI';
  * Can be accessed using {@TwitchClient#helix}.
  */
 @Cacheable
-export default class HelixAPIGroup extends BaseAPI {
+export class HelixAPIGroup extends BaseAPI {
 	/**
 	 * The Helix bits API methods.
 	 */

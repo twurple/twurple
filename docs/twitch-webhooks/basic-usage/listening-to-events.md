@@ -3,7 +3,7 @@ First, you have to create an instance of the core Twitch client, as outlined in 
 Then, you create a new {@WebHookListener} instance using the core client:
 
 ```typescript
-import WebHookListener from 'twitch-webhooks';
+import { WebHookListener } from 'twitch-webhooks';
 
 const listener = await WebHookListener.create(twitchClient, {port: 8090});
 listener.listen();

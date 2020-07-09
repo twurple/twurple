@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from 'twitch';
 import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 
 export interface PubSubSubscriptionDetail {
@@ -26,8 +26,8 @@ export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 /**
  * A message that informs about a user subscribing to a channel.
  */
-export default class PubSubSubscriptionMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubSubscriptionMessage {
+	@Enumerable(false) private readonly _twitchClient: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: PubSubSubscriptionMessageData, twitchClient: TwitchClient) {

@@ -1,7 +1,7 @@
-import HelixUser from '../API/Helix/User/HelixUser';
-import Channel from '../API/Kraken/Channel/Channel';
-import ChannelPlaceholder from '../API/Kraken/Channel/ChannelPlaceholder';
-import User from '../API/Kraken/User/User';
+import { HelixUser } from '../API/Helix/User/HelixUser';
+import { Channel } from '../API/Kraken/Channel/Channel';
+import { ChannelPlaceholder } from '../API/Kraken/Channel/ChannelPlaceholder';
+import { User } from '../API/Kraken/User/User';
 
 /**
  * A user ID or a user or channel object.

@@ -1,6 +1,6 @@
-import { indexBy, NonEnumerable, utf8Length } from '@d-fischer/shared-utils';
-import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable, indexBy, utf8Length } from '@d-fischer/shared-utils';
+import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
+import { TwitchClient } from '../../../TwitchClient';
 
 /**
  * The type of background a cheermote is supposed to appear on.
@@ -179,8 +179,8 @@ export interface MessageCheermote {
 /**
  * A list of cheermotes you can use globally or in a specific channel, depending on how you fetched the list.
  */
-export default class CheermoteList {
-	@NonEnumerable private readonly _client: TwitchClient;
+export class CheermoteList {
+	@Enumerable(false) private readonly _client: TwitchClient;
 	private readonly _data: Record<string, CheermoteActionData>;
 
 	/** @private */

@@ -28,7 +28,7 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/logger": "^1.1.1",
+    "@d-fischer/logger": "^2.0.0",
     "@d-fischer/portfinder": "^1.0.27",
     "@d-fischer/public-ip": "^4.0.2",
     "@d-fischer/randomstring": "^1.1.6",

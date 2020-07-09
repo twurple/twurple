@@ -1,6 +1,6 @@
-import ChannelPlaceholder, { ChannelPlaceholderData } from './ChannelPlaceholder';
-import TwitchClient from '../../../TwitchClient';
+import { TwitchClient } from '../../../TwitchClient';
 import { ChannelUpdateData } from './ChannelAPI';
+import { ChannelPlaceholder, ChannelPlaceholderData } from './ChannelPlaceholder';
 
 /** @private */
 export interface ChannelData extends ChannelPlaceholderData {
@@ -28,7 +28,7 @@ export interface ChannelData extends ChannelPlaceholderData {
 /**
  * A Twitch Channel.
  */
-export default class Channel extends ChannelPlaceholder {
+export class Channel extends ChannelPlaceholder {
 	/** @private */
 	protected _data: ChannelData;
 

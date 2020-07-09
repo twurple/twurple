@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from 'twitch';
 
 export interface PubSubChatModActionMessageContent {
 	type: string;
@@ -16,8 +16,8 @@ export interface PubSubChatModActionMessageData {
 /**
  * A message that informs about a moderation action being performed in a channel.
  */
-export default class PubSubChatModActionMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubChatModActionMessage {
+	@Enumerable(false) private readonly _twitchClient: TwitchClient;
 
 	/** @private */
 	constructor(

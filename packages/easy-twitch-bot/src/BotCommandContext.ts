@@ -1,6 +1,6 @@
-import ChatClient, { PrivateMessage } from 'twitch-chat-client';
+import { ChatClient, PrivateMessage } from 'twitch-chat-client';
 
-export default class BotCommandContext {
+export class BotCommandContext {
 	readonly user: string;
 	readonly channel: string;
 

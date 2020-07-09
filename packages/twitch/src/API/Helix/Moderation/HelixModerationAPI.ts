@@ -1,14 +1,14 @@
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import { HelixForwardPagination, makePaginationQuery } from '../HelixPagination';
 import { HelixPaginatedResponse } from '../HelixResponse';
-import HelixBan, { HelixBanData } from './HelixBan';
-import HelixBanEvent, { HelixBanEventData } from './HelixBanEvent';
-import HelixModerator, { HelixModeratorData } from './HelixModerator';
-import HelixModeratorEvent, { HelixModeratorEventData } from './HelixModeratorEvent';
+import { HelixBan, HelixBanData } from './HelixBan';
+import { HelixBanEvent, HelixBanEventData } from './HelixBanEvent';
+import { HelixModerator, HelixModeratorData } from './HelixModerator';
+import { HelixModeratorEvent, HelixModeratorEventData } from './HelixModeratorEvent';
 
 /**
  * Filters for the banned users request.
@@ -41,7 +41,7 @@ interface HelixModeratorFilter extends HelixForwardPagination {
  * const game = await client.helix.moderation.getBannedUsers('61369223');
  * ```
  */
-export default class HelixModerationAPI extends BaseAPI {
+export class HelixModerationAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of banned users in a given channel.
 	 *

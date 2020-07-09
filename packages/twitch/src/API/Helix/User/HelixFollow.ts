@@ -1,6 +1,6 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import TwitchClient from '../../../TwitchClient';
+import { TwitchClient } from '../../../TwitchClient';
 
 /**
  * Filters for the follower request.
@@ -29,9 +29,9 @@ export interface HelixFollowData {
 /**
  * A relation of a user following a broadcaster.
  */
-export default class HelixFollow {
+export class HelixFollow {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(/** @private */ protected _data: HelixFollowData, client: TwitchClient) {

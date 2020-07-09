@@ -10,7 +10,7 @@ export interface TokenInfoData {
 /**
  * Information about an access token.
  */
-export default class TokenInfo {
+export class TokenInfo {
 	private readonly _obtainmentDate: Date;
 
 	/** @private */

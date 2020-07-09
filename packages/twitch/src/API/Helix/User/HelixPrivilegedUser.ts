@@ -1,4 +1,4 @@
-import HelixUser, { HelixUserData } from './HelixUser';
+import { HelixUser, HelixUserData } from './HelixUser';
 
 /** @private */
 export interface HelixPrivilegedUserData extends HelixUserData {
@@ -10,7 +10,7 @@ export interface HelixPrivilegedUserData extends HelixUserData {
  *
  * @inheritDoc
  */
-export default class HelixPrivilegedUser extends HelixUser {
+export class HelixPrivilegedUser extends HelixUser {
 	/** @private */
 	protected _data: HelixPrivilegedUserData;
 

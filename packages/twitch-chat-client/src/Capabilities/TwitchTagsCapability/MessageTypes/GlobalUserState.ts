@@ -5,6 +5,6 @@ import { Message } from 'ircv3';
  *
  * @private
  */
-export default class GlobalUserState extends Message {
+export class GlobalUserState extends Message {
 	static readonly COMMAND = 'GLOBALUSERSTATE';
 }

@@ -1,10 +1,10 @@
-import SingleUserPubSubClient from './SingleUserPubSubClient';
-import PubSubMessage from './Messages/PubSubMessage';
+import { PubSubMessage } from './Messages/PubSubMessage';
+import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
 /**
  * A listener attached to a single PubSub topic.
  */
-export default class PubSubListener<T extends PubSubMessage = PubSubMessage> {
+export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	/** @private */
 	constructor(
 		private readonly _type: string,

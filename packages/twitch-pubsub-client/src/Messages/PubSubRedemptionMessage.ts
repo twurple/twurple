@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from 'twitch';
 
 export interface PubSubRedemptionMessageUserData {
 	id: string;
@@ -57,8 +57,8 @@ export interface PubSubRedemptionMessageData {
 /**
  * A message that informs about a user redeeming a custom channel points reward.
  */
-export default class PubSubRedemptionMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubRedemptionMessage {
+	@Enumerable(false) private readonly _twitchClient: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: PubSubRedemptionMessageData, twitchClient: TwitchClient) {

@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
 
 /** @private */
 export interface HelixBanData {
@@ -11,9 +11,9 @@ export interface HelixBanData {
 /**
  * Information about the ban of a user.
  */
-export default class HelixBan {
+export class HelixBan {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: HelixBanData, client: TwitchClient) {

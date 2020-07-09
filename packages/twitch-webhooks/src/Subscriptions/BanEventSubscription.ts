@@ -1,12 +1,12 @@
 import { HelixBanEvent, HelixResponse } from 'twitch';
 import { HelixBanEventData } from 'twitch/lib/API/Helix/Moderation/HelixBanEvent';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
  * @private
  */
-export default class BanEventSubscription extends Subscription<HelixBanEvent> {
+export class BanEventSubscription extends Subscription<HelixBanEvent> {
 	constructor(
 		private readonly _broadcasterId: string,
 		handler: (data: HelixBanEvent) => void,

@@ -1,5 +1,5 @@
-import { MakeOptional, NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
+import { Enumerable, MakeOptional } from '@d-fischer/shared-utils';
+import { TwitchClient } from 'twitch';
 import { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsMessageBadgeEntitlement {
@@ -27,8 +27,8 @@ export interface PubSubBitsMessageData {
 /**
  * A message that informs about bits being used in a channel.
  */
-export default class PubSubBitsMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubBitsMessage {
+	@Enumerable(false) private readonly _twitchClient: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: PubSubBitsMessageData, twitchClient: TwitchClient) {

@@ -18,7 +18,7 @@ export interface HelixForwardPagination {
  *
  * @inheritDoc
  */
-export default interface HelixPagination extends HelixForwardPagination {
+export interface HelixPagination extends HelixForwardPagination {
 	/**
 	 * A cursor to get the previous page of.
 	 */

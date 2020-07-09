@@ -1,15 +1,15 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import AccessToken from '../API/AccessToken';
-import TwitchClient from '../TwitchClient';
-import AuthProvider, { AuthProviderTokenType } from './AuthProvider';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { AccessToken } from '../API/AccessToken';
+import { TwitchClient } from '../TwitchClient';
+import { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
  * An auth provider that retrieve tokens using client credentials.
  */
-export default class ClientCredentialsAuthProvider implements AuthProvider {
-	@NonEnumerable private readonly _clientId: string;
-	@NonEnumerable private readonly _clientSecret: string;
-	@NonEnumerable private _token?: AccessToken;
+export class ClientCredentialsAuthProvider implements AuthProvider {
+	@Enumerable(false) private readonly _clientId: string;
+	@Enumerable(false) private readonly _clientSecret: string;
+	@Enumerable(false) private _token?: AccessToken;
 
 	/**
 	 * The type of tokens this provider generates.

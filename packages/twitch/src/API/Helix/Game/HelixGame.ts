@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
 
 export interface HelixGameData {
 	id: string;
@@ -10,9 +10,9 @@ export interface HelixGameData {
 /**
  * A game as displayed on Twitch.
  */
-export default class HelixGame {
+export class HelixGame {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: HelixGameData, client: TwitchClient) {

@@ -1,11 +1,11 @@
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixPaginatedResult from '../HelixPaginatedResult';
-import HelixPagination, { makePaginationQuery } from '../HelixPagination';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import { HelixPaginatedResult } from '../HelixPaginatedResult';
+import { HelixPagination, makePaginationQuery } from '../HelixPagination';
 import { HelixPaginatedResponse } from '../HelixResponse';
-import HelixVideo, { HelixVideoData, HelixVideoType } from './HelixVideo';
+import { HelixVideo, HelixVideoData, HelixVideoType } from './HelixVideo';
 
 /** @private */
 export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
@@ -57,7 +57,7 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
  * const videos = await client.helix.videos.getVideosByUser('125328655');
  * ```
  */
-export default class HelixVideoAPI extends BaseAPI {
+export class HelixVideoAPI extends BaseAPI {
 	/**
 	 * Retrieves the video data for the given list of video IDs.
 	 *

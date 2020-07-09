@@ -19,8 +19,8 @@ or using npm:
 To instantiate a TwitchClient with this auth provider, just pass it to its constructor:
 
 ```ts
-import TwitchClient from 'twitch';
-import ElectronAuthProvider from 'twitch-electron-auth-provider';
+import { TwitchClient } from 'twitch';
+import { ElectronAuthProvider } from 'twitch-electron-auth-provider';
 
 const clientId = 'abc123';
 const redirectURI = 'http://foo.bar/login';

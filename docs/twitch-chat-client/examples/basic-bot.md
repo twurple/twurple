@@ -50,8 +50,8 @@ Write down the `access_token` and `refresh_token` properties of the response bod
 Now you can finally start writing code! First, import all the classes you're gonna need from `twitch` and `twitch-chat-client`.
 
 ```typescript
-import TwitchClient from 'twitch';
-import ChatClient from 'twitch-chat-client';
+import { TwitchClient } from 'twitch';
+import { ChatClient } from 'twitch-chat-client';
 ```
 
 Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an async function and running it.
@@ -189,8 +189,8 @@ Now you can implement a more elaborated command system, add more events to react
 For reference, here's the full code that _should_ be the result of everything we just did:
 
 ```typescript
-import TwitchClient from 'twitch';
-import ChatClient from 'twitch-chat-client';
+import { TwitchClient } from 'twitch';
+import { ChatClient } from 'twitch-chat-client';
 import { promises as fs } from 'fs';
 
 async function main() {

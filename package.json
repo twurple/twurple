@@ -11,15 +11,15 @@
     "@d-fischer/documen.ts": "^0.9.3",
     "@d-fischer/eslint-config": "^1.0.11",
     "@types/node": "^12.12.47",
-    "electron": "^9.0.3",
+    "electron": "^9.1.0",
     "eslint": "^6.6.0",
     "eslint-import-resolver-lerna": "^1.1.0",
     "husky": "^4.2.5",
     "lerna": "^3.22.1",
-    "lint-staged": "^10.2.9",
+    "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
     "rimraf": "^3.0.0",
-    "tsukuru": "^0.4.3",
+    "tsukuru": "^0.4.4",
     "typescript": "~3.7.4"
   },
   "scripts": {

@@ -31,10 +31,10 @@
   "dependencies": {
     "@d-fischer/cache-decorators": "^2.0.0",
     "@d-fischer/deprecate": "^2.0.1",
-    "@d-fischer/logger": "^1.1.1",
-    "@d-fischer/shared-utils": "^2.0.1",
+    "@d-fischer/logger": "^2.0.0",
+    "@d-fischer/shared-utils": "^2.3.1",
     "@d-fischer/typed-event-emitter": "^3.0.0",
-    "ircv3": "^0.24.1",
+    "ircv3": "^0.25.3",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

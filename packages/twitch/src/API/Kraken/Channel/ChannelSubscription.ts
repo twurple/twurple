@@ -1,5 +1,5 @@
-import Subscription, { SubscriptionData } from '../Subscription';
-import User, { UserData } from '../User/User';
+import { Subscription, SubscriptionData } from '../Subscription';
+import { User, UserData } from '../User/User';
 
 /** @private */
 export interface ChannelSubscriptionsResponse {
@@ -15,7 +15,7 @@ export interface ChannelSubscriptionData extends SubscriptionData {
 /**
  * A relation of a user subscribing to a previously given channel.
  */
-export default class ChannelSubscription extends Subscription {
+export class ChannelSubscription extends Subscription {
 	/** @private */
 	protected _data: ChannelSubscriptionData;
 

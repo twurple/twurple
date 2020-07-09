@@ -1,6 +1,6 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import Channel, { ChannelData } from '../Channel/Channel';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
+import { Channel, ChannelData } from '../Channel/Channel';
 
 /** @private */
 export interface UserFollowData {
@@ -12,8 +12,8 @@ export interface UserFollowData {
 /**
  * A relation of a previously given user following a channel.
  */
-export default class UserFollow {
-	@NonEnumerable private readonly _client: TwitchClient;
+export class UserFollow {
+	@Enumerable(false) private readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: UserFollowData, client: TwitchClient) {

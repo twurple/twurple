@@ -1,12 +1,12 @@
 import { HelixExtensionTransaction, HelixResponse } from 'twitch';
 import { HelixExtensionTransactionData } from 'twitch/lib/API/Helix/Extensions/HelixExtensionTransaction';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
  * @private
  */
-export default class ExtensionTransactionSubscription extends Subscription<HelixExtensionTransaction> {
+export class ExtensionTransactionSubscription extends Subscription<HelixExtensionTransaction> {
 	constructor(
 		private readonly _extensionId: string,
 		handler: (data: HelixExtensionTransaction) => void,

@@ -1,7 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import AccessToken from '../API/AccessToken';
-import TwitchClient from '../TwitchClient';
-import AuthProvider from './AuthProvider';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { AccessToken } from '../API/AccessToken';
+import { TwitchClient } from '../TwitchClient';
+import { AuthProvider } from './AuthProvider';
 
 /**
  * Configuration for the {@RefreshableAuthProvider}.
@@ -34,9 +34,9 @@ export interface RefreshConfig {
  * Enhances another auth provider with the ability to make use of refresh
  * tokens, automatically refreshing the access token whenever necessary.
  */
-export default class RefreshableAuthProvider implements AuthProvider {
-	@NonEnumerable private readonly _clientSecret: string;
-	@NonEnumerable private _refreshToken: string;
+export class RefreshableAuthProvider implements AuthProvider {
+	@Enumerable(false) private readonly _clientSecret: string;
+	@Enumerable(false) private _refreshToken: string;
 	private readonly _childProvider: AuthProvider;
 	private _initialExpiry?: Date | null;
 	private readonly _onRefresh?: (token: AccessToken) => void;

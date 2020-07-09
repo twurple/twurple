@@ -1,10 +1,10 @@
 import { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import HelixPagination, { makePaginationQuery } from '../HelixPagination';
-import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
-import HelixGame, { HelixGameData } from './HelixGame';
+import { HelixPagination, makePaginationQuery } from '../HelixPagination';
+import { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
+import { HelixGame, HelixGameData } from './HelixGame';
 
 /** @private */
 export type HelixGameFilterType = 'id' | 'name';
@@ -20,7 +20,7 @@ export type HelixGameFilterType = 'id' | 'name';
  * const game = await client.helix.games.getGameByName('Hearthstone');
  * ```
  */
-export default class HelixGameAPI extends BaseAPI {
+export class HelixGameAPI extends BaseAPI {
 	/**
 	 * Retrieves the game data for the given list of game IDs.
 	 *

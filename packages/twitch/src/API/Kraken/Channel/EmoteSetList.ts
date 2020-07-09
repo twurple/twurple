@@ -13,7 +13,7 @@ export type EmoteSetListData = Record<string, Emote[]>;
  * A list of emotes, grouped into emote sets, that a user can use.
  */
 @Cacheable
-export default class EmoteSetList {
+export class EmoteSetList {
 	/** @private */
 	constructor(private readonly _data: EmoteSetListData) {}
 

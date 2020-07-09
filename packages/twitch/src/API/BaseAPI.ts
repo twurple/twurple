@@ -1,9 +1,9 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../TwitchClient';
 
 /** @private */
-export default class BaseAPI {
-	@NonEnumerable protected readonly _client: TwitchClient;
+export class BaseAPI {
+	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	constructor(client: TwitchClient) {
 		this._client = client;

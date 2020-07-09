@@ -1,7 +1,7 @@
 /**
  * Information about a raid.
  */
-export default interface ChatRitualInfo {
+export interface ChatRitualInfo {
 	/**
 	 * The name of the ritual.
 	 *

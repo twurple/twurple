@@ -13,12 +13,12 @@ or using npm:
 Using ES2015 modules:
 
 ```typescript
-import WebHookListener from 'twitch-webhooks';
+import { WebHookListener } from 'twitch-webhooks';
 ```
 
 Using CommonJS:
 
 ```typescript
-const WebHookListener = require('twitch-webhooks');
+const { WebHookListener } = require('twitch-webhooks');
 ```
 

@@ -2,10 +2,10 @@
  * A result coming from a Helix resource that is paginated using a cursor.
  */
 import { ConstructedType } from '@d-fischer/shared-utils';
-import TwitchClient from '../../TwitchClient';
+import { TwitchClient } from '../../TwitchClient';
 import { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './HelixResponse';
 
-export default interface HelixPaginatedResult<T> {
+export interface HelixPaginatedResult<T> {
 	/**
 	 * The returned data.
 	 */

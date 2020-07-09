@@ -1,6 +1,6 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import Channel, { ChannelData } from '../Channel/Channel';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
+import { Channel, ChannelData } from '../Channel/Channel';
 
 /**
  * The possible sizes for a stream preview.
@@ -65,8 +65,8 @@ export enum StreamType {
 /**
  * A Twitch stream.
  */
-export default class Stream {
-	@NonEnumerable private readonly _client: TwitchClient;
+export class Stream {
+	@Enumerable(false) private readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: StreamData, client: TwitchClient) {

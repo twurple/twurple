@@ -1,11 +1,11 @@
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
-import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
-import HelixSubscriptionEvent, { HelixSubscriptionEventData } from './HelixSubscriptionEvent';
+import { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
+import { HelixSubscription, HelixSubscriptionData } from './HelixSubscription';
+import { HelixSubscriptionEvent, HelixSubscriptionEventData } from './HelixSubscriptionEvent';
 
 /**
  * The Helix API methods that deal with subscriptions.
@@ -18,7 +18,7 @@ import HelixSubscriptionEvent, { HelixSubscriptionEventData } from './HelixSubsc
  * const subscriptions = await client.helix.subscriptions.getSubscriptionsForUsers('61369223', '125328655');
  * ```
  */
-export default class HelixSubscriptionAPI extends BaseAPI {
+export class HelixSubscriptionAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of all subscriptions to a given broadcaster.
 	 *

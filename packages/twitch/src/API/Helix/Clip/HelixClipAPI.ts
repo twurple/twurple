@@ -1,9 +1,9 @@
 import { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import { HelixPaginatedResponse } from '../HelixResponse';
-import HelixClip, { HelixClipData } from './HelixClip';
+import { HelixClip, HelixClipData } from './HelixClip';
 
 /** @private */
 export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
@@ -64,7 +64,7 @@ export interface HelixClipCreateResponse {
  * const clipId = await client.helix.clips.createClip({ channelId: '125328655' });
  * ```
  */
-export default class HelixClipAPI extends BaseAPI {
+export class HelixClipAPI extends BaseAPI {
 	/**
 	 * Retrieves the latest clips for the specified broadcaster.
 	 *

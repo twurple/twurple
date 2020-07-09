@@ -1,20 +1,20 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient, { extractUserId, UserIdResolvable } from 'twitch';
-import BasicPubSubClient from './BasicPubSubClient';
-import PubSubBitsBadgeUnlockMessage from './Messages/PubSubBitsBadgeUnlockMessage';
-import PubSubBitsMessage from './Messages/PubSubBitsMessage';
-import PubSubChatModActionMessage from './Messages/PubSubChatModActionMessage';
-import PubSubRedemptionMessage from './Messages/PubSubRedemptionMessage';
-import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
-import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
-import SingleUserPubSubClient from './SingleUserPubSubClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { extractUserId, TwitchClient, UserIdResolvable } from 'twitch';
+import { BasicPubSubClient } from './BasicPubSubClient';
+import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
+import { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
+import { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
+import { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
+import { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
+import { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
 /**
  * A high level PubSub client attachable to a multiple users.
  */
-export default class PubSubClient {
-	@NonEnumerable private readonly _rootClient: BasicPubSubClient;
-	@NonEnumerable private readonly _userClients = new Map<string, SingleUserPubSubClient>();
+export class PubSubClient {
+	@Enumerable(false) private readonly _rootClient: BasicPubSubClient;
+	@Enumerable(false) private readonly _userClients = new Map<string, SingleUserPubSubClient>();
 
 	/**
 	 * Creates a new PubSub client.

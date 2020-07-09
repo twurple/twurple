@@ -1,12 +1,12 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import BaseAPI from '../BaseAPI';
-import BitsAPI from './Bits/BitsAPI';
-import ChannelAPI from './Channel/ChannelAPI';
-import ChatAPI from './Chat/ChatAPI';
-import SearchAPI from './Search/SearchAPI';
-import StreamAPI from './Stream/StreamAPI';
-import TeamAPI from './Team/TeamAPI';
-import UserAPI from './User/UserAPI';
+import { BaseAPI } from '../BaseAPI';
+import { BitsAPI } from './Bits/BitsAPI';
+import { ChannelAPI } from './Channel/ChannelAPI';
+import { ChatAPI } from './Chat/ChatAPI';
+import { SearchAPI } from './Search/SearchAPI';
+import { StreamAPI } from './Stream/StreamAPI';
+import { TeamAPI } from './Team/TeamAPI';
+import { UserAPI } from './User/UserAPI';
 
 /**
  * Groups all API calls available in Kraken v5.
@@ -14,7 +14,7 @@ import UserAPI from './User/UserAPI';
  * Can be accessed using {@TwitchClient#kraken}.
  */
 @Cacheable
-export default class KrakenAPIGroup extends BaseAPI {
+export class KrakenAPIGroup extends BaseAPI {
 	/**
 	 * The API methods that deal with bits.
 	 */

@@ -1,10 +1,10 @@
 import { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import HelixPagination, { makePaginationQuery } from '../HelixPagination';
+import { HelixPagination, makePaginationQuery } from '../HelixPagination';
 import { HelixPaginatedResponse } from '../HelixResponse';
-import HelixExtensionTransaction, { HelixExtensionTransactionData } from './HelixExtensionTransaction';
+import { HelixExtensionTransaction, HelixExtensionTransactionData } from './HelixExtensionTransaction';
 
 /**
  * Filters for the extension transactions request.
@@ -29,7 +29,7 @@ interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensionTransa
  * const transactions = await client.helix.extionsions.getExtensionTransactions('abcd');
  * ```
  */
-export default class HelixExtensionsAPI extends BaseAPI {
+export class HelixExtensionsAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of transactions for the given extension.
 	 *

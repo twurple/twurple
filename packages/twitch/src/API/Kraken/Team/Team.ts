@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
 
 /** @private */
 export interface TeamData {
@@ -17,9 +17,9 @@ export interface TeamData {
 /**
  * A Twitch team.
  */
-export default class Team {
+export class Team {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(/** @private */ protected _data: TeamData, client: TwitchClient) {

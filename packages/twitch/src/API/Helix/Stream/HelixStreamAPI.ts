@@ -1,16 +1,16 @@
 import { flatten } from '@d-fischer/shared-utils';
-import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
-import StreamNotLiveError from '../../../Errors/StreamNotLiveError';
+import { HTTPStatusCodeError } from '../../../Errors/HTTPStatusCodeError';
+import { StreamNotLiveError } from '../../../Errors/StreamNotLiveError';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
-import TwitchClient, { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequest from '../HelixPaginatedRequest';
-import HelixPaginatedResult, { createPaginatedResult } from '../HelixPaginatedResult';
-import HelixPagination, { makePaginationQuery } from '../HelixPagination';
-import HelixResponse, { HelixPaginatedResponse } from '../HelixResponse';
-import HelixStream, { HelixStreamData, HelixStreamType } from './HelixStream';
-import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
-import HelixStreamMarkerWithVideo, { HelixStreamMarkerVideoData } from './HelixStreamMarkerWithVideo';
+import { TwitchAPICallType, TwitchClient } from '../../../TwitchClient';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import { createPaginatedResult, HelixPaginatedResult } from '../HelixPaginatedResult';
+import { HelixPagination, makePaginationQuery } from '../HelixPagination';
+import { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
+import { HelixStream, HelixStreamData, HelixStreamType } from './HelixStream';
+import { HelixStreamMarker, HelixStreamMarkerData } from './HelixStreamMarker';
+import { HelixStreamMarkerVideoData, HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
 
 /**
  * Filters for the streams request.
@@ -76,7 +76,7 @@ interface HelixStreamGetMarkersResult {
  * const stream = await client.helix.streams.getStreamByUserId('125328655');
  * ```
  */
-export default class HelixStreamAPI extends BaseAPI {
+export class HelixStreamAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of streams.
 	 *

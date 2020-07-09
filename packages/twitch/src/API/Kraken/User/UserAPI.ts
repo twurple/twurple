@@ -1,17 +1,17 @@
 import { Cacheable, Cached, CacheEntry, ClearsCache } from '@d-fischer/cache-decorators';
 import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
-import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
-import HTTPStatusCodeError from '../../../Errors/HTTPStatusCodeError';
-import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
+import { HTTPStatusCodeError } from '../../../Errors/HTTPStatusCodeError';
+import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import BaseAPI from '../../BaseAPI';
-import EmoteSetList from '../Channel/EmoteSetList';
-import PrivilegedUser from './PrivilegedUser';
-import User, { UserData } from './User';
-import UserBlock, { UserBlockData } from './UserBlock';
-import UserChatInfo, { UserChatInfoData } from './UserChatInfo';
-import UserFollow, { UserFollowData } from './UserFollow';
-import UserSubscription from './UserSubscription';
+import { BaseAPI } from '../../BaseAPI';
+import { EmoteSetList } from '../Channel/EmoteSetList';
+import { PrivilegedUser } from './PrivilegedUser';
+import { User, UserData } from './User';
+import { UserBlock, UserBlockData } from './UserBlock';
+import { UserChatInfo, UserChatInfoData } from './UserChatInfo';
+import { UserFollow, UserFollowData } from './UserFollow';
+import { UserSubscription } from './UserSubscription';
 
 /**
  * The API methods that deal with users.
@@ -25,7 +25,7 @@ import UserSubscription from './UserSubscription';
  * ```
  */
 @Cacheable
-export default class UserAPI extends BaseAPI {
+export class UserAPI extends BaseAPI {
 	private readonly _userByNameCache: Map<string, CacheEntry<User>> = new Map();
 
 	/**

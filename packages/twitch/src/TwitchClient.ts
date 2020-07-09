@@ -5,23 +5,23 @@ import fetch, { Headers } from '@d-fischer/cross-fetch';
 import { LogLevel } from '@d-fischer/logger';
 import { stringify } from '@d-fischer/qs';
 
-import AccessToken, { AccessTokenData } from './API/AccessToken';
-import BadgesAPI from './API/Badges/BadgesAPI';
-import HelixAPIGroup from './API/Helix/HelixAPIGroup';
-import HelixRateLimiter from './API/Helix/HelixRateLimiter';
+import { AccessToken, AccessTokenData } from './API/AccessToken';
+import { BadgesAPI } from './API/Badges/BadgesAPI';
+import { HelixAPIGroup } from './API/Helix/HelixAPIGroup';
+import { HelixRateLimiter } from './API/Helix/HelixRateLimiter';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
-import KrakenAPIGroup from './API/Kraken/KrakenAPIGroup';
-import TokenInfo, { TokenInfoData } from './API/TokenInfo';
-import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
+import { KrakenAPIGroup } from './API/Kraken/KrakenAPIGroup';
+import { TokenInfo, TokenInfoData } from './API/TokenInfo';
+import { UnsupportedAPI } from './API/Unsupported/UnsupportedAPI';
 
-import AuthProvider, { AuthProviderTokenType } from './Auth/AuthProvider';
-import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider';
-import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
-import StaticAuthProvider from './Auth/StaticAuthProvider';
+import { AuthProvider, AuthProviderTokenType } from './Auth/AuthProvider';
+import { ClientCredentialsAuthProvider } from './Auth/ClientCredentialsAuthProvider';
+import { RefreshableAuthProvider, RefreshConfig } from './Auth/RefreshableAuthProvider';
+import { StaticAuthProvider } from './Auth/StaticAuthProvider';
 
-import ConfigError from './Errors/ConfigError';
-import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
-import InvalidTokenError from './Errors/InvalidTokenError';
+import { ConfigError } from './Errors/ConfigError';
+import { HTTPStatusCodeError } from './Errors/HTTPStatusCodeError';
+import { InvalidTokenError } from './Errors/InvalidTokenError';
 
 /**
  * Default configuration for the cheermote API.
@@ -171,7 +171,7 @@ export interface TwitchAPICallOptionsInternal {
  * The main entry point of this library. Manages API calls and the use of access tokens in these.
  */
 @Cacheable
-export default class TwitchClient {
+export class TwitchClient {
 	private readonly _config: TwitchConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;
 

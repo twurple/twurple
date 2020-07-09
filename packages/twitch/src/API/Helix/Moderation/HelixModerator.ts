@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
 
 /** @private */
 export interface HelixModeratorData {
@@ -10,9 +10,9 @@ export interface HelixModeratorData {
 /**
  * Information about the moderator status of a user.
  */
-export default class HelixModerator {
+export class HelixModerator {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: HelixModeratorData, client: TwitchClient) {

@@ -3,7 +3,7 @@ import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv
 // this command has no *useful* parameters, all information is in tags
 /** @private */
 @MessageType('HOSTTARGET')
-export default class HostTarget extends Message<HostTarget> {
+export class HostTarget extends Message<HostTarget> {
 	@MessageParamDefinition({
 		type: 'channel'
 	})

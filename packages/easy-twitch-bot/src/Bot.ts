@@ -1,10 +1,10 @@
 import { ResolvableValue } from '@d-fischer/shared-utils';
-import TwitchClient, { AuthProvider } from 'twitch';
-import ChatClient, { LogLevel, PrivateMessage } from 'twitch-chat-client';
-import BotCommand, { BotCommandMatch } from './BotCommand';
-import BotCommandContext from './BotCommandContext';
+import { AuthProvider, TwitchClient } from 'twitch';
+import { ChatClient, LogLevel, PrivateMessage } from 'twitch-chat-client';
+import { BotCommand, BotCommandMatch } from './BotCommand';
+import { BotCommandContext } from './BotCommandContext';
 
-interface BotConfig {
+export interface BotConfig {
 	auth?: string | AuthProvider;
 	client?: TwitchClient;
 	debug?: boolean;
@@ -14,7 +14,7 @@ interface BotConfig {
 	prefix?: string;
 }
 
-export default class Bot {
+export class Bot {
 	readonly chat: ChatClient;
 	private readonly _commands = new Map<string, BotCommand>();
 	private readonly _prefix: string;
@@ -38,7 +38,7 @@ export default class Bot {
 		return new this(twitchClient, config);
 	}
 
-	private constructor(public readonly api: TwitchClient, { channel, channels, debug, commands, prefix }: BotConfig) {
+	constructor(public readonly api: TwitchClient, { channel, channels, debug, commands, prefix }: BotConfig) {
 		this._prefix = prefix ?? '!';
 		let resolvableChannels: ResolvableValue<string[]> | undefined;
 		if (channel) {

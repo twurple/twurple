@@ -1,8 +1,8 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../TwitchClient';
-import BaseAPI from '../BaseAPI';
-import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
+import { BaseAPI } from '../BaseAPI';
+import { ChatBadgeList, ChatBadgeListData } from './ChatBadgeList';
 
 /**
  * The API methods that deal with badges.
@@ -16,7 +16,7 @@ import ChatBadgeList, { ChatBadgeListData } from './ChatBadgeList';
  * ```
  */
 @Cacheable
-export default class BadgesAPI extends BaseAPI {
+export class BadgesAPI extends BaseAPI {
 	/**
 	 * Retrieves all globally applicable chat badges.
 	 */

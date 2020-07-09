@@ -1,17 +1,18 @@
 import { LogLevel } from '@d-fischer/logger';
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient, { extractUserId, InvalidTokenError, UserIdResolvable } from 'twitch';
-import BasicPubSubClient from './BasicPubSubClient';
-import PubSubBitsBadgeUnlockMessage, {
+import { Enumerable } from '@d-fischer/shared-utils';
+import { extractUserId, InvalidTokenError, TwitchClient, UserIdResolvable } from 'twitch';
+import { BasicPubSubClient } from './BasicPubSubClient';
+import {
+	PubSubBitsBadgeUnlockMessage,
 	PubSubBitsBadgeUnlockMessageData
 } from './Messages/PubSubBitsBadgeUnlockMessage';
-import PubSubBitsMessage, { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
-import PubSubChatModActionMessage, { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
-import PubSubMessage from './Messages/PubSubMessage';
-import PubSubRedemptionMessage, { PubSubRedemptionMessageData } from './Messages/PubSubRedemptionMessage';
-import PubSubSubscriptionMessage, { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
-import PubSubWhisperMessage, { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
-import PubSubListener from './PubSubListener';
+import { PubSubBitsMessage, PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
+import { PubSubChatModActionMessage, PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
+import { PubSubMessage } from './Messages/PubSubMessage';
+import { PubSubRedemptionMessage, PubSubRedemptionMessageData } from './Messages/PubSubRedemptionMessage';
+import { PubSubSubscriptionMessage, PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
+import { PubSubWhisperMessage, PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
+import { PubSubListener } from './PubSubListener';
 
 /**
  * Options for creating the single-user PubSub client.
@@ -36,9 +37,9 @@ interface SingleUserPubSubClientOptions {
 /**
  * A higher level PubSub client attached to a single user.
  */
-export default class SingleUserPubSubClient {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
-	@NonEnumerable private readonly _pubSubClient: BasicPubSubClient;
+export class SingleUserPubSubClient {
+	@Enumerable(false) private readonly _twitchClient: TwitchClient;
+	@Enumerable(false) private readonly _pubSubClient: BasicPubSubClient;
 
 	private readonly _listeners: Map<string, PubSubListener[]> = new Map();
 

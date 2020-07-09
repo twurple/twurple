@@ -1,7 +1,7 @@
-import Logger, { LoggerOptions } from '@d-fischer/logger';
+import { Logger, LoggerOptions } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Request, RequestHandler, Response, Server } from 'httpanda';
-import TwitchClient, {
+import {
 	extractUserId,
 	HelixBanEvent,
 	HelixExtensionTransaction,
@@ -10,20 +10,21 @@ import TwitchClient, {
 	HelixStream,
 	HelixSubscriptionEvent,
 	HelixUser,
+	TwitchClient,
 	UserIdResolvable
 } from 'twitch';
-import ConnectionAdapter from './Adapters/ConnectionAdapter';
-import LegacyAdapter, { WebHookListenerConfig } from './Adapters/LegacyAdapter';
-import ConnectCompatibleApp from './ConnectCompatibleApp';
-import BanEventSubscription from './Subscriptions/BanEventSubscription';
-import ExtensionTransactionSubscription from './Subscriptions/ExtensionTransactionSubscription';
-import FollowsFromUserSubscription from './Subscriptions/FollowsFromUserSubscription';
-import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription';
-import ModeratorEventSubscription from './Subscriptions/ModeratorEventSubscription';
-import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
-import Subscription from './Subscriptions/Subscription';
-import SubscriptionEventSubscription from './Subscriptions/SubscriptionEventSubscription';
-import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
+import { ConnectionAdapter } from './Adapters/ConnectionAdapter';
+import { LegacyAdapter, WebHookListenerConfig } from './Adapters/LegacyAdapter';
+import { ConnectCompatibleApp } from './ConnectCompatibleApp';
+import { BanEventSubscription } from './Subscriptions/BanEventSubscription';
+import { ExtensionTransactionSubscription } from './Subscriptions/ExtensionTransactionSubscription';
+import { FollowsFromUserSubscription } from './Subscriptions/FollowsFromUserSubscription';
+import { FollowsToUserSubscription } from './Subscriptions/FollowsToUserSubscription';
+import { ModeratorEventSubscription } from './Subscriptions/ModeratorEventSubscription';
+import { StreamChangeSubscription } from './Subscriptions/StreamChangeSubscription';
+import { Subscription } from './Subscriptions/Subscription';
+import { SubscriptionEventSubscription } from './Subscriptions/SubscriptionEventSubscription';
+import { UserChangeSubscription } from './Subscriptions/UserChangeSubscription';
 
 /**
  * Certificate data used to make the listener server SSL capable.
@@ -62,7 +63,7 @@ export interface WebHookConfig {
 /**
  * A WebHook listener you can track changes in various channel and user data with.
  */
-export default class WebHookListener {
+export class WebHookListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();
 

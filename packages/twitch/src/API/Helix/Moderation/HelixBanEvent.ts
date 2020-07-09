@@ -1,6 +1,6 @@
-import TwitchClient from '../../../TwitchClient';
+import { TwitchClient } from '../../../TwitchClient';
 import { HelixEventData } from '../HelixEvent';
-import HelixBan, { HelixBanData } from './HelixBan';
+import { HelixBan, HelixBanData } from './HelixBan';
 
 /**
  * The different types a ban event can have.
@@ -29,7 +29,7 @@ export type HelixBanEventData = HelixEventData<HelixBanEventDetail, HelixBanEven
 /**
  * An event that indicates the change of a ban status, i.e. banning or unbanning a user.
  */
-export default class HelixBanEvent extends HelixBan {
+export class HelixBanEvent extends HelixBan {
 	/** @private */
 	constructor(private readonly _eventData: HelixBanEventData, client: TwitchClient) {
 		super(_eventData.event_data, client);

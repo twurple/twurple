@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import BaseAPI from '../../BaseAPI';
-import Team, { TeamData } from './Team';
-import TeamWithUsers from './TeamWithUsers';
+import { BaseAPI } from '../../BaseAPI';
+import { Team, TeamData } from './Team';
+import { TeamWithUsers } from './TeamWithUsers';
 
 /**
  * The API methods that deal with teams.
@@ -15,7 +15,7 @@ import TeamWithUsers from './TeamWithUsers';
  * ```
  */
 @Cacheable
-export default class TeamAPI extends BaseAPI {
+export class TeamAPI extends BaseAPI {
 	/**
 	 * Get a list of teams.
 	 *

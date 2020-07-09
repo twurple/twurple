@@ -1,5 +1,5 @@
 /** @private */
-export default class CustomError extends Error {
+export class CustomError extends Error {
 	constructor(...params: [string, string?, string?]) {
 		// @ts-ignore
 		super(...params);

@@ -1,9 +1,9 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import BaseAPI from '../../BaseAPI';
+import { BaseAPI } from '../../BaseAPI';
 import { ChatEmoteData } from './ChatEmote';
-import ChatEmoteList from './ChatEmoteList';
-import ChatRoom, { ChatRoomData } from './ChatRoom';
+import { ChatEmoteList } from './ChatEmoteList';
+import { ChatRoom, ChatRoomData } from './ChatRoom';
 
 /**
  * The API methods that deal with chat and chatrooms.
@@ -17,7 +17,7 @@ import ChatRoom, { ChatRoomData } from './ChatRoom';
  * ```
  */
 @Cacheable
-export default class ChatAPI extends BaseAPI {
+export class ChatAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of emotes for a given list of enote set IDs.
 	 *

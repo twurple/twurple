@@ -1,4 +1,4 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
 import * as http from 'http';
 import * as https from 'https';
 import { WebHookListenerCertificateConfig } from '../WebHookListener';
@@ -22,9 +22,9 @@ export interface CommonConnectionAdapterConfig {
 /**
  * An abstraction of a WebHook connection adapter.
  */
-export default abstract class ConnectionAdapter {
+export abstract class ConnectionAdapter {
 	private readonly _listenerPort: number;
-	@NonEnumerable private readonly _ssl?: WebHookListenerCertificateConfig;
+	@Enumerable(false) private readonly _ssl?: WebHookListenerCertificateConfig;
 
 	/**
 	 * Creates a new instance of the connection adapter.

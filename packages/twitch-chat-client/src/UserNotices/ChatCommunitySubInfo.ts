@@ -1,7 +1,7 @@
 /**
  * Information about a community gift subscription.
  */
-export default interface ChatCommunitySubInfo {
+export interface ChatCommunitySubInfo {
 	/**
 	 * The user name of the user that gifted the subscription(s).
 	 */

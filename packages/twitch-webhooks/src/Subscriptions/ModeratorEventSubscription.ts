@@ -1,12 +1,12 @@
 import { HelixModeratorEvent, HelixResponse } from 'twitch';
 import { HelixModeratorEventData } from 'twitch/lib/API/Helix/Moderation/HelixModeratorEvent';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
  * @private
  */
-export default class ModeratorEventSubscription extends Subscription<HelixModeratorEvent> {
+export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent> {
 	constructor(
 		private readonly _broadcasterId: string,
 		handler: (data: HelixModeratorEvent) => void,

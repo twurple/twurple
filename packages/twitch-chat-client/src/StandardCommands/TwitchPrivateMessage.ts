@@ -1,6 +1,6 @@
 import { MessageTypes } from 'ircv3';
 import { CheermoteList } from 'twitch';
-import ChatUser from '../ChatUser';
+import { ChatUser } from '../ChatUser';
 import {
 	fillTextPositions,
 	ParsedMessageCheerPart,
@@ -9,7 +9,7 @@ import {
 	parseEmotePositions
 } from '../Toolkit/EmoteTools';
 
-class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
+export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	get userInfo() {
 		return new ChatUser(this._prefix!.nick, this._tags);
 	}
@@ -70,5 +70,3 @@ class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 		return fillTextPositions(messageText, foundEmotesAndCheermotes);
 	}
 }
-
-export default TwitchPrivateMessage;

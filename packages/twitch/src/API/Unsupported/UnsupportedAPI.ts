@@ -1,8 +1,8 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserName, UserNameResolvable } from '../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../TwitchClient';
-import BaseAPI from '../BaseAPI';
-import ChattersList, { ChattersListData } from './ChattersList';
+import { BaseAPI } from '../BaseAPI';
+import { ChattersList, ChattersListData } from './ChattersList';
 
 /**
  * Different API methods that are not officially supported by Twitch.
@@ -16,7 +16,7 @@ import ChattersList, { ChattersListData } from './ChattersList';
  * ```
  */
 @Cacheable
-export default class UnsupportedAPI extends BaseAPI {
+export class UnsupportedAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of chatters in the Twitch chat of the given channel.
 	 *

@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
 
 /**
  * The type of a stream.
@@ -41,8 +41,8 @@ export interface HelixStreamData {
 /**
  * A Twitch stream.
  */
-export default class HelixStream {
-	@NonEnumerable private readonly _client: TwitchClient;
+export class HelixStream {
+	@Enumerable(false) private readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: HelixStreamData, client: TwitchClient) {

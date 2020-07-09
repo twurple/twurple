@@ -4,7 +4,7 @@ import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
  * A user in chat.
  */
 @Cacheable
-export default class ChatUser {
+export class ChatUser {
 	private readonly _userData: Map<string, string>;
 	private readonly _userName: string;
 

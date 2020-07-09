@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient, { HelixUserType } from 'twitch';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { HelixUserType, TwitchClient } from 'twitch';
 import { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
 export interface PubSubWhisperTags {
@@ -41,8 +41,8 @@ export interface PubSubWhisperMessageData {
 /**
  * A message informing about a whisper being received from another user.
  */
-export default class PubSubWhisperMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubWhisperMessage {
+	@Enumerable(false) private readonly _twitchClient: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: PubSubWhisperMessageData, twitchClient: TwitchClient) {

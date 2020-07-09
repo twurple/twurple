@@ -1,7 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import TwitchClient from '../../../TwitchClient';
+import { TwitchClient } from '../../../TwitchClient';
 
 /**
  * The type of a broadcaster.
@@ -64,9 +64,9 @@ export interface HelixUserData {
 /**
  * A Twitch user.
  */
-export default class HelixUser {
+export class HelixUser {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(/** @private */ protected _data: HelixUserData, client: TwitchClient) {

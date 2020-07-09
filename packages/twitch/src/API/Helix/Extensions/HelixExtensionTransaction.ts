@@ -1,6 +1,6 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import HelixExtensionProductData from './HelixExtensionProductData';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
+import { HelixExtensionProductData } from './HelixExtensionProductData';
 
 /** @private */
 export interface HelixExtensionTransactionData {
@@ -17,8 +17,8 @@ export interface HelixExtensionTransactionData {
 /**
  * A bits transaction made inside an extension.
  */
-export default class HelixExtensionTransaction {
-	@NonEnumerable private readonly _client: TwitchClient;
+export class HelixExtensionTransaction {
+	@Enumerable(false) private readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: HelixExtensionTransactionData, client: TwitchClient) {

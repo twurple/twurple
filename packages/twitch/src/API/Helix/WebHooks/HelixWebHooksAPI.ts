@@ -1,8 +1,8 @@
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
-import HelixWebHookSubscription, { HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
+import { HelixWebHookSubscription, HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
 
 /**
  * The properties describing where and how long a WebHook notification is sent, and how it is signed.
@@ -68,7 +68,7 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  * const accepted = await client.helix.webHooks.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
-export default class HelixWebHooksAPI extends BaseAPI {
+export class HelixWebHooksAPI extends BaseAPI {
 	/**
 	 * Retrieves the current WebHook subscriptions for the current client.
 	 *

@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import BaseAPI from '../../BaseAPI';
-import Stream, { StreamData, StreamDataWrapper, StreamType } from './Stream';
+import { BaseAPI } from '../../BaseAPI';
+import { Stream, StreamData, StreamDataWrapper, StreamType } from './Stream';
 
 /**
  * The API methods that deal with streams.
@@ -15,7 +15,7 @@ import Stream, { StreamData, StreamDataWrapper, StreamType } from './Stream';
  * ```
  */
 @Cacheable
-export default class StreamAPI extends BaseAPI {
+export class StreamAPI extends BaseAPI {
 	/**
 	 * Retrieves the current stream on the given channel.
 	 *

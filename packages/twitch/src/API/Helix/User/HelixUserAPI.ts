@@ -1,13 +1,13 @@
-import HellFreezesOverError from '../../../Errors/HellFreezesOverError';
+import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import { TwitchAPICallType } from '../../../TwitchClient';
-import BaseAPI from '../../BaseAPI';
-import HelixPaginatedRequestWithTotal from '../HelixPaginatedRequestWithTotal';
+import { BaseAPI } from '../../BaseAPI';
+import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
-import HelixResponse, { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '../HelixResponse';
-import HelixFollow, { HelixFollowData, HelixFollowFilter } from './HelixFollow';
-import HelixPrivilegedUser, { HelixPrivilegedUserData } from './HelixPrivilegedUser';
-import HelixUser, { HelixUserData } from './HelixUser';
+import { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
+import { HelixFollow, HelixFollowData, HelixFollowFilter } from './HelixFollow';
+import { HelixPrivilegedUser, HelixPrivilegedUserData } from './HelixPrivilegedUser';
+import { HelixUser, HelixUserData } from './HelixUser';
 
 /** @private */
 export enum UserLookupType {
@@ -33,7 +33,7 @@ export interface HelixUserUpdate {
  * const user = await client.helix.users.getUserById('125328655');
  * ```
  */
-export default class HelixUserAPI extends BaseAPI {
+export class HelixUserAPI extends BaseAPI {
 	/**
 	 * Retrieves the user data for the given list of user IDs.
 	 *

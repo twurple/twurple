@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { TwitchClient } from '../../../TwitchClient';
 
 /** @private */
 export interface ChatEmoteData {
@@ -11,9 +11,9 @@ export interface ChatEmoteData {
 /**
  * A chat emote.
  */
-export default class ChatEmote {
+export class ChatEmote {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	/** @private */
 	constructor(private readonly _data: ChatEmoteData, client: TwitchClient) {

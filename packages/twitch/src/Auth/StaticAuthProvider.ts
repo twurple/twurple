@@ -1,7 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import AccessToken from '../API/AccessToken';
-import TwitchClient from '../TwitchClient';
-import AuthProvider, { AuthProviderTokenType } from './AuthProvider';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { AccessToken } from '../API/AccessToken';
+import { TwitchClient } from '../TwitchClient';
+import { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
  * An auth provider that always returns the same initially given credentials.
@@ -10,9 +10,9 @@ import AuthProvider, { AuthProviderTokenType } from './AuthProvider';
  * or to plan ahead and supply only access tokens that account for all scopes
  * you will ever need.
  */
-export default class StaticAuthProvider implements AuthProvider {
-	@NonEnumerable private readonly _clientId: string;
-	@NonEnumerable private _accessToken?: AccessToken;
+export class StaticAuthProvider implements AuthProvider {
+	@Enumerable(false) private readonly _clientId: string;
+	@Enumerable(false) private _accessToken?: AccessToken;
 	private _scopes?: string[];
 
 	/**

@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import BaseAPI from '../../BaseAPI';
-import CheermoteList, { CheermoteListData } from './CheermoteList';
+import { BaseAPI } from '../../BaseAPI';
+import { CheermoteList, CheermoteListData } from './CheermoteList';
 
 /**
  * The API methods that deal with Bits/Cheermotes.
@@ -15,7 +15,7 @@ import CheermoteList, { CheermoteListData } from './CheermoteList';
  * ```
  */
 @Cacheable
-export default class BitsAPI extends BaseAPI {
+export class BitsAPI extends BaseAPI {
 	/**
 	 * Retrieves global and channel cheermotes.
 	 *

@@ -13,11 +13,11 @@ or using npm:
 Using ES2015 modules:
 
 ```typescript
-import ChatClient from 'twitch-chat-client';
+import { ChatClient } from 'twitch-chat-client';
 ```
 
 Using CommonJS:
 
 ```typescript
-const ChatClient = require('twitch-chat-client');
+const { ChatClient } = require('twitch-chat-client');
 ```

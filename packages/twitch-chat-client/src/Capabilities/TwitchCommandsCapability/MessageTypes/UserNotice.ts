@@ -1,5 +1,5 @@
 import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
-import ChatUser from '../../../ChatUser';
+import { ChatUser } from '../../../ChatUser';
 import {
 	fillTextPositions,
 	ParsedMessagePart,
@@ -8,7 +8,7 @@ import {
 } from '../../../Toolkit/EmoteTools';
 
 @MessageType('USERNOTICE')
-export default class UserNotice extends Message<UserNotice> {
+export class UserNotice extends Message<UserNotice> {
 	@MessageParamDefinition({
 		type: 'channel'
 	})

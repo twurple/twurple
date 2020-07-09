@@ -1,4 +1,4 @@
-import AccessToken from '../API/AccessToken';
+import { AccessToken } from '../API/AccessToken';
 
 /**
  * The type of token an auth provider can return - user tokens and app tokens are supported.
@@ -16,7 +16,7 @@ export type AuthProviderTokenType = 'user' | 'app';
  * is used as a wrapper around another `AuthProvider` and can make use of
  * refresh tokens.
  */
-interface AuthProvider {
+export interface AuthProvider {
 	/**
 	 * The client ID.
 	 */
@@ -60,5 +60,3 @@ interface AuthProvider {
 	 */
 	refresh?(): Promise<AccessToken>;
 }
-
-export default AuthProvider;

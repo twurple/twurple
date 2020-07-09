@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import BaseAPI from '../../BaseAPI';
-import Channel, { ChannelData } from '../Channel/Channel';
-import Stream, { StreamData } from '../Stream/Stream';
+import { BaseAPI } from '../../BaseAPI';
+import { Channel, ChannelData } from '../Channel/Channel';
+import { Stream, StreamData } from '../Stream/Stream';
 
 /**
  * The API methods that deal with searching.
@@ -15,7 +15,7 @@ import Stream, { StreamData } from '../Stream/Stream';
  * ```
  */
 @Cacheable
-export default class SearchAPI extends BaseAPI {
+export class SearchAPI extends BaseAPI {
 	/**
 	 * Retrieves a list of channels that match the given search term.
 	 *
