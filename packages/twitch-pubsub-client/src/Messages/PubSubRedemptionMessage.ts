@@ -154,6 +154,13 @@ export class PubSubRedemptionMessage {
 	}
 
 	/**
+	 * The image set associated with the reward.
+	 */
+	get rewardImage() {
+		return this._data.data.redemption.reward.image;
+	}
+
+	/**
 	 * The full message that was sent with the notification.
 	 */
 	get message() {
