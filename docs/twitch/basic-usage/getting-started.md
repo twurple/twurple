@@ -16,8 +16,8 @@ Using ES2015 modules:
 import TwitchClient from 'twitch';
 ```
 
-Using CommonJS modules:
+Using CommonJS:
 
 ```typescript
-const TwitchClient = require('twitch').default;
+const TwitchClient = require('twitch');
 ```

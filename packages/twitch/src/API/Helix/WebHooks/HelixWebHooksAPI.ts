@@ -155,7 +155,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Subscribes to events representing a stream changing, e.g. going live, offline or changing its title.
+	 * Subscribes to events representing a stream changing, i.e. going live, offline or changing its title or category.
 	 *
 	 * @expandParams
 	 *
@@ -167,7 +167,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Unsubscribes from events representing a stream changing, e.g. going live, offline or changing its title.
+	 * Unsubscribes from events representing a stream changing.
 	 *
 	 * @expandParams
 	 *
@@ -208,11 +208,11 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Subscribes to events representing a channel subscription or unsubscription.
+	 * Subscribes to events representing the start or end of a channel subscription.
 	 *
 	 * @expandParams
 	 *
-	 * @param user The user for which to get notifications about subscriptions and unsubscriptions to their channel.
+	 * @param user The user for which to get notifications about subscriptions to their channel.
 	 * @param options
 	 */
 	async subscribeToSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
@@ -220,7 +220,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	}
 
 	/**
-	 * Unsubscribes from events representing a channel subscription or unsubscription.
+	 * Unsubscribes from events representing the start or end of a channel subscription.
 	 *
 	 * @expandParams
 	 *
@@ -343,7 +343,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 * @expandParams
 	 *
 	 * @param broadcaster The broadcaster for which to get notifications about moderator changes in their channel.
-	 * @param user The user that is being banned or unbanned.
+	 * @param user The user that is being modded or unmodded.
 	 * @param options
 	 */
 	async subscribeToModeratorEventsForUser(
@@ -360,7 +360,7 @@ export default class HelixWebHooksAPI extends BaseAPI {
 	 * @expandParams
 	 *
 	 * @param broadcaster The broadcaster for which not to get any more notifications about moderator changes in their channel.
-	 * @param user The user that is being banned or unbanned.
+	 * @param user The user that is being modded or unmodded.
 	 * @param options
 	 */
 	async unsubscribeFromModeratorEventsForUser(

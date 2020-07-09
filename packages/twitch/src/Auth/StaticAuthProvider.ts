@@ -1,7 +1,7 @@
 import { NonEnumerable } from '@d-fischer/shared-utils';
 import AccessToken from '../API/AccessToken';
 import TwitchClient from '../TwitchClient';
-import AuthProvider from './AuthProvider';
+import AuthProvider, { AuthProviderTokenType } from './AuthProvider';
 
 /**
  * An auth provider that always returns the same initially given credentials.
@@ -16,6 +16,11 @@ export default class StaticAuthProvider implements AuthProvider {
 	private _scopes?: string[];
 
 	/**
+	 * The type of token the provider holds.
+	 */
+	readonly tokenType: AuthProviderTokenType;
+
+	/**
 	 * Creates a new auth provider with static credentials.
 	 *
 	 * You don't usually have to create this manually. You should use `TwitchClient.withCredentials` instead.
@@ -25,9 +30,16 @@ export default class StaticAuthProvider implements AuthProvider {
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param scopes The scopes this token has.
+	 * @param tokenType The type of the supplied token.
 	 */
-	constructor(clientId: string, accessToken?: string | AccessToken, scopes?: string[]) {
+	constructor(
+		clientId: string,
+		accessToken?: string | AccessToken,
+		scopes?: string[],
+		tokenType: AuthProviderTokenType = 'user'
+	) {
 		this._clientId = clientId || '';
+		this.tokenType = tokenType;
 		if (accessToken) {
 			this._accessToken =
 				typeof accessToken === 'string'

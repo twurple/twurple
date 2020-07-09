@@ -4,11 +4,9 @@ import WebHookListener from '../WebHookListener';
 import Subscription from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
 export default class ExtensionTransactionSubscription extends Subscription<HelixExtensionTransaction> {
-	/** @private */
 	constructor(
 		private readonly _extensionId: string,
 		handler: (data: HelixExtensionTransaction) => void,
@@ -29,14 +27,14 @@ export default class ExtensionTransactionSubscription extends Subscription<Helix
 	protected async _subscribe() {
 		return this._client._twitchClient.helix.webHooks.subscribeToExtensionTransactions(
 			this._extensionId,
-			this._options
+			await this._getOptions()
 		);
 	}
 
 	protected async _unsubscribe() {
 		return this._client._twitchClient.helix.webHooks.unsubscribeFromExtensionTransactions(
 			this._extensionId,
-			this._options
+			await this._getOptions()
 		);
 	}
 }

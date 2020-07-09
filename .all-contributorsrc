@@ -147,6 +147,42 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "trezy",
+      "name": "Trezy",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/442980?v=4",
+      "profile": "http://trezy.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "travtarr",
+      "name": "Travis Tarr",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/7989582?v=4",
+      "profile": "https://github.com/travtarr",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "gregoire78",
+      "name": "Grégoire Joncour",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/11161511?v=4",
+      "profile": "http://multitwitch.co",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "maciej-trebacz",
+      "name": "Maciej Trębacz",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1614514?v=4",
+      "profile": "https://github.com/maciej-trebacz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

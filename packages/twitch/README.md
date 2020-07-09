@@ -1,5 +1,7 @@
 # Twitch.js - Core
 
+Interact with Twitch's API.
+
 ## Installation
 
 	yarn add twitch

@@ -8,6 +8,7 @@ import Channel from './Channel';
 import ChannelFollow, { ChannelFollowData } from './ChannelFollow';
 import ChannelSubscription, { ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
 import PrivilegedChannel, { PrivilegedChannelData } from './PrivilegedChannel';
+import Team, { TeamData } from '../Team/Team';
 
 /**
  * Channel data to update using {@ChannelAPI#updateChannel}.
@@ -205,6 +206,23 @@ export default class ChannelAPI extends BaseAPI {
 
 			throw e;
 		}
+	}
+
+	/**
+	 * Retrieves a list of teams of the given channel.
+	 *
+	 * @param channel The channel you want to retrieve the list of teams of.
+	 */
+	@Cached(30)
+	async getChannelTeams(channel: UserIdResolvable): Promise<Team[]> {
+		const channelId = extractUserId(channel);
+
+		const data = await this._client.callAPI({
+			url: `channels/${channelId}/teams`,
+			method: 'GET'
+		});
+
+		return data.teams.map((team: TeamData) => new Team(team, this._client));
 	}
 
 	/**

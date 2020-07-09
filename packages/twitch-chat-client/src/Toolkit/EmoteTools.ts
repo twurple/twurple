@@ -1,3 +1,5 @@
+/// <reference lib="esnext.array" />
+
 import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
 import { CheermoteDisplayInfo } from 'twitch';
 

@@ -4,11 +4,9 @@ import WebHookListener from '../WebHookListener';
 import Subscription from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
 export default class ModeratorEventSubscription extends Subscription<HelixModeratorEvent> {
-	/** @private */
 	constructor(
 		private readonly _broadcasterId: string,
 		handler: (data: HelixModeratorEvent) => void,
@@ -35,10 +33,13 @@ export default class ModeratorEventSubscription extends Subscription<HelixModera
 			return this._client._twitchClient.helix.webHooks.subscribeToModeratorEventsForUser(
 				this._broadcasterId,
 				this._userId,
-				this._options
+				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.subscribeToModeratorEvents(this._broadcasterId, this._options);
+		return this._client._twitchClient.helix.webHooks.subscribeToModeratorEvents(
+			this._broadcasterId,
+			await this._getOptions()
+		);
 	}
 
 	protected async _unsubscribe() {
@@ -46,12 +47,12 @@ export default class ModeratorEventSubscription extends Subscription<HelixModera
 			return this._client._twitchClient.helix.webHooks.unsubscribeFromModeratorEventsForUser(
 				this._broadcasterId,
 				this._userId,
-				this._options
+				await this._getOptions()
 			);
 		}
 		return this._client._twitchClient.helix.webHooks.unsubscribeFromModeratorEvents(
 			this._broadcasterId,
-			this._options
+			await this._getOptions()
 		);
 	}
 }

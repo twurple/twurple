@@ -1,6 +1,6 @@
 {
   "name": "twitch",
-  "version": "4.0.10",
+  "version": "4.1.1",
   "description": "Interact with Twitch's API.",
   "keywords": [
     "twitch",
@@ -11,37 +11,44 @@
     "chatters",
     "bot"
   ],
+  "sideEffects": false,
   "main": "lib",
-  "types": "lib/index",
+  "types": "lib",
+  "module": "es",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/d-fischer/twitch.git",
     "directory": "packages/twitch"
   },
+  "homepage": "https://d-fischer.github.io/twitch",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/cache-decorators": "^1.0.2",
-    "@d-fischer/logger": "^0.2.3",
-    "@d-fischer/rate-limiter": "^0.1.2",
-    "@d-fischer/shared-utils": "^1.0.1",
-    "@types/promise.allsettled": "^1.0.2",
-    "@types/qs": "^6.5.1",
-    "fetch-ponyfill": "^6.0.2",
-    "promise.allsettled": "^1.0.1",
-    "qs": "^6.6.0",
+    "@d-fischer/cache-decorators": "^2.0.0",
+    "@d-fischer/cross-fetch": "^4.0.1",
+    "@d-fischer/logger": "^1.1.1",
+    "@d-fischer/qs": "^7.0.2",
+    "@d-fischer/rate-limiter": "^0.2.4",
+    "@d-fischer/shared-utils": "^2.0.1",
     "top-package": "^1.0.0",
-    "tslib": "^1.9.3"
+    "tslib": "^2.0.0"
   },
   "files": [
     "LICENSE",
     "README.md",
     "lib",
+    "es",
     "scripts/npm"
   ],
   "scripts": {
-    "build": "tsc",
-    "rebuild": "rimraf lib && yarn run build",
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean",
     "postinstall": "node ./scripts/npm/postinstall.js"
   }
 }

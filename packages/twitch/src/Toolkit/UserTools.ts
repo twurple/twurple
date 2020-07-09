@@ -9,7 +9,7 @@ import User from '../API/Kraken/User/User';
  * This is not a user name.
  * Please use {@HelixUserAPI#getUserByName} to fetch a user object by name.
  */
-export type UserIdResolvable = string | User | ChannelPlaceholder | HelixUser;
+export type UserIdResolvable = string | number | User | ChannelPlaceholder | HelixUser;
 
 /**
  * A user name or a user or channel object.
@@ -22,7 +22,13 @@ export type UserNameResolvable = string | User | Channel | HelixUser;
  * @param user The user ID or object.
  */
 export function extractUserId(user: UserIdResolvable) {
-	return typeof user === 'string' ? user : user.id;
+	if (typeof user === 'string') {
+		return user;
+	} else if (typeof user === 'number') {
+		return user.toString(10);
+	} else {
+		return user.id;
+	}
 }
 
 /**

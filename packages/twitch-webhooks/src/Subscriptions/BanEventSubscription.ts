@@ -4,11 +4,9 @@ import WebHookListener from '../WebHookListener';
 import Subscription from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
 export default class BanEventSubscription extends Subscription<HelixBanEvent> {
-	/** @private */
 	constructor(
 		private readonly _broadcasterId: string,
 		handler: (data: HelixBanEvent) => void,
@@ -35,10 +33,13 @@ export default class BanEventSubscription extends Subscription<HelixBanEvent> {
 			return this._client._twitchClient.helix.webHooks.subscribeToBanEventsForUser(
 				this._broadcasterId,
 				this._userId,
-				this._options
+				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.subscribeToBanEvents(this._broadcasterId, this._options);
+		return this._client._twitchClient.helix.webHooks.subscribeToBanEvents(
+			this._broadcasterId,
+			await this._getOptions()
+		);
 	}
 
 	protected async _unsubscribe() {
@@ -46,9 +47,12 @@ export default class BanEventSubscription extends Subscription<HelixBanEvent> {
 			return this._client._twitchClient.helix.webHooks.unsubscribeFromBanEventsForUser(
 				this._broadcasterId,
 				this._userId,
-				this._options
+				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromBanEvents(this._broadcasterId, this._options);
+		return this._client._twitchClient.helix.webHooks.unsubscribeFromBanEvents(
+			this._broadcasterId,
+			await this._getOptions()
+		);
 	}
 }

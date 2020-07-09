@@ -18,14 +18,20 @@ When your listener is set up, you can subscribe to all supported events using th
 ```typescript
 import { HelixStream } from 'twitch';
 
+// we need to track the previous status of the stream because there are other state changes than the live/offline switch
+let prevStream = await twitchClient.helix.streams.getStreamByUserId(userId);
+
 const subscription = await listener.subscribeToStreamChanges(userId, async (stream?: HelixStream) => {
 	if (stream) {
-		console.log(`${stream.userDisplayName} just went live with title: ${stream.title}`);
+		if (!prevStream) {
+			console.log(`${stream.userDisplayName} just went live with title: ${stream.title}`);
+		}
 	} else {
 		// no stream, no display name
 		const user = await twitchClient.helix.users.getUserById(userId);
 		console.log(`${user.displayName} just went offline`);
 	}
+	prevStream = stream;
 });
 ```
 

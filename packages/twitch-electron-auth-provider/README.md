@@ -1,6 +1,6 @@
 # Twitch.js - Electron auth provider
 
-This aims to be an auth provider for [the `twitch` package](https://github.com/d-fischer/twitch)
+This is an `AuthProvider` implementation for [the `twitch` package](https://github.com/d-fischer/twitch)
 that will automatically pop up a Twitch OAuth dialog in an Electron `BrowserWindow`
 as soon as new scopes are requested.
 
@@ -25,15 +25,23 @@ import ElectronAuthProvider from 'twitch-electron-auth-provider';
 const clientId = 'abc123';
 const redirectURI = 'http://foo.bar/login';
 
+const authProvider = new ElectronAuthProvider({
+    clientId,
+    redirectURI
+});
+
 const client = new TwitchClient({
-	authProvider: new ElectronAuthProvider({
-		clientId,
-		redirectURI
-	})
+	authProvider
 });
 ```
 
-Please not that this currently only works from the *main thread*.
+Please note that this currently only works from the *main thread*.
+
+To allow the user to "log out" and change to another account, use:
+
+```ts
+authProvider.allowUserChange();
+```
 
 ## If you're getting stuck...
 

@@ -8,6 +8,7 @@ import ConfigError from './Errors/ConfigError';
 import HellFreezesOverError from './Errors/HellFreezesOverError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 import InvalidTokenError from './Errors/InvalidTokenError';
+import InvalidTokenTypeError from './Errors/InvalidTokenTypeError';
 import NoSubscriptionProgramError from './Errors/NoSubscriptionProgramError';
 import StreamNotLiveError from './Errors/StreamNotLiveError';
 
@@ -16,15 +17,16 @@ export {
 	HellFreezesOverError,
 	HTTPStatusCodeError,
 	InvalidTokenError,
+	InvalidTokenTypeError,
 	NoSubscriptionProgramError,
 	StreamNotLiveError
 };
 
-import AuthProvider from './Auth/AuthProvider';
+import AuthProvider, { AuthProviderTokenType } from './Auth/AuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
 import RefreshableAuthProvider from './Auth/RefreshableAuthProvider';
 
-export { AuthProvider, StaticAuthProvider, RefreshableAuthProvider };
+export { AuthProvider, AuthProviderTokenType, StaticAuthProvider, RefreshableAuthProvider };
 
 import AccessToken from './API/AccessToken';
 import TokenInfo from './API/TokenInfo';
@@ -66,10 +68,9 @@ import Stream, { StreamType } from './API/Kraken/Stream/Stream';
 
 export { Stream, StreamType };
 
-import ChannelEvent from './API/Unsupported/ChannelEvent';
 import ChattersList from './API/Unsupported/ChattersList';
 
-export { ChannelEvent, ChattersList };
+export { ChattersList };
 
 import PrivilegedUser from './API/Kraken/User/PrivilegedUser';
 import User from './API/Kraken/User/User';

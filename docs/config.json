@@ -190,6 +190,12 @@
 					]
 				}
 			]
+		},
+		"twitch-webhooks-ngrok": {
+			"indexTitle": "Twitch.js WebHook Listener - ngrok Adapter"
+		},
+		"easy-twitch-bot": {
+			"indexTitle": "Twitch.js - Bot framework"
 		}
 	}
 }

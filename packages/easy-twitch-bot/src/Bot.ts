@@ -53,7 +53,7 @@ export default class Bot {
 
 		this._commands = new Map<string, BotCommand>(commands?.map(cmd => [cmd.name, cmd]));
 
-		this.chat = ChatClient.forTwitchClient(api, { logLevel: debug ? LogLevel.DEBUG2 : LogLevel.ERROR, channels });
+		this.chat = ChatClient.forTwitchClient(api, { logLevel: debug ? LogLevel.DEBUG : LogLevel.ERROR, channels });
 
 		this.chat.onPrivmsg(async (currentChannel, user, message, msg) => {
 			const match = this.findMatch(msg);

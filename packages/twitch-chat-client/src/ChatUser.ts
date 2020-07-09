@@ -1,6 +1,9 @@
+import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+
 /**
  * A user in chat.
  */
+@Cacheable
 export default class ChatUser {
 	private readonly _userData: Map<string, string>;
 	private readonly _userName: string;
@@ -45,6 +48,7 @@ export default class ChatUser {
 	/**
 	 * The badges of the user. Returned as a map that maps the badge category to the detail.
 	 */
+	@CachedGetter()
 	get badges() {
 		const badgesStr = this._userData.get('badges');
 
@@ -54,6 +58,7 @@ export default class ChatUser {
 	/**
 	 * The badge info of the user. Returned as a map that maps the badge category to the detail.
 	 */
+	@CachedGetter()
 	get badgeInfo() {
 		const badgeInfoStr = this._userData.get('badge-info');
 
@@ -73,6 +78,13 @@ export default class ChatUser {
 	 */
 	get userType() {
 		return this._userData.get('user-type') || undefined;
+	}
+
+	/**
+	 * Whether the user is the broadcaster.
+	 */
+	get isBroadcaster() {
+		return this.badges.has('broadcaster');
 	}
 
 	/**

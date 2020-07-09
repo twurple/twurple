@@ -7,8 +7,7 @@ Channel names are case insensitive and can start with a `#` or not. The name wil
 ```typescript
 import ChatClient from 'twitch-chat-client';
 
-const chatClient = await ChatClient.forTwitchClient(twitchClient);
-chatClient.onRegister(() => chatClient.join('lidlRini'));
+const chatClient = ChatClient.forTwitchClient(twitchClient, { channels: ['lidlrini'] });
 // listen to more events...
 await chatClient.connect();
 ```

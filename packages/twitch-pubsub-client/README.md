@@ -1,5 +1,7 @@
 # Twitch.js - PubSub Client
 
+Listen to events using the Twitch PubSub interface.
+
 ## Installation
 
 	yarn add twitch twitch-pubsub-client

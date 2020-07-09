@@ -1,6 +1,9 @@
+/// <reference lib="dom" />
+
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import fetch, { Headers } from '@d-fischer/cross-fetch';
 import { LogLevel } from '@d-fischer/logger';
-import * as qs from 'qs';
+import { stringify } from '@d-fischer/qs';
 
 import AccessToken, { AccessTokenData } from './API/AccessToken';
 import BadgesAPI from './API/Badges/BadgesAPI';
@@ -11,7 +14,7 @@ import KrakenAPIGroup from './API/Kraken/KrakenAPIGroup';
 import TokenInfo, { TokenInfoData } from './API/TokenInfo';
 import UnsupportedAPI from './API/Unsupported/UnsupportedAPI';
 
-import AuthProvider from './Auth/AuthProvider';
+import AuthProvider, { AuthProviderTokenType } from './Auth/AuthProvider';
 import ClientCredentialsAuthProvider from './Auth/ClientCredentialsAuthProvider';
 import RefreshableAuthProvider, { RefreshConfig } from './Auth/RefreshableAuthProvider';
 import StaticAuthProvider from './Auth/StaticAuthProvider';
@@ -19,8 +22,6 @@ import StaticAuthProvider from './Auth/StaticAuthProvider';
 import ConfigError from './Errors/ConfigError';
 import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
 import InvalidTokenError from './Errors/InvalidTokenError';
-
-import { fetch, Headers } from './Toolkit/Fetch';
 
 /**
  * Default configuration for the cheermote API.
@@ -174,6 +175,7 @@ export default class TwitchClient {
 	private readonly _config: TwitchConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;
 
+	// TODO 5.0: config object!
 	/**
 	 * Creates a new instance with fixed credentials.
 	 *
@@ -190,17 +192,26 @@ export default class TwitchClient {
 	 * @param config Additional configuration to pass to the constructor.
 	 *
 	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
+	 * @param tokenType The type of token you passed.
+	 *
+	 * This should almost always be 'user' (which is the default).
+	 *
+	 * If you're passing 'app' here, please consider using {@TwitchClient.withClientCredentials} instead.
 	 */
 	static withCredentials(
 		clientId: string,
 		accessToken?: string,
 		scopes?: string[],
 		refreshConfig?: RefreshConfig,
-		config: Partial<TwitchConfig> = {}
+		config: Partial<TwitchConfig> = {},
+		tokenType: AuthProviderTokenType = 'user'
 	) {
 		const authProvider = refreshConfig
-			? new RefreshableAuthProvider(new StaticAuthProvider(clientId, accessToken, scopes), refreshConfig)
-			: new StaticAuthProvider(clientId, accessToken, scopes);
+			? new RefreshableAuthProvider(
+					new StaticAuthProvider(clientId, accessToken, scopes, tokenType),
+					refreshConfig
+			  )
+			: new StaticAuthProvider(clientId, accessToken, scopes, tokenType);
 
 		return new this({ ...config, authProvider });
 	}
@@ -223,7 +234,7 @@ export default class TwitchClient {
 	}
 
 	/**
-	 * Makes a call to the Twitch API using given credetials.
+	 * Makes a call to the Twitch API using given credentials.
 	 *
 	 * @param options The configuration of the call.
 	 * @param clientId The client ID of your application.
@@ -342,7 +353,7 @@ export default class TwitchClient {
 	): Promise<Response> {
 		const type = options.type === undefined ? TwitchAPICallType.Kraken : options.type;
 		const url = this._getUrl(options.url, type);
-		const params = qs.stringify(options.query, { arrayFormat: 'repeat' });
+		const params = stringify(options.query, { arrayFormat: 'repeat' });
 		const headers = new Headers({
 			Accept:
 				type === TwitchAPICallType.Kraken
@@ -352,7 +363,7 @@ export default class TwitchClient {
 
 		let body: string | undefined;
 		if (options.body) {
-			body = qs.stringify(options.body);
+			body = stringify(options.body);
 			headers.append('Content-Type', 'application/x-www-form-urlencoded');
 		} else if (options.jsonBody) {
 			body = JSON.stringify(options.jsonBody);
@@ -435,6 +446,13 @@ export default class TwitchClient {
 	 */
 	async refreshAccessToken() {
 		return this._config.authProvider.refresh && this._config.authProvider.refresh();
+	}
+
+	/**
+	 * The type of token used by the client.
+	 */
+	get tokenType(): AuthProviderTokenType {
+		return this._config.authProvider.tokenType || 'user';
 	}
 
 	/**

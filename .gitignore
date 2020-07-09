@@ -9,6 +9,7 @@ node_modules/
 .env
 /.idea
 /packages/*/generatedDocs
+/packages/*/es
 /packages/*/lib
 /packages/*/docs.json
 package-lock.json

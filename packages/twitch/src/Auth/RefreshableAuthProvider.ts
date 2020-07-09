@@ -60,6 +60,15 @@ export default class RefreshableAuthProvider implements AuthProvider {
 	}
 
 	/**
+	 * The type of tokens this provider generates.
+	 *
+	 * It is the same as the underlying base auth provider's token type.
+	 */
+	get tokenType() {
+		return this._childProvider.tokenType;
+	}
+
+	/**
 	 * Retrieves an access token.
 	 *
 	 * If the current access token does not have the requested scopes, the base auth

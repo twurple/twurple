@@ -1,7 +1,7 @@
 /* eslint-disable filenames/match-exported */
 import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
-import * as qs from 'qs';
-import { AccessToken, AuthProvider } from 'twitch';
+import { parse, stringify } from '@d-fischer/qs';
+import { AccessToken, AuthProvider, AuthProviderTokenType } from 'twitch';
 import WindowClosedError from './WindowClosedError';
 
 export interface TwitchClientCredentials {
@@ -55,10 +55,21 @@ const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> 
 	closeOnLogin: true
 };
 
+interface AuthorizeParams {
+	response_type: string;
+	client_id: string;
+	redirect_uri: string;
+	scope: string;
+	force_verify?: boolean;
+}
+
 export default class ElectronAuthProvider implements AuthProvider {
 	private _accessToken?: AccessToken;
 	private readonly _currentScopes = new Set<string>();
 	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
+	private _allowUserChange = false;
+
+	readonly tokenType: AuthProviderTokenType = 'user';
 
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowStyleOptions>);
 	constructor(clientCredentials: TwitchClientCredentials, options?: Options<WindowOptions>);
@@ -67,6 +78,10 @@ export default class ElectronAuthProvider implements AuthProvider {
 		options?: Options<WindowStyleOptions> | Options<WindowOptions>
 	) {
 		this._options = { ...defaultOptions, ...options };
+	}
+
+	allowUserChange() {
+		this._allowUserChange = true;
 	}
 
 	get clientId() {
@@ -91,9 +106,16 @@ export default class ElectronAuthProvider implements AuthProvider {
 			}
 
 			const redir = encodeURIComponent(this._clientCredentials.redirectURI);
-			const authUrl = `https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=${
-				this.clientId
-			}&redirect_uri=${redir}&scope=${scopes.join(' ')}`;
+			const queryParams: AuthorizeParams = {
+				response_type: 'token',
+				client_id: this.clientId,
+				redirect_uri: redir,
+				scope: scopes.join(' ')
+			};
+			if (this._allowUserChange) {
+				queryParams.force_verify = true;
+			}
+			const authUrl = `https://id.twitch.tv/oauth2/authorize${stringify(queryParams)}`;
 			const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
 				width: 800,
 				height: 600,
@@ -145,7 +167,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 						}
 					}
 					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					const params: any = url.hash ? qs.parse(url.hash.substr(1)) : url.searchParams;
+					const params: any = url.hash ? parse(url.hash.substr(1)) : url.searchParams;
 
 					if (params.error || params.access_token) {
 						done = true;
@@ -167,6 +189,7 @@ export default class ElectronAuthProvider implements AuthProvider {
 							scope: this.currentScopes,
 							refresh_token: ''
 						});
+						this._allowUserChange = false;
 						resolve(this._accessToken);
 					}
 

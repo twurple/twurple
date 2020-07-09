@@ -4,11 +4,9 @@ import WebHookListener from '../WebHookListener';
 import Subscription from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
 export default class UserChangeSubscription extends Subscription<HelixUser> {
-	/** @private */
 	constructor(
 		private readonly _userId: string,
 		handler: (data: HelixUser) => void,
@@ -30,12 +28,15 @@ export default class UserChangeSubscription extends Subscription<HelixUser> {
 	protected async _subscribe() {
 		return this._client._twitchClient.helix.webHooks.subscribeToUserChanges(
 			this._userId,
-			this._options,
+			await this._getOptions(),
 			this._withEmail
 		);
 	}
 
 	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserChanges(this._userId, this._options);
+		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserChanges(
+			this._userId,
+			await this._getOptions()
+		);
 	}
 }
