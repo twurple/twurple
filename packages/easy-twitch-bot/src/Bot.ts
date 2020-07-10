@@ -33,7 +33,7 @@ export class Bot {
 				apiClient = new ApiClient({ authProvider: auth });
 			}
 		} else {
-			throw new Error('didn\'t pass client nor auth option, exiting');
+			throw new Error("didn't pass client nor auth option, exiting");
 		}
 
 		return new this(apiClient, config);
@@ -49,7 +49,7 @@ export class Bot {
 		}
 
 		if (!resolvableChannels) {
-			throw new Error('didn\'t pass channel nor channels option, exiting');
+			throw new Error("didn't pass channel nor channels option, exiting");
 		}
 
 		this._commands = new Map<string, BotCommand>(commands?.map(cmd => [cmd.name, cmd]));

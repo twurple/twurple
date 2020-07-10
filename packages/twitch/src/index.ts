@@ -91,4 +91,14 @@ export { TwitchApiCallType as TwitchAPICallType } from 'twitch-api-call';
 /** @deprecated Import `TwitchApiCallOptions` instead. */
 export { TwitchApiCallOptions as TwitchAPICallOptions } from 'twitch-api-call';
 
-export { AccessToken, AuthProvider, AuthProviderTokenType, InvalidTokenError, StaticAuthProvider, ClientCredentialsAuthProvider, RefreshableAuthProvider, RefreshConfig, TokenInfo } from 'twitch-auth';
+export {
+	AccessToken,
+	AuthProvider,
+	AuthProviderTokenType,
+	InvalidTokenError,
+	StaticAuthProvider,
+	ClientCredentialsAuthProvider,
+	RefreshableAuthProvider,
+	RefreshConfig,
+	TokenInfo
+} from 'twitch-auth';

@@ -1,7 +1,14 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import deprecate from '@d-fischer/deprecate';
 import { LogLevel } from '@d-fischer/logger';
-import { callTwitchApi, callTwitchApiRaw, HttpStatusCodeError, transformTwitchApiResponse, TwitchApiCallOptions, TwitchApiCallType } from 'twitch-api-call';
+import {
+	callTwitchApi,
+	callTwitchApiRaw,
+	HttpStatusCodeError,
+	transformTwitchApiResponse,
+	TwitchApiCallOptions,
+	TwitchApiCallType
+} from 'twitch-api-call';
 
 import {
 	AccessToken,

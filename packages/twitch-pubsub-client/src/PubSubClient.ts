@@ -54,7 +54,10 @@ export class PubSubClient {
 			userId = tokenInfo.userId;
 		}
 
-		this._userClients.set(userId, new SingleUserPubSubClient({ twitchClient: apiClient, pubSubClient: this._rootClient }));
+		this._userClients.set(
+			userId,
+			new SingleUserPubSubClient({ twitchClient: apiClient, pubSubClient: this._rootClient })
+		);
 	}
 
 	/** @private */

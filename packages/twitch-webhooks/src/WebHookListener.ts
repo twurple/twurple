@@ -1,7 +1,18 @@
 import { Logger, LoggerOptions } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Request, RequestHandler, Response, Server } from 'httpanda';
-import { ApiClient, extractUserId, HelixBanEvent, HelixExtensionTransaction, HelixFollow, HelixModeratorEvent, HelixStream, HelixSubscriptionEvent, HelixUser, UserIdResolvable } from 'twitch';
+import {
+	ApiClient,
+	extractUserId,
+	HelixBanEvent,
+	HelixExtensionTransaction,
+	HelixFollow,
+	HelixModeratorEvent,
+	HelixStream,
+	HelixSubscriptionEvent,
+	HelixUser,
+	UserIdResolvable
+} from 'twitch';
 import { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import { LegacyAdapter, WebHookListenerConfig } from './Adapters/LegacyAdapter';
 import { ConnectCompatibleApp } from './ConnectCompatibleApp';
@@ -37,7 +48,8 @@ export interface WebHookConfig {
 	/**
 	 * Default validity of a WebHook, in seconds.
 	 *
-	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 * Please note that this doesn't mean that you don't get any notifications after the given time.
+	 * The hook will be automatically refreshed.
 	 *
 	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
 	 */

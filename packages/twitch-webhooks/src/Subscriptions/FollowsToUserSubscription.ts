@@ -25,10 +25,7 @@ export class FollowsToUserSubscription extends Subscription<HelixFollow> {
 	}
 
 	protected async _subscribe() {
-		return this._client._apiClient.helix.webHooks.subscribeToUserFollowsTo(
-			this._userId,
-			await this._getOptions()
-		);
+		return this._client._apiClient.helix.webHooks.subscribeToUserFollowsTo(this._userId, await this._getOptions());
 	}
 
 	protected async _unsubscribe() {

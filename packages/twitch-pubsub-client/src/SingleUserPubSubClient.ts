@@ -2,7 +2,10 @@ import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { ApiClient, extractUserId, InvalidTokenError, UserIdResolvable } from 'twitch';
 import { BasicPubSubClient } from './BasicPubSubClient';
-import { PubSubBitsBadgeUnlockMessage, PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
+import {
+	PubSubBitsBadgeUnlockMessage,
+	PubSubBitsBadgeUnlockMessageData
+} from './Messages/PubSubBitsBadgeUnlockMessage';
 import { PubSubBitsMessage, PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
 import { PubSubChatModActionMessage, PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 import { PubSubMessage } from './Messages/PubSubMessage';
@@ -239,11 +242,7 @@ export class SingleUserPubSubClient {
 			this._listeners.get(type)!.push(listener);
 		} else {
 			this._listeners.set(type, [listener]);
-			await this._pubSubClient.listen(
-				[type, userId, ...additionalParams].join('.'),
-				this._apiClient,
-				scope
-			);
+			await this._pubSubClient.listen([type, userId, ...additionalParams].join('.'), this._apiClient, scope);
 		}
 		return listener;
 	}

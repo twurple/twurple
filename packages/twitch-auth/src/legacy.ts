@@ -49,5 +49,5 @@ export async function getAppAccessToken(creds: LegacyAuthCredentials) {
 			client_id: creds.client_id,
 			client_secret: creds.client_secret
 		}
-	})
+	});
 }

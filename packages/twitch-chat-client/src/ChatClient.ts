@@ -24,7 +24,13 @@ import { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
 import { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
 import { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
 import { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
-import { ChatSubExtendInfo, ChatSubGiftInfo, ChatSubGiftUpgradeInfo, ChatSubInfo, ChatSubUpgradeInfo } from './UserNotices/ChatSubInfo';
+import {
+	ChatSubExtendInfo,
+	ChatSubGiftInfo,
+	ChatSubGiftUpgradeInfo,
+	ChatSubInfo,
+	ChatSubUpgradeInfo
+} from './UserNotices/ChatSubInfo';
 
 const GENERIC_CHANNEL = 'twjs';
 
