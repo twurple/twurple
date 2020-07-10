@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 import { Channel, ChannelData } from '../Channel/Channel';
 
 /** @private */
@@ -13,10 +13,10 @@ export interface UserFollowData {
  * A relation of a previously given user following a channel.
  */
 export class UserFollow {
-	@Enumerable(false) private readonly _client: TwitchClient;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: UserFollowData, client: TwitchClient) {
+	constructor(private readonly _data: UserFollowData, client: ApiClient) {
 		this._client = client;
 	}
 

@@ -1,4 +1,4 @@
-import { TwitchClient } from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 import { HelixEventData } from '../HelixEvent';
 import { HelixBan, HelixBanData } from './HelixBan';
 
@@ -31,7 +31,7 @@ export type HelixBanEventData = HelixEventData<HelixBanEventDetail, HelixBanEven
  */
 export class HelixBanEvent extends HelixBan {
 	/** @private */
-	constructor(private readonly _eventData: HelixBanEventData, client: TwitchClient) {
+	constructor(private readonly _eventData: HelixBanEventData, client: ApiClient) {
 		super(_eventData.event_data, client);
 	}
 

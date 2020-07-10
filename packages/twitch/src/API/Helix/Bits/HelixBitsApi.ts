@@ -1,4 +1,4 @@
-import { TwitchApiCallType } from '../../../TwitchClient';
+import { TwitchApiCallType } from 'twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixBitsLeaderboard, HelixBitsLeaderboardResponse } from './HelixBitsLeaderboard';
 
@@ -39,11 +39,11 @@ export interface HelixBitsLeaderboardQuery {
 /**
  * The Helix API methods that deal with bits.
  *
- * Can be accessed using `client.helix.bits` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.bits` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const leaderboard = await client.helix.bits.getLeaderboard({ period: 'day' });
  * ```
  */

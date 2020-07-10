@@ -1,6 +1,6 @@
 import { Enumerable, indexBy, utf8Length } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
-import { TwitchClient } from '../../../TwitchClient';
 
 /**
  * The type of background a cheermote is supposed to appear on.
@@ -180,11 +180,11 @@ export interface MessageCheermote {
  * A list of cheermotes you can use globally or in a specific channel, depending on how you fetched the list.
  */
 export class CheermoteList {
-	@Enumerable(false) private readonly _client: TwitchClient;
+	@Enumerable(false) private readonly _client: ApiClient;
 	private readonly _data: Record<string, CheermoteActionData>;
 
 	/** @private */
-	constructor(data: CheermoteActionData[], client: TwitchClient) {
+	constructor(data: CheermoteActionData[], client: ApiClient) {
 		this._client = client;
 		this._data = indexBy(data, action => action.prefix.toLowerCase());
 	}

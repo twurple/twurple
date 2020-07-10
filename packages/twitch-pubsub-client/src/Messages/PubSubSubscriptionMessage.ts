@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from 'twitch';
+import { ApiClient } from 'twitch';
 import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 
 export interface PubSubSubscriptionDetail {
@@ -27,11 +27,11 @@ export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
  * A message that informs about a user subscribing to a channel.
  */
 export class PubSubSubscriptionMessage {
-	@Enumerable(false) private readonly _twitchClient: TwitchClient;
+	@Enumerable(false) private readonly _apiClient: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: PubSubSubscriptionMessageData, twitchClient: TwitchClient) {
-		this._twitchClient = twitchClient;
+	constructor(private readonly _data: PubSubSubscriptionMessageData, apiClient: ApiClient) {
+		this._apiClient = apiClient;
 	}
 
 	/**
@@ -165,21 +165,25 @@ export class PubSubSubscriptionMessage {
 
 	/**
 	 * Retrieves more data about the subscribing user.
+	 *
+	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
 	 */
 	async getUser() {
-		return this._twitchClient.helix.users.getUserById(this.userId);
+		return this._apiClient.helix.users.getUserById(this.userId);
 	}
 
 	/**
 	 * Retrieves more data about the gifting user.
 	 *
 	 * Returns null if the subscription is not a gift.
+	 *
+	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
 	 */
 	async getGifter() {
 		if (!this.isGift) {
 			return null;
 		}
 
-		return this._twitchClient.helix.users.getUserById(this.gifterId!);
+		return this._apiClient.helix.users.getUserById(this.gifterId!);
 	}
 }

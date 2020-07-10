@@ -1,6 +1,6 @@
 /** @private */
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 
 export type ChatRoomRole = 'EVERYONE' | 'SUBSCRIBER' | 'MODERATOR';
 
@@ -16,10 +16,10 @@ export interface ChatRoomData {
 
 export class ChatRoom {
 	/** @private */
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: ChatRoomData, client: TwitchClient) {
+	constructor(private readonly _data: ChatRoomData, client: ApiClient) {
 		this._client = client;
 	}
 

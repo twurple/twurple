@@ -6,11 +6,11 @@ import { TeamWithUsers } from './TeamWithUsers';
 /**
  * The API methods that deal with teams.
  *
- * Can be accessed using `client.kraken.teams` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.teams` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const team = await client.kraken.teams.getTeamByName('staff');
  * ```
  */

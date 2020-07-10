@@ -2,7 +2,8 @@ import { Connection, PersistentConnection, WebSocketConnection } from '@d-fische
 import { Logger, LogLevel } from '@d-fischer/logger';
 import { Enumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
-import { AuthProvider, HellFreezesOverError, InvalidTokenError, TwitchClient } from 'twitch';
+import { AuthProvider, HellFreezesOverError, InvalidTokenError } from 'twitch';
+import { getTokenInfo } from 'twitch-auth';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
@@ -280,7 +281,7 @@ export class BasicPubSubClient extends EventEmitter {
 					const accessToken = await provider.getAccessToken(scopes);
 					if (accessToken) {
 						// check validity
-						await TwitchClient.getTokenInfo(accessToken.accessToken);
+						await getTokenInfo(accessToken.accessToken);
 						return accessToken.accessToken;
 					}
 				} catch (e) {
@@ -299,7 +300,7 @@ export class BasicPubSubClient extends EventEmitter {
 
 						if (newToken) {
 							// check validity
-							await TwitchClient.getTokenInfo(newToken.accessToken);
+							await getTokenInfo(newToken.accessToken);
 							return newToken.accessToken;
 						}
 					} catch (e) {

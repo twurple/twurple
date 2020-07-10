@@ -6,11 +6,11 @@ import { CheermoteList, CheermoteListData } from './CheermoteList';
 /**
  * The API methods that deal with Bits/Cheermotes.
  *
- * Can be accessed using `client.kraken.bits` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.bits` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const cheermotes = await client.kraken.bits.getCheermotes();
  * ```
  */

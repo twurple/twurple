@@ -1,7 +1,7 @@
 import { Cacheable, Cached, CacheEntry, ClearsCache } from '@d-fischer/cache-decorators';
 import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
+import { HttpStatusCodeError } from 'twitch-api-call/lib/errors/HttpStatusCodeError';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
-import { HttpStatusCodeError } from '../../../Errors/HttpStatusCodeError';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -16,11 +16,11 @@ import { UserSubscription } from './UserSubscription';
 /**
  * The API methods that deal with users.
  *
- * Can be accessed using `client.kraken.users` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.users` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const user = await client.kraken.users.getUser('125328655');
  * ```
  */

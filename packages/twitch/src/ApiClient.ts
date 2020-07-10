@@ -1,28 +1,33 @@
-/// <reference lib="dom" />
-
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import fetch, { Headers } from '@d-fischer/cross-fetch';
 import deprecate from '@d-fischer/deprecate';
 import { LogLevel } from '@d-fischer/logger';
-import { stringify } from '@d-fischer/qs';
+import { callTwitchApi, callTwitchApiRaw, HttpStatusCodeError, transformTwitchApiResponse, TwitchApiCallOptions, TwitchApiCallType } from 'twitch-api-call';
 
-import { AccessToken, AccessTokenData } from './API/AccessToken';
+import {
+	AccessToken,
+	AuthProvider,
+	AuthProviderTokenType,
+	ClientCredentialsAuthProvider,
+	exchangeCode,
+	getAppToken,
+	getTokenInfo,
+	InvalidTokenError,
+	RefreshableAuthProvider,
+	RefreshConfig,
+	refreshUserToken,
+	StaticAuthProvider,
+	TokenInfo,
+	TokenInfoData
+} from 'twitch-auth';
+
 import { BadgesApi } from './API/Badges/BadgesApi';
 import { HelixApiGroup } from './API/Helix/HelixApiGroup';
 import { HelixRateLimiter } from './API/Helix/HelixRateLimiter';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
 import { KrakenApiGroup } from './API/Kraken/KrakenApiGroup';
-import { TokenInfo, TokenInfoData } from './API/TokenInfo';
 import { UnsupportedApi } from './API/Unsupported/UnsupportedApi';
 
-import { AuthProvider, AuthProviderTokenType } from './Auth/AuthProvider';
-import { ClientCredentialsAuthProvider } from './Auth/ClientCredentialsAuthProvider';
-import { RefreshableAuthProvider, RefreshConfig } from './Auth/RefreshableAuthProvider';
-import { StaticAuthProvider } from './Auth/StaticAuthProvider';
-
 import { ConfigError } from './Errors/ConfigError';
-import { HttpStatusCodeError } from './Errors/HttpStatusCodeError';
-import { InvalidTokenError } from './Errors/InvalidTokenError';
 
 /**
  * Default configuration for the cheermote API.
@@ -45,9 +50,9 @@ export interface TwitchCheermoteConfig {
 }
 
 /**
- * Configuration for a {@TwitchClient} instance.
+ * Configuration for an {@ApiClient} instance.
  */
-export interface TwitchConfig {
+export interface ApiConfig {
 	/**
 	 * An authentication provider that supplies tokens to the client.
 	 *
@@ -77,89 +82,6 @@ export interface TwitchConfig {
 }
 
 /**
- * The endpoint to call, i.e. /kraken, /helix or a custom (potentially unsupported) endpoint.
- */
-export enum TwitchApiCallType {
-	/**
-	 * Call a Kraken API endpoint.
-	 */
-	Kraken,
-
-	/**
-	 * Call a Helix API endpoint.
-	 */
-	Helix,
-
-	/**
-	 * Call an authentication endpoint.
-	 */
-	Auth,
-
-	/**
-	 * Call a custom (potentially unsupported) endpoint.
-	 */
-	Custom
-}
-
-/**
- * Configuration for a single API call.
- */
-export interface TwitchApiCallOptions {
-	/**
-	 * The URL to request.
-	 *
-	 * If `type` is not `'custom'`, this is relative to the respective API root endpoint. Otherwise, it is an absoulte URL.
-	 */
-	url: string;
-
-	/**
-	 * The endpoint to call, i.e. /kraken, /helix or a custom (potentially unsupported) endpoint.
-	 */
-	type?: TwitchApiCallType;
-
-	/**
-	 * The HTTP method to use. Defaults to `'GET'`.
-	 */
-	method?: 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
-
-	/**
-	 * The query parameters to send with the API call.
-	 */
-	query?: Record<string, string | string[] | undefined>;
-
-	/**
-	 * The form body to send with the API call.
-	 *
-	 * If this is given, `jsonBody` will be ignored.
-	 */
-	body?: Record<string, string | string[] | undefined>;
-
-	/**
-	 * The JSON body to send with the API call.
-	 *
-	 * If `body` is also given, this will be ignored.
-	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	jsonBody?: any;
-
-	/**
-	 * The scope the request needs.
-	 */
-	scope?: string;
-
-	/**
-	 * The Kraken API version to request with. Defaults to 5.
-	 *
-	 * If `type` is not `'kraken'`, this will be ignored.
-	 *
-	 * Note that v3 will be removed at some point and v5 will be the only Kraken version left, so you should only use this option if you want to rewrite everything in a few months.
-	 *
-	 * Internally, only v5 and Helix are used.
-	 */
-	version?: number;
-}
-
-/**
  * @private
  */
 export interface TwitchApiCallOptionsInternal {
@@ -172,13 +94,14 @@ export interface TwitchApiCallOptionsInternal {
  * The main entry point of this library. Manages API calls and the use of access tokens in these.
  */
 @Cacheable
-export class TwitchClient {
-	private readonly _config: TwitchConfig;
+export class ApiClient implements AuthProvider {
+	private readonly _config: ApiConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;
 
-	// TODO 5.0: config object!
 	/**
 	 * Creates a new instance with fixed credentials.
+	 *
+	 * @deprecated Use the constructor of {@StaticAuthProvider} or {@RefreshableAuthProvider} and pass it as `authProvider` option to this class' constructor instead.
 	 *
 	 * @param clientId The client ID of your application.
 	 * @param accessToken The access token to call the API with.
@@ -191,20 +114,18 @@ export class TwitchClient {
 	 * If you can't exactly say which scopes your token has, don't use this parameter/set it to `undefined`.
 	 * @param refreshConfig Configuration to automatically refresh expired tokens.
 	 * @param config Additional configuration to pass to the constructor.
-	 *
-	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 * @param tokenType The type of token you passed.
 	 *
 	 * This should almost always be 'user' (which is the default).
 	 *
-	 * If you're passing 'app' here, please consider using {@TwitchClient.withClientCredentials} instead.
+	 * If you're passing 'app' here, please consider using {@ApiClient.withClientCredentials} instead.
 	 */
 	static withCredentials(
 		clientId: string,
 		accessToken?: string,
 		scopes?: string[],
 		refreshConfig?: RefreshConfig,
-		config: Partial<TwitchConfig> = {},
+		config: Partial<ApiConfig> = {},
 		tokenType: AuthProviderTokenType = 'user'
 	) {
 		const authProvider = refreshConfig
@@ -220,13 +141,13 @@ export class TwitchClient {
 	/**
 	 * Creates a new instance with client credentials.
 	 *
+	 * @deprecated Use the constructor of {@ClientCredentialsAuthProvider} and pass it as `authProvider` option to this class' constructor instead.
+	 *
 	 * @param clientId The client ID of your application.
 	 * @param clientSecret The client secret of your application.
 	 * @param config Additional configuration to pass to the constructor.
-	 *
-	 * Note that if you provide a custom `authProvider`, this method will overwrite it. In this case, you should use the constructor directly.
 	 */
-	static withClientCredentials(clientId: string, clientSecret?: string, config: Partial<TwitchConfig> = {}) {
+	static withClientCredentials(clientId: string, clientSecret?: string, config: Partial<ApiConfig> = {}) {
 		const authProvider = clientSecret
 			? new ClientCredentialsAuthProvider(clientId, clientSecret)
 			: new StaticAuthProvider(clientId);
@@ -237,6 +158,8 @@ export class TwitchClient {
 	/**
 	 * Makes a call to the Twitch API using given credentials.
 	 *
+	 * @deprecated Use `callTwitchApi` from `twitch-api-call` instead.
+	 *
 	 * @param options The configuration of the call.
 	 * @param clientId The client ID of your application.
 	 * @param accessToken The access token to call the API with.
@@ -245,12 +168,20 @@ export class TwitchClient {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async callApi<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
-		const response = await this._callApiRaw(options, clientId, accessToken);
-
-		return this._transformResponse(response);
+		return callTwitchApi(options, clientId, accessToken);
 	}
 
-	/** @deprecated Use callApi instead. */
+	/**
+	 * Makes a call to the Twitch API using given credentials.
+	 *
+	 * @deprecated Use `callTwitchApi` from `twitch-api-call` instead.
+	 *
+	 * @param options The configuration of the call.
+	 * @param clientId The client ID of your application.
+	 * @param accessToken The access token to call the API with.
+	 *
+	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
+	 */
 	// eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
 	static async callAPI<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
 		deprecate('[twitch] ChatClient.callAPI', 'Use callApi instead.');
@@ -260,75 +191,47 @@ export class TwitchClient {
 	/**
 	 * Retrieves an access token with your client credentials and an authorization code.
 	 *
+	 * @deprecated Use `exchangeCode` from `twitch-auth` instead.
+	 *
 	 * @param clientId The client ID of your application.
 	 * @param clientSecret The client secret of your application.
 	 * @param code The authorization code.
 	 * @param redirectUri The redirect URI. This serves no real purpose here, but must still match with the redirect URI you configured in the Twitch Developer dashboard.
 	 */
 	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string) {
-		return new AccessToken(
-			await this.callApi<AccessTokenData>({
-				type: TwitchApiCallType.Auth,
-				url: 'token',
-				method: 'POST',
-				query: {
-					grant_type: 'authorization_code',
-					client_id: clientId,
-					client_secret: clientSecret,
-					code,
-					redirect_uri: redirectUri
-				}
-			})
-		);
+		return exchangeCode(clientId, clientSecret, code, redirectUri);
 	}
 
 	/**
 	 * Retrieves an app access token with your client credentials.
+	 *
+	 * @deprecated Use `getAppToken` from `twitch-auth` instead.
 	 *
 	 * @param clientId The client ID of your application.
 	 * @param clientSecret The client secret of your application.
 	 * @param clientSecret
 	 */
 	static async getAppAccessToken(clientId: string, clientSecret: string) {
-		return new AccessToken(
-			await this.callApi<AccessTokenData>({
-				type: TwitchApiCallType.Auth,
-				url: 'token',
-				method: 'POST',
-				query: {
-					grant_type: 'client_credentials',
-					client_id: clientId,
-					client_secret: clientSecret
-				}
-			})
-		);
+		return getAppToken(clientId, clientSecret);
 	}
 
 	/**
 	 * Refreshes an expired access token with your client credentials and the refresh token that was given by the initial authentication.
+	 *
+	 * @deprecated Use `refreshUserToken` from `twitch-auth` instead.
 	 *
 	 * @param clientId The client ID of your application.
 	 * @param clientSecret The client secret of your application.
 	 * @param refreshToken The refresh token.
 	 */
 	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string) {
-		return new AccessToken(
-			await this.callApi<AccessTokenData>({
-				type: TwitchApiCallType.Auth,
-				url: 'token',
-				method: 'POST',
-				query: {
-					grant_type: 'refresh_token',
-					client_id: clientId,
-					client_secret: clientSecret,
-					refresh_token: refreshToken
-				}
-			})
-		);
+		return refreshUserToken(clientId, clientSecret, refreshToken);
 	}
 
 	/**
 	 * Retrieves information about an access token.
+	 *
+	 * @deprecated Use `getTokenInfo` from `twitch-auth` instead.
 	 *
 	 * @param clientId The client ID of your application.
 	 * @param accessToken The access token to get the information of.
@@ -336,71 +239,15 @@ export class TwitchClient {
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
 	static async getTokenInfo(accessToken: string, clientId?: string) {
-		try {
-			const data = await this.callApi<TokenInfoData>(
-				{ type: TwitchApiCallType.Auth, url: 'validate' },
-				clientId,
-				accessToken
-			);
-			return new TokenInfo(data);
-		} catch (e) {
-			if (e instanceof HttpStatusCodeError && e.statusCode === 401) {
-				throw new InvalidTokenError();
-			}
-			throw e;
-		}
+		return getTokenInfo(accessToken, clientId);
 	}
 
 	/**
-	 * @private
-	 */
-	static async _callApiRaw(
-		options: TwitchApiCallOptions,
-		clientId?: string,
-		accessToken?: string
-	): Promise<Response> {
-		const type = options.type === undefined ? TwitchApiCallType.Kraken : options.type;
-		const url = this._getUrl(options.url, type);
-		const params = stringify(options.query, { arrayFormat: 'repeat' });
-		const headers = new Headers({
-			Accept:
-				type === TwitchApiCallType.Kraken
-					? `application/vnd.twitchtv.v${options.version || 5}+json`
-					: 'application/json'
-		});
-
-		let body: string | undefined;
-		if (options.body) {
-			body = stringify(options.body);
-			headers.append('Content-Type', 'application/x-www-form-urlencoded');
-		} else if (options.jsonBody) {
-			body = JSON.stringify(options.jsonBody);
-			headers.append('Content-Type', 'application/json');
-		}
-
-		if (clientId && type !== TwitchApiCallType.Auth) {
-			headers.append('Client-ID', clientId);
-		}
-
-		if (accessToken) {
-			headers.append('Authorization', `${type === TwitchApiCallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`);
-		}
-
-		const requestOptions: RequestInit = {
-			method: options.method || 'GET',
-			headers,
-			body
-		};
-
-		return fetch(params ? `${url}?${params}` : url, requestOptions);
-	}
-
-	/**
-	 * Creates a new Twitch client instance.
+	 * Creates a new API client instance.
 	 *
 	 * @param config Configuration for the client instance.
 	 */
-	constructor(config: Partial<TwitchConfig>) {
+	constructor(config: Partial<ApiConfig>) {
 		const { authProvider, ...restConfig } = config;
 		if (!authProvider) {
 			throw new ConfigError('No auth provider given');
@@ -444,16 +291,43 @@ export class TwitchClient {
 	 * Retrieves an access token for the authentication provider.
 	 *
 	 * @param scopes The scopes to request.
+	 *
+	 * @deprecated Use {@AuthProvider#getAccessToken} directly instead.
 	 */
 	async getAccessToken(scopes?: string | string[]) {
 		return this._config.authProvider.getAccessToken(scopes);
 	}
 
 	/**
+	 * The scopes that are currently available using the access token.
+	 *
+	 * @deprecated Use {@AuthProvider#currentScopes} directly instead.
+	 */
+	get currentScopes() {
+		return this._config.authProvider.currentScopes;
+	}
+
+	/** @private */
+	setAccessToken(token: AccessToken) {
+		this._config.authProvider.setAccessToken(token);
+	}
+
+	/**
 	 * Forces the authentication provider to refresh the access token, if possible.
+	 *
+	 * @deprecated Use {@AuthProvider#refresh} directly instead.
+	 */
+	async refresh() {
+		return this._config.authProvider.refresh?.() ?? null;
+	}
+
+	/**
+	 * Forces the authentication provider to refresh the access token, if possible.
+	 *
+	 * @deprecated Use {@AuthProvider#refresh} directly instead.
 	 */
 	async refreshAccessToken() {
-		return this._config.authProvider.refresh && this._config.authProvider.refresh();
+		return (await this.refresh()) ?? undefined;
 	}
 
 	/**
@@ -461,6 +335,13 @@ export class TwitchClient {
 	 */
 	get tokenType(): AuthProviderTokenType {
 		return this._config.authProvider.tokenType || 'user';
+	}
+
+	/**
+	 * The client ID of your application.
+	 */
+	get clientId() {
+		return this._config.authProvider.clientId;
 	}
 
 	/**
@@ -473,11 +354,14 @@ export class TwitchClient {
 		const { authProvider } = this._config;
 		let accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : undefined);
 		if (!accessToken) {
-			return TwitchClient.callApi<T>(options, authProvider.clientId);
+			return callTwitchApi<T>(options, authProvider.clientId);
 		}
 
 		if (accessToken.isExpired && authProvider.refresh) {
-			accessToken = await authProvider.refresh();
+			const newAccessToken = await authProvider.refresh();
+			if (newAccessToken) {
+				accessToken = newAccessToken;
+			}
 		}
 
 		let response = await this._callApiInternal(options, authProvider.clientId, accessToken.accessToken);
@@ -489,10 +373,14 @@ export class TwitchClient {
 			}
 		}
 
-		return TwitchClient._transformResponse<T>(response);
+		return transformTwitchApiResponse<T>(response);
 	}
 
-	/** @deprecated Use callApi instead. */
+	/**
+	 * Makes a call to the Twitch API using your access token.
+	 *
+	 * @param options The configuration of the call.
+	 */
 	// eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
 	async callAPI<T = any>(options: TwitchApiCallOptions) {
 		deprecate('[twitch] ChatClient#callAPI', 'Use callApi instead.');
@@ -538,51 +426,11 @@ export class TwitchClient {
 		return new UnsupportedApi(this);
 	}
 
-	/** @private */
-	_getAuthProvider() {
-		return this._config.authProvider;
-	}
-
 	private async _callApiInternal(options: TwitchApiCallOptions, clientId?: string, accessToken?: string) {
 		if (options.type === TwitchApiCallType.Helix) {
 			return this._helixRateLimiter.request({ options, clientId, accessToken });
 		}
 
-		return TwitchClient._callApiRaw(options, clientId, accessToken);
-	}
-
-	private static _getUrl(url: string, type: TwitchApiCallType) {
-		switch (type) {
-			case TwitchApiCallType.Kraken:
-			case TwitchApiCallType.Helix:
-				const typeName = type === TwitchApiCallType.Kraken ? 'kraken' : 'helix';
-				return `https://api.twitch.tv/${typeName}/${url.replace(/^\//, '')}`;
-			case TwitchApiCallType.Auth:
-				return `https://id.twitch.tv/oauth2/${url.replace(/^\//, '')}`;
-			case TwitchApiCallType.Custom:
-				return url;
-			default:
-				return url; // wat
-		}
-	}
-
-	private static async _transformResponse<T>(response: Response): Promise<T> {
-		if (!response.ok) {
-			throw new HttpStatusCodeError(response.status, response.statusText, await response.json());
-		}
-
-		if (response.status === 204) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return (undefined as any) as T; // oof
-		}
-
-		const text = await response.text();
-
-		if (!text) {
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			return (undefined as any) as T; // mega oof - twitch doesn't return a response when it should
-		}
-
-		return JSON.parse(text);
+		return callTwitchApiRaw(options, clientId, accessToken);
 	}
 }

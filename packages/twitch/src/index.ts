@@ -1,37 +1,22 @@
 /* eslint-disable filenames/match-exported */
 import { deprecateClass } from '@d-fischer/shared-utils';
 
-import { TwitchClient } from './TwitchClient';
-/** @deprecated Use the named export `TwitchClient` instead. */
-const DeprecatedTwitchClient = deprecateClass(TwitchClient, 'Use the named export `TwitchClient` instead.');
-/** @deprecated Use the named export `TwitchClient` instead. */
-type DeprecatedTwitchClient = TwitchClient;
-/** @deprecated Use the named export `TwitchClient` instead. */
+import { ApiClient } from './ApiClient';
+/** @deprecated Use the named export `ApiClient` instead. */
+const DeprecatedTwitchClient = deprecateClass(ApiClient, 'Use the named export `ApiClient` instead.');
+/** @deprecated Use the named export `ApiClient` instead. */
+type DeprecatedTwitchClient = ApiClient;
+/** @deprecated Use the named export `ApiClient` instead. */
 export default DeprecatedTwitchClient;
-export { TwitchClient };
+export { ApiClient };
 
-export { TwitchApiCallType, TwitchApiCallOptions } from './TwitchClient';
-/** @deprecated Import `TwitchApiCallType` instead. */
-export { TwitchApiCallType as TwitchAPICallType } from './TwitchClient';
-/** @deprecated Import `TwitchApiCallOptions` instead. */
-export { TwitchApiCallOptions as TwitchAPICallOptions } from './TwitchClient';
+export { ApiConfig } from './ApiClient';
 
 export { ConfigError } from './Errors/ConfigError';
 export { HellFreezesOverError } from './Errors/HellFreezesOverError';
-export { HttpStatusCodeError } from './Errors/HttpStatusCodeError';
-/** @deprecated Import `HttpStatusCodeError` instead. */
-export { HttpStatusCodeError as HTTPStatusCodeError } from './Errors/HttpStatusCodeError';
-export { InvalidTokenError } from './Errors/InvalidTokenError';
 export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
 export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
 export { StreamNotLiveError } from './Errors/StreamNotLiveError';
-
-export { AuthProvider, AuthProviderTokenType } from './Auth/AuthProvider';
-export { StaticAuthProvider } from './Auth/StaticAuthProvider';
-export { RefreshableAuthProvider } from './Auth/RefreshableAuthProvider';
-
-export { AccessToken } from './API/AccessToken';
-export { TokenInfo } from './API/TokenInfo';
 
 export { Subscription } from './API/Kraken/Subscription';
 
@@ -97,3 +82,13 @@ export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
 export { ChatBadgeScale, ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
 
 export { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
+
+export { HttpStatusCodeError, TwitchApiCallType, TwitchApiCallOptions } from 'twitch-api-call';
+/** @deprecated Import `HttpStatusCodeError` instead. */
+export { HttpStatusCodeError as HTTPStatusCodeError } from 'twitch-api-call';
+/** @deprecated Import `TwitchApiCallType` instead. */
+export { TwitchApiCallType as TwitchAPICallType } from 'twitch-api-call';
+/** @deprecated Import `TwitchApiCallOptions` instead. */
+export { TwitchApiCallOptions as TwitchAPICallOptions } from 'twitch-api-call';
+
+export { AccessToken, AuthProvider, AuthProviderTokenType, InvalidTokenError, StaticAuthProvider, ClientCredentialsAuthProvider, RefreshableAuthProvider, RefreshConfig, TokenInfo } from 'twitch-auth';

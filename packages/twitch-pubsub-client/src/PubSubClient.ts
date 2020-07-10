@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { extractUserId, TwitchClient, UserIdResolvable } from 'twitch';
+import { ApiClient, extractUserId, UserIdResolvable } from 'twitch';
+import { getTokenInfo } from 'twitch-auth';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
 import { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
@@ -30,36 +31,37 @@ export class PubSubClient {
 	/**
 	 * Attaches a new user to the listener.
 	 *
-	 * @param twitchClient The client that provides authentication for the user.
+	 * @param apiClient The client that provides authentication for the user.
 	 * @param user The user that the client will be attached to.
 	 *
-	 * This should only be passed manually if you fetched the token info for the `twitchClient` before.
+	 * This should only be passed manually if you fetched the token info for the `apiClient` before.
 	 *
-	 * If not given, the user will be determined from the `twitchClient`.
+	 * If not given, the user will be determined from the `apiClient`.
 	 */
-	async registerUserListener(twitchClient: TwitchClient, user?: UserIdResolvable) {
+	async registerUserListener(apiClient: ApiClient, user?: UserIdResolvable) {
 		let userId;
 		if (user) {
 			userId = extractUserId(user);
 		} else {
-			const tokenInfo = await twitchClient.getTokenInfo();
-			if (!tokenInfo.userId) {
-				throw new Error('Passed a Twitch client that is not bound to a user');
+			if (apiClient.tokenType === 'app') {
+				throw new Error('Passed an auth provider that is not bound to a user');
 			}
+			const token = await apiClient.getAccessToken();
+			if (!token) {
+				throw new Error('Could not get an access token to link the listener to a user');
+			}
+			const tokenInfo = await getTokenInfo(token.accessToken);
 			userId = tokenInfo.userId;
 		}
 
-		this._userClients.set(
-			userId,
-			new SingleUserPubSubClient({ twitchClient: twitchClient, pubSubClient: this._rootClient })
-		);
+		this._userClients.set(userId, new SingleUserPubSubClient({ twitchClient: apiClient, pubSubClient: this._rootClient }));
 	}
 
 	/** @private */
 	getUserListener(user: UserIdResolvable) {
 		const userId = extractUserId(user);
 		if (!this._userClients.has(userId)) {
-			throw new Error(`No Twitch client registered for user ID ${userId}`);
+			throw new Error(`No API client registered for user ID ${userId}`);
 		}
 		return this._userClients.get(userId)!;
 	}

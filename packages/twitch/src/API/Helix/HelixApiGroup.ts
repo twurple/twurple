@@ -15,7 +15,7 @@ import { HelixWebHooksApi } from './WebHooks/HelixWebHooksApi';
 /**
  * Groups all API calls available in Helix a.k.a. the "New Twitch API".
  *
- * Can be accessed using {@TwitchClient#helix}.
+ * Can be accessed using {@ApiClient#helix}.
  */
 @Cacheable
 export class HelixApiGroup extends BaseApi {

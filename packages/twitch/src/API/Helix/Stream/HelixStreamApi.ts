@@ -1,8 +1,8 @@
 import { flatten } from '@d-fischer/shared-utils';
-import { HttpStatusCodeError } from '../../../Errors/HttpStatusCodeError';
+import { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
+import { ApiClient } from '../../../ApiClient';
 import { StreamNotLiveError } from '../../../Errors/StreamNotLiveError';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
-import { TwitchApiCallType, TwitchClient } from '../../../TwitchClient';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult, HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -68,11 +68,11 @@ interface HelixStreamGetMarkersResult {
 /**
  * The Helix API methods that deal with streams.
  *
- * Can be accessed using `client.helix.streams` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.streams` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const stream = await client.helix.streams.getStreamByUserId('125328655');
  * ```
  */
@@ -242,7 +242,7 @@ export class HelixStreamApi extends BaseApi {
 		);
 	}
 
-	private static _mapGetStreamMarkersResult(this: TwitchClient, data: HelixStreamGetMarkersResult) {
+	private static _mapGetStreamMarkersResult(this: ApiClient, data: HelixStreamGetMarkersResult) {
 		return data.videos.reduce<HelixStreamMarkerWithVideo[]>(
 			(result, video) => [
 				...result,

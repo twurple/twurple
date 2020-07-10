@@ -1,6 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 import { HelixDateRangeData } from '../HelixDateRangeData';
 import { HelixResponse } from '../HelixResponse';
 import { HelixBitsLeaderboardEntry, HelixBitsLeaderboardEntryData } from './HelixBitsLeaderboardEntry';
@@ -17,10 +17,10 @@ export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLea
 @Cacheable
 export class HelixBitsLeaderboard {
 	/** @private */
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixBitsLeaderboardResponse, client: TwitchClient) {
+	constructor(private readonly _data: HelixBitsLeaderboardResponse, client: ApiClient) {
 		this._client = client;
 	}
 

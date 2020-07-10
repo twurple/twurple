@@ -1,4 +1,4 @@
-import { TwitchApiCallType } from '../../../TwitchClient';
+import { TwitchApiCallType } from 'twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
@@ -56,11 +56,11 @@ export interface HelixClipCreateResponse {
 /**
  * The Helix API methods that deal with clips.
  *
- * Can be accessed using `client.helix.clips` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.clips` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const clipId = await client.helix.clips.createClip({ channelId: '125328655' });
  * ```
  */

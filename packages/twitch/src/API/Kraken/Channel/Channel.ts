@@ -1,4 +1,4 @@
-import { TwitchClient } from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 import { ChannelUpdateData } from './ChannelApi';
 import { ChannelPlaceholder, ChannelPlaceholderData } from './ChannelPlaceholder';
 
@@ -33,7 +33,7 @@ export class Channel extends ChannelPlaceholder {
 	protected _data: ChannelData;
 
 	/** @private */
-	constructor(data: ChannelData, client: TwitchClient) {
+	constructor(data: ChannelData, client: ApiClient) {
 		super(data._id, client);
 		this._data = data;
 	}

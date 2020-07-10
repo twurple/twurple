@@ -1,11 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from '../TwitchClient';
+import { ApiClient } from '../ApiClient';
 
 /** @private */
 export class BaseApi {
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
-	constructor(client: TwitchClient) {
+	constructor(client: ApiClient) {
 		this._client = client;
 	}
 }

@@ -1,5 +1,5 @@
+import { TwitchApiCallType } from 'twitch-api-call';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchApiCallType } from '../../../TwitchClient';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
@@ -10,11 +10,11 @@ import { HelixSubscriptionEvent, HelixSubscriptionEventData } from './HelixSubsc
 /**
  * The Helix API methods that deal with subscriptions.
  *
- * Can be accessed using `client.helix.subscriptions` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.subscriptions` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const subscriptions = await client.helix.subscriptions.getSubscriptionsForUsers('61369223', '125328655');
  * ```
  */

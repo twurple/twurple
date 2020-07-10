@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { AccessToken } from '../API/AccessToken';
-import { TwitchClient } from '../TwitchClient';
+import { AccessToken } from '../AccessToken';
+import { getTokenInfo } from '../helpers';
 import { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
@@ -22,8 +22,6 @@ export class StaticAuthProvider implements AuthProvider {
 
 	/**
 	 * Creates a new auth provider with static credentials.
-	 *
-	 * You don't usually have to create this manually. You should use `TwitchClient.withCredentials` instead.
 	 *
 	 * @param clientId The client ID.
 	 * @param accessToken The access token to provide.
@@ -67,7 +65,7 @@ export class StaticAuthProvider implements AuthProvider {
 				if (!this._accessToken) {
 					throw new Error('Auth provider has not been initialized with a token yet and is requesting scopes');
 				}
-				const tokenInfo = await TwitchClient.getTokenInfo(this._accessToken.accessToken, this._clientId);
+				const tokenInfo = await getTokenInfo(this._accessToken.accessToken, this._clientId);
 				this._scopes = tokenInfo.scopes;
 			}
 			if (typeof scopes === 'string') {

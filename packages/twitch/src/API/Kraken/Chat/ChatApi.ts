@@ -8,11 +8,11 @@ import { ChatRoom, ChatRoomData } from './ChatRoom';
 /**
  * The API methods that deal with chat and chatrooms.
  *
- * Can be accessed using `client.kraken.chat` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.chat` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const emotes = await client.kraken.chat.getEmotesBySets('1');
  * ```
  */

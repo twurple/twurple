@@ -1,5 +1,5 @@
+import { TwitchApiCallType } from 'twitch-api-call';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchApiCallType } from '../../../TwitchClient';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -49,11 +49,11 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
 /**
  * The Helix API methods that deal with videos.
  *
- * Can be accessed using `client.helix.videos` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.videos` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const videos = await client.helix.videos.getVideosByUser('125328655');
  * ```
  */

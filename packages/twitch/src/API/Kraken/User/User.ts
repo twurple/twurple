@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchClient } from '../../../TwitchClient';
 import { ChannelPlaceholder } from '../Channel/ChannelPlaceholder';
 
 /** @private */
@@ -21,10 +21,10 @@ export interface UserData {
  */
 export class User {
 	/** @private */
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: UserData, client: TwitchClient) {
+	constructor(/** @private */ protected _data: UserData, client: ApiClient) {
 		this._client = client;
 	}
 

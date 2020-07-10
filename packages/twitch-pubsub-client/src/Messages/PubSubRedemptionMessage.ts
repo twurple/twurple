@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from 'twitch';
+import { ApiClient } from 'twitch';
 
 export interface PubSubRedemptionMessageUserData {
 	id: string;
@@ -58,11 +58,11 @@ export interface PubSubRedemptionMessageData {
  * A message that informs about a user redeeming a custom channel points reward.
  */
 export class PubSubRedemptionMessage {
-	@Enumerable(false) private readonly _twitchClient: TwitchClient;
+	@Enumerable(false) private readonly _apiClient: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: PubSubRedemptionMessageData, twitchClient: TwitchClient) {
-		this._twitchClient = twitchClient;
+	constructor(private readonly _data: PubSubRedemptionMessageData, apiClient: ApiClient) {
+		this._apiClient = apiClient;
 	}
 
 	/**
@@ -95,9 +95,11 @@ export class PubSubRedemptionMessage {
 
 	/**
 	 * Retrieves more data about the user.
+	 *
+	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
 	 */
 	async getUser() {
-		return this._twitchClient.helix.users.getUserById(this._data.data.redemption.user.id);
+		return this._apiClient.helix.users.getUserById(this._data.data.redemption.user.id);
 	}
 
 	/**
@@ -109,11 +111,16 @@ export class PubSubRedemptionMessage {
 
 	/**
 	 * Retrieves more data about the channel where the reward was redeemed.
+	 *
+	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
 	 */
 	async getChannel() {
-		return this._twitchClient.helix.users.getUserById(this._data.data.redemption.channel_id);
+		return this._apiClient.helix.users.getUserById(this._data.data.redemption.channel_id);
 	}
 
+	/**
+	 * The date when the reward was redeemed.
+	 */
 	get redemptionDate() {
 		return new Date(this._data.data.redemption.redeemed_at);
 	}

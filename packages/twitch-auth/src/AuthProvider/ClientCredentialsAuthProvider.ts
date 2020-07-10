@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { AccessToken } from '../API/AccessToken';
-import { TwitchClient } from '../TwitchClient';
+import { AccessToken } from '../AccessToken';
+import { getAppToken } from '../helpers';
 import { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
@@ -21,12 +21,8 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 	/**
 	 * Creates a new auth provider to receive an application token with using the client ID and secret.
 	 *
-	 * You don't usually have to create this manually. You should use `TwitchClient.withClientCredentials` instead.
-	 *
 	 * @param clientId The client ID of your application.
 	 * @param clientSecret The client secret of your application.
-	 *
-	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
 	constructor(clientId: string, clientSecret: string) {
 		this._clientId = clientId;
@@ -60,7 +56,7 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 	 * Retrieves a new app access token.
 	 */
 	async refresh() {
-		return (this._token = await TwitchClient.getAppAccessToken(this._clientId, this._clientSecret));
+		return (this._token = await getAppToken(this._clientId, this._clientSecret));
 	}
 
 	/** @private */

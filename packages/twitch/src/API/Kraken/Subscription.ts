@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from '../../TwitchClient';
+import { ApiClient } from '../../ApiClient';
 
 /** @private */
 export interface SubscriptionData {
@@ -14,10 +14,10 @@ export interface SubscriptionData {
  */
 export class Subscription {
 	/** @private */
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: SubscriptionData, client: TwitchClient) {
+	constructor(/** @private */ protected _data: SubscriptionData, client: ApiClient) {
 		this._client = client;
 	}
 

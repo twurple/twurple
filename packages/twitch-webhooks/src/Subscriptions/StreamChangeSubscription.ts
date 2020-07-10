@@ -24,18 +24,18 @@ export class StreamChangeSubscription extends Subscription<HelixStream | undefin
 		if (!response.data.length) {
 			return undefined;
 		}
-		return new HelixStream(response.data[0], this._client._twitchClient);
+		return new HelixStream(response.data[0], this._client._apiClient);
 	}
 
 	protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToStreamChanges(
+		return this._client._apiClient.helix.webHooks.subscribeToStreamChanges(
 			this._userId,
 			await this._getOptions()
 		);
 	}
 
 	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromStreamChanges(
+		return this._client._apiClient.helix.webHooks.unsubscribeFromStreamChanges(
 			this._userId,
 			await this._getOptions()
 		);

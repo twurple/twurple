@@ -1,18 +1,7 @@
 import { Logger, LoggerOptions } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Request, RequestHandler, Response, Server } from 'httpanda';
-import {
-	extractUserId,
-	HelixBanEvent,
-	HelixExtensionTransaction,
-	HelixFollow,
-	HelixModeratorEvent,
-	HelixStream,
-	HelixSubscriptionEvent,
-	HelixUser,
-	TwitchClient,
-	UserIdResolvable
-} from 'twitch';
+import { ApiClient, extractUserId, HelixBanEvent, HelixExtensionTransaction, HelixFollow, HelixModeratorEvent, HelixStream, HelixSubscriptionEvent, HelixUser, UserIdResolvable } from 'twitch';
 import { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import { LegacyAdapter, WebHookListenerConfig } from './Adapters/LegacyAdapter';
 import { ConnectCompatibleApp } from './ConnectCompatibleApp';
@@ -67,7 +56,7 @@ export class WebHookListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();
 
-	/** @private */ readonly _twitchClient: TwitchClient;
+	/** @private */ readonly _apiClient: ApiClient;
 	private readonly _adapter: ConnectionAdapter;
 	private readonly _logger: Logger;
 
@@ -76,25 +65,25 @@ export class WebHookListener {
 	/**
 	 * Creates a new WebHook listener.
 	 *
-	 * @deprecated Use the normal constructor instead.
+	 * @deprecated Use the normal {@WebHookListener} constructor instead.
 	 *
-	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
+	 * @param apiClient The ApiClient instance to use for user info and API requests.
 	 * @param config
 	 */
-	static async create(twitchClient: TwitchClient, config: WebHookListenerConfig = {}) {
+	static async create(apiClient: ApiClient, config: WebHookListenerConfig = {}) {
 		const adapter = await LegacyAdapter.create(config);
-		return new WebHookListener(twitchClient, adapter, config);
+		return new WebHookListener(apiClient, adapter, config);
 	}
 
 	/**
 	 * Creates a new WebHook listener.
 	 *
-	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
+	 * @param apiClient The ApiClient instance to use for user info and API requests.
 	 * @param adapter The connection adapter.
 	 * @param config
 	 */
-	constructor(twitchClient: TwitchClient, adapter: ConnectionAdapter, config: WebHookConfig = {}) {
-		this._twitchClient = twitchClient;
+	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, config: WebHookConfig = {}) {
+		this._apiClient = apiClient;
 		this._adapter = adapter;
 		this._hookValidity = config.hookValidity;
 		this._logger = new Logger({

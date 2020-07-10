@@ -6,11 +6,11 @@ import { Stream, StreamData, StreamDataWrapper, StreamType } from './Stream';
 /**
  * The API methods that deal with streams.
  *
- * Can be accessed using `client.kraken.streams` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.streams` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const stream = await client.kraken.streams.getStreamByChannel('125328655');
  * ```
  */

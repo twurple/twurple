@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchClient } from '../../../TwitchClient';
 
 /**
  * The type of a broadcaster.
@@ -66,10 +66,10 @@ export interface HelixUserData {
  */
 export class HelixUser {
 	/** @private */
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: HelixUserData, client: TwitchClient) {
+	constructor(/** @private */ protected _data: HelixUserData, client: ApiClient) {
 		this._client = client;
 	}
 

@@ -6,11 +6,11 @@ import { Stream, StreamData } from '../Stream/Stream';
 /**
  * The API methods that deal with searching.
  *
- * Can be accessed using `client.kraken.search` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.search` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const channel = await client.kraken.search.searchStreams('Hearthstone');
  * ```
  */

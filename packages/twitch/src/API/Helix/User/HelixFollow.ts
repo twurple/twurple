@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchClient } from '../../../TwitchClient';
 
 /**
  * Filters for the follower request.
@@ -31,10 +31,10 @@ export interface HelixFollowData {
  */
 export class HelixFollow {
 	/** @private */
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: HelixFollowData, client: TwitchClient) {
+	constructor(/** @private */ protected _data: HelixFollowData, client: ApiClient) {
 		this._client = client;
 	}
 

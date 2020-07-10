@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 
 interface UserChatInfoGlobalBadgeData {
 	id: string;
@@ -21,10 +21,10 @@ export interface UserChatInfoData {
  * Information about a user's chat appearance and privileges.
  */
 export class UserChatInfo {
-	@Enumerable(false) private readonly _client: TwitchClient;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: UserChatInfoData, client: TwitchClient) {
+	constructor(private readonly _data: UserChatInfoData, client: ApiClient) {
 		this._client = client;
 	}
 

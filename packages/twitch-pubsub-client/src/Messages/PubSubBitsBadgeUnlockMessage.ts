@@ -1,5 +1,5 @@
 import { Enumerable, MakeOptional } from '@d-fischer/shared-utils';
-import { TwitchClient } from 'twitch';
+import { ApiClient } from 'twitch';
 import { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsBadgeUnlockMessageContent
@@ -19,11 +19,11 @@ export interface PubSubBitsBadgeUnlockMessageData {
  * A message that informs about a user unlocking a new bits badge.
  */
 export class PubSubBitsBadgeUnlockMessage {
-	@Enumerable(false) private readonly _twitchClient: TwitchClient;
+	@Enumerable(false) private readonly _apiClient: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: PubSubBitsBadgeUnlockMessageData, twitchClient: TwitchClient) {
-		this._twitchClient = twitchClient;
+	constructor(private readonly _data: PubSubBitsBadgeUnlockMessageData, apiClient: ApiClient) {
+		this._apiClient = apiClient;
 	}
 
 	/**
@@ -42,9 +42,11 @@ export class PubSubBitsBadgeUnlockMessage {
 
 	/**
 	 * Retrieves more data about the user.
+	 *
+	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
 	 */
 	async getUser() {
-		return this._data.data.user_id ? this._twitchClient.helix.users.getUserById(this._data.data.user_id) : null;
+		return this._data.data.user_id ? this._apiClient.helix.users.getUserById(this._data.data.user_id) : null;
 	}
 
 	/**

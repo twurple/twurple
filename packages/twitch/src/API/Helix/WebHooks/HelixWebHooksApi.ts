@@ -1,5 +1,5 @@
+import { TwitchApiCallType } from 'twitch-api-call';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchApiCallType } from '../../../TwitchClient';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import { HelixWebHookSubscription, HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
@@ -54,7 +54,7 @@ export type HubMode = 'subscribe' | 'unsubscribe';
 /**
  * The API methods that deal with WebHooks.
  *
- * Can be accessed using `client.helix.webHooks` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.webHooks` on an {@ApiClient} instance.
  *
  * ## Before using these methods...
  *
@@ -64,7 +64,7 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const accepted = await client.helix.webHooks.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */

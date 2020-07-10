@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 
 /** @private */
 export interface HelixModeratorData {
@@ -12,10 +12,10 @@ export interface HelixModeratorData {
  */
 export class HelixModerator {
 	/** @private */
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixModeratorData, client: TwitchClient) {
+	constructor(private readonly _data: HelixModeratorData, client: ApiClient) {
 		this._client = client;
 	}
 

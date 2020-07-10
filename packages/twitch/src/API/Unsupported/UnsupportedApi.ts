@@ -1,17 +1,17 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { TwitchApiCallType } from 'twitch-api-call';
 import { extractUserName, UserNameResolvable } from '../../Toolkit/UserTools';
-import { TwitchApiCallType } from '../../TwitchClient';
 import { BaseApi } from '../BaseApi';
 import { ChattersList, ChattersListData } from './ChattersList';
 
 /**
  * Different API methods that are not officially supported by Twitch.
  *
- * Can be accessed using `client.unsupported` on a {@TwitchClient} instance.
+ * Can be accessed using `client.unsupported` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const events = await client.unsupported.getEvents('125328655');
  * ```
  */

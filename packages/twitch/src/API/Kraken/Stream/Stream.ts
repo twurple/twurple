@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchClient } from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 import { Channel, ChannelData } from '../Channel/Channel';
 
 /**
@@ -66,10 +66,10 @@ export enum StreamType {
  * A Twitch stream.
  */
 export class Stream {
-	@Enumerable(false) private readonly _client: TwitchClient;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: StreamData, client: TwitchClient) {
+	constructor(private readonly _data: StreamData, client: ApiClient) {
 		this._client = client;
 	}
 

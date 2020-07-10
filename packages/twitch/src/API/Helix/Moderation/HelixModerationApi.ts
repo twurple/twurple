@@ -1,5 +1,5 @@
+import { TwitchApiCallType } from 'twitch-api-call';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchApiCallType } from '../../../TwitchClient';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
@@ -33,11 +33,11 @@ interface HelixModeratorFilter extends HelixForwardPagination {
 /**
  * The Helix API methods that deal with moderation.
  *
- * Can be accessed using `client.helix.moderation` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.moderation` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const game = await client.helix.moderation.getBannedUsers('61369223');
  * ```
  */

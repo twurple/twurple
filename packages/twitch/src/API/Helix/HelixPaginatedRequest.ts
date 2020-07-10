@@ -1,7 +1,8 @@
 /// <reference lib="esnext.asynciterable" />
 
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchApiCallOptions, TwitchApiCallType, TwitchClient } from '../../TwitchClient';
+import { TwitchApiCallOptions, TwitchApiCallType } from 'twitch-api-call';
+import { ApiClient } from '../../ApiClient';
 import { HelixPaginatedResponse } from './HelixResponse';
 
 if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
@@ -22,7 +23,7 @@ if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
  * ```
  */
 export class HelixPaginatedRequest<D, T> {
-	@Enumerable(false) private readonly _client: TwitchClient;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	protected _currentCursor?: string;
@@ -36,7 +37,7 @@ export class HelixPaginatedRequest<D, T> {
 	/** @private */
 	constructor(
 		private readonly _callOptions: Omit<TwitchApiCallOptions, 'type'>,
-		client: TwitchClient,
+		client: ApiClient,
 		private readonly _mapper: (data: D) => T | T[]
 	) {
 		this._client = client;

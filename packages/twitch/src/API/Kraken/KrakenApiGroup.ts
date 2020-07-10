@@ -11,7 +11,7 @@ import { UserApi } from './User/UserApi';
 /**
  * Groups all API calls available in Kraken v5.
  *
- * Can be accessed using {@TwitchClient#kraken}.
+ * Can be accessed using {@ApiClient#kraken}.
  */
 @Cacheable
 export class KrakenApiGroup extends BaseApi {

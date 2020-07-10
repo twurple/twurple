@@ -1,4 +1,4 @@
-import { TwitchApiCallType } from '../../../TwitchClient';
+import { TwitchApiCallType } from 'twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
@@ -21,11 +21,11 @@ interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensionTransa
 /**
  * The Helix API methods that deal with extensions.
  *
- * Can be accessed using `client.helix.extensions` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.extensions` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const transactions = await client.helix.extionsions.getExtensionTransactions('abcd');
  * ```
  */

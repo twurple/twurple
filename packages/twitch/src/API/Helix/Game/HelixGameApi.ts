@@ -1,4 +1,4 @@
-import { TwitchApiCallType } from '../../../TwitchClient';
+import { TwitchApiCallType } from 'twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
@@ -12,11 +12,11 @@ export type HelixGameFilterType = 'id' | 'name';
 /**
  * The Helix API methods that deal with games.
  *
- * Can be accessed using `client.helix.games` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.games` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const game = await client.helix.games.getGameByName('Hearthstone');
  * ```
  */

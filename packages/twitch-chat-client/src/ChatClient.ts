@@ -3,7 +3,8 @@ import { Logger, LoggerOptions, LogLevel } from '@d-fischer/logger';
 import { Enumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
 import { IRCClient, MessageTypes } from 'ircv3';
-import { CommercialLength, InvalidTokenError, InvalidTokenTypeError, TwitchClient } from 'twitch';
+import { CommercialLength, InvalidTokenError, InvalidTokenTypeError } from 'twitch';
+import { AuthProvider, getTokenInfo } from 'twitch-auth';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -23,13 +24,7 @@ import { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
 import { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
 import { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
 import { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
-import {
-	ChatSubExtendInfo,
-	ChatSubGiftInfo,
-	ChatSubGiftUpgradeInfo,
-	ChatSubInfo,
-	ChatSubUpgradeInfo
-} from './UserNotices/ChatSubInfo';
+import { ChatSubExtendInfo, ChatSubGiftInfo, ChatSubGiftUpgradeInfo, ChatSubInfo, ChatSubUpgradeInfo } from './UserNotices/ChatSubInfo';
 
 const GENERIC_CHANNEL = 'twjs';
 
@@ -103,7 +98,7 @@ export class ChatClient extends IRCClient {
 	private static readonly HOST_MESSAGE_REGEX = /(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
 	/** @private */
-	@Enumerable(false) readonly _twitchClient?: TwitchClient;
+	@Enumerable(false) readonly _authProvider?: AuthProvider;
 
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;
@@ -614,15 +609,18 @@ export class ChatClient extends IRCClient {
 	) => Listener = this.registerEvent();
 
 	/**
-	 * Creates a new Twitch chat client with the user info from the TwitchClient instance.
+	 * Creates a new Twitch chat client with the user info from the {@AuthProvider} instance.
+	 *
+	 * @deprecated Use the {@ChatClient} constructor instead.
 	 *
 	 * @expandParams
 	 *
-	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
+	 * @param authProvider The {@AuthProvider} instance to use for authentication.
 	 * @param options
 	 */
-	static forTwitchClient(twitchClient: TwitchClient, options: ChatClientOptions = {}) {
-		return new this(twitchClient, options);
+	static forTwitchClient(authProvider: AuthProvider, options: ChatClientOptions = {}) {
+		deprecate('[twitch-chat-client] ChatClient.forTwitchClient', 'Use the `ChatClient` constructor instead.');
+		return new this(authProvider, options);
 	}
 
 	/**
@@ -641,10 +639,10 @@ export class ChatClient extends IRCClient {
 	 *
 	 * @expandParams
 	 *
-	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
+	 * @param authProvider The {@AuthProvider} instance to use for authentication.
 	 * @param options
 	 */
-	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptions = {}) {
+	constructor(authProvider: AuthProvider | undefined, options: ChatClientOptions = {}) {
 		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
@@ -665,11 +663,11 @@ export class ChatClient extends IRCClient {
 		});
 		/* eslint-enable no-restricted-syntax */
 
-		if (twitchClient?.tokenType === 'app') {
+		if (authProvider?.tokenType === 'app') {
 			throw new InvalidTokenTypeError(
 				'You can not connect to chat using an AuthProvider that supplies app access tokens.\n' +
 					'To get an anonymous, read-only connection, please use `ChatClient.anonymous()`.\n' +
-					'To get a read-write connection, please provide a user access token to your TwitchClient instance, for example using `TwitchClient.withCredentials()`.'
+					'To get a read-write connection, please provide an auth provider that provides user access tokens, for example `RefreshableAuthProvider`.'
 			);
 		}
 
@@ -680,18 +678,16 @@ export class ChatClient extends IRCClient {
 			...(options.logger ?? {})
 		});
 
-		this._twitchClient = twitchClient;
+		this._authProvider = authProvider;
 
 		this._useLegacyScopes = !!options.legacyScopes;
 		this._readOnly = !!options.readOnly;
 
-		// tslint:disable:no-floating-promises
-		this.registerCapability(TwitchTagsCapability);
-		this.registerCapability(TwitchCommandsCapability);
+		this.addCapability(TwitchTagsCapability);
+		this.addCapability(TwitchCommandsCapability);
 		if (options.requestMembershipEvents) {
-			this.registerCapability(TwitchMembershipCapability);
+			this.addCapability(TwitchMembershipCapability);
 		}
-		// tslint:enable:no-floating-promises
 
 		this.onRegister(() => {
 			this._authVerified = true;
@@ -1384,7 +1380,7 @@ export class ChatClient extends IRCClient {
 	}
 
 	async connect() {
-		if (!this._twitchClient) {
+		if (!this._authProvider) {
 			this._updateCredentials({
 				nick: ChatClient._generateJustinfanNick(),
 				password: undefined
@@ -2098,7 +2094,7 @@ export class ChatClient extends IRCClient {
 	}
 
 	protected async getPassword(currentPassword?: string): Promise<string | undefined> {
-		if (!this._twitchClient) {
+		if (!this._authProvider) {
 			return undefined;
 		}
 
@@ -2119,9 +2115,9 @@ export class ChatClient extends IRCClient {
 		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		try {
-			const accessToken = await this._twitchClient.getAccessToken(scopes);
+			const accessToken = await this._authProvider.getAccessToken(scopes);
 			if (accessToken) {
-				const token = await this._twitchClient.getTokenInfo();
+				const token = await getTokenInfo(accessToken.accessToken);
 				this._updateCredentials({
 					nick: token.userName!
 				});
@@ -2138,10 +2134,10 @@ export class ChatClient extends IRCClient {
 		this._chatLogger.warning('No valid token available; trying to refresh');
 
 		try {
-			const newToken = await this._twitchClient.refreshAccessToken();
+			const newToken = await this._authProvider.refresh?.();
 
 			if (newToken) {
-				const token = await this._twitchClient.getTokenInfo();
+				const token = await getTokenInfo(newToken.accessToken);
 				this._updateCredentials({
 					nick: token.userName!
 				});

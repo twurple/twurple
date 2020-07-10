@@ -1,5 +1,5 @@
 import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
-import { HttpStatusCodeError } from '../../../Errors/HttpStatusCodeError';
+import { HttpStatusCodeError } from 'twitch-api-call/lib/errors/HttpStatusCodeError';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -43,11 +43,11 @@ export type CommercialLength = 30 | 60 | 90 | 120 | 150 | 180;
 /**
  * The API methods that deal with channels.
  *
- * Can be accessed using `client.kraken.channels` on a {@TwitchClient} instance.
+ * Can be accessed using `client.kraken.channels` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const channel = await client.kraken.channels.getMyChannel();
  * ```
  */

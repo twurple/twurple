@@ -1,7 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
-import { TwitchClient } from '../../../TwitchClient';
 
 export type HelixVideoViewableStatus = 'public' | 'private';
 export type HelixVideoType = 'upload' | 'archive' | 'highlight';
@@ -30,10 +30,10 @@ export interface HelixVideoData {
 @Cacheable
 export class HelixVideo {
 	/** @private */
-	@Enumerable(false) protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixVideoData, client: TwitchClient) {
+	constructor(private readonly _data: HelixVideoData, client: ApiClient) {
 		this._client = client;
 	}
 

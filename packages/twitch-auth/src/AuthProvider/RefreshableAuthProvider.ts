@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { AccessToken } from '../API/AccessToken';
-import { TwitchClient } from '../TwitchClient';
+import { AccessToken } from '../AccessToken';
+import { refreshUserToken } from '../helpers';
 import { AuthProvider } from './AuthProvider';
 
 /**
@@ -44,9 +44,6 @@ export class RefreshableAuthProvider implements AuthProvider {
 	/**
 	 * Creates a new auth provider based on the given one that can automatically
 	 * refresh access tokens.
-	 *
-	 * You don't usually have to create this manually. You should use `TwitchClient.withCredentials`
-	 * with the `refreshConfig` parameter instead.
 	 *
 	 * @param childProvider The base auth provider.
 	 * @param refreshConfig The information necessary to automatically refresh an access token.
@@ -118,7 +115,7 @@ export class RefreshableAuthProvider implements AuthProvider {
 	 * Force a refresh of the access token.
 	 */
 	async refresh() {
-		const tokenData = await TwitchClient.refreshAccessToken(this.clientId, this._clientSecret, this._refreshToken);
+		const tokenData = await refreshUserToken(this.clientId, this._clientSecret, this._refreshToken);
 		this.setAccessToken(tokenData);
 		this._refreshToken = tokenData.refreshToken;
 		this._initialExpiry = undefined;

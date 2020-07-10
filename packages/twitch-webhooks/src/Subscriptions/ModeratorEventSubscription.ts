@@ -25,18 +25,18 @@ export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent
 	}
 
 	protected transformData(response: HelixResponse<HelixModeratorEventData>) {
-		return new HelixModeratorEvent(response.data[0], this._client._twitchClient);
+		return new HelixModeratorEvent(response.data[0], this._client._apiClient);
 	}
 
 	protected async _subscribe() {
 		if (this._userId) {
-			return this._client._twitchClient.helix.webHooks.subscribeToModeratorEventsForUser(
+			return this._client._apiClient.helix.webHooks.subscribeToModeratorEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.subscribeToModeratorEvents(
+		return this._client._apiClient.helix.webHooks.subscribeToModeratorEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
@@ -44,13 +44,13 @@ export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent
 
 	protected async _unsubscribe() {
 		if (this._userId) {
-			return this._client._twitchClient.helix.webHooks.unsubscribeFromModeratorEventsForUser(
+			return this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromModeratorEvents(
+		return this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);

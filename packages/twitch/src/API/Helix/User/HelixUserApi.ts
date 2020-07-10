@@ -1,6 +1,6 @@
+import { TwitchApiCallType } from 'twitch-api-call';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
-import { TwitchApiCallType } from '../../../TwitchClient';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
@@ -25,11 +25,11 @@ export interface HelixUserUpdate {
 /**
  * The Helix API methods that deal with users.
  *
- * Can be accessed using `client.helix.users` on a {@TwitchClient} instance.
+ * Can be accessed using `client.helix.users` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
- * const client = TwitchClient.withCredentials(clientId, accessToken);
+ * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const user = await client.helix.users.getUserById('125328655');
  * ```
  */
