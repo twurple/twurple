@@ -18,8 +18,19 @@ interface AuthorizeParams {
 }
 
 export interface TwitchClientCredentials {
+	/**
+	 * The client ID of your application.
+	 */
 	clientId: string;
-	redirectURI: string;
+
+	/**
+	 * A redirect URI that was added to your application.
+	 */
+	redirectUri?: string;
+
+	/** @deprecated Use redirectUri instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	redirectURI?: string;
 }
 
 const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> = {
@@ -32,15 +43,25 @@ export class ElectronAuthProvider implements AuthProvider {
 	private readonly _currentScopes = new Set<string>();
 	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
 	private _allowUserChange = false;
+	private readonly _clientId: string;
+	private readonly _redirectUri: string;
 
 	readonly tokenType: AuthProviderTokenType = 'user';
 
 	constructor(clientCredentials: TwitchClientCredentials, options?: ElectronAuthProviderOptions);
 	constructor(clientCredentials: TwitchClientCredentials, options?: ElectronAuthProviderOptions<WindowOptions>);
 	constructor(
-		private readonly _clientCredentials: TwitchClientCredentials,
+		clientCredentials: TwitchClientCredentials,
 		options?: ElectronAuthProviderOptions | ElectronAuthProviderOptions<WindowOptions>
 	) {
+		this._clientId = clientCredentials.clientId;
+		if (clientCredentials.redirectUri) {
+			this._redirectUri = clientCredentials.redirectUri;
+		} else if (clientCredentials.redirectURI) {
+			this._redirectUri = clientCredentials.redirectURI;
+		} else {
+			throw new Error('Please supply a redirect URI');
+		}
 		this._options = { ...defaultOptions, ...options };
 	}
 
@@ -49,7 +70,7 @@ export class ElectronAuthProvider implements AuthProvider {
 	}
 
 	get clientId() {
-		return this._clientCredentials.clientId;
+		return this._clientId;
 	}
 
 	get currentScopes() {
@@ -69,7 +90,7 @@ export class ElectronAuthProvider implements AuthProvider {
 				return;
 			}
 
-			const redir = encodeURIComponent(this._clientCredentials.redirectURI);
+			const redir = encodeURIComponent(this._redirectUri);
 			const queryParams: AuthorizeParams = {
 				response_type: 'token',
 				client_id: this.clientId,
@@ -117,15 +138,15 @@ export class ElectronAuthProvider implements AuthProvider {
 			}
 
 			authWindow.webContents.session.webRequest.onBeforeRequest(
-				{ urls: [this._clientCredentials.redirectURI] },
+				{ urls: [this._redirectUri] },
 				(details, callback) => {
 					const url = new URL(details.url);
 					const match = url.origin + url.pathname;
 
 					// sometimes, electron seems to intercept too much... we catch this here
-					if (match !== this._clientCredentials.redirectURI) {
+					if (match !== this._redirectUri) {
 						// the trailing slash might be too much in the pathname
-						if (url.pathname !== '/' || url.origin !== this._clientCredentials.redirectURI) {
+						if (url.pathname !== '/' || url.origin !== this._redirectUri) {
 							callback({});
 							return;
 						}

@@ -1,7 +1,7 @@
 /// <reference lib="esnext.asynciterable" />
 
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchAPICallOptions, TwitchAPICallType, TwitchClient } from '../../TwitchClient';
+import { TwitchApiCallOptions, TwitchApiCallType, TwitchClient } from '../../TwitchClient';
 import { HelixPaginatedResponse } from './HelixResponse';
 
 if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
@@ -35,7 +35,7 @@ export class HelixPaginatedRequest<D, T> {
 
 	/** @private */
 	constructor(
-		private readonly _callOptions: Omit<TwitchAPICallOptions, 'type'>,
+		private readonly _callOptions: Omit<TwitchApiCallOptions, 'type'>,
 		client: TwitchClient,
 		private readonly _mapper: (data: D) => T | T[]
 	) {
@@ -123,9 +123,9 @@ export class HelixPaginatedRequest<D, T> {
 	}
 
 	/** @private */
-	protected async _fetchData(additionalOptions: Partial<TwitchAPICallOptions> = {}) {
-		return this._client.callAPI<HelixPaginatedResponse<D>>({
-			type: TwitchAPICallType.Helix,
+	protected async _fetchData(additionalOptions: Partial<TwitchApiCallOptions> = {}) {
+		return this._client.callApi<HelixPaginatedResponse<D>>({
+			type: TwitchApiCallType.Helix,
 			...this._callOptions,
 			...additionalOptions,
 			query: {

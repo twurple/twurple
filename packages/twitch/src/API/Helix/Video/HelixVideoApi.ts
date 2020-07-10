@@ -1,6 +1,6 @@
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchAPICallType } from '../../../TwitchClient';
-import { BaseAPI } from '../../BaseAPI';
+import { TwitchApiCallType } from '../../../TwitchClient';
+import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { HelixPagination, makePaginationQuery } from '../HelixPagination';
@@ -57,7 +57,7 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
  * const videos = await client.helix.videos.getVideosByUser('125328655');
  * ```
  */
-export class HelixVideoAPI extends BaseAPI {
+export class HelixVideoApi extends BaseApi {
 	/**
 	 * Retrieves the video data for the given list of video IDs.
 	 *
@@ -126,11 +126,11 @@ export class HelixVideoAPI extends BaseAPI {
 		filterValues: string | string[],
 		filter: HelixPaginatedVideoFilter = {}
 	): Promise<HelixPaginatedResult<HelixVideo>> {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixVideoData>>({
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixVideoData>>({
 			url: 'videos',
-			type: TwitchAPICallType.Helix,
+			type: TwitchApiCallType.Helix,
 			query: {
-				...HelixVideoAPI._makeVideosQuery(filterType, filterValues, filter),
+				...HelixVideoApi._makeVideosQuery(filterType, filterValues, filter),
 				...makePaginationQuery(filter)
 			}
 		});
@@ -149,7 +149,7 @@ export class HelixVideoAPI extends BaseAPI {
 		return new HelixPaginatedRequest(
 			{
 				url: 'videos',
-				query: HelixVideoAPI._makeVideosQuery(filterType, filterValues, filter)
+				query: HelixVideoApi._makeVideosQuery(filterType, filterValues, filter)
 			},
 			this._client,
 			(data: HelixVideoData) => new HelixVideo(data, this._client)

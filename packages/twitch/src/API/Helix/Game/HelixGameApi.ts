@@ -1,5 +1,5 @@
-import { TwitchAPICallType } from '../../../TwitchClient';
-import { BaseAPI } from '../../BaseAPI';
+import { TwitchApiCallType } from '../../../TwitchClient';
+import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import { HelixPagination, makePaginationQuery } from '../HelixPagination';
@@ -20,7 +20,7 @@ export type HelixGameFilterType = 'id' | 'name';
  * const game = await client.helix.games.getGameByName('Hearthstone');
  * ```
  */
-export class HelixGameAPI extends BaseAPI {
+export class HelixGameApi extends BaseApi {
 	/**
 	 * Retrieves the game data for the given list of game IDs.
 	 *
@@ -65,8 +65,8 @@ export class HelixGameAPI extends BaseAPI {
 	 * @param pagination Pagination info.
 	 */
 	async getTopGames(pagination?: HelixPagination) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixGameData>>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixGameData>>({
+			type: TwitchApiCallType.Helix,
 			url: 'games/top',
 			query: makePaginationQuery(pagination)
 		});
@@ -88,8 +88,8 @@ export class HelixGameAPI extends BaseAPI {
 	}
 
 	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]) {
-		const result = await this._client.callAPI<HelixResponse<HelixGameData>>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixResponse<HelixGameData>>({
+			type: TwitchApiCallType.Helix,
 			url: 'games',
 			query: {
 				[filterType]: filterValues

@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../Toolkit/UserTools';
-import { TwitchAPICallType } from '../../TwitchClient';
-import { BaseAPI } from '../BaseAPI';
+import { TwitchApiCallType } from '../../TwitchClient';
+import { BaseApi } from '../BaseApi';
 import { ChatBadgeList, ChatBadgeListData } from './ChatBadgeList';
 
 /**
@@ -16,18 +16,20 @@ import { ChatBadgeList, ChatBadgeListData } from './ChatBadgeList';
  * ```
  */
 @Cacheable
-export class BadgesAPI extends BaseAPI {
+export class BadgesApi extends BaseApi {
 	/**
 	 * Retrieves all globally applicable chat badges.
+	 *
+	 * @param language The language of the retrieved badge descriptions.
 	 */
 	@Cached(3600)
 	async getGlobalBadges(language?: string) {
-		const data = await this._client.callAPI<{ badge_sets: ChatBadgeListData }>({
+		const data = await this._client.callApi<{ badge_sets: ChatBadgeListData }>({
 			url: 'https://badges.twitch.tv/v1/badges/global/display',
 			query: {
 				language
 			},
-			type: TwitchAPICallType.Custom
+			type: TwitchApiCallType.Custom
 		});
 
 		return new ChatBadgeList(data.badge_sets, this._client);
@@ -38,15 +40,16 @@ export class BadgesAPI extends BaseAPI {
 	 *
 	 * @param channel The channel to retrieve the chat badges for.
 	 * @param includeGlobal Whether to include global badges in the result list.
+	 * @param language The language of the retrieved badge descriptions.
 	 */
 	@Cached(3600)
 	async getChannelBadges(channel: UserIdResolvable, includeGlobal: boolean = true, language?: string) {
-		const data = await this._client.callAPI<{ badge_sets: ChatBadgeListData }>({
+		const data = await this._client.callApi<{ badge_sets: ChatBadgeListData }>({
 			url: `https://badges.twitch.tv/v1/badges/channels/${extractUserId(channel)}/display`,
 			query: {
 				language
 			},
-			type: TwitchAPICallType.Custom
+			type: TwitchApiCallType.Custom
 		});
 
 		const channelBadges = new ChatBadgeList(data.badge_sets, this._client);

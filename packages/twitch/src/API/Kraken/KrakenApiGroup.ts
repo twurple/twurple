@@ -1,12 +1,12 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import { BaseAPI } from '../BaseAPI';
-import { BitsAPI } from './Bits/BitsAPI';
-import { ChannelAPI } from './Channel/ChannelAPI';
-import { ChatAPI } from './Chat/ChatAPI';
-import { SearchAPI } from './Search/SearchAPI';
-import { StreamAPI } from './Stream/StreamAPI';
-import { TeamAPI } from './Team/TeamAPI';
-import { UserAPI } from './User/UserAPI';
+import { BaseApi } from '../BaseApi';
+import { BitsApi } from './Bits/BitsApi';
+import { ChannelApi } from './Channel/ChannelApi';
+import { ChatApi } from './Chat/ChatApi';
+import { SearchApi } from './Search/SearchApi';
+import { StreamApi } from './Stream/StreamApi';
+import { TeamApi } from './Team/TeamApi';
+import { UserApi } from './User/UserApi';
 
 /**
  * Groups all API calls available in Kraken v5.
@@ -14,13 +14,13 @@ import { UserAPI } from './User/UserAPI';
  * Can be accessed using {@TwitchClient#kraken}.
  */
 @Cacheable
-export class KrakenAPIGroup extends BaseAPI {
+export class KrakenApiGroup extends BaseApi {
 	/**
 	 * The API methods that deal with bits.
 	 */
 	@CachedGetter()
 	get bits() {
-		return new BitsAPI(this._client);
+		return new BitsApi(this._client);
 	}
 
 	/**
@@ -28,7 +28,7 @@ export class KrakenAPIGroup extends BaseAPI {
 	 */
 	@CachedGetter()
 	get channels() {
-		return new ChannelAPI(this._client);
+		return new ChannelApi(this._client);
 	}
 
 	/**
@@ -36,7 +36,7 @@ export class KrakenAPIGroup extends BaseAPI {
 	 */
 	@CachedGetter()
 	get chat() {
-		return new ChatAPI(this._client);
+		return new ChatApi(this._client);
 	}
 
 	/**
@@ -44,7 +44,7 @@ export class KrakenAPIGroup extends BaseAPI {
 	 */
 	@CachedGetter()
 	get search() {
-		return new SearchAPI(this._client);
+		return new SearchApi(this._client);
 	}
 
 	/**
@@ -52,7 +52,7 @@ export class KrakenAPIGroup extends BaseAPI {
 	 */
 	@CachedGetter()
 	get streams() {
-		return new StreamAPI(this._client);
+		return new StreamApi(this._client);
 	}
 
 	/**
@@ -60,7 +60,7 @@ export class KrakenAPIGroup extends BaseAPI {
 	 */
 	@CachedGetter()
 	get users() {
-		return new UserAPI(this._client);
+		return new UserApi(this._client);
 	}
 
 	/**
@@ -68,6 +68,6 @@ export class KrakenAPIGroup extends BaseAPI {
 	 */
 	@CachedGetter()
 	get teams() {
-		return new TeamAPI(this._client);
+		return new TeamApi(this._client);
 	}
 }

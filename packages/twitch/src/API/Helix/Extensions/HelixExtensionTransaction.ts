@@ -91,6 +91,12 @@ export class HelixExtensionTransaction {
 	/**
 	 * The product SKU.
 	 */
+	get productSku() {
+		return this._data.product_data.sku;
+	}
+
+	/** @deprecated Use productSku instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	get productSKU() {
 		return this._data.product_data.sku;
 	}

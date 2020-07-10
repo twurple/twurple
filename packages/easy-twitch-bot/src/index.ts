@@ -3,11 +3,11 @@
 import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { Bot } from './Bot';
-/** @deprecated Please use the named export `Bot` instead */
-const DeprecatedBot = deprecateClass(Bot, 'Please use the named export `Bot` instead');
-/** @deprecated Please use the named export `Bot` instead */
+/** @deprecated Use the named export `Bot` instead. */
+const DeprecatedBot = deprecateClass(Bot, 'Use the named export `Bot` instead.');
+/** @deprecated Use the named export `Bot` instead. */
 type DeprecatedBot = Bot;
-/** @deprecated Please use the named export `Bot` instead */
+/** @deprecated Use the named export `Bot` instead. */
 export default DeprecatedBot;
 export { Bot };
 

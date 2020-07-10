@@ -2,7 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { TwitchClient } from '../TwitchClient';
 
 /** @private */
-export class BaseAPI {
+export class BaseApi {
 	@Enumerable(false) protected readonly _client: TwitchClient;
 
 	constructor(client: TwitchClient) {

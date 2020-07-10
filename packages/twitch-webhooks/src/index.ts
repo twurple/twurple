@@ -2,14 +2,11 @@
 import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { WebHookListener } from './WebHookListener';
-/** @deprecated Please use the named export `WebHookListener` instead */
-const DeprecatedWebHookListener = deprecateClass(
-	WebHookListener,
-	'Please use the named export `WebHookListener` instead'
-);
-/** @deprecated Please use the named export `WebHookListener` instead */
+/** @deprecated Use the named export `WebHookListener` instead. */
+const DeprecatedWebHookListener = deprecateClass(WebHookListener, 'Use the named export `WebHookListener` instead.');
+/** @deprecated Use the named export `WebHookListener` instead. */
 type DeprecatedWebHookListener = WebHookListener;
-/** @deprecated Please use the named export `WebHookListener` instead */
+/** @deprecated Use the named export `WebHookListener` instead. */
 export default DeprecatedWebHookListener;
 export { WebHookListener };
 

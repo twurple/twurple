@@ -2,11 +2,11 @@
 import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { PubSubClient } from './PubSubClient';
-/** @deprecated Please use the named export `PubSubClient` instead */
-const DeprecatedPubSubClient = deprecateClass(PubSubClient, 'Please use the named export `PubSubClient` instead');
-/** @deprecated Please use the named export `PubSubClient` instead */
+/** @deprecated Use the named export `PubSubClient` instead. */
+const DeprecatedPubSubClient = deprecateClass(PubSubClient, 'Use the named export `PubSubClient` instead.');
+/** @deprecated Use the named export `PubSubClient` instead. */
 type DeprecatedPubSubClient = PubSubClient;
-/** @deprecated Please use the named export `PubSubClient` instead */
+/** @deprecated Use the named export `PubSubClient` instead. */
 export default DeprecatedPubSubClient;
 export { PubSubClient };
 

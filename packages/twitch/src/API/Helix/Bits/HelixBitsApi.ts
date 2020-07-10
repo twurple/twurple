@@ -1,5 +1,5 @@
-import { TwitchAPICallType } from '../../../TwitchClient';
-import { BaseAPI } from '../../BaseAPI';
+import { TwitchApiCallType } from '../../../TwitchClient';
+import { BaseApi } from '../../BaseApi';
 import { HelixBitsLeaderboard, HelixBitsLeaderboardResponse } from './HelixBitsLeaderboard';
 
 /**
@@ -47,7 +47,7 @@ export interface HelixBitsLeaderboardQuery {
  * const leaderboard = await client.helix.bits.getLeaderboard({ period: 'day' });
  * ```
  */
-export class HelixBitsAPI extends BaseAPI {
+export class HelixBitsApi extends BaseApi {
 	/**
 	 * Gets a bits leaderboard of your channel.
 	 *
@@ -55,8 +55,8 @@ export class HelixBitsAPI extends BaseAPI {
 	 */
 	async getLeaderboard(params: HelixBitsLeaderboardQuery = {}) {
 		const { count = 10, period = 'all', startDate, contextUserId } = params;
-		const result = await this._client.callAPI<HelixBitsLeaderboardResponse>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixBitsLeaderboardResponse>({
+			type: TwitchApiCallType.Helix,
 			url: 'bits/leaderboard',
 			scope: 'bits:read',
 			query: {

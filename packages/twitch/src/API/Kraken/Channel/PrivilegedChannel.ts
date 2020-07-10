@@ -1,5 +1,5 @@
 import { Channel, ChannelData } from './Channel';
-import { CommercialLength } from './ChannelAPI';
+import { CommercialLength } from './ChannelApi';
 
 /** @private */
 export interface PrivilegedChannelData extends ChannelData {

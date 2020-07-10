@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserName, UserNameResolvable } from '../../Toolkit/UserTools';
-import { TwitchAPICallType } from '../../TwitchClient';
-import { BaseAPI } from '../BaseAPI';
+import { TwitchApiCallType } from '../../TwitchClient';
+import { BaseApi } from '../BaseApi';
 import { ChattersList, ChattersListData } from './ChattersList';
 
 /**
@@ -16,7 +16,7 @@ import { ChattersList, ChattersListData } from './ChattersList';
  * ```
  */
 @Cacheable
-export class UnsupportedAPI extends BaseAPI {
+export class UnsupportedApi extends BaseApi {
 	/**
 	 * Retrieves a list of chatters in the Twitch chat of the given channel.
 	 *
@@ -28,9 +28,9 @@ export class UnsupportedAPI extends BaseAPI {
 	async getChatters(channel: UserNameResolvable) {
 		const channelName = extractUserName(channel);
 
-		const data: ChattersListData = await this._client.callAPI({
+		const data: ChattersListData = await this._client.callApi({
 			url: `https://tmi.twitch.tv/group/user/${channelName}/chatters`,
-			type: TwitchAPICallType.Custom
+			type: TwitchApiCallType.Custom
 		});
 		return new ChattersList(data);
 	}

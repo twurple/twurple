@@ -2,17 +2,18 @@
 
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import fetch, { Headers } from '@d-fischer/cross-fetch';
+import deprecate from '@d-fischer/deprecate';
 import { LogLevel } from '@d-fischer/logger';
 import { stringify } from '@d-fischer/qs';
 
 import { AccessToken, AccessTokenData } from './API/AccessToken';
-import { BadgesAPI } from './API/Badges/BadgesAPI';
-import { HelixAPIGroup } from './API/Helix/HelixAPIGroup';
+import { BadgesApi } from './API/Badges/BadgesApi';
+import { HelixApiGroup } from './API/Helix/HelixApiGroup';
 import { HelixRateLimiter } from './API/Helix/HelixRateLimiter';
 import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
-import { KrakenAPIGroup } from './API/Kraken/KrakenAPIGroup';
+import { KrakenApiGroup } from './API/Kraken/KrakenApiGroup';
 import { TokenInfo, TokenInfoData } from './API/TokenInfo';
-import { UnsupportedAPI } from './API/Unsupported/UnsupportedAPI';
+import { UnsupportedApi } from './API/Unsupported/UnsupportedApi';
 
 import { AuthProvider, AuthProviderTokenType } from './Auth/AuthProvider';
 import { ClientCredentialsAuthProvider } from './Auth/ClientCredentialsAuthProvider';
@@ -20,7 +21,7 @@ import { RefreshableAuthProvider, RefreshConfig } from './Auth/RefreshableAuthPr
 import { StaticAuthProvider } from './Auth/StaticAuthProvider';
 
 import { ConfigError } from './Errors/ConfigError';
-import { HTTPStatusCodeError } from './Errors/HTTPStatusCodeError';
+import { HttpStatusCodeError } from './Errors/HttpStatusCodeError';
 import { InvalidTokenError } from './Errors/InvalidTokenError';
 
 /**
@@ -78,7 +79,7 @@ export interface TwitchConfig {
 /**
  * The endpoint to call, i.e. /kraken, /helix or a custom (potentially unsupported) endpoint.
  */
-export enum TwitchAPICallType {
+export enum TwitchApiCallType {
 	/**
 	 * Call a Kraken API endpoint.
 	 */
@@ -103,7 +104,7 @@ export enum TwitchAPICallType {
 /**
  * Configuration for a single API call.
  */
-export interface TwitchAPICallOptions {
+export interface TwitchApiCallOptions {
 	/**
 	 * The URL to request.
 	 *
@@ -114,7 +115,7 @@ export interface TwitchAPICallOptions {
 	/**
 	 * The endpoint to call, i.e. /kraken, /helix or a custom (potentially unsupported) endpoint.
 	 */
-	type?: TwitchAPICallType;
+	type?: TwitchApiCallType;
 
 	/**
 	 * The HTTP method to use. Defaults to `'GET'`.
@@ -161,8 +162,8 @@ export interface TwitchAPICallOptions {
 /**
  * @private
  */
-export interface TwitchAPICallOptionsInternal {
-	options: TwitchAPICallOptions;
+export interface TwitchApiCallOptionsInternal {
+	options: TwitchApiCallOptions;
 	clientId?: string;
 	accessToken?: string;
 }
@@ -243,10 +244,17 @@ export class TwitchClient {
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	static async callAPI<T = any>(options: TwitchAPICallOptions, clientId?: string, accessToken?: string): Promise<T> {
-		const response = await this._callAPIRaw(options, clientId, accessToken);
+	static async callApi<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
+		const response = await this._callApiRaw(options, clientId, accessToken);
 
 		return this._transformResponse(response);
+	}
+
+	/** @deprecated Use callApi instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
+	static async callAPI<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
+		deprecate('[twitch] ChatClient.callAPI', 'Use callApi instead.');
+		return this.callApi<T>(options, clientId, accessToken);
 	}
 
 	/**
@@ -259,8 +267,8 @@ export class TwitchClient {
 	 */
 	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string) {
 		return new AccessToken(
-			await this.callAPI<AccessTokenData>({
-				type: TwitchAPICallType.Auth,
+			await this.callApi<AccessTokenData>({
+				type: TwitchApiCallType.Auth,
 				url: 'token',
 				method: 'POST',
 				query: {
@@ -283,8 +291,8 @@ export class TwitchClient {
 	 */
 	static async getAppAccessToken(clientId: string, clientSecret: string) {
 		return new AccessToken(
-			await this.callAPI<AccessTokenData>({
-				type: TwitchAPICallType.Auth,
+			await this.callApi<AccessTokenData>({
+				type: TwitchApiCallType.Auth,
 				url: 'token',
 				method: 'POST',
 				query: {
@@ -305,8 +313,8 @@ export class TwitchClient {
 	 */
 	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string) {
 		return new AccessToken(
-			await this.callAPI<AccessTokenData>({
-				type: TwitchAPICallType.Auth,
+			await this.callApi<AccessTokenData>({
+				type: TwitchApiCallType.Auth,
 				url: 'token',
 				method: 'POST',
 				query: {
@@ -329,14 +337,14 @@ export class TwitchClient {
 	 */
 	static async getTokenInfo(accessToken: string, clientId?: string) {
 		try {
-			const data = await this.callAPI<TokenInfoData>(
-				{ type: TwitchAPICallType.Auth, url: 'validate' },
+			const data = await this.callApi<TokenInfoData>(
+				{ type: TwitchApiCallType.Auth, url: 'validate' },
 				clientId,
 				accessToken
 			);
 			return new TokenInfo(data);
 		} catch (e) {
-			if (e instanceof HTTPStatusCodeError && e.statusCode === 401) {
+			if (e instanceof HttpStatusCodeError && e.statusCode === 401) {
 				throw new InvalidTokenError();
 			}
 			throw e;
@@ -346,17 +354,17 @@ export class TwitchClient {
 	/**
 	 * @private
 	 */
-	static async _callAPIRaw(
-		options: TwitchAPICallOptions,
+	static async _callApiRaw(
+		options: TwitchApiCallOptions,
 		clientId?: string,
 		accessToken?: string
 	): Promise<Response> {
-		const type = options.type === undefined ? TwitchAPICallType.Kraken : options.type;
+		const type = options.type === undefined ? TwitchApiCallType.Kraken : options.type;
 		const url = this._getUrl(options.url, type);
 		const params = stringify(options.query, { arrayFormat: 'repeat' });
 		const headers = new Headers({
 			Accept:
-				type === TwitchAPICallType.Kraken
+				type === TwitchApiCallType.Kraken
 					? `application/vnd.twitchtv.v${options.version || 5}+json`
 					: 'application/json'
 		});
@@ -370,12 +378,12 @@ export class TwitchClient {
 			headers.append('Content-Type', 'application/json');
 		}
 
-		if (clientId && type !== TwitchAPICallType.Auth) {
+		if (clientId && type !== TwitchApiCallType.Auth) {
 			headers.append('Client-ID', clientId);
 		}
 
 		if (accessToken) {
-			headers.append('Authorization', `${type === TwitchAPICallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`);
+			headers.append('Authorization', `${type === TwitchApiCallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`);
 		}
 
 		const requestOptions: RequestInit = {
@@ -422,10 +430,10 @@ export class TwitchClient {
 	 */
 	async getTokenInfo() {
 		try {
-			const data = await this.callAPI<TokenInfoData>({ type: TwitchAPICallType.Auth, url: 'validate' });
+			const data = await this.callApi<TokenInfoData>({ type: TwitchApiCallType.Auth, url: 'validate' });
 			return new TokenInfo(data);
 		} catch (e) {
-			if (e instanceof HTTPStatusCodeError && e.statusCode === 401) {
+			if (e instanceof HttpStatusCodeError && e.statusCode === 401) {
 				throw new InvalidTokenError();
 			}
 			throw e;
@@ -461,27 +469,34 @@ export class TwitchClient {
 	 * @param options The configuration of the call.
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	async callAPI<T = any>(options: TwitchAPICallOptions) {
+	async callApi<T = any>(options: TwitchApiCallOptions) {
 		const { authProvider } = this._config;
 		let accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : undefined);
 		if (!accessToken) {
-			return TwitchClient.callAPI<T>(options, authProvider.clientId);
+			return TwitchClient.callApi<T>(options, authProvider.clientId);
 		}
 
 		if (accessToken.isExpired && authProvider.refresh) {
 			accessToken = await authProvider.refresh();
 		}
 
-		let response = await this._callAPIInternal(options, authProvider.clientId, accessToken.accessToken);
+		let response = await this._callApiInternal(options, authProvider.clientId, accessToken.accessToken);
 		if (response.status === 401 && authProvider.refresh) {
 			await authProvider.refresh();
 			accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : []);
 			if (accessToken) {
-				response = await this._callAPIInternal(options, authProvider.clientId, accessToken.accessToken);
+				response = await this._callApiInternal(options, authProvider.clientId, accessToken.accessToken);
 			}
 		}
 
 		return TwitchClient._transformResponse<T>(response);
+	}
+
+	/** @deprecated Use callApi instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
+	async callAPI<T = any>(options: TwitchApiCallOptions) {
+		deprecate('[twitch] ChatClient#callAPI', 'Use callApi instead.');
+		return this.callApi(options);
 	}
 
 	/**
@@ -496,7 +511,7 @@ export class TwitchClient {
 	 */
 	@CachedGetter()
 	get kraken() {
-		return new KrakenAPIGroup(this);
+		return new KrakenApiGroup(this);
 	}
 
 	/**
@@ -504,7 +519,7 @@ export class TwitchClient {
 	 */
 	@CachedGetter()
 	get helix() {
-		return new HelixAPIGroup(this);
+		return new HelixApiGroup(this);
 	}
 
 	/**
@@ -512,7 +527,7 @@ export class TwitchClient {
 	 */
 	@CachedGetter()
 	get badges() {
-		return new BadgesAPI(this);
+		return new BadgesApi(this);
 	}
 
 	/**
@@ -520,7 +535,7 @@ export class TwitchClient {
 	 */
 	@CachedGetter()
 	get unsupported() {
-		return new UnsupportedAPI(this);
+		return new UnsupportedApi(this);
 	}
 
 	/** @private */
@@ -528,23 +543,23 @@ export class TwitchClient {
 		return this._config.authProvider;
 	}
 
-	private async _callAPIInternal(options: TwitchAPICallOptions, clientId?: string, accessToken?: string) {
-		if (options.type === TwitchAPICallType.Helix) {
+	private async _callApiInternal(options: TwitchApiCallOptions, clientId?: string, accessToken?: string) {
+		if (options.type === TwitchApiCallType.Helix) {
 			return this._helixRateLimiter.request({ options, clientId, accessToken });
 		}
 
-		return TwitchClient._callAPIRaw(options, clientId, accessToken);
+		return TwitchClient._callApiRaw(options, clientId, accessToken);
 	}
 
-	private static _getUrl(url: string, type: TwitchAPICallType) {
+	private static _getUrl(url: string, type: TwitchApiCallType) {
 		switch (type) {
-			case TwitchAPICallType.Kraken:
-			case TwitchAPICallType.Helix:
-				const typeName = type === TwitchAPICallType.Kraken ? 'kraken' : 'helix';
+			case TwitchApiCallType.Kraken:
+			case TwitchApiCallType.Helix:
+				const typeName = type === TwitchApiCallType.Kraken ? 'kraken' : 'helix';
 				return `https://api.twitch.tv/${typeName}/${url.replace(/^\//, '')}`;
-			case TwitchAPICallType.Auth:
+			case TwitchApiCallType.Auth:
 				return `https://id.twitch.tv/oauth2/${url.replace(/^\//, '')}`;
-			case TwitchAPICallType.Custom:
+			case TwitchApiCallType.Custom:
 				return url;
 			default:
 				return url; // wat
@@ -553,7 +568,7 @@ export class TwitchClient {
 
 	private static async _transformResponse<T>(response: Response): Promise<T> {
 		if (!response.ok) {
-			throw new HTTPStatusCodeError(response.status, response.statusText, await response.json());
+			throw new HttpStatusCodeError(response.status, response.statusText, await response.json());
 		}
 
 		if (response.status === 204) {

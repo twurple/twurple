@@ -1,6 +1,6 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { BaseAPI } from '../../BaseAPI';
+import { BaseApi } from '../../BaseApi';
 import { CheermoteList, CheermoteListData } from './CheermoteList';
 
 /**
@@ -15,7 +15,7 @@ import { CheermoteList, CheermoteListData } from './CheermoteList';
  * ```
  */
 @Cacheable
-export class BitsAPI extends BaseAPI {
+export class BitsApi extends BaseApi {
 	/**
 	 * Retrieves global and channel cheermotes.
 	 *
@@ -33,7 +33,7 @@ export class BitsAPI extends BaseAPI {
 			query.include_sponsored = 'true';
 		}
 
-		const data = await this._client.callAPI<CheermoteListData>({ url: 'bits/actions', query });
+		const data = await this._client.callApi<CheermoteListData>({ url: 'bits/actions', query });
 		return new CheermoteList(data.actions, this._client);
 	}
 }

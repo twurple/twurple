@@ -1,6 +1,6 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { BaseAPI } from '../../BaseAPI';
+import { BaseApi } from '../../BaseApi';
 import { Stream, StreamData, StreamDataWrapper, StreamType } from './Stream';
 
 /**
@@ -15,7 +15,7 @@ import { Stream, StreamData, StreamDataWrapper, StreamType } from './Stream';
  * ```
  */
 @Cacheable
-export class StreamAPI extends BaseAPI {
+export class StreamApi extends BaseApi {
 	/**
 	 * Retrieves the current stream on the given channel.
 	 *
@@ -24,7 +24,7 @@ export class StreamAPI extends BaseAPI {
 	@Cached(60)
 	async getStreamByChannel(channel: UserIdResolvable) {
 		const channelId = extractUserId(channel);
-		const data = await this._client.callAPI<StreamDataWrapper>({ url: `streams/${channelId}` });
+		const data = await this._client.callApi<StreamDataWrapper>({ url: `streams/${channelId}` });
 
 		return data.stream ? new Stream(data.stream, this._client) : null;
 	}
@@ -69,7 +69,7 @@ export class StreamAPI extends BaseAPI {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.callAPI<{ streams: StreamData[] }>({ url: 'streams', query });
+		const data = await this._client.callApi<{ streams: StreamData[] }>({ url: 'streams', query });
 
 		return data.streams.map(streamData => new Stream(streamData, this._client));
 	}
@@ -113,7 +113,7 @@ export class StreamAPI extends BaseAPI {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.callAPI<{ streams: StreamData[] }>({
+		const data = await this._client.callApi<{ streams: StreamData[] }>({
 			url: 'streams/followed',
 			query,
 			scope: 'user_read'

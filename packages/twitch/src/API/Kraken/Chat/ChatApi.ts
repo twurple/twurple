@@ -1,6 +1,6 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { BaseAPI } from '../../BaseAPI';
+import { BaseApi } from '../../BaseApi';
 import { ChatEmoteData } from './ChatEmote';
 import { ChatEmoteList } from './ChatEmoteList';
 import { ChatRoom, ChatRoomData } from './ChatRoom';
@@ -17,7 +17,7 @@ import { ChatRoom, ChatRoomData } from './ChatRoom';
  * ```
  */
 @Cacheable
-export class ChatAPI extends BaseAPI {
+export class ChatApi extends BaseApi {
 	/**
 	 * Retrieves a list of emotes for a given list of enote set IDs.
 	 *
@@ -29,7 +29,7 @@ export class ChatAPI extends BaseAPI {
 			emotesets = emotesets.join(',');
 		}
 
-		const data = await this._client.callAPI<{ emoticons: ChatEmoteData[] }>({
+		const data = await this._client.callApi<{ emoticons: ChatEmoteData[] }>({
 			url: 'chat/emoticon_images',
 			query: {
 				emotesets
@@ -46,7 +46,7 @@ export class ChatAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getChatRoomsForChannel(channel: UserIdResolvable) {
-		const data = await this._client.callAPI<{ rooms: ChatRoomData[] }>({
+		const data = await this._client.callApi<{ rooms: ChatRoomData[] }>({
 			url: `chat/${extractUserId(channel)}/rooms`
 		});
 

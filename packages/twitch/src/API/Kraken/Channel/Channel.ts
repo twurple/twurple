@@ -1,5 +1,5 @@
 import { TwitchClient } from '../../../TwitchClient';
-import { ChannelUpdateData } from './ChannelAPI';
+import { ChannelUpdateData } from './ChannelApi';
 import { ChannelPlaceholder, ChannelPlaceholderData } from './ChannelPlaceholder';
 
 /** @private */

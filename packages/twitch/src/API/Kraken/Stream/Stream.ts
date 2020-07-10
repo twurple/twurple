@@ -104,6 +104,12 @@ export class Stream {
 	/**
 	 * The average FPS (frames per second) that are shown on the stream.
 	 */
+	get averageFps() {
+		return this._data.average_fps;
+	}
+
+	/** @deprecated Use averageFps instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	get averageFPS() {
 		return this._data.average_fps;
 	}

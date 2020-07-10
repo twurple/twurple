@@ -1901,7 +1901,7 @@ export class ChatClient extends IRCClient {
 	 * @param channel The channel to give the user VIP status in.
 	 * @param user The user to give VIP status.
 	 */
-	async addVIP(channel: string, user: string) {
+	async addVip(channel: string, user: string) {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1919,13 +1919,20 @@ export class ChatClient extends IRCClient {
 		});
 	}
 
+	/** @deprecated Use addVip instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	async addVIP(channel: string, user: string) {
+		deprecate('[twitch-chat-client] ChatClient#addVIP', 'Use `addVip` instead.');
+		return this.addVip(channel, user);
+	}
+
 	/**
 	 * Takes VIP status from a user in a channel.
 	 *
 	 * @param channel The channel to remove the user's VIP status in.
 	 * @param user The user to take VIP status from.
 	 */
-	async removeVIP(channel: string, user: string) {
+	async removeVip(channel: string, user: string) {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1943,12 +1950,19 @@ export class ChatClient extends IRCClient {
 		});
 	}
 
+	/** @deprecated Use removeVip instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	async removeVIP(channel: string, user: string) {
+		deprecate('[twitch-chat-client] ChatClient#removeVIP', 'Use `removeVip` instead.');
+		return this.removeVip(channel, user);
+	}
+
 	/**
 	 * Retrieves a list of VIPs in a channel.
 	 *
 	 * @param channel The channel to retrieve the VIPs of.
 	 */
-	async getVIPs(channel: string) {
+	async getVips(channel: string) {
 		channel = toUserName(channel);
 		return new Promise<string[]>(resolve => {
 			const e = this._onVipsResult((_channel, vips) => {
@@ -1959,6 +1973,13 @@ export class ChatClient extends IRCClient {
 			});
 			this.say(channel, '/vips');
 		});
+	}
+
+	/** @deprecated Use getVips instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	async getVIPs(channel: string) {
+		deprecate('[twitch-chat-client] ChatClient#getVIPs', 'Use `getVips` instead.');
+		return this.getVips(channel);
 	}
 
 	/**

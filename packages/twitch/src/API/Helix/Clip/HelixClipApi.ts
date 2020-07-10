@@ -1,5 +1,5 @@
-import { TwitchAPICallType } from '../../../TwitchClient';
-import { BaseAPI } from '../../BaseAPI';
+import { TwitchApiCallType } from '../../../TwitchClient';
+import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import { HelixPaginatedResponse } from '../HelixResponse';
@@ -64,7 +64,7 @@ export interface HelixClipCreateResponse {
  * const clipId = await client.helix.clips.createClip({ channelId: '125328655' });
  * ```
  */
-export class HelixClipAPI extends BaseAPI {
+export class HelixClipApi extends BaseApi {
 	/**
 	 * Retrieves the latest clips for the specified broadcaster.
 	 *
@@ -162,8 +162,8 @@ export class HelixClipAPI extends BaseAPI {
 	 */
 	async createClip(params: HelixClipCreateParams) {
 		const { channelId, createAfterDelay = false } = params;
-		const result = await this._client.callAPI<{ data: [HelixClipCreateResponse] }>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<{ data: [HelixClipCreateResponse] }>({
+			type: TwitchApiCallType.Helix,
 			url: 'clips',
 			method: 'POST',
 			scope: 'clips:edit',
@@ -179,8 +179,8 @@ export class HelixClipAPI extends BaseAPI {
 	private async _getClips(params: HelixClipIdFilter) {
 		const { filterType, ids, startDate, endDate, limit = 20 } = params;
 
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixClipData>>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixClipData>>({
+			type: TwitchApiCallType.Helix,
 			url: 'clips',
 			query: {
 				[filterType]: ids,

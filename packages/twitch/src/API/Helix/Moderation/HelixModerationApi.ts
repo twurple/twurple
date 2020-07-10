@@ -1,6 +1,6 @@
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchAPICallType } from '../../../TwitchClient';
-import { BaseAPI } from '../../BaseAPI';
+import { TwitchApiCallType } from '../../../TwitchClient';
+import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import { HelixForwardPagination, makePaginationQuery } from '../HelixPagination';
@@ -41,7 +41,7 @@ interface HelixModeratorFilter extends HelixForwardPagination {
  * const game = await client.helix.moderation.getBannedUsers('61369223');
  * ```
  */
-export class HelixModerationAPI extends BaseAPI {
+export class HelixModerationApi extends BaseApi {
 	/**
 	 * Retrieves a list of banned users in a given channel.
 	 *
@@ -49,8 +49,8 @@ export class HelixModerationAPI extends BaseAPI {
 	 * @param filter Additional filters for the result set.
 	 */
 	async getBannedUsers(channel: UserIdResolvable, filter?: HelixBanFilter) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixBanData>>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixBanData>>({
+			type: TwitchApiCallType.Helix,
 			url: 'moderation/banned',
 			scope: 'moderation:read',
 			query: {
@@ -102,8 +102,8 @@ export class HelixModerationAPI extends BaseAPI {
 	 * @param filter Additional filters for the result set.
 	 */
 	async getBanEvents(channel: UserIdResolvable, filter?: HelixBanFilter) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixBanEventData>>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixBanEventData>>({
+			type: TwitchApiCallType.Helix,
 			url: 'moderation/banned/events',
 			scope: 'moderation:read',
 			query: {
@@ -145,8 +145,8 @@ export class HelixModerationAPI extends BaseAPI {
 	 * @param filter Additional filters for the result set.
 	 */
 	async getModerators(channel: UserIdResolvable, filter?: HelixModeratorFilter) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixModeratorData>>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixModeratorData>>({
+			type: TwitchApiCallType.Helix,
 			url: 'moderation/moderators',
 			scope: 'moderation:read',
 			query: {
@@ -198,8 +198,8 @@ export class HelixModerationAPI extends BaseAPI {
 	 * @param filter Additional filters for the result set.
 	 */
 	async getModeratorEvents(channel: UserIdResolvable, filter?: HelixModeratorFilter) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixModeratorEventData>>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixModeratorEventData>>({
+			type: TwitchApiCallType.Helix,
 			url: 'moderation/moderators/events',
 			scope: 'moderation:read',
 			query: {

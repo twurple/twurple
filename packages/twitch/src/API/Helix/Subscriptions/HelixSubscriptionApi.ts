@@ -1,6 +1,6 @@
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchAPICallType } from '../../../TwitchClient';
-import { BaseAPI } from '../../BaseAPI';
+import { TwitchApiCallType } from '../../../TwitchClient';
+import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
@@ -18,17 +18,17 @@ import { HelixSubscriptionEvent, HelixSubscriptionEventData } from './HelixSubsc
  * const subscriptions = await client.helix.subscriptions.getSubscriptionsForUsers('61369223', '125328655');
  * ```
  */
-export class HelixSubscriptionAPI extends BaseAPI {
+export class HelixSubscriptionApi extends BaseApi {
 	/**
 	 * Retrieves a list of all subscriptions to a given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 */
 	async getSubscriptions(broadcaster: UserIdResolvable) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixSubscriptionData>>({
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
-			type: TwitchAPICallType.Helix,
+			type: TwitchApiCallType.Helix,
 			query: {
 				broadcaster_id: extractUserId(broadcaster)
 			}
@@ -63,10 +63,10 @@ export class HelixSubscriptionAPI extends BaseAPI {
 	 * @param users The users that should be checked for subscriptions.
 	 */
 	async getSubscriptionsForUsers(broadcaster: UserIdResolvable, users: UserIdResolvable[]) {
-		const result = await this._client.callAPI<HelixResponse<HelixSubscriptionData>>({
+		const result = await this._client.callApi<HelixResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
-			type: TwitchAPICallType.Helix,
+			type: TwitchApiCallType.Helix,
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
 				user_id: users.map(extractUserId)
@@ -125,8 +125,8 @@ export class HelixSubscriptionAPI extends BaseAPI {
 	}
 
 	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixSubscriptionEventData>>({
-			type: TwitchAPICallType.Helix,
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionEventData>>({
+			type: TwitchApiCallType.Helix,
 			url: 'subscriptions/events',
 			scope: 'channel:read:subscriptions',
 			query: {

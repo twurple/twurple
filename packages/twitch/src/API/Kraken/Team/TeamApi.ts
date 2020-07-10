@@ -1,5 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import { BaseAPI } from '../../BaseAPI';
+import { BaseApi } from '../../BaseApi';
 import { Team, TeamData } from './Team';
 import { TeamWithUsers } from './TeamWithUsers';
 
@@ -15,7 +15,7 @@ import { TeamWithUsers } from './TeamWithUsers';
  * ```
  */
 @Cacheable
-export class TeamAPI extends BaseAPI {
+export class TeamApi extends BaseApi {
 	/**
 	 * Get a list of teams.
 	 *
@@ -32,7 +32,7 @@ export class TeamAPI extends BaseAPI {
 
 		query.limit = limit.toString();
 
-		const data = await this._client.callAPI({
+		const data = await this._client.callApi({
 			url: 'teams',
 			query
 		});
@@ -47,7 +47,7 @@ export class TeamAPI extends BaseAPI {
 	 */
 	@Cached(3600)
 	async getTeamByName(team: string): Promise<TeamWithUsers> {
-		const teamData = await this._client.callAPI({ url: `teams/${team}` });
+		const teamData = await this._client.callApi({ url: `teams/${team}` });
 		return new TeamWithUsers(teamData, this._client);
 	}
 }

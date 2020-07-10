@@ -2,19 +2,25 @@
 import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { TwitchClient } from './TwitchClient';
-/** @deprecated Please use the named export `TwitchClient` instead */
-const DeprecatedTwitchClient = deprecateClass(TwitchClient, 'Please use the named export `TwitchClient` instead');
-/** @deprecated Please use the named export `TwitchClient` instead */
+/** @deprecated Use the named export `TwitchClient` instead. */
+const DeprecatedTwitchClient = deprecateClass(TwitchClient, 'Use the named export `TwitchClient` instead.');
+/** @deprecated Use the named export `TwitchClient` instead. */
 type DeprecatedTwitchClient = TwitchClient;
-/** @deprecated Please use the named export `TwitchClient` instead */
+/** @deprecated Use the named export `TwitchClient` instead. */
 export default DeprecatedTwitchClient;
 export { TwitchClient };
 
-export { TwitchAPICallType, TwitchAPICallOptions } from './TwitchClient';
+export { TwitchApiCallType, TwitchApiCallOptions } from './TwitchClient';
+/** @deprecated Import `TwitchApiCallType` instead. */
+export { TwitchApiCallType as TwitchAPICallType } from './TwitchClient';
+/** @deprecated Import `TwitchApiCallOptions` instead. */
+export { TwitchApiCallOptions as TwitchAPICallOptions } from './TwitchClient';
 
 export { ConfigError } from './Errors/ConfigError';
 export { HellFreezesOverError } from './Errors/HellFreezesOverError';
-export { HTTPStatusCodeError } from './Errors/HTTPStatusCodeError';
+export { HttpStatusCodeError } from './Errors/HttpStatusCodeError';
+/** @deprecated Import `HttpStatusCodeError` instead. */
+export { HttpStatusCodeError as HTTPStatusCodeError } from './Errors/HttpStatusCodeError';
 export { InvalidTokenError } from './Errors/InvalidTokenError';
 export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
 export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
@@ -43,7 +49,7 @@ export { ChannelPlaceholder } from './API/Kraken/Channel/ChannelPlaceholder';
 export { ChannelSubscription } from './API/Kraken/Channel/ChannelSubscription';
 export { EmoteSetList } from './API/Kraken/Channel/EmoteSetList';
 export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
-export { CommercialLength } from './API/Kraken/Channel/ChannelAPI';
+export { CommercialLength } from './API/Kraken/Channel/ChannelApi';
 
 export { Stream, StreamType } from './API/Kraken/Stream/Stream';
 

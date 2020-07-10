@@ -1,9 +1,9 @@
 import { flatten } from '@d-fischer/shared-utils';
-import { HTTPStatusCodeError } from '../../../Errors/HTTPStatusCodeError';
+import { HttpStatusCodeError } from '../../../Errors/HttpStatusCodeError';
 import { StreamNotLiveError } from '../../../Errors/StreamNotLiveError';
 import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
-import { TwitchAPICallType, TwitchClient } from '../../../TwitchClient';
-import { BaseAPI } from '../../BaseAPI';
+import { TwitchApiCallType, TwitchClient } from '../../../TwitchClient';
+import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult, HelixPaginatedResult } from '../HelixPaginatedResult';
 import { HelixPagination, makePaginationQuery } from '../HelixPagination';
@@ -76,16 +76,16 @@ interface HelixStreamGetMarkersResult {
  * const stream = await client.helix.streams.getStreamByUserId('125328655');
  * ```
  */
-export class HelixStreamAPI extends BaseAPI {
+export class HelixStreamApi extends BaseApi {
 	/**
 	 * Retrieves a list of streams.
 	 *
 	 * @expandParams
 	 */
 	async getStreams(filter: HelixPaginatedStreamFilter = {}) {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamData>>({
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamData>>({
 			url: 'streams',
-			type: TwitchAPICallType.Helix,
+			type: TwitchApiCallType.Helix,
 			query: {
 				...makePaginationQuery(filter),
 				community_id: filter.community,
@@ -188,10 +188,10 @@ export class HelixStreamAPI extends BaseAPI {
 	 */
 	async createStreamMarker(userId: string, description?: string) {
 		try {
-			const result = await this._client.callAPI<HelixResponse<HelixStreamMarkerData>>({
+			const result = await this._client.callApi<HelixResponse<HelixStreamMarkerData>>({
 				url: 'streams/markers',
 				method: 'POST',
-				type: TwitchAPICallType.Helix,
+				type: TwitchApiCallType.Helix,
 				scope: 'user:edit:broadcast',
 				query: {
 					user_id: userId,
@@ -201,7 +201,7 @@ export class HelixStreamAPI extends BaseAPI {
 
 			return new HelixStreamMarker(result.data[0], this._client);
 		} catch (e) {
-			if (e instanceof HTTPStatusCodeError && e.statusCode === 404) {
+			if (e instanceof HttpStatusCodeError && e.statusCode === 404) {
 				throw new StreamNotLiveError();
 			}
 
@@ -213,9 +213,9 @@ export class HelixStreamAPI extends BaseAPI {
 		queryType: string,
 		id: string
 	): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
-		const result = await this._client.callAPI<HelixPaginatedResponse<HelixStreamGetMarkersResult>>({
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamGetMarkersResult>>({
 			url: 'streams/markers',
-			type: TwitchAPICallType.Helix,
+			type: TwitchApiCallType.Helix,
 			query: {
 				[queryType]: id
 			},
@@ -223,7 +223,7 @@ export class HelixStreamAPI extends BaseAPI {
 		});
 
 		return {
-			data: flatten(result.data.map(HelixStreamAPI._mapGetStreamMarkersResult.bind(this._client))),
+			data: flatten(result.data.map(HelixStreamApi._mapGetStreamMarkersResult.bind(this._client))),
 			cursor: result.pagination && result.pagination.cursor
 		};
 	}
@@ -238,7 +238,7 @@ export class HelixStreamAPI extends BaseAPI {
 				scope: 'user:read:broadcast'
 			},
 			this._client,
-			HelixStreamAPI._mapGetStreamMarkersResult.bind(this._client)
+			HelixStreamApi._mapGetStreamMarkersResult.bind(this._client)
 		);
 	}
 

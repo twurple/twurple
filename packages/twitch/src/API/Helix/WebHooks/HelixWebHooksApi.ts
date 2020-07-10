@@ -1,6 +1,6 @@
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
-import { TwitchAPICallType } from '../../../TwitchClient';
-import { BaseAPI } from '../../BaseAPI';
+import { TwitchApiCallType } from '../../../TwitchClient';
+import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import { HelixWebHookSubscription, HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
 
@@ -68,7 +68,7 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  * const accepted = await client.helix.webHooks.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
-export class HelixWebHooksAPI extends BaseAPI {
+export class HelixWebHooksApi extends BaseApi {
 	/**
 	 * Retrieves the current WebHook subscriptions for the current client.
 	 *
@@ -91,9 +91,9 @@ export class HelixWebHooksAPI extends BaseAPI {
 	 */
 	async sendHubRequest(options: HelixWebHookHubRequest) {
 		const { mode, callbackUrl, topicUrl, validityInSeconds = 3600, secret, scope } = options;
-		await this._client.callAPI({
+		await this._client.callApi({
 			url: 'webhooks/hub',
-			type: TwitchAPICallType.Helix,
+			type: TwitchApiCallType.Helix,
 			method: 'POST',
 			scope,
 			jsonBody: {
