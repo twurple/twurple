@@ -1,6 +1,6 @@
 import generateRandomString from '@d-fischer/randomstring';
 import * as crypto from 'crypto';
-import { HelixWebHookHubRequestOptions } from 'twitch/lib/API/Helix/WebHooks/HelixWebHooksAPI';
+import { HelixWebHookHubRequestOptions } from 'twitch';
 import { WebHookListener } from '../WebHookListener';
 
 /**

@@ -79,6 +79,9 @@ export { HelixBanEvent } from './API/Helix/Moderation/HelixBanEvent';
 export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
 export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
 
+export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
+export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+
 export { HelixStream, HelixStreamType } from './API/Helix/Stream/HelixStream';
 
 export { HelixFollow } from './API/Helix/User/HelixFollow';
@@ -87,8 +90,7 @@ export { HelixBroadcasterType, HelixUser, HelixUserType } from './API/Helix/User
 
 export { HelixVideo } from './API/Helix/Video/HelixVideo';
 
-export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
-export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+export { HelixWebHookHubRequestOptions } from './API/Helix/WebHooks/HelixWebHooksApi';
 
 export { ChatBadgeList } from './API/Badges/ChatBadgeList';
 export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
