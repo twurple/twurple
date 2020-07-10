@@ -96,7 +96,7 @@ export class PubSubRedemptionMessage {
 	/**
 	 * Retrieves more data about the user.
 	 *
-	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getUser() {
 		return this._apiClient.helix.users.getUserById(this._data.data.redemption.user.id);
@@ -112,7 +112,7 @@ export class PubSubRedemptionMessage {
 	/**
 	 * Retrieves more data about the channel where the reward was redeemed.
 	 *
-	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getChannel() {
 		return this._apiClient.helix.users.getUserById(this._data.data.redemption.channel_id);

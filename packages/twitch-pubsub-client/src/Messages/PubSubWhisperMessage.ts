@@ -80,7 +80,7 @@ export class PubSubWhisperMessage {
 	/**
 	 * Retrieves more data about the user who sent the whisper.
 	 *
-	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getSender() {
 		return this._apiClient.helix.users.getUserById(this._data.data_object.from_id.toString());

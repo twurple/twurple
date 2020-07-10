@@ -11,7 +11,7 @@ import { ChannelSubscription, ChannelSubscriptionData, ChannelSubscriptionsRespo
 import { PrivilegedChannel, PrivilegedChannelData } from './PrivilegedChannel';
 
 /**
- * Channel data to update using {@ChannelAPI#updateChannel}.
+ * Channel data to update using {@ChannelApi#updateChannel}.
  */
 export interface ChannelUpdateData {
 	/**
@@ -177,7 +177,7 @@ export class ChannelApi extends BaseApi {
 	 * Throws if the channel doesn't have a subscription program or the user is not subscribed to it.
 	 *
 	 * This method requires access to the channel. If you only have access to the user,
-	 * use {@UserAPI#getSubscriptionData} instead.
+	 * use {@UserApi#getSubscriptionData} instead.
 	 *
 	 * @param channel The channel to check the subscription to.
 	 * @param byUser The user to check the subscription for.

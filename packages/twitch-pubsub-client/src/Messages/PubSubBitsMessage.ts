@@ -52,7 +52,7 @@ export class PubSubBitsMessage {
 	/**
 	 * Retrieves more data about the user.
 	 *
-	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getUser() {
 		return this._data.data.user_id ? this._apiClient.helix.users.getUserById(this._data.data.user_id) : null;

@@ -386,12 +386,14 @@ export class ApiClient implements AuthProvider {
 	/**
 	 * Makes a call to the Twitch API using your access token.
 	 *
+	 * @deprecated Use callApi instead.
+	 *
 	 * @param options The configuration of the call.
 	 */
 	// eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
 	async callAPI<T = any>(options: TwitchApiCallOptions) {
 		deprecate('[twitch] ChatClient#callAPI', 'Use callApi instead.');
-		return this.callApi(options);
+		return this.callApi<T>(options);
 	}
 
 	/**

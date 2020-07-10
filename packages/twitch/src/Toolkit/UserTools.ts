@@ -7,7 +7,7 @@ import { User } from '../API/Kraken/User/User';
  * A user ID or a user or channel object.
  *
  * This is not a user name.
- * Please use {@HelixUserAPI#getUserByName} to fetch a user object by name.
+ * Please use {@HelixUserApi#getUserByName} to fetch a user object by name.
  */
 export type UserIdResolvable = string | number | User | ChannelPlaceholder | HelixUser;
 

@@ -2,7 +2,7 @@ import { CustomError } from './CustomError';
 
 /**
  * Thrown whenever you try accessing a subscription-related resource
- * (for example {@ChannelAPI#getChannelSubscriptions})
+ * (for example {@ChannelApi#getChannelSubscriptions})
  * and the given channel does not have a subscription program.
  */
 export class NoSubscriptionProgramError extends CustomError {

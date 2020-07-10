@@ -38,7 +38,7 @@ export class PubSubChatModActionMessage {
 	/**
 	 * Retrieves more data about the channel where the action was performed.
 	 *
-	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getChannel() {
 		return this._apiClient.helix.users.getUserById(this._channelId);
@@ -82,7 +82,7 @@ export class PubSubChatModActionMessage {
 	/**
 	 * Retrieves more data about the user that performed the action.
 	 *
-	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getUser() {
 		return this._apiClient.helix.users.getUserById(this._data.data.created_by_user_id);

@@ -16,7 +16,7 @@ export enum UserLookupType {
 }
 
 /**
- * User data to update using {@HelixUserAPI#updateUser}.
+ * User data to update using {@HelixUserApi#updateUser}.
  */
 export interface HelixUserUpdate {
 	description?: string;

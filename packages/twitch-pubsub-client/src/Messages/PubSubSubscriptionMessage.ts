@@ -166,7 +166,7 @@ export class PubSubSubscriptionMessage {
 	/**
 	 * Retrieves more data about the subscribing user.
 	 *
-	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getUser() {
 		return this._apiClient.helix.users.getUserById(this.userId);
@@ -177,7 +177,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns null if the subscription is not a gift.
 	 *
-	 * @deprecated Use {@HelixUserAPI#getUserById} instead.
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getGifter() {
 		if (!this.isGift) {
