@@ -1,6 +1,6 @@
 export { AccessToken } from './AccessToken';
 
-export { exchangeCode, getAppToken, getTokenInfo, refreshUserToken } from './helpers';
+export { exchangeCode, getAppToken, getTokenInfo, refreshUserToken, revokeToken } from './helpers';
 
 export { TokenInfo, TokenInfoData } from './TokenInfo';
 

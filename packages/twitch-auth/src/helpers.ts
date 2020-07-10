@@ -74,6 +74,24 @@ export async function refreshUserToken(clientId: string, clientSecret: string, r
 }
 
 /**
+ * Revokes an access token.
+ *
+ * @param clientId The client ID of your application.
+ * @param accessToken The access token.
+ */
+export async function revokeToken(clientId: string, accessToken: string) {
+	await callTwitchApi({
+		type: TwitchApiCallType.Auth,
+		url: 'revoke',
+		method: 'POST',
+		query: {
+			client_id: clientId,
+			token: accessToken
+		}
+	});
+}
+
+/**
  * Retrieves information about an access token.
  *
  * @param clientId The client ID of your application.
