@@ -756,7 +756,7 @@ export class ChatClient extends IRCClient {
 						channel,
 						match[1],
 						Boolean(match[2]),
-						match[3] === '' ? undefined : Number(match[3])
+						match[3] ? Number(match[3]) : undefined
 					);
 				}
 			}
