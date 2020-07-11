@@ -194,8 +194,8 @@ export class VideoApi extends BaseApi {
 			auth: false,
 			query: {
 				upload_token: token
-			},
-		})
+			}
+		});
 	}
 
 	/**
