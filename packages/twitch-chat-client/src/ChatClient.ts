@@ -760,7 +760,10 @@ export class ChatClient extends IrcClient {
 		});
 
 		this.onTypedMessage(TwitchPrivateMessage, msg => {
-			const { prefix, params: { target: channel, message } } = msg;
+			const {
+				prefix,
+				params: { target: channel, message }
+			} = msg;
 			if (prefix?.nick === 'jtv') {
 				// 1 = who hosted
 				// 2 = auto-host or not
