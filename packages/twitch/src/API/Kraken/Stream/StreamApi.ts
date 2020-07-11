@@ -47,27 +47,14 @@ export class StreamApi extends BaseApi {
 		page?: number,
 		limit: number = 25
 	) {
-		const query: Record<string, string> = { limit: limit.toString() };
-
-		if (channels) {
-			query.channel = typeof channels === 'string' ? channels : channels.join(',');
-		}
-
-		if (game) {
-			query.game = game;
-		}
-
-		if (languageCode) {
-			query.language = languageCode;
-		}
-
-		if (type) {
-			query.stream_type = type;
-		}
-
-		if (page) {
-			query.offset = ((page - 1) * limit).toString();
-		}
+		const query: Record<string, string | undefined> = {
+			limit: limit.toString(),
+			channel: channels ? (typeof channels === 'string' ? channels : channels.join(',')) : undefined,
+			game,
+			language: languageCode,
+			stream_type: type,
+			offset: page ? ((page - 1) * limit).toString() : undefined
+		};
 
 		const data = await this._client.callApi<{ streams: StreamData[] }>({ url: 'streams', query });
 

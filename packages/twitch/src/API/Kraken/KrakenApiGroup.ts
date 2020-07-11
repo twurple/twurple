@@ -7,6 +7,7 @@ import { SearchApi } from './Search/SearchApi';
 import { StreamApi } from './Stream/StreamApi';
 import { TeamApi } from './Team/TeamApi';
 import { UserApi } from './User/UserApi';
+import { VideoApi } from './Video/VideoApi';
 
 /**
  * Groups all API calls available in Kraken v5.
@@ -56,18 +57,26 @@ export class KrakenApiGroup extends BaseApi {
 	}
 
 	/**
-	 * The API methods that deal with users.
-	 */
-	@CachedGetter()
-	get users() {
-		return new UserApi(this._client);
-	}
-
-	/**
 	 * The API methods that deal with teams.
 	 */
 	@CachedGetter()
 	get teams() {
 		return new TeamApi(this._client);
+	}
+
+	/**
+	 * The API methods that deal with videos.
+	 */
+	@CachedGetter()
+	get videos() {
+		return new VideoApi(this._client);
+	}
+
+	/**
+	 * The API methods that deal with users.
+	 */
+	@CachedGetter()
+	get users() {
+		return new UserApi(this._client);
 	}
 }

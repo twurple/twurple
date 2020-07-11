@@ -7,12 +7,12 @@ const memberNames = [
 	'^user_login$',
 	'^client_secret$',
 	'^redirect_uri$',
-	'^(access|refresh|auth)_token$',
+	'^(access|refresh|auth|upload)_token$',
 	'^has_delay$',
 	'^include_sponsored$',
 	'^stream_(key|type)$',
 	'^broadcaster_(language|type)$',
-	'^(grant|response)_type$',
+	'^(broadcast|grant|response)_type$',
 	'^force_verify$',
 	'^expires_in$',
 	'^badge_sets$',
@@ -55,6 +55,9 @@ const memberNames = [
 	'^data_object$',
 	'^video_height$',
 	'^average_fps$',
+	'^description_html$',
+	'^muted_segments$',
+	'^tag_list$',
 	// HTTP
 	'^Accept$'
 ];

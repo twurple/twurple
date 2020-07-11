@@ -359,7 +359,10 @@ export class ApiClient implements AuthProvider {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async callApi<T = any>(options: TwitchApiCallOptions) {
 		const { authProvider } = this._config;
-		let accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : undefined);
+		const shouldAuth = options?.auth ?? true;
+		let accessToken = shouldAuth
+			? await authProvider.getAccessToken(options.scope ? [options.scope] : undefined)
+			: null;
 		if (!accessToken) {
 			return callTwitchApi<T>(options, authProvider.clientId);
 		}

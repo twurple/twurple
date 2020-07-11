@@ -79,4 +79,9 @@ export interface TwitchApiCallOptions {
 	 * Internally, only v5 and Helix are used.
 	 */
 	version?: number;
+
+	/**
+	 * Whether OAuth credentials should be generated and sent with the request. Defaults to `true`.
+	 */
+	auth?: boolean;
 }
