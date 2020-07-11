@@ -715,6 +715,26 @@ export class ChatClient extends IrcClient {
 			this._authFailureMessage = undefined;
 		});
 
+		this.onPrivmsg((channel, user, message, msg) => {
+			if (user === 'jtv') {
+				// 1 = who hosted
+				// 2 = auto-host or not
+				// 3 = how many viewers (not always present)
+				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
+				if (match) {
+					this.emit(
+						this.onHosted,
+						channel,
+						match[1],
+						Boolean(match[2]),
+						match[3] ? Number(match[3]) : undefined
+					);
+				}
+			} else {
+				this.emit(this.onMessage, channel, user, message, msg);
+			}
+		});
+
 		this.onTypedMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
 				const duration = tags.get('ban-duration');
@@ -757,30 +777,6 @@ export class ChatClient extends IrcClient {
 
 		this.onTypedMessage(MessageTypes.Commands.ChannelPart, ({ prefix, params: { channel } }) => {
 			this.emit(this.onPart, channel, prefix!.nick);
-		});
-
-		this.onTypedMessage(TwitchPrivateMessage, msg => {
-			const {
-				prefix,
-				params: { target: channel, message }
-			} = msg;
-			if (prefix?.nick === 'jtv') {
-				// 1 = who hosted
-				// 2 = auto-host or not
-				// 3 = how many viewers (not always present)
-				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
-				if (match) {
-					this.emit(
-						this.onHosted,
-						channel,
-						match[1],
-						Boolean(match[2]),
-						match[3] ? Number(match[3]) : undefined
-					);
-				}
-			} else {
-				this.emit(this.onMessage, channel, prefix!.nick, message, msg);
-			}
 		});
 
 		this.onTypedMessage(RoomState, ({ params: { channel }, tags }) => {
