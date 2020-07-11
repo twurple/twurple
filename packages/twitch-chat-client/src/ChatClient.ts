@@ -2,7 +2,7 @@ import deprecate from '@d-fischer/deprecate';
 import { Logger, LoggerOptions, LogLevel } from '@d-fischer/logger';
 import { Enumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { Listener } from '@d-fischer/typed-event-emitter';
-import { IRCClient, MessageTypes } from 'ircv3';
+import { IrcClient, MessageTypes } from 'ircv3';
 import { CommercialLength, InvalidTokenError, InvalidTokenTypeError } from 'twitch';
 import { AuthProvider, getTokenInfo } from 'twitch-auth';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
@@ -100,7 +100,7 @@ export interface ChatClientOptions {
  * @inheritDoc
  * @hideProtected
  */
-export class ChatClient extends IRCClient {
+export class ChatClient extends IrcClient {
 	private static readonly HOST_MESSAGE_REGEX = /(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
 	/** @private */
@@ -512,9 +512,24 @@ export class ChatClient extends IRCClient {
 	 */
 	onMessageFailed: (handler: (channel: string, reason: string) => void) => Listener = this.registerEvent();
 
+	/**
+	 * Fires when a user sends a message to a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel the message was sent to.
+	 * @param user The user that send the message.
+	 * @param message The message text.
+	 * @param msg The raw message that was received.
+	 */
+	onMessage!: (
+		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
+	) => Listener;
+
 	// override for specific class
 	/**
 	 * Fires when a user sends a message to a channel.
+	 *
+	 * @deprecated Use `onMessage` instead.
 	 *
 	 * @eventListener
 	 * @param channel The channel the message was sent to.
@@ -700,7 +715,7 @@ export class ChatClient extends IRCClient {
 			this._authFailureMessage = undefined;
 		});
 
-		this.onMessage(ClearChat, ({ params: { channel, user }, tags }) => {
+		this.onTypedMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
 				const duration = tags.get('ban-duration');
 				if (duration === undefined) {
@@ -717,7 +732,7 @@ export class ChatClient extends IRCClient {
 			}
 		});
 
-		this.onMessage(ClearMsg, msg => {
+		this.onTypedMessage(ClearMsg, msg => {
 			const {
 				params: { channel },
 				targetMessageId
@@ -725,7 +740,7 @@ export class ChatClient extends IRCClient {
 			this.emit(this.onMessageRemove, channel, targetMessageId, msg);
 		});
 
-		this.onMessage(HostTarget, ({ params: { channel, targetAndViewers } }) => {
+		this.onTypedMessage(HostTarget, ({ params: { channel, targetAndViewers } }) => {
 			const [target, viewers] = targetAndViewers.split(' ');
 			if (target === '-') {
 				// unhost
@@ -736,16 +751,17 @@ export class ChatClient extends IRCClient {
 			}
 		});
 
-		this.onMessage(MessageTypes.Commands.ChannelJoin, ({ prefix, params: { channel } }) => {
+		this.onTypedMessage(MessageTypes.Commands.ChannelJoin, ({ prefix, params: { channel } }) => {
 			this.emit(this.onJoin, channel, prefix!.nick);
 		});
 
-		this.onMessage(MessageTypes.Commands.ChannelPart, ({ prefix, params: { channel } }) => {
+		this.onTypedMessage(MessageTypes.Commands.ChannelPart, ({ prefix, params: { channel } }) => {
 			this.emit(this.onPart, channel, prefix!.nick);
 		});
 
-		this.onMessage(TwitchPrivateMessage, ({ prefix, params: { target: channel, message } }) => {
-			if (prefix && prefix.nick === 'jtv') {
+		this.onTypedMessage(TwitchPrivateMessage, msg => {
+			const { prefix, params: { target: channel, message } } = msg;
+			if (prefix?.nick === 'jtv') {
 				// 1 = who hosted
 				// 2 = auto-host or not
 				// 3 = how many viewers (not always present)
@@ -759,10 +775,12 @@ export class ChatClient extends IRCClient {
 						match[3] ? Number(match[3]) : undefined
 					);
 				}
+			} else {
+				this.emit(this.onMessage, channel, prefix!.nick, message, msg);
 			}
 		});
 
-		this.onMessage(RoomState, ({ params: { channel }, tags }) => {
+		this.onTypedMessage(RoomState, ({ params: { channel }, tags }) => {
 			let isInitial = false;
 			if (tags.has('subs-only') && tags.has('slow')) {
 				// this is the full state - so we just successfully joined
@@ -801,7 +819,7 @@ export class ChatClient extends IRCClient {
 			}
 		});
 
-		this.onMessage(UserNotice, userNotice => {
+		this.onTypedMessage(UserNotice, userNotice => {
 			const {
 				params: { channel, message },
 				tags
@@ -982,11 +1000,11 @@ export class ChatClient extends IRCClient {
 			}
 		});
 
-		this.onMessage(Whisper, whisper => {
+		this.onTypedMessage(Whisper, whisper => {
 			this.emit(this.onWhisper, whisper.prefix!.nick, whisper.params.message, whisper);
 		});
 
-		this.onMessage(MessageTypes.Commands.Notice, ({ params: { target: channel, message }, tags }) => {
+		this.onTypedMessage(MessageTypes.Commands.Notice, ({ params: { target: channel, message }, tags }) => {
 			const messageType = tags.get('msg-id');
 
 			// this event handler involves a lot of parsing strings you shouldn't parse...
