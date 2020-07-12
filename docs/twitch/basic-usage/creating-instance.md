@@ -35,7 +35,7 @@ const apiClient = new ApiClient({ authProvider });
 
 There's a more elaborated example on how to make auto refreshing work in the [twitch-chat-client documentation](/twitch-chat-client/docs/examples/basic-bot).
 
-If you don't need any client scopes, you may also create the client using client credentials:
+If you don't need any user scopes, you may also create the client using client credentials:
 
 ```typescript
 import { ApiClient } from 'twitch';
