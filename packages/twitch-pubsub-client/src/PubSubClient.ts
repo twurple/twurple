@@ -29,7 +29,7 @@ export class PubSubClient {
 	}
 
 	/**
-	 * Attaches a new user to the listener.
+	 * Attaches a new user to the listener and returns the user ID for convenience.
 	 *
 	 * @param apiClient The client that provides authentication for the user.
 	 * @param user The user that the client will be attached to.
@@ -58,6 +58,8 @@ export class PubSubClient {
 			userId,
 			new SingleUserPubSubClient({ twitchClient: apiClient, pubSubClient: this._rootClient })
 		);
+
+		return userId;
 	}
 
 	/** @private */
