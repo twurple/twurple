@@ -1,18 +1,18 @@
-# Twitch.js - Authentication
+# Twitch.js - API call
 
-Authenticate with Twitch and stop caring about refreshing tokens.
+A basic Twitch API call wrapper.
 
 ## Installation
 
-	yarn add twitch-auth
+	yarn add twitch-api-call
 
 or using npm:
 
-	npm install --save twitch-auth
+	npm install --save twitch-api-call
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-auth)
+A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-api-call)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## If you're getting stuck...
