@@ -1,5 +1,5 @@
 import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
-import { HttpStatusCodeError } from 'twitch-api-call/lib/errors/HttpStatusCodeError';
+import { HttpStatusCodeError } from 'twitch-api-call';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';

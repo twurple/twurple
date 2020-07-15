@@ -1,6 +1,6 @@
 import { Cacheable, Cached, CacheEntry, ClearsCache } from '@d-fischer/cache-decorators';
 import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
-import { HttpStatusCodeError } from 'twitch-api-call/lib/errors/HttpStatusCodeError';
+import { HttpStatusCodeError } from 'twitch-api-call';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
