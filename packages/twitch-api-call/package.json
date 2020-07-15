@@ -1,6 +1,6 @@
 {
   "name": "twitch-api-call",
-  "version": "4.2.0-pre.3",
+  "version": "4.2.0-pre.4",
   "description": "A light wrapper around the Twitch API.",
   "keywords": [
     "twitch",
