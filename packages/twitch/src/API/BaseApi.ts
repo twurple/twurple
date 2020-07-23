@@ -3,6 +3,7 @@ import { ApiClient } from '../ApiClient';
 
 /** @private */
 export class BaseApi {
+	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
 	constructor(client: ApiClient) {
