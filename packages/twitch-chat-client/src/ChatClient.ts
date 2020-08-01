@@ -521,9 +521,9 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The raw message that was received.
 	 */
-	onMessage!: (
+	onMessage: (
 		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	) => Listener = this.registerEvent();
 
 	// override for specific class
 	/**
