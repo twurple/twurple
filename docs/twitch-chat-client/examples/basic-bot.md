@@ -72,6 +72,7 @@ Now, we can construct an `ApiClient` instance using a static auth provider:
 const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
 const accessToken = '0123456789abcdefghijABCDEFGHIJ';
 const auth = new StaticAuthProvider(clientId, accessToken);
+const apiClient = new ApiClient({ authProvider: auth });
 ```
 
 ## 4. Connect to chat
@@ -80,7 +81,7 @@ Using the `ApiClient` instance we just created, we can easily create a `ChatClie
 The given channels will automatically be joined after connecting.
 
 ```typescript
-const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
+const chatClient = new ChatClient(apiClient, { channels: ['satisfiedpear'] });
 await chatClient.connect();
 ```
 
