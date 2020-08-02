@@ -1,7 +1,7 @@
 After you established a connection to the Twitch chat server and joined at least one channel, you can listen to events:
 
 ```typescript
-const followAgeListener = chatClient.onPrivmsg(async (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => {
+const followAgeListener = chatClient.onMessage(async (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => {
 	if (message === '!followage') {
 		const follow = await apiClient.kraken.users.getFollowedChannel(msg.userInfo.userId, msg.channelId);
 

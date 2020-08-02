@@ -2,7 +2,7 @@ In this example, you learn how to set up a basic bot that reacts to a few comman
 
 We will achieve authorization by fetching an initial access token from Twitch and then refreshing that token using the refreh token provided by the same request.
 
-If you already have an authentication flow up and running with an `ApiClient` instance, you find all you need in step 4 and 5.
+If you already have an authentication flow up and running with an `AuthProvider` instance, you find all you need in step 4 and 5.
 
 ## 1. Create a Twitch application
 
@@ -45,9 +45,9 @@ The response body should look similar to the following:
 
 Write down the `access_token` and `refresh_token` properties of the response body. These are important for all the other requests you're sending to Twitch!
 
-## 3. Create an `ApiClient` instance
+## 3. Create an `AuthProvider` instance
 
-Now you can finally start writing code! First, import all the classes you're gonna need from `twitch` and `twitch-chat-client`.
+Now you can finally start writing code! First, import all the classes you're gonna need from `twitch-auth` and `twitch-chat-client`.
 
 ```typescript
 import { StaticAuthProvider } from 'twitch-auth';
@@ -66,7 +66,7 @@ main();
 
 All the following code needs to be inside this function (or at least called from inside it) so we can use `await` and still avoid race conditions.
 
-Now, we can construct an `ApiClient` instance using a static auth provider:
+Now, we can construct a `StaticAuthProvider` instance using a static auth provider:
 
 ```typescript
 const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
@@ -76,7 +76,7 @@ const auth = new StaticAuthProvider(clientId, accessToken);
 
 ## 4. Connect to chat
 
-Using the `ApiClient` instance we just created, we can easily create a `ChatClient` instance and connect to the chat server.
+Using the `AuthProvider` instance we just created, we can easily create a `ChatClient` instance and connect to the chat server.
 The given channels will automatically be joined after connecting.
 
 ```typescript
@@ -88,10 +88,10 @@ Now you can run your code and see your bot sitting in your channel. But we want 
 
 ## 5. Listen and react to events
 
-Fortunately, reacting to things is easy. To listen to chat messages, just use the `onPrivmsg` method. As an example, we implement a few basic commands here:
+Fortunately, reacting to things is easy. To listen to chat messages, just use the `onMessage` method. As an example, we implement a few basic commands here:
 
 ```typescript
-chatClient.onPrivmsg((channel, user, message) => {
+chatClient.onMessage((channel, user, message) => {
 	if (message === '!ping') {
 		chatClient.say(channel, 'Pong!');
 	} else if (message === '!dice') {
@@ -198,7 +198,7 @@ Now you can implement a more elaborated command system, add more events to react
 For reference, here's the full code that _should_ be the result of everything we just did:
 
 ```typescript
-import { ApiClient } from 'twitch';
+import { RefreshableAuthProvider } from 'twitch-auth';
 import { ChatClient } from 'twitch-chat-client';
 import { promises as fs } from 'fs';
 
@@ -226,7 +226,7 @@ async function main() {
     const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
     await chatClient.connect();
 
-    chatClient.onPrivmsg((channel, user, message) => {
+    chatClient.onMessage((channel, user, message) => {
         if (message === '!ping') {
             chatClient.say(channel, 'Pong!');
         } else if (message === '!dice') {
