@@ -208,6 +208,25 @@ export default class BasicPubSubClient extends EventEmitter {
 		return this.connect();
 	}
 
+	/**
+	 * Checks whether the client is currently connecting to the server.
+	 */
+	get isConnecting() {
+		return this._connection?.isConnecting ?? false;
+	}
+
+	/**
+	 * Checks whether the client is currently connected to the server.
+	 */
+	get isConnected() {
+		return this._connection?.isConnected ?? false;
+	}
+
+	/** @private */
+	get hasAnyTopics() {
+		return this._topics.size > 0;
+	}
+
 	private async _sendListen(topics: string[], accessToken?: string) {
 		return this._sendNonced({
 			type: 'LISTEN',
@@ -426,20 +445,6 @@ export default class BasicPubSubClient extends EventEmitter {
 			return this.reconnect();
 		}, this._pingTimeout * 1000);
 		this._sendPacket({ type: 'PING' });
-	}
-
-	/**
-	 * Checks whether the client is currently connecting to the server.
-	 */
-	protected get isConnecting() {
-		return this._connection ? this._connection.isConnecting : false;
-	}
-
-	/**
-	 * Checks whether the client is currently connected to the server.
-	 */
-	protected get isConnected() {
-		return this._connection ? this._connection.isConnected : false;
 	}
 
 	private _startPingCheckTimer() {
