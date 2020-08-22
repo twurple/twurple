@@ -20,7 +20,7 @@ export class UnsupportedApi extends BaseApi {
 	/**
 	 * Retrieves a list of chatters in the Twitch chat of the given channel.
 	 *
-	 * **WARNING**: In contrast to most other methods, this takes a channel *name*, not a user ID.
+	 * **WARNING:** In contrast to most other methods, this takes a channel *name*, not a user ID.
 	 *
 	 * @param channel The channel to retrieve the chatters for.
 	 */

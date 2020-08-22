@@ -25,6 +25,9 @@ interface SingleUserPubSubClientOptions {
 
 	/**
 	 * The underlying {@BasicPubSubClient} instance. If not given, we'll create a new one.
+	 *
+	 * **WARNING:** If you pass this, you shouldn't execute any manual actions on it.
+	 * You can, however, pass the same client to multiple instances of {@SingleUserPubSubClient}.
 	 */
 	pubSubClient?: BasicPubSubClient;
 

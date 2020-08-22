@@ -66,4 +66,4 @@ async function findClipFromBroadcasterWithTitle(userId: string, searchTerm: stri
 }
 ```
 
-**WARNING**: Uncontrolled use of the paginator may lead to quick exhaustion of your rate limit with big, unfiltered result sets. Please use filters and exit your loops as soon as you have enough data.
+**WARNING:** Uncontrolled use of the paginator may lead to quick exhaustion of your rate limit with big, unfiltered result sets. Please use filters and exit your loops as soon as you have enough data.
