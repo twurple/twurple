@@ -177,13 +177,18 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param listener A listener returned by one of the `add*Listener` methods.
 	 */
-	removeListener(listener: PubSubListener) {
+	async removeListener(listener: PubSubListener) {
 		if (this._listeners.has(listener.type)) {
 			const newListeners = this._listeners.get(listener.type)!.filter(l => l !== listener);
 			if (newListeners.length === 0) {
 				this._listeners.delete(listener.type);
-				// tslint:disable-next-line:no-floating-promises
-				this._pubSubClient.unlisten(`${listener.type}.${listener.userId}`);
+				await this._pubSubClient.unlisten(`${listener.type}.${listener.userId}`);
+				if (
+					!this._pubSubClient.hasAnyTopics &&
+					(this._pubSubClient.isConnected || this._pubSubClient.isConnecting)
+				) {
+					await this._pubSubClient.disconnect();
+				}
 			} else {
 				this._listeners.set(listener.type, newListeners);
 			}
