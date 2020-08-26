@@ -26,12 +26,23 @@ export class EmoteSetList {
 	findEmoteId(emoteCode: string) {
 		for (const emoteSet of Object.values(this._data)) {
 			for (const emote of emoteSet) {
-				if (new RegExp(emote.code).test(emoteCode)) {
+				if (EmoteSetList._testEmoteCode(emote.code, emoteCode)) {
 					return emote.id;
 				}
 			}
 		}
 
 		return undefined;
+	}
+
+	private static _testEmoteCode(code: string, text: string) {
+		if (!code.includes('\\')) {
+			return code === text;
+		}
+
+		const re = new RegExp(code);
+		const match = re.exec(text);
+
+		return match?.index === 0 && match[0].length === match.input.length;
 	}
 }
