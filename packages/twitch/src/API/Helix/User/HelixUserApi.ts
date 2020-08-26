@@ -165,6 +165,10 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
+		// #157: return empty early to prevent token based lookup
+		if (Array.isArray(param) && param.length === 0) {
+			return [];
+		}
 		const query: Record<string, string | string[] | undefined> = { [lookupType]: param };
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserData>>({
 			type: TwitchApiCallType.Helix,
