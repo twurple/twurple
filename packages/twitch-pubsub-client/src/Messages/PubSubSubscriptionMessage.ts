@@ -14,6 +14,7 @@ export interface PubSubSubscriptionGiftDetail {
 	recipient_user_name: string;
 	recipient_display_name: string;
 	months: number;
+	multi_month_duration: number;
 }
 
 export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
@@ -161,6 +162,17 @@ export class PubSubSubscriptionMessage {
 	 */
 	get gifterDisplayName() {
 		return this.isGift ? this._data.display_name : null;
+	}
+
+	/**
+	 * The duration of the gifted subscription, in months.
+	 *
+	 * Returns null if the subscription is not a gift.
+	 */
+	get giftDuration() {
+		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
+			? this._data.multi_month_duration
+			: null;
 	}
 
 	/**

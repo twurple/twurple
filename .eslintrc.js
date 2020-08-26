@@ -50,6 +50,7 @@ const memberNames = [
 	'^moderation_action$',
 	'^created_by$',
 	'^sub_(plan|message)$',
+	'^multi_month_duration$',
 	'^user_type$',
 	'^sent_ts$',
 	'^data_object$',

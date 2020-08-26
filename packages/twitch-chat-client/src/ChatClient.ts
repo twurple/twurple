@@ -855,7 +855,8 @@ export class ChatClient extends IrcClient {
 						gifter: isAnon ? undefined : gifter,
 						gifterUserId: isAnon ? undefined : tags.get('user-id')!,
 						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
-						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
+						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')),
+						giftDuration: Number(tags.get('msg-param-gift-months')),
 						plan,
 						planName: tags.get('msg-param-sub-plan-name')!,
 						isPrime: plan === 'Prime',
@@ -872,7 +873,7 @@ export class ChatClient extends IrcClient {
 						gifter: isAnon ? undefined : gifter,
 						gifterUserId: isAnon ? undefined : tags.get('user-id')!,
 						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
-						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
+						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')),
 						count: Number(tags.get('msg-param-mass-gift-count')!),
 						plan: tags.get('msg-param-sub-plan')!
 					};
