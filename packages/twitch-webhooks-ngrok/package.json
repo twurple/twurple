@@ -1,6 +1,6 @@
 {
   "name": "twitch-webhooks-ngrok",
-  "version": "4.2.0-pre.7",
+  "version": "4.2.0",
   "description": "Test your WebHooks locally using ngrok.",
   "keywords": [
     "twitch",
@@ -34,8 +34,8 @@
     "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "twitch": "^4.2.0-pre.7",
-    "twitch-webhooks": "^4.2.0-pre.7"
+    "twitch": "^4.2.0",
+    "twitch-webhooks": "^4.2.0"
   },
   "peerDependencies": {
     "twitch": "^4.1.0",
