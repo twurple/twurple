@@ -82,7 +82,7 @@ export class HelixPaginatedRequest<D, T> {
 		const result = [];
 		do {
 			const data = await this.getNext();
-			if (!data?.length) {
+			if (!data.length) {
 				break;
 			}
 			result.push(...data);
