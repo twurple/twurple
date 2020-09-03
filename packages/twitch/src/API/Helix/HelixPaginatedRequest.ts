@@ -62,7 +62,7 @@ export class HelixPaginatedRequest<D, T> {
 
 		const result = await this._fetchData();
 
-		if (!result.data.length) {
+		if (!result.data?.length) {
 			this._isFinished = true;
 			return [];
 		}
