@@ -62,7 +62,7 @@ export class HelixPaginatedRequest<D, T> {
 
 		const result = await this._fetchData();
 
-		if (!result.data.length) {
+		if (!result.data?.length) {
 			this._isFinished = true;
 			return [];
 		}
@@ -82,7 +82,7 @@ export class HelixPaginatedRequest<D, T> {
 		const result = [];
 		do {
 			const data = await this.getNext();
-			if (!data.length) {
+			if (!data?.length) {
 				break;
 			}
 			result.push(...data);
