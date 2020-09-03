@@ -1,6 +1,6 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import User, { UserData } from './User';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
+import { User, UserData } from './User';
 
 /** @private */
 export interface UserBlockData {
@@ -12,11 +12,11 @@ export interface UserBlockData {
 /**
  * A relation of a previously givn user blocking another user.
  */
-export default class UserBlock {
-	@NonEnumerable private readonly _client: TwitchClient;
+export class UserBlock {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: UserBlockData, client: TwitchClient) {
+	constructor(private readonly _data: UserBlockData, client: ApiClient) {
 		this._client = client;
 	}
 

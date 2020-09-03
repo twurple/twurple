@@ -1,7 +1,7 @@
 /**
  * Information about a bits tier upgrade.
  */
-export default interface ChatBitsBadgeUpgradeInfo {
+export interface ChatBitsBadgeUpgradeInfo {
 	/**
 	 * The display name of the user.
 	 */

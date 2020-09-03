@@ -1,33 +1,20 @@
 /* eslint-disable filenames/match-exported */
-import WebHookListener, { WebHookListenerCertificateConfig } from './WebHookListener';
+import { deprecateClass } from '@d-fischer/shared-utils';
 
-export default WebHookListener;
-export { WebHookListenerCertificateConfig };
+import { WebHookListener } from './WebHookListener';
+/** @deprecated Use the named export `WebHookListener` instead. */
+const DeprecatedWebHookListener = deprecateClass(WebHookListener, 'Use the named export `WebHookListener` instead.');
+/** @deprecated Use the named export `WebHookListener` instead. */
+type DeprecatedWebHookListener = WebHookListener;
+/** @deprecated Use the named export `WebHookListener` instead. */
+export default DeprecatedWebHookListener;
+export { WebHookListener };
 
-import ConnectCompatibleApp, { ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
-
-export { ConnectCompatibleApp, ConnectCompatibleMiddleware };
-
-import ConnectionAdapter, { CommonConnectionAdapterConfig } from './Adapters/ConnectionAdapter';
-
-export { ConnectionAdapter, CommonConnectionAdapterConfig };
-
-import EnvPortAdapter, { EnvPortAdapterConfig } from './Adapters/EnvPortAdapter';
-
-export { EnvPortAdapter, EnvPortAdapterConfig };
-
-import LegacyAdapter, { WebHookListenerConfig, WebHookListenerReverseProxyConfig } from './Adapters/LegacyAdapter';
-
-export { LegacyAdapter, WebHookListenerConfig, WebHookListenerReverseProxyConfig };
-
-import ReverseProxyAdapter, { ReverseProxyAdapterConfig } from './Adapters/ReverseProxyAdapter';
-
-export { ReverseProxyAdapter, ReverseProxyAdapterConfig };
-
-import SimpleAdapter, { SimpleAdapterConfig } from './Adapters/SimpleAdapter';
-
-export { SimpleAdapter, SimpleAdapterConfig };
-
-import Subscription from './Subscriptions/Subscription';
-
-export { Subscription };
+export { WebHookListenerCertificateConfig } from './WebHookListener';
+export { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
+export { CommonConnectionAdapterConfig, ConnectionAdapter } from './Adapters/ConnectionAdapter';
+export { EnvPortAdapter, EnvPortAdapterConfig } from './Adapters/EnvPortAdapter';
+export { LegacyAdapter, WebHookListenerConfig, WebHookListenerReverseProxyConfig } from './Adapters/LegacyAdapter';
+export { ReverseProxyAdapter, ReverseProxyAdapterConfig } from './Adapters/ReverseProxyAdapter';
+export { SimpleAdapter, SimpleAdapterConfig } from './Adapters/SimpleAdapter';
+export { Subscription } from './Subscriptions/Subscription';

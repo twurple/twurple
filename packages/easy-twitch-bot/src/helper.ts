@@ -1,5 +1,5 @@
-import BotCommand from './BotCommand';
-import BotCommandContext from './BotCommandContext';
+import { BotCommand } from './BotCommand';
+import { BotCommandContext } from './BotCommandContext';
 
 export function createBotCommand(
 	commandName: string,

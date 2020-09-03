@@ -6,8 +6,6 @@ import { Capability } from 'ircv3';
  *
  * @private
  */
-const TwitchMembershipCapability: Capability = {
+export const TwitchMembershipCapability: Capability = {
 	name: 'twitch.tv/membership'
 };
-
-export default TwitchMembershipCapability;

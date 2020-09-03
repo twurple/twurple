@@ -1,140 +1,104 @@
 /* eslint-disable filenames/match-exported */
-import TwitchClient, { TwitchAPICallType, TwitchAPICallOptions } from './TwitchClient';
+import { deprecateClass } from '@d-fischer/shared-utils';
 
-export default TwitchClient;
-export { TwitchAPICallType, TwitchAPICallOptions };
+import { ApiClient } from './ApiClient';
+/** @deprecated Use the named export `ApiClient` instead. */
+const DeprecatedTwitchClient = deprecateClass(ApiClient, 'Use the named export `ApiClient` instead.');
+/** @deprecated Use the named export `ApiClient` instead. */
+type DeprecatedTwitchClient = ApiClient;
+/** @deprecated Use the named export `ApiClient` instead. */
+export default DeprecatedTwitchClient;
+export { ApiClient };
 
-import ConfigError from './Errors/ConfigError';
-import HellFreezesOverError from './Errors/HellFreezesOverError';
-import HTTPStatusCodeError from './Errors/HTTPStatusCodeError';
-import InvalidTokenError from './Errors/InvalidTokenError';
-import InvalidTokenTypeError from './Errors/InvalidTokenTypeError';
-import NoSubscriptionProgramError from './Errors/NoSubscriptionProgramError';
-import StreamNotLiveError from './Errors/StreamNotLiveError';
+export { ApiConfig } from './ApiClient';
+
+export { ConfigError } from './Errors/ConfigError';
+export { HellFreezesOverError } from './Errors/HellFreezesOverError';
+export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
+export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
+export { StreamNotLiveError } from './Errors/StreamNotLiveError';
+
+export { Subscription } from './API/Kraken/Subscription';
 
 export {
-	ConfigError,
-	HellFreezesOverError,
-	HTTPStatusCodeError,
-	InvalidTokenError,
-	InvalidTokenTypeError,
-	NoSubscriptionProgramError,
-	StreamNotLiveError
-};
-
-import AuthProvider, { AuthProviderTokenType } from './Auth/AuthProvider';
-import StaticAuthProvider from './Auth/StaticAuthProvider';
-import RefreshableAuthProvider from './Auth/RefreshableAuthProvider';
-
-export { AuthProvider, AuthProviderTokenType, StaticAuthProvider, RefreshableAuthProvider };
-
-import AccessToken from './API/AccessToken';
-import TokenInfo from './API/TokenInfo';
-
-export { AccessToken, TokenInfo };
-
-import Subscription from './API/Kraken/Subscription';
-
-export { Subscription };
-
-import CheermoteList, {
 	CheermoteBackground,
 	CheermoteDisplayInfo,
+	CheermoteList,
 	CheermoteScale,
 	CheermoteState
 } from './API/Kraken/Bits/CheermoteList';
 
-export { CheermoteList, CheermoteBackground, CheermoteDisplayInfo, CheermoteScale, CheermoteState };
+export { Channel } from './API/Kraken/Channel/Channel';
+export { ChannelFollow } from './API/Kraken/Channel/ChannelFollow';
+export { ChannelPlaceholder } from './API/Kraken/Channel/ChannelPlaceholder';
+export { ChannelSubscription } from './API/Kraken/Channel/ChannelSubscription';
+export { EmoteSetList } from './API/Kraken/Channel/EmoteSetList';
+export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
+export { CommercialLength } from './API/Kraken/Channel/ChannelApi';
 
-import Channel from './API/Kraken/Channel/Channel';
-import ChannelFollow from './API/Kraken/Channel/ChannelFollow';
-import ChannelPlaceholder from './API/Kraken/Channel/ChannelPlaceholder';
-import ChannelSubscription from './API/Kraken/Channel/ChannelSubscription';
-import EmoteSetList from './API/Kraken/Channel/EmoteSetList';
-import PrivilegedChannel from './API/Kraken/Channel/PrivilegedChannel';
-import { CommercialLength } from './API/Kraken/Channel/ChannelAPI';
+export { Stream, StreamType } from './API/Kraken/Stream/Stream';
+
+export { ChattersList } from './API/Unsupported/ChattersList';
+
+export { PrivilegedUser } from './API/Kraken/User/PrivilegedUser';
+export { User } from './API/Kraken/User/User';
+export { UserBlock } from './API/Kraken/User/UserBlock';
+export { UserFollow } from './API/Kraken/User/UserFollow';
+export { UserSubscription } from './API/Kraken/User/UserSubscription';
+
+export { HelixPaginatedRequest } from './API/Helix/HelixPaginatedRequest';
+export { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './API/Helix/HelixPaginatedResult';
+export { HelixResponse } from './API/Helix/HelixResponse';
+
+export { HelixBitsLeaderboard } from './API/Helix/Bits/HelixBitsLeaderboard';
+export { HelixBitsLeaderboardEntry } from './API/Helix/Bits/HelixBitsLeaderboardEntry';
+
+export { HelixClip } from './API/Helix/Clip/HelixClip';
+
+export { HelixExtensionTransaction } from './API/Helix/Extensions/HelixExtensionTransaction';
+
+export { HelixGame } from './API/Helix/Game/HelixGame';
+
+export { HelixBan } from './API/Helix/Moderation/HelixBan';
+export { HelixBanEvent } from './API/Helix/Moderation/HelixBanEvent';
+export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
+export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
+
+export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
+export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+
+export { HelixStream, HelixStreamType } from './API/Helix/Stream/HelixStream';
+
+export { HelixFollow } from './API/Helix/User/HelixFollow';
+export { HelixPrivilegedUser } from './API/Helix/User/HelixPrivilegedUser';
+export { HelixBroadcasterType, HelixUser, HelixUserType } from './API/Helix/User/HelixUser';
+
+export { HelixVideo } from './API/Helix/Video/HelixVideo';
+
+export { HelixWebHookHubRequestOptions } from './API/Helix/WebHooks/HelixWebHooksApi';
+
+export { ChatBadgeList } from './API/Badges/ChatBadgeList';
+export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
+export { ChatBadgeScale, ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
+
+export { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
+
+export { HttpStatusCodeError, TwitchApiCallType, TwitchApiCallOptions } from 'twitch-api-call';
+/** @deprecated Import `HttpStatusCodeError` instead. */
+export { HttpStatusCodeError as HTTPStatusCodeError } from 'twitch-api-call';
+/** @deprecated Import `TwitchApiCallType` instead. */
+export { TwitchApiCallType as TwitchAPICallType } from 'twitch-api-call';
+/** @deprecated Import `TwitchApiCallOptions` instead. */
+export { TwitchApiCallOptions as TwitchAPICallOptions } from 'twitch-api-call';
 
 export {
-	Channel,
-	ChannelFollow,
-	ChannelPlaceholder,
-	ChannelSubscription,
-	EmoteSetList,
-	PrivilegedChannel,
-	CommercialLength
-};
-
-import Stream, { StreamType } from './API/Kraken/Stream/Stream';
-
-export { Stream, StreamType };
-
-import ChattersList from './API/Unsupported/ChattersList';
-
-export { ChattersList };
-
-import PrivilegedUser from './API/Kraken/User/PrivilegedUser';
-import User from './API/Kraken/User/User';
-import UserBlock from './API/Kraken/User/UserBlock';
-import UserFollow from './API/Kraken/User/UserFollow';
-import UserSubscription from './API/Kraken/User/UserSubscription';
-
-export { PrivilegedUser, User, UserBlock, UserFollow, UserSubscription };
-
-import HelixPaginatedRequest from './API/Helix/HelixPaginatedRequest';
-import HelixPaginatedResult, { HelixPaginatedResultWithTotal } from './API/Helix/HelixPaginatedResult';
-import HelixResponse from './API/Helix/HelixResponse';
-
-export { HelixPaginatedRequest, HelixPaginatedResult, HelixPaginatedResultWithTotal, HelixResponse };
-
-import HelixBitsLeaderboard from './API/Helix/Bits/HelixBitsLeaderboard';
-import HelixBitsLeaderboardEntry from './API/Helix/Bits/HelixBitsLeaderboardEntry';
-
-export { HelixBitsLeaderboard, HelixBitsLeaderboardEntry };
-
-import HelixClip from './API/Helix/Clip/HelixClip';
-
-export { HelixClip };
-
-import HelixExtensionTransaction from './API/Helix/Extensions/HelixExtensionTransaction';
-
-export { HelixExtensionTransaction };
-
-import HelixGame from './API/Helix/Game/HelixGame';
-
-export { HelixGame };
-
-import HelixBan from './API/Helix/Moderation/HelixBan';
-import HelixBanEvent from './API/Helix/Moderation/HelixBanEvent';
-import HelixModerator from './API/Helix/Moderation/HelixModerator';
-import HelixModeratorEvent from './API/Helix/Moderation/HelixModeratorEvent';
-
-export { HelixBan, HelixBanEvent, HelixModerator, HelixModeratorEvent };
-
-import HelixStream, { HelixStreamType } from './API/Helix/Stream/HelixStream';
-
-export { HelixStream, HelixStreamType };
-
-import HelixFollow from './API/Helix/User/HelixFollow';
-import HelixPrivilegedUser from './API/Helix/User/HelixPrivilegedUser';
-import HelixUser, { HelixBroadcasterType, HelixUserType } from './API/Helix/User/HelixUser';
-
-export { HelixFollow, HelixPrivilegedUser, HelixUser, HelixBroadcasterType, HelixUserType };
-
-import HelixVideo from './API/Helix/Video/HelixVideo';
-
-export { HelixVideo };
-
-import HelixSubscription from './API/Helix/Subscriptions/HelixSubscription';
-import HelixSubscriptionEvent from './API/Helix/Subscriptions/HelixSubscriptionEvent';
-
-export { HelixSubscription, HelixSubscriptionEvent };
-
-import ChatBadgeList from './API/Badges/ChatBadgeList';
-import ChatBadgeSet from './API/Badges/ChatBadgeSet';
-import ChatBadgeVersion, { ChatBadgeScale } from './API/Badges/ChatBadgeVersion';
-
-export { ChatBadgeList, ChatBadgeSet, ChatBadgeVersion, ChatBadgeScale };
-
-import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
-
-export { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable };
+	AccessToken,
+	AuthProvider,
+	AuthProviderTokenType,
+	InvalidTokenError,
+	StaticAuthProvider,
+	ClientCredentialsAuthProvider,
+	RefreshableAuthProvider,
+	RefreshConfig,
+	TokenInfo
+} from 'twitch-auth';

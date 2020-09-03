@@ -1,6 +1,6 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import Channel, { ChannelData } from '../Channel/Channel';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
+import { Channel, ChannelData } from '../Channel/Channel';
 
 /**
  * The possible sizes for a stream preview.
@@ -65,11 +65,11 @@ export enum StreamType {
 /**
  * A Twitch stream.
  */
-export default class Stream {
-	@NonEnumerable private readonly _client: TwitchClient;
+export class Stream {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: StreamData, client: TwitchClient) {
+	constructor(private readonly _data: StreamData, client: ApiClient) {
 		this._client = client;
 	}
 
@@ -104,6 +104,12 @@ export default class Stream {
 	/**
 	 * The average FPS (frames per second) that are shown on the stream.
 	 */
+	get averageFps() {
+		return this._data.average_fps;
+	}
+
+	/** @deprecated Use averageFps instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	get averageFPS() {
 		return this._data.average_fps;
 	}

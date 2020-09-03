@@ -4,11 +4,11 @@ Test your WebHooks locally using ngrok.
 
 ## Installation
 
-	yarn add twitch twitch-webhooks-ngrok
+	yarn add twitch twitch-webhooks twitch-webhooks-ngrok
 
 or using npm:
 
-	npm install --save twitch twitch-webhooks-ngrok
+	npm install --save twitch twitch-webhooks twitch-webhooks-ngrok
 
 ## Documentation
 

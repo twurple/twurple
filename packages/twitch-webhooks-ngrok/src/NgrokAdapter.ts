@@ -5,7 +5,7 @@ import { ConnectionAdapter } from 'twitch-webhooks';
 /**
  * A connection adapter that uses ngrok to make local testing easy.
  */
-export default class NgrokAdapter extends ConnectionAdapter {
+export class NgrokAdapter extends ConnectionAdapter {
 	private _listenerPortPromise?: Promise<number>;
 	private _hostNamePromise?: Promise<string>;
 

@@ -1,0 +1,47 @@
+{
+  "name": "twitch-auth",
+  "version": "4.2.0-pre.7",
+  "description": "Authenticate with Twitch and stop caring about refreshing tokens.",
+  "keywords": [
+    "twitch",
+    "auth",
+    "authentication",
+    "oauth",
+    "stream",
+    "bot"
+  ],
+  "sideEffects": false,
+  "main": "lib",
+  "types": "lib",
+  "module": "es",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d-fischer/twitch.git",
+    "directory": "packages/twitch-auth"
+  },
+  "homepage": "https://d-fischer.github.io/twitch-auth",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "@d-fischer/deprecate": "^2.0.1",
+    "@d-fischer/shared-utils": "^2.3.1",
+    "tslib": "^2.0.0",
+    "twitch-api-call": "^4.2.0-pre.7"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
+  }
+}

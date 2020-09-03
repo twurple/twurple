@@ -1,12 +1,12 @@
 import { HelixBanEvent, HelixResponse } from 'twitch';
 import { HelixBanEventData } from 'twitch/lib/API/Helix/Moderation/HelixBanEvent';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
  * @private
  */
-export default class BanEventSubscription extends Subscription<HelixBanEvent> {
+export class BanEventSubscription extends Subscription<HelixBanEvent> {
 	constructor(
 		private readonly _broadcasterId: string,
 		handler: (data: HelixBanEvent) => void,
@@ -25,18 +25,18 @@ export default class BanEventSubscription extends Subscription<HelixBanEvent> {
 	}
 
 	protected transformData(response: HelixResponse<HelixBanEventData>) {
-		return new HelixBanEvent(response.data[0], this._client._twitchClient);
+		return new HelixBanEvent(response.data[0], this._client._apiClient);
 	}
 
 	protected async _subscribe() {
 		if (this._userId) {
-			return this._client._twitchClient.helix.webHooks.subscribeToBanEventsForUser(
+			return this._client._apiClient.helix.webHooks.subscribeToBanEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.subscribeToBanEvents(
+		return this._client._apiClient.helix.webHooks.subscribeToBanEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
@@ -44,13 +44,13 @@ export default class BanEventSubscription extends Subscription<HelixBanEvent> {
 
 	protected async _unsubscribe() {
 		if (this._userId) {
-			return this._client._twitchClient.helix.webHooks.unsubscribeFromBanEventsForUser(
+			return this._client._apiClient.helix.webHooks.unsubscribeFromBanEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromBanEvents(
+		return this._client._apiClient.helix.webHooks.unsubscribeFromBanEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);

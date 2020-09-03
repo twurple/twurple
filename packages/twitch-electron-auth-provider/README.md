@@ -1,6 +1,6 @@
 # Twitch.js - Electron auth provider
 
-This is an `AuthProvider` implementation for [the `twitch` package](https://github.com/d-fischer/twitch)
+This is an {@AuthProvider} implementation for [the `twitch` package family](https://github.com/d-fischer/twitch)
 that will automatically pop up a Twitch OAuth dialog in an Electron `BrowserWindow`
 as soon as new scopes are requested.
 
@@ -16,11 +16,11 @@ or using npm:
 
 ## Basic usage
 
-To instantiate a TwitchClient with this auth provider, just pass it to its constructor:
+To instantiate an {@ApiClient} with this auth provider, just pass it to its constructor:
 
 ```ts
-import TwitchClient from 'twitch';
-import ElectronAuthProvider from 'twitch-electron-auth-provider';
+import { ApiClient } from 'twitch';
+import { ElectronAuthProvider } from 'twitch-electron-auth-provider';
 
 const clientId = 'abc123';
 const redirectURI = 'http://foo.bar/login';
@@ -30,7 +30,7 @@ const authProvider = new ElectronAuthProvider({
     redirectURI
 });
 
-const client = new TwitchClient({
+const client = new ApiClient({
 	authProvider
 });
 ```

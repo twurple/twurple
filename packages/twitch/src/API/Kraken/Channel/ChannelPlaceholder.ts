@@ -1,7 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
+import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import TwitchClient from '../../../TwitchClient';
 
 /** @private */
 export interface ChannelPlaceholderData {
@@ -14,15 +14,15 @@ export interface ChannelPlaceholderData {
  * This is used for example when you only have retrieved user data, but not channel data.
  * This can do anything you can do with only a channel ID, as it's equivalent to the user ID.
  */
-export default class ChannelPlaceholder {
+export class ChannelPlaceholder {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
 	protected _data: ChannelPlaceholderData;
 
 	/** @private */
-	constructor(id: string, client: TwitchClient) {
+	constructor(id: string, client: ApiClient) {
 		this._data = { _id: id };
 		this._client = client;
 	}

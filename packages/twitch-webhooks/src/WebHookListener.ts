@@ -1,7 +1,8 @@
-import Logger, { LoggerOptions } from '@d-fischer/logger';
+import { Logger, LoggerOptions } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Request, RequestHandler, Response, Server } from 'httpanda';
-import TwitchClient, {
+import {
+	ApiClient,
 	extractUserId,
 	HelixBanEvent,
 	HelixExtensionTransaction,
@@ -12,18 +13,18 @@ import TwitchClient, {
 	HelixUser,
 	UserIdResolvable
 } from 'twitch';
-import ConnectionAdapter from './Adapters/ConnectionAdapter';
-import LegacyAdapter, { WebHookListenerConfig } from './Adapters/LegacyAdapter';
-import ConnectCompatibleApp from './ConnectCompatibleApp';
-import BanEventSubscription from './Subscriptions/BanEventSubscription';
-import ExtensionTransactionSubscription from './Subscriptions/ExtensionTransactionSubscription';
-import FollowsFromUserSubscription from './Subscriptions/FollowsFromUserSubscription';
-import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription';
-import ModeratorEventSubscription from './Subscriptions/ModeratorEventSubscription';
-import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
-import Subscription from './Subscriptions/Subscription';
-import SubscriptionEventSubscription from './Subscriptions/SubscriptionEventSubscription';
-import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
+import { ConnectionAdapter } from './Adapters/ConnectionAdapter';
+import { LegacyAdapter, WebHookListenerConfig } from './Adapters/LegacyAdapter';
+import { ConnectCompatibleApp } from './ConnectCompatibleApp';
+import { BanEventSubscription } from './Subscriptions/BanEventSubscription';
+import { ExtensionTransactionSubscription } from './Subscriptions/ExtensionTransactionSubscription';
+import { FollowsFromUserSubscription } from './Subscriptions/FollowsFromUserSubscription';
+import { FollowsToUserSubscription } from './Subscriptions/FollowsToUserSubscription';
+import { ModeratorEventSubscription } from './Subscriptions/ModeratorEventSubscription';
+import { StreamChangeSubscription } from './Subscriptions/StreamChangeSubscription';
+import { Subscription } from './Subscriptions/Subscription';
+import { SubscriptionEventSubscription } from './Subscriptions/SubscriptionEventSubscription';
+import { UserChangeSubscription } from './Subscriptions/UserChangeSubscription';
 
 /**
  * Certificate data used to make the listener server SSL capable.
@@ -47,7 +48,8 @@ export interface WebHookConfig {
 	/**
 	 * Default validity of a WebHook, in seconds.
 	 *
-	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 * Please note that this doesn't mean that you don't get any notifications after the given time.
+	 * The hook will be automatically refreshed.
 	 *
 	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
 	 */
@@ -62,11 +64,11 @@ export interface WebHookConfig {
 /**
  * A WebHook listener you can track changes in various channel and user data with.
  */
-export default class WebHookListener {
+export class WebHookListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();
 
-	/** @private */ readonly _twitchClient: TwitchClient;
+	/** @private */ readonly _apiClient: ApiClient;
 	private readonly _adapter: ConnectionAdapter;
 	private readonly _logger: Logger;
 
@@ -75,25 +77,25 @@ export default class WebHookListener {
 	/**
 	 * Creates a new WebHook listener.
 	 *
-	 * @deprecated Use the normal constructor instead.
+	 * @deprecated Use the normal {@WebHookListener} constructor instead.
 	 *
-	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
+	 * @param apiClient The ApiClient instance to use for user info and API requests.
 	 * @param config
 	 */
-	static async create(twitchClient: TwitchClient, config: WebHookListenerConfig = {}) {
+	static async create(apiClient: ApiClient, config: WebHookListenerConfig = {}) {
 		const adapter = await LegacyAdapter.create(config);
-		return new WebHookListener(twitchClient, adapter, config);
+		return new WebHookListener(apiClient, adapter, config);
 	}
 
 	/**
 	 * Creates a new WebHook listener.
 	 *
-	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
+	 * @param apiClient The ApiClient instance to use for user info and API requests.
 	 * @param adapter The connection adapter.
 	 * @param config
 	 */
-	constructor(twitchClient: TwitchClient, adapter: ConnectionAdapter, config: WebHookConfig = {}) {
-		this._twitchClient = twitchClient;
+	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, config: WebHookConfig = {}) {
+		this._apiClient = apiClient;
 		this._adapter = adapter;
 		this._hookValidity = config.hookValidity;
 		this._logger = new Logger({

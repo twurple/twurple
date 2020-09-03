@@ -1,4 +1,4 @@
-import ConnectionAdapter, { CommonConnectionAdapterConfig } from './ConnectionAdapter';
+import { CommonConnectionAdapterConfig, ConnectionAdapter } from './ConnectionAdapter';
 
 /**
  * The configuration of the simple connection adapter.
@@ -17,7 +17,7 @@ export interface SimpleAdapterConfig extends CommonConnectionAdapterConfig {
  *
  * @hideProtected
  */
-export default class SimpleAdapter extends ConnectionAdapter {
+export class SimpleAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 
 	/**

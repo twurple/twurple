@@ -1,5 +1,5 @@
-import Channel, { ChannelData } from './Channel';
-import { CommercialLength } from './ChannelAPI';
+import { Channel, ChannelData } from './Channel';
+import { CommercialLength } from './ChannelApi';
 
 /** @private */
 export interface PrivilegedChannelData extends ChannelData {
@@ -10,7 +10,7 @@ export interface PrivilegedChannelData extends ChannelData {
 /**
  * A channel you have extended privileges for, i.e. the channel of the currently authenticated user.
  */
-export default class PrivilegedChannel extends Channel {
+export class PrivilegedChannel extends Channel {
 	/** @private */
 	protected _data: PrivilegedChannelData;
 

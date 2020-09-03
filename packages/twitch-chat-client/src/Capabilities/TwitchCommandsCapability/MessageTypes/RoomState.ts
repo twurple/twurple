@@ -2,7 +2,7 @@ import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv
 
 /** @private */
 @MessageType('ROOMSTATE')
-export default class RoomState extends Message<RoomState> {
+export class RoomState extends Message<RoomState> {
 	@MessageParamDefinition({
 		type: 'channel'
 	})

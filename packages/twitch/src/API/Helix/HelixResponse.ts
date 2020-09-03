@@ -1,5 +1,5 @@
 /** @private */
-export default interface HelixResponse<T> {
+export interface HelixResponse<T> {
 	data: T[];
 }
 

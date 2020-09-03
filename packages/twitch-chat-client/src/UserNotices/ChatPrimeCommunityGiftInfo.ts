@@ -1,7 +1,7 @@
 /**
  * Information about a Prime Community Gift.
  */
-export default interface ChatPrimeCommunityGiftInfo {
+export interface ChatPrimeCommunityGiftInfo {
 	/**
 	 * The name of the gift.
 	 */

@@ -1,32 +1,27 @@
 /* eslint-disable filenames/match-exported */
-import PubSubClient from './PubSubClient';
-import BasicPubSubClient from './BasicPubSubClient';
-import SingleUserPubSubClient from './SingleUserPubSubClient';
-import PubSubListener from './PubSubListener';
+import { deprecateClass } from '@d-fischer/shared-utils';
 
-export default PubSubClient;
-export { BasicPubSubClient, SingleUserPubSubClient, PubSubListener };
+import { PubSubClient } from './PubSubClient';
+/** @deprecated Use the named export `PubSubClient` instead. */
+const DeprecatedPubSubClient = deprecateClass(PubSubClient, 'Use the named export `PubSubClient` instead.');
+/** @deprecated Use the named export `PubSubClient` instead. */
+type DeprecatedPubSubClient = PubSubClient;
+/** @deprecated Use the named export `PubSubClient` instead. */
+export default DeprecatedPubSubClient;
+export { PubSubClient };
+
+export { PubSubListener } from './PubSubListener';
+export { BasicPubSubClient } from './BasicPubSubClient';
+export { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
 export * from './PubSubPacket';
 
-import PubSubMessage from './Messages/PubSubMessage';
-import PubSubBitsMessage from './Messages/PubSubBitsMessage';
-import PubSubBitsBadgeUnlockMessage from './Messages/PubSubBitsBadgeUnlockMessage';
-import PubSubChatModActionMessage from './Messages/PubSubChatModActionMessage';
-import PubSubRedemptionMessage from './Messages/PubSubRedemptionMessage';
-import PubSubSubscriptionMessage from './Messages/PubSubSubscriptionMessage';
-import PubSubWhisperMessage from './Messages/PubSubWhisperMessage';
+export { PubSubMessage } from './Messages/PubSubMessage';
+export { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
+export { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
+export { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
+export { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
+export { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
+export { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
 
-export {
-	PubSubMessage,
-	PubSubBitsMessage,
-	PubSubBitsBadgeUnlockMessage,
-	PubSubChatModActionMessage,
-	PubSubRedemptionMessage,
-	PubSubSubscriptionMessage,
-	PubSubWhisperMessage
-};
-
-import { LogLevel } from '@d-fischer/logger';
-
-export { LogLevel };
+export { LogLevel } from '@d-fischer/logger';

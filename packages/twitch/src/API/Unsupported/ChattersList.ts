@@ -9,7 +9,7 @@ export interface ChattersListData {
 /**
  * A list of chatters in a Twitch chat.
  */
-export default class ChattersList {
+export class ChattersList {
 	/** @private */
 	constructor(private readonly _data: ChattersListData) {}
 

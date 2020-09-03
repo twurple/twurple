@@ -6,7 +6,7 @@ export type ConnectCompatibleMiddleware = (
 	next: (err?: unknown) => void
 ) => void;
 
-export default interface ConnectCompatibleApp {
+export interface ConnectCompatibleApp {
 	use(...middlewares: ConnectCompatibleMiddleware[]): unknown;
 	use(path: string, ...middlewares: ConnectCompatibleMiddleware[]): unknown;
 }

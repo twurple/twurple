@@ -1,5 +1,5 @@
 import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
-import ChatUser from '../../../ChatUser';
+import { ChatUser } from '../../../ChatUser';
 import {
 	fillTextPositions,
 	ParsedMessagePart,
@@ -9,7 +9,7 @@ import {
 
 /** @private */
 @MessageType('WHISPER')
-export default class Whisper extends Message<Whisper> {
+export class Whisper extends Message<Whisper> {
 	@MessageParamDefinition()
 	target!: MessageParam;
 

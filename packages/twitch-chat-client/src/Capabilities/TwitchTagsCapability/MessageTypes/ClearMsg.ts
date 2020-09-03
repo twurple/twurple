@@ -3,7 +3,7 @@ import { Message, MessageParam, MessageParamDefinition } from 'ircv3';
 /**
  * @private
  */
-export default class ClearMsg extends Message {
+export class ClearMsg extends Message {
 	static readonly COMMAND = 'CLEARMSG';
 
 	@MessageParamDefinition({

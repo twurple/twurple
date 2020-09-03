@@ -1,6 +1,6 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import HelixExtensionProductData from './HelixExtensionProductData';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
+import { HelixExtensionProductData } from './HelixExtensionProductData';
 
 /** @private */
 export interface HelixExtensionTransactionData {
@@ -17,11 +17,11 @@ export interface HelixExtensionTransactionData {
 /**
  * A bits transaction made inside an extension.
  */
-export default class HelixExtensionTransaction {
-	@NonEnumerable private readonly _client: TwitchClient;
+export class HelixExtensionTransaction {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixExtensionTransactionData, client: TwitchClient) {
+	constructor(private readonly _data: HelixExtensionTransactionData, client: ApiClient) {
 		this._client = client;
 	}
 
@@ -91,6 +91,12 @@ export default class HelixExtensionTransaction {
 	/**
 	 * The product SKU.
 	 */
+	get productSku() {
+		return this._data.product_data.sku;
+	}
+
+	/** @deprecated Use productSku instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	get productSKU() {
 		return this._data.product_data.sku;
 	}

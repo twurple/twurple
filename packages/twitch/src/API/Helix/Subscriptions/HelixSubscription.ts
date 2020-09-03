@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
 
 /** @private */
 export interface HelixSubscriptionData {
@@ -16,12 +16,12 @@ export interface HelixSubscriptionData {
 /**
  * A (paid) subscription of a user to a broadcaster.
  */
-export default class HelixSubscription {
+export class HelixSubscription {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixSubscriptionData, client: TwitchClient) {
+	constructor(private readonly _data: HelixSubscriptionData, client: ApiClient) {
 		this._client = client;
 	}
 

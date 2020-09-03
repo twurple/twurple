@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from 'twitch';
 
 export interface PubSubChatModActionMessageContent {
 	type: string;
@@ -16,16 +16,16 @@ export interface PubSubChatModActionMessageData {
 /**
  * A message that informs about a moderation action being performed in a channel.
  */
-export default class PubSubChatModActionMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubChatModActionMessage {
+	@Enumerable(false) private readonly _apiClient: ApiClient;
 
 	/** @private */
 	constructor(
 		private readonly _data: PubSubChatModActionMessageData,
 		private readonly _channelId: string,
-		twitchClient: TwitchClient
+		apiClient: ApiClient
 	) {
-		this._twitchClient = twitchClient;
+		this._apiClient = apiClient;
 	}
 
 	/**
@@ -37,9 +37,11 @@ export default class PubSubChatModActionMessage {
 
 	/**
 	 * Retrieves more data about the channel where the action was performed.
+	 *
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getChannel() {
-		return this._twitchClient.helix.users.getUserById(this._channelId);
+		return this._apiClient.helix.users.getUserById(this._channelId);
 	}
 
 	/**
@@ -79,8 +81,10 @@ export default class PubSubChatModActionMessage {
 
 	/**
 	 * Retrieves more data about the user that performed the action.
+	 *
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getUser() {
-		return this._twitchClient.helix.users.getUserById(this._data.data.created_by_user_id);
+		return this._apiClient.helix.users.getUserById(this._data.data.created_by_user_id);
 	}
 }

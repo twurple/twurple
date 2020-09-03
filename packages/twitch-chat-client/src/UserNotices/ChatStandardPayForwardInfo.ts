@@ -1,7 +1,7 @@
 /**
  * Information about a "forward payment" to a specific user.
  */
-export default interface ChatStandardPayForwardInfo {
+export interface ChatStandardPayForwardInfo {
 	/**
 	 * The user ID of the forwarding user.
 	 */

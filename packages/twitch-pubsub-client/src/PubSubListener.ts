@@ -1,10 +1,10 @@
-import SingleUserPubSubClient from './SingleUserPubSubClient';
-import PubSubMessage from './Messages/PubSubMessage';
+import { PubSubMessage } from './Messages/PubSubMessage';
+import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
 /**
  * A listener attached to a single PubSub topic.
  */
-export default class PubSubListener<T extends PubSubMessage = PubSubMessage> {
+export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	/** @private */
 	constructor(
 		private readonly _type: string,
@@ -30,8 +30,8 @@ export default class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	/**
 	 * Removes the topic from the PubSub client.
 	 */
-	remove() {
-		this._client.removeListener(this);
+	async remove(): Promise<void> {
+		return this._client.removeListener(this);
 	}
 
 	/** @private */

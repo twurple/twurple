@@ -1,11 +1,14 @@
-First, you have to create an instance of the core Twitch client, as outlined in [its own documentation](/twitch/docs/basic-usage/creating-instance).
+First, you have to create an instance of the Twitch API client, as outlined in [its own documentation](/twitch/docs/basic-usage/creating-instance).
 
 Then, you create a new {@WebHookListener} instance using the core client:
 
 ```typescript
-import WebHookListener from 'twitch-webhooks';
+import { SimpleAdapter, WebHookListener } from 'twitch-webhooks';
 
-const listener = await WebHookListener.create(twitchClient, {port: 8090});
+const listener = new WebHookListener(apiClient, new SimpleAdapter({
+    hostName: 'example.com',
+    listenerPort: 8090
+}));
 listener.listen();
 ```
 
@@ -19,7 +22,7 @@ When your listener is set up, you can subscribe to all supported events using th
 import { HelixStream } from 'twitch';
 
 // we need to track the previous status of the stream because there are other state changes than the live/offline switch
-let prevStream = await twitchClient.helix.streams.getStreamByUserId(userId);
+let prevStream = await apiClient.helix.streams.getStreamByUserId(userId);
 
 const subscription = await listener.subscribeToStreamChanges(userId, async (stream?: HelixStream) => {
 	if (stream) {
@@ -28,7 +31,7 @@ const subscription = await listener.subscribeToStreamChanges(userId, async (stre
 		}
 	} else {
 		// no stream, no display name
-		const user = await twitchClient.helix.users.getUserById(userId);
+		const user = await apiClient.helix.users.getUserById(userId);
 		console.log(`${user.displayName} just went offline`);
 	}
 	prevStream = stream;

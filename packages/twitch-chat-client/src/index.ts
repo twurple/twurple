@@ -1,23 +1,30 @@
 /* eslint-disable filenames/match-exported */
-import ChatClient from './ChatClient';
+import { deprecateClass } from '@d-fischer/shared-utils';
 
-export default ChatClient;
+import { ChatClient } from './ChatClient';
+/** @deprecated Use the named export `ChatClient` instead. */
+const DeprecatedChatClient = deprecateClass(ChatClient, 'Use the named export `ChatClient` instead.');
+/** @deprecated Use the named export `ChatClient` instead. */
+type DeprecatedChatClient = ChatClient;
+/** @deprecated Use the named export `ChatClient` instead. */
+export default DeprecatedChatClient;
+export { ChatClient };
 
-export { default as PrivateMessage } from './StandardCommands/TwitchPrivateMessage';
+export { TwitchPrivateMessage as PrivateMessage } from './StandardCommands/TwitchPrivateMessage';
 
 export {
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
 	ChatSubUpgradeInfo,
 	ChatSubExtendInfo,
-	default as ChatSubInfo
+	ChatSubInfo
 } from './UserNotices/ChatSubInfo';
-export { default as ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
-export { default as ChatRaidInfo } from './UserNotices/ChatRaidInfo';
-export { default as ChatRitualInfo } from './UserNotices/ChatRitualInfo';
-export { default as ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
+export { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
+export { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
+export { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
+export { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
 
-export { default as ChatUser } from './ChatUser';
+export { ChatUser } from './ChatUser';
 
 export { LogLevel } from '@d-fischer/logger';
 

@@ -1,6 +1,6 @@
-import TwitchClient from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 import { HelixEventData } from '../HelixEvent';
-import HelixModerator, { HelixModeratorData } from './HelixModerator';
+import { HelixModerator, HelixModeratorData } from './HelixModerator';
 
 /**
  * The different types a moderator event can have.
@@ -29,9 +29,9 @@ export type HelixModeratorEventData = HelixEventData<HelixModeratorEventDetail, 
 /**
  * An event that indicates the change of a moderator status, i.e. gaining or losing moderation privileges.
  */
-export default class HelixModeratorEvent extends HelixModerator {
+export class HelixModeratorEvent extends HelixModerator {
 	/** @private */
-	constructor(private readonly _eventData: HelixModeratorEventData, client: TwitchClient) {
+	constructor(private readonly _eventData: HelixModeratorEventData, client: ApiClient) {
 		super(_eventData.event_data, client);
 	}
 

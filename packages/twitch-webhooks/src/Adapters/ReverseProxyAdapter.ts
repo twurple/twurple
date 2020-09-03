@@ -1,4 +1,4 @@
-import ConnectionAdapter, { CommonConnectionAdapterConfig } from './ConnectionAdapter';
+import { CommonConnectionAdapterConfig, ConnectionAdapter } from './ConnectionAdapter';
 
 /**
  * The configuration of the reverse proxy connection adapter.
@@ -36,7 +36,7 @@ export interface ReverseProxyAdapterConfig extends CommonConnectionAdapterConfig
  *
  * @hideProtected
  */
-export default class ReverseProxyAdapter extends ConnectionAdapter {
+export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _connectUsingSsl: boolean;
 	private readonly _port: number;
@@ -44,6 +44,8 @@ export default class ReverseProxyAdapter extends ConnectionAdapter {
 
 	/**
 	 * Creates a reverse proxy connection adapter.
+	 *
+	 * @expandParams
 	 *
 	 * @param options
 	 */

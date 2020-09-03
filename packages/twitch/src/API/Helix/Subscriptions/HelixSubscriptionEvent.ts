@@ -1,6 +1,6 @@
-import TwitchClient from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
 import { HelixEventData } from '../HelixEvent';
-import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
+import { HelixSubscription, HelixSubscriptionData } from './HelixSubscription';
 
 /**
  * The different types a subscription event can have.
@@ -28,9 +28,9 @@ export type HelixSubscriptionEventData = HelixEventData<HelixSubscriptionData, H
 /**
  * An event that indicates the change of a subscription status, i.e. subscribing, unsubscribing or sending the monthly notification.
  */
-export default class HelixSubscriptionEvent extends HelixSubscription {
+export class HelixSubscriptionEvent extends HelixSubscription {
 	/** @private */
-	constructor(private readonly _eventData: HelixSubscriptionEventData, client: TwitchClient) {
+	constructor(private readonly _eventData: HelixSubscriptionEventData, client: ApiClient) {
 		super(_eventData.event_data, client);
 	}
 

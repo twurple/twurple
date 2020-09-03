@@ -1,12 +1,12 @@
 import { HelixModeratorEvent, HelixResponse } from 'twitch';
 import { HelixModeratorEventData } from 'twitch/lib/API/Helix/Moderation/HelixModeratorEvent';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
  * @private
  */
-export default class ModeratorEventSubscription extends Subscription<HelixModeratorEvent> {
+export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent> {
 	constructor(
 		private readonly _broadcasterId: string,
 		handler: (data: HelixModeratorEvent) => void,
@@ -25,18 +25,18 @@ export default class ModeratorEventSubscription extends Subscription<HelixModera
 	}
 
 	protected transformData(response: HelixResponse<HelixModeratorEventData>) {
-		return new HelixModeratorEvent(response.data[0], this._client._twitchClient);
+		return new HelixModeratorEvent(response.data[0], this._client._apiClient);
 	}
 
 	protected async _subscribe() {
 		if (this._userId) {
-			return this._client._twitchClient.helix.webHooks.subscribeToModeratorEventsForUser(
+			return this._client._apiClient.helix.webHooks.subscribeToModeratorEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.subscribeToModeratorEvents(
+		return this._client._apiClient.helix.webHooks.subscribeToModeratorEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
@@ -44,13 +44,13 @@ export default class ModeratorEventSubscription extends Subscription<HelixModera
 
 	protected async _unsubscribe() {
 		if (this._userId) {
-			return this._client._twitchClient.helix.webHooks.unsubscribeFromModeratorEventsForUser(
+			return this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
 		}
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromModeratorEvents(
+		return this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);

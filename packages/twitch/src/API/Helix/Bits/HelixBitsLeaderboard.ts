@@ -1,9 +1,9 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import HelixDateRangeData from '../HelixDateRangeData';
-import HelixResponse from '../HelixResponse';
-import HelixBitsLeaderboardEntry, { HelixBitsLeaderboardEntryData } from './HelixBitsLeaderboardEntry';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
+import { HelixDateRangeData } from '../HelixDateRangeData';
+import { HelixResponse } from '../HelixResponse';
+import { HelixBitsLeaderboardEntry, HelixBitsLeaderboardEntryData } from './HelixBitsLeaderboardEntry';
 
 /** @private */
 export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLeaderboardEntryData> {
@@ -15,12 +15,12 @@ export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLea
  * A leaderboard where the users who used the most bits to a broadcaster are listed.
  */
 @Cacheable
-export default class HelixBitsLeaderboard {
+export class HelixBitsLeaderboard {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixBitsLeaderboardResponse, client: TwitchClient) {
+	constructor(private readonly _data: HelixBitsLeaderboardResponse, client: ApiClient) {
 		this._client = client;
 	}
 

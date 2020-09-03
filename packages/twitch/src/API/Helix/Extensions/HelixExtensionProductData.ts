@@ -5,7 +5,7 @@ export interface HelixExtensionProductCostData {
 }
 
 /** @private */
-export default interface HelixExtensionProductData {
+export interface HelixExtensionProductData {
 	sku: string;
 	cost: HelixExtensionProductCostData;
 	displayName: string;

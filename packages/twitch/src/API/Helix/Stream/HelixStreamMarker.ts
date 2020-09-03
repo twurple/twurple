@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
 
 export interface HelixStreamMarkerData {
 	id: string;
@@ -9,12 +9,12 @@ export interface HelixStreamMarkerData {
 	URL?: string;
 }
 
-export default class HelixStreamMarker {
+export class HelixStreamMarker {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected readonly _data: HelixStreamMarkerData, client: TwitchClient) {
+	constructor(/** @private */ protected readonly _data: HelixStreamMarkerData, client: ApiClient) {
 		this._client = client;
 	}
 

@@ -1,8 +1,9 @@
 import { Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
-import Logger, { LogLevel } from '@d-fischer/logger';
-import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
+import { Logger, LogLevel } from '@d-fischer/logger';
+import { Enumerable, ResolvableValue } from '@d-fischer/shared-utils';
 import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
-import TwitchClient, { AuthProvider, HellFreezesOverError, InvalidTokenError } from 'twitch';
+import { AuthProvider, HellFreezesOverError, InvalidTokenError } from 'twitch';
+import { getTokenInfo } from 'twitch-auth';
 import { PubSubMessageData } from './Messages/PubSubMessage';
 import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
@@ -31,11 +32,11 @@ type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTok
 /**
  * A client for the Twitch PubSub interface.
  */
-export default class BasicPubSubClient extends EventEmitter {
-	@NonEnumerable private readonly _logger: Logger;
+export class BasicPubSubClient extends EventEmitter {
+	@Enumerable(false) private readonly _logger: Logger;
 
 	// topic => token
-	@NonEnumerable private readonly _topics = new Map<string, TokenResolvable>();
+	@Enumerable(false) private readonly _topics = new Map<string, TokenResolvable>();
 
 	private _connection: Connection;
 
@@ -208,6 +209,25 @@ export default class BasicPubSubClient extends EventEmitter {
 		return this.connect();
 	}
 
+	/**
+	 * Checks whether the client is currently connecting to the server.
+	 */
+	get isConnecting() {
+		return this._connection?.isConnecting ?? false;
+	}
+
+	/**
+	 * Checks whether the client is currently connected to the server.
+	 */
+	get isConnected() {
+		return this._connection?.isConnected ?? false;
+	}
+
+	/** @private */
+	get hasAnyTopics() {
+		return this._topics.size > 0;
+	}
+
 	private async _sendListen(topics: string[], accessToken?: string) {
 		return this._sendNonced({
 			type: 'LISTEN',
@@ -280,7 +300,7 @@ export default class BasicPubSubClient extends EventEmitter {
 					const accessToken = await provider.getAccessToken(scopes);
 					if (accessToken) {
 						// check validity
-						await TwitchClient.getTokenInfo(accessToken.accessToken);
+						await getTokenInfo(accessToken.accessToken);
 						return accessToken.accessToken;
 					}
 				} catch (e) {
@@ -299,7 +319,7 @@ export default class BasicPubSubClient extends EventEmitter {
 
 						if (newToken) {
 							// check validity
-							await TwitchClient.getTokenInfo(newToken.accessToken);
+							await getTokenInfo(newToken.accessToken);
 							return newToken.accessToken;
 						}
 					} catch (e) {
@@ -426,20 +446,6 @@ export default class BasicPubSubClient extends EventEmitter {
 			return this.reconnect();
 		}, this._pingTimeout * 1000);
 		this._sendPacket({ type: 'PING' });
-	}
-
-	/**
-	 * Checks whether the client is currently connecting to the server.
-	 */
-	protected get isConnecting() {
-		return this._connection ? this._connection.isConnecting : false;
-	}
-
-	/**
-	 * Checks whether the client is currently connected to the server.
-	 */
-	protected get isConnected() {
-		return this._connection ? this._connection.isConnected : false;
 	}
 
 	private _startPingCheckTimer() {

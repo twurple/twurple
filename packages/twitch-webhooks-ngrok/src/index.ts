@@ -1,3 +1,1 @@
-import NgrokAdapter from './NgrokAdapter';
-
-export { NgrokAdapter };
+export { NgrokAdapter } from './NgrokAdapter';

@@ -1,4 +1,4 @@
-import ReverseProxyAdapter from './ReverseProxyAdapter';
+import { ReverseProxyAdapter } from './ReverseProxyAdapter';
 
 /**
  * The configuration for the environment port connection adapter.
@@ -36,7 +36,7 @@ export interface EnvPortAdapterConfig {
  *
  * @hideProtected
  */
-export default class EnvPortAdapter extends ReverseProxyAdapter {
+export class EnvPortAdapter extends ReverseProxyAdapter {
 	/**
 	 * Creates a new environment port connection adapter.
 	 *

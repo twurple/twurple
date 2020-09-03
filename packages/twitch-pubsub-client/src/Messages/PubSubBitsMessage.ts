@@ -1,5 +1,5 @@
-import { MakeOptional, NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
+import { Enumerable, MakeOptional } from '@d-fischer/shared-utils';
+import { ApiClient } from 'twitch';
 import { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsMessageBadgeEntitlement {
@@ -27,12 +27,12 @@ export interface PubSubBitsMessageData {
 /**
  * A message that informs about bits being used in a channel.
  */
-export default class PubSubBitsMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubBitsMessage {
+	@Enumerable(false) private readonly _apiClient: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: PubSubBitsMessageData, twitchClient: TwitchClient) {
-		this._twitchClient = twitchClient;
+	constructor(private readonly _data: PubSubBitsMessageData, apiClient: ApiClient) {
+		this._apiClient = apiClient;
 	}
 
 	/**
@@ -51,9 +51,11 @@ export default class PubSubBitsMessage {
 
 	/**
 	 * Retrieves more data about the user.
+	 *
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getUser() {
-		return this._data.data.user_id ? this._twitchClient.helix.users.getUserById(this._data.data.user_id) : null;
+		return this._data.data.user_id ? this._apiClient.helix.users.getUserById(this._data.data.user_id) : null;
 	}
 
 	/**

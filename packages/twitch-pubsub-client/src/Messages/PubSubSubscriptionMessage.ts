@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from 'twitch';
 import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 
 export interface PubSubSubscriptionDetail {
@@ -14,6 +14,7 @@ export interface PubSubSubscriptionGiftDetail {
 	recipient_user_name: string;
 	recipient_display_name: string;
 	months: number;
+	multi_month_duration: number;
 }
 
 export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
@@ -26,12 +27,12 @@ export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 /**
  * A message that informs about a user subscribing to a channel.
  */
-export default class PubSubSubscriptionMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+export class PubSubSubscriptionMessage {
+	@Enumerable(false) private readonly _apiClient: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: PubSubSubscriptionMessageData, twitchClient: TwitchClient) {
-		this._twitchClient = twitchClient;
+	constructor(private readonly _data: PubSubSubscriptionMessageData, apiClient: ApiClient) {
+		this._apiClient = apiClient;
 	}
 
 	/**
@@ -164,22 +165,37 @@ export default class PubSubSubscriptionMessage {
 	}
 
 	/**
+	 * The duration of the gifted subscription, in months.
+	 *
+	 * Returns null if the subscription is not a gift.
+	 */
+	get giftDuration() {
+		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
+			? this._data.multi_month_duration
+			: null;
+	}
+
+	/**
 	 * Retrieves more data about the subscribing user.
+	 *
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getUser() {
-		return this._twitchClient.helix.users.getUserById(this.userId);
+		return this._apiClient.helix.users.getUserById(this.userId);
 	}
 
 	/**
 	 * Retrieves more data about the gifting user.
 	 *
 	 * Returns null if the subscription is not a gift.
+	 *
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
 	async getGifter() {
 		if (!this.isGift) {
 			return null;
 		}
 
-		return this._twitchClient.helix.users.getUserById(this.gifterId!);
+		return this._apiClient.helix.users.getUserById(this.gifterId!);
 	}
 }

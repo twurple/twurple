@@ -1,12 +1,12 @@
 import { HelixResponse, HelixUser } from 'twitch';
 import { HelixUserData } from 'twitch/lib/API/Helix/User/HelixUser';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
  * @private
  */
-export default class UserChangeSubscription extends Subscription<HelixUser> {
+export class UserChangeSubscription extends Subscription<HelixUser> {
 	constructor(
 		private readonly _userId: string,
 		handler: (data: HelixUser) => void,
@@ -22,11 +22,11 @@ export default class UserChangeSubscription extends Subscription<HelixUser> {
 	}
 
 	protected transformData(response: HelixResponse<HelixUserData>) {
-		return new HelixUser(response.data[0], this._client._twitchClient);
+		return new HelixUser(response.data[0], this._client._apiClient);
 	}
 
 	protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToUserChanges(
+		return this._client._apiClient.helix.webHooks.subscribeToUserChanges(
 			this._userId,
 			await this._getOptions(),
 			this._withEmail
@@ -34,7 +34,7 @@ export default class UserChangeSubscription extends Subscription<HelixUser> {
 	}
 
 	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserChanges(
+		return this._client._apiClient.helix.webHooks.unsubscribeFromUserChanges(
 			this._userId,
 			await this._getOptions()
 		);

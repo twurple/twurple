@@ -1,6 +1,6 @@
 import { Message } from 'ircv3';
 
 /** @private */
-export default class Reconnect extends Message {
+export class Reconnect extends Message {
 	static readonly COMMAND = 'RECONNECT';
 }

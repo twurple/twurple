@@ -1,10 +1,10 @@
-import HelixPaginatedRequest from './HelixPaginatedRequest';
+import { HelixPaginatedRequest } from './HelixPaginatedRequest';
 import { HelixPaginatedResponseWithTotal } from './HelixResponse';
 
 /**
  * A special case of {@HelixPaginatedRequest} with support for fetching the total number of entities, whenever an endpoint supports it.
  */
-export default class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<D, T> {
+export class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<D, T> {
 	/** @private */
 	protected _currentData?: HelixPaginatedResponseWithTotal<D>;
 

@@ -1,13 +1,13 @@
-import HelixStreamMarker, { HelixStreamMarkerData } from './HelixStreamMarker';
-import TwitchClient from '../../../TwitchClient';
+import { ApiClient } from '../../../ApiClient';
+import { HelixStreamMarker, HelixStreamMarkerData } from './HelixStreamMarker';
 
 export interface HelixStreamMarkerVideoData extends HelixStreamMarkerData {
 	URL: string;
 }
 
-export default class HelixStreamMarkerWithVideo extends HelixStreamMarker {
+export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
 	/** @private */
-	constructor(data: HelixStreamMarkerVideoData, private readonly _videoId: string, client: TwitchClient) {
+	constructor(data: HelixStreamMarkerVideoData, private readonly _videoId: string, client: ApiClient) {
 		super(data, client);
 	}
 

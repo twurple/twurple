@@ -1,13 +1,13 @@
 import generateRandomString from '@d-fischer/randomstring';
 import * as crypto from 'crypto';
-import { HelixWebHookHubRequestOptions } from 'twitch/lib/API/Helix/WebHooks/HelixWebHooksAPI';
-import WebHookListener from '../WebHookListener';
+import { HelixWebHookHubRequestOptions } from 'twitch';
+import { WebHookListener } from '../WebHookListener';
 
 /**
  * @hideProtected
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export default abstract class Subscription</** @private */ T = any> {
+export abstract class Subscription</** @private */ T = any> {
 	private _verified: boolean = false;
 	protected _secret: string;
 	private _refreshTimer?: NodeJS.Timer;

@@ -1,7 +1,7 @@
 /**
  * Information about a Reward Gift triggered by a special event.
  */
-interface ChatRewardGiftInfo {
+export interface ChatRewardGiftInfo {
 	/**
 	 * The domain of the reward, i.e. an identifier of the special event that caused these rewards.
 	 */
@@ -34,5 +34,3 @@ interface ChatRewardGiftInfo {
 	 */
 	triggerType: string;
 }
-
-export default ChatRewardGiftInfo;

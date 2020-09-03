@@ -1,18 +1,18 @@
 import { Cacheable, Cached, CachedGetter } from '@d-fischer/cache-decorators';
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import ChatEmote, { ChatEmoteData } from './ChatEmote';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { ApiClient } from '../../../ApiClient';
+import { ChatEmote, ChatEmoteData } from './ChatEmote';
 
 /**
  * A list of emotes.
  */
 @Cacheable
-export default class ChatEmoteList {
+export class ChatEmoteList {
 	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: ChatEmoteData[], client: TwitchClient) {
+	constructor(private readonly _data: ChatEmoteData[], client: ApiClient) {
 		this._client = client;
 	}
 
