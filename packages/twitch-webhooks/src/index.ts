@@ -2,8 +2,14 @@
 import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { WebHookListener } from './WebHookListener';
+
 /** @deprecated Use the named export `WebHookListener` instead. */
-const DeprecatedWebHookListener = deprecateClass(WebHookListener, 'Use the named export `WebHookListener` instead.');
+const DeprecatedWebHookListener = deprecateClass(
+	WebHookListener,
+	`[twitch-webhooks] The default export has been deprecated. Use the named export instead:
+
+\timport { WebHookListener } from 'twitch-webhooks';`
+);
 /** @deprecated Use the named export `WebHookListener` instead. */
 type DeprecatedWebHookListener = WebHookListener;
 /** @deprecated Use the named export `WebHookListener` instead. */

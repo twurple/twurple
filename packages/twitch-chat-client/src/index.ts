@@ -2,8 +2,14 @@
 import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { ChatClient } from './ChatClient';
+
 /** @deprecated Use the named export `ChatClient` instead. */
-const DeprecatedChatClient = deprecateClass(ChatClient, 'Use the named export `ChatClient` instead.');
+const DeprecatedChatClient = deprecateClass(
+	ChatClient,
+	`[twitch-chat-client] The default export has been deprecated. Use the named export instead:
+
+\timport { ChatClient } from 'twitch-chat-client';`
+);
 /** @deprecated Use the named export `ChatClient` instead. */
 type DeprecatedChatClient = ChatClient;
 /** @deprecated Use the named export `ChatClient` instead. */

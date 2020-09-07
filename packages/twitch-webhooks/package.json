@@ -33,7 +33,7 @@
     "@d-fischer/public-ip": "^4.0.2",
     "@d-fischer/randomstring": "^1.1.6",
     "@d-fischer/raw-body": "^2.4.2",
-    "@d-fischer/shared-utils": "^2.0.1",
+    "@d-fischer/shared-utils": "^2.3.2",
     "httpanda": "^0.4.1",
     "tslib": "^2.0.0"
   },

@@ -3,7 +3,12 @@ import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { PubSubClient } from './PubSubClient';
 /** @deprecated Use the named export `PubSubClient` instead. */
-const DeprecatedPubSubClient = deprecateClass(PubSubClient, 'Use the named export `PubSubClient` instead.');
+const DeprecatedPubSubClient = deprecateClass(
+	PubSubClient,
+	`[twitch-pubsub-client] The default export has been deprecated. Use the named export instead:
+
+\timport { PubSubClient } from 'twitch-pubsub-client';`
+);
 /** @deprecated Use the named export `PubSubClient` instead. */
 type DeprecatedPubSubClient = PubSubClient;
 /** @deprecated Use the named export `PubSubClient` instead. */
