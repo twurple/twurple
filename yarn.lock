@@ -222,10 +222,10 @@
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-"@d-fischer/shared-utils@^2.0.0", "@d-fischer/shared-utils@^2.0.1", "@d-fischer/shared-utils@^2.1.2", "@d-fischer/shared-utils@^2.3.1":
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-2.3.1.tgz#a4cb0e5b098ca810421bd73bf1371c554345355d"
-  integrity sha512-4cWXqXYrMOvk1dIao3iODrAIiA4a6gB7FF0/OmYq0nUJFQ4u688tTJl/hQoBs2Id51wvas8oavdz0jxWAa4dZA==
+"@d-fischer/shared-utils@^2.0.0", "@d-fischer/shared-utils@^2.1.2", "@d-fischer/shared-utils@^2.3.1", "@d-fischer/shared-utils@^2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-2.3.2.tgz#ba271cf04dba05c89b8815e9427f7e647eb2633e"
+  integrity sha512-/eOhwUcdbWrpdPDWu77Q21UDuL6q9GJAp1dfXr6QgGs4pHTg9ZUFSs6Vhotk0Muu6xNkwwlOlZFwds3CRXhTmg==
   dependencies:
     "@types/node" "^14.0.5"
     tslib "^2.0.0"

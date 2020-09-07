@@ -3,7 +3,12 @@ import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { ApiClient } from './ApiClient';
 /** @deprecated Use the named export `ApiClient` instead. */
-const DeprecatedTwitchClient = deprecateClass(ApiClient, 'Use the named export `ApiClient` instead.');
+const DeprecatedTwitchClient = deprecateClass(
+	ApiClient,
+	`[twitch] The default export has been deprecated. Use the named export instead:
+
+\timport { ApiClient } from 'twitch';`
+);
 /** @deprecated Use the named export `ApiClient` instead. */
 type DeprecatedTwitchClient = ApiClient;
 /** @deprecated Use the named export `ApiClient` instead. */

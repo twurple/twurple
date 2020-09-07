@@ -5,7 +5,9 @@ import { ElectronAuthProvider } from './ElectronAuthProvider';
 /** @deprecated Use the named export `ElectronAuthProvider` instead. */
 const DeprecatedElectronAuthProvider = deprecateClass(
 	ElectronAuthProvider,
-	'Use the named export `ElectronAuthProvider` instead.'
+	`[twitch-electron-auth-provider] The default export has been deprecated. Use the named export instead:
+
+\timport { ElectronAuthProvider } from 'twitch-electron-auth-provider';`
 );
 /** @deprecated Use the named export `ElectronAuthProvider` instead. */
 type DeprecatedElectronAuthProvider = ElectronAuthProvider;
