@@ -151,6 +151,30 @@ export class HelixWebHooksApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribes to events representing a hypetrain progressing.
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcasterId The broadcaster / channel for which to get notifications about hypetrain events.
+	 * @param options
+	 */
+	async subscribeToHypeTrainEvents(broadcasterId: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		return this._sendHypeTrainEventHubRequest('subscribe', broadcasterId, options);
+	}
+
+	/**
+	 * Unsubscribes from events representing a user following other users.
+	 *
+	 * @expandParams
+	 *
+	 * @param user The user for which to not get any more notifications about the users they will follow.
+	 * @param options
+	 */
+	async unsubscribeFromHypeTrainEvents(broadcasterId: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+		return this._sendUserFollowsHubRequest('unsubscribe', 'from', broadcasterId, options);
+	}
+
+	/**
 	 * Unsubscribes from events representing a user being followed by other users.
 	 *
 	 * @expandParams
@@ -405,6 +429,21 @@ export class HelixWebHooksApi extends BaseApi {
 		return this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/users/follows?first=1&${direction}_id=${userId}`,
+			...options
+		});
+	}
+
+	private async _sendHypeTrainEventHubRequest(
+		mode: HubMode,
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	) {
+		const userId = extractUserId(user);
+
+		return this.sendHubRequest({
+			mode,
+			topicUrl: `https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=${userId}&first=1`,
+			scope: 'channel:read:hype_train',
 			...options
 		});
 	}

@@ -12,6 +12,7 @@ import type {
 	HelixStream,
 	HelixSubscriptionEvent,
 	HelixUser,
+	HypeTrainEvent,
 	UserIdResolvable
 } from 'twitch';
 import { extractUserId } from 'twitch';
@@ -23,6 +24,7 @@ import { BanEventSubscription } from './Subscriptions/BanEventSubscription';
 import { ExtensionTransactionSubscription } from './Subscriptions/ExtensionTransactionSubscription';
 import { FollowsFromUserSubscription } from './Subscriptions/FollowsFromUserSubscription';
 import { FollowsToUserSubscription } from './Subscriptions/FollowsToUserSubscription';
+import { HypeTrainEventSubscription } from './Subscriptions/HypeTrainEventSubscription';
 import { ModeratorEventSubscription } from './Subscriptions/ModeratorEventSubscription';
 import { StreamChangeSubscription } from './Subscriptions/StreamChangeSubscription';
 import type { Subscription } from './Subscriptions/Subscription';
@@ -223,6 +225,31 @@ export class WebHookListener {
 		const userId = extractUserId(user);
 
 		const subscription = new FollowsToUserSubscription(userId, handler, this, validityInSeconds);
+		await subscription.start();
+		this._subscriptions.set(subscription.id, subscription);
+
+		return subscription;
+	}
+
+	/**
+	 * Subscribes to events representing a hypetrain event.
+	 *
+	 * @param broadcasterId The broadcaster / channel for which to get notifications about the hypetrain events.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
+	async subscribeToHypeTrainEvents(
+		broadcasterId: UserIdResolvable,
+		handler: (hypeTrain: HypeTrainEvent) => void,
+		validityInSeconds = this._hookValidity
+	): Promise<Subscription> {
+		const userId = extractUserId(broadcasterId);
+
+		const subscription = new HypeTrainEventSubscription(userId, handler, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id, subscription);
 
