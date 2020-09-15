@@ -163,11 +163,11 @@ export class HelixWebHooksApi extends BaseApi {
 	}
 
 	/**
-	 * Unsubscribes from events representing a user following other users.
+	 * Unsubscribes from events representing a hypetrain progressing.
 	 *
 	 * @expandParams
 	 *
-	 * @param user The user for which to not get any more notifications about the users they will follow.
+	 * @param boradcasterId The broadcaster / channel for which to get notifications about hypetrain events.
 	 * @param options
 	 */
 	async unsubscribeFromHypeTrainEvents(broadcasterId: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
