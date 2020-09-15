@@ -24,6 +24,11 @@ export class HypeTrainEvent {
 	/** @private */
 	constructor(/** @private */ protected _data: HypeTrainEventData, client: ApiClient) {
 		this._client = client;
+		this._data.lastContribution = new HypeTrainContributor(_data.lastContribution);
+
+		_data.topContributions.forEach(contributor =>
+			this._data.topContributions.push(new HypeTrainContributor(contributor))
+		);
 	}
 
 	/**
