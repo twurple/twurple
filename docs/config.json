@@ -6,6 +6,8 @@
 	"repoUser": "d-fischer",
 	"repoName": "twitch",
 	"monorepoRoot": "packages",
+	"versionBranchPrefix": "support/",
+	"versionFolder": "versions",
 	"ignoredPackages": ["twitch-electron-auth-provider"],
 	"packages": {
 		"twitch": {
