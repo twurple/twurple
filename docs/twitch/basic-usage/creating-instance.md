@@ -1,6 +1,6 @@
 The first thing you do is create an authentication provider. The easiest way to get one is to supply static credentials. From that, you can create your Twitch API client.
 
-```typescript
+```ts twoslash
 import { ApiClient } from 'twitch';
 import { StaticAuthProvider } from 'twitch-auth';
 
@@ -12,7 +12,7 @@ const apiClient = new ApiClient({ authProvider });
 
 You can also have the client refresh the tokens automatically if necessary by wrapping it in a {@RefreshableAuthProvider} with the necessary data:
 
-```typescript
+```ts twoslash
 import { ApiClient } from 'twitch';
 import { AccessToken, RefreshableAuthProvider, StaticAuthProvider } from 'twitch-auth';
 
@@ -37,7 +37,7 @@ There's a more elaborated example on how to make auto refreshing work in the [tw
 
 If you don't need any user scopes, you may also create the client using client credentials:
 
-```typescript
+```ts twoslash
 import { ApiClient } from 'twitch';
 import { ClientCredentialsAuthProvider } from 'twitch-auth';
 
