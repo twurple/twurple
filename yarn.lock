@@ -66,10 +66,10 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/deprecate/-/deprecate-2.0.1.tgz#5cccedff47477ae9e055a8be799ac8ac3dd22eda"
   integrity sha512-HrK3Yu3iRJo1YzG52bt2TyhRGZRIyFumbV/fH0h6IWa43ZJeAI3o4LXzBVLLdA7ITLTMtYP8yJnpHuFftQwQ2A==
 
-"@d-fischer/documen.ts@^0.11.3":
-  version "0.11.3"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.11.3.tgz#a21500d7222504f3c47fb2ef5ba538b99e61215f"
-  integrity sha512-K9L5Rny4eC6J99fXmpF183wp/vLL4iHbosiKOX1EN4ggg00zv/ZnjiaMZbpscXpp38gz6G5OPXY2xU5jKOLrng==
+"@d-fischer/documen.ts@^0.11.4":
+  version "0.11.4"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.11.4.tgz#a29bb57455e1462d87cd8bbe006778a87487b354"
+  integrity sha512-C8hBdKL2y6MMlZGUDIzXBOrYTeyGJcCE0+NA5j57JeMKAy6Vd429A6qjiEBdIWv59BDkCVruZjtIf72iXw8nsQ==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.28"
     "@fortawesome/free-solid-svg-icons" "^5.13.0"
