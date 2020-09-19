@@ -10,6 +10,7 @@ const DeprecatedPubSubClient = deprecateClass(
 \timport { PubSubClient } from 'twitch-pubsub-client';`
 );
 /** @deprecated Use the named export `PubSubClient` instead. */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 type DeprecatedPubSubClient = PubSubClient;
 /** @deprecated Use the named export `PubSubClient` instead. */
 export default DeprecatedPubSubClient;

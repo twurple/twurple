@@ -11,6 +11,7 @@ const DeprecatedWebHookListener = deprecateClass(
 \timport { WebHookListener } from 'twitch-webhooks';`
 );
 /** @deprecated Use the named export `WebHookListener` instead. */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 type DeprecatedWebHookListener = WebHookListener;
 /** @deprecated Use the named export `WebHookListener` instead. */
 export default DeprecatedWebHookListener;

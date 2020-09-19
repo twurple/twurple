@@ -10,6 +10,7 @@ const DeprecatedTwitchClient = deprecateClass(
 \timport { ApiClient } from 'twitch';`
 );
 /** @deprecated Use the named export `ApiClient` instead. */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 type DeprecatedTwitchClient = ApiClient;
 /** @deprecated Use the named export `ApiClient` instead. */
 export default DeprecatedTwitchClient;

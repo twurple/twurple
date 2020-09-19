@@ -58,7 +58,7 @@ export class SingleUserPubSubClient {
 		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
 		this._pubSubClient.onMessage(async (topic, messageData) => {
 			const [type, userId, ...args] = topic.split('.');
-			if (this._listeners.has(type) && userId === (await this._getUserId())) {
+			if (this._listeners.has(topic) && userId === (await this._getUserId())) {
 				let message: PubSubMessage;
 				switch (type) {
 					case 'channel-bits-events-v2': {
@@ -101,7 +101,7 @@ export class SingleUserPubSubClient {
 					default:
 						return;
 				}
-				for (const listener of this._listeners.get(type)!) {
+				for (const listener of this._listeners.get(topic)!) {
 					listener.call(message);
 				}
 			}
@@ -245,12 +245,13 @@ export class SingleUserPubSubClient {
 	) {
 		await this._pubSubClient.connect();
 		const userId = await this._getUserId();
+		const topicName = [type, userId, ...additionalParams].join('.');
 		const listener = new PubSubListener(type, userId, callback, this);
-		if (this._listeners.has(type)) {
-			this._listeners.get(type)!.push(listener);
+		if (this._listeners.has(topicName)) {
+			this._listeners.get(topicName)!.push(listener);
 		} else {
-			this._listeners.set(type, [listener]);
-			await this._pubSubClient.listen([type, userId, ...additionalParams].join('.'), this._apiClient, scope);
+			this._listeners.set(topicName, [listener]);
+			await this._pubSubClient.listen(topicName, this._apiClient, scope);
 		}
 		return listener;
 	}

@@ -1,6 +1,6 @@
 {
   "name": "twitch",
-  "version": "4.2.0-pre.7",
+  "version": "4.2.3",
   "description": "Interact with Twitch's API.",
   "keywords": [
     "twitch",
@@ -37,8 +37,8 @@
     "@d-fischer/shared-utils": "^2.3.2",
     "top-package": "^1.0.0",
     "tslib": "^2.0.0",
-    "twitch-api-call": "^4.2.0-pre.7",
-    "twitch-auth": "^4.2.0-pre.7"
+    "twitch-api-call": "^4.2.3",
+    "twitch-auth": "^4.2.3"
   },
   "files": [
     "LICENSE",

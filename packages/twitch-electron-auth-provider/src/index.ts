@@ -10,6 +10,7 @@ const DeprecatedElectronAuthProvider = deprecateClass(
 \timport { ElectronAuthProvider } from 'twitch-electron-auth-provider';`
 );
 /** @deprecated Use the named export `ElectronAuthProvider` instead. */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 type DeprecatedElectronAuthProvider = ElectronAuthProvider;
 /** @deprecated Use the named export `ElectronAuthProvider` instead. */
 export default DeprecatedElectronAuthProvider;
