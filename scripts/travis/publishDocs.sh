@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-shopt -s extglob
 
 REPO_USER="${TRAVIS_REPO_SLUG%/*}"
 
