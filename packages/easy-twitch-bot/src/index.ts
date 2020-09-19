@@ -11,6 +11,7 @@ const DeprecatedBot = deprecateClass(
 \timport { Bot } from 'easy-twitch-bot';`
 );
 /** @deprecated Use the named export `Bot` instead. */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 type DeprecatedBot = Bot;
 /** @deprecated Use the named export `Bot` instead. */
 export default DeprecatedBot;

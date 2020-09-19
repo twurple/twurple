@@ -11,6 +11,7 @@ const DeprecatedChatClient = deprecateClass(
 \timport { ChatClient } from 'twitch-chat-client';`
 );
 /** @deprecated Use the named export `ChatClient` instead. */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 type DeprecatedChatClient = ChatClient;
 /** @deprecated Use the named export `ChatClient` instead. */
 export default DeprecatedChatClient;
