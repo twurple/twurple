@@ -90,17 +90,16 @@ export class ElectronAuthProvider implements AuthProvider {
 				return;
 			}
 
-			const redir = encodeURIComponent(this._redirectUri);
 			const queryParams: AuthorizeParams = {
 				response_type: 'token',
 				client_id: this.clientId,
-				redirect_uri: redir,
+				redirect_uri: this._redirectUri,
 				scope: scopes.join(' ')
 			};
 			if (this._allowUserChange) {
 				queryParams.force_verify = true;
 			}
-			const authUrl = `https://id.twitch.tv/oauth2/authorize${stringify(queryParams)}`;
+			const authUrl = `https://id.twitch.tv/oauth2/authorize${stringify(queryParams, { addQueryPrefix: true })}`;
 			const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
 				width: 800,
 				height: 600,
