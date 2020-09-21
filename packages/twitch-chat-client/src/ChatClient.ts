@@ -715,25 +715,7 @@ export class ChatClient extends IrcClient {
 			this._authFailureMessage = undefined;
 		});
 
-		this.onPrivmsg((channel, user, message, msg) => {
-			if (user === 'jtv') {
-				// 1 = who hosted
-				// 2 = auto-host or not
-				// 3 = how many viewers (not always present)
-				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
-				if (match) {
-					this.emit(
-						this.onHosted,
-						channel,
-						match[1],
-						Boolean(match[2]),
-						match[3] ? Number(match[3]) : undefined
-					);
-				}
-			} else {
-				this.emit(this.onMessage, channel, user, message, msg);
-			}
-		});
+		this._registerInternalOnPrivmsgHandler();
 
 		this.onTypedMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
@@ -2112,6 +2094,19 @@ export class ChatClient extends IrcClient {
 		}
 	}
 
+	removeListener(): void;
+	removeListener(id: Listener): void;
+	removeListener(event: Function, listener?: Function): void;
+
+	removeListener() {
+		// Doing this with rest params would require a any[] type annotation which is bad and also
+		// would add a new function signature which is also not wanted thus using `arguments` makes more sense here.
+		super.removeListener.call(this, ...arguments); // eslint-disable-line prefer-rest-params
+		if (arguments.length === 0) {
+			this._registerInternalOnPrivmsgHandler();
+		}
+	}
+
 	protected registerCoreMessageTypes() {
 		super.registerCoreMessageTypes();
 		this.registerMessageType(TwitchPrivateMessage);
@@ -2184,5 +2179,27 @@ export class ChatClient extends IrcClient {
 			.toString()
 			.padStart(5, '0');
 		return `justinfan${randomSuffix}`;
+	}
+
+	private _registerInternalOnPrivmsgHandler() {
+		this.onPrivmsg((channel, user, message, msg) => {
+			if (user === 'jtv') {
+				// 1 = who hosted
+				// 2 = auto-host or not
+				// 3 = how many viewers (not always present)
+				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
+				if (match) {
+					this.emit(
+						this.onHosted,
+						channel,
+						match[1],
+						Boolean(match[2]),
+						match[3] ? Number(match[3]) : undefined
+					);
+				}
+			} else {
+				this.emit(this.onMessage, channel, user, message, msg);
+			}
+		});
 	}
 }
