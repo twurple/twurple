@@ -2098,12 +2098,14 @@ export class ChatClient extends IrcClient {
 	removeListener(id: Listener): void;
 	removeListener(event: Function, listener?: Function): void;
 
-	removeListener() {
-		// Doing this with rest params would require a any[] type annotation which is bad and also
-		// would add a new function signature which is also not wanted thus using `arguments` makes more sense here.
-		super.removeListener.call(this, ...arguments); // eslint-disable-line prefer-rest-params
-		if (arguments.length === 0) {
+	removeListener(idOrEvent?: Listener | Function, listener?: Function) {
+		if (!idOrEvent) {
+			super.removeListener();
 			this._registerInternalOnPrivmsgHandler();
+		} else if (typeof idOrEvent === 'object') {
+			super.removeListener(idOrEvent);
+		} else {
+			super.removeListener(idOrEvent, listener);
 		}
 	}
 
