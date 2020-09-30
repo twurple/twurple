@@ -715,25 +715,7 @@ export class ChatClient extends IrcClient {
 			this._authFailureMessage = undefined;
 		});
 
-		this.onPrivmsg((channel, user, message, msg) => {
-			if (user === 'jtv') {
-				// 1 = who hosted
-				// 2 = auto-host or not
-				// 3 = how many viewers (not always present)
-				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
-				if (match) {
-					this.emit(
-						this.onHosted,
-						channel,
-						match[1],
-						Boolean(match[2]),
-						match[3] ? Number(match[3]) : undefined
-					);
-				}
-			} else {
-				this.emit(this.onMessage, channel, user, message, msg);
-			}
-		});
+		this._registerInternalOnPrivmsgHandler();
 
 		this.onTypedMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
@@ -2112,6 +2094,18 @@ export class ChatClient extends IrcClient {
 		}
 	}
 
+	removeListener(): void;
+	removeListener(id: Listener): void;
+	removeListener(event: Function, listener?: Function): void;
+
+	removeListener(...args: [] | [Listener] | [Function, Function?]) {
+		// @ts-expect-error TS2557 - doesn't recognize tuple unions as overload possibilities
+		super.removeListener(...args);
+		if (args.length === 0) {
+			this._registerInternalOnPrivmsgHandler();
+		}
+	}
+
 	protected registerCoreMessageTypes() {
 		super.registerCoreMessageTypes();
 		this.registerMessageType(TwitchPrivateMessage);
@@ -2184,5 +2178,27 @@ export class ChatClient extends IrcClient {
 			.toString()
 			.padStart(5, '0');
 		return `justinfan${randomSuffix}`;
+	}
+
+	private _registerInternalOnPrivmsgHandler() {
+		this.onPrivmsg((channel, user, message, msg) => {
+			if (user === 'jtv') {
+				// 1 = who hosted
+				// 2 = auto-host or not
+				// 3 = how many viewers (not always present)
+				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
+				if (match) {
+					this.emit(
+						this.onHosted,
+						channel,
+						match[1],
+						Boolean(match[2]),
+						match[3] ? Number(match[3]) : undefined
+					);
+				}
+			} else {
+				this.emit(this.onMessage, channel, user, message, msg);
+			}
+		});
 	}
 }
