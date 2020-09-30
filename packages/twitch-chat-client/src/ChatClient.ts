@@ -2098,14 +2098,11 @@ export class ChatClient extends IrcClient {
 	removeListener(id: Listener): void;
 	removeListener(event: Function, listener?: Function): void;
 
-	removeListener(idOrEvent?: Listener | Function, listener?: Function) {
-		if (!idOrEvent) {
-			super.removeListener();
+	removeListener(...args: [] | [Listener] | [Function, Function?]) {
+		// @ts-expect-error TS2557 - doesn't recognize tuple unions as overload possibilities
+		super.removeListener(...args);
+		if (args.length === 0) {
 			this._registerInternalOnPrivmsgHandler();
-		} else if (typeof idOrEvent === 'object') {
-			super.removeListener(idOrEvent);
-		} else {
-			super.removeListener(idOrEvent, listener);
 		}
 	}
 
