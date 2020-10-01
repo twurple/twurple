@@ -2073,7 +2073,9 @@ export class ChatClient extends IrcClient {
 	 * Disconnects from the chat server.
 	 */
 	async quit() {
-		return this._connection?.disconnect();
+		this._connection?.disconnect().then(() => {
+			this._chatLogger.debug('Finished cleaning up old connection');
+		});
 	}
 
 	/**

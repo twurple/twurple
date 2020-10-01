@@ -27,10 +27,10 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/connection": "^6.0.2",
+    "@d-fischer/connection": "^6.1.0",
     "@d-fischer/logger": "^2.0.0",
     "@d-fischer/shared-utils": "^2.3.2",
-    "@d-fischer/typed-event-emitter": "^3.0.0"
+    "@d-fischer/typed-event-emitter": "^3.0.2"
   },
   "devDependencies": {
     "twitch": "^4.2.3"
