@@ -25,6 +25,7 @@
   },
   "homepage": "https://d-fischer.github.io/twitch-api-call",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
     "@d-fischer/cross-fetch": "^4.0.1",

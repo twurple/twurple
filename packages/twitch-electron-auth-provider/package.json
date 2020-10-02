@@ -24,6 +24,7 @@
     "directory": "packages/twitch-electron-auth-provider"
   },
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
     "@d-fischer/qs": "^7.0.2",

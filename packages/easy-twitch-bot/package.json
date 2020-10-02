@@ -18,8 +18,9 @@
     "url": "https://github.com/d-fischer/twitch.git",
     "directory": "packages/twitch-chat-client"
   },
-  "homepage": "https://d-fischer.github.io/twitch-chat-client",
+  "homepage": "https://d-fischer.github.io/easy-twitch-bot",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
     "@d-fischer/shared-utils": "^2.3.2",

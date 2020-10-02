@@ -28,6 +28,7 @@
   },
   "homepage": "https://d-fischer.github.io/twitch",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
     "@d-fischer/cache-decorators": "^2.0.0",

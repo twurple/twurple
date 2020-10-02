@@ -27,6 +27,7 @@
   },
   "homepage": "https://d-fischer.github.io/twitch-webhooks-ngrok",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
     "@d-fischer/portfinder": "^1.0.27",
