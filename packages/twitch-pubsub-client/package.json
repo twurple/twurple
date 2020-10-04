@@ -11,7 +11,6 @@
   "sideEffects": false,
   "main": "lib",
   "types": "lib",
-  "module": "es",
   "exports": {
     ".": {
       "require": "./lib/index.js",
@@ -28,10 +27,10 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/connection": "^6.1.0",
-    "@d-fischer/logger": "^2.0.0",
-    "@d-fischer/shared-utils": "^2.3.2",
-    "@d-fischer/typed-event-emitter": "^3.0.2"
+    "@d-fischer/connection": "^6.2.0",
+    "@d-fischer/logger": "^2.1.0",
+    "@d-fischer/shared-utils": "^2.4.0",
+    "@d-fischer/typed-event-emitter": "^3.1.0"
   },
   "devDependencies": {
     "twitch": "^4.3.0-pre.0"

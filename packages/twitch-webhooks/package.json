@@ -12,7 +12,6 @@
   "sideEffects": false,
   "main": "lib",
   "types": "lib",
-  "module": "es",
   "exports": {
     ".": {
       "require": "./lib/index.js",
@@ -29,13 +28,13 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/logger": "^2.0.0",
-    "@d-fischer/portfinder": "^1.0.27",
-    "@d-fischer/public-ip": "^4.0.2",
-    "@d-fischer/randomstring": "^1.1.6",
-    "@d-fischer/raw-body": "^2.4.2",
-    "@d-fischer/shared-utils": "^2.3.2",
-    "httpanda": "^0.4.1",
+    "@d-fischer/logger": "^2.1.0",
+    "@d-fischer/portfinder": "^1.0.28",
+    "@d-fischer/public-ip": "^4.0.3",
+    "@d-fischer/randomstring": "^1.1.7",
+    "@d-fischer/raw-body": "^2.4.3",
+    "@d-fischer/shared-utils": "^2.4.0",
+    "httpanda": "^0.4.3",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

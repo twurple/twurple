@@ -13,7 +13,6 @@
   "sideEffects": false,
   "main": "lib",
   "types": "lib",
-  "module": "es",
   "exports": {
     ".": {
       "require": "./lib/index.js",
@@ -30,8 +29,8 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/portfinder": "^1.0.27",
-    "ngrok": "^3.2.7",
+    "@d-fischer/portfinder": "^1.0.28",
+    "ngrok": "^3.3.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

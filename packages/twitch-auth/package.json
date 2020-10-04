@@ -13,7 +13,6 @@
   "sideEffects": false,
   "main": "lib",
   "types": "lib",
-  "module": "es",
   "exports": {
     ".": {
       "require": "./lib/index.js",
@@ -30,8 +29,8 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/deprecate": "^2.0.1",
-    "@d-fischer/shared-utils": "^2.3.2",
+    "@d-fischer/deprecate": "^2.0.2",
+    "@d-fischer/shared-utils": "^2.4.0",
     "tslib": "^2.0.0",
     "twitch-api-call": "^4.3.0-pre.0"
   },

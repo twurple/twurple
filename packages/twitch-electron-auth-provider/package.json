@@ -11,7 +11,6 @@
   "sideEffects": false,
   "main": "lib",
   "types": "lib",
-  "module": "es",
   "exports": {
     ".": {
       "require": "./lib/index.js",
@@ -28,7 +27,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/qs": "^7.0.2",
-    "@d-fischer/shared-utils": "^2.3.2",
+    "@d-fischer/shared-utils": "^2.4.0",
     "tslib": "^2.0.0"
   },
   "devDependencies": {
