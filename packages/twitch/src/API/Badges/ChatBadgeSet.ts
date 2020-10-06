@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../ApiClient';
-import { ChatBadgeVersion, ChatBadgeVersionData } from './ChatBadgeVersion';
+import type { ApiClient } from '../../ApiClient';
+import type { ChatBadgeVersionData } from './ChatBadgeVersion';
+import { ChatBadgeVersion } from './ChatBadgeVersion';
 
 /** @private */
 export interface ChatBadgeSetData {
@@ -22,7 +23,7 @@ export class ChatBadgeSet {
 	/**
 	 * Names of all versions of the badge set.
 	 */
-	get versionNames() {
+	get versionNames(): string[] {
 		return Object.keys(this._data.versions);
 	}
 
@@ -31,7 +32,7 @@ export class ChatBadgeSet {
 	 *
 	 * @param name The name of the version.
 	 */
-	getVersion(name: string) {
+	getVersion(name: string): ChatBadgeVersion {
 		return new ChatBadgeVersion(this._data.versions[name], this._client);
 	}
 }

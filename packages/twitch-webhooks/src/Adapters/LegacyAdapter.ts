@@ -1,7 +1,8 @@
 import { getPortPromise } from '@d-fischer/portfinder';
 import { v4 } from '@d-fischer/public-ip';
-import { WebHookConfig, WebHookListenerCertificateConfig } from '../WebHookListener';
-import { CommonConnectionAdapterConfig, ConnectionAdapter } from './ConnectionAdapter';
+import type { WebHookConfig, WebHookListenerCertificateConfig } from '../WebHookListener';
+import type { CommonConnectionAdapterConfig } from './ConnectionAdapter';
+import { ConnectionAdapter } from './ConnectionAdapter';
 
 /**
  * The configuration of a reverse proxy that the listener may be behind.
@@ -83,7 +84,7 @@ export class LegacyAdapter extends ConnectionAdapter {
 	 *
 	 * @expandParams
 	 */
-	static async create(config: WebHookListenerConfig) {
+	static async create(config: WebHookListenerConfig): Promise<LegacyAdapter> {
 		const listenerPort = config.port || (await getPortPromise());
 		const reverseProxy = config.reverseProxy || {};
 		return new LegacyAdapter({
@@ -112,12 +113,12 @@ export class LegacyAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
-	async getExternalPort() {
+	async getExternalPort(): Promise<number> {
 		return this._config.externalPort;
 	}
 
 	/** @protected */
-	async getHostName() {
+	async getHostName(): Promise<string> {
 		return this._config.hostName;
 	}
 }

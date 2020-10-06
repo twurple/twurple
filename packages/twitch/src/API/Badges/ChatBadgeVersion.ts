@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../ApiClient';
+import type { ApiClient } from '../../ApiClient';
 
 /** @private */
 export interface ChatBadgeVersionData {
@@ -30,7 +30,7 @@ export class ChatBadgeVersion {
 	/**
 	 * The action to execute when the badge is clicked.
 	 */
-	get clickAction() {
+	get clickAction(): string {
 		return this._data.click_action;
 	}
 
@@ -39,14 +39,14 @@ export class ChatBadgeVersion {
 	 *
 	 * Only applies if clickAction === 'visit_url'.
 	 */
-	get clickUrl() {
+	get clickUrl(): string {
 		return this._data.click_url;
 	}
 
 	/**
 	 * The description of the badge.
 	 */
-	get description() {
+	get description(): string {
 		return this._data.description;
 	}
 
@@ -62,7 +62,7 @@ export class ChatBadgeVersion {
 	/**
 	 * The title of the badge.
 	 */
-	get title() {
+	get title(): string {
 		return this._data.title;
 	}
 }

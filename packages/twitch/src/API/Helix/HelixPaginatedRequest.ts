@@ -1,9 +1,10 @@
 /// <reference lib="esnext.asynciterable" />
 
 import { Enumerable } from '@d-fischer/shared-utils';
-import { TwitchApiCallOptions, TwitchApiCallType } from 'twitch-api-call';
-import { ApiClient } from '../../ApiClient';
-import { HelixPaginatedResponse } from './HelixResponse';
+import type { TwitchApiCallOptions } from 'twitch-api-call';
+import { TwitchApiCallType } from 'twitch-api-call';
+import type { ApiClient } from '../../ApiClient';
+import type { HelixPaginatedResponse } from './HelixResponse';
 
 if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,14 +49,14 @@ export class HelixPaginatedRequest<D, T> {
 	 *
 	 * Only works with {@HelixPaginatedRequest#getNext} and not with any other methods of data retrieval.
 	 */
-	get current() {
-		return this._currentData ? this._currentData.data : undefined;
+	get current(): D[] | undefined {
+		return this._currentData?.data;
 	}
 
 	/**
 	 * Retrieves and returns the next available page of data associated to the requested resource, or an empty array if there are no more available pages.
 	 */
-	async getNext() {
+	async getNext(): Promise<T[]> {
 		if (this._isFinished) {
 			return [];
 		}
@@ -77,7 +78,7 @@ export class HelixPaginatedRequest<D, T> {
 	 *
 	 * Also be aware that this resets the internal cursor, so avoid using this and {@HelixPaginatedRequest#getNext} together.
 	 */
-	async getAll() {
+	async getAll(): Promise<T[]> {
 		this.reset();
 		const result = [];
 		do {
@@ -97,7 +98,7 @@ export class HelixPaginatedRequest<D, T> {
 	 *
 	 * Only useful if you want to make manual requests to the API.
 	 */
-	get currentCursor() {
+	get currentCursor(): string | undefined {
 		return this._currentCursor;
 	}
 
@@ -106,13 +107,13 @@ export class HelixPaginatedRequest<D, T> {
 	 *
 	 * This will make {@HelixPaginatedRequest#getNext} start from the first page again.
 	 */
-	reset() {
+	reset(): void {
 		this._currentCursor = undefined;
 		this._isFinished = false;
 		this._currentData = undefined;
 	}
 
-	async *[Symbol.asyncIterator]() {
+	async *[Symbol.asyncIterator](): AsyncGenerator<T, void, undefined> {
 		this.reset();
 		while (true) {
 			const data = await this.getNext();
@@ -124,7 +125,9 @@ export class HelixPaginatedRequest<D, T> {
 	}
 
 	/** @private */
-	protected async _fetchData(additionalOptions: Partial<TwitchApiCallOptions> = {}) {
+	protected async _fetchData(
+		additionalOptions: Partial<TwitchApiCallOptions> = {}
+	): Promise<HelixPaginatedResponse<D>> {
 		return this._client.callApi<HelixPaginatedResponse<D>>({
 			type: TwitchApiCallType.Helix,
 			...this._callOptions,
@@ -139,7 +142,7 @@ export class HelixPaginatedRequest<D, T> {
 	}
 
 	/** @private */
-	protected _processResult(result: HelixPaginatedResponse<D>) {
+	protected _processResult(result: HelixPaginatedResponse<D>): T[] {
 		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
 		if (this._currentCursor === undefined) {
 			this._isFinished = true;

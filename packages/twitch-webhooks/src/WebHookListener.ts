@@ -1,9 +1,10 @@
-import { Logger, LoggerOptions } from '@d-fischer/logger';
+import type { LoggerOptions } from '@d-fischer/logger';
+import { Logger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
-import { Request, RequestHandler, Response, Server } from 'httpanda';
-import {
+import type { Request, RequestHandler, Response } from 'httpanda';
+import { Server } from 'httpanda';
+import type {
 	ApiClient,
-	extractUserId,
 	HelixBanEvent,
 	HelixExtensionTransaction,
 	HelixFollow,
@@ -13,16 +14,18 @@ import {
 	HelixUser,
 	UserIdResolvable
 } from 'twitch';
-import { ConnectionAdapter } from './Adapters/ConnectionAdapter';
-import { LegacyAdapter, WebHookListenerConfig } from './Adapters/LegacyAdapter';
-import { ConnectCompatibleApp } from './ConnectCompatibleApp';
+import { extractUserId } from 'twitch';
+import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
+import type { WebHookListenerConfig } from './Adapters/LegacyAdapter';
+import { LegacyAdapter } from './Adapters/LegacyAdapter';
+import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
 import { BanEventSubscription } from './Subscriptions/BanEventSubscription';
 import { ExtensionTransactionSubscription } from './Subscriptions/ExtensionTransactionSubscription';
 import { FollowsFromUserSubscription } from './Subscriptions/FollowsFromUserSubscription';
 import { FollowsToUserSubscription } from './Subscriptions/FollowsToUserSubscription';
 import { ModeratorEventSubscription } from './Subscriptions/ModeratorEventSubscription';
 import { StreamChangeSubscription } from './Subscriptions/StreamChangeSubscription';
-import { Subscription } from './Subscriptions/Subscription';
+import type { Subscription } from './Subscriptions/Subscription';
 import { SubscriptionEventSubscription } from './Subscriptions/SubscriptionEventSubscription';
 import { UserChangeSubscription } from './Subscriptions/UserChangeSubscription';
 
@@ -82,7 +85,7 @@ export class WebHookListener {
 	 * @param apiClient The ApiClient instance to use for user info and API requests.
 	 * @param config
 	 */
-	static async create(apiClient: ApiClient, config: WebHookListenerConfig = {}) {
+	static async create(apiClient: ApiClient, config: WebHookListenerConfig = {}): Promise<WebHookListener> {
 		const adapter = await LegacyAdapter.create(config);
 		return new WebHookListener(apiClient, adapter, config);
 	}
@@ -108,7 +111,7 @@ export class WebHookListener {
 	/**
 	 * Starts the backing server and listens to incoming WebHook notifications.
 	 */
-	async listen() {
+	async listen(): Promise<void> {
 		if (this._server) {
 			throw new Error('Trying to listen while already listening');
 		}
@@ -140,7 +143,7 @@ export class WebHookListener {
 	/**
 	 * Stops the backing server, suspending all active subscriptions.
 	 */
-	async unlisten() {
+	async unlisten(): Promise<void> {
 		if (!this._server) {
 			throw new Error('Trying to unlisten while not listening');
 		}
@@ -156,7 +159,7 @@ export class WebHookListener {
 	 *
 	 * @param app The app the middleware should be applied to.
 	 */
-	applyMiddleware(app: ConnectCompatibleApp) {
+	applyMiddleware(app: ConnectCompatibleApp): void {
 		let { pathPrefix } = this._adapter;
 		if (pathPrefix) {
 			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/, '')}`;
@@ -191,7 +194,7 @@ export class WebHookListener {
 		handler: (user: HelixUser) => void,
 		withEmail: boolean = false,
 		validityInSeconds = this._hookValidity
-	) {
+	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
 		const subscription = new UserChangeSubscription(userId, handler, withEmail, this, validityInSeconds);
@@ -216,7 +219,7 @@ export class WebHookListener {
 		user: UserIdResolvable,
 		handler: (follow: HelixFollow) => void,
 		validityInSeconds = this._hookValidity
-	) {
+	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
 		const subscription = new FollowsToUserSubscription(userId, handler, this, validityInSeconds);
@@ -241,7 +244,7 @@ export class WebHookListener {
 		user: UserIdResolvable,
 		handler: (follow: HelixFollow) => void,
 		validityInSeconds = this._hookValidity
-	) {
+	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
 		const subscription = new FollowsFromUserSubscription(userId, handler, this, validityInSeconds);
@@ -266,7 +269,7 @@ export class WebHookListener {
 		user: UserIdResolvable,
 		handler: (stream?: HelixStream) => void,
 		validityInSeconds = this._hookValidity
-	) {
+	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
 		const subscription = new StreamChangeSubscription(userId, handler, this, validityInSeconds);
@@ -291,7 +294,7 @@ export class WebHookListener {
 		user: UserIdResolvable,
 		handler: (subscriptionEvent: HelixSubscriptionEvent) => void,
 		validityInSeconds = this._hookValidity
-	) {
+	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
 		const subscription = new SubscriptionEventSubscription(userId, handler, this, validityInSeconds);
@@ -318,7 +321,7 @@ export class WebHookListener {
 		handler: (banEvent: HelixBanEvent) => void,
 		user?: UserIdResolvable,
 		validityInSeconds = this._hookValidity
-	) {
+	): Promise<Subscription> {
 		const broadcasterId = extractUserId(broadcaster);
 		const userId = user ? extractUserId(user) : undefined;
 
@@ -346,7 +349,7 @@ export class WebHookListener {
 		handler: (modEvent: HelixModeratorEvent) => void,
 		user?: UserIdResolvable,
 		validityInSeconds = this._hookValidity
-	) {
+	): Promise<Subscription> {
 		const broadcasterId = extractUserId(broadcaster);
 		const userId = user ? extractUserId(user) : undefined;
 
@@ -372,7 +375,7 @@ export class WebHookListener {
 		extensionId: string,
 		handler: (transaction: HelixExtensionTransaction) => void,
 		validityInSeconds = this._hookValidity
-	) {
+	): Promise<Subscription> {
 		const subscription = new ExtensionTransactionSubscription(extensionId, handler, this, validityInSeconds);
 		await subscription.start();
 		this._subscriptions.set(subscription.id, subscription);
@@ -381,7 +384,7 @@ export class WebHookListener {
 	}
 
 	/** @private */
-	async _buildHookUrl(id: string) {
+	async _buildHookUrl(id: string): Promise<string> {
 		const protocol = this._adapter.connectUsingSsl ? 'https' : 'http';
 
 		const hostName = await this._adapter.getHostName();
@@ -396,7 +399,7 @@ export class WebHookListener {
 	}
 
 	/** @private */
-	_changeIdOfSubscription(oldId: string, newId: string) {
+	_changeIdOfSubscription(oldId: string, newId: string): void {
 		const sub = this._subscriptions.get(oldId);
 		if (sub) {
 			this._subscriptions.delete(oldId);
@@ -405,7 +408,7 @@ export class WebHookListener {
 	}
 
 	/** @private */
-	_dropSubscription(id: string) {
+	_dropSubscription(id: string): void {
 		this._subscriptions.delete(id);
 	}
 

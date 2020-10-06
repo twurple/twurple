@@ -1,8 +1,10 @@
-import { ResolvableValue } from '@d-fischer/shared-utils';
-import { ApiClient, AuthProvider } from 'twitch';
+import type { ResolvableValue } from '@d-fischer/shared-utils';
+import type { AuthProvider } from 'twitch';
+import { ApiClient } from 'twitch';
 import { getTokenInfo, StaticAuthProvider } from 'twitch-auth';
-import { ChatClient, LogLevel, PrivateMessage } from 'twitch-chat-client';
-import { BotCommand, BotCommandMatch } from './BotCommand';
+import type { PrivateMessage } from 'twitch-chat-client';
+import { ChatClient, LogLevel } from 'twitch-chat-client';
+import type { BotCommand, BotCommandMatch } from './BotCommand';
 import { BotCommandContext } from './BotCommandContext';
 
 export interface BotConfig {
@@ -20,7 +22,7 @@ export class Bot {
 	private readonly _commands = new Map<string, BotCommand>();
 	private readonly _prefix: string;
 
-	static async create(config: BotConfig) {
+	static async create(config: BotConfig): Promise<Bot> {
 		const { auth } = config;
 		let apiClient: ApiClient;
 		if (config.client) {

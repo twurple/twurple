@@ -1,10 +1,14 @@
 import deprecate from '@d-fischer/deprecate';
-import { Logger, LoggerOptions, LogLevel } from '@d-fischer/logger';
-import { Enumerable, ResolvableValue } from '@d-fischer/shared-utils';
-import { Listener } from '@d-fischer/typed-event-emitter';
+import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
+import { Logger } from '@d-fischer/logger';
+import type { ResolvableValue } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { Listener } from '@d-fischer/typed-event-emitter';
 import { IrcClient, MessageTypes } from 'ircv3';
-import { CommercialLength, InvalidTokenError, InvalidTokenTypeError } from 'twitch';
-import { AuthProvider, getTokenInfo } from 'twitch-auth';
+import type { CommercialLength } from 'twitch';
+import { InvalidTokenError, InvalidTokenTypeError } from 'twitch';
+import type { AuthProvider } from 'twitch-auth';
+import { getTokenInfo } from 'twitch-auth';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -16,15 +20,15 @@ import { TwitchTagsCapability } from './Capabilities/TwitchTagsCapability';
 import { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
 import { TwitchPrivateMessage } from './StandardCommands/TwitchPrivateMessage';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
-import { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
-import { ChatCommunityPayForwardInfo } from './UserNotices/ChatCommunityPayForwardInfo';
-import { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
-import { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
-import { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
-import { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
-import { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
-import { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
-import {
+import type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
+import type { ChatCommunityPayForwardInfo } from './UserNotices/ChatCommunityPayForwardInfo';
+import type { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
+import type { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
+import type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
+import type { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
+import type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
+import type { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
+import type {
 	ChatSubExtendInfo,
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
@@ -639,7 +643,7 @@ export class ChatClient extends IrcClient {
 	 * @param authProvider The {@AuthProvider} instance to use for authentication.
 	 * @param options
 	 */
-	static forTwitchClient(authProvider: AuthProvider, options: ChatClientOptions = {}) {
+	static forTwitchClient(authProvider: AuthProvider, options: ChatClientOptions = {}): ChatClient {
 		deprecate('[twitch-chat-client] ChatClient.forTwitchClient', 'Use the `ChatClient` constructor instead.');
 		return new this(authProvider, options);
 	}
@@ -651,7 +655,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param options
 	 */
-	static anonymous(options: ChatClientOptions = {}) {
+	static anonymous(options: ChatClientOptions = {}): ChatClient {
 		return new this(undefined, options);
 	}
 
@@ -1385,7 +1389,7 @@ export class ChatClient extends IrcClient {
 		});
 	}
 
-	async connect() {
+	async connect(): Promise<void> {
 		if (!this._authProvider) {
 			this._updateCredentials({
 				nick: ChatClient._generateJustinfanNick(),
@@ -1402,7 +1406,7 @@ export class ChatClient extends IrcClient {
 	 * @param target The host target, i.e. the channel that is being hosted.
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
 	 */
-	async host(channel: string = this._credentials.nick, target: string) {
+	async host(channel: string = this._credentials.nick, target: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onHostResult((chan, error) => {
@@ -1428,7 +1432,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
-	async unhost(channel: string = this._credentials.nick) {
+	async unhost(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onUnhostResult((chan, error) => {
@@ -1454,7 +1458,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
-	unhostOutside(channel: string = this._credentials.nick) {
+	unhostOutside(channel: string = this._credentials.nick): void {
 		this.say(channel, '/unhost');
 	}
 
@@ -1465,7 +1469,7 @@ export class ChatClient extends IrcClient {
 	 * @param user The user to ban from the channel.
 	 * @param reason The reason for the ban.
 	 */
-	async ban(channel: string = this._credentials.nick, user: string, reason: string = '') {
+	async ban(channel: string = this._credentials.nick, user: string, reason: string = ''): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1488,7 +1492,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
 	 */
-	async clear(channel: string = this._credentials.nick) {
+	async clear(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>(resolve => {
 			const e = this.onChatClear(_channel => {
@@ -1512,7 +1516,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * Blue, BlueViolet, CadetBlue, Chocolate, Coral, DodgerBlue, Firebrick, GoldenRod, Green, HotPink, OrangeRed, Red, SeaGreen, SpringGreen, YellowGreen
 	 */
-	async changeColor(color: string) {
+	async changeColor(color: string): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onColorResult(error => {
 				if (error) {
@@ -1532,7 +1536,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to run the commercial break on.
 	 * @param duration The duration of the commercial break.
 	 */
-	async runCommercial(channel: string, duration: CommercialLength) {
+	async runCommercial(channel: string, duration: CommercialLength): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onCommercialResult((_channel, error) => {
@@ -1555,7 +1559,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to delete the message from.
 	 * @param message The message (as message ID or message object) to delete.
 	 */
-	async deleteMessage(channel: string, message: string | MessageTypes.Commands.PrivateMessage) {
+	async deleteMessage(channel: string, message: string | MessageTypes.Commands.PrivateMessage): Promise<void> {
 		channel = toUserName(channel);
 		const messageId = message instanceof MessageTypes.Commands.PrivateMessage ? message.tags.get('id') : message;
 		return new Promise<void>((resolve, reject) => {
@@ -1578,7 +1582,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to enable emote-only mode in.
 	 */
-	async enableEmoteOnly(channel: string) {
+	async enableEmoteOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onEmoteOnlyResult((_channel, error) => {
@@ -1600,7 +1604,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to disable emote-only mode in.
 	 */
-	async disableEmoteOnly(channel: string) {
+	async disableEmoteOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onEmoteOnlyOffResult((_channel, error) => {
@@ -1623,7 +1627,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to enable followers-only mode in.
 	 * @param delay The time (in minutes) a user needs to be following before being able to send messages.
 	 */
-	async enableFollowersOnly(channel: string, delay: number = 0) {
+	async enableFollowersOnly(channel: string, delay: number = 0): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onFollowersOnlyResult((_channel, _delay, error) => {
@@ -1645,7 +1649,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to disable followers-only mode in.
 	 */
-	async disableFollowersOnly(channel: string) {
+	async disableFollowersOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onFollowersOnlyOffResult((_channel, error) => {
@@ -1668,7 +1672,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to give the user moderator rights in.
 	 * @param user The user to give moderator rights.
 	 */
-	async mod(channel: string, user: string) {
+	async mod(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1692,7 +1696,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to remove the user's moderator rights in.
 	 * @param user The user to take moderator rights from.
 	 */
-	async unmod(channel: string, user: string) {
+	async unmod(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1715,7 +1719,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to retrieve the moderators of.
 	 */
-	async getMods(channel: string) {
+	async getMods(channel: string): Promise<string[]> {
 		channel = toUserName(channel);
 		return new Promise<string[]>(resolve => {
 			const e = this._onModsResult((_channel, mods) => {
@@ -1733,7 +1737,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to enable r9k mode in.
 	 */
-	async enableR9k(channel: string) {
+	async enableR9k(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onR9kResult((_channel, error) => {
@@ -1755,7 +1759,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to disable r9k mode in.
 	 */
-	async disableR9k(channel: string) {
+	async disableR9k(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onR9kOffResult((_channel, error) => {
@@ -1778,7 +1782,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to enable slow mode in.
 	 * @param delay The time (in seconds) a user needs to wait between messages.
 	 */
-	async enableSlow(channel: string, delay: number = 30) {
+	async enableSlow(channel: string, delay: number = 30): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSlowResult((_channel, _delay, error) => {
@@ -1800,7 +1804,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to disable slow mode in.
 	 */
-	async disableSlow(channel: string) {
+	async disableSlow(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSlowOffResult((_channel, error) => {
@@ -1822,7 +1826,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to enable subscribers-only mode in.
 	 */
-	async enableSubsOnly(channel: string) {
+	async enableSubsOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSubsOnlyResult((_channel, error) => {
@@ -1844,7 +1848,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to disable subscribers-only mode in.
 	 */
-	async disableSubsOnly(channel: string) {
+	async disableSubsOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSubsOnlyOffResult((_channel, error) => {
@@ -1869,7 +1873,7 @@ export class ChatClient extends IrcClient {
 	 * @param duration The time (in seconds) until the user can send messages again. Defaults to 1 minute.
 	 * @param reason
 	 */
-	async timeout(channel: string, user: string, duration: number = 60, reason: string = '') {
+	async timeout(channel: string, user: string, duration: number = 60, reason: string = ''): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
@@ -1893,7 +1897,7 @@ export class ChatClient extends IrcClient {
 	 * @param user The user to purge.
 	 * @param reason The reason for the purge.
 	 */
-	async purge(channel: string, user: string, reason: string = '') {
+	async purge(channel: string, user: string, reason: string = ''): Promise<void> {
 		return this.timeout(channel, user, 1, reason);
 	}
 
@@ -1903,7 +1907,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to give the user VIP status in.
 	 * @param user The user to give VIP status.
 	 */
-	async addVip(channel: string, user: string) {
+	async addVip(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1923,7 +1927,7 @@ export class ChatClient extends IrcClient {
 
 	/** @deprecated Use addVip instead. */
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	async addVIP(channel: string, user: string) {
+	async addVIP(channel: string, user: string): Promise<void> {
 		deprecate('[twitch-chat-client] ChatClient#addVIP', 'Use `addVip` instead.');
 		return this.addVip(channel, user);
 	}
@@ -1934,7 +1938,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to remove the user's VIP status in.
 	 * @param user The user to take VIP status from.
 	 */
-	async removeVip(channel: string, user: string) {
+	async removeVip(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1954,7 +1958,7 @@ export class ChatClient extends IrcClient {
 
 	/** @deprecated Use removeVip instead. */
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	async removeVIP(channel: string, user: string) {
+	async removeVIP(channel: string, user: string): Promise<void> {
 		deprecate('[twitch-chat-client] ChatClient#removeVIP', 'Use `removeVip` instead.');
 		return this.removeVip(channel, user);
 	}
@@ -1964,7 +1968,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to retrieve the VIPs of.
 	 */
-	async getVips(channel: string) {
+	async getVips(channel: string): Promise<string[]> {
 		channel = toUserName(channel);
 		return new Promise<string[]>(resolve => {
 			const e = this._onVipsResult((_channel, vips) => {
@@ -1979,7 +1983,7 @@ export class ChatClient extends IrcClient {
 
 	/** @deprecated Use getVips instead. */
 	// eslint-disable-next-line @typescript-eslint/naming-convention
-	async getVIPs(channel: string) {
+	async getVIPs(channel: string): Promise<string[]> {
 		deprecate('[twitch-chat-client] ChatClient#getVIPs', 'Use `getVips` instead.');
 		return this.getVips(channel);
 	}
@@ -1990,7 +1994,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to send the message to.
 	 * @param message The message to send.
 	 */
-	say(channel: string, message: string) {
+	say(channel: string, message: string): void {
 		super.say(toChannelName(channel), message);
 	}
 
@@ -2000,7 +2004,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to send the message to.
 	 * @param message The message to send.
 	 */
-	action(channel: string, message: string) {
+	action(channel: string, message: string): void {
 		super.action(toChannelName(channel), message);
 	}
 
@@ -2010,7 +2014,7 @@ export class ChatClient extends IrcClient {
 	 * @param user The user to send the message to.
 	 * @param message The message to send.
 	 */
-	whisper(user: string, message: string) {
+	whisper(user: string, message: string): void {
 		super.say(GENERIC_CHANNEL, `/w ${toUserName(user)} ${message}`);
 	}
 
@@ -2019,7 +2023,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to join.
 	 */
-	async join(channel: string) {
+	async join(channel: string): Promise<void> {
 		channel = toChannelName(channel);
 		return new Promise<void>((resolve, reject) => {
 			let timer: NodeJS.Timer;
@@ -2047,14 +2051,14 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to leave.
 	 */
-	part(channel: string) {
+	part(channel: string): void {
 		super.part(toChannelName(channel));
 	}
 
 	/**
 	 * Disconnects from the chat server.
 	 */
-	async quit() {
+	async quit(): Promise<void> {
 		return this._connection?.disconnect();
 	}
 
@@ -2063,7 +2067,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @deprecated Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.
 	 */
-	async waitForRegistration() {
+	async waitForRegistration(): Promise<void> {
 		deprecate(
 			'[twitch-chat-client] ChatClient#waitForRegistration',
 			'Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.'
@@ -2098,7 +2102,7 @@ export class ChatClient extends IrcClient {
 	removeListener(id: Listener): void;
 	removeListener(event: Function, listener?: Function): void;
 
-	removeListener(...args: [] | [Listener] | [Function, Function?]) {
+	removeListener(...args: [] | [Listener] | [Function, Function?]): void {
 		// @ts-expect-error TS2557 - doesn't recognize tuple unions as overload possibilities
 		super.removeListener(...args);
 		if (args.length === 0) {
@@ -2106,7 +2110,7 @@ export class ChatClient extends IrcClient {
 		}
 	}
 
-	protected registerCoreMessageTypes() {
+	protected registerCoreMessageTypes(): void {
 		super.registerCoreMessageTypes();
 		this.registerMessageType(TwitchPrivateMessage);
 	}

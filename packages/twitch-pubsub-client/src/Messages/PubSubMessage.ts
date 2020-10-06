@@ -1,9 +1,9 @@
-import { PubSubBitsBadgeUnlockMessage, PubSubBitsBadgeUnlockMessageData } from './PubSubBitsBadgeUnlockMessage';
-import { PubSubBitsMessage, PubSubBitsMessageData } from './PubSubBitsMessage';
-import { PubSubChatModActionMessage, PubSubChatModActionMessageData } from './PubSubChatModActionMessage';
-import { PubSubRedemptionMessage, PubSubRedemptionMessageData } from './PubSubRedemptionMessage';
-import { PubSubSubscriptionMessage, PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage';
-import { PubSubWhisperMessage, PubSubWhisperMessageData } from './PubSubWhisperMessage';
+import type { PubSubBitsBadgeUnlockMessage, PubSubBitsBadgeUnlockMessageData } from './PubSubBitsBadgeUnlockMessage';
+import type { PubSubBitsMessage, PubSubBitsMessageData } from './PubSubBitsMessage';
+import type { PubSubChatModActionMessage, PubSubChatModActionMessageData } from './PubSubChatModActionMessage';
+import type { PubSubRedemptionMessage, PubSubRedemptionMessageData } from './PubSubRedemptionMessage';
+import type { PubSubSubscriptionMessage, PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage';
+import type { PubSubWhisperMessage, PubSubWhisperMessageData } from './PubSubWhisperMessage';
 
 export interface PubSubBasicMessageInfo {
 	user_name: string;

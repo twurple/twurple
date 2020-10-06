@@ -1,6 +1,7 @@
 import { TwitchApiCallType } from 'twitch-api-call';
 import { BaseApi } from '../../BaseApi';
-import { HelixBitsLeaderboard, HelixBitsLeaderboardResponse } from './HelixBitsLeaderboard';
+import type { HelixBitsLeaderboardResponse } from './HelixBitsLeaderboard';
+import { HelixBitsLeaderboard } from './HelixBitsLeaderboard';
 
 /**
  * The possible time periods for a bits leaderboard.
@@ -53,7 +54,7 @@ export class HelixBitsApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async getLeaderboard(params: HelixBitsLeaderboardQuery = {}) {
+	async getLeaderboard(params: HelixBitsLeaderboardQuery = {}): Promise<HelixBitsLeaderboard> {
 		const { count = 10, period = 'all', startDate, contextUserId } = params;
 		const result = await this._client.callApi<HelixBitsLeaderboardResponse>({
 			type: TwitchApiCallType.Helix,

@@ -1,13 +1,15 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient, extractUserId, UserIdResolvable } from 'twitch';
+import type { ApiClient, UserIdResolvable } from 'twitch';
+import { extractUserId } from 'twitch';
 import { getTokenInfo } from 'twitch-auth';
 import { BasicPubSubClient } from './BasicPubSubClient';
-import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
-import { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
-import { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
-import { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
-import { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
-import { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+import type { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
+import type { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
+import type { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
+import type { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
+import type { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
+import type { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+import type { PubSubListener } from './PubSubListener';
 import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
 /**
@@ -38,7 +40,7 @@ export class PubSubClient {
 	 *
 	 * If not given, the user will be determined from the `apiClient`.
 	 */
-	async registerUserListener(apiClient: ApiClient, user?: UserIdResolvable) {
+	async registerUserListener(apiClient: ApiClient, user?: UserIdResolvable): Promise<string> {
 		let userId;
 		if (user) {
 			userId = extractUserId(user);
@@ -63,7 +65,7 @@ export class PubSubClient {
 	}
 
 	/** @private */
-	getUserListener(user: UserIdResolvable) {
+	getUserListener(user: UserIdResolvable): SingleUserPubSubClient {
 		const userId = extractUserId(user);
 		if (!this._userClients.has(userId)) {
 			throw new Error(`No API client registered for user ID ${userId}`);
@@ -79,7 +81,7 @@ export class PubSubClient {
 	 *
 	 * It receives a {@PubSubBitsMessage} object.
 	 */
-	async onBits(user: UserIdResolvable, callback: (message: PubSubBitsMessage) => void) {
+	async onBits(user: UserIdResolvable, callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener> {
 		return this.getUserListener(user).onBits(callback);
 	}
 
@@ -91,7 +93,10 @@ export class PubSubClient {
 	 *
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
 	 */
-	async onBitsBadgeUnlock(user: UserIdResolvable, callback: (message: PubSubBitsBadgeUnlockMessage) => void) {
+	async onBitsBadgeUnlock(
+		user: UserIdResolvable,
+		callback: (message: PubSubBitsBadgeUnlockMessage) => void
+	): Promise<PubSubListener> {
 		return this.getUserListener(user).onBitsBadgeUnlock(callback);
 	}
 
@@ -103,7 +108,10 @@ export class PubSubClient {
 	 *
 	 * It receives a {@PubSubBitsRedemptionMessage} object.
 	 */
-	async onRedemption(user: UserIdResolvable, callback: (message: PubSubRedemptionMessage) => void) {
+	async onRedemption(
+		user: UserIdResolvable,
+		callback: (message: PubSubRedemptionMessage) => void
+	): Promise<PubSubListener> {
 		return this.getUserListener(user).onRedemption(callback);
 	}
 
@@ -115,7 +123,10 @@ export class PubSubClient {
 	 *
 	 * It receives a {@PubSubSubscriptionMessage} object.
 	 */
-	async onSubscription(user: UserIdResolvable, callback: (message: PubSubSubscriptionMessage) => void) {
+	async onSubscription(
+		user: UserIdResolvable,
+		callback: (message: PubSubSubscriptionMessage) => void
+	): Promise<PubSubListener> {
 		return this.getUserListener(user).onSubscription(callback);
 	}
 
@@ -127,7 +138,10 @@ export class PubSubClient {
 	 *
 	 * It receives a {@PubSubWhisperMessage} object.
 	 */
-	async onWhisper(user: UserIdResolvable, callback: (message: PubSubWhisperMessage) => void) {
+	async onWhisper(
+		user: UserIdResolvable,
+		callback: (message: PubSubWhisperMessage) => void
+	): Promise<PubSubListener> {
 		return this.getUserListener(user).onWhisper(callback);
 	}
 
@@ -144,7 +158,7 @@ export class PubSubClient {
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
 		callback: (message: PubSubChatModActionMessage) => void
-	) {
+	): Promise<PubSubListener> {
 		return this.getUserListener(user).onModAction(channel, callback);
 	}
 }

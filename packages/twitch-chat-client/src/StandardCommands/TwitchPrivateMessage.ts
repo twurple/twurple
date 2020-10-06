@@ -1,47 +1,31 @@
 import { MessageTypes } from 'ircv3';
-import { CheermoteList } from 'twitch';
+import type { CheermoteList } from 'twitch';
 import { ChatUser } from '../ChatUser';
-import {
-	fillTextPositions,
-	ParsedMessageCheerPart,
-	ParsedMessagePart,
-	parseEmoteOffsets,
-	parseEmotePositions
-} from '../Toolkit/EmoteTools';
+import type { ParsedMessageCheerPart, ParsedMessagePart } from '../Toolkit/EmoteTools';
+import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../Toolkit/EmoteTools';
 
 export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
-	get userInfo() {
+	get userInfo(): ChatUser {
 		return new ChatUser(this._prefix!.nick, this._tags);
 	}
 
-	get channelId() {
-		if (!this._tags) {
-			return null;
-		}
-		return this._tags.get('room-id') || null;
+	get channelId(): string | null {
+		return this._tags.get('room-id') ?? null;
 	}
 
-	get isCheer() {
-		if (!this._tags) {
-			return false;
-		}
-
-		return this._tags.has('bits');
+	get isCheer(): boolean {
+		return this._tags.has('bits') ?? false;
 	}
 
-	get totalBits() {
-		if (!this._tags) {
-			return 0;
-		}
-
-		return Number(this._tags.get('bits'));
+	get totalBits(): number {
+		return Number(this._tags.get('bits') ?? 0);
 	}
 
-	get emoteOffsets() {
-		return parseEmoteOffsets(this._tags?.get('emotes'));
+	get emoteOffsets(): Map<string, string[]> {
+		return parseEmoteOffsets(this._tags.get('emotes'));
 	}
 
-	parseEmotes() {
+	parseEmotes(): ParsedMessagePart[] {
 		const messageText = this.params.message;
 		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
 

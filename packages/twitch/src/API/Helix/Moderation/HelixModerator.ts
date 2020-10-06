@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../User/HelixUser';
 
 /** @private */
 export interface HelixModeratorData {
@@ -22,21 +23,21 @@ export class HelixModerator {
 	/**
 	 * The ID of the user.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
-	}
-
-	/**
-	 * Retrieves more data about the user.
-	 */
-	async getUser() {
-		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 
 	/**
 	 * The name of the user.
 	 */
-	get userName() {
+	get userName(): string {
 		return this._data.user_name;
+	}
+
+	/**
+	 * Retrieves more data about the user.
+	 */
+	async getUser(): Promise<HelixUser | null> {
+		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 }

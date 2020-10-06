@@ -1,5 +1,5 @@
-import { PubSubMessage } from './Messages/PubSubMessage';
-import { SingleUserPubSubClient } from './SingleUserPubSubClient';
+import type { PubSubMessage } from './Messages/PubSubMessage';
+import type { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
 /**
  * A listener attached to a single PubSub topic.
@@ -16,14 +16,14 @@ export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	/**
 	 * The type of the topic.
 	 */
-	get type() {
+	get type(): string {
 		return this._type;
 	}
 
 	/**
 	 * The user ID part of the topic.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._userId;
 	}
 
@@ -35,7 +35,7 @@ export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	}
 
 	/** @private */
-	call(message: T) {
+	call(message: T): void {
 		this._callback(message);
 	}
 }

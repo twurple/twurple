@@ -61,23 +61,26 @@ export { HelixBitsLeaderboardEntry } from './API/Helix/Bits/HelixBitsLeaderboard
 
 export { HelixClip } from './API/Helix/Clip/HelixClip';
 
-export { HelixExtensionTransaction } from './API/Helix/Extensions/HelixExtensionTransaction';
+export {
+	HelixExtensionTransaction,
+	HelixExtensionTransactionData
+} from './API/Helix/Extensions/HelixExtensionTransaction';
 
 export { HelixGame } from './API/Helix/Game/HelixGame';
 
 export { HelixBan } from './API/Helix/Moderation/HelixBan';
-export { HelixBanEvent } from './API/Helix/Moderation/HelixBanEvent';
+export { HelixBanEvent, HelixBanEventData } from './API/Helix/Moderation/HelixBanEvent';
 export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
 export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
 
 export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
-export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+export { HelixSubscriptionEvent, HelixSubscriptionEventData } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
 
-export { HelixStream, HelixStreamType } from './API/Helix/Stream/HelixStream';
+export { HelixStream, HelixStreamData, HelixStreamType } from './API/Helix/Stream/HelixStream';
 
-export { HelixFollow } from './API/Helix/User/HelixFollow';
+export { HelixFollow, HelixFollowData } from './API/Helix/User/HelixFollow';
 export { HelixPrivilegedUser } from './API/Helix/User/HelixPrivilegedUser';
-export { HelixBroadcasterType, HelixUser, HelixUserType } from './API/Helix/User/HelixUser';
+export { HelixBroadcasterType, HelixUser, HelixUserData, HelixUserType } from './API/Helix/User/HelixUser';
 
 export { HelixVideo } from './API/Helix/Video/HelixVideo';
 

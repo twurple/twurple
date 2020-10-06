@@ -1,11 +1,15 @@
-import { Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
+import type { Connection } from '@d-fischer/connection';
+import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
 import { Logger, LogLevel } from '@d-fischer/logger';
-import { Enumerable, ResolvableValue } from '@d-fischer/shared-utils';
-import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
-import { AuthProvider, HellFreezesOverError, InvalidTokenError } from 'twitch';
+import type { ResolvableValue } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { Listener } from '@d-fischer/typed-event-emitter';
+import { EventEmitter } from '@d-fischer/typed-event-emitter';
+import type { AuthProvider } from 'twitch';
+import { HellFreezesOverError, InvalidTokenError } from 'twitch';
 import { getTokenInfo } from 'twitch-auth';
-import { PubSubMessageData } from './Messages/PubSubMessage';
-import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
+import type { PubSubMessageData } from './Messages/PubSubMessage';
+import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
 interface NullTokenResolvable {
 	type: 'null';
@@ -149,7 +153,7 @@ export class BasicPubSubClient extends EventEmitter {
 		topics: string | string[],
 		tokenResolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
 		scope?: string
-	) {
+	): Promise<void> {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
@@ -169,7 +173,7 @@ export class BasicPubSubClient extends EventEmitter {
 	 *
 	 * @param topics A topic or a list of topics to not listen to anymore.
 	 */
-	async unlisten(topics: string | string[]) {
+	async unlisten(topics: string | string[]): Promise<void> {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
@@ -186,7 +190,7 @@ export class BasicPubSubClient extends EventEmitter {
 	/**
 	 * Connects to the PubSub interface.
 	 */
-	async connect() {
+	async connect(): Promise<void> {
 		if (!this._connection.isConnected && !this._connection.isConnecting) {
 			this._logger.info('Connecting...');
 			await this._connection.connect();
@@ -196,7 +200,7 @@ export class BasicPubSubClient extends EventEmitter {
 	/**
 	 * Disconnects from the PubSub interface.
 	 */
-	async disconnect() {
+	async disconnect(): Promise<void> {
 		this._logger.info('Disconnecting...');
 		return this._connection.disconnect();
 	}
@@ -204,7 +208,7 @@ export class BasicPubSubClient extends EventEmitter {
 	/**
 	 * Reconnects to the PubSub interface.
 	 */
-	async reconnect() {
+	async reconnect(): Promise<void> {
 		await this.disconnect();
 		return this.connect();
 	}
@@ -212,19 +216,19 @@ export class BasicPubSubClient extends EventEmitter {
 	/**
 	 * Checks whether the client is currently connecting to the server.
 	 */
-	get isConnecting() {
+	get isConnecting(): boolean {
 		return this._connection?.isConnecting ?? false;
 	}
 
 	/**
 	 * Checks whether the client is currently connected to the server.
 	 */
-	get isConnected() {
+	get isConnected(): boolean {
 		return this._connection?.isConnected ?? false;
 	}
 
 	/** @private */
-	get hasAnyTopics() {
+	get hasAnyTopics(): boolean {
 		return this._topics.size > 0;
 	}
 

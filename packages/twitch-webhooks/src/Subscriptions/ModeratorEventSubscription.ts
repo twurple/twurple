@@ -1,6 +1,7 @@
-import { HelixModeratorEvent, HelixResponse } from 'twitch';
-import { HelixModeratorEventData } from 'twitch/lib/API/Helix/Moderation/HelixModeratorEvent';
-import { WebHookListener } from '../WebHookListener';
+import type { HelixResponse } from 'twitch';
+import { HelixModeratorEvent } from 'twitch';
+import type { HelixModeratorEventData } from 'twitch/lib/API/Helix/Moderation/HelixModeratorEvent';
+import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
@@ -17,18 +18,18 @@ export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent
 		super(handler, client, validityInSeconds);
 	}
 
-	get id() {
+	get id(): string {
 		if (this._userId) {
 			return `moderator.event.${this._broadcasterId}.${this._userId}`;
 		}
 		return `moderator.event.${this._broadcasterId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixModeratorEventData>) {
+	protected transformData(response: HelixResponse<HelixModeratorEventData>): HelixModeratorEvent {
 		return new HelixModeratorEvent(response.data[0], this._client._apiClient);
 	}
 
-	protected async _subscribe() {
+	protected async _subscribe(): Promise<void> {
 		if (this._userId) {
 			return this._client._apiClient.helix.webHooks.subscribeToModeratorEventsForUser(
 				this._broadcasterId,
@@ -42,7 +43,7 @@ export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent
 		);
 	}
 
-	protected async _unsubscribe() {
+	protected async _unsubscribe(): Promise<void> {
 		if (this._userId) {
 			return this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEventsForUser(
 				this._broadcasterId,

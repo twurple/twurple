@@ -1,7 +1,7 @@
 import generateRandomString from '@d-fischer/randomstring';
 import * as crypto from 'crypto';
-import { HelixWebHookHubRequestOptions } from 'twitch';
-import { WebHookListener } from '../WebHookListener';
+import type { HelixWebHookHubRequestOptions } from 'twitch';
+import type { WebHookListener } from '../WebHookListener';
 
 /**
  * @hideProtected
@@ -22,17 +22,17 @@ export abstract class Subscription</** @private */ T = any> {
 	/**
 	 * Whether the subscription has been verified by Twitch.
 	 */
-	get verified() {
+	get verified(): boolean {
 		return this._verified;
 	}
 
 	/** @private */
-	_verify() {
+	_verify(): void {
 		this._verified = true;
 	}
 
 	/** @private */
-	_generateNewCredentials() {
+	_generateNewCredentials(): void {
 		this._secret = generateRandomString(16);
 	}
 
@@ -53,7 +53,7 @@ export abstract class Subscription</** @private */ T = any> {
 	/**
 	 * Activates the subscription.
 	 */
-	async start() {
+	async start(): Promise<void> {
 		if (this._refreshTimer) {
 			clearInterval(this._refreshTimer);
 		}
@@ -66,7 +66,7 @@ export abstract class Subscription</** @private */ T = any> {
 	/**
 	 * Suspends the subscription, not removing it from the listener.
 	 */
-	async suspend() {
+	async suspend(): Promise<void> {
 		if (this._refreshTimer) {
 			clearInterval(this._refreshTimer);
 			this._refreshTimer = undefined;
@@ -77,7 +77,7 @@ export abstract class Subscription</** @private */ T = any> {
 	/**
 	 * Deactivates the subscription and removes it from the listener.
 	 */
-	async stop() {
+	async stop(): Promise<void> {
 		await this.suspend();
 		this._client._dropSubscription(this.id);
 	}

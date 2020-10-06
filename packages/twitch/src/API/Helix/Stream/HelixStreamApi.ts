@@ -1,16 +1,22 @@
 import { flatten } from '@d-fischer/shared-utils';
 import { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
 import { StreamNotLiveError } from '../../../Errors/StreamNotLiveError';
-import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, extractUserName } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
-import { createPaginatedResult, HelixPaginatedResult } from '../HelixPaginatedResult';
-import { HelixPagination, makePaginationQuery } from '../HelixPagination';
-import { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
-import { HelixStream, HelixStreamData, HelixStreamType } from './HelixStream';
-import { HelixStreamMarker, HelixStreamMarkerData } from './HelixStreamMarker';
-import { HelixStreamMarkerVideoData, HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
+import { createPaginatedResult } from '../HelixPaginatedResult';
+import type { HelixPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
+import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
+import type { HelixStreamData, HelixStreamType } from './HelixStream';
+import { HelixStream } from './HelixStream';
+import type { HelixStreamMarkerData } from './HelixStreamMarker';
+import { HelixStreamMarker } from './HelixStreamMarker';
+import type { HelixStreamMarkerVideoData } from './HelixStreamMarkerWithVideo';
+import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
 
 /**
  * Filters for the streams request.
@@ -82,7 +88,7 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async getStreams(filter: HelixPaginatedStreamFilter = {}) {
+	async getStreams(filter: HelixPaginatedStreamFilter = {}): Promise<HelixPaginatedResult<HelixStream>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamData>>({
 			url: 'streams',
 			type: TwitchApiCallType.Helix,
@@ -105,7 +111,7 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	getStreamsPaginated(filter: HelixStreamFilter = {}) {
+	getStreamsPaginated(filter: HelixStreamFilter = {}): HelixPaginatedRequest<HelixStreamData, HelixStream> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'streams',
@@ -128,7 +134,7 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @param user The user name to retrieve the stream for.
 	 */
-	async getStreamByUserName(user: UserNameResolvable) {
+	async getStreamByUserName(user: UserNameResolvable): Promise<HelixStream | null> {
 		const result = await this.getStreams({ userName: extractUserName(user) });
 
 		return result.data.length ? result.data[0] : null;
@@ -139,7 +145,7 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @param user The user ID to retrieve the stream for.
 	 */
-	async getStreamByUserId(user: UserIdResolvable) {
+	async getStreamByUserId(user: UserIdResolvable): Promise<HelixStream | null> {
 		const result = await this.getStreams({ userId: extractUserId(user) });
 
 		return result.data.length ? result.data[0] : null;
@@ -150,7 +156,7 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @param user The user to list the stream markers for.
 	 */
-	async getStreamMarkersForUser(user: UserIdResolvable) {
+	async getStreamMarkersForUser(user: UserIdResolvable): Promise<HelixPaginatedResult<HelixStreamMarker>> {
 		return this._getStreamMarkers('user_id', extractUserId(user));
 	}
 
@@ -159,7 +165,9 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @param user The user to list the stream markers for.
 	 */
-	getStreamMarkersForUserPaginated(user: UserIdResolvable) {
+	getStreamMarkersForUserPaginated(
+		user: UserIdResolvable
+	): HelixPaginatedRequest<HelixStreamGetMarkersResult, HelixStreamMarkerWithVideo> {
 		return this._getStreamMarkersPaginated('user_id', extractUserId(user));
 	}
 
@@ -168,7 +176,7 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @param videoId The video to list the stream markers for.
 	 */
-	async getStreamMarkersForVideo(videoId: string) {
+	async getStreamMarkersForVideo(videoId: string): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
 		return this._getStreamMarkers('video_id', videoId);
 	}
 
@@ -177,7 +185,9 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @param videoId The video to list the stream markers for.
 	 */
-	getStreamMarkersForVideoPaginated(videoId: string) {
+	getStreamMarkersForVideoPaginated(
+		videoId: string
+	): HelixPaginatedRequest<HelixStreamGetMarkersResult, HelixStreamMarkerWithVideo> {
 		return this._getStreamMarkersPaginated('video_id', videoId);
 	}
 
@@ -186,7 +196,7 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * Only works while the specified user's stream is live.
 	 */
-	async createStreamMarker(userId: string, description?: string) {
+	async createStreamMarker(userId: string, description?: string): Promise<HelixStreamMarker> {
 		try {
 			const result = await this._client.callApi<HelixResponse<HelixStreamMarkerData>>({
 				url: 'streams/markers',

@@ -1,7 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
-import { UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { CheermoteList } from '../Bits/CheermoteList';
+import type { Stream } from '../Stream/Stream';
+import type { Channel } from './Channel';
+import type { ChannelFollow } from './ChannelFollow';
+import type { ChannelSubscription } from './ChannelSubscription';
 
 /** @private */
 export interface ChannelPlaceholderData {
@@ -28,49 +33,49 @@ export class ChannelPlaceholder {
 	}
 
 	/** @private */
-	get cacheKey() {
+	get cacheKey(): string {
 		return this._data._id;
 	}
 
 	/**
 	 * The ID of the channel.
 	 */
-	get id() {
+	get id(): string {
 		return this._data._id;
 	}
 
 	/**
 	 * Retrieves the list of cheermotes you can use in the channel.
 	 */
-	async getCheermotes() {
+	async getCheermotes(): Promise<CheermoteList> {
 		return this._client.kraken.bits.getCheermotes(this);
 	}
 
 	/**
 	 * Retrieves the channel data.
 	 */
-	async getChannel() {
+	async getChannel(): Promise<Channel> {
 		return this._client.kraken.channels.getChannel(this);
 	}
 
 	/**
 	 * Retrieves the channel's stream data.
 	 */
-	async getStream() {
+	async getStream(): Promise<Stream | null> {
 		return this._client.kraken.streams.getStreamByChannel(this);
 	}
 
 	/**
 	 * Retrieves the channel's followers.
 	 */
-	async getFollowers() {
+	async getFollowers(): Promise<ChannelFollow[]> {
 		return this._client.kraken.channels.getChannelFollowers(this);
 	}
 
 	/**
 	 * Retrieves the channel's subscribers.
 	 */
-	async getSubscriptions() {
+	async getSubscriptions(): Promise<ChannelSubscription[]> {
 		return this._client.kraken.channels.getChannelSubscriptions(this);
 	}
 
@@ -84,7 +89,7 @@ export class ChannelPlaceholder {
 	 *
 	 * @param user The user you want to get the subscription data for.
 	 */
-	async getSubscriptionBy(user: UserIdResolvable) {
+	async getSubscriptionBy(user: UserIdResolvable): Promise<ChannelSubscription | null> {
 		return this._client.kraken.channels.getChannelSubscriptionByUser(this, user);
 	}
 
@@ -93,7 +98,7 @@ export class ChannelPlaceholder {
 	 *
 	 * @param user The user you want to check the subscription for.
 	 */
-	async hasSubscriber(user: UserIdResolvable) {
+	async hasSubscriber(user: UserIdResolvable): Promise<boolean> {
 		try {
 			return (await this.getSubscriptionBy(user)) !== null;
 		} catch (e) {

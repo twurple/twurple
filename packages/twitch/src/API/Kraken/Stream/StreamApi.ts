@@ -1,7 +1,9 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
-import { Stream, StreamData, StreamDataWrapper, StreamType } from './Stream';
+import type { StreamData, StreamDataWrapper } from './Stream';
+import { Stream, StreamType } from './Stream';
 
 /**
  * The API methods that deal with streams.
@@ -22,7 +24,7 @@ export class StreamApi extends BaseApi {
 	 * @param channel
 	 */
 	@Cached(60)
-	async getStreamByChannel(channel: UserIdResolvable) {
+	async getStreamByChannel(channel: UserIdResolvable): Promise<Stream | null> {
 		const channelId = extractUserId(channel);
 		const data = await this._client.callApi<StreamDataWrapper>({ url: `streams/${channelId}` });
 
@@ -46,7 +48,7 @@ export class StreamApi extends BaseApi {
 		type?: StreamType,
 		page?: number,
 		limit: number = 25
-	) {
+	): Promise<Stream[]> {
 		const query: Record<string, string | undefined> = {
 			limit: limit.toString(),
 			channel: channels ? (typeof channels === 'string' ? channels : channels.join(',')) : undefined,
@@ -67,7 +69,7 @@ export class StreamApi extends BaseApi {
 	 * @param page The result page you want to retrieve.
 	 * @param limit The number of results you want to retrieve.
 	 */
-	async getAllStreams(page?: number, limit?: number) {
+	async getAllStreams(page?: number, limit?: number): Promise<Stream[]> {
 		return this.getStreams(undefined, undefined, undefined, StreamType.All, page, limit);
 	}
 
@@ -77,7 +79,7 @@ export class StreamApi extends BaseApi {
 	 * @param page The result page you want to retrieve.
 	 * @param limit The number of results you want to retrieve.
 	 */
-	async getAllLiveStreams(page?: number, limit?: number) {
+	async getAllLiveStreams(page?: number, limit?: number): Promise<Stream[]> {
 		return this.getStreams(undefined, undefined, undefined, StreamType.Live, page, limit);
 	}
 
@@ -89,7 +91,7 @@ export class StreamApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	@Cached(60)
-	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25) {
+	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25): Promise<Stream[]> {
 		const query: Record<string, string> = { limit: limit.toString() };
 
 		if (type) {

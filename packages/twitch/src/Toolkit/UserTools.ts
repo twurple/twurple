@@ -1,7 +1,7 @@
-import { HelixUser } from '../API/Helix/User/HelixUser';
-import { Channel } from '../API/Kraken/Channel/Channel';
-import { ChannelPlaceholder } from '../API/Kraken/Channel/ChannelPlaceholder';
-import { User } from '../API/Kraken/User/User';
+import type { HelixUser } from '../API/Helix/User/HelixUser';
+import type { Channel } from '../API/Kraken/Channel/Channel';
+import type { ChannelPlaceholder } from '../API/Kraken/Channel/ChannelPlaceholder';
+import type { User } from '../API/Kraken/User/User';
 
 /**
  * A user ID or a user or channel object.
@@ -21,7 +21,7 @@ export type UserNameResolvable = string | User | Channel | HelixUser;
  *
  * @param user The user ID or object.
  */
-export function extractUserId(user: UserIdResolvable) {
+export function extractUserId(user: UserIdResolvable): string {
 	if (typeof user === 'string') {
 		return user;
 	} else if (typeof user === 'number') {
@@ -36,6 +36,6 @@ export function extractUserId(user: UserIdResolvable) {
  *
  * @param user The user name or object.
  */
-export function extractUserName(user: UserNameResolvable) {
+export function extractUserName(user: UserNameResolvable): string {
 	return typeof user === 'string' ? user : user.name;
 }

@@ -4,7 +4,8 @@ import fetch, { Headers } from '@d-fischer/cross-fetch';
 import { stringify } from '@d-fischer/qs';
 import { transformTwitchApiResponse } from './helpers/transform';
 import { getTwitchApiUrl } from './helpers/url';
-import { TwitchApiCallOptions, TwitchApiCallType } from './TwitchApiCallOptions';
+import type { TwitchApiCallOptions } from './TwitchApiCallOptions';
+import { TwitchApiCallType } from './TwitchApiCallOptions';
 
 /**
  * Makes a call to the Twitch API using the given credentials, returning the raw Response object.

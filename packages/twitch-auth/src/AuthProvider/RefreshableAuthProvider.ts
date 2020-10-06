@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { AccessToken } from '../AccessToken';
+import type { AccessToken } from '../AccessToken';
 import { refreshUserToken } from '../helpers';
-import { AuthProvider } from './AuthProvider';
+import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
  * Configuration for the {@RefreshableAuthProvider}.
@@ -61,7 +61,7 @@ export class RefreshableAuthProvider implements AuthProvider {
 	 *
 	 * It is the same as the underlying base auth provider's token type.
 	 */
-	get tokenType() {
+	get tokenType(): AuthProviderTokenType | undefined {
 		return this._childProvider.tokenType;
 	}
 
@@ -75,7 +75,7 @@ export class RefreshableAuthProvider implements AuthProvider {
 	 *
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessToken(scopes?: string | string[]) {
+	async getAccessToken(scopes?: string | string[]): Promise<AccessToken | null> {
 		if (typeof scopes === 'string') {
 			scopes = scopes.split(' ');
 		}
@@ -114,7 +114,7 @@ export class RefreshableAuthProvider implements AuthProvider {
 	/**
 	 * Force a refresh of the access token.
 	 */
-	async refresh() {
+	async refresh(): Promise<AccessToken> {
 		const tokenData = await refreshUserToken(this.clientId, this._clientSecret, this._refreshToken);
 		this.setAccessToken(tokenData);
 		this._refreshToken = tokenData.refreshToken;
@@ -128,21 +128,21 @@ export class RefreshableAuthProvider implements AuthProvider {
 	}
 
 	/** @private */
-	setAccessToken(token: AccessToken) {
+	setAccessToken(token: AccessToken): void {
 		this._childProvider.setAccessToken(token);
 	}
 
 	/**
 	 * The client ID.
 	 */
-	get clientId() {
+	get clientId(): string {
 		return this._childProvider.clientId;
 	}
 
 	/**
 	 * The scopes that are currently available using the access token.
 	 */
-	get currentScopes() {
+	get currentScopes(): string[] {
 		return this._childProvider.currentScopes;
 	}
 }

@@ -1,4 +1,4 @@
-import { AccessToken } from '../AccessToken';
+import type { AccessToken } from '../AccessToken';
 
 /**
  * The type of token an auth provider can return - user tokens and app tokens are supported.

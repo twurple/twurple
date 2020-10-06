@@ -1,7 +1,7 @@
 /// <reference lib="esnext.array" />
 
 import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
-import { CheermoteDisplayInfo } from 'twitch';
+import type { CheermoteDisplayInfo } from 'twitch';
 
 export interface ParsedMessageTextPart {
 	type: 'text';
@@ -50,7 +50,7 @@ export function parseEmoteOffsets(emotes?: string): Map<string, string[]> {
 }
 
 /** @private */
-export function parseEmotePositions(message: string, emoteOffsets: Map<string, string[]>) {
+export function parseEmotePositions(message: string, emoteOffsets: Map<string, string[]>): ParsedMessageEmotePart[] {
 	return [...emoteOffsets.entries()]
 		.flatMap(([emote, placements]) =>
 			placements.map(

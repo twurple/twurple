@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
 
 /** @private */
 export interface VideoChannelData {
@@ -68,56 +68,56 @@ export class Video {
 	/**
 	 * The ID of the video.
 	 */
-	get id() {
+	get id(): string {
 		return this._data._id;
 	}
 
 	/**
 	 * The ID of the channel the video was uploaded to.
 	 */
-	get channelId() {
+	get channelId(): string {
 		return this._data.channel._id;
 	}
 
 	/**
 	 * The name of the channel the video was uploaded to.
 	 */
-	get channelName() {
+	get channelName(): string {
 		return this._data.channel.name;
 	}
 
 	/**
 	 * The display name of the channel the video was uploaded to.
 	 */
-	get channelDisplayName() {
+	get channelDisplayName(): string {
 		return this._data.channel.display_name;
 	}
 
 	/**
 	 * The date when the video was created.
 	 */
-	get creationDate() {
+	get creationDate(): Date {
 		return new Date(this._data.created_at);
 	}
 
 	/**
 	 * The description of the video.
 	 */
-	get description() {
+	get description(): string {
 		return this._data.description;
 	}
 
 	/**
 	 * The description of the video in HTML.
 	 */
-	get htmlDescription() {
+	get htmlDescription(): string {
 		return this._data.description_html;
 	}
 
 	/**
 	 * The resolutions the video is available in.
 	 */
-	get resolutions() {
+	get resolutions(): Record<string, string> {
 		return this._data.resolutions;
 	}
 
@@ -133,28 +133,28 @@ export class Video {
 	/**
 	 * The name of the game shown in the video.
 	 */
-	get gameName() {
+	get gameName(): string {
 		return this._data.game;
 	}
 
 	/**
 	 * The language of the video.
 	 */
-	get language() {
+	get language(): string {
 		return this._data.language;
 	}
 
 	/**
 	 * The length of the video, in seconds.
 	 */
-	get length() {
+	get length(): number {
 		return this._data.length;
 	}
 
 	/**
 	 * The muted segments of the video.
 	 */
-	get mutedSegments() {
+	get mutedSegments(): VideoMutedSegment[] {
 		return this._data.muted_segments;
 	}
 
@@ -163,28 +163,28 @@ export class Video {
 	 *
 	 * @param size The size of the preview.
 	 */
-	getPreview(size: VideoThumbSize) {
+	getPreview(size: VideoThumbSize): string {
 		return this._data.preview[size];
 	}
 
 	/**
 	 * The date when the video was published.
 	 */
-	get publishDate() {
+	get publishDate(): Date {
 		return new Date(this._data.published_at);
 	}
 
 	/**
 	 * The status of the video.
 	 */
-	get status() {
+	get status(): string {
 		return this._data.status;
 	}
 
 	/**
 	 * A list of tags of the video.
 	 */
-	get tags() {
+	get tags(): string[] {
 		return this._data.tag_list.split(',');
 	}
 
@@ -193,42 +193,42 @@ export class Video {
 	 *
 	 * @param size
 	 */
-	getThumbnails(size: VideoThumbSize) {
+	getThumbnails(size: VideoThumbSize): VideoThumbnail[] {
 		return this._data.thumbnails[size];
 	}
 
 	/**
 	 * The title of the video.
 	 */
-	get title() {
+	get title(): string {
 		return this._data.title;
 	}
 
 	/**
 	 * The URL of the video.
 	 */
-	get url() {
+	get url(): string {
 		return this._data.url;
 	}
 
 	/**
 	 * Whether the video is public.
 	 */
-	get isPublic() {
+	get isPublic(): boolean {
 		return this._data.viewable === 'public';
 	}
 
 	/**
 	 * When the video will be viewable publicly.
 	 */
-	get viewabilityDate() {
+	get viewabilityDate(): Date | null {
 		return this._data.viewable_at ? new Date(this._data.viewable_at) : null;
 	}
 
 	/**
 	 * The number of views of the video.
 	 */
-	get views() {
+	get views(): number {
 		return this._data.views;
 	}
 }

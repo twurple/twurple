@@ -1,4 +1,4 @@
-import { Capability } from 'ircv3';
+import type { Capability } from 'ircv3';
 import { ClearMsg } from './MessageTypes/ClearMsg';
 import { GlobalUserState } from './MessageTypes/GlobalUserState';
 

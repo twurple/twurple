@@ -1,7 +1,9 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { BaseApi } from '../../BaseApi';
-import { Channel, ChannelData } from '../Channel/Channel';
-import { Stream, StreamData } from '../Stream/Stream';
+import type { ChannelData } from '../Channel/Channel';
+import { Channel } from '../Channel/Channel';
+import type { StreamData } from '../Stream/Stream';
+import { Stream } from '../Stream/Stream';
 
 /**
  * The API methods that deal with searching.
@@ -31,9 +33,9 @@ export class SearchApi extends BaseApi {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.callApi({ url: 'search/channels', query });
+		const data = await this._client.callApi<{ channels: ChannelData[] }>({ url: 'search/channels', query });
 
-		return data.channels.map((channelData: ChannelData) => new Channel(channelData, this._client));
+		return data.channels.map(channelData => new Channel(channelData, this._client));
 	}
 
 	/**
@@ -56,7 +58,7 @@ export class SearchApi extends BaseApi {
 			query.hls = hls.toString();
 		}
 
-		const data = await this._client.callApi({ url: 'search/streams', query });
+		const data = await this._client.callApi<{ streams: StreamData[] }>({ url: 'search/streams', query });
 
 		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
 	}

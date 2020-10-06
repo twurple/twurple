@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from 'twitch';
+import type { ApiClient, HelixUser } from 'twitch';
 
 export interface PubSubRedemptionMessageUserData {
 	id: string;
@@ -34,6 +34,8 @@ export interface PubSubRedemptionMessageRewardData {
 	should_redemptions_skip_request_queue: boolean;
 }
 
+export type PubSubRedemptionStatus = 'FULFILLED' | 'UNFULFILLED';
+
 export interface PubSubRedemptionMessageRedemptionData {
 	id: string;
 	user: PubSubRedemptionMessageUserData;
@@ -41,7 +43,7 @@ export interface PubSubRedemptionMessageRedemptionData {
 	redeemed_at: string;
 	reward: PubSubRedemptionMessageRewardData;
 	user_input: string;
-	status: 'FULFILLED' | 'UNFULFILLED';
+	status: PubSubRedemptionStatus;
 }
 
 export interface PubSubRedemptionMessageContent {
@@ -68,28 +70,28 @@ export class PubSubRedemptionMessage {
 	/**
 	 * The internal redemption ID.
 	 */
-	get id() {
+	get id(): string {
 		return this._data.data.redemption.id;
 	}
 
 	/**
 	 * The ID of the user that redeemed the reward.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.data.redemption.user.id;
 	}
 
 	/**
 	 * The name of the user that redeemed the reward.
 	 */
-	get userName() {
+	get userName(): string {
 		return this._data.data.redemption.user.login;
 	}
 
 	/**
 	 * The display name of the user that redeemed the reward.
 	 */
-	get userDisplayName() {
+	get userDisplayName(): string {
 		return this._data.data.redemption.user.display_name;
 	}
 
@@ -98,14 +100,14 @@ export class PubSubRedemptionMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._apiClient.helix.users.getUserById(this._data.data.redemption.user.id);
 	}
 
 	/**
 	 * The ID of the channel where the reward was redeemed.
 	 */
-	get channelId() {
+	get channelId(): string {
 		return this._data.data.redemption.channel_id;
 	}
 
@@ -114,70 +116,70 @@ export class PubSubRedemptionMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getChannel() {
+	async getChannel(): Promise<HelixUser | null> {
 		return this._apiClient.helix.users.getUserById(this._data.data.redemption.channel_id);
 	}
 
 	/**
 	 * The date when the reward was redeemed.
 	 */
-	get redemptionDate() {
+	get redemptionDate(): Date {
 		return new Date(this._data.data.redemption.redeemed_at);
 	}
 
 	/**
 	 * The ID of the reward.
 	 */
-	get rewardId() {
+	get rewardId(): string {
 		return this._data.data.redemption.reward.id;
 	}
 
 	/**
 	 * The name of the reward.
 	 */
-	get rewardName() {
+	get rewardName(): string {
 		return this._data.data.redemption.reward.title;
 	}
 
 	/**
 	 * The prompt of the reward.
 	 */
-	get rewardPrompt() {
+	get rewardPrompt(): string {
 		return this._data.data.redemption.reward.prompt;
 	}
 
 	/**
 	 * The cost of the reward, in channel points.
 	 */
-	get rewardCost() {
+	get rewardCost(): number {
 		return this._data.data.redemption.reward.cost;
 	}
 
 	/**
 	 * Whether the reward gets added to the request queue.
 	 */
-	get rewardIsQueued() {
+	get rewardIsQueued(): boolean {
 		return !this._data.data.redemption.reward.should_redemptions_skip_request_queue;
 	}
 
 	/**
 	 * The image set associated with the reward.
 	 */
-	get rewardImage() {
+	get rewardImage(): PubSubRedemptionMessageImageData {
 		return this._data.data.redemption.reward.image;
 	}
 
 	/**
 	 * The full message that was sent with the notification.
 	 */
-	get message() {
+	get message(): string {
 		return this._data.data.redemption.user_input;
 	}
 
 	/**
 	 * The status of the redemption.
 	 */
-	get status() {
+	get status(): PubSubRedemptionStatus {
 		return this._data.data.redemption.status;
 	}
 }

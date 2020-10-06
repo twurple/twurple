@@ -21,37 +21,37 @@ export class TokenInfo {
 	/**
 	 * The client ID.
 	 */
-	get clientId() {
+	get clientId(): string {
 		return this._data.client_id;
 	}
 
 	/**
 	 * The ID of the authenticated user.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
 	 * The user name of the authenticated user.
 	 */
-	get userName() {
+	get userName(): string {
 		return this._data.login;
 	}
 
 	/**
 	 * The scopes for which this token is valid.
 	 */
-	get scopes() {
+	get scopes(): string[] {
 		return this._data.scopes;
 	}
 
 	/**
 	 * The time when the token will expire.
 	 *
-	 * If this returns null, it means that the token is either invalid or never expires (happens with old client IDs).
+	 * If this returns null, it means that the token never expires (happens with some old client IDs).
 	 */
-	get expiryDate() {
+	get expiryDate(): Date | null {
 		if (!this._data.expires_in) {
 			return null;
 		}

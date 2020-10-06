@@ -1,11 +1,15 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
-import { HelixSubscription, HelixSubscriptionData } from './HelixSubscription';
-import { HelixSubscriptionEvent, HelixSubscriptionEventData } from './HelixSubscriptionEvent';
+import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
+import type { HelixSubscriptionData } from './HelixSubscription';
+import { HelixSubscription } from './HelixSubscription';
+import type { HelixSubscriptionEventData } from './HelixSubscriptionEvent';
+import { HelixSubscriptionEvent } from './HelixSubscriptionEvent';
 
 /**
  * The Helix API methods that deal with subscriptions.
@@ -24,7 +28,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 */
-	async getSubscriptions(broadcaster: UserIdResolvable) {
+	async getSubscriptions(broadcaster: UserIdResolvable): Promise<HelixPaginatedResult<HelixSubscription>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
@@ -42,7 +46,9 @@ export class HelixSubscriptionApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 */
-	getSubscriptionsPaginated(broadcaster: UserIdResolvable) {
+	getSubscriptionsPaginated(
+		broadcaster: UserIdResolvable
+	): HelixPaginatedRequest<HelixSubscriptionData, HelixSubscription> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'subscriptions',
@@ -62,7 +68,10 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * @param broadcaster The broadcaster to find subscriptions to.
 	 * @param users The users that should be checked for subscriptions.
 	 */
-	async getSubscriptionsForUsers(broadcaster: UserIdResolvable, users: UserIdResolvable[]) {
+	async getSubscriptionsForUsers(
+		broadcaster: UserIdResolvable,
+		users: UserIdResolvable[]
+	): Promise<HelixSubscription[]> {
 		const result = await this._client.callApi<HelixResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
@@ -82,7 +91,10 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * @param broadcaster The broadcaster to check.
 	 * @param user The user to check.
 	 */
-	async getSubscriptionForUser(broadcaster: UserIdResolvable, user: UserIdResolvable) {
+	async getSubscriptionForUser(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable
+	): Promise<HelixSubscription | null> {
 		const list = await this.getSubscriptionsForUsers(broadcaster, [user]);
 		return list.length ? list[0] : null;
 	}
@@ -92,7 +104,9 @@ export class HelixSubscriptionApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster to retrieve subscription events for.
 	 */
-	async getSubscriptionEventsForBroadcaster(broadcaster: UserIdResolvable) {
+	async getSubscriptionEventsForBroadcaster(
+		broadcaster: UserIdResolvable
+	): Promise<HelixPaginatedResult<HelixSubscriptionEvent>> {
 		return this._getSubscriptionEvents('broadcaster_id', extractUserId(broadcaster));
 	}
 
@@ -101,7 +115,9 @@ export class HelixSubscriptionApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster to retrieve subscription events for.
 	 */
-	getSubscriptionEventsForBroadcasterPaginated(broadcaster: UserIdResolvable) {
+	getSubscriptionEventsForBroadcasterPaginated(
+		broadcaster: UserIdResolvable
+	): HelixPaginatedRequest<HelixSubscriptionEventData, HelixSubscriptionEvent> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'subscriptions/events',
@@ -120,8 +136,9 @@ export class HelixSubscriptionApi extends BaseApi {
 	 *
 	 * @param id The event ID.
 	 */
-	async getSubscriptionEventById(id: string) {
-		return this._getSubscriptionEvents('id', id);
+	async getSubscriptionEventById(id: string): Promise<HelixSubscriptionEvent | null> {
+		const events = await this._getSubscriptionEvents('id', id);
+		return events.data[0] ?? null;
 	}
 
 	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string) {

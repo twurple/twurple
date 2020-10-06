@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
 
 export interface HelixGameData {
 	id: string;
@@ -22,21 +22,21 @@ export class HelixGame {
 	/**
 	 * The ID of the game.
 	 */
-	get id() {
+	get id(): string {
 		return this._data.id;
 	}
 
 	/**
 	 * The name of the game.
 	 */
-	get name() {
+	get name(): string {
 		return this._data.name;
 	}
 
 	/**
 	 * The URL of the box art of the game.
 	 */
-	get boxArtUrl() {
+	get boxArtUrl(): string {
 		return this._data.box_art_url;
 	}
 }

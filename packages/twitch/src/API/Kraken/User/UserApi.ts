@@ -1,16 +1,23 @@
-import { Cacheable, Cached, CacheEntry, ClearsCache } from '@d-fischer/cache-decorators';
+import type { CacheEntry } from '@d-fischer/cache-decorators';
+import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
 import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
 import { HttpStatusCodeError } from 'twitch-api-call';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
+import type { EmoteSetListData } from '../Channel/EmoteSetList';
 import { EmoteSetList } from '../Channel/EmoteSetList';
 import { PrivilegedUser } from './PrivilegedUser';
-import { User, UserData } from './User';
-import { UserBlock, UserBlockData } from './UserBlock';
-import { UserChatInfo, UserChatInfoData } from './UserChatInfo';
-import { UserFollow, UserFollowData } from './UserFollow';
+import type { UserData } from './User';
+import { User } from './User';
+import type { UserBlockData } from './UserBlock';
+import { UserBlock } from './UserBlock';
+import type { UserChatInfoData } from './UserChatInfo';
+import { UserChatInfo } from './UserChatInfo';
+import type { UserFollowData } from './UserFollow';
+import { UserFollow } from './UserFollow';
 import { UserSubscription } from './UserSubscription';
 
 /**
@@ -32,7 +39,7 @@ export class UserApi extends BaseApi {
 	 * Retrieves the user data of the currently authenticated user.
 	 */
 	@Cached(3600)
-	async getMe() {
+	async getMe(): Promise<PrivilegedUser> {
 		return new PrivilegedUser(await this._client.callApi({ url: 'user', scope: 'user_read' }), this._client);
 	}
 
@@ -42,8 +49,8 @@ export class UserApi extends BaseApi {
 	 * @param userId The user ID you want to look up.
 	 */
 	@Cached(3600)
-	async getUser(userId: UserIdResolvable) {
-		const userData = await this._client.callApi({ url: `users/${extractUserId(userId)}` });
+	async getUser(userId: UserIdResolvable): Promise<User> {
+		const userData = await this._client.callApi<UserData>({ url: `users/${extractUserId(userId)}` });
 		if (!userData) {
 			throw new HellFreezesOverError('Could not get authenticated user');
 		}
@@ -55,13 +62,16 @@ export class UserApi extends BaseApi {
 	 *
 	 * @param userName The user name you want to look up.
 	 */
-	async getUserByName(userName: string) {
+	async getUserByName(userName: string): Promise<User | null> {
 		// not using the decorator's cache here as users-by-name is slightly more complex to cache
 		this._cleanUserCache();
 		if (this._userByNameCache.has(userName)) {
 			return this._userByNameCache.get(userName)!.value;
 		}
-		const { users } = await this._client.callApi({ url: 'users', query: { login: userName } });
+		const { users } = await this._client.callApi<{ users: UserData[] }>({
+			url: 'users',
+			query: { login: userName }
+		});
 		if (users.length === 0) {
 			return null;
 		}
@@ -88,7 +98,10 @@ export class UserApi extends BaseApi {
 		if (!toFetch.length) {
 			return cachedUsers;
 		}
-		const usersData = await this._client.callApi({ url: 'users', query: { login: toFetch.join(',') } });
+		const usersData = await this._client.callApi<{ users: UserData[] }>({
+			url: 'users',
+			query: { login: toFetch.join(',') }
+		});
 		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
 		usersArr.forEach(user =>
 			this._userByNameCache.set(user.name, {
@@ -107,7 +120,7 @@ export class UserApi extends BaseApi {
 	 * @param user The user you want to get chat info for.
 	 */
 	@Cached(3600)
-	async getChatInfo(user: UserIdResolvable) {
+	async getChatInfo(user: UserIdResolvable): Promise<UserChatInfo> {
 		const userId = extractUserId(user);
 
 		const data = await this._client.callApi<UserChatInfoData>({ url: `users/${userId}/chat` });
@@ -120,10 +133,13 @@ export class UserApi extends BaseApi {
 	 * @param user The user you want to get emotes for.
 	 */
 	@Cached(3600)
-	async getUserEmotes(user: UserIdResolvable) {
+	async getUserEmotes(user: UserIdResolvable): Promise<EmoteSetList> {
 		const userId = extractUserId(user);
 
-		const data = await this._client.callApi({ url: `users/${userId}/emotes`, scope: 'user_subscriptions' });
+		const data = await this._client.callApi<{ emoticon_sets: EmoteSetListData }>({
+			url: `users/${userId}/emotes`,
+			scope: 'user_subscriptions'
+		});
 		return new EmoteSetList(data.emoticon_sets);
 	}
 
@@ -134,7 +150,7 @@ export class UserApi extends BaseApi {
 	 * @param toChannel The channel you want to retrieve the subscription data to.
 	 */
 	@Cached(3600)
-	async getSubscriptionData(user: UserIdResolvable, toChannel: UserIdResolvable) {
+	async getSubscriptionData(user: UserIdResolvable, toChannel: UserIdResolvable): Promise<UserSubscription | null> {
 		const userId = extractUserId(user);
 		const channelId = extractUserId(toChannel);
 
@@ -193,12 +209,12 @@ export class UserApi extends BaseApi {
 			query.direction = orderDirection;
 		}
 
-		const data = await this._client.callApi({
+		const data = await this._client.callApi<{ follows: UserFollowData[] }>({
 			url: `users/${userId}/follows/channels`,
 			query
 		});
 
-		return data.follows.map((follow: UserFollowData) => new UserFollow(follow, this._client));
+		return data.follows.map(follow => new UserFollow(follow, this._client));
 	}
 
 	/**
@@ -208,11 +224,13 @@ export class UserApi extends BaseApi {
 	 * @param channel The channel you want to retrieve follow data to.
 	 */
 	@Cached(300)
-	async getFollowedChannel(user: UserIdResolvable, channel: UserIdResolvable) {
+	async getFollowedChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<UserFollow | null> {
 		const userId = extractUserId(user);
 		const channelId = extractUserId(channel);
 		try {
-			const data = await this._client.callApi({ url: `users/${userId}/follows/channels/${channelId}` });
+			const data = await this._client.callApi<UserFollowData>({
+				url: `users/${userId}/follows/channels/${channelId}`
+			});
 			return new UserFollow(data, this._client);
 		} catch (e) {
 			if (e instanceof HttpStatusCodeError) {
@@ -234,10 +252,14 @@ export class UserApi extends BaseApi {
 	 */
 	@ClearsCache<UserApi>('getFollowedChannels', 1)
 	@ClearsCache<UserApi>('getFollowedChannel', 2)
-	async followChannel(user: UserIdResolvable, channel: UserIdResolvable, notifications?: boolean) {
+	async followChannel(
+		user: UserIdResolvable,
+		channel: UserIdResolvable,
+		notifications?: boolean
+	): Promise<UserFollow> {
 		const userId = extractUserId(user);
 		const channelId = extractUserId(channel);
-		const data = await this._client.callApi({
+		const data = await this._client.callApi<UserFollowData>({
 			url: `users/${userId}/follows/channels/${channelId}`,
 			method: 'PUT',
 			scope: 'user_follows_edit',
@@ -254,7 +276,7 @@ export class UserApi extends BaseApi {
 	 */
 	@ClearsCache<UserApi>('getFollowedChannels', 1)
 	@ClearsCache<UserApi>('getFollowedChannel', 2)
-	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable) {
+	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<void> {
 		const userId = extractUserId(user);
 		const channelId = extractUserId(channel);
 		await this._client.callApi({
@@ -280,13 +302,13 @@ export class UserApi extends BaseApi {
 			query.offset = ((page - 1) * limit).toString();
 		}
 
-		const data = await this._client.callApi({
+		const data = await this._client.callApi<{ blocks: UserBlockData[] }>({
 			url: `users/${userId}/blocks`,
 			query,
 			scope: 'user_blocks_read'
 		});
 
-		return data.blocks.map((block: UserBlockData) => new UserBlock(block, this._client));
+		return data.blocks.map(block => new UserBlock(block, this._client));
 	}
 
 	/**
@@ -296,10 +318,10 @@ export class UserApi extends BaseApi {
 	 * @param userToBlock The user to block.
 	 */
 	@ClearsCache<UserApi>('getBlockedUsers', 1)
-	async blockUser(user: UserIdResolvable, userToBlock: UserIdResolvable) {
+	async blockUser(user: UserIdResolvable, userToBlock: UserIdResolvable): Promise<UserBlock> {
 		const userId = extractUserId(user);
 		const userIdToBlock = extractUserId(userToBlock);
-		const data = await this._client.callApi({
+		const data = await this._client.callApi<UserBlockData>({
 			url: `users/${userId}/blocks/${userIdToBlock}`,
 			method: 'PUT',
 			scope: 'user_blocks_edit'
@@ -314,7 +336,7 @@ export class UserApi extends BaseApi {
 	 * @param userToUnblock The user to unblock.
 	 */
 	@ClearsCache<UserApi>('getBlockedUsers', 1)
-	async unblockUser(user: UserIdResolvable, userToUnblock: UserIdResolvable) {
+	async unblockUser(user: UserIdResolvable, userToUnblock: UserIdResolvable): Promise<void> {
 		const userId = extractUserId(user);
 		const userIdToUnblock = extractUserId(userToUnblock);
 		await this._client.callApi({

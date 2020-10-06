@@ -1,4 +1,5 @@
-import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
+import type { MessageParam } from 'ircv3';
+import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 
 // this command has no *useful* parameters, all information is in tags
 /** @private */

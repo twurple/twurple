@@ -1,11 +1,8 @@
-import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
+import type { MessageParam } from 'ircv3';
+import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 import { ChatUser } from '../../../ChatUser';
-import {
-	fillTextPositions,
-	ParsedMessagePart,
-	parseEmoteOffsets,
-	parseEmotePositions
-} from '../../../Toolkit/EmoteTools';
+import type { ParsedMessagePart } from '../../../Toolkit/EmoteTools';
+import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../../../Toolkit/EmoteTools';
 
 /** @private */
 @MessageType('WHISPER')
@@ -19,15 +16,15 @@ export class Whisper extends Message<Whisper> {
 	})
 	message!: MessageParam;
 
-	get userInfo() {
+	get userInfo(): ChatUser {
 		return new ChatUser(this._prefix!.nick, this._tags);
 	}
 
-	get emoteOffsets() {
-		return parseEmoteOffsets(this._tags?.get('emotes'));
+	get emoteOffsets(): Map<string, string[]> {
+		return parseEmoteOffsets(this._tags.get('emotes'));
 	}
 
-	parseEmotes() {
+	parseEmotes(): ParsedMessagePart[] {
 		const messageText = this.params.message;
 		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
 

@@ -1,7 +1,7 @@
 import { TwitchApiCallType } from '../TwitchApiCallOptions';
 
 /** @private */
-export function getTwitchApiUrl(url: string, type: TwitchApiCallType) {
+export function getTwitchApiUrl(url: string, type: TwitchApiCallType): string {
 	switch (type) {
 		case TwitchApiCallType.Kraken:
 		case TwitchApiCallType.Helix:

@@ -1,6 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../User/HelixUser';
+import type { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 
 export type HelixVideoViewableStatus = 'public' | 'private';
@@ -40,105 +41,105 @@ export class HelixVideo {
 	/**
 	 * The ID of the video.
 	 */
-	get id() {
+	get id(): string {
 		return this._data.id;
 	}
 
 	/**
 	 * The ID of the user who created the video.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
 	 * The display name of the user who created the video.
 	 */
-	get userDisplayName() {
+	get userDisplayName(): string {
 		return this._data.user_name;
 	}
 
 	/**
 	 * Retrieves information about the user who created the video.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 
 	/**
 	 * The title of the video.
 	 */
-	get title() {
+	get title(): string {
 		return this._data.title;
 	}
 
 	/**
 	 * The description of the video.
 	 */
-	get description() {
+	get description(): string {
 		return this._data.description;
 	}
 
 	/**
 	 * The date when the video was created.
 	 */
-	get creationDate() {
+	get creationDate(): Date {
 		return new Date(this._data.created_at);
 	}
 
 	/**
 	 * The date when the video was published.
 	 */
-	get publishDate() {
+	get publishDate(): Date {
 		return new Date(this._data.published_at);
 	}
 
 	/**
 	 * The URL of the video.
 	 */
-	get url() {
+	get url(): string {
 		return this._data.url;
 	}
 
 	/**
 	 * The URL of the thumbnail of the video.
 	 */
-	get thumbnailUrl() {
+	get thumbnailUrl(): string {
 		return this._data.thumbnail_url;
 	}
 
 	/**
 	 * Whether the video is public or not.
 	 */
-	get isPublic() {
+	get isPublic(): boolean {
 		return this._data.viewable === 'public';
 	}
 
 	/**
 	 * The number of views of the video.
 	 */
-	get views() {
+	get views(): number {
 		return this._data.view_count;
 	}
 
 	/**
 	 * The language of the video.
 	 */
-	get language() {
+	get language(): string {
 		return this._data.language;
 	}
 
 	/**
 	 * The type of the video.
 	 */
-	get type() {
+	get type(): HelixVideoType {
 		return this._data.type;
 	}
 
 	/**
 	 * The duration of the video, as formatted by Twitch.
 	 */
-	get duration() {
+	get duration(): string {
 		return this._data.duration;
 	}
 
@@ -146,7 +147,7 @@ export class HelixVideo {
 	 * The duration of the video, in seconds.
 	 */
 	@CachedGetter()
-	get durationInSeconds() {
+	get durationInSeconds(): number {
 		const parts = this._data.duration.match(/\d+[hms]/g);
 		if (!parts) {
 			throw new HellFreezesOverError(`Could not parse duration string: ${this._data.duration}`);

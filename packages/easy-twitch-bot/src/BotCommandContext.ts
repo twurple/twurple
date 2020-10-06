@@ -1,4 +1,4 @@
-import { ChatClient, PrivateMessage } from 'twitch-chat-client';
+import type { ChatClient, PrivateMessage } from 'twitch-chat-client';
 
 export class BotCommandContext {
 	readonly user: string;
@@ -10,7 +10,7 @@ export class BotCommandContext {
 		this.channel = msg.params.target;
 	}
 
-	say = (message: string) => {
+	say = (message: string): void => {
 		this._client.say(this.msg.params.target, message);
 	};
 }

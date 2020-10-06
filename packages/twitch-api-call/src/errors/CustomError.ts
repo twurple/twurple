@@ -19,7 +19,7 @@ export class CustomError extends Error {
 		}
 	}
 
-	get name() {
+	get name(): string {
 		return this.constructor.name;
 	}
 }

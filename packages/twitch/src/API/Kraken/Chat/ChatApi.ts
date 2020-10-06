@@ -1,9 +1,11 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
-import { ChatEmoteData } from './ChatEmote';
+import type { ChatEmoteData } from './ChatEmote';
 import { ChatEmoteList } from './ChatEmoteList';
-import { ChatRoom, ChatRoomData } from './ChatRoom';
+import type { ChatRoomData } from './ChatRoom';
+import { ChatRoom } from './ChatRoom';
 
 /**
  * The API methods that deal with chat and chatrooms.
@@ -24,7 +26,7 @@ export class ChatApi extends BaseApi {
 	 * @param emotesets The list of emote set IDs, either as array of strings or as a comma separated string.
 	 */
 	@Cached(3600)
-	async getEmotesBySets(emotesets: string[] | string) {
+	async getEmotesBySets(emotesets: string[] | string): Promise<ChatEmoteList> {
 		if (typeof emotesets !== 'string') {
 			emotesets = emotesets.join(',');
 		}
@@ -45,7 +47,7 @@ export class ChatApi extends BaseApi {
 	 * @param channel The channel to retrieve the chat rooms of.
 	 */
 	@Cached(3600)
-	async getChatRoomsForChannel(channel: UserIdResolvable) {
+	async getChatRoomsForChannel(channel: UserIdResolvable): Promise<ChatRoom[]> {
 		const data = await this._client.callApi<{ rooms: ChatRoomData[] }>({
 			url: `chat/${extractUserId(channel)}/rooms`
 		});

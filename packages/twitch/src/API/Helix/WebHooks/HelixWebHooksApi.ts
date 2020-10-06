@@ -1,8 +1,10 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
-import { HelixWebHookSubscription, HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
+import type { HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
+import { HelixWebHookSubscription } from './HelixWebHookSubscription';
 
 /**
  * The properties describing where and how long a WebHook notification is sent, and how it is signed.
@@ -69,12 +71,15 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  * ```
  */
 export class HelixWebHooksApi extends BaseApi {
+	// TODO rename to getSubscriptionsPaginated and make sync
 	/**
 	 * Retrieves the current WebHook subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 */
-	async getSubscriptions() {
+	async getSubscriptions(): Promise<
+		HelixPaginatedRequestWithTotal<HelixWebHookSubscriptionData, HelixWebHookSubscription>
+	> {
 		return new HelixPaginatedRequestWithTotal(
 			{
 				url: 'webhooks/subscriptions'
@@ -89,7 +94,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async sendHubRequest(options: HelixWebHookHubRequest) {
+	async sendHubRequest(options: HelixWebHookHubRequest): Promise<void> {
 		const { mode, callbackUrl, topicUrl, validityInSeconds = 3600, secret, scope } = options;
 		await this._client.callApi({
 			url: 'webhooks/hub',
@@ -114,7 +119,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which to get notifications about the users they will follow.
 	 * @param options
 	 */
-	async subscribeToUserFollowsFrom(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async subscribeToUserFollowsFrom(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendUserFollowsHubRequest('subscribe', 'from', user, options);
 	}
 
@@ -126,7 +131,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which to get notifications about the users they will be followed by.
 	 * @param options
 	 */
-	async subscribeToUserFollowsTo(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async subscribeToUserFollowsTo(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendUserFollowsHubRequest('subscribe', 'to', user, options);
 	}
 
@@ -138,7 +143,10 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which to not get any more notifications about the users they will follow.
 	 * @param options
 	 */
-	async unsubscribeFromUserFollowsFrom(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromUserFollowsFrom(
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	): Promise<void> {
 		return this._sendUserFollowsHubRequest('unsubscribe', 'from', user, options);
 	}
 
@@ -150,7 +158,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which to not get any more notifications about the users they will be followed by.
 	 * @param options
 	 */
-	async unsubscribeFromUserFollowsTo(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromUserFollowsTo(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendUserFollowsHubRequest('unsubscribe', 'to', user, options);
 	}
 
@@ -162,7 +170,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which to get notifications about their streams changing.
 	 * @param options
 	 */
-	async subscribeToStreamChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async subscribeToStreamChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendStreamChangeHubRequest('subscribe', user, options);
 	}
 
@@ -174,7 +182,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which not to get any more notifications about their streams changing.
 	 * @param options
 	 */
-	async unsubscribeFromStreamChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromStreamChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendStreamChangeHubRequest('unsubscribe', user, options);
 	}
 
@@ -191,7 +199,7 @@ export class HelixWebHooksApi extends BaseApi {
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions,
 		withEmail: boolean = false
-	) {
+	): Promise<void> {
 		return this._sendUserChangeHubRequest('subscribe', user, options, withEmail);
 	}
 
@@ -203,7 +211,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which not to get any more notifications about changing a setting.
 	 * @param options
 	 */
-	async unsubscribeFromUserChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromUserChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendUserChangeHubRequest('unsubscribe', user, options);
 	}
 
@@ -215,7 +223,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which to get notifications about subscriptions to their channel.
 	 * @param options
 	 */
-	async subscribeToSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async subscribeToSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendSubscriptionEventsHubRequest('subscribe', user, options);
 	}
 
@@ -227,7 +235,10 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param user The user for which not to get any more notifications about subscriptions and unsubscriptions to their channel.
 	 * @param options
 	 */
-	async unsubscribeFromSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromSubscriptionEvents(
+		user: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	): Promise<void> {
 		return this._sendSubscriptionEventsHubRequest('unsubscribe', user, options);
 	}
 
@@ -239,7 +250,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param extensionId The extension ID for which to get notifications about transactions.
 	 * @param options
 	 */
-	async subscribeToExtensionTransactions(extensionId: string, options: HelixWebHookHubRequestOptions) {
+	async subscribeToExtensionTransactions(extensionId: string, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendExtensionTransactionsHubRequest('subscribe', extensionId, options);
 	}
 
@@ -251,7 +262,10 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param extensionId The extension ID for which not to get any more notifications about transactions.
 	 * @param options
 	 */
-	async unsubscribeFromExtensionTransactions(extensionId: string, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromExtensionTransactions(
+		extensionId: string,
+		options: HelixWebHookHubRequestOptions
+	): Promise<void> {
 		return this._sendExtensionTransactionsHubRequest('unsubscribe', extensionId, options);
 	}
 
@@ -263,7 +277,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param broadcaster The broadcaster for which to get notifications about bans or unbans in their channel.
 	 * @param options
 	 */
-	async subscribeToBanEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async subscribeToBanEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
 		return this._sendBanEventsHubRequest('subscribe', broadcaster, options);
 	}
 
@@ -275,7 +289,10 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param broadcaster The broadcaster for which not to get any more notifications about bans or unbans in their channel.
 	 * @param options
 	 */
-	async unsubscribeFromBanEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromBanEvents(
+		broadcaster: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	): Promise<void> {
 		return this._sendBanEventsHubRequest('unsubscribe', broadcaster, options);
 	}
 
@@ -292,7 +309,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
-	) {
+	): Promise<void> {
 		return this._sendBanEventsHubRequest('subscribe', broadcaster, options, user);
 	}
 
@@ -309,7 +326,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
-	) {
+	): Promise<void> {
 		return this._sendBanEventsHubRequest('unsubscribe', broadcaster, options, user);
 	}
 
@@ -321,7 +338,10 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param broadcaster The broadcaster for which to get notifications about moderator changes in their channel.
 	 * @param options
 	 */
-	async subscribeToModeratorEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async subscribeToModeratorEvents(
+		broadcaster: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	): Promise<void> {
 		return this._sendModeratorEventsHubRequest('subscribe', broadcaster, options);
 	}
 
@@ -333,7 +353,10 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param broadcaster The broadcaster for which not to get any more notifications about moderator changes in their channel.
 	 * @param options
 	 */
-	async unsubscribeFromModeratorEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async unsubscribeFromModeratorEvents(
+		broadcaster: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	): Promise<void> {
 		return this._sendModeratorEventsHubRequest('unsubscribe', broadcaster, options);
 	}
 
@@ -350,7 +373,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
-	) {
+	): Promise<void> {
 		return this._sendModeratorEventsHubRequest('subscribe', broadcaster, options, user);
 	}
 
@@ -367,7 +390,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
-	) {
+	): Promise<void> {
 		return this._sendModeratorEventsHubRequest('unsubscribe', broadcaster, options, user);
 	}
 

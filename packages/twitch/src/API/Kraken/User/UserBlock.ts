@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
-import { User, UserData } from './User';
+import type { ApiClient } from '../../../ApiClient';
+import type { UserData } from './User';
+import { User } from './User';
 
 /** @private */
 export interface UserBlockData {
@@ -23,7 +24,7 @@ export class UserBlock {
 	/**
 	 * The blocked user.
 	 */
-	get blockedUser() {
+	get blockedUser(): User {
 		return new User(this._data.user, this._client);
 	}
 }

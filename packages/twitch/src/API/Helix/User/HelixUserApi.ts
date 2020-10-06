@@ -1,13 +1,18 @@
 import { TwitchApiCallType } from 'twitch-api-call';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
-import { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId, extractUserName } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
+import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
-import { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
-import { HelixFollow, HelixFollowData, HelixFollowFilter } from './HelixFollow';
-import { HelixPrivilegedUser, HelixPrivilegedUserData } from './HelixPrivilegedUser';
-import { HelixUser, HelixUserData } from './HelixUser';
+import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
+import type { HelixFollowData, HelixFollowFilter } from './HelixFollow';
+import { HelixFollow } from './HelixFollow';
+import type { HelixPrivilegedUserData } from './HelixPrivilegedUser';
+import { HelixPrivilegedUser } from './HelixPrivilegedUser';
+import type { HelixUserData } from './HelixUser';
+import { HelixUser } from './HelixUser';
 
 /** @private */
 export enum UserLookupType {
@@ -39,7 +44,7 @@ export class HelixUserApi extends BaseApi {
 	 *
 	 * @param userIds The user IDs you want to look up.
 	 */
-	async getUsersByIds(userIds: UserIdResolvable[]) {
+	async getUsersByIds(userIds: UserIdResolvable[]): Promise<HelixUser[]> {
 		return this._getUsers(UserLookupType.Id, userIds.map(extractUserId));
 	}
 
@@ -48,7 +53,7 @@ export class HelixUserApi extends BaseApi {
 	 *
 	 * @param userNames The user names you want to look up.
 	 */
-	async getUsersByNames(userNames: UserNameResolvable[]) {
+	async getUsersByNames(userNames: UserNameResolvable[]): Promise<HelixUser[]> {
 		return this._getUsers(UserLookupType.Login, userNames.map(extractUserName));
 	}
 
@@ -57,7 +62,7 @@ export class HelixUserApi extends BaseApi {
 	 *
 	 * @param userId The user ID you want to look up.
 	 */
-	async getUserById(userId: UserIdResolvable) {
+	async getUserById(userId: UserIdResolvable): Promise<HelixUser | null> {
 		const users = await this._getUsers(UserLookupType.Id, extractUserId(userId));
 		return users.length ? users[0] : null;
 	}
@@ -67,7 +72,7 @@ export class HelixUserApi extends BaseApi {
 	 *
 	 * @param userName The user name you want to look up.
 	 */
-	async getUserByName(userName: UserNameResolvable) {
+	async getUserByName(userName: UserNameResolvable): Promise<HelixUser | null> {
 		const users = await this._getUsers(UserLookupType.Login, extractUserName(userName));
 		return users.length ? users[0] : null;
 	}
@@ -77,7 +82,7 @@ export class HelixUserApi extends BaseApi {
 	 *
 	 * @param withEmail Whether you need the user's email address.
 	 */
-	async getMe(withEmail: boolean = false) {
+	async getMe(withEmail: boolean = false): Promise<HelixPrivilegedUser> {
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedUserData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'users',
@@ -96,7 +101,7 @@ export class HelixUserApi extends BaseApi {
 	 *
 	 * @param data The data to update.
 	 */
-	async updateUser(data: HelixUserUpdate) {
+	async updateUser(data: HelixUserUpdate): Promise<HelixPrivilegedUser> {
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedUserData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'users',
@@ -115,7 +120,7 @@ export class HelixUserApi extends BaseApi {
 	 *
 	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
 	 */
-	async getFollows(filter: HelixFollowFilter) {
+	async getFollows(filter: HelixFollowFilter): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
 		const query = HelixUserApi._makeFollowsQuery(filter);
 
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowData>>({
@@ -132,7 +137,7 @@ export class HelixUserApi extends BaseApi {
 	 *
 	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
 	 */
-	getFollowsPaginated(filter: HelixFollowFilter) {
+	getFollowsPaginated(filter: HelixFollowFilter): HelixPaginatedRequestWithTotal<HelixFollowData, HelixFollow> {
 		const query = HelixUserApi._makeFollowsQuery(filter);
 
 		return new HelixPaginatedRequestWithTotal(

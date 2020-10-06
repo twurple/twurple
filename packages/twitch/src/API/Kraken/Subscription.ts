@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../ApiClient';
+import type { ApiClient } from '../../ApiClient';
 
 /** @private */
 export interface SubscriptionData {
@@ -24,28 +24,28 @@ export class Subscription {
 	/**
 	 * The ID of the subscription.
 	 */
-	get id() {
+	get id(): string {
 		return this._data._id;
 	}
 
 	/**
 	 * The identifier of the subscription plan.
 	 */
-	get subPlan() {
+	get subPlan(): string {
 		return this._data.sub_plan;
 	}
 
 	/**
 	 * The name of the subscription plan.
 	 */
-	get subPlanName() {
+	get subPlanName(): string {
 		return this._data.sub_plan_name;
 	}
 
 	/**
 	 * The date when the subscription was started.
 	 */
-	get startDate() {
+	get startDate(): Date {
 		return new Date(this._data.created_at);
 	}
 }

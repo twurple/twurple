@@ -1,4 +1,5 @@
-import { HelixUser, HelixUserData } from './HelixUser';
+import type { HelixUserData } from './HelixUser';
+import { HelixUser } from './HelixUser';
 
 /** @private */
 export interface HelixPrivilegedUserData extends HelixUserData {
@@ -17,7 +18,7 @@ export class HelixPrivilegedUser extends HelixUser {
 	/**
 	 * The email address of the user.
 	 */
-	get email() {
+	get email(): string | undefined {
 		return this._data.email;
 	}
 
@@ -26,7 +27,7 @@ export class HelixPrivilegedUser extends HelixUser {
 	 *
 	 * @param description The new description.
 	 */
-	async setDescription(description: string) {
+	async setDescription(description: string): Promise<HelixPrivilegedUser> {
 		return this._client.helix.users.updateUser({ description });
 	}
 }

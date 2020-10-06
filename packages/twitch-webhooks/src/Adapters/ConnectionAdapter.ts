@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import * as http from 'http';
 import * as https from 'https';
-import { WebHookListenerCertificateConfig } from '../WebHookListener';
+import type { WebHookListenerCertificateConfig } from '../WebHookListener';
 
 /** @protected */
 export interface CommonConnectionAdapterConfig {
@@ -58,7 +58,7 @@ export abstract class ConnectionAdapter {
 	 *
 	 * @protected
 	 */
-	get listenUsingSsl() {
+	get listenUsingSsl(): boolean {
 		return !!this._ssl;
 	}
 
@@ -67,7 +67,7 @@ export abstract class ConnectionAdapter {
 	 *
 	 * @protected
 	 */
-	async getListenerPort() {
+	async getListenerPort(): Promise<number> {
 		return this._listenerPort;
 	}
 

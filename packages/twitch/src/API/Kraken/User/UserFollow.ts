@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
-import { Channel, ChannelData } from '../Channel/Channel';
+import type { ApiClient } from '../../../ApiClient';
+import type { ChannelData } from '../Channel/Channel';
+import { Channel } from '../Channel/Channel';
 
 /** @private */
 export interface UserFollowData {
@@ -23,21 +24,21 @@ export class UserFollow {
 	/**
 	 * The date when the user followed the channel.
 	 */
-	get followDate() {
+	get followDate(): Date {
 		return new Date(this._data.created_at);
 	}
 
 	/**
 	 * Whether the user has notifications enabled for the channel.
 	 */
-	get hasNotifications() {
+	get hasNotifications(): boolean {
 		return this._data.notifications;
 	}
 
 	/**
 	 * The followed channel.
 	 */
-	get channel() {
+	get channel(): Channel {
 		return new Channel(this._data.channel, this._client);
 	}
 }

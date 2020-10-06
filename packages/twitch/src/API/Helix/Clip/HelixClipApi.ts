@@ -2,8 +2,9 @@ import { TwitchApiCallType } from 'twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import { HelixPaginatedResponse } from '../HelixResponse';
-import { HelixClip, HelixClipData } from './HelixClip';
+import type { HelixPaginatedResponse } from '../HelixResponse';
+import type { HelixClipData } from './HelixClip';
+import { HelixClip } from './HelixClip';
 
 /** @private */
 export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
@@ -73,7 +74,10 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async getClipsForBroadcaster(userId: string, filter: HelixClipFilter = {}) {
+	async getClipsForBroadcaster(
+		userId: string,
+		filter: HelixClipFilter = {}
+	): Promise<HelixPaginatedResponse<HelixClip>> {
 		return this._getClips({
 			...filter,
 			filterType: 'broadcaster_id',
@@ -89,7 +93,10 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	getClipsForBroadcasterPaginated(userId: string, filter: HelixClipFilter = {}) {
+	getClipsForBroadcasterPaginated(
+		userId: string,
+		filter: HelixClipFilter = {}
+	): HelixPaginatedRequest<HelixClipData, HelixClip> {
 		return this._getClipsPaginated({
 			...filter,
 			filterType: 'broadcaster_id',
@@ -105,7 +112,7 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async getClipsForGame(gameId: string, filter: HelixClipFilter = {}) {
+	async getClipsForGame(gameId: string, filter: HelixClipFilter = {}): Promise<HelixPaginatedResponse<HelixClip>> {
 		return this._getClips({
 			...filter,
 			filterType: 'game_id',
@@ -121,7 +128,10 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	getClipsForGamePaginated(gameId: string, filter: HelixClipFilter = {}) {
+	getClipsForGamePaginated(
+		gameId: string,
+		filter: HelixClipFilter = {}
+	): HelixPaginatedRequest<HelixClipData, HelixClip> {
 		return this._getClipsPaginated({
 			...filter,
 			filterType: 'game_id',
@@ -134,7 +144,7 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @param ids The clip IDs.
 	 */
-	async getClipsByIds(ids: string[]) {
+	async getClipsByIds(ids: string[]): Promise<HelixClip[]> {
 		const result = await this._getClips({
 			filterType: 'id',
 			ids
@@ -148,7 +158,7 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @param id The clip ID.
 	 */
-	async getClipById(id: string) {
+	async getClipById(id: string): Promise<HelixClip | null> {
 		const clips = await this.getClipsByIds([id]);
 		return clips.length ? clips[0] : null;
 	}
@@ -160,7 +170,7 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async createClip(params: HelixClipCreateParams) {
+	async createClip(params: HelixClipCreateParams): Promise<string> {
 		const { channelId, createAfterDelay = false } = params;
 		const result = await this._client.callApi<{ data: [HelixClipCreateResponse] }>({
 			type: TwitchApiCallType.Helix,
@@ -176,7 +186,7 @@ export class HelixClipApi extends BaseApi {
 		return result.data[0].id;
 	}
 
-	private async _getClips(params: HelixClipIdFilter) {
+	private async _getClips(params: HelixClipIdFilter): Promise<HelixPaginatedResponse<HelixClip>> {
 		const { filterType, ids, startDate, endDate, limit = 20 } = params;
 
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixClipData>>({
@@ -193,7 +203,7 @@ export class HelixClipApi extends BaseApi {
 		return createPaginatedResult(result, HelixClip, this._client);
 	}
 
-	private _getClipsPaginated(params: HelixClipIdFilter) {
+	private _getClipsPaginated(params: HelixClipIdFilter): HelixPaginatedRequest<HelixClipData, HelixClip> {
 		const { filterType, ids, startDate, endDate } = params;
 
 		return new HelixPaginatedRequest(

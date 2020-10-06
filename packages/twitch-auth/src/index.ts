@@ -1,4 +1,4 @@
-export { AccessToken } from './AccessToken';
+export { AccessToken, AccessTokenData } from './AccessToken';
 
 export { exchangeCode, getAppToken, getTokenInfo, refreshUserToken, revokeToken } from './helpers';
 
