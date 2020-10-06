@@ -9,7 +9,7 @@ const listener = new WebHookListener(apiClient, new SimpleAdapter({
     hostName: 'example.com',
     listenerPort: 8090
 }));
-listener.listen();
+await listener.listen();
 ```
 
 Please note that the port you supply needs to be **available from the outside**.
