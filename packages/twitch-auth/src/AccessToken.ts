@@ -20,14 +20,14 @@ export class AccessToken {
 	/**
 	 * The access token which is necessary for every request to the Twitch API.
 	 */
-	get accessToken() {
+	get accessToken(): string {
 		return this._data.access_token;
 	}
 
 	/**
 	 * The refresh token which is necessary to refresh the access token once it expires.
 	 */
-	get refreshToken() {
+	get refreshToken(): string {
 		return this._data.refresh_token;
 	}
 
@@ -37,14 +37,14 @@ export class AccessToken {
 	 * May be `null`, in which case the token does not expire.
 	 * This can only be the case with very old Client IDs.
 	 */
-	get expiryDate() {
+	get expiryDate(): Date | null {
 		if (!this._data.expires_in) {
 			return null;
 		}
 		return new Date(this._obtainmentDate.getTime() + this._data.expires_in * 1000);
 	}
 
-	get isExpired() {
+	get isExpired(): boolean {
 		if (!this._data.expires_in) {
 			return false;
 		}
@@ -54,7 +54,7 @@ export class AccessToken {
 	/**
 	 * The scope the access token is valid for, i.e. what this token enables you to do.
 	 */
-	get scope() {
+	get scope(): string[] {
 		return this._data.scope || [];
 	}
 }

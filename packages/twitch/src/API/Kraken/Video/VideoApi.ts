@@ -1,8 +1,11 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { extractUserId, UserIdResolvable } from '../../..';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
-import { CreatedVideo, CreatedVideoData } from './CreatedVideo';
-import { Video, VideoData, VideoViewability } from './Video';
+import type { CreatedVideoData } from './CreatedVideo';
+import { CreatedVideo } from './CreatedVideo';
+import type { VideoData, VideoViewability } from './Video';
+import { Video } from './Video';
 
 /**
  * Possible periods to search videos in.
@@ -93,7 +96,7 @@ export class VideoApi extends BaseApi {
 	 *
 	 * @param id The ID of the video.
 	 */
-	async getVideo(id: string) {
+	async getVideo(id: string): Promise<Video> {
 		const data = await this._client.callApi<VideoData>({ url: `videos/${id}` });
 		return new Video(data, this._client);
 	}
@@ -117,7 +120,7 @@ export class VideoApi extends BaseApi {
 		sort?: VideoSort,
 		page?: number,
 		limit: number = 10
-	) {
+	): Promise<Video[]> {
 		const query: Record<string, string | undefined> = {
 			limit: limit.toString(),
 			game,
@@ -147,7 +150,7 @@ export class VideoApi extends BaseApi {
 		sort?: VideoSort,
 		page?: number,
 		limit: number = 10
-	) {
+	): Promise<Video[]> {
 		const query: Record<string, string | undefined> = {
 			limit: limit.toString(),
 			broadcast_type: type,
@@ -166,7 +169,7 @@ export class VideoApi extends BaseApi {
 	 * @param channel The channel to upload the video to.
 	 * @param createData The data for the video.
 	 */
-	async createVideo(channel: UserIdResolvable, createData: VideoCreateData) {
+	async createVideo(channel: UserIdResolvable, createData: VideoCreateData): Promise<CreatedVideo> {
 		const channelId = extractUserId(channel);
 		const data = await this._client.callApi<CreatedVideoData>({
 			url: 'videos',
@@ -186,7 +189,7 @@ export class VideoApi extends BaseApi {
 	 * @param id The ID of the video.
 	 * @param token The upload token.
 	 */
-	async completeVideoUpload(id: string, token: string) {
+	async completeVideoUpload(id: string, token: string): Promise<void> {
 		await this._client.callApi({
 			url: `https://uploads.twitch.tv/upload/${id}/complete`,
 			type: TwitchApiCallType.Custom,
@@ -204,7 +207,7 @@ export class VideoApi extends BaseApi {
 	 * @param id The ID of the video.
 	 * @param updateData The data to change for the video.
 	 */
-	async updateVideo(id: string, updateData: VideoUpdateData) {
+	async updateVideo(id: string, updateData: VideoUpdateData): Promise<void> {
 		await this._client.callApi({
 			url: `videos/${id}`,
 			method: 'PUT',
@@ -218,7 +221,7 @@ export class VideoApi extends BaseApi {
 	 *
 	 * @param id The ID of the video.
 	 */
-	async deleteVideo(id: string) {
+	async deleteVideo(id: string): Promise<void> {
 		await this._client.callApi({
 			url: `videos/${id}`,
 			method: 'DELETE',

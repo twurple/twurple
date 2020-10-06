@@ -1,6 +1,6 @@
-import { HelixFollow, HelixResponse } from 'twitch';
-import { HelixFollowData } from 'twitch/lib/API/Helix/User/HelixFollow';
-import { WebHookListener } from '../WebHookListener';
+import type { HelixFollowData, HelixResponse } from 'twitch';
+import { HelixFollow } from 'twitch';
+import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
@@ -16,22 +16,22 @@ export class FollowsFromUserSubscription extends Subscription<HelixFollow> {
 		super(handler, client, validityInSeconds);
 	}
 
-	get id() {
+	get id(): string {
 		return `follows.from.${this._userId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixFollowData>) {
+	protected transformData(response: HelixResponse<HelixFollowData>): HelixFollow {
 		return new HelixFollow(response.data[0], this._client._apiClient);
 	}
 
-	protected async _subscribe() {
+	protected async _subscribe(): Promise<void> {
 		return this._client._apiClient.helix.webHooks.subscribeToUserFollowsFrom(
 			this._userId,
 			await this._getOptions()
 		);
 	}
 
-	protected async _unsubscribe() {
+	protected async _unsubscribe(): Promise<void> {
 		return this._client._apiClient.helix.webHooks.unsubscribeFromUserFollowsFrom(
 			this._userId,
 			await this._getOptions()

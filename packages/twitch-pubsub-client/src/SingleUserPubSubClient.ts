@@ -1,17 +1,21 @@
 import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient, extractUserId, InvalidTokenError, UserIdResolvable } from 'twitch';
+import type { ApiClient, UserIdResolvable } from 'twitch';
+import { extractUserId, InvalidTokenError } from 'twitch';
 import { BasicPubSubClient } from './BasicPubSubClient';
-import {
-	PubSubBitsBadgeUnlockMessage,
-	PubSubBitsBadgeUnlockMessageData
-} from './Messages/PubSubBitsBadgeUnlockMessage';
-import { PubSubBitsMessage, PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
-import { PubSubChatModActionMessage, PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
-import { PubSubMessage } from './Messages/PubSubMessage';
-import { PubSubRedemptionMessage, PubSubRedemptionMessageData } from './Messages/PubSubRedemptionMessage';
-import { PubSubSubscriptionMessage, PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
-import { PubSubWhisperMessage, PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
+import type { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
+import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
+import type { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
+import { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
+import type { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
+import { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
+import type { PubSubMessage } from './Messages/PubSubMessage';
+import type { PubSubRedemptionMessageData } from './Messages/PubSubRedemptionMessage';
+import { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
+import type { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
+import { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
+import type { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
+import { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
 import { PubSubListener } from './PubSubListener';
 
 /**
@@ -115,7 +119,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsMessage} object.
 	 */
-	async onBits(callback: (message: PubSubBitsMessage) => void) {
+	async onBits(callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener> {
 		return this._addListener('channel-bits-events-v2', callback, 'bits:read');
 	}
 
@@ -126,7 +130,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
 	 */
-	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void) {
+	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void): Promise<PubSubListener> {
 		return this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
 	}
 
@@ -137,7 +141,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsRedemptionMessage} object.
 	 */
-	async onRedemption(callback: (message: PubSubRedemptionMessage) => void) {
+	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener> {
 		return this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');
 	}
 
@@ -148,7 +152,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubSubscriptionMessage} object.
 	 */
-	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void) {
+	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void): Promise<PubSubListener> {
 		return this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
 	}
 
@@ -159,7 +163,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubWhisperMessage} object.
 	 */
-	async onWhisper(callback: (message: PubSubWhisperMessage) => void) {
+	async onWhisper(callback: (message: PubSubWhisperMessage) => void): Promise<PubSubListener> {
 		return this._addListener('whispers', callback, 'whispers:read');
 	}
 
@@ -171,7 +175,10 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubChatModActionMessage} object.
 	 */
-	async onModAction(channelId: UserIdResolvable, callback: (message: PubSubChatModActionMessage) => void) {
+	async onModAction(
+		channelId: UserIdResolvable,
+		callback: (message: PubSubChatModActionMessage) => void
+	): Promise<PubSubListener> {
 		return this._addListener('chat_moderator_actions', callback, 'channel:moderate', extractUserId(channelId));
 	}
 
@@ -180,7 +187,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param listener A listener returned by one of the `add*Listener` methods.
 	 */
-	async removeListener(listener: PubSubListener) {
+	async removeListener(listener: PubSubListener): Promise<void> {
 		if (this._listeners.has(listener.type)) {
 			const newListeners = this._listeners.get(listener.type)!.filter(l => l !== listener);
 			if (newListeners.length === 0) {

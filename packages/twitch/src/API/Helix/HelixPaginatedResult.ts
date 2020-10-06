@@ -1,9 +1,9 @@
 /**
  * A result coming from a Helix resource that is paginated using a cursor.
  */
-import { ConstructedType } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../ApiClient';
-import { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './HelixResponse';
+import type { ConstructedType } from '@d-fischer/shared-utils';
+import type { ApiClient } from '../../ApiClient';
+import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './HelixResponse';
 
 export interface HelixPaginatedResult<T> {
 	/**

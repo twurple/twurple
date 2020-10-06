@@ -1,10 +1,10 @@
 import { BotCommand } from './BotCommand';
-import { BotCommandContext } from './BotCommandContext';
+import type { BotCommandContext } from './BotCommandContext';
 
 export function createBotCommand(
 	commandName: string,
 	handler: (params: string[], context: BotCommandContext) => void | Promise<void>
-) {
+): BotCommand {
 	return new (class extends BotCommand {
 		name = commandName;
 

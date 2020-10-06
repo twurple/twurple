@@ -1,8 +1,10 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { TwitchApiCallType } from 'twitch-api-call';
-import { extractUserName, UserNameResolvable } from '../../Toolkit/UserTools';
+import type { UserNameResolvable } from '../../Toolkit/UserTools';
+import { extractUserName } from '../../Toolkit/UserTools';
 import { BaseApi } from '../BaseApi';
-import { ChattersList, ChattersListData } from './ChattersList';
+import type { ChattersListData } from './ChattersList';
+import { ChattersList } from './ChattersList';
 
 /**
  * Different API methods that are not officially supported by Twitch.
@@ -25,7 +27,7 @@ export class UnsupportedApi extends BaseApi {
 	 * @param channel The channel to retrieve the chatters for.
 	 */
 	@Cached(60)
-	async getChatters(channel: UserNameResolvable) {
+	async getChatters(channel: UserNameResolvable): Promise<ChattersList> {
 		const channelName = extractUserName(channel);
 
 		const data: ChattersListData = await this._client.callApi({

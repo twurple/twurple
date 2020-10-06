@@ -1,11 +1,14 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
-import { HelixPaginatedResult } from '../HelixPaginatedResult';
-import { HelixPagination, makePaginationQuery } from '../HelixPagination';
-import { HelixPaginatedResponse } from '../HelixResponse';
-import { HelixVideo, HelixVideoData, HelixVideoType } from './HelixVideo';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
+import type { HelixPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
+import type { HelixPaginatedResponse } from '../HelixResponse';
+import type { HelixVideoData, HelixVideoType } from './HelixVideo';
+import { HelixVideo } from './HelixVideo';
 
 /** @private */
 export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
@@ -63,7 +66,7 @@ export class HelixVideoApi extends BaseApi {
 	 *
 	 * @param ids The video IDs you want to look up.
 	 */
-	async getVideosByIds(ids: string | string[]) {
+	async getVideosByIds(ids: string | string[]): Promise<HelixVideo[]> {
 		const result = await this._getVideos('id', ids);
 
 		return result.data;
@@ -74,7 +77,7 @@ export class HelixVideoApi extends BaseApi {
 	 *
 	 * @param id The video ID you want to look up.
 	 */
-	async getVideoById(id: string) {
+	async getVideoById(id: string): Promise<HelixVideo | null> {
 		const videos = await this.getVideosByIds(id);
 		return videos.length ? videos[0] : null;
 	}
@@ -85,7 +88,10 @@ export class HelixVideoApi extends BaseApi {
 	 * @param user The user you want to retrieve videos from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getVideosByUser(user: UserIdResolvable, filter: HelixPaginatedVideoFilter = {}) {
+	async getVideosByUser(
+		user: UserIdResolvable,
+		filter: HelixPaginatedVideoFilter = {}
+	): Promise<HelixPaginatedResult<HelixVideo>> {
 		const userId = extractUserId(user);
 		return this._getVideos('user_id', userId, filter);
 	}
@@ -96,7 +102,10 @@ export class HelixVideoApi extends BaseApi {
 	 * @param user The user you want to retrieve videos from.
 	 * @param filter Additional filters for the result set.
 	 */
-	getVideosByUserPaginated(user: UserIdResolvable, filter: HelixVideoFilter = {}) {
+	getVideosByUserPaginated(
+		user: UserIdResolvable,
+		filter: HelixVideoFilter = {}
+	): HelixPaginatedRequest<HelixVideoData, HelixVideo> {
 		const userId = extractUserId(user);
 		return this._getVideosPaginated('user_id', userId, filter);
 	}
@@ -107,7 +116,7 @@ export class HelixVideoApi extends BaseApi {
 	 * @param gameId The game you want to retrieve videos from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getVideosByGame(gameId: string, filter: HelixVideoFilter = {}) {
+	async getVideosByGame(gameId: string, filter: HelixVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
 		return this._getVideos('game_id', gameId, filter);
 	}
 
@@ -117,7 +126,10 @@ export class HelixVideoApi extends BaseApi {
 	 * @param gameId The game you want to retrieve videos from.
 	 * @param filter Additional filters for the result set.
 	 */
-	getVideosByGamePaginated(gameId: string, filter: HelixVideoFilter = {}) {
+	getVideosByGamePaginated(
+		gameId: string,
+		filter: HelixVideoFilter = {}
+	): HelixPaginatedRequest<HelixVideoData, HelixVideo> {
 		return this._getVideosPaginated('game_id', gameId, filter);
 	}
 

@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { AccessToken } from '../AccessToken';
+import type { AccessToken } from '../AccessToken';
 import { getAppToken } from '../helpers';
-import { AuthProvider, AuthProviderTokenType } from './AuthProvider';
+import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
  * An auth provider that retrieve tokens using client credentials.
@@ -36,7 +36,7 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 	 *
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessToken(scopes?: string | string[]) {
+	async getAccessToken(scopes?: string | string[]): Promise<AccessToken> {
 		if (scopes && scopes.length > 0) {
 			throw new Error(
 				`Scope ${
@@ -55,26 +55,26 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 	/**
 	 * Retrieves a new app access token.
 	 */
-	async refresh() {
+	async refresh(): Promise<AccessToken> {
 		return (this._token = await getAppToken(this._clientId, this._clientSecret));
 	}
 
 	/** @private */
-	setAccessToken(token: AccessToken) {
+	setAccessToken(token: AccessToken): void {
 		this._token = token;
 	}
 
 	/**
 	 * The client ID.
 	 */
-	get clientId() {
+	get clientId(): string {
 		return this._clientId;
 	}
 
 	/**
 	 * The scopes that are currently available using the access token.
 	 */
-	get currentScopes() {
+	get currentScopes(): string[] {
 		return [];
 	}
 }

@@ -1,7 +1,9 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
-import { CheermoteList, CheermoteListData } from './CheermoteList';
+import type { CheermoteListData } from './CheermoteList';
+import { CheermoteList } from './CheermoteList';
 
 /**
  * The API methods that deal with Bits/Cheermotes.
@@ -24,7 +26,7 @@ export class BitsApi extends BaseApi {
 	 * @param includeSponsored Whether to include sponsored cheermotes in the list.
 	 */
 	@Cached(3600)
-	async getCheermotes(channel?: UserIdResolvable, includeSponsored: boolean = true) {
+	async getCheermotes(channel?: UserIdResolvable, includeSponsored: boolean = true): Promise<CheermoteList> {
 		const query: Record<string, string> = {};
 		if (channel) {
 			query.channel_id = extractUserId(channel);

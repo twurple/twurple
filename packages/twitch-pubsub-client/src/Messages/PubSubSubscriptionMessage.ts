@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from 'twitch';
-import { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
+import type { ApiClient, HelixUser } from 'twitch';
+import type { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 
 export interface PubSubSubscriptionDetail {
 	context: 'sub' | 'resub';
@@ -38,7 +38,7 @@ export class PubSubSubscriptionMessage {
 	/**
 	 * The ID of the user subscribing to the channel.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? this._data.recipient_id
 			: this._data.user_id;
@@ -47,7 +47,7 @@ export class PubSubSubscriptionMessage {
 	/**
 	 * The name of the user subscribing to the channel.
 	 */
-	get userName() {
+	get userName(): string {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? this._data.recipient_user_name
 			: this._data.user_name;
@@ -56,7 +56,7 @@ export class PubSubSubscriptionMessage {
 	/**
 	 * The display name of the user subscribing to the channel.
 	 */
-	get userDisplayName() {
+	get userDisplayName(): string {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? this._data.recipient_display_name
 			: this._data.display_name;
@@ -67,7 +67,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns 0 if a gift sub or the streaks months.
 	 */
-	get streakMonths() {
+	get streakMonths(): number {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? 0
 			: this._data['streak-months'];
@@ -78,7 +78,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns the months if a gift sub or the cumulative months.
 	 */
-	get cumulativeMonths() {
+	get cumulativeMonths(): number {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? this._data.months
 			: this._data['cumulative-months'];
@@ -89,14 +89,14 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns the months if a gift sub or the cumulative months.
 	 */
-	get months() {
+	get months(): number {
 		return this.cumulativeMonths;
 	}
 
 	/**
 	 * The time the user subscribed.
 	 */
-	get time() {
+	get time(): Date {
 		return new Date(this._data.time);
 	}
 
@@ -105,35 +105,35 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns null if the subscription is a gift subscription.
 	 */
-	get message() {
+	get message(): PubSubChatMessage | null {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift' ? null : this._data.sub_message;
 	}
 
 	/**
 	 * The plan of the subscription.
 	 */
-	get subPlan() {
+	get subPlan(): string {
 		return this._data.sub_plan;
 	}
 
 	/**
 	 * Whether the subscription is a resub.
 	 */
-	get isResub() {
+	get isResub(): boolean {
 		return this._data.context === 'resub';
 	}
 
 	/**
 	 * Whether the subscription is a gift.
 	 */
-	get isGift() {
+	get isGift(): boolean {
 		return this._data.context === 'subgift';
 	}
 
 	/**
 	 * Whether the subscription is from an anonymous gifter.
 	 */
-	get isAnonymous() {
+	get isAnonymous(): boolean {
 		return this._data.context === 'anonsubgift';
 	}
 
@@ -142,7 +142,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns null if the subscription is not a gift.
 	 */
-	get gifterId() {
+	get gifterId(): string | null {
 		return this.isGift ? this._data.user_id : null;
 	}
 
@@ -151,7 +151,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns null if the subscription is not a gift.
 	 */
-	get gifterName() {
+	get gifterName(): string | null {
 		return this.isGift ? this._data.user_name : null;
 	}
 
@@ -160,7 +160,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns null if the subscription is not a gift.
 	 */
-	get gifterDisplayName() {
+	get gifterDisplayName(): string | null {
 		return this.isGift ? this._data.display_name : null;
 	}
 
@@ -169,7 +169,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * Returns null if the subscription is not a gift.
 	 */
-	get giftDuration() {
+	get giftDuration(): number | null {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? this._data.multi_month_duration
 			: null;
@@ -180,7 +180,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._apiClient.helix.users.getUserById(this.userId);
 	}
 
@@ -191,7 +191,7 @@ export class PubSubSubscriptionMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getGifter() {
+	async getGifter(): Promise<HelixUser | null> {
 		if (!this.isGift) {
 			return null;
 		}

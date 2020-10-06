@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
 
 /** @private */
 export interface ChatEmoteData {
@@ -23,21 +23,21 @@ export class ChatEmote {
 	/**
 	 * The emote ID.
 	 */
-	get id() {
+	get id(): number {
 		return this._data.id;
 	}
 
 	/**
 	 * The emote code, i.e. how you write it in chat.
 	 */
-	get code() {
+	get code(): string {
 		return this._data.code;
 	}
 
 	/**
 	 * The ID of the emote set.
 	 */
-	get setId() {
+	get setId(): number {
 		return this._data.emoticon_set;
 	}
 }

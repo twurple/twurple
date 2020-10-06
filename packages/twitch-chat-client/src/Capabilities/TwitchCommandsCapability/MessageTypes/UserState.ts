@@ -1,4 +1,5 @@
-import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
+import type { MessageParam } from 'ircv3';
+import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 
 /** @private */
 @MessageType('USERSTATE')

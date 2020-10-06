@@ -1,6 +1,6 @@
 import deprecate from '@d-fischer/deprecate';
 import { callTwitchApi, TwitchApiCallType } from 'twitch-api-call';
-import { AccessTokenData } from './AccessToken';
+import type { AccessTokenData } from './AccessToken';
 
 /** @deprecated No replacement. */
 export interface LegacyAuthCredentials {
@@ -9,7 +9,11 @@ export interface LegacyAuthCredentials {
 }
 
 /** @deprecated Use `exchangeCode` instead. */
-export async function getUserAccessToken(creds: LegacyAuthCredentials, code: string, redirectUri = 'http://localhost') {
+export async function getUserAccessToken(
+	creds: LegacyAuthCredentials,
+	code: string,
+	redirectUri = 'http://localhost'
+): Promise<AccessTokenData> {
 	deprecate('[twitch-auth] getUserAccessToken', 'Use exchangeCode instead.');
 	return callTwitchApi<AccessTokenData>({
 		type: TwitchApiCallType.Auth,
@@ -26,7 +30,10 @@ export async function getUserAccessToken(creds: LegacyAuthCredentials, code: str
 }
 
 /** @deprecated Use `refreshUserToken` instead. */
-export async function refreshUserAccessToken(creds: LegacyAuthCredentials, refreshToken: string) {
+export async function refreshUserAccessToken(
+	creds: LegacyAuthCredentials,
+	refreshToken: string
+): Promise<AccessTokenData> {
 	deprecate('[twitch-auth] refreshUserAccessToken', 'Use refreshUserToken instead.');
 	return callTwitchApi<AccessTokenData>({
 		type: TwitchApiCallType.Auth,
@@ -42,7 +49,7 @@ export async function refreshUserAccessToken(creds: LegacyAuthCredentials, refre
 }
 
 /** @deprecated Use `getAppToken` instead. */
-export async function getAppAccessToken(creds: LegacyAuthCredentials) {
+export async function getAppAccessToken(creds: LegacyAuthCredentials): Promise<AccessTokenData> {
 	deprecate('[twitch-auth] getAppAccessToken', 'Use getAppToken instead.');
 	return callTwitchApi<AccessTokenData>({
 		type: TwitchApiCallType.Auth,

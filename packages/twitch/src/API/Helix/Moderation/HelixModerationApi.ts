@@ -1,14 +1,21 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import { HelixForwardPagination, makePaginationQuery } from '../HelixPagination';
-import { HelixPaginatedResponse } from '../HelixResponse';
-import { HelixBan, HelixBanData } from './HelixBan';
-import { HelixBanEvent, HelixBanEventData } from './HelixBanEvent';
-import { HelixModerator, HelixModeratorData } from './HelixModerator';
-import { HelixModeratorEvent, HelixModeratorEventData } from './HelixModeratorEvent';
+import type { HelixForwardPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
+import type { HelixPaginatedResponse } from '../HelixResponse';
+import type { HelixBanData } from './HelixBan';
+import { HelixBan } from './HelixBan';
+import type { HelixBanEventData } from './HelixBanEvent';
+import { HelixBanEvent } from './HelixBanEvent';
+import type { HelixModeratorData } from './HelixModerator';
+import { HelixModerator } from './HelixModerator';
+import type { HelixModeratorEventData } from './HelixModeratorEvent';
+import { HelixModeratorEvent } from './HelixModeratorEvent';
 
 /**
  * Filters for the banned users request.
@@ -48,7 +55,7 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to retrieve the banned users from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getBannedUsers(channel: UserIdResolvable, filter?: HelixBanFilter) {
+	async getBannedUsers(channel: UserIdResolvable, filter?: HelixBanFilter): Promise<HelixPaginatedResult<HelixBan>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBanData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'moderation/banned',
@@ -68,7 +75,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve the banned users from.
 	 */
-	getBannedUsersPaginated(channel: UserIdResolvable) {
+	getBannedUsersPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixBanData, HelixBan> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'moderation/banned',
@@ -88,7 +95,7 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to check for a ban of the given user.
 	 * @param user The user to check for a ban in the given channel.
 	 */
-	async checkUserBan(channel: UserIdResolvable, user: UserIdResolvable) {
+	async checkUserBan(channel: UserIdResolvable, user: UserIdResolvable): Promise<boolean> {
 		const userId = extractUserId(user);
 		const result = await this.getBannedUsers(channel, { userId });
 
@@ -101,7 +108,10 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to retrieve the ban events from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getBanEvents(channel: UserIdResolvable, filter?: HelixBanFilter) {
+	async getBanEvents(
+		channel: UserIdResolvable,
+		filter?: HelixBanFilter
+	): Promise<HelixPaginatedResult<HelixBanEvent>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBanEventData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'moderation/banned/events',
@@ -113,10 +123,7 @@ export class HelixModerationApi extends BaseApi {
 			}
 		});
 
-		return {
-			data: result.data.map(data => new HelixBanEvent(data, this._client)),
-			cursor: result.pagination?.cursor
-		};
+		return createPaginatedResult(result, HelixBanEvent, this._client);
 	}
 
 	/**
@@ -124,7 +131,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve the ban events from.
 	 */
-	getBanEventsPaginated(channel: UserIdResolvable) {
+	getBanEventsPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixBanEventData, HelixBanEvent> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'moderation/banned/events',
@@ -144,7 +151,10 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to retrieve moderators from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getModerators(channel: UserIdResolvable, filter?: HelixModeratorFilter) {
+	async getModerators(
+		channel: UserIdResolvable,
+		filter?: HelixModeratorFilter
+	): Promise<HelixPaginatedResult<HelixModerator>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixModeratorData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'moderation/moderators',
@@ -164,7 +174,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve moderators from.
 	 */
-	getModeratorsPaginated(channel: UserIdResolvable) {
+	getModeratorsPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixModeratorData, HelixModerator> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'moderation/moderators',
@@ -184,7 +194,7 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to check.
 	 * @param user The user to check.
 	 */
-	async checkUserMod(channel: UserIdResolvable, user: UserIdResolvable) {
+	async checkUserMod(channel: UserIdResolvable, user: UserIdResolvable): Promise<boolean> {
 		const userId = extractUserId(user);
 		const result = await this.getModerators(channel, { userId });
 
@@ -197,7 +207,10 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to retrieve the moderator events from.
 	 * @param filter Additional filters for the result set.
 	 */
-	async getModeratorEvents(channel: UserIdResolvable, filter?: HelixModeratorFilter) {
+	async getModeratorEvents(
+		channel: UserIdResolvable,
+		filter?: HelixModeratorFilter
+	): Promise<HelixPaginatedResult<HelixModeratorEvent>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixModeratorEventData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'moderation/moderators/events',
@@ -217,7 +230,9 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve the moderator events from.
 	 */
-	getModeratorEventsPaginated(channel: UserIdResolvable) {
+	getModeratorEventsPaginated(
+		channel: UserIdResolvable
+	): HelixPaginatedRequest<HelixModeratorEventData, HelixModeratorEvent> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'moderation/moderators/events',

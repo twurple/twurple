@@ -1,10 +1,13 @@
 import { TwitchApiCallType } from 'twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import { HelixPagination, makePaginationQuery } from '../HelixPagination';
-import { HelixPaginatedResponse } from '../HelixResponse';
-import { HelixExtensionTransaction, HelixExtensionTransactionData } from './HelixExtensionTransaction';
+import type { HelixPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
+import type { HelixPaginatedResponse } from '../HelixResponse';
+import type { HelixExtensionTransactionData } from './HelixExtensionTransaction';
+import { HelixExtensionTransaction } from './HelixExtensionTransaction';
 
 /**
  * Filters for the extension transactions request.
@@ -36,7 +39,10 @@ export class HelixExtensionsApi extends BaseApi {
 	 * @param extensionId The ID of the extension to retrieve transactions for.
 	 * @param filter Additional filters.
 	 */
-	async getExtensionTransactions(extensionId: string, filter: HelixExtensionTransactionsPaginatedFilter = {}) {
+	async getExtensionTransactions(
+		extensionId: string,
+		filter: HelixExtensionTransactionsPaginatedFilter = {}
+	): Promise<HelixPaginatedResult<HelixExtensionTransaction>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixExtensionTransactionData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'extensions/transactions',
@@ -56,7 +62,10 @@ export class HelixExtensionsApi extends BaseApi {
 	 * @param extensionId The ID of the extension to retrieve transactions for.
 	 * @param filter Additional filters.
 	 */
-	getExtensionTransactionsPaginated(extensionId: string, filter: HelixExtensionTransactionsFilter = {}) {
+	getExtensionTransactionsPaginated(
+		extensionId: string,
+		filter: HelixExtensionTransactionsFilter = {}
+	): HelixPaginatedRequest<HelixExtensionTransactionData, HelixExtensionTransaction> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'extensions/transactions',

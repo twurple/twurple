@@ -1,6 +1,7 @@
 /** @private */
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
+import type { User } from '../User/User';
 
 export type ChatRoomRole = 'EVERYONE' | 'SUBSCRIBER' | 'MODERATOR';
 
@@ -26,56 +27,56 @@ export class ChatRoom {
 	/**
 	 * The ID of the chat room.
 	 */
-	get id() {
+	get id(): string {
 		return this._data._id;
 	}
 
 	/**
 	 * The user ID of the chat room owner.
 	 */
-	get ownerId() {
+	get ownerId(): string {
 		return this._data.owner_id;
 	}
 
 	/**
 	 * Retrieves the user data of the chat room owner.
 	 */
-	async getOwner() {
+	async getOwner(): Promise<User> {
 		return this._client.kraken.users.getUser(this._data.owner_id);
 	}
 
 	/**
 	 * The name of the chat room.
 	 */
-	get name() {
+	get name(): string {
 		return this._data.name;
 	}
 
 	/**
 	 * The topic of the chat room.
 	 */
-	get topic() {
+	get topic(): string {
 		return this._data.topic;
 	}
 
 	/**
 	 * Whether the chat room is previewable.
 	 */
-	get isPreviewable() {
+	get isPreviewable(): boolean {
 		return this._data.is_previewable;
 	}
 
 	/**
 	 * The minimum role allowed to enter this chat room.
 	 */
-	get minRole() {
+	get minRole(): ChatRoomRole {
 		return this._data.minimum_allowed_role;
 	}
 
 	/**
 	 * The name of the IRC channel that corresponds to this chat room.
 	 */
-	get ircName() {
+	get ircName(): string {
 		return `#chatrooms:${this._data.owner_id}:${this._data._id}`;
 	}
 }

@@ -1,5 +1,6 @@
-import { ApiClient } from '../../../ApiClient';
-import { Video, VideoData } from './Video';
+import type { ApiClient } from '../../../ApiClient';
+import type { VideoData } from './Video';
+import { Video } from './Video';
 
 /** @private */
 export interface CreatedVideoUploadData {
@@ -28,7 +29,7 @@ export class CreatedVideo extends Video {
 	/**
 	 * The upload token for your video. Use it to upload your video parts.
 	 */
-	get uploadToken() {
+	get uploadToken(): string {
 		return this._uploadData.token;
 	}
 }

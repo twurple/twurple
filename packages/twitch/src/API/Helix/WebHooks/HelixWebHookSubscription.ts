@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
 
 /** @private */
 export interface HelixWebHookSubscriptionData {
@@ -23,28 +23,28 @@ export class HelixWebHookSubscription {
 	/**
 	 * The topic the WebHook is listening to.
 	 */
-	get topicUrl() {
+	get topicUrl(): string {
 		return this._data.topic;
 	}
 
 	/**
 	 * The URL that will be called for every subscribed event.
 	 */
-	get callbackUrl() {
+	get callbackUrl(): string {
 		return this._data.callback;
 	}
 
 	/**
 	 * The time when the subscription will expire.
 	 */
-	get expiryDate() {
+	get expiryDate(): Date {
 		return new Date(this._data.expires_at);
 	}
 
 	/**
 	 * Unsubscribe from the WebHook.
 	 */
-	async unsubscribe() {
+	async unsubscribe(): Promise<void> {
 		return this._client.helix.webHooks.sendHubRequest({
 			mode: 'unsubscribe',
 			topicUrl: this.topicUrl,

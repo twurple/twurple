@@ -1,7 +1,9 @@
 import { parse, stringify } from '@d-fischer/qs';
-import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
-import { AccessToken, AuthProvider, AuthProviderTokenType } from 'twitch';
-import {
+import type { BrowserWindowConstructorOptions } from 'electron';
+import { BrowserWindow } from 'electron';
+import type { AuthProvider, AuthProviderTokenType } from 'twitch';
+import { AccessToken } from 'twitch';
+import type {
 	BaseOptions,
 	ElectronAuthProviderOptions,
 	WindowOptions,
@@ -65,19 +67,19 @@ export class ElectronAuthProvider implements AuthProvider {
 		this._options = { ...defaultOptions, ...options };
 	}
 
-	allowUserChange() {
+	allowUserChange(): void {
 		this._allowUserChange = true;
 	}
 
-	get clientId() {
+	get clientId(): string {
 		return this._clientId;
 	}
 
-	get currentScopes() {
+	get currentScopes(): string[] {
 		return Array.from(this._currentScopes);
 	}
 
-	async getAccessToken(scopes?: string | string[]) {
+	async getAccessToken(scopes?: string | string[]): Promise<AccessToken> {
 		return new Promise<AccessToken>((resolve, reject) => {
 			if (typeof scopes === 'string') {
 				scopes = [scopes];
@@ -90,17 +92,16 @@ export class ElectronAuthProvider implements AuthProvider {
 				return;
 			}
 
-			const redir = encodeURIComponent(this._redirectUri);
 			const queryParams: AuthorizeParams = {
 				response_type: 'token',
 				client_id: this.clientId,
-				redirect_uri: redir,
+				redirect_uri: this._redirectUri,
 				scope: scopes.join(' ')
 			};
 			if (this._allowUserChange) {
 				queryParams.force_verify = true;
 			}
-			const authUrl = `https://id.twitch.tv/oauth2/authorize${stringify(queryParams)}`;
+			const authUrl = `https://id.twitch.tv/oauth2/authorize${stringify(queryParams, { addQueryPrefix: true })}`;
 			const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
 				width: 800,
 				height: 600,
@@ -187,7 +188,7 @@ export class ElectronAuthProvider implements AuthProvider {
 		});
 	}
 
-	setAccessToken(token: AccessToken) {
+	setAccessToken(token: AccessToken): void {
 		this._accessToken = token;
 	}
 }

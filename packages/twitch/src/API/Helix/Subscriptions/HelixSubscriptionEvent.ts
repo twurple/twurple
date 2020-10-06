@@ -1,6 +1,7 @@
-import { ApiClient } from '../../../ApiClient';
-import { HelixEventData } from '../HelixEvent';
-import { HelixSubscription, HelixSubscriptionData } from './HelixSubscription';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixEventData } from '../HelixEvent';
+import type { HelixSubscriptionData } from './HelixSubscription';
+import { HelixSubscription } from './HelixSubscription';
 
 /**
  * The different types a subscription event can have.
@@ -37,35 +38,35 @@ export class HelixSubscriptionEvent extends HelixSubscription {
 	/**
 	 * The unique ID of the subscription event.
 	 */
-	get eventId() {
+	get eventId(): string {
 		return this._eventData.id;
 	}
 
 	/**
 	 * The type of the subscription event.
 	 */
-	get eventType() {
+	get eventType(): HelixSubscriptionEventType {
 		return this._eventData.event_type;
 	}
 
 	/**
 	 * The date of the subscription event.
 	 */
-	get eventDate() {
+	get eventDate(): Date {
 		return new Date(this._eventData.event_timestamp);
 	}
 
 	/**
 	 * The version of the subscription event.
 	 */
-	get eventVersion() {
+	get eventVersion(): string {
 		return this._eventData.version;
 	}
 
 	/**
 	 * The message sent with the subscription event.
 	 */
-	get eventMessage() {
+	get eventMessage(): string {
 		return this._eventData.event_data.message || '';
 	}
 }

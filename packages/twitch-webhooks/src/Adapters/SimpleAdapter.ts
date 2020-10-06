@@ -1,4 +1,5 @@
-import { CommonConnectionAdapterConfig, ConnectionAdapter } from './ConnectionAdapter';
+import type { CommonConnectionAdapterConfig } from './ConnectionAdapter';
+import { ConnectionAdapter } from './ConnectionAdapter';
 
 /**
  * The configuration of the simple connection adapter.
@@ -33,17 +34,17 @@ export class SimpleAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
-	get connectUsingSsl() {
+	get connectUsingSsl(): boolean {
 		return this.listenUsingSsl;
 	}
 
 	/** @protected */
-	async getExternalPort() {
+	async getExternalPort(): Promise<number> {
 		return this.getListenerPort();
 	}
 
 	/** @protected */
-	async getHostName() {
+	async getHostName(): Promise<string> {
 		return this._hostName;
 	}
 }

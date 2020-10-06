@@ -1,6 +1,7 @@
-import { Enumerable, MakeOptional } from '@d-fischer/shared-utils';
-import { ApiClient } from 'twitch';
-import { PubSubBasicMessageInfo } from './PubSubMessage';
+import type { MakeOptional } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { ApiClient, HelixUser } from 'twitch';
+import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsBadgeUnlockMessageContent
 	extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
@@ -29,14 +30,14 @@ export class PubSubBitsBadgeUnlockMessage {
 	/**
 	 * The ID of the user that unlocked the badge.
 	 */
-	get userId() {
+	get userId(): string | undefined {
 		return this._data.data.user_id;
 	}
 
 	/**
 	 * The name of the user that unlocked the badge.
 	 */
-	get userName() {
+	get userName(): string | undefined {
 		return this._data.data.user_name;
 	}
 
@@ -45,21 +46,21 @@ export class PubSubBitsBadgeUnlockMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._data.data.user_id ? this._apiClient.helix.users.getUserById(this._data.data.user_id) : null;
 	}
 
 	/**
 	 * The full message that was sent with the notification.
 	 */
-	get message() {
+	get message(): string {
 		return this._data.data.chat_message;
 	}
 
 	/**
 	 * The new badge tier.
 	 */
-	get badgeTier() {
+	get badgeTier(): number {
 		return this._data.data.badge_tier;
 	}
 }

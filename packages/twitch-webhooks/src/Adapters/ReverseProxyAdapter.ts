@@ -1,4 +1,5 @@
-import { CommonConnectionAdapterConfig, ConnectionAdapter } from './ConnectionAdapter';
+import type { CommonConnectionAdapterConfig } from './ConnectionAdapter';
+import { ConnectionAdapter } from './ConnectionAdapter';
 
 /**
  * The configuration of the reverse proxy connection adapter.
@@ -73,7 +74,7 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
-	get pathPrefix() {
+	get pathPrefix(): string | undefined {
 		return this._pathPrefix;
 	}
 }

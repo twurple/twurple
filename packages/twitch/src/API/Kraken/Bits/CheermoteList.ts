@@ -1,5 +1,7 @@
+/// <reference lib="es2016.array.include" />
+
 import { Enumerable, indexBy, utf8Length } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 
 /**
@@ -222,7 +224,7 @@ export class CheermoteList {
 	/**
 	 * Gets all possible cheermote names.
 	 */
-	getPossibleNames() {
+	getPossibleNames(): string[] {
 		return Object.keys(this._data);
 	}
 
@@ -231,7 +233,7 @@ export class CheermoteList {
 	 *
 	 * @param message The message.
 	 */
-	parseMessage(message: string) {
+	parseMessage(message: string): MessageCheermote[] {
 		const result: MessageCheermote[] = [];
 
 		const names = this.getPossibleNames();
@@ -261,7 +263,10 @@ export class CheermoteList {
 	 * @param message The message.
 	 * @param transformer A function that transforms a message part into an arbitrary structure.
 	 */
-	transformCheerMessage<T>(message: string, transformer: (displayInfo: MessageCheermote) => string | T) {
+	transformCheerMessage<T>(
+		message: string,
+		transformer: (displayInfo: MessageCheermote) => string | T
+	): Array<string | T> {
 		const result: Array<string | T> = [];
 
 		let currentPosition = 0;

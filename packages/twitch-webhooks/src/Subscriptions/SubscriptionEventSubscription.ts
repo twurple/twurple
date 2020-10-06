@@ -1,6 +1,6 @@
-import { HelixResponse, HelixSubscriptionEvent } from 'twitch';
-import { HelixSubscriptionEventData } from 'twitch/lib/API/Helix/Subscriptions/HelixSubscriptionEvent';
-import { WebHookListener } from '../WebHookListener';
+import type { HelixResponse, HelixSubscriptionEventData } from 'twitch';
+import { HelixSubscriptionEvent } from 'twitch';
+import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
@@ -16,22 +16,22 @@ export class SubscriptionEventSubscription extends Subscription<HelixSubscriptio
 		super(handler, client, validityInSeconds);
 	}
 
-	get id() {
+	get id(): string {
 		return `subscription.event.${this._userId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixSubscriptionEventData>) {
+	protected transformData(response: HelixResponse<HelixSubscriptionEventData>): HelixSubscriptionEvent {
 		return new HelixSubscriptionEvent(response.data[0], this._client._apiClient);
 	}
 
-	protected async _subscribe() {
+	protected async _subscribe(): Promise<void> {
 		return this._client._apiClient.helix.webHooks.subscribeToSubscriptionEvents(
 			this._userId,
 			await this._getOptions()
 		);
 	}
 
-	protected async _unsubscribe() {
+	protected async _unsubscribe(): Promise<void> {
 		return this._client._apiClient.helix.webHooks.unsubscribeFromSubscriptionEvents(
 			this._userId,
 			await this._getOptions()

@@ -1,4 +1,4 @@
-import { Capability } from 'ircv3';
+import type { Capability } from 'ircv3';
 import { ClearChat } from './MessageTypes/ClearChat';
 import { HostTarget } from './MessageTypes/HostTarget';
 import { Reconnect } from './MessageTypes/Reconnect';

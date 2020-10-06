@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../ApiClient';
-import { ChatBadgeSet, ChatBadgeSetData } from './ChatBadgeSet';
+import type { ApiClient } from '../../ApiClient';
+import type { ChatBadgeSetData } from './ChatBadgeSet';
+import { ChatBadgeSet } from './ChatBadgeSet';
 
 /** @private */
 export type ChatBadgeListData = Record<string, ChatBadgeSetData>;
@@ -20,7 +21,7 @@ export class ChatBadgeList {
 	/**
 	 * Names of all badge sets in the list.
 	 */
-	get badgeSetNames() {
+	get badgeSetNames(): string[] {
 		return Object.keys(this._data);
 	}
 
@@ -29,12 +30,12 @@ export class ChatBadgeList {
 	 *
 	 * @param name The name of the badge set.
 	 */
-	getBadgeSet(name: string) {
+	getBadgeSet(name: string): ChatBadgeSet {
 		return new ChatBadgeSet(this._data[name], this._client);
 	}
 
 	/** @private */
-	_merge(additionalData: ChatBadgeList | ChatBadgeListData) {
+	_merge(additionalData: ChatBadgeList | ChatBadgeListData): ChatBadgeList {
 		if (additionalData instanceof ChatBadgeList) {
 			additionalData = additionalData._data;
 		}

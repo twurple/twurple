@@ -16,11 +16,12 @@ export class HttpStatusCodeError extends CustomError {
 		this._body = body;
 	}
 
-	get statusCode() {
+	get statusCode(): number {
 		return this._statusCode;
 	}
 
-	get body() {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	get body(): any {
 		return this._body;
 	}
 }

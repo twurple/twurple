@@ -1,6 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { BaseApi } from '../../BaseApi';
-import { Team, TeamData } from './Team';
+import type { TeamData } from './Team';
+import { Team } from './Team';
 import { TeamWithUsers } from './TeamWithUsers';
 
 /**
@@ -23,7 +24,7 @@ export class TeamApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	@Cached(3600)
-	async getTeams(page?: number, limit: number = 25): Promise<TeamData[]> {
+	async getTeams(page?: number, limit: number = 25): Promise<Team[]> {
 		const query: Record<string, string> = {};
 
 		if (page) {
@@ -32,12 +33,12 @@ export class TeamApi extends BaseApi {
 
 		query.limit = limit.toString();
 
-		const data = await this._client.callApi({
+		const data = await this._client.callApi<{ teams: TeamData[] }>({
 			url: 'teams',
 			query
 		});
 
-		return data.teams.map((team: TeamData) => new Team(team, this._client));
+		return data.teams.map(teamData => new Team(teamData, this._client));
 	}
 
 	/**
@@ -47,7 +48,7 @@ export class TeamApi extends BaseApi {
 	 */
 	@Cached(3600)
 	async getTeamByName(team: string): Promise<TeamWithUsers> {
-		const teamData = await this._client.callApi({ url: `teams/${team}` });
+		const teamData = await this._client.callApi<TeamData>({ url: `teams/${team}` });
 		return new TeamWithUsers(teamData, this._client);
 	}
 }

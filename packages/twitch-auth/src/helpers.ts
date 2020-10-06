@@ -1,7 +1,9 @@
 import { callTwitchApi, HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
-import { AccessToken, AccessTokenData } from './AccessToken';
+import type { AccessTokenData } from './AccessToken';
+import { AccessToken } from './AccessToken';
 import { InvalidTokenError } from './Errors/InvalidTokenError';
-import { TokenInfo, TokenInfoData } from './TokenInfo';
+import type { TokenInfoData } from './TokenInfo';
+import { TokenInfo } from './TokenInfo';
 
 /**
  * Retrieves an access token with your client credentials and an authorization code.
@@ -11,7 +13,12 @@ import { TokenInfo, TokenInfoData } from './TokenInfo';
  * @param code The authorization code.
  * @param redirectUri The redirect URI. This serves no real purpose here, but must still match one of the redirect URIs you configured in the Twitch Developer dashboard.
  */
-export async function exchangeCode(clientId: string, clientSecret: string, code: string, redirectUri: string) {
+export async function exchangeCode(
+	clientId: string,
+	clientSecret: string,
+	code: string,
+	redirectUri: string
+): Promise<AccessToken> {
 	return new AccessToken(
 		await callTwitchApi<AccessTokenData>({
 			type: TwitchApiCallType.Auth,
@@ -35,7 +42,7 @@ export async function exchangeCode(clientId: string, clientSecret: string, code:
  * @param clientSecret The client secret of your application.
  * @param clientSecret
  */
-export async function getAppToken(clientId: string, clientSecret: string) {
+export async function getAppToken(clientId: string, clientSecret: string): Promise<AccessToken> {
 	return new AccessToken(
 		await callTwitchApi<AccessTokenData>({
 			type: TwitchApiCallType.Auth,
@@ -57,7 +64,11 @@ export async function getAppToken(clientId: string, clientSecret: string) {
  * @param clientSecret The client secret of your application.
  * @param refreshToken The refresh token.
  */
-export async function refreshUserToken(clientId: string, clientSecret: string, refreshToken: string) {
+export async function refreshUserToken(
+	clientId: string,
+	clientSecret: string,
+	refreshToken: string
+): Promise<AccessToken> {
 	return new AccessToken(
 		await callTwitchApi<AccessTokenData>({
 			type: TwitchApiCallType.Auth,
@@ -79,7 +90,7 @@ export async function refreshUserToken(clientId: string, clientSecret: string, r
  * @param clientId The client ID of your application.
  * @param accessToken The access token.
  */
-export async function revokeToken(clientId: string, accessToken: string) {
+export async function revokeToken(clientId: string, accessToken: string): Promise<void> {
 	await callTwitchApi({
 		type: TwitchApiCallType.Auth,
 		url: 'revoke',
@@ -99,7 +110,7 @@ export async function revokeToken(clientId: string, accessToken: string) {
  *
  * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
  */
-export async function getTokenInfo(accessToken: string, clientId?: string) {
+export async function getTokenInfo(accessToken: string, clientId?: string): Promise<TokenInfo> {
 	try {
 		const data = await callTwitchApi<TokenInfoData>(
 			{ type: TwitchApiCallType.Auth, url: 'validate' },

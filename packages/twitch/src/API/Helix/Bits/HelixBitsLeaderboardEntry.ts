@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../User/HelixUser';
 
 /** @private */
 export interface HelixBitsLeaderboardEntryData {
@@ -24,35 +25,35 @@ export class HelixBitsLeaderboardEntry {
 	/**
 	 * The ID of the user on the leaderboard.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
 	 * The display name of the user on the leaderboard.
 	 */
-	get userDisplayName() {
+	get userDisplayName(): string {
 		return this._data.user_name;
 	}
 
 	/**
 	 * The position of the user on the leaderboard.
 	 */
-	get rank() {
+	get rank(): number {
 		return this._data.rank;
 	}
 
 	/**
 	 * The amount of bits used in the given period of time.
 	 */
-	get amount() {
+	get amount(): number {
 		return this._data.score;
 	}
 
 	/**
 	 * Retrieves the user that's on this place on the leaderboard.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 }

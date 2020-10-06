@@ -26,7 +26,10 @@ export interface HelixPagination extends HelixForwardPagination {
 }
 
 /** @private */
-export function makePaginationQuery({ after, before, limit }: HelixPagination = {}) {
+export function makePaginationQuery({ after, before, limit }: HelixPagination = {}): Record<
+	string,
+	string | undefined
+> {
 	return {
 		after,
 		before,

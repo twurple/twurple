@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../User/HelixUser';
 
 /** @private */
 export interface HelixSubscriptionData {
@@ -28,56 +29,56 @@ export class HelixSubscription {
 	/**
 	 * The user ID of the broadcaster.
 	 */
-	get broadcasterId() {
+	get broadcasterId(): string {
 		return this._data.broadcaster_id;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
-	get broadcasterDisplayName() {
+	get broadcasterDisplayName(): string {
 		return this._data.broadcaster_name;
 	}
 
 	/**
 	 * Retrieves more data about the broadcaster.
 	 */
-	async getBroadcaster() {
+	async getBroadcaster(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this.broadcasterId);
 	}
 
 	/**
 	 * Whether the subscription has been gifted by another user.
 	 */
-	get isGift() {
+	get isGift(): boolean {
 		return this._data.is_gift;
 	}
 
 	/**
 	 * The tier of the subscription.
 	 */
-	get tier() {
+	get tier(): string {
 		return this._data.tier;
 	}
 
 	/**
 	 * The user ID of the subscribed user.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
 	 * The display name of the subscribed user.
 	 */
-	get userDisplayName() {
+	get userDisplayName(): string {
 		return this._data.user_name;
 	}
 
 	/**
 	 * Retrieves more data about the subscribed user.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this.userId);
 	}
 }

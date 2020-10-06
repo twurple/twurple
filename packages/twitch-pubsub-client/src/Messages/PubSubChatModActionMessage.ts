@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from 'twitch';
+import type { ApiClient, HelixUser } from 'twitch';
 
 export interface PubSubChatModActionMessageContent {
 	type: string;
@@ -31,7 +31,7 @@ export class PubSubChatModActionMessage {
 	/**
 	 * The ID of the channel where the action was performed.
 	 */
-	get channelId() {
+	get channelId(): string {
 		return this._channelId;
 	}
 
@@ -40,42 +40,42 @@ export class PubSubChatModActionMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getChannel() {
+	async getChannel(): Promise<HelixUser | null> {
 		return this._apiClient.helix.users.getUserById(this._channelId);
 	}
 
 	/**
 	 * The type of the message.
 	 */
-	get type() {
+	get type(): string {
 		return this._data.data.type;
 	}
 
 	/**
 	 * The action that was performed.
 	 */
-	get action() {
+	get action(): string {
 		return this._data.data.moderation_action;
 	}
 
 	/**
 	 * The arguments given to the action.
 	 */
-	get args() {
+	get args(): string[] {
 		return this._data.data.args;
 	}
 
 	/**
 	 * The user ID of the moderator that performed the action.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.data.created_by_user_id;
 	}
 
 	/**
 	 * The name of the moderator that performed the action.
 	 */
-	get userName() {
+	get userName(): string {
 		return this._data.data.created_by;
 	}
 
@@ -84,7 +84,7 @@ export class PubSubChatModActionMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._apiClient.helix.users.getUserById(this._data.data.created_by_user_id);
 	}
 }

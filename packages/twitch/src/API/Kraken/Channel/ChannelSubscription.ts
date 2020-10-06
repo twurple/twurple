@@ -1,5 +1,7 @@
-import { Subscription, SubscriptionData } from '../Subscription';
-import { User, UserData } from '../User/User';
+import type { SubscriptionData } from '../Subscription';
+import { Subscription } from '../Subscription';
+import type { UserData } from '../User/User';
+import { User } from '../User/User';
 
 /** @private */
 export interface ChannelSubscriptionsResponse {
@@ -22,7 +24,7 @@ export class ChannelSubscription extends Subscription {
 	/**
 	 * The user subscribing to the given channel.
 	 */
-	get user() {
+	get user(): User {
 		return new User(this._data.user, this._client);
 	}
 }

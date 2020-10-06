@@ -1,3 +1,5 @@
+/// <reference lib="es2017.object" />
+
 import { flatten } from '@d-fischer/shared-utils';
 
 /** @private */
@@ -16,14 +18,14 @@ export class ChattersList {
 	/**
 	 * A list of user names of all chatters in the chat.
 	 */
-	get allChatters() {
+	get allChatters(): string[] {
 		return flatten(Object.values(this._data.chatters));
 	}
 
 	/**
 	 * A map of user names of all chatters in the chat, mapped to their status in the channel.
 	 */
-	get allChattersWithStatus() {
+	get allChattersWithStatus(): Map<string, string> {
 		return new Map(
 			flatten(
 				Object.entries(this._data.chatters).map(([status, names]) =>

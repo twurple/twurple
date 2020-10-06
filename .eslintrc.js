@@ -23,7 +23,7 @@ const memberNames = [
 	'^((offline|profile)_image|edit|embed|thumbnail|box_art|click)_url$',
 	'^click_action$',
 	'^(image_)?url_\\dx$',
-	'^emoticon_set$',
+	'^emoticon_sets?$',
 	'^is_(anonymous|gift|user_input_required|sub_only|enabled|paused|in_stock|previewable|playlist|(verified|known)_bot)$',
 	'^minimum_allowed_role$',
 	'^(chatter|view(er)?)_count$',

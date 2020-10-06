@@ -1,8 +1,10 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { TwitchApiCallType } from 'twitch-api-call';
-import { extractUserId, UserIdResolvable } from '../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../Toolkit/UserTools';
+import { extractUserId } from '../../Toolkit/UserTools';
 import { BaseApi } from '../BaseApi';
-import { ChatBadgeList, ChatBadgeListData } from './ChatBadgeList';
+import type { ChatBadgeListData } from './ChatBadgeList';
+import { ChatBadgeList } from './ChatBadgeList';
 
 /**
  * The API methods that deal with badges.
@@ -23,7 +25,7 @@ export class BadgesApi extends BaseApi {
 	 * @param language The language of the retrieved badge descriptions.
 	 */
 	@Cached(3600)
-	async getGlobalBadges(language?: string) {
+	async getGlobalBadges(language?: string): Promise<ChatBadgeList> {
 		const data = await this._client.callApi<{ badge_sets: ChatBadgeListData }>({
 			url: 'https://badges.twitch.tv/v1/badges/global/display',
 			query: {
@@ -43,7 +45,11 @@ export class BadgesApi extends BaseApi {
 	 * @param language The language of the retrieved badge descriptions.
 	 */
 	@Cached(3600)
-	async getChannelBadges(channel: UserIdResolvable, includeGlobal: boolean = true, language?: string) {
+	async getChannelBadges(
+		channel: UserIdResolvable,
+		includeGlobal: boolean = true,
+		language?: string
+	): Promise<ChatBadgeList> {
 		const data = await this._client.callApi<{ badge_sets: ChatBadgeListData }>({
 			url: `https://badges.twitch.tv/v1/badges/channels/${extractUserId(channel)}/display`,
 			query: {

@@ -1,4 +1,4 @@
-import { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
+import type { BrowserWindow, BrowserWindowConstructorOptions } from 'electron';
 
 export interface BaseOptions {
 	/**

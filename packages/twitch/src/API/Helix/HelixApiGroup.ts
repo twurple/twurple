@@ -23,7 +23,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix bits API methods.
 	 */
 	@CachedGetter()
-	get bits() {
+	get bits(): HelixBitsApi {
 		return new HelixBitsApi(this._client);
 	}
 
@@ -31,7 +31,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix clips API methods.
 	 */
 	@CachedGetter()
-	get clips() {
+	get clips(): HelixClipApi {
 		return new HelixClipApi(this._client);
 	}
 
@@ -39,7 +39,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix extensions API methods.
 	 */
 	@CachedGetter()
-	get extensions() {
+	get extensions(): HelixExtensionsApi {
 		return new HelixExtensionsApi(this._client);
 	}
 
@@ -47,7 +47,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix game API methods.
 	 */
 	@CachedGetter()
-	get games() {
+	get games(): HelixGameApi {
 		return new HelixGameApi(this._client);
 	}
 
@@ -55,7 +55,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix moderation API methods.
 	 */
 	@CachedGetter()
-	get moderation() {
+	get moderation(): HelixModerationApi {
 		return new HelixModerationApi(this._client);
 	}
 
@@ -63,7 +63,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix stream API methods.
 	 */
 	@CachedGetter()
-	get streams() {
+	get streams(): HelixStreamApi {
 		return new HelixStreamApi(this._client);
 	}
 
@@ -71,7 +71,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix subscription API methods.
 	 */
 	@CachedGetter()
-	get subscriptions() {
+	get subscriptions(): HelixSubscriptionApi {
 		return new HelixSubscriptionApi(this._client);
 	}
 
@@ -79,7 +79,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix user API methods.
 	 */
 	@CachedGetter()
-	get users() {
+	get users(): HelixUserApi {
 		return new HelixUserApi(this._client);
 	}
 
@@ -87,7 +87,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix WebHook API methods.
 	 */
 	@CachedGetter()
-	get webHooks() {
+	get webHooks(): HelixWebHooksApi {
 		return new HelixWebHooksApi(this._client);
 	}
 
@@ -95,7 +95,7 @@ export class HelixApiGroup extends BaseApi {
 	 * The Helix video API methods.
 	 */
 	@CachedGetter()
-	get videos() {
+	get videos(): HelixVideoApi {
 		return new HelixVideoApi(this._client);
 	}
 }

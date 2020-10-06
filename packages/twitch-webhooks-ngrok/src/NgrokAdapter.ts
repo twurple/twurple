@@ -23,7 +23,7 @@ export class NgrokAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
-	async getListenerPort() {
+	async getListenerPort(): Promise<number> {
 		if (!this._listenerPortPromise) {
 			this._listenerPortPromise = getPortPromise();
 		}

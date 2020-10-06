@@ -1,30 +1,26 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import deprecate from '@d-fischer/deprecate';
 import { LogLevel } from '@d-fischer/logger';
+import type { TwitchApiCallOptions } from 'twitch-api-call';
 import {
 	callTwitchApi,
 	callTwitchApiRaw,
 	HttpStatusCodeError,
 	transformTwitchApiResponse,
-	TwitchApiCallOptions,
 	TwitchApiCallType
 } from 'twitch-api-call';
 
+import type { AccessToken, AuthProvider, AuthProviderTokenType, RefreshConfig, TokenInfoData } from 'twitch-auth';
 import {
-	AccessToken,
-	AuthProvider,
-	AuthProviderTokenType,
 	ClientCredentialsAuthProvider,
 	exchangeCode,
 	getAppToken,
 	getTokenInfo,
 	InvalidTokenError,
 	RefreshableAuthProvider,
-	RefreshConfig,
 	refreshUserToken,
 	StaticAuthProvider,
-	TokenInfo,
-	TokenInfoData
+	TokenInfo
 } from 'twitch-auth';
 
 import { BadgesApi } from './API/Badges/BadgesApi';
@@ -134,7 +130,7 @@ export class ApiClient implements AuthProvider {
 		refreshConfig?: RefreshConfig,
 		config: Partial<ApiConfig> = {},
 		tokenType: AuthProviderTokenType = 'user'
-	) {
+	): ApiClient {
 		const authProvider = refreshConfig
 			? new RefreshableAuthProvider(
 					new StaticAuthProvider(clientId, accessToken, scopes, tokenType),
@@ -154,7 +150,7 @@ export class ApiClient implements AuthProvider {
 	 * @param clientSecret The client secret of your application.
 	 * @param config Additional configuration to pass to the constructor.
 	 */
-	static withClientCredentials(clientId: string, clientSecret?: string, config: Partial<ApiConfig> = {}) {
+	static withClientCredentials(clientId: string, clientSecret?: string, config: Partial<ApiConfig> = {}): ApiClient {
 		const authProvider = clientSecret
 			? new ClientCredentialsAuthProvider(clientId, clientSecret)
 			: new StaticAuthProvider(clientId);
@@ -205,7 +201,12 @@ export class ApiClient implements AuthProvider {
 	 * @param code The authorization code.
 	 * @param redirectUri The redirect URI. This serves no real purpose here, but must still match with the redirect URI you configured in the Twitch Developer dashboard.
 	 */
-	static async getAccessToken(clientId: string, clientSecret: string, code: string, redirectUri: string) {
+	static async getAccessToken(
+		clientId: string,
+		clientSecret: string,
+		code: string,
+		redirectUri: string
+	): Promise<AccessToken> {
 		return exchangeCode(clientId, clientSecret, code, redirectUri);
 	}
 
@@ -216,9 +217,8 @@ export class ApiClient implements AuthProvider {
 	 *
 	 * @param clientId The client ID of your application.
 	 * @param clientSecret The client secret of your application.
-	 * @param clientSecret
 	 */
-	static async getAppAccessToken(clientId: string, clientSecret: string) {
+	static async getAppAccessToken(clientId: string, clientSecret: string): Promise<AccessToken> {
 		return getAppToken(clientId, clientSecret);
 	}
 
@@ -231,7 +231,11 @@ export class ApiClient implements AuthProvider {
 	 * @param clientSecret The client secret of your application.
 	 * @param refreshToken The refresh token.
 	 */
-	static async refreshAccessToken(clientId: string, clientSecret: string, refreshToken: string) {
+	static async refreshAccessToken(
+		clientId: string,
+		clientSecret: string,
+		refreshToken: string
+	): Promise<AccessToken> {
 		return refreshUserToken(clientId, clientSecret, refreshToken);
 	}
 
@@ -245,7 +249,7 @@ export class ApiClient implements AuthProvider {
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 */
-	static async getTokenInfo(accessToken: string, clientId?: string) {
+	static async getTokenInfo(accessToken: string, clientId?: string): Promise<TokenInfo> {
 		return getTokenInfo(accessToken, clientId);
 	}
 
@@ -282,7 +286,7 @@ export class ApiClient implements AuthProvider {
 	/**
 	 * Retrieves information about your access token.
 	 */
-	async getTokenInfo() {
+	async getTokenInfo(): Promise<TokenInfo> {
 		try {
 			const data = await this.callApi<TokenInfoData>({ type: TwitchApiCallType.Auth, url: 'validate' });
 			return new TokenInfo(data);
@@ -301,7 +305,7 @@ export class ApiClient implements AuthProvider {
 	 *
 	 * @deprecated Use {@AuthProvider#getAccessToken} directly instead.
 	 */
-	async getAccessToken(scopes?: string | string[]) {
+	async getAccessToken(scopes?: string | string[]): Promise<AccessToken | null> {
 		return this._config.authProvider.getAccessToken(scopes);
 	}
 
@@ -310,12 +314,12 @@ export class ApiClient implements AuthProvider {
 	 *
 	 * @deprecated Use {@AuthProvider#currentScopes} directly instead.
 	 */
-	get currentScopes() {
+	get currentScopes(): string[] {
 		return this._config.authProvider.currentScopes;
 	}
 
 	/** @private */
-	setAccessToken(token: AccessToken) {
+	setAccessToken(token: AccessToken): void {
 		this._config.authProvider.setAccessToken(token);
 	}
 
@@ -324,7 +328,7 @@ export class ApiClient implements AuthProvider {
 	 *
 	 * @deprecated Use {@AuthProvider#refresh} directly instead.
 	 */
-	async refresh() {
+	async refresh(): Promise<AccessToken | null> {
 		return this._config.authProvider.refresh?.() ?? null;
 	}
 
@@ -333,7 +337,7 @@ export class ApiClient implements AuthProvider {
 	 *
 	 * @deprecated Use {@AuthProvider#refresh} directly instead.
 	 */
-	async refreshAccessToken() {
+	async refreshAccessToken(): Promise<AccessToken | undefined> {
 		return (await this.refresh()) ?? undefined;
 	}
 
@@ -347,7 +351,7 @@ export class ApiClient implements AuthProvider {
 	/**
 	 * The client ID of your application.
 	 */
-	get clientId() {
+	get clientId(): string {
 		return this._config.authProvider.clientId;
 	}
 
@@ -357,7 +361,7 @@ export class ApiClient implements AuthProvider {
 	 * @param options The configuration of the call.
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	async callApi<T = any>(options: TwitchApiCallOptions) {
+	async callApi<T = unknown>(options: TwitchApiCallOptions): Promise<T> {
 		const { authProvider } = this._config;
 		const shouldAuth = options?.auth ?? true;
 		let accessToken = shouldAuth
@@ -394,7 +398,7 @@ export class ApiClient implements AuthProvider {
 	 * @param options The configuration of the call.
 	 */
 	// eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
-	async callAPI<T = any>(options: TwitchApiCallOptions) {
+	async callAPI<T = any>(options: TwitchApiCallOptions): Promise<T> {
 		deprecate('[twitch] ChatClient#callAPI', 'Use callApi instead.');
 		return this.callApi<T>(options);
 	}
@@ -402,7 +406,7 @@ export class ApiClient implements AuthProvider {
 	/**
 	 * The default specs for cheermotes.
 	 */
-	get cheermoteDefaults() {
+	get cheermoteDefaults(): TwitchCheermoteConfig {
 		return this._config.cheermotes;
 	}
 
@@ -410,7 +414,7 @@ export class ApiClient implements AuthProvider {
 	 * A group of Kraken API methods.
 	 */
 	@CachedGetter()
-	get kraken() {
+	get kraken(): KrakenApiGroup {
 		return new KrakenApiGroup(this);
 	}
 
@@ -418,7 +422,7 @@ export class ApiClient implements AuthProvider {
 	 * A group of Helix API methods.
 	 */
 	@CachedGetter()
-	get helix() {
+	get helix(): HelixApiGroup {
 		return new HelixApiGroup(this);
 	}
 
@@ -426,7 +430,7 @@ export class ApiClient implements AuthProvider {
 	 * The API methods that deal with badges.
 	 */
 	@CachedGetter()
-	get badges() {
+	get badges(): BadgesApi {
 		return new BadgesApi(this);
 	}
 
@@ -434,7 +438,7 @@ export class ApiClient implements AuthProvider {
 	 * Various API methods that are not officially supported by Twitch.
 	 */
 	@CachedGetter()
-	get unsupported() {
+	get unsupported(): UnsupportedApi {
 		return new UnsupportedApi(this);
 	}
 

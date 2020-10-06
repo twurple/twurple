@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient, HelixUserType } from 'twitch';
-import { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
+import type { ApiClient, HelixUser, HelixUserType } from 'twitch';
+import type { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
 export interface PubSubWhisperTags {
 	login: string;
@@ -52,28 +52,28 @@ export class PubSubWhisperMessage {
 	/**
 	 * The message text.
 	 */
-	get text() {
+	get text(): string {
 		return this._data.data_object.body;
 	}
 
 	/**
 	 * The ID of the user who sent the whisper.
 	 */
-	get senderId() {
+	get senderId(): string {
 		return this._data.data_object.from_id.toString();
 	}
 
 	/**
 	 * The name of the user who sent the whisper.
 	 */
-	get senderName() {
+	get senderName(): string {
 		return this._data.data_object.tags.login;
 	}
 
 	/**
 	 * The display name of the user who sent the whisper.
 	 */
-	get senderDisplayName() {
+	get senderDisplayName(): string {
 		return this._data.data_object.tags.display_name;
 	}
 
@@ -82,7 +82,7 @@ export class PubSubWhisperMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getSender() {
+	async getSender(): Promise<HelixUser | null> {
 		return this._apiClient.helix.users.getUserById(this._data.data_object.from_id.toString());
 	}
 }

@@ -1,6 +1,6 @@
-import { HelixBanEvent, HelixResponse } from 'twitch';
-import { HelixBanEventData } from 'twitch/lib/API/Helix/Moderation/HelixBanEvent';
-import { WebHookListener } from '../WebHookListener';
+import type { HelixBanEventData, HelixResponse } from 'twitch';
+import { HelixBanEvent } from 'twitch';
+import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
@@ -17,18 +17,18 @@ export class BanEventSubscription extends Subscription<HelixBanEvent> {
 		super(handler, client, validityInSeconds);
 	}
 
-	get id() {
+	get id(): string {
 		if (this._userId) {
 			return `ban.event.${this._broadcasterId}.${this._userId}`;
 		}
 		return `ban.event.${this._broadcasterId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixBanEventData>) {
+	protected transformData(response: HelixResponse<HelixBanEventData>): HelixBanEvent {
 		return new HelixBanEvent(response.data[0], this._client._apiClient);
 	}
 
-	protected async _subscribe() {
+	protected async _subscribe(): Promise<void> {
 		if (this._userId) {
 			return this._client._apiClient.helix.webHooks.subscribeToBanEventsForUser(
 				this._broadcasterId,
@@ -42,7 +42,7 @@ export class BanEventSubscription extends Subscription<HelixBanEvent> {
 		);
 	}
 
-	protected async _unsubscribe() {
+	protected async _unsubscribe(): Promise<void> {
 		if (this._userId) {
 			return this._client._apiClient.helix.webHooks.unsubscribeFromBanEventsForUser(
 				this._broadcasterId,

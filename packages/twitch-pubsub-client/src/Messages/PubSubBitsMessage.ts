@@ -1,6 +1,7 @@
-import { Enumerable, MakeOptional } from '@d-fischer/shared-utils';
-import { ApiClient } from 'twitch';
-import { PubSubBasicMessageInfo } from './PubSubMessage';
+import type { MakeOptional } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { ApiClient, HelixUser } from 'twitch';
+import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsMessageBadgeEntitlement {
 	previous_version: number;
@@ -38,14 +39,14 @@ export class PubSubBitsMessage {
 	/**
 	 * The ID of the user that sent the bits.
 	 */
-	get userId() {
+	get userId(): string | undefined {
 		return this._data.data.user_id;
 	}
 
 	/**
 	 * The name of the user that sent the bits.
 	 */
-	get userName() {
+	get userName(): string | undefined {
 		return this._data.data.user_name;
 	}
 
@@ -54,35 +55,35 @@ export class PubSubBitsMessage {
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._data.data.user_id ? this._apiClient.helix.users.getUserById(this._data.data.user_id) : null;
 	}
 
 	/**
 	 * The full message that was sent with the bits.
 	 */
-	get message() {
+	get message(): string {
 		return this._data.data.chat_message;
 	}
 
 	/**
 	 * The number of bits that were sent.
 	 */
-	get bits() {
+	get bits(): number {
 		return this._data.data.bits_used;
 	}
 
 	/**
 	 * The total number of bits that were ever sent by the user in the channel.
 	 */
-	get totalBits() {
+	get totalBits(): number {
 		return this._data.data.total_bits_used;
 	}
 
 	/**
 	 * Whether the cheer was anonymous.
 	 */
-	get isAnonymous() {
+	get isAnonymous(): boolean {
 		return this._data.data.is_anonymous;
 	}
 }

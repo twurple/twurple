@@ -1,14 +1,20 @@
 import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
 import { HttpStatusCodeError } from 'twitch-api-call';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
-import { extractUserId, UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
-import { Team, TeamData } from '../Team/Team';
-import { User, UserData } from '../User/User';
+import type { TeamData } from '../Team/Team';
+import { Team } from '../Team/Team';
+import type { UserData } from '../User/User';
+import { User } from '../User/User';
 import { Channel } from './Channel';
-import { ChannelFollow, ChannelFollowData } from './ChannelFollow';
-import { ChannelSubscription, ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
-import { PrivilegedChannel, PrivilegedChannelData } from './PrivilegedChannel';
+import type { ChannelFollowData } from './ChannelFollow';
+import { ChannelFollow } from './ChannelFollow';
+import type { ChannelSubscriptionData, ChannelSubscriptionsResponse } from './ChannelSubscription';
+import { ChannelSubscription } from './ChannelSubscription';
+import type { PrivilegedChannelData } from './PrivilegedChannel';
+import { PrivilegedChannel } from './PrivilegedChannel';
 
 /**
  * Channel data to update using {@ChannelApi#updateChannel}.
@@ -57,9 +63,9 @@ export class ChannelApi extends BaseApi {
 	 * Gets the channel the client is logged in to.
 	 */
 	@Cached(3600)
-	async getMyChannel() {
+	async getMyChannel(): Promise<PrivilegedChannel> {
 		return new PrivilegedChannel(
-			await this._client.callApi({ url: 'channel', scope: 'channel_read' }),
+			await this._client.callApi<PrivilegedChannelData>({ url: 'channel', scope: 'channel_read' }),
 			this._client
 		);
 	}
@@ -70,7 +76,7 @@ export class ChannelApi extends BaseApi {
 	 * @param user The user you want to retrieve the channel for.
 	 */
 	@Cached(3600)
-	async getChannel(user: UserIdResolvable) {
+	async getChannel(user: UserIdResolvable): Promise<Channel> {
 		return new Channel(await this._client.callApi({ url: `channels/${extractUserId(user)}` }), this._client);
 	}
 
@@ -81,7 +87,7 @@ export class ChannelApi extends BaseApi {
 	 * @param data The updated channel data.
 	 */
 	@ClearsCache<ChannelApi>('getChannel', 1)
-	async updateChannel(channel: UserIdResolvable, data: ChannelUpdateData) {
+	async updateChannel(channel: UserIdResolvable, data: ChannelUpdateData): Promise<void> {
 		const channelId = extractUserId(channel);
 		await this._client.callApi({
 			url: `channels/${channelId}`,
@@ -99,11 +105,11 @@ export class ChannelApi extends BaseApi {
 	@Cached(3600)
 	async getChannelEditors(channel: UserIdResolvable): Promise<User[]> {
 		const channelId = extractUserId(channel);
-		const data = await this._client.callApi({
+		const data = await this._client.callApi<{ users: UserData[] }>({
 			url: `channels/${channelId}/editors`,
 			scope: 'channel_read'
 		});
-		return data.users.map((userData: UserData) => new User(userData, this._client));
+		return data.users.map(userData => new User(userData, this._client));
 	}
 
 	/**
@@ -132,11 +138,11 @@ export class ChannelApi extends BaseApi {
 			query.direction = orderDirection;
 		}
 
-		const data = await this._client.callApi({
+		const data = await this._client.callApi<{ follows: ChannelFollowData[] }>({
 			url: `channels/${channelId}/follows`,
 			query
 		});
-		return data.follows.map((follow: ChannelFollowData) => new ChannelFollow(follow, this._client));
+		return data.follows.map(followData => new ChannelFollow(followData, this._client));
 	}
 
 	/**
@@ -183,7 +189,10 @@ export class ChannelApi extends BaseApi {
 	 * @param byUser The user to check the subscription for.
 	 */
 	@Cached(3600)
-	async getChannelSubscriptionByUser(channel: UserIdResolvable, byUser: UserIdResolvable) {
+	async getChannelSubscriptionByUser(
+		channel: UserIdResolvable,
+		byUser: UserIdResolvable
+	): Promise<ChannelSubscription | null> {
 		const channelId = extractUserId(channel);
 		const userId = extractUserId(byUser);
 
@@ -217,12 +226,12 @@ export class ChannelApi extends BaseApi {
 	async getChannelTeams(channel: UserIdResolvable): Promise<Team[]> {
 		const channelId = extractUserId(channel);
 
-		const data = await this._client.callApi({
+		const data = await this._client.callApi<{ teams: TeamData[] }>({
 			url: `channels/${channelId}/teams`,
 			method: 'GET'
 		});
 
-		return data.teams.map((team: TeamData) => new Team(team, this._client));
+		return data.teams.map(teamData => new Team(teamData, this._client));
 	}
 
 	/**
@@ -231,9 +240,9 @@ export class ChannelApi extends BaseApi {
 	 * @param channel The channel to start the commercial in.
 	 * @param length The length of the commercial.
 	 */
-	async startChannelCommercial(channel: UserIdResolvable, length: CommercialLength) {
+	async startChannelCommercial(channel: UserIdResolvable, length: CommercialLength): Promise<void> {
 		const channelId = extractUserId(channel);
-		return this._client.callApi<void>({
+		await this._client.callApi({
 			url: `channels/${channelId}/commercial`,
 			method: 'POST',
 			jsonBody: { length },
@@ -247,13 +256,15 @@ export class ChannelApi extends BaseApi {
 	 * @param channel The channel to reset the stream key for.
 	 */
 	@ClearsCache<ChannelApi>('getMyChannel')
-	async resetChannelStreamKey(channel: UserIdResolvable) {
+	async resetChannelStreamKey(channel: UserIdResolvable): Promise<PrivilegedChannel> {
 		const channelId = extractUserId(channel);
-		return this._client.callApi<PrivilegedChannelData>({
+		const channelData = await this._client.callApi<PrivilegedChannelData>({
 			url: `channels/${channelId}/stream_key`,
 			method: 'DELETE',
 			scope: 'channel_stream'
 		});
+
+		return new PrivilegedChannel(channelData, this._client);
 	}
 
 	private async _getChannelSubscriptions(

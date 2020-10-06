@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../User/HelixUser';
+import type { ApiClient } from '../../../ApiClient';
 
 /** @private */
 export interface HelixBanData {
@@ -23,28 +24,28 @@ export class HelixBan {
 	/**
 	 * The ID of the user.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
 	 * Retrieves more data about the user.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 
 	/**
 	 * The name of the user.
 	 */
-	get userName() {
+	get userName(): string {
 		return this._data.user_name;
 	}
 
 	/**
 	 * The date when the ban will expire; null for permanent bans.
 	 */
-	get expiryDate() {
+	get expiryDate(): Date | null {
 		return this._data.expires_at ? new Date(this._data.expires_at) : null;
 	}
 }

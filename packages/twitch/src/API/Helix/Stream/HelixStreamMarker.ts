@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
 
 export interface HelixStreamMarkerData {
 	id: string;
@@ -21,28 +21,28 @@ export class HelixStreamMarker {
 	/**
 	 * The ID of the marker.
 	 */
-	get id() {
+	get id(): string {
 		return this._data.id;
 	}
 
 	/**
 	 * The date and time when the marker was created.
 	 */
-	get creationDate() {
+	get creationDate(): Date {
 		return new Date(this._data.created_at);
 	}
 
 	/**
 	 * The description of the marker.
 	 */
-	get description() {
+	get description(): string {
 		return this._data.description;
 	}
 
 	/**
 	 * The position in the stream when the marker was created, in seconds.
 	 */
-	get positionInSeconds() {
+	get positionInSeconds(): number {
 		return this._data.position_seconds;
 	}
 }

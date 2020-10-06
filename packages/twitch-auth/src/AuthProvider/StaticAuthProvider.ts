@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { AccessToken } from '../AccessToken';
 import { getTokenInfo } from '../helpers';
-import { AuthProvider, AuthProviderTokenType } from './AuthProvider';
+import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
  * An auth provider that always returns the same initially given credentials.
@@ -59,7 +59,7 @@ export class StaticAuthProvider implements AuthProvider {
 	 *
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessToken(scopes?: string | string[]) {
+	async getAccessToken(scopes?: string | string[]): Promise<AccessToken | null> {
 		if (scopes && scopes.length > 0) {
 			if (!this._scopes) {
 				if (!this._accessToken) {
@@ -82,21 +82,21 @@ export class StaticAuthProvider implements AuthProvider {
 	}
 
 	/** @private */
-	setAccessToken(token: AccessToken) {
+	setAccessToken(token: AccessToken): void {
 		this._accessToken = token;
 	}
 
 	/**
 	 * The client ID.
 	 */
-	get clientId() {
+	get clientId(): string {
 		return this._clientId;
 	}
 
 	/**
 	 * The scopes that are currently available using the access token.
 	 */
-	get currentScopes() {
+	get currentScopes(): string[] {
 		return this._scopes || [];
 	}
 }

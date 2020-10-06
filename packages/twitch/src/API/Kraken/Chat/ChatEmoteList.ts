@@ -1,7 +1,8 @@
 import { Cacheable, Cached, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
-import { ChatEmote, ChatEmoteData } from './ChatEmote';
+import type { ApiClient } from '../../../ApiClient';
+import type { ChatEmoteData } from './ChatEmote';
+import { ChatEmote } from './ChatEmote';
 
 /**
  * A list of emotes.
@@ -20,7 +21,7 @@ export class ChatEmoteList {
 	 * A list of all emotes in the list.
 	 */
 	@CachedGetter()
-	get emotes() {
+	get emotes(): ChatEmote[] {
 		return this._data.map(emote => new ChatEmote(emote, this._client));
 	}
 
@@ -30,7 +31,7 @@ export class ChatEmoteList {
 	 * @param setId
 	 */
 	@Cached()
-	getAllFromSet(setId: number) {
+	getAllFromSet(setId: number): ChatEmote[] {
 		return this._data
 			.filter(emote => emote.emoticon_set === setId)
 			.map(emote => new ChatEmote(emote, this._client));
@@ -42,7 +43,7 @@ export class ChatEmoteList {
 	 * @param id
 	 */
 	@Cached()
-	getById(id: number) {
+	getById(id: number): ChatEmote | null {
 		const data = this._data.find(emote => emote.id === id);
 
 		return data ? new ChatEmote(data, this._client) : null;

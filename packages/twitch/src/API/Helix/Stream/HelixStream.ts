@@ -1,5 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ApiClient } from '../../../ApiClient';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixGame } from '../Game/HelixGame';
+import type { HelixUser } from '../User/HelixUser';
 
 /**
  * The type of a stream.
@@ -52,84 +54,84 @@ export class HelixStream {
 	/**
 	 * The stream ID.
 	 */
-	get id() {
+	get id(): string {
 		return this._data.id;
 	}
 
 	/**
 	 * The user ID.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
 	 * The user's display name.
 	 */
-	get userDisplayName() {
+	get userDisplayName(): string {
 		return this._data.user_name;
 	}
 
 	/**
 	 * Retrieves information about the user broadcasting the stream.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 
 	/**
 	 * The game ID.
 	 */
-	get gameId() {
+	get gameId(): string {
 		return this._data.game_id;
 	}
 
 	/**
 	 * Retrieves information about the game that is being played on this stream.
 	 */
-	async getGame() {
+	async getGame(): Promise<HelixGame | null> {
 		return this._client.helix.games.getGameById(this._data.game_id);
 	}
 
 	/**
 	 * The type of the stream.
 	 */
-	get type() {
+	get type(): HelixStreamType {
 		return this._data.type;
 	}
 
 	/**
 	 * The title of the stream.
 	 */
-	get title() {
+	get title(): string {
 		return this._data.title;
 	}
 
 	/**
 	 * The number of viewers the stream currently has.
 	 */
-	get viewers() {
+	get viewers(): number {
 		return this._data.viewer_count;
 	}
 
 	/**
 	 * The time when the stream started.
 	 */
-	get startDate() {
+	get startDate(): Date {
 		return new Date(this._data.started_at);
 	}
 
 	/**
 	 * The language of the stream.
 	 */
-	get language() {
+	get language(): string {
 		return this._data.language;
 	}
 
 	/**
 	 * The URL of the thumbnail of the stream.
 	 */
-	get thumbnailUrl() {
+	get thumbnailUrl(): string {
 		return this._data.thumbnail_url;
 	}
 }

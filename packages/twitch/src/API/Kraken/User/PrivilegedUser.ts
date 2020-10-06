@@ -1,6 +1,8 @@
-import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { User, UserData } from './User';
-import { UserFollow } from './UserFollow';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import type { UserData } from './User';
+import { User } from './User';
+import type { UserBlock } from './UserBlock';
+import type { UserFollow } from './UserFollow';
 
 /** @private */
 export interface UserNotificationFlags {
@@ -29,42 +31,42 @@ export class PrivilegedUser extends User {
 	/**
 	 * The user's email address.
 	 */
-	get email() {
+	get email(): string {
 		return this._data.email;
 	}
 
 	/**
 	 * Whether the user's email address is verified.
 	 */
-	get isEmailVerified() {
+	get isEmailVerified(): boolean {
 		return this._data.email_verified;
 	}
 
 	/**
 	 * Whether the user has email notifications enabled.
 	 */
-	get hasEmailNotifications() {
+	get hasEmailNotifications(): boolean {
 		return this._data.notifications.email;
 	}
 
 	/**
 	 * Whether the user has push notifications enabled.
 	 */
-	get hasPushNotifications() {
+	get hasPushNotifications(): boolean {
 		return this._data.notifications.push;
 	}
 
 	/**
 	 * Whether the user is partnered.
 	 */
-	get isPartnered() {
+	get isPartnered(): boolean {
 		return this._data.partnered;
 	}
 
 	/**
 	 * Whether the user has a Twitter account connected.
 	 */
-	get hasTwitter() {
+	get hasTwitter(): boolean {
 		return this._data.twitter_connected;
 	}
 
@@ -92,7 +94,7 @@ export class PrivilegedUser extends User {
 	 *
 	 * @param userToBlock The user to block.
 	 */
-	async blockUser(userToBlock: UserIdResolvable) {
+	async blockUser(userToBlock: UserIdResolvable): Promise<UserBlock> {
 		return this._client.kraken.users.blockUser(this, userToBlock);
 	}
 
@@ -101,7 +103,7 @@ export class PrivilegedUser extends User {
 	 *
 	 * @param userToUnblock The user to unblock.
 	 */
-	async unblockUser(userToUnblock: UserIdResolvable) {
+	async unblockUser(userToUnblock: UserIdResolvable): Promise<void> {
 		return this._client.kraken.users.unblockUser(this, userToUnblock);
 	}
 }
