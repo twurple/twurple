@@ -1,6 +1,6 @@
-import { HypeTrainEvent, HelixResponse } from 'twitch';
-import { HypeTrainEventData } from 'twitch/lib/API/Helix/HypeTrain/HypeTrainEvent';
-import { WebHookListener } from '../WebHookListener';
+import type { HelixResponse, HypeTrainEventData } from 'twitch';
+import { HypeTrainEvent } from 'twitch';
+import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
@@ -16,29 +16,25 @@ export class HypeTrainEventSubscription extends Subscription<HypeTrainEvent> {
 		super(handler, client, validityInSeconds);
 	}
 
-	get broadcasterId() {
+	get id(): string {
 		return `hypetrain.event.${this._broadcasterId}`;
 	}
 
-	protected async _subscribe() {
+	protected transformData(response: HelixResponse<HypeTrainEventData>): HypeTrainEvent {
+		return new HypeTrainEvent(response.data[0], this._client._apiClient);
+	}
+
+	protected async _subscribe(): Promise<void> {
 		return this._client._apiClient.helix.webHooks.subscribeToHypeTrainEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
 	}
 
-	protected async _unsubscribe() {
-		return this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEvents(
+	protected async _unsubscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.unsubscribeFromHypeTrainEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
-	}
-
-	get id() {
-		return `hypetrain.event.${this._broadcasterId}`;
-	}
-
-	protected transformData(response: HelixResponse<HypeTrainEventData>) {
-		return new HypeTrainEvent(response.data[0], this._client._apiClient);
 	}
 }

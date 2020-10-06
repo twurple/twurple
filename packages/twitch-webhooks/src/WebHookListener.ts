@@ -232,9 +232,9 @@ export class WebHookListener {
 	}
 
 	/**
-	 * Subscribes to events representing a hypetrain event.
+	 * Subscribes to events representing a hype train event.
 	 *
-	 * @param broadcasterId The broadcaster / channel for which to get notifications about the hypetrain events.
+	 * @param broadcasterId The broadcaster / channel for which to get notifications about the hype train events.
 	 * @param handler The function that will be called for any new notifications.
 	 * @param validityInSeconds The validity of the WebHook, in seconds.
 	 *

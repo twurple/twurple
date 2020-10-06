@@ -151,27 +151,33 @@ export class HelixWebHooksApi extends BaseApi {
 	}
 
 	/**
-	 * Subscribes to events representing a hypetrain progressing.
+	 * Subscribes to events representing a hype train progressing.
 	 *
 	 * @expandParams
 	 *
-	 * @param broadcasterId The broadcaster / channel for which to get notifications about hypetrain events.
+	 * @param broadcasterId The broadcaster / channel for which to get notifications about hype train events.
 	 * @param options
 	 */
-	async subscribeToHypeTrainEvents(broadcasterId: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
+	async subscribeToHypeTrainEvents(
+		broadcasterId: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	): Promise<void> {
 		return this._sendHypeTrainEventHubRequest('subscribe', broadcasterId, options);
 	}
 
 	/**
-	 * Unsubscribes from events representing a hypetrain progressing.
+	 * Unsubscribes from events representing a hype train progressing.
 	 *
 	 * @expandParams
 	 *
-	 * @param boradcasterId The broadcaster / channel for which to get notifications about hypetrain events.
+	 * @param broadcasterId The broadcaster / channel for which to get notifications about hype train events.
 	 * @param options
 	 */
-	async unsubscribeFromHypeTrainEvents(broadcasterId: UserIdResolvable, options: HelixWebHookHubRequestOptions) {
-		return this._sendUserFollowsHubRequest('unsubscribe', 'from', broadcasterId, options);
+	async unsubscribeFromHypeTrainEvents(
+		broadcasterId: UserIdResolvable,
+		options: HelixWebHookHubRequestOptions
+	): Promise<void> {
+		return this._sendHypeTrainEventHubRequest('unsubscribe', broadcasterId, options);
 	}
 
 	/**
