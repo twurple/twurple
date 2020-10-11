@@ -5,6 +5,7 @@ import { HelixBitsApi } from './Bits/HelixBitsApi';
 import { HelixClipApi } from './Clip/HelixClipApi';
 import { HelixExtensionsApi } from './Extensions/HelixExtensionsApi';
 import { HelixGameApi } from './Game/HelixGameApi';
+import HelixHypeTrainApi from './HypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './Moderation/HelixModerationApi';
 import { HelixStreamApi } from './Stream/HelixStreamApi';
 import { HelixSubscriptionApi } from './Subscriptions/HelixSubscriptionApi';
@@ -41,6 +42,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get extensions(): HelixExtensionsApi {
 		return new HelixExtensionsApi(this._client);
+	}
+
+	/**
+	 * The Helix hype train API methods.
+	 */
+	@CachedGetter()
+	get hypeTrain(): HelixHypeTrainApi {
+		return new HelixHypeTrainApi(this._client);
 	}
 
 	/**

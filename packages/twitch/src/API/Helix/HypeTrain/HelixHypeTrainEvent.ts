@@ -1,32 +1,32 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
-import type { HypeTrainContributionData } from './HypeTrainContribution';
-import { HypeTrainContribution } from './HypeTrainContribution';
+import type { HelixHypeTrainContributionData } from './HelixHypeTrainContribution';
+import { HelixHypeTrainContribution } from './HelixHypeTrainContribution';
 
 /** @private */
-export interface HypeTrainEventData {
+export interface HelixHypeTrainEventData {
 	id: string;
 	broadcaster_id: string;
 	cooldown_end_time: string;
 	expires_at: string;
 	goal: number;
-	last_contribution: HypeTrainContributionData;
+	last_contribution: HelixHypeTrainContributionData;
 	level: number;
 	started_at: string;
-	top_contributions: HypeTrainContributionData[];
+	top_contributions: HelixHypeTrainContributionData[];
 	total: number;
 }
 
 /**
  * A hype train event.
  */
-export class HypeTrainEvent {
+export class HelixHypeTrainEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private _data: HypeTrainEventData, client: ApiClient) {
+	constructor(private _data: HelixHypeTrainEventData, client: ApiClient) {
 		this._client = client;
 	}
 
@@ -82,14 +82,14 @@ export class HypeTrainEvent {
 	/**
 	 * The last contribution to the hype train event.
 	 */
-	get lastContribution(): HypeTrainContribution {
-		return new HypeTrainContribution(this._data.last_contribution, this._client);
+	get lastContribution(): HelixHypeTrainContribution {
+		return new HelixHypeTrainContribution(this._data.last_contribution, this._client);
 	}
 
 	/**
 	 * Array list of the top contributions to the hype train event for bits and subs.
 	 */
-	get topContributions(): HypeTrainContribution[] {
-		return this._data.top_contributions.map(cont => new HypeTrainContribution(cont, this._client));
+	get topContributions(): HelixHypeTrainContribution[] {
+		return this._data.top_contributions.map(cont => new HelixHypeTrainContribution(cont, this._client));
 	}
 }

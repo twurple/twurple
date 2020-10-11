@@ -8,11 +8,11 @@ import type {
 	HelixBanEvent,
 	HelixExtensionTransaction,
 	HelixFollow,
+	HelixHypeTrainEvent,
 	HelixModeratorEvent,
 	HelixStream,
 	HelixSubscriptionEvent,
 	HelixUser,
-	HypeTrainEvent,
 	UserIdResolvable
 } from 'twitch';
 import { extractUserId } from 'twitch';
@@ -244,7 +244,7 @@ export class WebHookListener {
 	 */
 	async subscribeToHypeTrainEvents(
 		broadcasterId: UserIdResolvable,
-		handler: (hypeTrain: HypeTrainEvent) => void,
+		handler: (hypeTrain: HelixHypeTrainEvent) => void,
 		validityInSeconds = this._hookValidity
 	): Promise<Subscription> {
 		const userId = extractUserId(broadcasterId);

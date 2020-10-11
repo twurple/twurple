@@ -73,8 +73,8 @@ export { HelixBanEvent, HelixBanEventData } from './API/Helix/Moderation/HelixBa
 export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
 export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
 
-export { HypeTrainContribution } from './API/Helix/HypeTrain/HypeTrainContribution';
-export { HypeTrainEvent, HypeTrainEventData } from './API/Helix/HypeTrain/HypeTrainEvent';
+export { HelixHypeTrainContribution } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
+export { HelixHypeTrainEvent, HelixHypeTrainEventData } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
 
 export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
 export { HelixSubscriptionEvent, HelixSubscriptionEventData } from './API/Helix/Subscriptions/HelixSubscriptionEvent';

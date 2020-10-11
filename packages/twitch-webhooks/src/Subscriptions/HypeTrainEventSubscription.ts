@@ -1,15 +1,15 @@
-import type { HelixResponse, HypeTrainEventData } from 'twitch';
-import { HypeTrainEvent } from 'twitch';
+import type { HelixResponse, HelixHypeTrainEventData } from 'twitch';
+import { HelixHypeTrainEvent } from 'twitch';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
  * @private
  */
-export class HypeTrainEventSubscription extends Subscription<HypeTrainEvent> {
+export class HypeTrainEventSubscription extends Subscription<HelixHypeTrainEvent> {
 	constructor(
 		private readonly _broadcasterId: string,
-		handler: (data: HypeTrainEvent) => void,
+		handler: (data: HelixHypeTrainEvent) => void,
 		client: WebHookListener,
 		validityInSeconds = 100000
 	) {
@@ -20,8 +20,8 @@ export class HypeTrainEventSubscription extends Subscription<HypeTrainEvent> {
 		return `hypetrain.event.${this._broadcasterId}`;
 	}
 
-	protected transformData(response: HelixResponse<HypeTrainEventData>): HypeTrainEvent {
-		return new HypeTrainEvent(response.data[0], this._client._apiClient);
+	protected transformData(response: HelixResponse<HelixHypeTrainEventData>): HelixHypeTrainEvent {
+		return new HelixHypeTrainEvent(response.data[0], this._client._apiClient);
 	}
 
 	protected async _subscribe(): Promise<void> {

@@ -5,24 +5,24 @@ import type { HelixUser } from '../User/HelixUser';
 /**
  * The type of a hype train contribution.
  */
-export type HypeTrainContributionType = 'BITS' | 'SUBS';
+export type HelixHypeTrainContributionType = 'BITS' | 'SUBS';
 
 /** @private */
-export interface HypeTrainContributionData {
+export interface HelixHypeTrainContributionData {
 	total: number;
 	user: string;
-	type: HypeTrainContributionType;
+	type: HelixHypeTrainContributionType;
 }
 
 /**
  * A hype train contributor.
  */
-export class HypeTrainContribution {
+export class HelixHypeTrainContribution {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private _data: HypeTrainContributionData, client: ApiClient) {
+	constructor(private _data: HelixHypeTrainContributionData, client: ApiClient) {
 		this._client = client;
 	}
 
@@ -43,7 +43,7 @@ export class HypeTrainContribution {
 	/**
 	 * The hype train event type.
 	 */
-	get type(): HypeTrainContributionType {
+	get type(): HelixHypeTrainContributionType {
 		return this._data.type;
 	}
 
