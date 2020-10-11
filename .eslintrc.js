@@ -59,6 +59,8 @@ const memberNames = [
 	'^description_html$',
 	'^muted_segments$',
 	'^tag_list$',
+	'^cooldown_end_time$',
+	'^(last|top)_contributions?$',
 	// HTTP
 	'^Accept$'
 ];
