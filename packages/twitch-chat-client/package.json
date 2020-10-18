@@ -34,7 +34,7 @@
     "@d-fischer/logger": "^2.0.0",
     "@d-fischer/shared-utils": "^2.3.2",
     "@d-fischer/typed-event-emitter": "^3.0.2",
-    "ircv3": "^0.26.0",
+    "ircv3": "^0.26.4",
     "tslib": "^2.0.0"
   },
   "devDependencies": {

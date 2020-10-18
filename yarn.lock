@@ -39,7 +39,7 @@
     "@types/node" "^12.12.14"
     tslib "^1.10.0"
 
-"@d-fischer/connection@^6.0.1", "@d-fischer/connection@^6.0.2":
+"@d-fischer/connection@^6.0.2":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.0.2.tgz#3d84ae67b9807445d6ec63afc187b223d4200990"
   integrity sha512-thcyWe04fg1zdJVetwXJ1OKPE3pdvdCb0OvsfpCaUGr9pp//wxW8a15pNlDMED37QWnPndPc9Lt2zdQR/Oe2dg==
@@ -52,6 +52,20 @@
     "@types/ws" "^7.2.5"
     tslib "^2.0.0"
     ws "^7.3.0"
+
+"@d-fischer/connection@^6.2.0":
+  version "6.2.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.2.0.tgz#fabbf1bab8bffd5c4b85988ce06c41f9537d3a94"
+  integrity sha512-koam3kWfdkWJXlczji2iDBPILTSddDxCujjdhNDrF1DEORgjrHfBwB4CvNKjQL3jTgOuaAUcSgfgGYZJ92ngXA==
+  dependencies:
+    "@d-fischer/isomorphic-ws" "^5.0.2"
+    "@d-fischer/logger" "^2.1.0"
+    "@d-fischer/shared-utils" "^2.4.0"
+    "@d-fischer/typed-event-emitter" "^3.1.0"
+    "@types/node" "^14.11.2"
+    "@types/ws" "^7.2.7"
+    tslib "^2.0.1"
+    ws "^7.3.1"
 
 "@d-fischer/cross-fetch@^4.0.1":
   version "4.0.1"
@@ -157,11 +171,6 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/isomorphic-ws/-/isomorphic-ws-5.0.2.tgz#91bb78f520b6c9e4a820eb80c9be5dfeebdb08ed"
   integrity sha512-FeULiS37jd5M7nroqUw7kfnntlIW6Kilr2kn38Xjoyw/WZqwdxSAihJ2Y09aoDamrVKEW9/flbo2/y/VwHVZ6g==
 
-"@d-fischer/klona@^1.1.5":
-  version "1.1.5"
-  resolved "https://registry.yarnpkg.com/@d-fischer/klona/-/klona-1.1.5.tgz#f273072fcac6f1078d2ff52e24e1d34c329eca4f"
-  integrity sha512-fdXM0iXtYcGbIxpWpUYsUi7cAMw8jXbJ75OJDFuScL/TXrrtMlZ9JOLpsZFVMzgeBOTpHLefG5KydsZEAzj95Q==
-
 "@d-fischer/logger@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-2.0.0.tgz#0b9be52fdceddfe307563ee9f73b8b7f667f4020"
@@ -169,6 +178,14 @@
   dependencies:
     detect-node "^2.0.4"
     tslib "^2.0.0"
+
+"@d-fischer/logger@^2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-2.1.0.tgz#fd14020c6a83490dafe0a85048967f578fc236da"
+  integrity sha512-NK2SFtNYfzI5V0/Nws1ANJC2b0K3JB1Uhp7CdS6VH2v3wPBlfM/NXcrrsiPTbCM5QgsZxJDIlQKcI+UYw9terg==
+  dependencies:
+    detect-node "^2.0.4"
+    tslib "^2.0.1"
 
 "@d-fischer/portfinder@^1.0.27":
   version "1.0.27"
@@ -230,7 +247,7 @@
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-"@d-fischer/shared-utils@^2.0.0", "@d-fischer/shared-utils@^2.1.2", "@d-fischer/shared-utils@^2.3.1", "@d-fischer/shared-utils@^2.3.2":
+"@d-fischer/shared-utils@^2.0.0", "@d-fischer/shared-utils@^2.1.2", "@d-fischer/shared-utils@^2.3.2":
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-2.3.2.tgz#ba271cf04dba05c89b8815e9427f7e647eb2633e"
   integrity sha512-/eOhwUcdbWrpdPDWu77Q21UDuL6q9GJAp1dfXr6QgGs4pHTg9ZUFSs6Vhotk0Muu6xNkwwlOlZFwds3CRXhTmg==
@@ -238,12 +255,28 @@
     "@types/node" "^14.0.5"
     tslib "^2.0.0"
 
+"@d-fischer/shared-utils@^2.4.0":
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-2.4.0.tgz#922993ccaf55307e2ae83fe9a0cbbab34248a687"
+  integrity sha512-HqS4PAyzJXzs+CtomhsqcvAl34UmDHoiP8BqOkTdMZCkcqW+SMoGekBAxDyX23p7q8E39zRy0S3uyIHD/GPmuA==
+  dependencies:
+    "@types/node" "^14.11.2"
+    tslib "^2.0.1"
+
 "@d-fischer/typed-event-emitter@^3.0.1", "@d-fischer/typed-event-emitter@^3.0.2":
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/@d-fischer/typed-event-emitter/-/typed-event-emitter-3.0.2.tgz#fde8f73317038fa5153a86ac5e25e2a0e00f660c"
   integrity sha512-8wd8Nv9c0H0/eeagiXRongLdwv510EriTj9+Ja2gkIebGFp8Irrxcx9pL6+4jdnr+R7MV3sEoJBQ8FynSFH7Tw==
   dependencies:
     "@types/node" "^14.11.1"
+    tslib "^2.0.1"
+
+"@d-fischer/typed-event-emitter@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/typed-event-emitter/-/typed-event-emitter-3.1.0.tgz#4dd7a052492e8a75310b5c4b0c93a81aa05d302d"
+  integrity sha512-s0ZokqR2kR3NX6C7Em4gdf6sXtyH17yqhQzDEXEvFjBeWaYSRbRVUV/73DxU2ZTR+4h2obwL+Gru4TAEXrFfdQ==
+  dependencies:
+    "@types/node" "^14.11.2"
     tslib "^2.0.1"
 
 "@electron/get@^1.0.1":
@@ -1352,11 +1385,6 @@
   resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.10.tgz#cc658ca319b6355399efc1f5b9e818f1a24bf999"
   integrity sha512-1UzDldn9GfYYEsWWnn/P4wkTlkZDH7lDb0wBMGbtIQc9zXEQq7FlKBdZUn6OBqD8sKZZ2RQO2mAjGpXiDGoRmQ==
 
-"@types/clone@^0.1.30":
-  version "0.1.30"
-  resolved "https://registry.yarnpkg.com/@types/clone/-/clone-0.1.30.tgz#e7365648c1b42136a59c7d5040637b3b5c83b614"
-  integrity sha1-5zZWSMG0ITalnH1QQGN7O1yDthQ=
-
 "@types/color-convert@*":
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/@types/color-convert/-/color-convert-1.9.0.tgz#bfa8203e41e7c65471e9841d7e306a7cd8b5172d"
@@ -1469,7 +1497,7 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
   integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
 
-"@types/node@*", "@types/node@>= 8", "@types/node@^14.0.11", "@types/node@^14.0.13", "@types/node@^14.0.20", "@types/node@^14.0.5":
+"@types/node@*", "@types/node@>= 8", "@types/node@^14.0.11", "@types/node@^14.0.13", "@types/node@^14.0.5":
   version "14.6.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.6.0.tgz#7d4411bf5157339337d7cff864d9ff45f177b499"
   integrity sha512-mikldZQitV94akrc4sCcSjtJfsTKt4p+e/s0AGscVA6XArQ9kFclP+ZiYUMnq987rc6QlYxXv/EivqlfSLxpKA==
@@ -1483,6 +1511,11 @@
   version "14.11.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.11.2.tgz#2de1ed6670439387da1c9f549a2ade2b0a799256"
   integrity sha512-jiE3QIxJ8JLNcb1Ps6rDbysDhN4xa8DJJvuC9prr6w+1tIh+QAbYyNF3tyiZNLDBIuBCf4KEcV2UvQm/V60xfA==
+
+"@types/node@^14.11.2":
+  version "14.11.10"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.11.10.tgz#8c102aba13bf5253f35146affbf8b26275069bef"
+  integrity sha512-yV1nWZPlMFpoXyoknm4S56y2nlTAuFYaJuQtYRAOU7xA/FJ9RY0Xm7QOkaYMMmr8ESdHIuUb6oQgR/0+2NqlyA==
 
 "@types/node@^8.10.50":
   version "8.10.62"
@@ -1653,6 +1686,13 @@
   version "7.2.6"
   resolved "https://registry.yarnpkg.com/@types/ws/-/ws-7.2.6.tgz#516cbfb818310f87b43940460e065eb912a4178d"
   integrity sha512-Q07IrQUSNpr+cXU4E4LtkSIBPie5GLZyyMC1QtQYRLWz701+XcoVygGUZgvLqElq1nU4ICldMYPnexlBsg3dqQ==
+  dependencies:
+    "@types/node" "*"
+
+"@types/ws@^7.2.7":
+  version "7.2.7"
+  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-7.2.7.tgz#362ad1a1d62721bdb725e72c8cccf357078cf5a3"
+  integrity sha512-UUFC/xxqFLP17hTva8/lVT0SybLUrfSD9c+iapKb0fEiC8uoDbA+xuZ3pAN603eW+bY8ebSMLm9jXdIPnD0ZgA==
   dependencies:
     "@types/node" "*"
 
@@ -2966,11 +3006,6 @@ clone@^1.0.2:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/clone/-/clone-1.0.4.tgz#da309cc263df15994c688ca902179ca3c7cd7c7e"
   integrity sha1-2jCcwmPfFZlMaIypAheco8fNfH4=
-
-clone@^2.1.2:
-  version "2.1.2"
-  resolved "https://registry.yarnpkg.com/clone/-/clone-2.1.2.tgz#1b7f4b9f591f1e8f83670401600345a02887435f"
-  integrity sha1-G39Ln1kfHo+DZwQBYANFoCiHQ18=
 
 clsx@^1.0.4:
   version "1.1.1"
@@ -5685,20 +5720,19 @@ ipaddr.js@1.9.1, ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.0.tgz#4caa75618c3d4d62857e612541423e2d0b149db4"
-  integrity sha512-/2vzYh5ut/9tmROt7q+MlBqq2rDKpPxR8yidBkbirODRR/xTn2FW9YrV4Fo3OQdQXayZzwjUWHYuo9oI50HxpQ==
+ircv3@^0.26.4:
+  version "0.26.4"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.4.tgz#d61355aea4aedd001c11863298c6034b5596e180"
+  integrity sha512-7exmf76YORH9OSEn0zy4u6zuyrK0WSex2usP9GKjaMDDUnbwkjT2eyslJ5wE0A5s5F87MPI7cTC21T80UpSVdg==
   dependencies:
-    "@d-fischer/connection" "^6.0.1"
+    "@d-fischer/connection" "^6.2.0"
     "@d-fischer/escape-string-regexp" "^5.0.0"
-    "@d-fischer/klona" "^1.1.5"
-    "@d-fischer/logger" "^2.0.0"
-    "@d-fischer/shared-utils" "^2.3.1"
-    "@d-fischer/typed-event-emitter" "^3.0.1"
-    "@types/clone" "^0.1.30"
-    "@types/node" "^14.0.20"
-    clone "^2.1.2"
+    "@d-fischer/logger" "^2.1.0"
+    "@d-fischer/shared-utils" "^2.4.0"
+    "@d-fischer/typed-event-emitter" "^3.1.0"
+    "@types/node" "^14.11.2"
+    klona "^2.0.4"
+    tslib "^2.0.1"
 
 is-absolute-url@^3.0.3:
   version "3.0.3"
@@ -6311,6 +6345,11 @@ kind-of@^6.0.0, kind-of@^6.0.2, kind-of@^6.0.3:
   version "6.0.3"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
+
+klona@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
+  integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
 
 lerna@^3.22.1:
   version "3.22.1"
@@ -10654,7 +10693,7 @@ ws@^6.2.1:
   dependencies:
     async-limiter "~1.0.0"
 
-ws@^7.3.0:
+ws@^7.3.0, ws@^7.3.1:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.1.tgz#d0547bf67f7ce4f12a72dfe31262c68d7dc551c8"
   integrity sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==
