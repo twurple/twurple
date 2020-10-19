@@ -61,6 +61,7 @@ const memberNames = [
 	'^tag_list$',
 	'^cooldown_end_time$',
 	'^(last|top)_contributions?$',
+	'^(streak|cumulative)_months',
 	// HTTP
 	'^Accept$'
 ];

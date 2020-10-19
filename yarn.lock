@@ -66,10 +66,10 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/deprecate/-/deprecate-2.0.2.tgz#d1f0d40acc881edd771cace7992a1070460608c8"
   integrity sha512-wlw3HwEanJFJKctwLzhfOM6LKwR70FPfGZGoKOhWBKyOPXk+3a9Cc6S9zhm6tka7xKtpmfxVIReGUwPnMbIaZg==
 
-"@d-fischer/documen.ts@^0.11.7":
-  version "0.11.7"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.11.7.tgz#5f4fcbaa452181720f0a123ea2e6fc52f1b9dcee"
-  integrity sha512-DYaqPsgxVkvAn9k96C9kgoCePpgzo7Bx+716Y6YqadIqUr9Yr/fuICzbUEvcOOBfzfWlGR/1UIYdVdz/cZxtiA==
+"@d-fischer/documen.ts@^0.11.8":
+  version "0.11.8"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.11.8.tgz#cc58e3251dfd7b7621bf5c870c9cbd4dec3835cb"
+  integrity sha512-KpTSvSKURSJ3LVUt15PAJTTHg2fwkPqFnURj4EQwMBg3nBUQTAltlVFDN9iJTOooNj8JcxgZE1N9mgF6+vVk0A==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.28"
     "@fortawesome/free-solid-svg-icons" "^5.13.0"
@@ -5691,10 +5691,10 @@ ipaddr.js@1.9.1, ipaddr.js@^1.9.0:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.26.3:
-  version "0.26.3"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.3.tgz#c804f1541b2cb25951b7127dba28bc2391c6f97b"
-  integrity sha512-W4P+vqFVHUUBSCX7lY9HnH1Rag0OLqlpLSFE69z3qKx3Fpx4EpLVJVQXRF/LVSC+Fo1efvj9hXnH+A4m9yJwVQ==
+ircv3@^0.26.4:
+  version "0.26.4"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.4.tgz#d61355aea4aedd001c11863298c6034b5596e180"
+  integrity sha512-7exmf76YORH9OSEn0zy4u6zuyrK0WSex2usP9GKjaMDDUnbwkjT2eyslJ5wE0A5s5F87MPI7cTC21T80UpSVdg==
   dependencies:
     "@d-fischer/connection" "^6.2.0"
     "@d-fischer/escape-string-regexp" "^5.0.0"

@@ -11,9 +11,10 @@ export abstract class Subscription</** @private */ T = any> {
 	private _verified: boolean = false;
 	protected _secret: string;
 	private _refreshTimer?: NodeJS.Timer;
+	private _unsubscribeResolver?: () => void;
 
 	/** @private */
-	constructor(
+	protected constructor(
 		protected _handler: (obj: T) => void,
 		protected _client: WebHookListener,
 		private _validityInSeconds: number = 100000
@@ -50,6 +51,16 @@ export abstract class Subscription</** @private */ T = any> {
 		return false;
 	}
 
+	/** @private */
+	_handleUnsubscribe(): boolean {
+		if (this._unsubscribeResolver) {
+			this._unsubscribeResolver();
+			this._unsubscribeResolver = undefined;
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Activates the subscription.
 	 */
@@ -71,7 +82,9 @@ export abstract class Subscription</** @private */ T = any> {
 			clearInterval(this._refreshTimer);
 			this._refreshTimer = undefined;
 		}
+		const unsubscribePromise = new Promise(resolve => (this._unsubscribeResolver = resolve));
 		await this._unsubscribe();
+		await unsubscribePromise;
 	}
 
 	/**
