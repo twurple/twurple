@@ -4,8 +4,8 @@ import type { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage'
 
 export interface PubSubSubscriptionDetail {
 	context: 'sub' | 'resub';
-	'cumulative-months': number;
-	'streak-months': number;
+	cumulative_months: number;
+	streak_months: number;
 }
 
 export interface PubSubSubscriptionGiftDetail {
@@ -70,7 +70,7 @@ export class PubSubSubscriptionMessage {
 	get streakMonths(): number {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? 0
-			: this._data['streak-months'];
+			: (this._data as PubSubSubscriptionDetail).streak_months;
 	}
 
 	/**
@@ -81,7 +81,7 @@ export class PubSubSubscriptionMessage {
 	get cumulativeMonths(): number {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? this._data.months
-			: this._data['cumulative-months'];
+			: (this._data as PubSubSubscriptionDetail).cumulative_months;
 	}
 
 	/**

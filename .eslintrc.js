@@ -59,6 +59,7 @@ const memberNames = [
 	'^description_html$',
 	'^muted_segments$',
 	'^tag_list$',
+	'^(streak|cumulative)_months',
 	// HTTP
 	'^Accept$'
 ];
