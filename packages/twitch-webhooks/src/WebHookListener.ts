@@ -148,10 +148,10 @@ export class WebHookListener {
 			throw new Error('Trying to unlisten while not listening');
 		}
 
+		await Promise.all([...this._subscriptions.values()].map(async sub => sub.suspend()));
+
 		await this._server.close();
 		this._server = undefined;
-
-		await Promise.all([...this._subscriptions.values()].map(async sub => sub.suspend()));
 	}
 
 	/**
@@ -434,9 +434,11 @@ export class WebHookListener {
 				res.end(req.query['hub.challenge']);
 				this._logger.debug(`Successfully subscribed to hook: ${id}`);
 			} else if (hubMode === 'unsubscribe') {
-				this._subscriptions.delete(id);
+				if (!subscription._handleUnsubscribe()) {
+					this._logger.warn(`Unsubscribing without explicit request from hook: ${id}`);
+				}
 				res.writeHead(200);
-				res.end();
+				res.end(req.query['hub.challenge']);
 				this._logger.debug(`Successfully unsubscribed from hook: ${id}`);
 			} else if (hubMode === 'denied') {
 				this._logger.error(`Subscription denied to hook: ${id} (${req.query['hub.reason']})`);
