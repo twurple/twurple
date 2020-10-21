@@ -6,10 +6,10 @@ Then, you register that instance with a new {@PubSubClient} instance:
 import { PubSubClient } from 'twitch-pubsub-client';
 
 const pubSubClient = new PubSubClient();
-await pubSubClient.registerUserListener(apiClient);
+const userId = await pubSubClient.registerUserListener(apiClient);
 ```
 
-It's very easy to listen to events in any channel a core client is registered for now:
+It's very easy to listen to events in any channel an API client is registered for now:
 
 ```typescript
 import { PubSubSubscriptionMessage } from 'twitch-pubsub-client';

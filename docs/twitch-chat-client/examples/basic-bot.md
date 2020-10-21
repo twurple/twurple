@@ -33,7 +33,7 @@ https://id.twitch.tv/oauth2/token?client_id=CLIENT_ID
 
 The response body should look similar to the following:
 
-```javascript
+```json
 {
   "access_token": "0123456789abcdefghijABCDEFGHIJ",
   "refresh_token": "eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj",
@@ -151,7 +151,7 @@ The `refreshConfig` parameter we just added can contain another property named `
 
 To prepare for this, let's move the tokens to a JSON file named `tokens.json`:
 
-```javascript
+```json
 {
 	"accessToken": "0123456789abcdefghijABCDEFGHIJ",
 	"refreshToken": "eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj",
@@ -198,7 +198,7 @@ Now you can implement a more elaborated command system, add more events to react
 For reference, here's the full code that _should_ be the result of everything we just did:
 
 ```typescript
-import { RefreshableAuthProvider } from 'twitch-auth';
+import { RefreshableAuthProvider, StaticAuthProvider } from 'twitch-auth';
 import { ChatClient } from 'twitch-chat-client';
 import { promises as fs } from 'fs';
 

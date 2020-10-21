@@ -23,11 +23,11 @@ import { ApiClient } from 'twitch';
 import { ElectronAuthProvider } from 'twitch-electron-auth-provider';
 
 const clientId = 'abc123';
-const redirectURI = 'http://foo.bar/login';
+const redirectUri = 'http://foo.bar/login';
 
 const authProvider = new ElectronAuthProvider({
     clientId,
-    redirectURI
+    redirectUri
 });
 
 const client = new ApiClient({

@@ -9,7 +9,7 @@
 	"mainPackage": "twitch",
 	"versionBranchPrefix": "support/",
 	"versionFolder": "versions",
-	"ignoredPackages": ["twitch-electron-auth-provider"],
+	"ignoredPackages": ["twitch-electron-auth-provider", "twitch-webhooks-ngrok", "twitch-api-call"],
 	"packages": {
 		"twitch": {
 			"indexTitle": "Welcome to Twitch.js",
@@ -186,6 +186,11 @@
 					"title": "Special hosting",
 					"articles": [
 						{
+							"name": "reverse-proxy",
+							"title": "Serving through a reverse proxy",
+							"file": "twitch-webhooks/special-hosting/reverse-proxy.md"
+						},
+						{
 							"name": "ngrok",
 							"title": "Testing locally using ngrok",
 							"file": "twitch-webhooks/special-hosting/ngrok.md"
@@ -194,8 +199,37 @@
 				}
 			]
 		},
-		"twitch-webhooks-ngrok": {
-			"indexTitle": "Twitch.js WebHook Listener - ngrok Adapter"
+		"twitch-auth": {
+			"indexTitle": "Twitch.js Authentication Manager",
+			"indexFile": "twitch-auth/index.md",
+			"categories": [
+				{
+					"name": "providers",
+					"title": "Providers",
+					"articles": [
+						{
+							"name": "static",
+							"title": "Using a fixed token",
+							"file": "twitch-auth/providers/static.md"
+						},
+						{
+							"name": "refreshable",
+							"title": "Auto-refreshing tokens",
+							"file": "twitch-auth/providers/refreshable.md"
+						},
+						{
+							"name": "client-credentials",
+							"title": "Using app tokens",
+							"file": "twitch-auth/providers/client-credentials.md"
+						},
+						{
+							"name": "electron",
+							"title": "For Electron apps",
+							"file": "twitch-auth/providers/electron.md"
+						}
+					]
+				}
+			]
 		},
 		"easy-twitch-bot": {
 			"indexTitle": "Twitch.js - Bot framework"
