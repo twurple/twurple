@@ -66,8 +66,8 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const accepted = await client.helix.webHooks.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * await api.helix.webHooks.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
 export class HelixWebHooksApi extends BaseApi {

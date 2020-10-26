@@ -53,8 +53,8 @@ export type CommercialLength = 30 | 60 | 90 | 120 | 150 | 180;
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const channel = await client.kraken.channels.getMyChannel();
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const channel = await api.kraken.channels.getMyChannel();
  * ```
  */
 @Cacheable

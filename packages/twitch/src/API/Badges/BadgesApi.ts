@@ -13,8 +13,8 @@ import { ChatBadgeList } from './ChatBadgeList';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const cheermotes = await client.badges.getGlobalBadges();
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const cheermotes = await api.badges.getGlobalBadges();
  * ```
  */
 @Cacheable

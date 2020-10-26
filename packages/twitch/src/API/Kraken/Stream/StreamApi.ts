@@ -12,8 +12,8 @@ import { Stream, StreamType } from './Stream';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const stream = await client.kraken.streams.getStreamByChannel('125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const stream = await api.kraken.streams.getStreamByChannel('125328655');
  * ```
  */
 @Cacheable

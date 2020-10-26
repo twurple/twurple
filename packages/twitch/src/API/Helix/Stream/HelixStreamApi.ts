@@ -78,8 +78,8 @@ interface HelixStreamGetMarkersResult {
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const stream = await client.helix.streams.getStreamByUserId('125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const stream = await api.helix.streams.getStreamByUserId('125328655');
  * ```
  */
 export class HelixStreamApi extends BaseApi {

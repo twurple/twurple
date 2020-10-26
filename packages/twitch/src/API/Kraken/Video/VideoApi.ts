@@ -86,8 +86,8 @@ export interface VideoUpdateData extends VideoEditData {
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const user = await client.kraken.videos.getUser('125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const user = await api.kraken.videos.getVideo('85448040');
  * ```
  */
 export class VideoApi extends BaseApi {

@@ -14,8 +14,8 @@ import { ChatRoom } from './ChatRoom';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const emotes = await client.kraken.chat.getEmotesBySets('1');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const emotes = await api.kraken.chat.getEmotesBySets('1');
  * ```
  */
 @Cacheable

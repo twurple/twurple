@@ -28,8 +28,8 @@ interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensionTransa
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const transactions = await client.helix.extionsions.getExtensionTransactions('abcd');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const transactions = await api.helix.extionsions.getExtensionTransactions('abcd');
  * ```
  */
 export class HelixExtensionsApi extends BaseApi {

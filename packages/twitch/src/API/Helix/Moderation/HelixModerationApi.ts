@@ -44,8 +44,8 @@ interface HelixModeratorFilter extends HelixForwardPagination {
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const game = await client.helix.moderation.getBannedUsers('61369223');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const { data: users } = await api.helix.moderation.getBannedUsers('61369223');
  * ```
  */
 export class HelixModerationApi extends BaseApi {

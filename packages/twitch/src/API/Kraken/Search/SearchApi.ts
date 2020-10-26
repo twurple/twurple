@@ -12,8 +12,8 @@ import { Stream } from '../Stream/Stream';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const channel = await client.kraken.search.searchStreams('Hearthstone');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const channel = await api.kraken.search.searchStreams('Hearthstone');
  * ```
  */
 @Cacheable

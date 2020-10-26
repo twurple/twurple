@@ -56,8 +56,8 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const videos = await client.helix.videos.getVideosByUser('125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const { data: videos } = await api.helix.videos.getVideosByUser('125328655');
  * ```
  */
 export class HelixVideoApi extends BaseApi {

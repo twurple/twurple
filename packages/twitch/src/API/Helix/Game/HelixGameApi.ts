@@ -19,8 +19,8 @@ export type HelixGameFilterType = 'id' | 'name';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const game = await client.helix.games.getGameByName('Hearthstone');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const game = await api.helix.games.getGameByName('Hearthstone');
  * ```
  */
 export class HelixGameApi extends BaseApi {

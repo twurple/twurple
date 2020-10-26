@@ -18,8 +18,8 @@ import { HelixSubscriptionEvent } from './HelixSubscriptionEvent';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const subscriptions = await client.helix.subscriptions.getSubscriptionsForUsers('61369223', '125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const subscription = await api.helix.subscriptions.getSubscriptionForUser('61369223', '125328655');
  * ```
  */
 export class HelixSubscriptionApi extends BaseApi {

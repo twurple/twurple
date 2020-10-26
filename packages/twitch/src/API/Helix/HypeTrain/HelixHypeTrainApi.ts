@@ -17,8 +17,8 @@ import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const { data: events } = await client.helix.hypeTrain.getHypeTrainEventsForBroadcaster('125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const { data: events } = await api.helix.hypeTrain.getHypeTrainEventsForBroadcaster('125328655');
  * ```
  */
 export default class HelixHypeTrainApi extends BaseApi {

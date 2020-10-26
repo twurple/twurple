@@ -30,6 +30,8 @@ export type HelixBanEventData = HelixEventData<HelixBanEventDetail, HelixBanEven
 
 /**
  * An event that indicates the change of a ban status, i.e. banning or unbanning a user.
+ *
+ * @inheritDoc
  */
 export class HelixBanEvent extends HelixBan {
 	/** @private */

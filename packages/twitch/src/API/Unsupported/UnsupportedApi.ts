@@ -13,8 +13,8 @@ import { ChattersList } from './ChattersList';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const events = await client.unsupported.getEvents('125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const events = await api.unsupported.getChatters('yourfavoritestreamer');
  * ```
  */
 @Cacheable

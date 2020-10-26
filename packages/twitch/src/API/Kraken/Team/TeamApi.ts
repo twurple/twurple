@@ -11,8 +11,8 @@ import { TeamWithUsers } from './TeamWithUsers';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const team = await client.kraken.teams.getTeamByName('staff');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const team = await api.kraken.teams.getTeamByName('staff');
  * ```
  */
 @Cacheable

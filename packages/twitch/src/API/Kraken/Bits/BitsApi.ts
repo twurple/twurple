@@ -12,8 +12,8 @@ import { CheermoteList } from './CheermoteList';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const cheermotes = await client.kraken.bits.getCheermotes();
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const cheermotes = await api.kraken.bits.getCheermotes();
  * ```
  */
 @Cacheable

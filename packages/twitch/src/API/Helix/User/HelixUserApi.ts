@@ -34,8 +34,8 @@ export interface HelixUserUpdate {
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const user = await client.helix.users.getUserById('125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const user = await api.helix.users.getUserById('125328655');
  * ```
  */
 export class HelixUserApi extends BaseApi {

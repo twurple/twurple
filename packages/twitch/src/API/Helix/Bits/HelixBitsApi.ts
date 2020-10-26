@@ -44,8 +44,8 @@ export interface HelixBitsLeaderboardQuery {
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const leaderboard = await client.helix.bits.getLeaderboard({ period: 'day' });
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const leaderboard = await api.helix.bits.getLeaderboard({ period: 'day' });
  * ```
  */
 export class HelixBitsApi extends BaseApi {

@@ -27,8 +27,8 @@ import { UserSubscription } from './UserSubscription';
  *
  * ## Example
  * ```ts
- * const client = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const user = await client.kraken.users.getUser('125328655');
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const user = await api.kraken.users.getUser('125328655');
  * ```
  */
 @Cacheable
