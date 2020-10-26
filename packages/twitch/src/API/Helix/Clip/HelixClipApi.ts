@@ -1,4 +1,6 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { createPaginatedResult } from '../HelixPaginatedResult';
@@ -69,38 +71,38 @@ export class HelixClipApi extends BaseApi {
 	/**
 	 * Retrieves the latest clips for the specified broadcaster.
 	 *
-	 * @param userId The broadcaster's user ID.
+	 * @param user The broadcaster to fetch clips for.
 	 * @param filter
 	 *
 	 * @expandParams
 	 */
 	async getClipsForBroadcaster(
-		userId: string,
+		user: UserIdResolvable,
 		filter: HelixClipFilter = {}
 	): Promise<HelixPaginatedResponse<HelixClip>> {
 		return this._getClips({
 			...filter,
 			filterType: 'broadcaster_id',
-			ids: userId
+			ids: extractUserId(user)
 		});
 	}
 
 	/**
 	 * Creates a paginator for the latest clips for the specified broadcaster.
 	 *
-	 * @param userId The broadcaster's user ID.
+	 * @param user The broadcaster to fetch clips for.
 	 * @param filter
 	 *
 	 * @expandParams
 	 */
 	getClipsForBroadcasterPaginated(
-		userId: string,
+		user: UserIdResolvable,
 		filter: HelixClipFilter = {}
 	): HelixPaginatedRequest<HelixClipData, HelixClip> {
 		return this._getClipsPaginated({
 			...filter,
 			filterType: 'broadcaster_id',
-			ids: userId
+			ids: extractUserId(user)
 		});
 	}
 
