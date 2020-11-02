@@ -7,7 +7,7 @@ import type { Listener } from '@d-fischer/typed-event-emitter';
 import { IrcClient, MessageTypes } from 'ircv3';
 import type { CommercialLength } from 'twitch';
 import { InvalidTokenError, InvalidTokenTypeError } from 'twitch';
-import type { AuthProvider } from 'twitch-auth';
+import type { AuthProvider, AccessToken } from 'twitch-auth';
 import { getTokenInfo } from 'twitch-auth';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
@@ -113,6 +113,7 @@ export class ChatClient extends IrcClient {
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;
 
+	private _authToken?: AccessToken | null;
 	private _authVerified = false;
 	private _authFailureMessage?: string;
 
@@ -1372,11 +1373,11 @@ export class ChatClient extends IrcClient {
 						message === 'Improperly formatted AUTH' ||
 						message === 'Invalid NICK'
 					) {
+						this._authVerified = false;
 						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
-						// Attempt to reconnect right away if auth was previously valid, else wait 5 seconds to avoid spamming
-						setTimeout(async () => this.reconnect(), this._authVerified ? 0 : 5000);
-						this._authVerified = false;
+						// Attempt to reconnect after 5 seconds to avoid spamming
+						setTimeout(async () => this.reconnect(), 5000);
 					}
 					break;
 				}
@@ -2118,14 +2119,14 @@ export class ChatClient extends IrcClient {
 		this.registerMessageType(TwitchPrivateMessage);
 	}
 
-	protected async getPassword(currentPassword?: string): Promise<string | undefined> {
+	protected async getPassword(): Promise<string | undefined> {
 		if (!this._authProvider) {
 			return undefined;
 		}
 
-		if (currentPassword && this._authVerified) {
-			this._chatLogger.debug('Password assumed to be correct from last connection');
-			return currentPassword;
+		if (this._authToken && !this._authToken.isExpired && this._authVerified) {
+			this._chatLogger.debug('AccessToken assumed to be correct from last connection');
+			return `oauth:${this._authToken.accessToken}`;
 		}
 
 		let scopes: string[];
@@ -2140,13 +2141,13 @@ export class ChatClient extends IrcClient {
 		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		try {
-			const accessToken = await this._authProvider.getAccessToken(scopes);
-			if (accessToken) {
-				const token = await getTokenInfo(accessToken.accessToken);
+			this._authToken = await this._authProvider.getAccessToken(scopes);
+			if (this._authToken) {
+				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
 					nick: token.userName!
 				});
-				return `oauth:${accessToken.accessToken}`;
+				return `oauth:${this._authToken.accessToken}`;
 			}
 		} catch (e) {
 			if (e instanceof InvalidTokenError) {
@@ -2159,14 +2160,14 @@ export class ChatClient extends IrcClient {
 		this._chatLogger.warning('No valid token available; trying to refresh');
 
 		try {
-			const newToken = await this._authProvider.refresh?.();
+			this._authToken = await this._authProvider.refresh?.();
 
-			if (newToken) {
-				const token = await getTokenInfo(newToken.accessToken);
+			if (this._authToken) {
+				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
 					nick: token.userName!
 				});
-				return `oauth:${newToken.accessToken}`;
+				return `oauth:${this._authToken.accessToken}`;
 			}
 		} catch (e) {
 			if (e instanceof InvalidTokenError) {
