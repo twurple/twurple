@@ -1372,10 +1372,11 @@ export class ChatClient extends IrcClient {
 						message === 'Improperly formatted AUTH' ||
 						message === 'Invalid NICK'
 					) {
-						this._authVerified = false;
 						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
-						this._connection!.disconnect();
+						// Attempt to reconnect right away if auth was previously valid, else wait 5 seconds to avoid spamming
+						setTimeout(async () => this.reconnect(), this._authVerified ? 0 : 5000);
+						this._authVerified = false;
 					}
 					break;
 				}
