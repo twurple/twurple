@@ -73,7 +73,10 @@ export class StaticAuthProvider implements AuthProvider {
 			}
 			if (scopes.some(scope => !this._scopes!.includes(scope))) {
 				throw new Error(
-					`This token does not have the requested scopes (${scopes.join(', ')}) and can not be upgraded`
+					`This token does not have the requested scopes (${scopes.join(', ')}) and can not be upgraded.
+If you need dynamically upgrading scopes, please implement the AuthProvider interface accordingly:
+
+\thttps://d-fischer.github.io/twitch-auth/reference/interfaces/AuthProvider.html`
 				);
 			}
 		}

@@ -3,6 +3,9 @@ import * as crypto from 'crypto';
 import type { HelixWebHookHubRequestOptions } from 'twitch';
 import type { WebHookListener } from '../WebHookListener';
 
+/** @private */
+export type SubscriptionResultType<T extends Subscription> = T extends Subscription<infer O> ? O : never;
+
 /**
  * @hideProtected
  */

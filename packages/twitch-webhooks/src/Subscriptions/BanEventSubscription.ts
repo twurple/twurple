@@ -8,11 +8,11 @@ import { Subscription } from './Subscription';
  */
 export class BanEventSubscription extends Subscription<HelixBanEvent> {
 	constructor(
-		private readonly _broadcasterId: string,
 		handler: (data: HelixBanEvent) => void,
 		client: WebHookListener,
-		private readonly _userId?: string,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _broadcasterId: string,
+		private readonly _userId?: string
 	) {
 		super(handler, client, validityInSeconds);
 	}

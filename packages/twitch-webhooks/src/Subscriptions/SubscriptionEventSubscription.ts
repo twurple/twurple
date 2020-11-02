@@ -8,16 +8,16 @@ import { Subscription } from './Subscription';
  */
 export class SubscriptionEventSubscription extends Subscription<HelixSubscriptionEvent> {
 	constructor(
-		private readonly _userId: string,
 		handler: (data: HelixSubscriptionEvent) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _broadcasterId: string
 	) {
 		super(handler, client, validityInSeconds);
 	}
 
 	get id(): string {
-		return `subscription.event.${this._userId}`;
+		return `subscription.event.${this._broadcasterId}`;
 	}
 
 	protected transformData(response: HelixResponse<HelixSubscriptionEventData>): HelixSubscriptionEvent {
@@ -26,14 +26,14 @@ export class SubscriptionEventSubscription extends Subscription<HelixSubscriptio
 
 	protected async _subscribe(): Promise<void> {
 		return this._client._apiClient.helix.webHooks.subscribeToSubscriptionEvents(
-			this._userId,
+			this._broadcasterId,
 			await this._getOptions()
 		);
 	}
 
 	protected async _unsubscribe(): Promise<void> {
 		return this._client._apiClient.helix.webHooks.unsubscribeFromSubscriptionEvents(
-			this._userId,
+			this._broadcasterId,
 			await this._getOptions()
 		);
 	}

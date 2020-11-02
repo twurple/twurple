@@ -8,11 +8,11 @@ import { Subscription } from './Subscription';
  */
 export class UserChangeSubscription extends Subscription<HelixUser> {
 	constructor(
-		private readonly _userId: string,
 		handler: (data: HelixUser) => void,
-		private readonly _withEmail: boolean,
 		client: WebHookListener,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _userId: string,
+		private readonly _withEmail: boolean
 	) {
 		super(handler, client, validityInSeconds);
 	}

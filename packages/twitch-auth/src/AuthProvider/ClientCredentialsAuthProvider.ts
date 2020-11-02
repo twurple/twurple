@@ -40,7 +40,7 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 		if (scopes && scopes.length > 0) {
 			throw new Error(
 				`Scope ${
-					typeof scopes === 'string' ? scopes : scopes.join(',')
+					typeof scopes === 'string' ? scopes : scopes.join(', ')
 				} requested but the client credentials flow does not support scopes`
 			);
 		}

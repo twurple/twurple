@@ -261,7 +261,7 @@ export class ApiClient implements AuthProvider {
 	constructor(config: Partial<ApiConfig>) {
 		const { authProvider, ...restConfig } = config;
 		if (!authProvider) {
-			throw new ConfigError('No auth provider given');
+			throw new ConfigError('No auth provider given. Please supply the `authProvider` option.');
 		}
 
 		this._helixRateLimiter = new HelixRateLimiter(config.logLevel || LogLevel.CRITICAL);

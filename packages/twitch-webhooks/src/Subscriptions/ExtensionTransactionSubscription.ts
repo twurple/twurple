@@ -8,10 +8,10 @@ import { Subscription } from './Subscription';
  */
 export class ExtensionTransactionSubscription extends Subscription<HelixExtensionTransaction> {
 	constructor(
-		private readonly _extensionId: string,
 		handler: (data: HelixExtensionTransaction) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _extensionId: string
 	) {
 		super(handler, client, validityInSeconds);
 	}

@@ -46,7 +46,9 @@ export class PubSubClient {
 			userId = extractUserId(user);
 		} else {
 			if (apiClient.tokenType === 'app') {
-				throw new Error('Passed an auth provider that is not bound to a user');
+				throw new Error(
+					'App tokens are not supported by PubSubClient; you need to pass authentication representing a user.'
+				);
 			}
 			const token = await apiClient.getAccessToken();
 			if (!token) {
@@ -68,7 +70,10 @@ export class PubSubClient {
 	getUserListener(user: UserIdResolvable): SingleUserPubSubClient {
 		const userId = extractUserId(user);
 		if (!this._userClients.has(userId)) {
-			throw new Error(`No API client registered for user ID ${userId}`);
+			throw new Error(`No API client registered for user ID ${userId}
+Register one using:
+
+\tpubSubClient.registerUserListener(apiClient);`);
 		}
 		return this._userClients.get(userId)!;
 	}

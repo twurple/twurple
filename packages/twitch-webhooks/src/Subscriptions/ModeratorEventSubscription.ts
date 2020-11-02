@@ -9,11 +9,11 @@ import { Subscription } from './Subscription';
  */
 export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent> {
 	constructor(
-		private readonly _broadcasterId: string,
 		handler: (data: HelixModeratorEvent) => void,
 		client: WebHookListener,
-		private readonly _userId?: string,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _broadcasterId: string,
+		private readonly _userId?: string
 	) {
 		super(handler, client, validityInSeconds);
 	}

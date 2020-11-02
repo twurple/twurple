@@ -8,10 +8,10 @@ import { Subscription } from './Subscription';
  */
 export class HypeTrainEventSubscription extends Subscription<HelixHypeTrainEvent> {
 	constructor(
-		private readonly _broadcasterId: string,
 		handler: (data: HelixHypeTrainEvent) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _broadcasterId: string
 	) {
 		super(handler, client, validityInSeconds);
 	}

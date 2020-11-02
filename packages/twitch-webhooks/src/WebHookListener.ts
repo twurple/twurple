@@ -27,7 +27,7 @@ import { FollowsToUserSubscription } from './Subscriptions/FollowsToUserSubscrip
 import { HypeTrainEventSubscription } from './Subscriptions/HypeTrainEventSubscription';
 import { ModeratorEventSubscription } from './Subscriptions/ModeratorEventSubscription';
 import { StreamChangeSubscription } from './Subscriptions/StreamChangeSubscription';
-import type { Subscription } from './Subscriptions/Subscription';
+import type { Subscription, SubscriptionResultType } from './Subscriptions/Subscription';
 import { SubscriptionEventSubscription } from './Subscriptions/SubscriptionEventSubscription';
 import { UserChangeSubscription } from './Subscriptions/UserChangeSubscription';
 
@@ -65,6 +65,8 @@ export interface WebHookConfig {
 	 */
 	logger?: Partial<LoggerOptions>;
 }
+
+const numberRegex = /^\d+$/;
 
 /**
  * A WebHook listener you can track changes in various channel and user data with.
@@ -199,11 +201,13 @@ export class WebHookListener {
 	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
-		const subscription = new UserChangeSubscription(userId, handler, withEmail, this, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToUserChanges: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
 
-		return subscription;
+		return this._genericSubscribe(UserChangeSubscription, handler, this, validityInSeconds, userId, withEmail);
 	}
 
 	/**
@@ -224,36 +228,13 @@ export class WebHookListener {
 	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
-		const subscription = new FollowsToUserSubscription(userId, handler, this, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToFollowsToUser: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
 
-		return subscription;
-	}
-
-	/**
-	 * Subscribes to events representing a hype train event.
-	 *
-	 * @param broadcasterId The broadcaster / channel for which to get notifications about the hype train events.
-	 * @param handler The function that will be called for any new notifications.
-	 * @param validityInSeconds The validity of the WebHook, in seconds.
-	 *
-	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
-	 *
-	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
-	 */
-	async subscribeToHypeTrainEvents(
-		broadcasterId: UserIdResolvable,
-		handler: (hypeTrain: HelixHypeTrainEvent) => void,
-		validityInSeconds = this._hookValidity
-	): Promise<Subscription> {
-		const userId = extractUserId(broadcasterId);
-
-		const subscription = new HypeTrainEventSubscription(userId, handler, this, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
-
-		return subscription;
+		return this._genericSubscribe(FollowsToUserSubscription, handler, this, validityInSeconds, userId);
 	}
 
 	/**
@@ -274,11 +255,40 @@ export class WebHookListener {
 	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
-		const subscription = new FollowsFromUserSubscription(userId, handler, this, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToFollowsFromUser: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
 
-		return subscription;
+		return this._genericSubscribe(FollowsFromUserSubscription, handler, this, validityInSeconds, userId);
+	}
+
+	/**
+	 * Subscribes to events representing a hype train event.
+	 *
+	 * @param broadcaster The broadcaster / channel for which to get notifications about the hype train events.
+	 * @param handler The function that will be called for any new notifications.
+	 * @param validityInSeconds The validity of the WebHook, in seconds.
+	 *
+	 * Please note that this doesn't mean that you don't get any notifications after the given time. The hook will be automatically refreshed.
+	 *
+	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
+	 */
+	async subscribeToHypeTrainEvents(
+		broadcaster: UserIdResolvable,
+		handler: (hypeTrain: HelixHypeTrainEvent) => void,
+		validityInSeconds = this._hookValidity
+	): Promise<Subscription> {
+		const broadcasterId = extractUserId(broadcaster);
+
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToHypeTrainEvents: The given broadcaster is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+
+		return this._genericSubscribe(HypeTrainEventSubscription, handler, this, validityInSeconds, broadcasterId);
 	}
 
 	/**
@@ -299,17 +309,19 @@ export class WebHookListener {
 	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
-		const subscription = new StreamChangeSubscription(userId, handler, this, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToStreamChanges: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
 
-		return subscription;
+		return this._genericSubscribe(StreamChangeSubscription, handler, this, validityInSeconds, userId);
 	}
 
 	/**
 	 * Subscribes to events representing the start or end of a channel subscription.
 	 *
-	 * @param user The user for which to get notifications about subscriptions to their channel.
+	 * @param broadcaster The user for which to get notifications about subscriptions to their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 * @param validityInSeconds The validity of the WebHook, in seconds.
 	 *
@@ -318,17 +330,19 @@ export class WebHookListener {
 	 * This is meant for debugging issues. Please don't set it unless you know what you're doing.
 	 */
 	async subscribeToSubscriptionEvents(
-		user: UserIdResolvable,
+		broadcaster: UserIdResolvable,
 		handler: (subscriptionEvent: HelixSubscriptionEvent) => void,
 		validityInSeconds = this._hookValidity
 	): Promise<Subscription> {
-		const userId = extractUserId(user);
+		const broadcasterId = extractUserId(broadcaster);
 
-		const subscription = new SubscriptionEventSubscription(userId, handler, this, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToSubscriptionEvents: The given broadcaster is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
 
-		return subscription;
+		return this._genericSubscribe(SubscriptionEventSubscription, handler, this, validityInSeconds, broadcasterId);
 	}
 
 	/**
@@ -352,11 +366,19 @@ export class WebHookListener {
 		const broadcasterId = extractUserId(broadcaster);
 		const userId = user ? extractUserId(user) : undefined;
 
-		const subscription = new BanEventSubscription(broadcasterId, handler, this, userId, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToBanEvents: The given broadcaster is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
 
-		return subscription;
+		if (userId !== undefined && !numberRegex.test(userId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToBanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+
+		return this._genericSubscribe(BanEventSubscription, handler, this, validityInSeconds, broadcasterId, userId);
 	}
 
 	/**
@@ -380,11 +402,26 @@ export class WebHookListener {
 		const broadcasterId = extractUserId(broadcaster);
 		const userId = user ? extractUserId(user) : undefined;
 
-		const subscription = new ModeratorEventSubscription(broadcasterId, handler, this, userId, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToModeratorEvents: The given broadcaster is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
 
-		return subscription;
+		if (userId !== undefined && !numberRegex.test(userId)) {
+			this._logger.warn(
+				'WebHookListener#subscribeToModeratorEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+
+		return this._genericSubscribe(
+			ModeratorEventSubscription,
+			handler,
+			this,
+			validityInSeconds,
+			broadcasterId,
+			userId
+		);
 	}
 
 	/**
@@ -403,11 +440,7 @@ export class WebHookListener {
 		handler: (transaction: HelixExtensionTransaction) => void,
 		validityInSeconds = this._hookValidity
 	): Promise<Subscription> {
-		const subscription = new ExtensionTransactionSubscription(extensionId, handler, this, validityInSeconds);
-		await subscription.start();
-		this._subscriptions.set(subscription.id, subscription);
-
-		return subscription;
+		return this._genericSubscribe(ExtensionTransactionSubscription, handler, this, validityInSeconds, extensionId);
 	}
 
 	/** @private */
@@ -437,6 +470,25 @@ export class WebHookListener {
 	/** @private */
 	_dropSubscription(id: string): void {
 		this._subscriptions.delete(id);
+	}
+
+	private async _genericSubscribe<T extends Subscription, Args extends unknown[]>(
+		clazz: new (
+			handler: (obj: SubscriptionResultType<T>) => void,
+			client: this,
+			validityInSeconds?: number,
+			...args: Args
+		) => T,
+		handler: (obj: SubscriptionResultType<T>) => void,
+		client: this,
+		validityInSeconds?: number,
+		...params: Args
+	): Promise<Subscription> {
+		const subscription = new clazz(handler, client, validityInSeconds, ...params);
+		await subscription.start();
+		this._subscriptions.set(subscription.id, subscription);
+
+		return subscription;
 	}
 
 	private _createHandleRequest(): RequestHandler {
