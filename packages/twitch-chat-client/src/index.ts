@@ -19,6 +19,17 @@ export { ChatClient };
 
 export { TwitchPrivateMessage as PrivateMessage } from './StandardCommands/TwitchPrivateMessage';
 
+export { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
+export { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
+export { Reconnect } from './Capabilities/TwitchCommandsCapability/MessageTypes/Reconnect';
+export { RoomState } from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
+export { UserNotice } from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
+export { UserState } from './Capabilities/TwitchCommandsCapability/MessageTypes/UserState';
+export { Whisper } from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
+
+export { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
+export { GlobalUserState } from './Capabilities/TwitchTagsCapability/MessageTypes/GlobalUserState';
+
 export {
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
@@ -36,7 +47,9 @@ export { ChatUser } from './ChatUser';
 export { LogLevel } from '@d-fischer/logger';
 
 export { toChannelName, toUserName } from './Toolkit/UserTools';
-export { ParsedMessagePart } from './Toolkit/EmoteTools';
-export { ParsedMessageEmotePart } from './Toolkit/EmoteTools';
-export { ParsedMessageCheerPart } from './Toolkit/EmoteTools';
-export { ParsedMessageTextPart } from './Toolkit/EmoteTools';
+export {
+	ParsedMessagePart,
+	ParsedMessageEmotePart,
+	ParsedMessageCheerPart,
+	ParsedMessageTextPart
+} from './Toolkit/EmoteTools';
