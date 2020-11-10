@@ -27,9 +27,9 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/cross-fetch": "^4.0.1",
+    "@d-fischer/cross-fetch": "^4.0.2",
     "@d-fischer/qs": "^7.0.2",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.3"
   },
   "files": [
     "LICENSE",

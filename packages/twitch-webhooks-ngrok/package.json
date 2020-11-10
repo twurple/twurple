@@ -31,7 +31,7 @@
   "dependencies": {
     "@d-fischer/portfinder": "^1.0.28",
     "ngrok": "^3.3.0",
-    "tslib": "^2.0.0"
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
     "twitch": "^4.3.0-pre.4",

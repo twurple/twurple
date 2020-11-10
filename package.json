@@ -12,15 +12,15 @@
     "@d-fischer/eslint-config": "^3.1.1",
     "@types/node": "^12.12.47",
     "electron": "^9.1.0",
-    "eslint": "^7.10.0",
-    "eslint-import-resolver-lerna": "^1.1.0",
+    "eslint": "^7.13.0",
+    "eslint-import-resolver-lerna": "^2.0.0",
     "husky": "^4.3.0",
     "lerna": "^3.22.1",
-    "lint-staged": "^10.4.0",
+    "lint-staged": "^10.5.1",
     "prettier": "^2.1.2",
     "rimraf": "^3.0.0",
-    "tsukuru": "^0.5.0",
-    "typescript": "~4.0.2"
+    "tsukuru": "^0.6.0",
+    "typescript": "~4.0.5"
   },
   "scripts": {
     "lint": "eslint --ext js,ts packages",
