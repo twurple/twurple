@@ -1,1 +1,6 @@
 blank_issues_enabled: false
+contact_links:
+    -
+        name: ❓ Support Question
+        about: "If you have a question 💬, please ask it on the Twitch API Discord in the #twitch-js channel!"
+        url: "https://discord.gg/b9ZqMfz"
