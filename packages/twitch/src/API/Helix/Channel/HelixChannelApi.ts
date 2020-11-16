@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import type { CommercialLength } from '../../CommercialLength';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -76,6 +77,24 @@ export class HelixChannelApi extends BaseApi {
 				game_id: data.gameId,
 				broadcaster_language: data.language,
 				title: data.title
+			}
+		});
+	}
+
+	/**
+	 * Starts a commercial on a channel.
+	 *
+	 * @param broadcaster The broadcaster on whose channel the commercial is started.
+	 * @param length The length of the commercial, in seconds.
+	 */
+	async startChannelCommercial(broadcaster: UserIdResolvable, length: CommercialLength): Promise<void> {
+		await this._client.callApi({
+			type: TwitchApiCallType.Helix,
+			url: 'channels/commercial',
+			scope: 'channel:edit:commercial',
+			jsonBody: {
+				broadcaster_id: extractUserId(broadcaster),
+				length: length
 			}
 		});
 	}

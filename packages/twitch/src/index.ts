@@ -40,7 +40,6 @@ export { ChannelPlaceholder } from './API/Kraken/Channel/ChannelPlaceholder';
 export { ChannelSubscription } from './API/Kraken/Channel/ChannelSubscription';
 export { EmoteSetList } from './API/Kraken/Channel/EmoteSetList';
 export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
-export { CommercialLength } from './API/Kraken/Channel/ChannelApi';
 
 export { Stream, StreamType } from './API/Kraken/Stream/Stream';
 
@@ -114,3 +113,4 @@ export {
 	RefreshConfig,
 	TokenInfo
 } from 'twitch-auth';
+export { CommercialLength } from './API/CommercialLength';

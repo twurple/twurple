@@ -262,6 +262,24 @@ export class HelixStreamApi extends BaseApi {
 		});
 	}
 
+	/**
+	 * Retrieves the stream key of a stream.
+	 *
+	 * @param broadcaster The broadcaster to retrieve the stream key for.
+	 */
+	async getStreamKey(broadcaster: UserIdResolvable): Promise<string> {
+		const result = await this._client.callApi<HelixResponse<{ stream_key: string }>>({
+			type: TwitchApiCallType.Helix,
+			url: 'streams/key',
+			scope: 'channel:read:stream_key',
+			query: {
+				broadcaster_id: extractUserId(broadcaster)
+			}
+		});
+
+		return result.data[0].stream_key;
+	}
+
 	private async _getStreamMarkers(
 		queryType: string,
 		id: string

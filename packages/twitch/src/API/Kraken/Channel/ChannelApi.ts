@@ -4,6 +4,7 @@ import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgra
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
+import type { CommercialLength } from '../../CommercialLength';
 import type { TeamData } from '../Team/Team';
 import { Team } from '../Team/Team';
 import type { UserData } from '../User/User';
@@ -40,11 +41,6 @@ export interface ChannelUpdateData {
 	 */
 	channel_feed_enabled?: boolean;
 }
-
-/**
- * The possible lengths of a channel commercial.
- */
-export type CommercialLength = 30 | 60 | 90 | 120 | 150 | 180;
 
 /**
  * The API methods that deal with channels.
