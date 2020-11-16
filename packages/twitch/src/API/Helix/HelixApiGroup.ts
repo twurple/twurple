@@ -2,6 +2,7 @@ import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { BaseApi } from '../BaseApi';
 
 import { HelixBitsApi } from './Bits/HelixBitsApi';
+import { HelixChannelApi } from './Channel/HelixChannelApi';
 import { HelixClipApi } from './Clip/HelixClipApi';
 import { HelixExtensionsApi } from './Extensions/HelixExtensionsApi';
 import { HelixGameApi } from './Game/HelixGameApi';
@@ -26,6 +27,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get bits(): HelixBitsApi {
 		return new HelixBitsApi(this._client);
+	}
+
+	/**
+	 * The Helix channels API methods.
+	 */
+	@CachedGetter()
+	get channels(): HelixChannelApi {
+		return new HelixChannelApi(this._client);
 	}
 
 	/**
