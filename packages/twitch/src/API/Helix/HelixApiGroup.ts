@@ -10,6 +10,7 @@ import HelixHypeTrainApi from './HypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './Moderation/HelixModerationApi';
 import { HelixStreamApi } from './Stream/HelixStreamApi';
 import { HelixSubscriptionApi } from './Subscriptions/HelixSubscriptionApi';
+import { HelixTagApi } from './Tag/HelixTagApi';
 import { HelixUserApi } from './User/HelixUserApi';
 import { HelixVideoApi } from './Video/HelixVideoApi';
 import { HelixWebHooksApi } from './WebHooks/HelixWebHooksApi';
@@ -91,6 +92,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get subscriptions(): HelixSubscriptionApi {
 		return new HelixSubscriptionApi(this._client);
+	}
+
+	/**
+	 * The Helix tag API methods.
+	 */
+	@CachedGetter()
+	get tags(): HelixTagApi {
+		return new HelixTagApi(this._client);
 	}
 
 	/**

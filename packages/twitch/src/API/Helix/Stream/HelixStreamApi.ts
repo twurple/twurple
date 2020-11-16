@@ -11,6 +11,8 @@ import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
+import type { HelixTagData } from '../Tag/HelixTag';
+import { HelixTag } from '../Tag/HelixTag';
 import type { HelixStreamData, HelixStreamType } from './HelixStream';
 import { HelixStream } from './HelixStream';
 import type { HelixStreamMarkerData } from './HelixStreamMarker';
@@ -220,6 +222,44 @@ export class HelixStreamApi extends BaseApi {
 
 			throw e;
 		}
+	}
+
+	/**
+	 * Retrieves the tags of a stream.
+	 *
+	 * @param broadcaster The broadcaster of the stream.
+	 */
+	async getStreamTags(broadcaster: UserIdResolvable): Promise<HelixTag[]> {
+		const result = await this._client.callApi<HelixResponse<HelixTagData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'streams/tags',
+			query: {
+				broadcaster_id: extractUserId(broadcaster)
+			}
+		});
+
+		return result.data.map(data => new HelixTag(data, this._client));
+	}
+
+	/**
+	 * Replaces the tags of a stream.
+	 *
+	 * @param broadcaster The broadcaster of the stream.
+	 * @param tagIds The tags to set. If not given, removes all tags.
+	 */
+	async replaceStreamTags(broadcaster: UserIdResolvable, tagIds?: string[]): Promise<void> {
+		await this._client.callApi({
+			type: TwitchApiCallType.Helix,
+			url: 'streams/tags',
+			scope: 'user:edit:broadcast',
+			method: 'PUT',
+			query: {
+				broadcaster: extractUserId(broadcaster)
+			},
+			jsonBody: {
+				tag_ids: tagIds
+			}
+		});
 	}
 
 	private async _getStreamMarkers(

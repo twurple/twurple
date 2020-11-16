@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixGame } from '../Game/HelixGame';
+import type { HelixTag } from '../Tag/HelixTag';
 import type { HelixUser } from '../User/HelixUser';
 
 /**
@@ -38,6 +39,7 @@ export interface HelixStreamData {
 	started_at: string;
 	language: string;
 	thumbnail_url: string;
+	tag_ids: string[];
 }
 
 /**
@@ -87,7 +89,7 @@ export class HelixStream {
 	}
 
 	/**
-	 * Retrieves information about the game that is being played on this stream.
+	 * Retrieves information about the game that is being played on the stream.
 	 */
 	async getGame(): Promise<HelixGame | null> {
 		return this._client.helix.games.getGameById(this._data.game_id);
@@ -133,5 +135,19 @@ export class HelixStream {
 	 */
 	get thumbnailUrl(): string {
 		return this._data.thumbnail_url;
+	}
+
+	/**
+	 * The IDs of the tags of the stream.
+	 */
+	get tagIds(): string[] {
+		return this._data.tag_ids;
+	}
+
+	/**
+	 * Retrieves the tags of the stream.
+	 */
+	async getTags(): Promise<HelixTag[]> {
+		return this._client.helix.tags.getStreamTagsByIds(this._data.tag_ids);
 	}
 }

@@ -24,7 +24,7 @@ const memberNames = [
 	'^click_action$',
 	'^(image_)?url_\\dx$',
 	'^emoticon_sets?$',
-	'^is_(anonymous|gift|user_input_required|sub_only|enabled|paused|in_stock|previewable|playlist|(verified|known)_bot)$',
+	'^is_(anonymous|gift|user_input_required|sub_only|enabled|paused|in_stock|previewable|playlist|(verified|known)_bot|live|auto)$',
 	'^minimum_allowed_role$',
 	'^(chatter|view(er)?)_count$',
 	'^min_bits$',
@@ -58,10 +58,12 @@ const memberNames = [
 	'^average_fps$',
 	'^description_html$',
 	'^muted_segments$',
-	'^tag_list$',
+	'^tag_(ids|list)$',
 	'^cooldown_end_time$',
 	'^(last|top)_contributions?$',
 	'^(streak|cumulative)_months',
+	'^live_only$',
+	'^localization_(names|descriptions)',
 	// HTTP
 	'^Accept$'
 ];
