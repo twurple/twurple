@@ -64,6 +64,7 @@ const memberNames = [
 	'^(streak|cumulative)_months',
 	'^live_only$',
 	'^localization_(names|descriptions)',
+	'^allow_notifications$',
 	// HTTP
 	'^Accept$'
 ];
