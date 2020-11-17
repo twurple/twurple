@@ -26,13 +26,7 @@ export { StreamNotLiveError } from './Errors/StreamNotLiveError';
 
 export { Subscription } from './API/Kraken/Subscription';
 
-export {
-	CheermoteBackground,
-	CheermoteDisplayInfo,
-	CheermoteList,
-	CheermoteScale,
-	CheermoteState
-} from './API/Kraken/Bits/CheermoteList';
+export { CheermoteList } from './API/Kraken/Bits/CheermoteList';
 
 export { Channel } from './API/Kraken/Channel/Channel';
 export { ChannelFollow } from './API/Kraken/Channel/ChannelFollow';
@@ -113,4 +107,8 @@ export {
 	RefreshConfig,
 	TokenInfo
 } from 'twitch-auth';
-export { CommercialLength } from './API/CommercialLength';
+export { CommercialLength } from './API/Shared/CommercialLength';
+export { CheermoteDisplayInfo } from './API/Shared/BaseCheermoteList';
+export { CheermoteScale } from './API/Shared/BaseCheermoteList';
+export { CheermoteState } from './API/Shared/BaseCheermoteList';
+export { CheermoteBackground } from './API/Shared/BaseCheermoteList';

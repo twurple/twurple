@@ -11,43 +11,40 @@ import type {
 import { BaseCheermoteList } from '../../Shared/BaseCheermoteList';
 
 /** @private */
-export type CheermoteActionImageUrlsByScale = {
+export type HelixCheermoteActionImageUrlsByScale = {
 	[scale in CheermoteScale]: string;
 };
 
 /** @private */
-export type CheermoteActionImageUrlsByStateAndScale = {
-	[state in CheermoteState]: CheermoteActionImageUrlsByScale;
+export type HelixCheermoteActionImageUrlsByStateAndScale = {
+	[state in CheermoteState]: HelixCheermoteActionImageUrlsByScale;
 };
 
 /** @private */
-export type CheermoteActionImageUrlsByBackgroundAndStateAndScale = {
-	[background in CheermoteBackground]: CheermoteActionImageUrlsByStateAndScale;
+export type HelixCheermoteActionImageUrlsByBackgroundAndStateAndScale = {
+	[background in CheermoteBackground]: HelixCheermoteActionImageUrlsByStateAndScale;
 };
 
 /** @private */
-export interface CheermoteActionTierData {
+export interface HelixCheermoteTierData {
 	min_bits: number;
 	id: string;
 	color: string;
-	images: CheermoteActionImageUrlsByBackgroundAndStateAndScale[];
+	images: HelixCheermoteActionImageUrlsByBackgroundAndStateAndScale[];
+	can_cheer: boolean;
+	show_in_bits_card: boolean;
 }
 
 /** @private */
-export interface CheermoteActionData {
+type HelixCheermoteType = 'global_first_party' | 'global_third_party' | 'channel_custom' | 'display_only' | 'sponsored';
+
+/** @private */
+export interface HelixCheermoteData {
 	prefix: string;
-	scales: string[];
-	tiers: CheermoteActionTierData[];
-	backgrounds: string[];
-	states: string[];
-	type: string;
-	updated_at: string;
-	priority: number;
-}
-
-/** @private */
-export interface CheermoteListData {
-	actions: CheermoteActionData[];
+	tiers: HelixCheermoteTierData[];
+	type: HelixCheermoteType;
+	last_updated: string;
+	order: number;
 }
 
 /**
@@ -55,12 +52,12 @@ export interface CheermoteListData {
  *
  * @inheritDoc
  */
-export class CheermoteList extends BaseCheermoteList {
+export class HelixCheermoteList extends BaseCheermoteList {
 	@Enumerable(false) private readonly _client: ApiClient;
-	private readonly _data: Record<string, CheermoteActionData>;
+	private readonly _data: Record<string, HelixCheermoteData>;
 
 	/** @private */
-	constructor(data: CheermoteActionData[], client: ApiClient) {
+	constructor(data: HelixCheermoteData[], client: ApiClient) {
 		super();
 		this._client = client;
 		this._data = indexBy(data, action => action.prefix.toLowerCase());

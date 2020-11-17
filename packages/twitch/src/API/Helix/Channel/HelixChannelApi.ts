@@ -1,5 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import type { CommercialLength } from '../../CommercialLength';
+import type { CommercialLength } from '../../Shared/CommercialLength';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';

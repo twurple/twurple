@@ -65,6 +65,9 @@ const memberNames = [
 	'^live_only$',
 	'^localization_(names|descriptions)',
 	'^allow_notifications$',
+	'^can_cheer$',
+	'^show_in_bits_card$',
+	'^last_updated$',
 	// HTTP
 	'^Accept$'
 ];

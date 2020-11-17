@@ -1,7 +1,12 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import type { HelixResponse } from '../HelixResponse';
+import type { UserIdResolvable } from '../../../Toolkit/UserTools';
+import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import type { HelixBitsLeaderboardResponse } from './HelixBitsLeaderboard';
 import { HelixBitsLeaderboard } from './HelixBitsLeaderboard';
+import type { HelixCheermoteData } from './HelixCheermoteList';
+import { HelixCheermoteList } from './HelixCheermoteList';
 
 /**
  * The possible time periods for a bits leaderboard.
@@ -50,7 +55,7 @@ export interface HelixBitsLeaderboardQuery {
  */
 export class HelixBitsApi extends BaseApi {
 	/**
-	 * Gets a bits leaderboard of your channel.
+	 * Retrieves a bits leaderboard of your channel.
 	 *
 	 * @expandParams
 	 */
@@ -69,5 +74,25 @@ export class HelixBitsApi extends BaseApi {
 		});
 
 		return new HelixBitsLeaderboard(result, this._client);
+	}
+
+	/**
+	 * Retrieves all available cheermotes.
+	 *
+	 * @param broadcaster The broadcaster to include custom cheermotes of.
+	 *
+	 * If not given, only retrieves global cheermotes.
+	 */
+	async getCheermotes(broadcaster?: UserIdResolvable): Promise<HelixCheermoteList> {
+		const broadcasterId = broadcaster ? extractUserId(broadcaster) : undefined;
+		const result = await this._client.callApi<HelixResponse<HelixCheermoteData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'bits/cheermotes',
+			query: {
+				broadcaster_id: broadcasterId
+			}
+		});
+
+		return new HelixCheermoteList(result.data, this._client);
 	}
 }

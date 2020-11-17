@@ -26,8 +26,8 @@ import {
 import { BadgesApi } from './API/Badges/BadgesApi';
 import { HelixApiGroup } from './API/Helix/HelixApiGroup';
 import { HelixRateLimiter } from './API/Helix/HelixRateLimiter';
-import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Kraken/Bits/CheermoteList';
 import { KrakenApiGroup } from './API/Kraken/KrakenApiGroup';
+import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Shared/BaseCheermoteList';
 import { UnsupportedApi } from './API/Unsupported/UnsupportedApi';
 
 import { ConfigError } from './Errors/ConfigError';

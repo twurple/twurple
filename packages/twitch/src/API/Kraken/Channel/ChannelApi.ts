@@ -4,7 +4,7 @@ import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgra
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
-import type { CommercialLength } from '../../CommercialLength';
+import type { CommercialLength } from '../../Shared/CommercialLength';
 import type { TeamData } from '../Team/Team';
 import { Team } from '../Team/Team';
 import type { UserData } from '../User/User';
