@@ -39,7 +39,8 @@ export class HelixPaginatedRequest<D, T> {
 	constructor(
 		private readonly _callOptions: Omit<TwitchApiCallOptions, 'type'>,
 		client: ApiClient,
-		private readonly _mapper: (data: D) => T | T[]
+		private readonly _mapper: (data: D) => T | T[],
+		private readonly _limitPerPage: number = 100
 	) {
 		this._client = client;
 	}
@@ -135,7 +136,7 @@ export class HelixPaginatedRequest<D, T> {
 			query: {
 				...this._callOptions.query,
 				after: this._currentCursor,
-				first: '100',
+				first: this._limitPerPage.toString(),
 				...additionalOptions.query
 			}
 		});

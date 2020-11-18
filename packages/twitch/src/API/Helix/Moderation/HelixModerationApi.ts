@@ -85,7 +85,8 @@ export class HelixModerationApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixBanData) => new HelixBan(data, this._client)
+			(data: HelixBanData) => new HelixBan(data, this._client),
+			50 // possibly a relatively consistent workaround for twitchdev/issues#18
 		);
 	}
 
