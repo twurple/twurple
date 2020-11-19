@@ -2,12 +2,12 @@ import deprecate from '@d-fischer/deprecate';
 import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
 import { Logger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import { Enumerable } from '@d-fischer/shared-utils';
+import { delay, Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
 import { IrcClient, MessageTypes } from 'ircv3';
 import type { CommercialLength } from 'twitch';
 import { InvalidTokenError, InvalidTokenTypeError } from 'twitch';
-import type { AuthProvider } from 'twitch-auth';
+import type { AuthProvider, AccessToken } from 'twitch-auth';
 import { getTokenInfo } from 'twitch-auth';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
@@ -113,8 +113,10 @@ export class ChatClient extends IrcClient {
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;
 
+	private _authToken?: AccessToken | null;
 	private _authVerified = false;
 	private _authFailureMessage?: string;
+	private _authRetryTimer?: Iterator<number>;
 
 	private _chatLogger: Logger;
 
@@ -582,7 +584,7 @@ export class ChatClient extends IrcClient {
 		handler: (channel: string, error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onFollowersOnlyResult: (
-		handler: (channel: string, delay?: number, error?: string) => void
+		handler: (channel: string, minFollowTime?: number, error?: string) => void
 	) => Listener = this.registerEvent();
 	private readonly _onFollowersOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
@@ -990,7 +992,7 @@ export class ChatClient extends IrcClient {
 			this.emit(this.onWhisper, whisper.prefix!.nick, whisper.params.message, whisper);
 		});
 
-		this.onTypedMessage(MessageTypes.Commands.Notice, ({ params: { target: channel, message }, tags }) => {
+		this.onTypedMessage(MessageTypes.Commands.Notice, async ({ params: { target: channel, message }, tags }) => {
 			const messageType = tags.get('msg-id');
 
 			// this event handler involves a lot of parsing strings you shouldn't parse...
@@ -1375,7 +1377,15 @@ export class ChatClient extends IrcClient {
 						this._authVerified = false;
 						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
-						this._connection!.disconnect();
+						if (!this._authRetryTimer) {
+							this._authRetryTimer = ChatClient._getReauthenticateWaitTime();
+						}
+						const secs = this._authRetryTimer.next().value;
+						if (secs !== 0) {
+							this._chatLogger?.info(`Retrying authentication in ${secs} seconds`);
+						}
+						await delay(secs * 1000);
+						await this.reconnect();
 					}
 					break;
 				}
@@ -1625,13 +1635,13 @@ export class ChatClient extends IrcClient {
 	 * Enables followers-only mode in a channel.
 	 *
 	 * @param channel The channel to enable followers-only mode in.
-	 * @param delay The time (in minutes) a user needs to be following before being able to send messages.
+	 * @param minFollowTime The time (in minutes) a user needs to be following before being able to send messages.
 	 */
-	async enableFollowersOnly(channel: string, delay: number = 0): Promise<void> {
+	async enableFollowersOnly(channel: string, minFollowTime: number = 0): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
-			const e = this._onFollowersOnlyResult((_channel, _delay, error) => {
-				if (toUserName(_channel) === channel && _delay === delay) {
+			const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
+				if (toUserName(_channel) === channel && _minFollowTime === minFollowTime) {
 					if (error) {
 						reject(error);
 					} else {
@@ -1640,7 +1650,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/followers ${delay || ''}`);
+			this.say(channel, `/followers ${minFollowTime || ''}`);
 		});
 	}
 
@@ -1780,9 +1790,9 @@ export class ChatClient extends IrcClient {
 	 * Enables slow mode in a channel.
 	 *
 	 * @param channel The channel to enable slow mode in.
-	 * @param delay The time (in seconds) a user needs to wait between messages.
+	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
 	 */
-	async enableSlow(channel: string, delay: number = 30): Promise<void> {
+	async enableSlow(channel: string, delayBetweenMessages: number = 30): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSlowResult((_channel, _delay, error) => {
@@ -1795,7 +1805,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/slow ${delay}`);
+			this.say(channel, `/slow ${delayBetweenMessages}`);
 		});
 	}
 
@@ -2117,14 +2127,14 @@ export class ChatClient extends IrcClient {
 		this.registerMessageType(TwitchPrivateMessage);
 	}
 
-	protected async getPassword(currentPassword?: string): Promise<string | undefined> {
+	protected async getPassword(): Promise<string | undefined> {
 		if (!this._authProvider) {
 			return undefined;
 		}
 
-		if (currentPassword && this._authVerified) {
-			this._chatLogger.debug('Password assumed to be correct from last connection');
-			return currentPassword;
+		if (this._authToken && !this._authToken.isExpired && this._authVerified) {
+			this._chatLogger.debug('AccessToken assumed to be correct from last connection');
+			return `oauth:${this._authToken.accessToken}`;
 		}
 
 		let scopes: string[];
@@ -2139,13 +2149,13 @@ export class ChatClient extends IrcClient {
 		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		try {
-			const accessToken = await this._authProvider.getAccessToken(scopes);
-			if (accessToken) {
-				const token = await getTokenInfo(accessToken.accessToken);
+			this._authToken = await this._authProvider.getAccessToken(scopes);
+			if (this._authToken) {
+				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
 					nick: token.userName!
 				});
-				return `oauth:${accessToken.accessToken}`;
+				return `oauth:${this._authToken.accessToken}`;
 			}
 		} catch (e) {
 			if (e instanceof InvalidTokenError) {
@@ -2158,14 +2168,14 @@ export class ChatClient extends IrcClient {
 		this._chatLogger.warning('No valid token available; trying to refresh');
 
 		try {
-			const newToken = await this._authProvider.refresh?.();
+			this._authToken = await this._authProvider.refresh?.();
 
-			if (newToken) {
-				const token = await getTokenInfo(newToken.accessToken);
+			if (this._authToken) {
+				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
 					nick: token.userName!
 				});
-				return `oauth:${newToken.accessToken}`;
+				return `oauth:${this._authToken.accessToken}`;
 			}
 		} catch (e) {
 			if (e instanceof InvalidTokenError) {
@@ -2206,5 +2216,20 @@ export class ChatClient extends IrcClient {
 				this.emit(this.onMessage, channel, user, message, msg);
 			}
 		});
+	}
+
+	// yes, this is just fibonacci with a limit
+	private static *_getReauthenticateWaitTime(): IterableIterator<number> {
+		let current = 0;
+		let next = 1;
+
+		while (current < 120) {
+			yield current;
+			[current, next] = [next, current + next];
+		}
+
+		while (true) {
+			yield 120;
+		}
 	}
 }
