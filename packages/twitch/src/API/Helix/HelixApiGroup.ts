@@ -3,6 +3,7 @@ import { BaseApi } from '../BaseApi';
 
 import { HelixBitsApi } from './Bits/HelixBitsApi';
 import { HelixChannelApi } from './Channel/HelixChannelApi';
+import { HelixChannelPointsApi } from './ChannelPoints/HelixChannelPointsApi';
 import { HelixClipApi } from './Clip/HelixClipApi';
 import { HelixExtensionsApi } from './Extensions/HelixExtensionsApi';
 import { HelixGameApi } from './Game/HelixGameApi';
@@ -36,6 +37,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get channels(): HelixChannelApi {
 		return new HelixChannelApi(this._client);
+	}
+
+	/**
+	 * The Helix channel points API methods.
+	 */
+	@CachedGetter()
+	get channelPoints(): HelixChannelPointsApi {
+		return new HelixChannelPointsApi(this._client);
 	}
 
 	/**
