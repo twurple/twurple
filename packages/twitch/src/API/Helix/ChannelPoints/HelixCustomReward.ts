@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import type { HelixUser } from '../User/HelixUser';
 import type { ApiClient } from '../../../ApiClient';
 
 /** @private */
@@ -83,6 +84,13 @@ export class HelixCustomReward {
 	 */
 	get broadcasterDisplayName(): string {
 		return this._data.broadcaster_name;
+	}
+
+	/**
+	 * Retrieves more information about the reward's broadcaster.
+	 */
+	async getBroadcaster(): Promise<HelixUser | null> {
+		return this._client.helix.users.getUserById(this._data.broadcaster_id);
 	}
 
 	/**

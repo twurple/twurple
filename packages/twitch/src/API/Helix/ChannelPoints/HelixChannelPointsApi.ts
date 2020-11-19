@@ -2,9 +2,20 @@ import { TwitchApiCallType } from 'twitch-api-call';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
-import type { HelixResponse } from '../HelixResponse';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
+import { createPaginatedResult } from '../HelixPaginatedResult';
+import { makePaginationQuery } from '../HelixPagination';
+import type { HelixForwardPagination } from '../HelixPagination';
+import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
 import type { HelixCustomRewardData } from './HelixCustomReward';
 import { HelixCustomReward } from './HelixCustomReward';
+import type {
+	HelixCustomRewardRedemptionData,
+	HelixCustomRewardRedemptionStatus,
+	HelixCustomRewardRedemptionTargetStatus
+} from './HelixCustomRewardRedemption';
+import { HelixCustomRewardRedemption } from './HelixCustomRewardRedemption';
 
 /**
  * Data to create a new custom reward.
@@ -72,6 +83,25 @@ interface HelixUpdateCustomRewardData extends Partial<HelixCreateCustomRewardDat
 	 */
 	isPaused?: boolean;
 }
+
+/**
+ * Filters for the custom reward redemptions request.
+ */
+export interface HelixCustomRewardRedemptionFilter {
+	/**
+	 * Whether to put the newest redemptions first.
+	 *
+	 * Oldest redemptions are shown first by default.
+	 */
+	newestFirst?: boolean;
+}
+
+/**
+ * @inheritDoc
+ */
+export interface HelixPaginatedCustomRewardRedemptionFilter
+	extends HelixCustomRewardRedemptionFilter,
+		HelixForwardPagination {}
 
 export class HelixChannelPointsApi extends BaseApi {
 	/**
@@ -195,6 +225,139 @@ export class HelixChannelPointsApi extends BaseApi {
 				id: rewardId
 			}
 		});
+	}
+
+	/**
+	 * Retrieves custom reward redemptions by IDs.
+	 *
+	 * @param broadcaster The broadcaster to retrieve the redemptions for.
+	 * @param rewardId The ID of the reward.
+	 * @param redemptionIds The IDs of the redemptions.
+	 */
+	async getRedemptionsByIds(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		redemptionIds: string[]
+	): Promise<HelixCustomRewardRedemption[]> {
+		const result = await this._client.callApi<HelixResponse<HelixCustomRewardRedemptionData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'channel_points/custom_rewards/redemptions',
+			scope: 'channel:read:redemptions',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				reward_id: rewardId,
+				id: redemptionIds
+			}
+		});
+
+		return result.data.map(data => new HelixCustomRewardRedemption(data, this._client));
+	}
+
+	/**
+	 * Retrieves a custom reward redemption by ID.
+	 *
+	 * @param broadcaster The broadcaster to retrieve the redemption for.
+	 * @param rewardId The ID of the reward.
+	 * @param redemptionId The ID of the redemption.
+	 */
+	async getRedemptionById(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		redemptionId: string
+	): Promise<HelixCustomRewardRedemption | null> {
+		const redemptions = await this.getRedemptionsByIds(broadcaster, rewardId, [redemptionId]);
+		return redemptions.length ? redemptions[0] : null;
+	}
+
+	/**
+	 * Retrieves custom reward redemptions for the given broadcaster.
+	 *
+	 * @param broadcaster The broadcaster to retrieve the redemptions for.
+	 * @param rewardId The ID of the reward.
+	 * @param status The status of the redemptions to retrieve.
+	 * @param filter
+	 *
+	 * @expandParams
+	 */
+	async getRedemptionsForBroadcaster(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		status: HelixCustomRewardRedemptionStatus,
+		filter: HelixPaginatedCustomRewardRedemptionFilter
+	): Promise<HelixPaginatedResult<HelixCustomRewardRedemption>> {
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixCustomRewardRedemptionData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'channel_points/custom_rewards/redemptions',
+			scope: 'channel:read:redemptions',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				reward_id: rewardId,
+				sort: filter.newestFirst ? 'NEWEST' : 'OLDEST',
+				...makePaginationQuery(filter)
+			}
+		});
+
+		return createPaginatedResult(result, HelixCustomRewardRedemption, this._client);
+	}
+
+	/**
+	 * Creates a paginator for custom reward redemptions for the given broadcaster.
+	 *
+	 * @param broadcaster The broadcaster to retrieve the redemptions for.
+	 * @param rewardId The ID of the reward.
+	 * @param status The status of the redemptions to retrieve.
+	 * @param filter
+	 *
+	 * @expandParams
+	 */
+	getRedemptionsForBroadcasterPaginated(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		status: HelixCustomRewardRedemptionStatus,
+		filter: HelixCustomRewardRedemptionFilter
+	): HelixPaginatedRequest<HelixCustomRewardRedemptionData, HelixCustomRewardRedemption> {
+		return new HelixPaginatedRequest<HelixCustomRewardRedemptionData, HelixCustomRewardRedemption>(
+			{
+				url: 'channel_points/custom_rewards/redemptions',
+				scope: 'channel:read:redemptions',
+				query: {
+					broadcaster_id: extractUserId(broadcaster),
+					reward_id: rewardId,
+					sort: filter.newestFirst ? 'NEWEST' : 'OLDEST'
+				}
+			},
+			this._client,
+			data => new HelixCustomRewardRedemption(data, this._client)
+		);
+	}
+
+	/**
+	 * Updates the status of the given redemptions by IDs.
+	 *
+	 * @param broadcaster The broadcaster to retrieve the redemptions for.
+	 * @param rewardId The ID of the reward.
+	 * @param redemptionIds The IDs of the redemptions to update.
+	 * @param status The status to set for the redemptions.
+	 */
+	async updateRedemptionStatusByIds(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		redemptionIds: string[],
+		status: HelixCustomRewardRedemptionTargetStatus
+	): Promise<HelixCustomRewardRedemption[]> {
+		const result = await this._client.callApi<HelixResponse<HelixCustomRewardRedemptionData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'channel_points/custom_rewards/redemptions',
+			method: 'PATCH',
+			scope: 'channel:manage:redemptions',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				reward_id: rewardId,
+				id: redemptionIds
+			}
+		});
+
+		return result.data.map(data => new HelixCustomRewardRedemption(data, this._client));
 	}
 
 	private static _transformRewardData(data: HelixCreateCustomRewardData | HelixUpdateCustomRewardData) {
