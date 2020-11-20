@@ -5,6 +5,7 @@ import { HelixBitsApi } from './Bits/HelixBitsApi';
 import { HelixChannelApi } from './Channel/HelixChannelApi';
 import { HelixChannelPointsApi } from './ChannelPoints/HelixChannelPointsApi';
 import { HelixClipApi } from './Clip/HelixClipApi';
+import { HelixEventSubApi } from './EventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from './Extensions/HelixExtensionsApi';
 import { HelixGameApi } from './Game/HelixGameApi';
 import HelixHypeTrainApi from './HypeTrain/HelixHypeTrainApi';
@@ -53,6 +54,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get clips(): HelixClipApi {
 		return new HelixClipApi(this._client);
+	}
+
+	/**
+	 * The Helix EventSub API methods.
+	 */
+	@CachedGetter()
+	get eventSub(): HelixEventSubApi {
+		return new HelixEventSubApi(this._client);
 	}
 
 	/**

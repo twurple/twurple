@@ -55,6 +55,16 @@ export { HelixBitsLeaderboardEntry } from './API/Helix/Bits/HelixBitsLeaderboard
 export { HelixClip } from './API/Helix/Clip/HelixClip';
 
 export {
+	HelixEventSubTransportOptions,
+	HelixEventSubWebHookTransportOptions
+} from './API/Helix/EventSub/HelixEventSubApi';
+
+export {
+	HelixEventSubSubscription,
+	HelixEventSubSubscriptionStatus
+} from './API/Helix/EventSub/HelixEventSubSubscription';
+
+export {
 	HelixExtensionTransaction,
 	HelixExtensionTransactionData
 } from './API/Helix/Extensions/HelixExtensionTransaction';
