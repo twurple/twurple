@@ -159,6 +159,13 @@ export class HelixUser {
 	async getFollows(): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
 		return this._client.helix.users.getFollows({ user: this });
 	}
+	
+	/**
+	 * Retrieves a list of users that follows broadcaster.
+	 */
+	async getFollowers(): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
+		return this._client.helix.users.getFollows({ followedUser: this });
+	}
 
 	/**
 	 * Retrieves the follow data of the user to the given broadcaster.
