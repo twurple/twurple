@@ -3,6 +3,7 @@ import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixClipData } from './HelixClip';
@@ -79,7 +80,7 @@ export class HelixClipApi extends BaseApi {
 	async getClipsForBroadcaster(
 		user: UserIdResolvable,
 		filter: HelixClipFilter = {}
-	): Promise<HelixPaginatedResponse<HelixClip>> {
+	): Promise<HelixPaginatedResult<HelixClip>> {
 		return this._getClips({
 			...filter,
 			filterType: 'broadcaster_id',
@@ -114,7 +115,7 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async getClipsForGame(gameId: string, filter: HelixClipFilter = {}): Promise<HelixPaginatedResponse<HelixClip>> {
+	async getClipsForGame(gameId: string, filter: HelixClipFilter = {}): Promise<HelixPaginatedResult<HelixClip>> {
 		return this._getClips({
 			...filter,
 			filterType: 'game_id',
@@ -188,7 +189,7 @@ export class HelixClipApi extends BaseApi {
 		return result.data[0].id;
 	}
 
-	private async _getClips(params: HelixClipIdFilter): Promise<HelixPaginatedResponse<HelixClip>> {
+	private async _getClips(params: HelixClipIdFilter): Promise<HelixPaginatedResult<HelixClip>> {
 		const { filterType, ids, startDate, endDate, limit = 20 } = params;
 
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixClipData>>({
