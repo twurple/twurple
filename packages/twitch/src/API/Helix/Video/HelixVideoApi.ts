@@ -3,6 +3,7 @@ import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
@@ -138,6 +139,9 @@ export class HelixVideoApi extends BaseApi {
 		filterValues: string | string[],
 		filter: HelixPaginatedVideoFilter = {}
 	): Promise<HelixPaginatedResult<HelixVideo>> {
+		if (Array.isArray(filterValues) && !filterValues.length) {
+			return { data: [] };
+		}
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixVideoData>>({
 			url: 'videos',
 			type: TwitchApiCallType.Helix,
@@ -147,10 +151,7 @@ export class HelixVideoApi extends BaseApi {
 			}
 		});
 
-		return {
-			data: result.data.map(data => new HelixVideo(data, this._client)),
-			cursor: result.pagination && result.pagination.cursor
-		};
+		return createPaginatedResult(result, HelixVideo, this._client);
 	}
 
 	private _getVideosPaginated(

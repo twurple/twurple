@@ -63,7 +63,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param userId The user ID you want to look up.
 	 */
 	async getUserById(userId: UserIdResolvable): Promise<HelixUser | null> {
-		const users = await this._getUsers(UserLookupType.Id, extractUserId(userId));
+		const users = await this._getUsers(UserLookupType.Id, [extractUserId(userId)]);
 		return users.length ? users[0] : null;
 	}
 
@@ -73,7 +73,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param userName The user name you want to look up.
 	 */
 	async getUserByName(userName: UserNameResolvable): Promise<HelixUser | null> {
-		const users = await this._getUsers(UserLookupType.Login, extractUserName(userName));
+		const users = await this._getUsers(UserLookupType.Login, [extractUserName(userName)]);
 		return users.length ? users[0] : null;
 	}
 
@@ -215,9 +215,8 @@ export class HelixUserApi extends BaseApi {
 		return query;
 	}
 
-	private async _getUsers(lookupType: UserLookupType, param: string | string[]) {
-		// #157: return empty early to prevent token based lookup
-		if (Array.isArray(param) && param.length === 0) {
+	private async _getUsers(lookupType: UserLookupType, param: string[]) {
+		if (param.length === 0) {
 			return [];
 		}
 		const query: Record<string, string | string[] | undefined> = { [lookupType]: param };
