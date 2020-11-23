@@ -77,7 +77,7 @@ export interface HelixCreateCustomRewardData {
  *
  * @inheritDoc
  */
-interface HelixUpdateCustomRewardData extends Partial<HelixCreateCustomRewardData> {
+export interface HelixUpdateCustomRewardData extends Partial<HelixCreateCustomRewardData> {
 	/**
 	 * Whether the reward is paused. If true, users can't redeem it.
 	 */
