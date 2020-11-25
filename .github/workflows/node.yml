@@ -23,7 +23,7 @@ jobs:
       - run: yarn
       - run: yarn run lerna bootstrap
       - run: yarn run lint
-      - run: yarn run pretter:check
+      - run: yarn run prettier:check
       - run: yarn run build
   docs:
     if: ${{ github.event == 'push' }}
