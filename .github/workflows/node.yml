@@ -1,0 +1,43 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: [ master, support/** ]
+  pull_request:
+    branches: [ master, support/** ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [ 14.x, 12.x ]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn run lerna bootstrap
+      - run: yarn run lint
+      - run: yarn run pretter:check
+      - run: yarn run build
+  docs:
+    if: ${{ github.event == 'push' }}
+    needs: [ build ]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - run: yarn run lerna bootstrap
+      - run: yarn run build
+      - env:
+          BUILD_NUMBER: ${{ github.run_number }}
+          REPO_USER: ${{ github.repository_owner }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: scripts/github/publishDocs.sh
