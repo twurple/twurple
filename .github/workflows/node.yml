@@ -41,5 +41,6 @@ jobs:
       - env:
           BUILD_NUMBER: ${{ github.run_number }}
           REPO_USER: ${{ github.repository_owner }}
+          GIT_REF: ${{ github.ref }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: scripts/github/publishDocs.sh
