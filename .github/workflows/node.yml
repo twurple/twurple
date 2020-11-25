@@ -26,7 +26,7 @@ jobs:
       - run: yarn run prettier:check
       - run: yarn run build
   docs:
-    if: ${{ github.event == 'push' }}
+    if: ${{ github.event_name == 'push' }}
     needs: [ build ]
     runs-on: ubuntu-latest
     steps:
