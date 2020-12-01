@@ -65,10 +65,10 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/deprecate/-/deprecate-2.0.2.tgz#d1f0d40acc881edd771cace7992a1070460608c8"
   integrity sha512-wlw3HwEanJFJKctwLzhfOM6LKwR70FPfGZGoKOhWBKyOPXk+3a9Cc6S9zhm6tka7xKtpmfxVIReGUwPnMbIaZg==
 
-"@d-fischer/documen.ts@^0.11.16":
-  version "0.11.16"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.11.16.tgz#eae8feccc094f025fd347356138b05db2b7cbaf0"
-  integrity sha512-0ayAAwLOMjgeX19xvBHmFAW5FDnucXLdt58fy3/ysGUHCIHnHvedvy0D0WWZVNMnUSPnQTqf9JRSUUI5qIJGQg==
+"@d-fischer/documen.ts@^0.11.18":
+  version "0.11.18"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.11.18.tgz#cf0ac097ec57ae10f2ca8b773cf1232b7c02e273"
+  integrity sha512-5CcaI/c9IMZKeK1xZ8h73g3M1zIrnqJ2SeLQ/Pd3dVM/uy97dGIw9a3khwIkAB5UyRPcs3bIlTliKdp/SBjoVw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.28"
     "@fortawesome/free-solid-svg-icons" "^5.13.0"
@@ -93,8 +93,8 @@
     "@types/tmp" "^0.1.0"
     "@types/webpack" "^4.41.25"
     "@types/webpack-env" "^1.15.2"
-    "@typescript/twoslash" "^0.6.2"
-    "@typescript/vfs" "^1.1.2"
+    "@typescript/twoslash" "^1.1.2"
+    "@typescript/vfs" "^1.3.0"
     ansi-escapes "^4.3.1"
     cartesian-product "^2.1.2"
     case-sensitive-paths-webpack-plugin "^2.1.2"
@@ -1740,23 +1740,16 @@
     "@typescript-eslint/types" "4.4.0"
     eslint-visitor-keys "^2.0.0"
 
-"@typescript/twoslash@^0.6.2":
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/@typescript/twoslash/-/twoslash-0.6.2.tgz#6e1d3635a92bf97c145cf31ea90e78fb9e21cee8"
-  integrity sha512-vKuOi55XEe/lZ8Pi0au2ihofgmPrujaOPCTqonqa5QSD3sG2NWWOPhNjNWtxuIAQ+LKrS5FVRxK8cGUgbrjEhA==
+"@typescript/twoslash@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@typescript/twoslash/-/twoslash-1.1.2.tgz#429c11032a708c6ffc38fb9278167df41e6ceefd"
+  integrity sha512-U7h7wVW4aymz6G54KaOIaeS1nqkSjKMeW6hWtw1r9GWnA9hshswKS2HslkEj3Ij91kUIjjigUBcVNfPq/P2TlA==
   dependencies:
-    "@typescript/vfs" "1.1.2"
+    "@typescript/vfs" "1.3.0"
     debug "^4.1.1"
     lz-string "^1.4.4"
 
-"@typescript/vfs@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@typescript/vfs/-/vfs-1.1.2.tgz#750e30343ea706ff52cae5b7865c8cacc92bf3a2"
-  integrity sha512-5VOXMjAMc9W0XnW+DNskn+kR0ytIzigLlK9Bfj4oSOQdWAehrmwJ8Xm0Q/YFmYsMCt+N9UosLJVGLpgyrAVqwg==
-  dependencies:
-    debug "^4.1.1"
-
-"@typescript/vfs@^1.1.2":
+"@typescript/vfs@1.3.0", "@typescript/vfs@^1.3.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@typescript/vfs/-/vfs-1.3.0.tgz#1abc69c43c85c21a58881598a6031fd3f3600153"
   integrity sha512-Bd1LdvQpm0uU2eclcCfO8H8oAGAfEJiKn0acKy/xeZV4sARwXx9MHBMuDX0XDPLmI2JpIm+mFV9Ers65xnoaQg==
