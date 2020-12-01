@@ -1,6 +1,8 @@
+import type { Logger } from '@d-fischer/logger';
 import { callTwitchApi, HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
 import type { AccessTokenData } from './AccessToken';
 import { AccessToken } from './AccessToken';
+import type { AuthProvider } from './AuthProvider/AuthProvider';
 import { InvalidTokenError } from './Errors/InvalidTokenError';
 import type { TokenInfoData } from './TokenInfo';
 import { TokenInfo } from './TokenInfo';
@@ -124,4 +126,50 @@ export async function getTokenInfo(accessToken: string, clientId?: string): Prom
 		}
 		throw e;
 	}
+}
+
+/** @private */
+export async function getValidTokenFromProvider(
+	provider: AuthProvider,
+	scopes?: string[],
+	logger?: Logger
+): Promise<{ accessToken: AccessToken; tokenInfo: TokenInfo }> {
+	let lastTokenError: InvalidTokenError | undefined = undefined;
+
+	try {
+		const accessToken = await provider.getAccessToken(scopes);
+		if (accessToken) {
+			// check validity
+			const tokenInfo = await getTokenInfo(accessToken.accessToken);
+			return { accessToken, tokenInfo };
+		}
+	} catch (e) {
+		if (e instanceof InvalidTokenError) {
+			lastTokenError = e;
+		} else {
+			logger?.err(`Retrieving an access token failed: ${e.message}`);
+		}
+	}
+
+	logger?.warning('No valid token available; trying to refresh');
+
+	if (provider.refresh) {
+		try {
+			const newToken = await provider.refresh();
+
+			if (newToken) {
+				// check validity
+				const tokenInfo = await getTokenInfo(newToken.accessToken);
+				return { accessToken: newToken, tokenInfo };
+			}
+		} catch (e) {
+			if (e instanceof InvalidTokenError) {
+				lastTokenError = e;
+			} else {
+				logger?.err(`Refreshing the access token failed: ${e.message}`);
+			}
+		}
+	}
+
+	throw lastTokenError || new Error('Could not retrieve a valid token');
 }

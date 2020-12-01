@@ -6,8 +6,8 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from 'twitch';
-import { HellFreezesOverError, InvalidTokenError } from 'twitch';
-import { getTokenInfo } from 'twitch-auth';
+import { HellFreezesOverError } from 'twitch';
+import { getValidTokenFromProvider } from 'twitch-auth';
 import type { PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
@@ -298,44 +298,8 @@ export class BasicPubSubClient extends EventEmitter {
 		switch (resolvable.type) {
 			case 'provider': {
 				const { provider, scopes } = resolvable;
-				let lastTokenError: InvalidTokenError | undefined = undefined;
-
-				try {
-					const accessToken = await provider.getAccessToken(scopes);
-					if (accessToken) {
-						// check validity
-						await getTokenInfo(accessToken.accessToken);
-						return accessToken.accessToken;
-					}
-				} catch (e) {
-					if (e instanceof InvalidTokenError) {
-						lastTokenError = e;
-					} else {
-						this._logger.err(`Retrieving an access token failed: ${e.message}`);
-					}
-				}
-
-				this._logger.warning('No valid token available; trying to refresh');
-
-				if (provider.refresh) {
-					try {
-						const newToken = await provider.refresh();
-
-						if (newToken) {
-							// check validity
-							await getTokenInfo(newToken.accessToken);
-							return newToken.accessToken;
-						}
-					} catch (e) {
-						if (e instanceof InvalidTokenError) {
-							lastTokenError = e;
-						} else {
-							this._logger.err(`Refreshing the access token failed: ${e.message}`);
-						}
-					}
-				}
-
-				throw lastTokenError || new Error('Could not retrieve a valid token');
+				const { accessToken } = await getValidTokenFromProvider(provider, scopes, this._logger);
+				return accessToken.accessToken;
 			}
 			case 'function': {
 				return resolvable.function();

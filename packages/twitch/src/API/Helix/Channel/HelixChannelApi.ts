@@ -35,7 +35,7 @@ export interface HelixChannelUpdate {
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const channel = await api.helix.channels.getChannelInfoByUserId('125328655');
+ * const channel = await api.helix.channels.getChannelInfo('125328655');
  * ```
  */
 export class HelixChannelApi extends BaseApi {

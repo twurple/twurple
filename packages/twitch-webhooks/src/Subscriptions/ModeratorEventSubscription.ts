@@ -1,6 +1,5 @@
-import type { HelixResponse } from 'twitch';
+import type { HelixModeratorEventData, HelixResponse } from 'twitch';
 import { HelixModeratorEvent } from 'twitch';
-import type { HelixModeratorEventData } from 'twitch/lib/API/Helix/Moderation/HelixModeratorEvent';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 

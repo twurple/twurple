@@ -17,10 +17,10 @@ or using npm:
 
 You can choose between different ways to authenticate:
 
-- To only ever use a single token determined at instantiation time, check out [Using a fixed token](/twitch-auth/providers/static).
-- If you want to run something more long-term, you may be interested in [auto-refreshing tokens](/twitch-auth/providers/refreshable).
-- If you run an application that doesn't need user-specific data, you can use [app tokens](/twitch-auth/providers/client-credentials).
-- If you are building an Electron app, you can use our premade [Electron auth provider](/twitch-auth/providers/electron).
+- To only ever use a single token determined at instantiation time, check out [Using a fixed token](/twitch-auth/docs/providers/static).
+- If you want to run something more long-term, you may be interested in [auto-refreshing tokens](/twitch-auth/docs/providers/refreshable).
+- If you run an application that doesn't need user-specific data, you can use [app tokens](/twitch-auth/docs/providers/client-credentials).
+- If you are building an Electron app, you can use our premade [Electron auth provider](/twitch-auth/docs/providers/electron).
 - If you have special requirements, you can write your own provider by following the {@AuthProvider} interface.
 
 ## If you're getting stuck...

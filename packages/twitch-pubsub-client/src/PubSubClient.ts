@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, UserIdResolvable } from 'twitch';
 import { extractUserId } from 'twitch';
-import { getTokenInfo } from 'twitch-auth';
+import { getValidTokenFromProvider } from 'twitch-auth';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import type { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
 import type { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
@@ -50,11 +50,7 @@ export class PubSubClient {
 					'App tokens are not supported by PubSubClient; you need to pass authentication representing a user.'
 				);
 			}
-			const token = await apiClient.getAccessToken();
-			if (!token) {
-				throw new Error('Could not get an access token to link the listener to a user');
-			}
-			const tokenInfo = await getTokenInfo(token.accessToken);
+			const { tokenInfo } = await getValidTokenFromProvider(apiClient);
 			userId = tokenInfo.userId;
 		}
 

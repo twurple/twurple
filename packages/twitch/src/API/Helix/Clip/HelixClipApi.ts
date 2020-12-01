@@ -192,6 +192,10 @@ export class HelixClipApi extends BaseApi {
 	private async _getClips(params: HelixClipIdFilter): Promise<HelixPaginatedResult<HelixClip>> {
 		const { filterType, ids, startDate, endDate, limit = 20 } = params;
 
+		if (!ids.length) {
+			return { data: [] };
+		}
+
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixClipData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'clips',

@@ -10,6 +10,7 @@ import { HelixExtensionsApi } from './Extensions/HelixExtensionsApi';
 import { HelixGameApi } from './Game/HelixGameApi';
 import HelixHypeTrainApi from './HypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './Moderation/HelixModerationApi';
+import { HelixSearchApi } from './Search/HelixSearchApi';
 import { HelixStreamApi } from './Stream/HelixStreamApi';
 import { HelixSubscriptionApi } from './Subscriptions/HelixSubscriptionApi';
 import { HelixTagApi } from './Tag/HelixTagApi';
@@ -94,6 +95,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get moderation(): HelixModerationApi {
 		return new HelixModerationApi(this._client);
+	}
+
+	/**
+	 * The Helix search API methods.
+	 */
+	@CachedGetter()
+	get search(): HelixSearchApi {
+		return new HelixSearchApi(this._client);
 	}
 
 	/**

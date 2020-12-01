@@ -18,39 +18,30 @@ export { ApiClient };
 
 export { ApiConfig } from './ApiClient';
 
-export { ConfigError } from './Errors/ConfigError';
-export { HellFreezesOverError } from './Errors/HellFreezesOverError';
-export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
-export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
-export { StreamNotLiveError } from './Errors/StreamNotLiveError';
-
-export { Subscription } from './API/Kraken/Subscription';
-
-export { CheermoteList } from './API/Kraken/Bits/CheermoteList';
-
-export { Channel } from './API/Kraken/Channel/Channel';
-export { ChannelFollow } from './API/Kraken/Channel/ChannelFollow';
-export { ChannelPlaceholder } from './API/Kraken/Channel/ChannelPlaceholder';
-export { ChannelSubscription } from './API/Kraken/Channel/ChannelSubscription';
-export { EmoteSetList } from './API/Kraken/Channel/EmoteSetList';
-export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
-
-export { Stream, StreamType } from './API/Kraken/Stream/Stream';
-
-export { ChattersList } from './API/Unsupported/ChattersList';
-
-export { PrivilegedUser } from './API/Kraken/User/PrivilegedUser';
-export { User } from './API/Kraken/User/User';
-export { UserBlock } from './API/Kraken/User/UserBlock';
-export { UserFollow } from './API/Kraken/User/UserFollow';
-export { UserSubscription } from './API/Kraken/User/UserSubscription';
+export { ChatBadgeList } from './API/Badges/ChatBadgeList';
+export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
+export { ChatBadgeScale, ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
 
 export { HelixPaginatedRequest } from './API/Helix/HelixPaginatedRequest';
 export { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './API/Helix/HelixPaginatedResult';
-export { HelixResponse } from './API/Helix/HelixResponse';
+export { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './API/Helix/HelixResponse';
 
 export { HelixBitsLeaderboard } from './API/Helix/Bits/HelixBitsLeaderboard';
 export { HelixBitsLeaderboardEntry } from './API/Helix/Bits/HelixBitsLeaderboardEntry';
+export { HelixCheermoteList } from './API/Helix/Bits/HelixCheermoteList';
+
+export { HelixChannel } from './API/Helix/Channel/HelixChannel';
+
+export {
+	HelixCreateCustomRewardData,
+	HelixUpdateCustomRewardData
+} from './API/Helix/ChannelPoints/HelixChannelPointsApi';
+export { HelixCustomReward } from './API/Helix/ChannelPoints/HelixCustomReward';
+export {
+	HelixCustomRewardRedemption,
+	HelixCustomRewardRedemptionStatus,
+	HelixCustomRewardRedemptionTargetStatus
+} from './API/Helix/ChannelPoints/HelixCustomRewardRedemption';
 
 export { HelixClip } from './API/Helix/Clip/HelixClip';
 
@@ -71,18 +62,24 @@ export {
 
 export { HelixGame } from './API/Helix/Game/HelixGame';
 
+export { HelixHypeTrainContribution } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
+export { HelixHypeTrainEvent, HelixHypeTrainEventData } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
+
 export { HelixBan } from './API/Helix/Moderation/HelixBan';
 export { HelixBanEvent, HelixBanEventData } from './API/Helix/Moderation/HelixBanEvent';
 export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
-export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
+export { HelixModeratorEvent, HelixModeratorEventData } from './API/Helix/Moderation/HelixModeratorEvent';
 
-export { HelixHypeTrainContribution } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
-export { HelixHypeTrainEvent, HelixHypeTrainEventData } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
+export { HelixChannelSearchResult } from './API/Helix/Search/HelixChannelSearchResult';
+
+export { HelixStream, HelixStreamData, HelixStreamType } from './API/Helix/Stream/HelixStream';
+export { HelixStreamMarker } from './API/Helix/Stream/HelixStreamMarker';
+export { HelixStreamMarkerWithVideo } from './API/Helix/Stream/HelixStreamMarkerWithVideo';
 
 export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
 export { HelixSubscriptionEvent, HelixSubscriptionEventData } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
 
-export { HelixStream, HelixStreamData, HelixStreamType } from './API/Helix/Stream/HelixStream';
+export { HelixTag } from './API/Helix/Tag/HelixTag';
 
 export { HelixFollow, HelixFollowData } from './API/Helix/User/HelixFollow';
 export { HelixPrivilegedUser } from './API/Helix/User/HelixPrivilegedUser';
@@ -91,13 +88,57 @@ export { HelixBroadcasterType, HelixUser, HelixUserData, HelixUserType } from '.
 export { HelixVideo } from './API/Helix/Video/HelixVideo';
 
 export { HelixWebHookHubRequestOptions } from './API/Helix/WebHooks/HelixWebHooksApi';
+export { HelixWebHookSubscription } from './API/Helix/WebHooks/HelixWebHookSubscription';
 
-export { ChatBadgeList } from './API/Badges/ChatBadgeList';
-export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
-export { ChatBadgeScale, ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
+export { Subscription } from './API/Kraken/Subscription';
+
+export { CheermoteList } from './API/Kraken/Bits/CheermoteList';
+
+export { Channel } from './API/Kraken/Channel/Channel';
+export { ChannelFollow } from './API/Kraken/Channel/ChannelFollow';
+export { ChannelPlaceholder } from './API/Kraken/Channel/ChannelPlaceholder';
+export { ChannelSubscription } from './API/Kraken/Channel/ChannelSubscription';
+export { EmoteSetList } from './API/Kraken/Channel/EmoteSetList';
+export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
+
+export { ChatEmote } from './API/Kraken/Chat/ChatEmote';
+export { ChatEmoteList } from './API/Kraken/Chat/ChatEmoteList';
+export { ChatRoom } from './API/Kraken/Chat/ChatRoom';
+
+export { Stream, StreamType } from './API/Kraken/Stream/Stream';
+
+export { Team } from './API/Kraken/Team/Team';
+export { TeamWithUsers } from './API/Kraken/Team/TeamWithUsers';
+
+export { PrivilegedUser } from './API/Kraken/User/PrivilegedUser';
+export { User } from './API/Kraken/User/User';
+export { UserBlock } from './API/Kraken/User/UserBlock';
+export { UserChatInfo } from './API/Kraken/User/UserChatInfo';
+export { UserFollow } from './API/Kraken/User/UserFollow';
+export { UserSubscription } from './API/Kraken/User/UserSubscription';
+
+export { CreatedVideo } from './API/Kraken/Video/CreatedVideo';
+export { Video } from './API/Kraken/Video/Video';
+
+export { ChattersList } from './API/Unsupported/ChattersList';
+
+export { CommercialLength } from './API/Shared/CommercialLength';
+export {
+	CheermoteDisplayInfo,
+	CheermoteBackground,
+	CheermoteScale,
+	CheermoteState
+} from './API/Shared/BaseCheermoteList';
+
+export { ConfigError } from './Errors/ConfigError';
+export { HellFreezesOverError } from './Errors/HellFreezesOverError';
+export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
+export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
+export { StreamNotLiveError } from './Errors/StreamNotLiveError';
 
 export { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
 
+/** @deprecated Import this from `twitch-api-call` instead. */
 export { HttpStatusCodeError, TwitchApiCallType, TwitchApiCallOptions } from 'twitch-api-call';
 /** @deprecated Import `HttpStatusCodeError` instead. */
 export { HttpStatusCodeError as HTTPStatusCodeError } from 'twitch-api-call';
@@ -106,6 +147,7 @@ export { TwitchApiCallType as TwitchAPICallType } from 'twitch-api-call';
 /** @deprecated Import `TwitchApiCallOptions` instead. */
 export { TwitchApiCallOptions as TwitchAPICallOptions } from 'twitch-api-call';
 
+/** @deprecated Import this from `twitch-auth` instead. */
 export {
 	AccessToken,
 	AuthProvider,
@@ -117,8 +159,3 @@ export {
 	RefreshConfig,
 	TokenInfo
 } from 'twitch-auth';
-export { CommercialLength } from './API/Shared/CommercialLength';
-export { CheermoteDisplayInfo } from './API/Shared/BaseCheermoteList';
-export { CheermoteScale } from './API/Shared/BaseCheermoteList';
-export { CheermoteState } from './API/Shared/BaseCheermoteList';
-export { CheermoteBackground } from './API/Shared/BaseCheermoteList';

@@ -48,7 +48,7 @@ export class HelixGameApi extends BaseApi {
 	 * @param id The game ID you want to look up.
 	 */
 	async getGameById(id: string): Promise<HelixGame | null> {
-		const games = await this._getGames('id', id);
+		const games = await this._getGames('id', [id]);
 		return games.length ? games[0] : null;
 	}
 
@@ -58,7 +58,7 @@ export class HelixGameApi extends BaseApi {
 	 * @param name The game name you want to look up.
 	 */
 	async getGameByName(name: string): Promise<HelixGame | null> {
-		const games = await this._getGames('name', name);
+		const games = await this._getGames('name', [name]);
 		return games.length ? games[0] : null;
 	}
 
@@ -90,7 +90,10 @@ export class HelixGameApi extends BaseApi {
 		);
 	}
 
-	private async _getGames(filterType: HelixGameFilterType, filterValues: string | string[]): Promise<HelixGame[]> {
+	private async _getGames(filterType: HelixGameFilterType, filterValues: string[]): Promise<HelixGame[]> {
+		if (!filterValues.length) {
+			return [];
+		}
 		const result = await this._client.callApi<HelixResponse<HelixGameData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'games',

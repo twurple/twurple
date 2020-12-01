@@ -118,6 +118,11 @@
 							"name": "basic-bot",
 							"title": "Basic bot",
 							"file": "twitch-chat-client/examples/basic-bot.md"
+						},
+						{
+							"name": "sub-gift-spam",
+							"title": "Preventing sub gift spam",
+							"file": "twitch-chat-client/examples/sub-gift-spam.md"
 						}
 					]
 				}

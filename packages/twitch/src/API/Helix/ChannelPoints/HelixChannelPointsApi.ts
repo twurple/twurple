@@ -77,7 +77,7 @@ export interface HelixCreateCustomRewardData {
  *
  * @inheritDoc
  */
-interface HelixUpdateCustomRewardData extends Partial<HelixCreateCustomRewardData> {
+export interface HelixUpdateCustomRewardData extends Partial<HelixCreateCustomRewardData> {
 	/**
 	 * Whether the reward is paused. If true, users can't redeem it.
 	 */
@@ -131,6 +131,9 @@ export class HelixChannelPointsApi extends BaseApi {
 	 * @param rewardIds The IDs of the rewards.
 	 */
 	async getCustomRewardsByIds(broadcaster: UserIdResolvable, rewardIds: string[]): Promise<HelixCustomReward[]> {
+		if (!rewardIds.length) {
+			return [];
+		}
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'channel_points/custom_rewards',
@@ -239,6 +242,9 @@ export class HelixChannelPointsApi extends BaseApi {
 		rewardId: string,
 		redemptionIds: string[]
 	): Promise<HelixCustomRewardRedemption[]> {
+		if (!redemptionIds.length) {
+			return [];
+		}
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardRedemptionData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'channel_points/custom_rewards/redemptions',
@@ -345,6 +351,9 @@ export class HelixChannelPointsApi extends BaseApi {
 		redemptionIds: string[],
 		status: HelixCustomRewardRedemptionTargetStatus
 	): Promise<HelixCustomRewardRedemption[]> {
+		if (!redemptionIds.length) {
+			return [];
+		}
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardRedemptionData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'channel_points/custom_rewards/redemptions',
