@@ -201,6 +201,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "cheeseandcereal",
+      "name": "Adam",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/11189778?v=4",
+      "profile": "https://adamcrowder.net",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
