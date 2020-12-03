@@ -1,4 +1,3 @@
-import type { CommonConnectionAdapterConfig } from './ConnectionAdapter';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
 /**
@@ -6,25 +5,23 @@ import { ConnectionAdapter } from './ConnectionAdapter';
  *
  * @inheritDoc
  */
-export interface ReverseProxyAdapterConfig extends CommonConnectionAdapterConfig {
+export interface ReverseProxyAdapterConfig {
+	/**
+	 * The port the server should listen to.
+	 */
+	port: number;
+
 	/**
 	 * The host name the reverse proxy is available under.
 	 */
 	hostName: string;
 
 	/**
-	 * Whether the reverse proxy supports SSL.
-	 *
-	 * @default true
-	 */
-	ssl?: boolean;
-
-	/**
 	 * The port on which the reverse proxy is available.
 	 *
-	 * @default ssl ? 443 : 80
+	 * @default 443
 	 */
-	port?: number;
+	externalPort?: number;
 
 	/**
 	 * The path prefix your reverse proxy redirects to the listener.
@@ -39,8 +36,8 @@ export interface ReverseProxyAdapterConfig extends CommonConnectionAdapterConfig
  */
 export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
-	private readonly _connectUsingSsl: boolean;
 	private readonly _port: number;
+	private readonly _externalPort: number;
 	private readonly _pathPrefix?: string;
 
 	/**
@@ -51,21 +48,21 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 	 * @param options
 	 */
 	constructor(options: ReverseProxyAdapterConfig) {
-		super(options);
+		super();
 		this._hostName = options.hostName;
-		this._connectUsingSsl = options.ssl ?? true;
-		this._port = options.port ?? (this._connectUsingSsl ? 443 : 80);
+		this._port = options.port;
+		this._externalPort = options.externalPort ?? 443;
 		this._pathPrefix = options.pathPrefix;
 	}
 
 	/** @protected */
-	get connectUsingSsl(): boolean {
-		return this._connectUsingSsl;
+	async getListenerPort(): Promise<number> {
+		return this._port;
 	}
 
 	/** @protected */
 	async getExternalPort(): Promise<number> {
-		return this._port;
+		return this._externalPort;
 	}
 
 	/** @protected */

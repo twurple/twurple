@@ -17,16 +17,9 @@ export interface EnvPortAdapterConfig {
 	hostName: string;
 
 	/**
-	 * Whether the reverse proxy supports SSL.
-	 *
-	 * @default true
-	 */
-	ssl?: boolean;
-
-	/**
 	 * The port on which the reverse proxy is available.
 	 *
-	 * @default ssl ? 443 : 80
+	 * @default 443
 	 */
 	port?: number;
 }
@@ -46,10 +39,10 @@ export class EnvPortAdapter extends ReverseProxyAdapter {
 	 */
 	constructor(options: EnvPortAdapterConfig) {
 		const { variableName = 'PORT', ...otherOptions } = options;
-		const listenerPort = Number(process.env[variableName || 'PORT']);
-		if (Number.isNaN(listenerPort)) {
+		const port = Number(process.env[variableName || 'PORT']);
+		if (Number.isNaN(port)) {
 			throw new Error(`The environment variable "${variableName}" does not contain a number`);
 		}
-		super({ listenerPort, ...otherOptions });
+		super({ port, ...otherOptions });
 	}
 }

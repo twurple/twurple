@@ -1,6 +1,7 @@
 import type { LoggerOptions } from '@d-fischer/logger';
 import { Logger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
+import { Enumerable } from '@d-fischer/shared-utils';
 import type { Request, RequestHandler } from 'httpanda';
 import { Server } from 'httpanda';
 import type { ApiClient, UserIdResolvable } from 'twitch';
@@ -47,7 +48,8 @@ export class EventSubListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, EventSubSubscription>();
 
-	/** @private */ readonly _apiClient: ApiClient;
+	/** @private */ @Enumerable(false) readonly _apiClient: ApiClient;
+	/** @private */ @Enumerable(false) readonly _secret: string;
 	private readonly _adapter: ConnectionAdapter;
 	private readonly _logger: Logger;
 
@@ -55,11 +57,13 @@ export class EventSubListener {
 	 * Creates a new EventSub listener.
 	 *
 	 * @param apiClient The ApiClient instance to use for user info and API requests.
+	 * @param secret The secret for Twitch to sign payloads with.
 	 * @param adapter The connection adapter.
 	 * @param config
 	 */
-	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, config: EventSubConfig = {}) {
+	constructor(apiClient: ApiClient, secret: string, adapter: ConnectionAdapter, config: EventSubConfig = {}) {
 		this._apiClient = apiClient;
+		this._secret = secret;
 		this._adapter = adapter;
 		this._logger = new Logger({
 			name: 'twitch-eventsub',
@@ -71,7 +75,7 @@ export class EventSubListener {
 	/**
 	 * Starts the backing server and listens to incoming EventSub notifications.
 	 */
-	async listen(): Promise<void> {
+	async listen(port?: number): Promise<void> {
 		if (this._server) {
 			throw new Error('Trying to listen while already listening');
 		}
@@ -92,7 +96,10 @@ export class EventSubListener {
 			next();
 		});
 		this._server.post('/:id', this._createHandleRequest());
-		const listenerPort = await this._adapter.getListenerPort();
+		const listenerPort = (await this._adapter.getListenerPort()) ?? port;
+		if (!port) {
+			throw new Error("Adapter didn't define a listener port; please pass one as an argument");
+		}
 		await this._server.listen(listenerPort);
 		this._logger.info(`Listening on port ${listenerPort}`);
 
@@ -180,17 +187,14 @@ export class EventSubListener {
 
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
-		const protocol = this._adapter.connectUsingSsl ? 'https' : 'http';
-
 		const hostName = await this._adapter.getHostName();
 		const externalPort = await this._adapter.getExternalPort();
-		const protocolDefaultPort = this._adapter.connectUsingSsl ? 443 : 80;
-		const hostPortion = externalPort === protocolDefaultPort ? hostName : `${hostName}:${externalPort}`;
+		const hostPortion = externalPort === 443 ? hostName : `${hostName}:${externalPort}`;
 
 		// trim slashes on both ends
 		const pathPrefix = this._adapter.pathPrefix?.replace(/^\/|\/$/, '');
 
-		return `${protocol}://${hostPortion}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/${id}`;
+		return `https://${hostPortion}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/${id}`;
 	}
 
 	/** @private */

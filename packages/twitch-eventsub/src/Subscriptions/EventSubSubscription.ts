@@ -1,4 +1,3 @@
-import generateRandomString from '@d-fischer/randomstring';
 import * as crypto from 'crypto';
 import type { HelixEventSubSubscription, HelixEventSubTransportOptions } from 'twitch';
 import type { EventSubListener } from '../EventSubListener';
@@ -14,7 +13,6 @@ export type SubscriptionResultType<T extends EventSubSubscription> = T extends E
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class EventSubSubscription</** @private */ T = any> {
 	private _verified: boolean = false;
-	protected _secret: string;
 	private _subscriptionData: HelixEventSubSubscription;
 	private _unsubscribeResolver?: () => void;
 
@@ -28,14 +26,13 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 		return this._verified;
 	}
 
-	/** @private */
-	_verify(): void {
-		this._verified = true;
+	private get _secret() {
+		return `${this.id}.${this._client._secret}`;
 	}
 
 	/** @private */
-	_generateNewCredentials(): void {
-		this._secret = generateRandomString(16);
+	_verify(): void {
+		this._verified = true;
 	}
 
 	/** @private */
@@ -69,7 +66,7 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 	 * Activates the subscription.
 	 */
 	async start(): Promise<void> {
-		await this._createNewSubscription();
+		await this._subscribe();
 	}
 
 	/**
@@ -106,9 +103,4 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 	protected abstract _subscribe(): Promise<HelixEventSubSubscription>;
 
 	protected abstract transformData(response: object): T;
-
-	private async _createNewSubscription() {
-		this._generateNewCredentials();
-		await this._subscribe();
-	}
 }
