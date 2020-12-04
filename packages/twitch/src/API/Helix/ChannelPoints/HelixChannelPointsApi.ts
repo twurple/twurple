@@ -200,7 +200,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: TwitchApiCallType.Helix,
 			url: 'channel_points/custom_rewards',
 			method: 'PATCH',
-			scope: 'channel:manage_redemptions',
+			scope: 'channel:manage:redemptions',
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
 				id: rewardId
