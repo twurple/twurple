@@ -146,7 +146,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the bits badge was upgraded.
 	 * @param user The user that has upgraded their bits badge.
 	 * @param ritualInfo Additional information about the upgrade.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onBitsBadgeUpgrade: (
 		handler: (channel: string, user: string, upgradeInfo: ChatBitsBadgeUpgradeInfo, msg: UserNotice) => void
@@ -248,7 +248,7 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param channel The channel where the message was removed.
 	 * @param messageId The ID of the message that was removed.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 *
 	 * This is *not* the message that was removed. The text of the message is available using `msg.params.message` though.
 	 */
@@ -280,7 +280,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that was raided.
 	 * @param user The user that has raided the channel.
 	 * @param raidInfo Additional information about the raid.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onRaid: (
 		handler: (channel: string, user: string, raidInfo: ChatRaidInfo, msg: UserNotice) => void
@@ -291,7 +291,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @eventListener
 	 * @param channel The channel where the raid was cancelled.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onRaidCancel: (handler: (channel: string, msg: UserNotice) => void) => Listener = this.registerEvent();
 
@@ -302,7 +302,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the ritual was performed.
 	 * @param user The user that has performed the ritual.
 	 * @param ritualInfo Additional information about the ritual.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onRitual: (
 		handler: (channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice) => void
@@ -334,7 +334,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that was subscribed to.
 	 * @param user The subscribing user.
 	 * @param subInfo Additional information about the subscription.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onSub: (
 		handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void
@@ -347,7 +347,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that was resubscribed to.
 	 * @param user The resubscribing user.
 	 * @param subInfo Additional information about the resubscription.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onResub: (
 		handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void
@@ -356,11 +356,14 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Fires when a user gifts a subscription to a channel to another user.
 	 *
+	 * Community subs also fire multiple `onSubGift` events.
+	 * To prevent alert spam, check [Sub gift spam](/twitch-chat-client/docs/examples/sub-gift-spam).
+	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
 	 * @param user The user that the subscription was gifted to. The gifting user is defined in `subInfo.gifter`.
 	 * @param subInfo Additional information about the subscription.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onSubGift: (
 		handler: (channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice) => void
@@ -369,11 +372,14 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Fires when a user gifts random subscriptions to the community of a channel.
 	 *
+	 * Community subs also fire multiple `onSubGift` events.
+	 * To prevent alert spam, check [Sub gift spam](/twitch-chat-client/docs/examples/sub-gift-spam).
+	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
 	 * @param user The gifting user.
 	 * @param subInfo Additional information about the community subscription.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onCommunitySub: (
 		handler: (channel: string, user: string, subInfo: ChatCommunitySubInfo, msg: UserNotice) => void
@@ -386,7 +392,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the subscription was extended.
 	 * @param user The user that extended their subscription.
 	 * @param subInfo Additional information about the subscription extension.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onSubExtend: (
 		handler: (channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice) => void
@@ -399,7 +405,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the rewards were gifted.
 	 * @param user The user that gifted the rewards.
 	 * @param rewardGiftInfo Additional information about the reward gift.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onRewardGift: (
 		handler: (channel: string, user: string, rewardGiftInfo: ChatRewardGiftInfo, msg: UserNotice) => void
@@ -412,7 +418,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the subscription was upgraded.
 	 * @param user The user that upgraded their subscription.
 	 * @param subInfo Additional information about the subscription upgrade.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onPrimePaidUpgrade: (
 		handler: (channel: string, user: string, subInfo: ChatSubUpgradeInfo, msg: UserNotice) => void
@@ -425,7 +431,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the subscription was upgraded.
 	 * @param user The user that upgraded their subscription.
 	 * @param subInfo Additional information about the subscription upgrade.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onGiftPaidUpgrade: (
 		handler: (channel: string, user: string, subInfo: ChatSubGiftUpgradeInfo, msg: UserNotice) => void
@@ -440,7 +446,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * **WARNING:** This is a *display name* and thus will not work as an identifier for the API (login) in some cases.
 	 * @param subInfo Additional information about the gift.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onPrimeCommunityGift: (
 		handler: (channel: string, user: string, subInfo: ChatPrimeCommunityGiftInfo, msg: UserNotice) => void
@@ -453,7 +459,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the gift was forwarded.
 	 * @param user The user that forwarded the gift.
 	 * @param forwardInfo Additional information about the gift.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onStandardPayForward: (
 		handler: (channel: string, user: string, forwardInfo: ChatStandardPayForwardInfo, msg: UserNotice) => void
@@ -466,7 +472,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the gift was forwarded.
 	 * @param user The user that forwarded the gift.
 	 * @param forwardInfo Additional information about the gift.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onCommunityPayForward: (
 		handler: (channel: string, user: string, forwardInfo: ChatCommunityPayForwardInfo, msg: UserNotice) => void
@@ -478,7 +484,7 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param user The user that sent the whisper.
 	 * @param message The message text.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
 
@@ -525,7 +531,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel the message was sent to.
 	 * @param user The user that send the message.
 	 * @param message The message text.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onMessage: (
 		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
@@ -541,7 +547,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel the message was sent to.
 	 * @param user The user that send the message.
 	 * @param message The message text.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onPrivmsg!: (
 		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
@@ -554,7 +560,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel the action was sent to.
 	 * @param user The user that send the action.
 	 * @param message The action text.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onAction!: (
 		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
