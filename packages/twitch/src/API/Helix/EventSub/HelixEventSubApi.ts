@@ -153,4 +153,40 @@ export class HelixEventSubApi extends BaseApi {
 			transport
 		);
 	}
+
+	/**
+	 * Subscribe to events that represent a channel updating their metadata.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to update events for.
+	 * @param transport The transport options
+	 */
+	async subscribetoChannelUpdateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.update',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a user following a channel.
+	 *
+	 * @param broadcaster  The broadcaster you want to listen to follow events for.
+	 * @param transport The transport options
+	 */
+	async subscribeToChannelFollowEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.follow',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
 }
