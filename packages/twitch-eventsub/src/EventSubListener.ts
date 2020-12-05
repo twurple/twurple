@@ -201,6 +201,19 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
 	}
 
+	async subscribeToChannelFollowEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelFollowEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelFollowEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
+	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
 		const hostName = await this._adapter.getHostName();
