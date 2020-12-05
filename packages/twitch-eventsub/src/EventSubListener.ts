@@ -10,8 +10,10 @@ import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
 import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
 import type { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
+import type { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
+import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -183,6 +185,20 @@ export class EventSubListener {
 		}
 
 		return this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
+	}
+
+	async subscribeToChannelUpdateEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelUpdateEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.console.warn(
+				'EventSubListener#subscribeToChannelUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
 	}
 
 	/** @private */
