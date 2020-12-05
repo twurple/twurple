@@ -11,9 +11,11 @@ import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
 import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
 import type { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
 import type { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
+import type { EventSubChannelFollowEvent } from './Events/EventSubChannelFollowEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
+import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChannelFollowSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
