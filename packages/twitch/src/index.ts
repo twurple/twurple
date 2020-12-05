@@ -16,15 +16,16 @@ type DeprecatedTwitchClient = ApiClient;
 export default DeprecatedTwitchClient;
 export { ApiClient };
 
-export { ApiConfig } from './ApiClient';
+export type { ApiConfig } from './ApiClient';
 
 export { ChatBadgeList } from './API/Badges/ChatBadgeList';
 export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
-export { ChatBadgeScale, ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
+export { ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
+export type { ChatBadgeScale } from './API/Badges/ChatBadgeVersion';
 
 export { HelixPaginatedRequest } from './API/Helix/HelixPaginatedRequest';
-export { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './API/Helix/HelixPaginatedResult';
-export { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './API/Helix/HelixResponse';
+export type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './API/Helix/HelixPaginatedResult';
+export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './API/Helix/HelixResponse';
 
 export { HelixBitsLeaderboard } from './API/Helix/Bits/HelixBitsLeaderboard';
 export { HelixBitsLeaderboardEntry } from './API/Helix/Bits/HelixBitsLeaderboardEntry';
@@ -32,62 +33,65 @@ export { HelixCheermoteList } from './API/Helix/Bits/HelixCheermoteList';
 
 export { HelixChannel } from './API/Helix/Channel/HelixChannel';
 
-export {
+export type {
 	HelixCreateCustomRewardData,
 	HelixUpdateCustomRewardData
 } from './API/Helix/ChannelPoints/HelixChannelPointsApi';
 export { HelixCustomReward } from './API/Helix/ChannelPoints/HelixCustomReward';
-export {
-	HelixCustomRewardRedemption,
+export { HelixCustomRewardRedemption } from './API/Helix/ChannelPoints/HelixCustomRewardRedemption';
+export type {
 	HelixCustomRewardRedemptionStatus,
 	HelixCustomRewardRedemptionTargetStatus
 } from './API/Helix/ChannelPoints/HelixCustomRewardRedemption';
 
 export { HelixClip } from './API/Helix/Clip/HelixClip';
 
-export {
+export type {
 	HelixEventSubTransportOptions,
 	HelixEventSubWebHookTransportOptions
 } from './API/Helix/EventSub/HelixEventSubApi';
 
-export {
-	HelixEventSubSubscription,
-	HelixEventSubSubscriptionStatus
-} from './API/Helix/EventSub/HelixEventSubSubscription';
+export { HelixEventSubSubscription } from './API/Helix/EventSub/HelixEventSubSubscription';
+export type { HelixEventSubSubscriptionStatus } from './API/Helix/EventSub/HelixEventSubSubscription';
 
-export {
-	HelixExtensionTransaction,
-	HelixExtensionTransactionData
-} from './API/Helix/Extensions/HelixExtensionTransaction';
+export { HelixExtensionTransaction } from './API/Helix/Extensions/HelixExtensionTransaction';
+export type { HelixExtensionTransactionData } from './API/Helix/Extensions/HelixExtensionTransaction';
 
 export { HelixGame } from './API/Helix/Game/HelixGame';
 
 export { HelixHypeTrainContribution } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
-export { HelixHypeTrainEvent, HelixHypeTrainEventData } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
+export { HelixHypeTrainEvent } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
+export type { HelixHypeTrainEventData } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
 
 export { HelixBan } from './API/Helix/Moderation/HelixBan';
-export { HelixBanEvent, HelixBanEventData } from './API/Helix/Moderation/HelixBanEvent';
+export { HelixBanEvent } from './API/Helix/Moderation/HelixBanEvent';
+export type { HelixBanEventData } from './API/Helix/Moderation/HelixBanEvent';
 export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
-export { HelixModeratorEvent, HelixModeratorEventData } from './API/Helix/Moderation/HelixModeratorEvent';
+export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
+export type { HelixModeratorEventData } from './API/Helix/Moderation/HelixModeratorEvent';
 
 export { HelixChannelSearchResult } from './API/Helix/Search/HelixChannelSearchResult';
 
-export { HelixStream, HelixStreamData, HelixStreamType } from './API/Helix/Stream/HelixStream';
+export { HelixStream, HelixStreamType } from './API/Helix/Stream/HelixStream';
+export type { HelixStreamData } from './API/Helix/Stream/HelixStream';
 export { HelixStreamMarker } from './API/Helix/Stream/HelixStreamMarker';
 export { HelixStreamMarkerWithVideo } from './API/Helix/Stream/HelixStreamMarkerWithVideo';
 
 export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
-export { HelixSubscriptionEvent, HelixSubscriptionEventData } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+export type { HelixSubscriptionEventData } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
 
 export { HelixTag } from './API/Helix/Tag/HelixTag';
 
-export { HelixFollow, HelixFollowData } from './API/Helix/User/HelixFollow';
+export { HelixFollow } from './API/Helix/User/HelixFollow';
+export type { HelixFollowData } from './API/Helix/User/HelixFollow';
 export { HelixPrivilegedUser } from './API/Helix/User/HelixPrivilegedUser';
-export { HelixBroadcasterType, HelixUser, HelixUserData, HelixUserType } from './API/Helix/User/HelixUser';
+export { HelixBroadcasterType, HelixUser, HelixUserType } from './API/Helix/User/HelixUser';
+export type { HelixUserData } from './API/Helix/User/HelixUser';
 
 export { HelixVideo } from './API/Helix/Video/HelixVideo';
 
-export { HelixWebHookHubRequestOptions } from './API/Helix/WebHooks/HelixWebHooksApi';
+export type { HelixWebHookHubRequestOptions } from './API/Helix/WebHooks/HelixWebHooksApi';
 export { HelixWebHookSubscription } from './API/Helix/WebHooks/HelixWebHookSubscription';
 
 export { Subscription } from './API/Kraken/Subscription';
@@ -122,13 +126,9 @@ export { Video } from './API/Kraken/Video/Video';
 
 export { ChattersList } from './API/Unsupported/ChattersList';
 
-export { CommercialLength } from './API/Shared/CommercialLength';
-export {
-	CheermoteDisplayInfo,
-	CheermoteBackground,
-	CheermoteScale,
-	CheermoteState
-} from './API/Shared/BaseCheermoteList';
+export type { CommercialLength } from './API/Shared/CommercialLength';
+export { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Shared/BaseCheermoteList';
+export type { CheermoteDisplayInfo } from './API/Shared/BaseCheermoteList';
 
 export { ConfigError } from './Errors/ConfigError';
 export { HellFreezesOverError } from './Errors/HellFreezesOverError';
@@ -136,26 +136,27 @@ export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
 export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
 export { StreamNotLiveError } from './Errors/StreamNotLiveError';
 
-export { extractUserId, extractUserName, UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
+export { extractUserId, extractUserName } from './Toolkit/UserTools';
+export type { UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
 
 /** @deprecated Import this from `twitch-api-call` instead. */
-export { HttpStatusCodeError, TwitchApiCallType, TwitchApiCallOptions } from 'twitch-api-call';
-/** @deprecated Import `HttpStatusCodeError` instead. */
+export { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
+/** @deprecated Import this from `twitch-api-call` instead. */
+export type { TwitchApiCallOptions } from 'twitch-api-call';
+/** @deprecated Import `HttpStatusCodeError` from `twitch-api-call` instead. */
 export { HttpStatusCodeError as HTTPStatusCodeError } from 'twitch-api-call';
-/** @deprecated Import `TwitchApiCallType` instead. */
+/** @deprecated Import `TwitchApiCallType` from `twitch-api-call` instead. */
 export { TwitchApiCallType as TwitchAPICallType } from 'twitch-api-call';
-/** @deprecated Import `TwitchApiCallOptions` instead. */
-export { TwitchApiCallOptions as TwitchAPICallOptions } from 'twitch-api-call';
+/** @deprecated Import `TwitchApiCallOptions` from `twitch-api-call` instead. */
+export type { TwitchApiCallOptions as TwitchAPICallOptions } from 'twitch-api-call';
 
 /** @deprecated Import this from `twitch-auth` instead. */
 export {
 	AccessToken,
-	AuthProvider,
-	AuthProviderTokenType,
 	InvalidTokenError,
 	StaticAuthProvider,
 	ClientCredentialsAuthProvider,
 	RefreshableAuthProvider,
-	RefreshConfig,
 	TokenInfo
 } from 'twitch-auth';
+export type { AuthProvider, AuthProviderTokenType, RefreshConfig } from 'twitch-auth';

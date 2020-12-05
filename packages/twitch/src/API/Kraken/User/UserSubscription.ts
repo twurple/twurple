@@ -13,7 +13,7 @@ export interface UserSubscriptionData extends SubscriptionData {
  */
 export class UserSubscription extends Subscription {
 	/** @private */
-	protected _data: UserSubscriptionData;
+	protected declare _data: UserSubscriptionData;
 
 	/**
 	 * The subscribed channel.

@@ -10,7 +10,7 @@ export interface TeamWithUsersData extends TeamData {
 
 export class TeamWithUsers extends Team {
 	/** @private */
-	protected _data: TeamWithUsersData;
+	protected declare _data: TeamWithUsersData;
 
 	/**
 	 * The list of users in the team.

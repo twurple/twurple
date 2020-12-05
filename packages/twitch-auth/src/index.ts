@@ -1,4 +1,5 @@
-export { AccessToken, AccessTokenData } from './AccessToken';
+export { AccessToken } from './AccessToken';
+export type { AccessTokenData } from './AccessToken';
 
 export {
 	exchangeCode,
@@ -9,14 +10,17 @@ export {
 	revokeToken
 } from './helpers';
 
-export { TokenInfo, TokenInfoData } from './TokenInfo';
+export { TokenInfo } from './TokenInfo';
+export type { TokenInfoData } from './TokenInfo';
 
-export { AuthProvider, AuthProviderTokenType } from './AuthProvider/AuthProvider';
+export type { AuthProvider, AuthProviderTokenType } from './AuthProvider/AuthProvider';
 export { ClientCredentialsAuthProvider } from './AuthProvider/ClientCredentialsAuthProvider';
-export { RefreshableAuthProvider, RefreshConfig } from './AuthProvider/RefreshableAuthProvider';
+export { RefreshableAuthProvider } from './AuthProvider/RefreshableAuthProvider';
+export type { RefreshConfig } from './AuthProvider/RefreshableAuthProvider';
 export { StaticAuthProvider } from './AuthProvider/StaticAuthProvider';
 
 export { InvalidTokenError } from './Errors/InvalidTokenError';
 
 // twitch-auth@^1 compat
-export { getAppAccessToken, getUserAccessToken, LegacyAuthCredentials, refreshUserAccessToken } from './legacy';
+export { getAppAccessToken, getUserAccessToken, refreshUserAccessToken } from './legacy';
+export type { LegacyAuthCredentials } from './legacy';

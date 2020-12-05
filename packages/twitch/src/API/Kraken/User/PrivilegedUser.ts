@@ -26,7 +26,7 @@ export interface PrivilegedUserData extends UserData {
  */
 export class PrivilegedUser extends User {
 	/** @private */
-	protected _data: PrivilegedUserData;
+	protected declare _data: PrivilegedUserData;
 
 	/**
 	 * The user's email address.
