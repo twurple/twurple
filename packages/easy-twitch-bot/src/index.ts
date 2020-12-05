@@ -17,7 +17,8 @@ type DeprecatedBot = Bot;
 export default DeprecatedBot;
 export { Bot };
 
-export { BotConfig } from './Bot';
-export { BotCommand, BotCommandMatch } from './BotCommand';
+export type { BotConfig } from './Bot';
+export { BotCommand } from './BotCommand';
+export type { BotCommandMatch } from './BotCommand';
 export { BotCommandContext } from './BotCommandContext';
 export { createBotCommand } from './helper';

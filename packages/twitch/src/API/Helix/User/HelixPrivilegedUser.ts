@@ -13,7 +13,7 @@ export interface HelixPrivilegedUserData extends HelixUserData {
  */
 export class HelixPrivilegedUser extends HelixUser {
 	/** @private */
-	protected _data: HelixPrivilegedUserData;
+	protected declare _data: HelixPrivilegedUserData;
 
 	/**
 	 * The email address of the user.

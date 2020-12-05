@@ -16,5 +16,5 @@ type DeprecatedElectronAuthProvider = ElectronAuthProvider;
 export default DeprecatedElectronAuthProvider;
 export { ElectronAuthProvider };
 
-export { TwitchClientCredentials } from './ElectronAuthProvider';
-export { ElectronAuthProviderOptions } from './ElectronAuthProviderOptions';
+export type { TwitchClientCredentials } from './ElectronAuthProvider';
+export type { ElectronAuthProviderOptions } from './ElectronAuthProviderOptions';
