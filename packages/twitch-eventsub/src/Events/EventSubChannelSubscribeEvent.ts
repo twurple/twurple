@@ -1,0 +1,80 @@
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { ApiClient, HelixUser } from 'twitch';
+
+type EventSubChannelSubscribeEventTier = '1000' | '2000' | '3000';
+export interface EventSubChannelSubscribeEventData {
+	user_id: string;
+	user_name: string;
+	broadcaster_user_id: string;
+	broadcaster_user_name: string;
+	tier: EventSubChannelSubscribeEventTier;
+	is_gift: boolean;
+}
+
+/**
+ * An EventSub event representing a channel subscription.
+ */
+export class EventSubChannelSubscribeEvent {
+	/** @private */
+	@Enumerable(false) protected readonly _client: ApiClient;
+
+	constructor(private readonly _data: EventSubChannelSubscribeEventData, client: ApiClient) {
+		this._client = client;
+	}
+
+	/**
+	 * The ID of the subscribing user.
+	 */
+	get userId(): string {
+		return this._data.user_id;
+	}
+
+	/**
+	 * The display name of the subscribing user.
+	 */
+	get userDisplayName(): string {
+		return this._data.user_name;
+	}
+
+	/**
+	 * Retrieves more information about the subscription.
+	 */
+	async getUser(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+	}
+
+	/**
+	 * The ID of the broadcaster.
+	 */
+	get broadcasterId(): string {
+		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The display name of the broadcaster.
+	 */
+	get broadcasterDisplayName(): string {
+		return this._data.broadcaster_user_name;
+	}
+
+	/**
+	 * Retrieves more information about the broadcaster.
+	 */
+	async getBroadcaster(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+	}
+
+	/**
+	 * The tier of the subscription, either 1000, 2000 or 3000
+	 */
+	get tier(): EventSubChannelSubscribeEventTier {
+		return this._data.tier;
+	}
+
+	/**
+	 * Whether the subscription has been gifted
+	 */
+	get isGift(): boolean {
+		return this._data.is_gift;
+	}
+}
