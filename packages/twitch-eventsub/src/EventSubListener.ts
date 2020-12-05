@@ -194,7 +194,7 @@ export class EventSubListener {
 		const userId = extractUserId(user);
 
 		if (!numberRegex.test(userId)) {
-			this._logger.console.warn(
+			this._logger.warn(
 				'EventSubListener#subscribeToChannelUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
