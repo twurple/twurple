@@ -207,4 +207,16 @@ export class HelixEventSubApi extends BaseApi {
 			transport
 		);
 	}
+
+	async subscribeToChannelCheerEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.cheer',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
 }
