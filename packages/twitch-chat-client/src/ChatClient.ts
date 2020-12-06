@@ -549,7 +549,7 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onPrivmsg!: (
+	declare onPrivmsg: (
 		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
 	) => Listener;
 
@@ -562,7 +562,7 @@ export class ChatClient extends IrcClient {
 	 * @param message The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onAction!: (
+	declare onAction: (
 		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
 	) => Listener;
 

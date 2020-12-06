@@ -14,7 +14,7 @@ export interface PrivilegedChannelData extends ChannelData {
  */
 export class PrivilegedChannel extends Channel {
 	/** @private */
-	protected _data: PrivilegedChannelData;
+	protected declare _data: PrivilegedChannelData;
 
 	/**
 	 * The channel's stream key.

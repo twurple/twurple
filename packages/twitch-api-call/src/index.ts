@@ -1,5 +1,6 @@
 export { callTwitchApi, callTwitchApiRaw } from './apiCall';
-export { TwitchApiCallOptions, TwitchApiCallType } from './TwitchApiCallOptions';
+export { TwitchApiCallType } from './TwitchApiCallOptions';
+export type { TwitchApiCallOptions } from './TwitchApiCallOptions';
 
 export { transformTwitchApiResponse } from './helpers/transform';
 

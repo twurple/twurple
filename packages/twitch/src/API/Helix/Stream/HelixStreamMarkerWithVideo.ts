@@ -8,7 +8,7 @@ export interface HelixStreamMarkerVideoData extends HelixStreamMarkerData {
 }
 
 export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
-	protected readonly _data: HelixStreamMarkerVideoData;
+	protected declare readonly _data: HelixStreamMarkerVideoData;
 
 	/** @private */
 	constructor(data: HelixStreamMarkerVideoData, private readonly _videoId: string, client: ApiClient) {

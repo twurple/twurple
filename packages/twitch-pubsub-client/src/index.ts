@@ -22,7 +22,7 @@ export { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
 export * from './PubSubPacket';
 
-export { PubSubMessage } from './Messages/PubSubMessage';
+export type { PubSubMessage } from './Messages/PubSubMessage';
 export { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
 export { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
 export { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';

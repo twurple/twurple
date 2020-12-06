@@ -30,24 +30,24 @@ export { Whisper } from './Capabilities/TwitchCommandsCapability/MessageTypes/Wh
 export { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
 export { GlobalUserState } from './Capabilities/TwitchTagsCapability/MessageTypes/GlobalUserState';
 
-export {
+export type {
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
 	ChatSubUpgradeInfo,
 	ChatSubExtendInfo,
 	ChatSubInfo
 } from './UserNotices/ChatSubInfo';
-export { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
-export { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
-export { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
-export { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
+export type { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
+export type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
+export type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
+export type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
 
 export { ChatUser } from './ChatUser';
 
 export { LogLevel } from '@d-fischer/logger';
 
 export { toChannelName, toUserName } from './Toolkit/UserTools';
-export {
+export type {
 	ParsedMessagePart,
 	ParsedMessageEmotePart,
 	ParsedMessageCheerPart,
