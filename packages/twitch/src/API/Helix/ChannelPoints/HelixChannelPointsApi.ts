@@ -200,7 +200,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: TwitchApiCallType.Helix,
 			url: 'channel_points/custom_rewards',
 			method: 'PATCH',
-			scope: 'channel:manage_redemptions',
+			scope: 'channel:manage:redemptions',
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
 				id: rewardId
@@ -298,6 +298,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
 				reward_id: rewardId,
+				status,
 				sort: filter.newestFirst ? 'NEWEST' : 'OLDEST',
 				...makePaginationQuery(filter)
 			}
@@ -329,6 +330,7 @@ export class HelixChannelPointsApi extends BaseApi {
 				query: {
 					broadcaster_id: extractUserId(broadcaster),
 					reward_id: rewardId,
+					status,
 					sort: filter.newestFirst ? 'NEWEST' : 'OLDEST'
 				}
 			},
