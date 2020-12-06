@@ -34,6 +34,8 @@ import { ConfigError } from './Errors/ConfigError';
 
 /**
  * Default configuration for the cheermote API.
+ *
+ * @deprecated Pass the full {@CheermoteFormat} to the applicable methods instead.
  */
 export interface TwitchCheermoteConfig {
 	/**
@@ -79,6 +81,8 @@ export interface ApiConfig {
 
 	/**
 	 * Default values for fetched cheermotes.
+	 *
+	 * @deprecated Pass the full {@CheermoteFormat} to the applicable methods instead.
 	 */
 	cheermotes: TwitchCheermoteConfig;
 
