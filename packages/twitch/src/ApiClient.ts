@@ -65,11 +65,15 @@ export interface ApiConfig {
 
 	/**
 	 * Whether to authenticate the client before a request is made.
+	 *
+	 * @deprecated Call {@ApiClient#requestScopes} after instantiating the client instead.
 	 */
 	preAuth: boolean;
 
 	/**
 	 * The scopes to request with the initial request, even if it's not necessary for the request.
+	 *
+	 * @deprecated Call {@ApiClient#requestScopes} after instantiating the client instead.
 	 */
 	initialScopes?: string[];
 
@@ -281,6 +285,15 @@ export class ApiClient implements AuthProvider {
 			// tslint:disable-next-line:no-floating-promises
 			authProvider.getAccessToken(this._config.initialScopes);
 		}
+	}
+
+	/**
+	 * Requests scopes from the auth provider.
+	 *
+	 * @param scopes The scopes to request.
+	 */
+	async requestScopes(scopes: string[]): Promise<void> {
+		await this._config.authProvider.getAccessToken(scopes);
 	}
 
 	/**
