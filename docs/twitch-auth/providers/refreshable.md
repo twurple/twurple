@@ -29,10 +29,11 @@ declare const Date: any;
 // ---cut---
 import { RefreshableAuthProvider, StaticAuthProvider } from 'twitch-auth';
 import { promises as fs } from 'fs';
+import path from 'path'
 
 const clientId = 'YOUR_CLIENT_ID';
 const clientSecret = 'YOUR_CLIENT_SECRET';
-const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
+const tokenData = JSON.parse(await fs.readFile(path.join(__dirname + '/tokens.json'), 'utf8'));
 const authProvider = new RefreshableAuthProvider(
     new StaticAuthProvider(clientId, tokenData.accessToken),
     {
@@ -45,7 +46,7 @@ const authProvider = new RefreshableAuthProvider(
                 refreshToken,
                 expiryTimestamp: expiryDate === null ? null : expiryDate.getTime()
             };
-            await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+            await fs.writeFile(path.join(__dirname + '/tokens.json'), JSON.stringify(newTokenData, null, 4), 'utf8')
         }
     }
 );
