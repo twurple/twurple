@@ -1,5 +1,5 @@
 ---
-name: 🚀 Feature Request/Improvement
+name: 🚀 Feature/Improvement Request
 about: I have a suggestion (and may want to implement it 🙂)!
 labels: feature
 ---
