@@ -7,11 +7,6 @@ import { ConnectionAdapter } from './ConnectionAdapter';
  */
 export interface ReverseProxyAdapterConfig {
 	/**
-	 * The port the server should listen to.
-	 */
-	port: number;
-
-	/**
 	 * The host name the reverse proxy is available under.
 	 */
 	hostName: string;
@@ -36,7 +31,6 @@ export interface ReverseProxyAdapterConfig {
  */
 export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
-	private readonly _port: number;
 	private readonly _externalPort: number;
 	private readonly _pathPrefix?: string;
 
@@ -50,14 +44,8 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 	constructor(options: ReverseProxyAdapterConfig) {
 		super();
 		this._hostName = options.hostName;
-		this._port = options.port;
 		this._externalPort = options.externalPort ?? 443;
 		this._pathPrefix = options.pathPrefix;
-	}
-
-	/** @protected */
-	async getListenerPort(): Promise<number> {
-		return this._port;
 	}
 
 	/** @protected */
