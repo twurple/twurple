@@ -365,6 +365,9 @@ export class HelixChannelPointsApi extends BaseApi {
 				broadcaster_id: extractUserId(broadcaster),
 				reward_id: rewardId,
 				id: redemptionIds
+			},
+			jsonBody: {
+				status
 			}
 		});
 
