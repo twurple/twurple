@@ -6,6 +6,7 @@ import type { Request, RequestHandler } from 'httpanda';
 import { Server } from 'httpanda';
 import type { ApiClient, HelixEventSubSubscription, UserIdResolvable } from 'twitch';
 import { extractUserId } from 'twitch';
+import { InvalidTokenTypeError } from 'twitch-auth';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
 import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
@@ -64,7 +65,7 @@ export class EventSubListener {
 	 */
 	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, secret: string, config: EventSubConfig = {}) {
 		if (apiClient.tokenType !== 'app') {
-			throw new Error(
+			throw new InvalidTokenTypeError(
 				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
 			);
 		}

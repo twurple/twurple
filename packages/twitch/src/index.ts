@@ -132,7 +132,6 @@ export type { CheermoteDisplayInfo } from './API/Shared/BaseCheermoteList';
 
 export { ConfigError } from './Errors/ConfigError';
 export { HellFreezesOverError } from './Errors/HellFreezesOverError';
-export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
 export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
 export { StreamNotLiveError } from './Errors/StreamNotLiveError';
 
@@ -154,6 +153,7 @@ export type { TwitchApiCallOptions as TwitchAPICallOptions } from 'twitch-api-ca
 export {
 	AccessToken,
 	InvalidTokenError,
+	InvalidTokenTypeError,
 	StaticAuthProvider,
 	ClientCredentialsAuthProvider,
 	RefreshableAuthProvider,
