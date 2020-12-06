@@ -195,6 +195,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events representing a change in channel metadata, e.g. stream title or category
+	 *
+	 * @param user The user for which to get notifications about updates
+	 * @param handler The function that will be called for any new notifications
+	 */
 	async subscribeToChannelUpdateEvents(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelUpdateEvent) => void
@@ -209,6 +215,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represent a user following a channel
+	 *
+	 * @param user The user for which to get notifications about their followers
+	 * @param handler The function that will be called for any new notifications
+	 */
 	async subscribeToChannelFollowEvents(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelFollowEvent) => void
@@ -223,6 +235,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represent a user subscribing to a channel
+	 *
+	 * @param user The user for which to get notifications for about their subscribers
+	 * @param handler  The function that will be called for any new notifications
+	 */
 	async subscribeToChannelSubscribeEvents(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscribeEvent) => void
@@ -237,6 +255,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelSubscribeSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represent a user cheering some bits
+	 *
+	 * @param user The user for which to get notifications for about cheers they get
+	 * @param handler The function that will be called for any new notifications
+	 */
 	async subscribeToChannelCheerEvents(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCheerEvent) => void
@@ -251,6 +275,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represent a user getting banned from a channel
+	 *
+	 * @param user The user for which to get notifications for when users get banned in their channel
+	 * @param handler The function that will be called for any new notifications
+	 */
 	async subscribeToChannelBanEvents(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelBanEvent) => void
