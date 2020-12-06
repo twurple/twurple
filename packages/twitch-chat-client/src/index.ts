@@ -42,6 +42,8 @@ export type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
 export type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
 export type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
 
+export type { ChatSayMessageAttributes } from './ChatMessageAttributes';
+
 export { ChatUser } from './ChatUser';
 
 export { LogLevel } from '@d-fischer/logger';

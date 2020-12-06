@@ -17,6 +17,8 @@ import { Whisper } from './Capabilities/TwitchCommandsCapability/MessageTypes/Wh
 import { TwitchMembershipCapability } from './Capabilities/TwitchMembershipCapability';
 import { TwitchTagsCapability } from './Capabilities/TwitchTagsCapability';
 import { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
+import type { ChatSayMessageAttributes } from './ChatMessageAttributes';
+import { extractMessageId } from './ChatMessageAttributes';
 import { TwitchPrivateMessage } from './StandardCommands/TwitchPrivateMessage';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
 import type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
@@ -1574,9 +1576,9 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to delete the message from.
 	 * @param message The message (as message ID or message object) to delete.
 	 */
-	async deleteMessage(channel: string, message: string | MessageTypes.Commands.PrivateMessage): Promise<void> {
+	async deleteMessage(channel: string, message: string | TwitchPrivateMessage): Promise<void> {
 		channel = toUserName(channel);
-		const messageId = message instanceof MessageTypes.Commands.PrivateMessage ? message.tags.get('id') : message;
+		const messageId = extractMessageId(message);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onDeleteMessageResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
@@ -2008,9 +2010,14 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to send the message to.
 	 * @param message The message to send.
+	 * @param attributes The attributes to add to the message.
 	 */
-	say(channel: string, message: string): void {
-		super.say(toChannelName(channel), message);
+	say(channel: string, message: string, attributes: ChatSayMessageAttributes = {}): void {
+		const tags = {};
+		if (attributes.replyTo) {
+			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
+		}
+		super.say(toChannelName(channel), message, tags);
 	}
 
 	/**
