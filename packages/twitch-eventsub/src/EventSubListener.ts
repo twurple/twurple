@@ -17,7 +17,7 @@ import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStrea
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
 import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChannelFollowSubscription';
-import { EventSubChannelSubcribeSubscription } from './Subscriptions/EventSubChannelSubscribeSubscription';
+import { EventSubChannelSubscribeSubscription } from './Subscriptions/EventSubChannelSubscribeSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -226,11 +226,11 @@ export class EventSubListener {
 		const userId = extractUserId(user);
 
 		if (!numberRegex.test(userId)) {
-			this._logger.console.warn(
+			this._logger.warn(
 				'EventSubListener#subscribeToChannelSubscribeEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelSubcribeSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelSubscribeSubscription, handler, this, userId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
