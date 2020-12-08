@@ -36,7 +36,6 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@types/trouter": "^3.1.0",
     "twitch": "^4.4.0-pre.1"
   },
   "peerDependencies": {
