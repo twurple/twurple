@@ -4,8 +4,9 @@ import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { Request, RequestHandler } from 'httpanda';
 import { Server } from 'httpanda';
-import type { ApiClient, UserIdResolvable } from 'twitch';
+import type { ApiClient, HelixEventSubSubscription, UserIdResolvable } from 'twitch';
 import { extractUserId } from 'twitch';
+import { InvalidTokenTypeError } from 'twitch-auth';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
 import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
@@ -57,11 +58,12 @@ const numberRegex = /^\d+$/;
 export class EventSubListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, EventSubSubscription>();
+	private _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
 
 	/** @private */ @Enumerable(false) readonly _apiClient: ApiClient;
 	/** @private */ @Enumerable(false) readonly _secret: string;
 	private readonly _adapter: ConnectionAdapter;
-	private readonly _logger: Logger;
+	/** @private */ readonly _logger: Logger;
 
 	/**
 	 * Creates a new EventSub listener.
@@ -71,7 +73,12 @@ export class EventSubListener {
 	 * @param adapter The connection adapter.
 	 * @param config
 	 */
-	constructor(apiClient: ApiClient, secret: string, adapter: ConnectionAdapter, config: EventSubConfig = {}) {
+	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, secret: string, config: EventSubConfig = {}) {
+		if (apiClient.tokenType !== 'app') {
+			throw new InvalidTokenTypeError(
+				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
+			);
+		}
 		this._apiClient = apiClient;
 		this._secret = secret;
 		this._adapter = adapter;
@@ -113,7 +120,27 @@ export class EventSubListener {
 		await this._server.listen(listenerPort);
 		this._logger.info(`Listening on port ${listenerPort}`);
 
-		await Promise.all([...this._subscriptions.values()].map(async sub => sub.start()));
+		const subscriptions = await this._apiClient.helix.eventSub.getSubscriptionsPaginated().getAll();
+
+		const urlPrefix = await this._buildHookUrl('');
+		this._twitchSubscriptions = new Map<string, HelixEventSubSubscription>(
+			subscriptions
+				.map(sub => {
+					if (sub._transport.method === 'webhook') {
+						const url = sub._transport.callback;
+						if (url.startsWith(urlPrefix)) {
+							const id = url.slice(urlPrefix.length);
+							return [id, sub] as const;
+						}
+					}
+					return undefined;
+				})
+				.filter(<T>(x?: T): x is T => !!x)
+		);
+
+		await Promise.all(
+			[...this._subscriptions].map(async ([subId, sub]) => sub.start(this._twitchSubscriptions.get(subId)))
+		);
 	}
 
 	/**
@@ -311,6 +338,16 @@ export class EventSubListener {
 		this._subscriptions.delete(id);
 	}
 
+	/** @private */
+	_dropTwitchSubscription(id: string): void {
+		this._twitchSubscriptions.delete(id);
+	}
+
+	/** @private */
+	_registerTwitchSubscription(id: string, data: HelixEventSubSubscription): void {
+		this._twitchSubscriptions.set(id, data);
+	}
+
 	private async _genericSubscribe<T extends EventSubSubscription, Args extends unknown[]>(
 		clazz: new (handler: (obj: SubscriptionResultType<T>) => void, client: this, ...args: Args) => T,
 		handler: (obj: SubscriptionResultType<T>) => void,
@@ -318,7 +355,7 @@ export class EventSubListener {
 		...params: Args
 	): Promise<EventSubSubscription> {
 		const subscription = new clazz(handler, client, ...params);
-		await subscription.start();
+		await subscription.start(this._twitchSubscriptions.get(subscription.id));
 		this._subscriptions.set(subscription.id, subscription);
 
 		return subscription;
@@ -328,6 +365,7 @@ export class EventSubListener {
 		return async (req, res, next) => {
 			const { id } = req.param;
 			const subscription = this._subscriptions.get(id);
+			const twitchSubscription = this._twitchSubscriptions.get(id);
 			const type = req.headers['twitch-eventsub-message-type'] as string;
 			if (subscription) {
 				const messageId = req.headers['twitch-eventsub-message-id'] as string;
@@ -339,6 +377,9 @@ export class EventSubListener {
 					const data = JSON.parse(body);
 					if (type === 'webhook_callback_verification') {
 						subscription._verify();
+						if (twitchSubscription) {
+							twitchSubscription._status = 'enabled';
+						}
 						res.setHeader('Content-Length', data.challenge.length);
 						res.writeHead(200, undefined);
 						res.end(data.challenge);

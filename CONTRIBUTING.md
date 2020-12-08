@@ -12,7 +12,7 @@ There is a [Discord server](https://discord.gg/b9ZqMfz) where you can ask questi
 
 ## Development
 
-**READ THIS FIRST:** If you want to create a new feature, please file a feature request first. State that you want to implement the feature by yourself, too.
+**READ THIS FIRST:** If you want to create a new feature, **please file a feature request first**. State that you want to implement the feature by yourself, too.
 We will decide whether we want this feature in the library. You don't want to spend your precious time for nothing, do you?
 
 ### General code conventions

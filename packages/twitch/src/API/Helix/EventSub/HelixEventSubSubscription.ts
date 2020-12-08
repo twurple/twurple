@@ -89,4 +89,14 @@ export class HelixEventSubSubscription {
 	async unsubscribe(): Promise<void> {
 		return this._client.helix.eventSub.deleteSubscription(this._data.id);
 	}
+
+	/** @private */
+	get _transport(): HelixEventSubTransportData {
+		return this._data.transport;
+	}
+
+	/** @private */
+	set _status(status: HelixEventSubSubscriptionStatus) {
+		this._data.status = status;
+	}
 }

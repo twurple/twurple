@@ -20,6 +20,7 @@ export type { RefreshConfig } from './AuthProvider/RefreshableAuthProvider';
 export { StaticAuthProvider } from './AuthProvider/StaticAuthProvider';
 
 export { InvalidTokenError } from './Errors/InvalidTokenError';
+export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
 
 // twitch-auth@^1 compat
 export { getAppAccessToken, getUserAccessToken, refreshUserAccessToken } from './legacy';

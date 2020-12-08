@@ -4,27 +4,57 @@ import { ChatUser } from '../ChatUser';
 import type { ParsedMessageCheerPart, ParsedMessagePart } from '../Toolkit/EmoteTools';
 import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../Toolkit/EmoteTools';
 
+/**
+ * An IRC PRIVMSG, with easy accessors for commonly used data from its tags.
+ */
 export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
+	/**
+	 * Info about the user that send the message, like their user ID and their status in the current channel.
+	 */
 	get userInfo(): ChatUser {
 		return new ChatUser(this._prefix!.nick, this._tags);
 	}
 
+	/**
+	 * The ID of the channel the message is in.
+	 */
 	get channelId(): string | null {
 		return this._tags.get('room-id') ?? null;
 	}
 
+	/**
+	 * Whether the message is a cheer.
+	 */
 	get isCheer(): boolean {
 		return this._tags.has('bits') ?? false;
 	}
 
-	get totalBits(): number {
+	/**
+	 * The number of bits cheered with the message.
+	 */
+	get bits(): number {
 		return Number(this._tags.get('bits') ?? 0);
 	}
 
+	/**
+	 * The number of bits cheered with the message.
+	 *
+	 * @deprecated Use {@TwitchPrivateMessage#bits} instead.
+	 */
+	get totalBits(): number {
+		return this.bits;
+	}
+
+	/**
+	 * The offsets of emote usages in the message.
+	 */
 	get emoteOffsets(): Map<string, string[]> {
 		return parseEmoteOffsets(this._tags.get('emotes'));
 	}
 
+	/**
+	 * Parses the message, separating text from emote usages.
+	 */
 	parseEmotes(): ParsedMessagePart[] {
 		const messageText = this.params.message;
 		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
@@ -32,6 +62,11 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 		return fillTextPositions(messageText, foundEmotes);
 	}
 
+	/**
+	 * Parses the message, separating text from emote usages and cheers.
+	 *
+	 * @param cheermotes A list of cheermotes
+	 */
 	parseEmotesAndBits(cheermotes: CheermoteList): ParsedMessagePart[] {
 		const messageText = this.params.message;
 		const foundCheermotes = cheermotes.parseMessage(messageText);

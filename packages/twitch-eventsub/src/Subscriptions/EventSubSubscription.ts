@@ -13,7 +13,7 @@ export type SubscriptionResultType<T extends EventSubSubscription> = T extends E
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class EventSubSubscription</** @private */ T = any> {
 	private _verified: boolean = false;
-	private _subscriptionData: HelixEventSubSubscription;
+	private _twitchSubscriptionData?: HelixEventSubSubscription;
 	private _unsubscribeResolver?: () => void;
 
 	/** @private */
@@ -28,6 +28,11 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 
 	private get _secret() {
 		return `${this.id}.${this._client._secret}`;
+	}
+
+	/** @private */
+	get _twitchId(): string | undefined {
+		return this._twitchSubscriptionData?.id;
 	}
 
 	/** @private */
@@ -65,20 +70,32 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 	/**
 	 * Activates the subscription.
 	 */
-	async start(): Promise<void> {
-		await this._subscribe();
+	async start(resumeFrom?: HelixEventSubSubscription): Promise<void> {
+		if (resumeFrom) {
+			if (resumeFrom.status === 'enabled') {
+				this._twitchSubscriptionData = resumeFrom;
+				this._client._logger.debug(`Successfully resumed subscription for event: ${this.id}`);
+				return;
+			}
+
+			this._client._logger.info(`Cycling broken conflicting subscription for event: ${this.id}`);
+			await this._unsubscribe();
+		}
+		this._twitchSubscriptionData = await this._subscribe();
+		this._client._registerTwitchSubscription(this.id, this._twitchSubscriptionData);
 	}
 
 	/**
 	 * Suspends the subscription, not removing it from the listener.
 	 */
 	async suspend(): Promise<void> {
-		if (!this._subscriptionData) {
+		if (!this._twitchSubscriptionData) {
 			return;
 		}
 		const unsubscribePromise = new Promise(resolve => (this._unsubscribeResolver = resolve));
-		await this._client._apiClient.helix.eventSub.deleteSubscription(this._subscriptionData.id);
+		await this._unsubscribe();
 		await unsubscribePromise;
+		this._twitchSubscriptionData = undefined;
 	}
 
 	/**
@@ -103,4 +120,11 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 	protected abstract _subscribe(): Promise<HelixEventSubSubscription>;
 
 	protected abstract transformData(response: object): T;
+
+	private async _unsubscribe() {
+		if (this._twitchSubscriptionData) {
+			await this._client._apiClient.helix.eventSub.deleteSubscription(this._twitchSubscriptionData.id);
+		}
+		this._client._dropTwitchSubscription(this.id);
+	}
 }

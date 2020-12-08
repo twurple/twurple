@@ -7,7 +7,7 @@ Don't worry - bugfixes will also be merged back to master, if applicable.
 Type: 
 <!--
 Enter the issue ID(s) of the issue(s) this pull request fixes here.
-Please do not submit pull requests without first filing an issue.
+PLEASE DO NOT SUBMIT PULL REQUESTS WITHOUT FIRST FILING AN ISSUE.
 In case of bugs, no further discussion is required and you can submit a fix immediately.
 For improvements and features, please allow for at least 24 hours after filing the issue for discussion about a shallow plan whether and how it should be implemented in order to not waste your time.
 -->

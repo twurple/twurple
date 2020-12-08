@@ -39,10 +39,10 @@
     "@types/node" "^14.11.2"
     tslib "^2.0.3"
 
-"@d-fischer/connection@^6.2.1":
-  version "6.2.1"
-  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.2.1.tgz#a631e91f3cdb37ccd64929e1f863b417c1173193"
-  integrity sha512-qQSMGHWjd/aE6c+lUGwxRYjur1iyD8siyuDDCYkdBYTVrvCGNSwNLgX8oRuR1UbKcM7evc1vQlxEIFGwr7lfcg==
+"@d-fischer/connection@^6.3.1":
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.3.1.tgz#5ecafae1c6ea1622deabc7299519af80912dfe9e"
+  integrity sha512-Lkf0cvLaeSN6lbDSUjUeBBV5dDmtc8VZflH8a0UZLn5kDpBAa0c+bO4pksrIOubR/HaTtBs6kCu5EimGLIGYXA==
   dependencies:
     "@d-fischer/isomorphic-ws" "^5.0.2"
     "@d-fischer/logger" "^2.1.1"
@@ -1624,11 +1624,6 @@
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/@types/tough-cookie/-/tough-cookie-4.0.0.tgz#fef1904e4668b6e5ecee60c52cc6a078ffa6697d"
   integrity sha512-I99sngh224D0M7XgW1s120zxCt3VYQ3IQsuw3P3jbq5GG4yc79+ZjyKznyOGIQrflfylLgcfekeZW/vk0yng6A==
-
-"@types/trouter@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@types/trouter/-/trouter-3.1.0.tgz#8a3c7b34352b1cb454217a194e8bf03e5cdf7cc4"
-  integrity sha512-4LPNrqSJknLzILMVXn2P/mh0djNgFvom4T9Y1hmhaB8OBm1cY71bMMSrGRu1q5qF4JZzY6iaGT11BHmCMY/NZg==
 
 "@types/uglify-js@*":
   version "3.11.1"
@@ -5442,12 +5437,12 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.26.5:
-  version "0.26.5"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.5.tgz#dc1217a4e15a394d96bd321fe4960f06ffc3d7be"
-  integrity sha512-E5IUaNv0dphO1yGxkTe0OiMwXyRDulSL2lssv+RZc9Q/F+DzGiYrYR04c2e44DOvrsMMAv3qeaVccnOni619fw==
+ircv3@^0.26.7:
+  version "0.26.7"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.7.tgz#945956b9853eb996090d8ad5fcbda1f1628edad8"
+  integrity sha512-DGukT379szK0+7LomB2cwLuyL6KGZ9JZG22yj9K44ShSph7AUIlXlGDhBeoU61LCJMxUVqjy+GyXdlLfOUBK/g==
   dependencies:
-    "@d-fischer/connection" "^6.2.1"
+    "@d-fischer/connection" "^6.3.1"
     "@d-fischer/escape-string-regexp" "^5.0.0"
     "@d-fischer/logger" "^2.1.1"
     "@d-fischer/shared-utils" "^2.4.1"
