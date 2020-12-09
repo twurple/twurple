@@ -18,6 +18,7 @@ import type { EventSubChannelCheerEvent } from './Events/EventSubChannelCheerEve
 import type { EventSubChannelBanEvent } from './Events/EventSubChannelBanEvent';
 import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
 import type { EventSubChannelRewardAddEvent } from './Events/EventSubChannelRewardAddEvent';
+import type { EventSubChannelRewardUpdateEvent } from './Events/EventSubChannelRewardUpdateEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -27,6 +28,7 @@ import { EventSubChannelCheerSubscription } from './Subscriptions/EventSubChanne
 import { EventSubChannelBanSubscription } from './Subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
+import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -359,11 +361,31 @@ export class EventSubListener {
 		const userId = extractUserId(user);
 
 		if (!numberRegex.test(userId)) {
-			this._logger.console.warn(
+			this._logger.warn(
 				'EventSubListener#subscribeToChannelRewardAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a Channel Points Reward being updated
+	 *
+	 * @param user The user for which to get notifications for when they update a reward
+	 * @param handler The function that will be called for any new notifications
+	 */
+	async subscribeToChannelRewardUpdateEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelRewardUpdateEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
