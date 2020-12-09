@@ -170,6 +170,13 @@ export class PubSubRedemptionMessage {
 	}
 
 	/**
+	 * The default image set associated with the reward.
+	 */
+	get defaultImage(): PubSubRedemptionMessageImageData {
+		return this._data.data.redemption.reward.default_image;
+	}
+
+	/**
 	 * The full message that was sent with the notification.
 	 */
 	get message(): string {
