@@ -188,11 +188,11 @@ export class SingleUserPubSubClient {
 	 * @param listener A listener returned by one of the `add*Listener` methods.
 	 */
 	async removeListener(listener: PubSubListener): Promise<void> {
-		if (this._listeners.has(listener.type)) {
-			const newListeners = this._listeners.get(listener.type)!.filter(l => l !== listener);
+		if (this._listeners.has(listener.topic)) {
+			const newListeners = this._listeners.get(listener.topic)!.filter(l => l !== listener);
 			if (newListeners.length === 0) {
-				this._listeners.delete(listener.type);
-				await this._pubSubClient.unlisten(`${listener.type}.${listener.userId}`);
+				this._listeners.delete(listener.topic);
+				await this._pubSubClient.unlisten(`${listener.topic}.${listener.userId}`);
 				if (
 					!this._pubSubClient.hasAnyTopics &&
 					(this._pubSubClient.isConnected || this._pubSubClient.isConnecting)
@@ -200,7 +200,7 @@ export class SingleUserPubSubClient {
 					await this._pubSubClient.disconnect();
 				}
 			} else {
-				this._listeners.set(listener.type, newListeners);
+				this._listeners.set(listener.topic, newListeners);
 			}
 		}
 	}
@@ -253,7 +253,7 @@ export class SingleUserPubSubClient {
 		await this._pubSubClient.connect();
 		const userId = await this._getUserId();
 		const topicName = [type, userId, ...additionalParams].join('.');
-		const listener = new PubSubListener(type, userId, callback, this);
+		const listener = new PubSubListener(topicName, userId, callback, this);
 		if (this._listeners.has(topicName)) {
 			this._listeners.get(topicName)!.push(listener);
 		} else {

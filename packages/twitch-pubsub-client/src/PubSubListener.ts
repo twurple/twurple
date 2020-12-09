@@ -7,7 +7,7 @@ import type { SingleUserPubSubClient } from './SingleUserPubSubClient';
 export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	/** @private */
 	constructor(
-		private readonly _type: string,
+		private readonly _topic: string,
 		private readonly _userId: string,
 		private readonly _callback: (message: T) => void,
 		private readonly _client: SingleUserPubSubClient
@@ -16,8 +16,8 @@ export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	/**
 	 * The type of the topic.
 	 */
-	get type(): string {
-		return this._type;
+	get topic(): string {
+		return this._topic;
 	}
 
 	/**
