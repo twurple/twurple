@@ -1,6 +1,6 @@
 # Twitch.js
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-22-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-23-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A set of libraries that aims to cover all of the existing Twitch APIs.
@@ -74,6 +74,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   </tr>
   <tr>
     <td align="center"><a href="https://adamcrowder.net"><img src="https://avatars1.githubusercontent.com/u/11189778?v=4" width="100px;" alt=""/><br /><sub><b>Adam</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=cheeseandcereal" title="Code">💻</a></td>
+    <td align="center"><a href="https://crutchcorn.dev"><img src="https://avatars0.githubusercontent.com/u/9100169?v=4" width="100px;" alt=""/><br /><sub><b>Corbin Crutchley</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=crutchcorn" title="Code">💻</a></td>
   </tr>
 </table>
 
