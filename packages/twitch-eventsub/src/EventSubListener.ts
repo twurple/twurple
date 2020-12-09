@@ -16,6 +16,7 @@ import type { EventSubChannelFollowEvent } from './Events/EventSubChannelFollowE
 import type { EventSubChannelSubscribeEvent } from './Events/EventSubChannelSubscribeEvent';
 import type { EventSubChannelCheerEvent } from './Events/EventSubChannelCheerEvent';
 import type { EventSubChannelBanEvent } from './Events/EventSubChannelBanEvent';
+import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -23,6 +24,7 @@ import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChann
 import { EventSubChannelSubscribeSubscription } from './Subscriptions/EventSubChannelSubscribeSubscription';
 import { EventSubChannelCheerSubscription } from './Subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelBanSubscription } from './Subscriptions/EventSubChannelBanSubscription';
+import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -320,6 +322,26 @@ export class EventSubListener {
 			);
 		}
 		return this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user getting unbanned from a channel
+	 *
+	 * @param user The user for which to get notifications for when users get unbanned in their channel
+	 * @param handler The function that will be called for any new notifications
+	 */
+	async subscribeToChannelUnbanEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelUnbanEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelUnbanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {

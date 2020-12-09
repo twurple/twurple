@@ -231,4 +231,16 @@ export class HelixEventSubApi extends BaseApi {
 			transport
 		);
 	}
+
+	async subscribeToChannelUnbanEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.unban',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
 }
