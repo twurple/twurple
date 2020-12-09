@@ -17,6 +17,7 @@ import type { EventSubChannelSubscribeEvent } from './Events/EventSubChannelSubs
 import type { EventSubChannelCheerEvent } from './Events/EventSubChannelCheerEvent';
 import type { EventSubChannelBanEvent } from './Events/EventSubChannelBanEvent';
 import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
+import type { EventSubChannelRewardAddEvent } from './Events/EventSubChannelRewardAddEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -25,6 +26,7 @@ import { EventSubChannelSubscribeSubscription } from './Subscriptions/EventSubCh
 import { EventSubChannelCheerSubscription } from './Subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelBanSubscription } from './Subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
+import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -342,6 +344,26 @@ export class EventSubListener {
 			);
 		}
 		return this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a Channel Points Reward being added to a channel.
+	 *
+	 * @param user The user for which to get notifications for when they add a reward to their channel
+	 * @param handler The function that will be called for any new notifications
+	 */
+	async subscribeToChannelRewardAddEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelRewardAddEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.console.warn(
+				'EventSubListener#subscribeToChannelRewardAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
