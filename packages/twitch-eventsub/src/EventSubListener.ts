@@ -387,6 +387,20 @@ export class EventSubListener {
 		}
 		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
 	}
+
+	async subscribeToChannelRewardRemoveEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelRewardUpdateEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToRewardRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
+	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
 		const hostName = await this._adapter.getHostName();
