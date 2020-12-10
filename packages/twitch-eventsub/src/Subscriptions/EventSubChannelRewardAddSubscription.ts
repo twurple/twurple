@@ -25,7 +25,7 @@ export class EventSubChannelRewardAddSubscription extends EventSubSubscription<E
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventsub.subscribeToChannelRewardAddEvents(
+		return this._client._apiClient.helix.eventSub.subscribeToChannelRewardAddEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

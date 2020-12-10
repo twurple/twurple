@@ -19,6 +19,7 @@ import type { EventSubChannelBanEvent } from './Events/EventSubChannelBanEvent';
 import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
 import type { EventSubChannelRewardAddEvent } from './Events/EventSubChannelRewardAddEvent';
 import type { EventSubChannelRewardUpdateEvent } from './Events/EventSubChannelRewardUpdateEvent';
+import type { EventSubChannelRewardRemoveEvent } from './Events/EventSubChannelRewardRemoveEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -29,6 +30,7 @@ import { EventSubChannelBanSubscription } from './Subscriptions/EventSubChannelB
 import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
 import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
+import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSubChannelRewardRemoveSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -390,7 +392,7 @@ export class EventSubListener {
 
 	async subscribeToChannelRewardRemoveEvents(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardUpdateEvent) => void
+		handler: (data: EventSubChannelRewardRemoveEvent) => void
 	): Promise<EventSubSubscription> {
 		const userId = extractUserId(user);
 

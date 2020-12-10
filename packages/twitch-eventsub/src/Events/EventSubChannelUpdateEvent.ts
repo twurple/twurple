@@ -17,7 +17,7 @@ export class EventSubChannelUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
-	constructor(private readonly _data: EventSubChannelUpdateEvent, client: ApiClient) {
+	constructor(private readonly _data: EventSubChannelUpdateEventData, client: ApiClient) {
 		this._client = client;
 	}
 

@@ -35,7 +35,7 @@ export class EventSubChannelUnbanEvent {
 
 	/** Retrieves more information about the unbanned user */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserByID(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this._data.user_id))!;
 	}
 
 	/**
