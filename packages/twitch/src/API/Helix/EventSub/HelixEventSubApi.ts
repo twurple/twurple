@@ -301,7 +301,7 @@ export class HelixEventSubApi extends BaseApi {
 	async subscribeToChannelRedemptionAddEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions,
-		rewardId: string
+		rewardId?: string
 	): Promise<HelixEventSubSubscription> {
 		if (rewardId)
 			return this.createSubscription(
