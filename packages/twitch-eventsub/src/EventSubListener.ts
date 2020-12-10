@@ -21,6 +21,7 @@ import type { EventSubChannelRewardAddEvent } from './Events/EventSubChannelRewa
 import type { EventSubChannelRewardUpdateEvent } from './Events/EventSubChannelRewardUpdateEvent';
 import type { EventSubChannelRewardRemoveEvent } from './Events/EventSubChannelRewardRemoveEvent';
 import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
+import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -33,6 +34,7 @@ import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubCh
 import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
 import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSubChannelRewardRemoveSubscription';
 import { EventSubChannelRedemptionAddSubscription } from './Subscriptions/EventSubChannelRedemptionAddSubscription';
+import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/EventSubChannelRedemptionUpdateSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -418,6 +420,20 @@ export class EventSubListener {
 			);
 		}
 		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
+	}
+
+	async subscribeToChannelRedemptionUpdateEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelRedemptionUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
