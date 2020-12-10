@@ -25,7 +25,7 @@ export class EventSubChannelUnbanSubscription extends EventSubSubscription<Event
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToChanelUnbanEvents(
+		return this._client._apiClient.helix.eventSub.subscribeToChannelUnbanEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

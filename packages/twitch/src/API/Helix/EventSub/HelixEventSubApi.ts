@@ -160,7 +160,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param broadcaster The broadcaster you want to listen to update events for.
 	 * @param transport The transport options
 	 */
-	async subscribetoChannelUpdateEvents(
+	async subscribeToChannelUpdateEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
