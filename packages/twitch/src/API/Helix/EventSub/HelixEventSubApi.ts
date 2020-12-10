@@ -297,4 +297,25 @@ export class HelixEventSubApi extends BaseApi {
 				transport
 			);
 	}
+
+	async subscribeToChannelRedemptionAddEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+		rewardId: string
+	): Promise<HelixEventSubSubscription> {
+		if (rewardId)
+			return this.createSubscription(
+				'channel.channel_points_custom_reward_redemption.add',
+				'1',
+				{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
+				transport
+			);
+		else
+			return this.createSubscription(
+				'channel.channel_points_custom_reward_redemption.add',
+				'1',
+				{ broadcaster_user_id: extractUserId(broadcaster) },
+				transport
+			);
+	}
 }

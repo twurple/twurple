@@ -20,6 +20,7 @@ import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEve
 import type { EventSubChannelRewardAddEvent } from './Events/EventSubChannelRewardAddEvent';
 import type { EventSubChannelRewardUpdateEvent } from './Events/EventSubChannelRewardUpdateEvent';
 import type { EventSubChannelRewardRemoveEvent } from './Events/EventSubChannelRewardRemoveEvent';
+import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -31,6 +32,7 @@ import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChanne
 import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
 import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
 import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSubChannelRewardRemoveSubscription';
+import { EventSubChannelRedemptionAddSubscription } from './Subscriptions/EventSubChannelRedemptionAddSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -396,12 +398,26 @@ export class EventSubListener {
 	): Promise<EventSubSubscription> {
 		const userId = extractUserId(user);
 
-		if (numberRegex.test(userId)) {
+		if (!numberRegex.test(userId)) {
 			this._logger.warn(
 				'EventSubListener#subscribeToRewardRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
+	}
+
+	async subscribeToChannelRedemptionAddEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelRedemptionAddEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelRedemptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
