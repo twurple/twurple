@@ -25,7 +25,7 @@ export class EventSubChannelHypeTrainBeginSubscription extends EventSubSubscript
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		this._client._apiClient.helix.eventSub.subscribeToChannelHypeTrainBeginEvents(
+		return this._client._apiClient.helix.eventSub.subscribeToChannelHypeTrainBeginEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);
