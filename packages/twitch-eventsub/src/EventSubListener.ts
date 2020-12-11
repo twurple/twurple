@@ -22,6 +22,7 @@ import type { EventSubChannelRewardUpdateEvent } from './Events/EventSubChannelR
 import type { EventSubChannelRewardRemoveEvent } from './Events/EventSubChannelRewardRemoveEvent';
 import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
+import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChannelHypeTrainBeginEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -35,6 +36,7 @@ import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSu
 import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSubChannelRewardRemoveSubscription';
 import { EventSubChannelRedemptionAddSubscription } from './Subscriptions/EventSubChannelRedemptionAddSubscription';
 import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/EventSubChannelRedemptionUpdateSubscription';
+import { EventSubChannelHypeTrainBeginSubscription } from './Subscriptions/EventSubChannelHypeTrainBeginSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -434,6 +436,20 @@ export class EventSubListener {
 			);
 		}
 		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
+	}
+
+	async subscribeToChannelHypeTrainBeginEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainBeginEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelHypeTrainBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
