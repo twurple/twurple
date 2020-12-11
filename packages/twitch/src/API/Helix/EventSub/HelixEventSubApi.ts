@@ -363,4 +363,16 @@ export class HelixEventSubApi extends BaseApi {
 			transport
 		);
 	}
+
+	async subscribeToChannelHypeTrainEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.hype_train.end',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
 }
