@@ -245,10 +245,10 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events representing a change in channel metadata, e.g. stream title or category
+	 * Subscribes to events representing a change in channel metadata, e.g. stream title or category.
 	 *
-	 * @param user The user for which to get notifications about updates
-	 * @param handler The function that will be called for any new notifications
+	 * @param user The user for which to get notifications about updates.
+	 * @param handler The function that will be called for any new notifications.
 	 */
 	async subscribeToChannelUpdateEvents(
 		user: UserIdResolvable,
@@ -265,10 +265,10 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent a user following a channel
+	 * Subscribes to events that represent a user following a channel.
 	 *
-	 * @param user The user for which to get notifications about their followers
-	 * @param handler The function that will be called for any new notifications
+	 * @param user The user for which to get notifications about their followers.
+	 * @param handler The function that will be called for any new notifications.
 	 */
 	async subscribeToChannelFollowEvents(
 		user: UserIdResolvable,
@@ -285,10 +285,10 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent a user subscribing to a channel
+	 * Subscribes to events that represent a user subscribing to a channel.
 	 *
-	 * @param user The user for which to get notifications for about their subscribers
-	 * @param handler  The function that will be called for any new notifications
+	 * @param user The user for which to get notifications for about their subscribers.
+	 * @param handler  The function that will be called for any new notifications.
 	 */
 	async subscribeToChannelSubscribeEvents(
 		user: UserIdResolvable,
@@ -305,10 +305,10 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent a user cheering some bits
+	 * Subscribes to events that represent a user cheering some bits.
 	 *
-	 * @param user The user for which to get notifications for about cheers they get
-	 * @param handler The function that will be called for any new notifications
+	 * @param user The user for which to get notifications for about cheers they get.
+	 * @param handler The function that will be called for any new notifications.
 	 */
 	async subscribeToChannelCheerEvents(
 		user: UserIdResolvable,
@@ -325,10 +325,10 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent a user getting banned from a channel
+	 * Subscribes to events that represent a user getting banned from a channel.
 	 *
-	 * @param user The user for which to get notifications for when users get banned in their channel
-	 * @param handler The function that will be called for any new notifications
+	 * @param user The user for which to get notifications for when users get banned in their channel.
+	 * @param handler The function that will be called for any new notifications.
 	 */
 	async subscribeToChannelBanEvents(
 		user: UserIdResolvable,
@@ -345,10 +345,10 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent a user getting unbanned from a channel
+	 * Subscribes to events that represent a user getting unbanned from a channel.
 	 *
-	 * @param user The user for which to get notifications for when users get unbanned in their channel
-	 * @param handler The function that will be called for any new notifications
+	 * @param user The user for which to get notifications for when users get unbanned in their channel.
+	 * @param handler The function that will be called for any new notifications.
 	 */
 	async subscribeToChannelUnbanEvents(
 		user: UserIdResolvable,
@@ -367,8 +367,8 @@ export class EventSubListener {
 	/**
 	 * Subscribes to events that represent a Channel Points Reward being added to a channel.
 	 *
-	 * @param user The user for which to get notifications for when they add a reward to their channel
-	 * @param handler The function that will be called for any new notifications
+	 * @param user The user for which to get notifications for when they add a reward to their channel.
+	 * @param handler The function that will be called for any new notifications.
 	 */
 	async subscribeToChannelRewardAddEvents(
 		user: UserIdResolvable,
@@ -385,10 +385,10 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent a Channel Points Reward being updated
+	 * Subscribes to events that represent a Channel Points Reward being updated.
 	 *
-	 * @param user The user for which to get notifications for when they update a reward
-	 * @param handler The function that will be called for any new notifications
+	 * @param user The user for which to get notifications for when they update a reward.
+	 * @param handler The function that will be called for any new notifications.
 	 */
 	async subscribeToChannelRewardUpdateEvents(
 		user: UserIdResolvable,
@@ -403,7 +403,12 @@ export class EventSubListener {
 		}
 		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
 	}
-
+	/**
+	 * Subscribes to events that represent a Channel Points reward being removed.
+	 *
+	 * @param user The user for which to get notifications for when they remove a reward.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	async subscribeToChannelRewardRemoveEvents(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardRemoveEvent) => void
@@ -418,6 +423,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represents a Channel Points reward being redeemed.
+	 *
+	 * @param user The user for which to get notifications for when their rewards are redeemed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	async subscribeToChannelRedemptionAddEvents(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRedemptionAddEvent) => void
@@ -432,6 +443,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represent a Channel Points reward being updated by a broadcaster.
+	 *
+	 * @param user The user for which to get notifications for when they update a reward.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	async subscribeToChannelRedemptionUpdateEvents(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
@@ -446,6 +463,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represent a Hype Train beginning.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	async subscribeToChannelHypeTrainBeginEvents(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainBeginEvent) => void
@@ -460,6 +483,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represent progress in Hype Train in a channel
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	async subscribeToChannelHypeTrainProgressEvents(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainProgressEvent) => void
@@ -474,6 +503,12 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
 	}
 
+	/**
+	 * Subscribes to events that represent the end of Hype Train in a channel.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	async subscribeToChannelHypeTrainEndEvents(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainEndEvent) => void
@@ -488,13 +523,25 @@ export class EventSubListener {
 		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
 	}
 
-	async subscribeToUserAuthRevokeEvents(
+	/**
+	 * Subscribes to events that represent a user revoking authorization from an application.
+	 *
+	 * @param clientId The Client ID for which to get notifications about authorization revokations.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToUserAuthorizationRevokeEvents(
 		clientId: string,
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void
 	): Promise<EventSubSubscription> {
 		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
 
+	/**
+	 * Subscribes to events that represent a user updating their account details.
+	 *
+	 * @param user The user for which to get notifications about account updates.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	async subscribeToUserUpdateEvents(
 		user: UserIdResolvable,
 		handler: (data: EventSubUserUpdateEvent) => void
