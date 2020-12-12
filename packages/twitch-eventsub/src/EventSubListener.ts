@@ -26,6 +26,7 @@ import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChanne
 import type { EventSubChannelHypeTrainProgressEvent } from './Events/EventSubChannelHypeTrainProgressEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './Events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './Events/EventSubUserAuthorizationRevokeEvent';
+import type { EventSubUserUpdateEvent } from './Events/EventSubUserUpdateEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -492,6 +493,20 @@ export class EventSubListener {
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void
 	): Promise<EventSubSubscription> {
 		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
+	}
+
+	async subscribeToUserUpdateEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubUserUpdateEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToUserUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
