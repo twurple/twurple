@@ -25,6 +25,7 @@ import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChan
 import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChannelHypeTrainBeginEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './Events/EventSubChannelHypeTrainProgressEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './Events/EventSubChannelHypeTrainEndEvent';
+import type { EventSubUserAuthorizationRevokeEvent } from './Events/EventSubUserAuthorizationRevokeEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -41,6 +42,8 @@ import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/Eve
 import { EventSubChannelHypeTrainBeginSubscription } from './Subscriptions/EventSubChannelHypeTrainBeginSubscription';
 import { EventSubChannelHypeTrainProgressSubscription } from './Subscriptions/EventSubChannelHypeTrainProgressSubscription';
 import { EventSubChannelHypeTrainEndSubscription } from './Subscriptions/EventSubChannelHypeTrainEndSubscription';
+import { EventSubUserAuthorizationRevokeSubscription } from './Subscriptions/EventSubUserAuthorizationRevokeSubscription';
+import { EventSubUserUpdateSubscription } from './Subscriptions/EventSubUserUpdateSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
@@ -482,6 +485,13 @@ export class EventSubListener {
 			);
 		}
 		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
+	}
+
+	async subscribeToUserAuthRevokeEvents(
+		clientId: string,
+		handler: (data: EventSubUserAuthorizationRevokeEvent) => void
+	): Promise<EventSubSubscription> {
+		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {

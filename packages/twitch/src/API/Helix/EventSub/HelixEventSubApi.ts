@@ -375,4 +375,11 @@ export class HelixEventSubApi extends BaseApi {
 			transport
 		);
 	}
+
+	async subscribeToUserAuthorizationRevokeEvents(
+		clientId: string,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription('user.authorization.revoke', '1', { client_id: clientId }, transport);
+	}
 }
