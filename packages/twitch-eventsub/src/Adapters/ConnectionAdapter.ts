@@ -36,14 +36,14 @@ export abstract class ConnectionAdapter {
 	 *
 	 * @protected
 	 */
-	abstract async getHostName(): Promise<string>;
+	abstract getHostName(): Promise<string>;
 
 	/**
 	 * Returns the port that should be used by Twitch to connect to this server.
 	 *
 	 * @protected
 	 */
-	abstract async getExternalPort(): Promise<number>;
+	abstract getExternalPort(): Promise<number>;
 
 	/**
 	 * The path prefix an external connection needs to reach this server.

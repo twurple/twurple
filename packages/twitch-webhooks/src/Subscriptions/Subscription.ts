@@ -85,7 +85,7 @@ export abstract class Subscription</** @private */ T = any> {
 			clearInterval(this._refreshTimer);
 			this._refreshTimer = undefined;
 		}
-		const unsubscribePromise = new Promise(resolve => (this._unsubscribeResolver = resolve));
+		const unsubscribePromise = new Promise<void>(resolve => (this._unsubscribeResolver = resolve));
 		await this._unsubscribe();
 		await unsubscribePromise;
 	}

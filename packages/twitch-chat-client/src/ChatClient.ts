@@ -1741,7 +1741,7 @@ export class ChatClient extends IrcClient {
 		return new Promise<string[]>(resolve => {
 			const e = this._onModsResult((_channel, mods) => {
 				if (toUserName(_channel) === channel) {
-					resolve(mods);
+					resolve(mods!);
 					this.removeListener(e);
 				}
 			});
@@ -1990,7 +1990,7 @@ export class ChatClient extends IrcClient {
 		return new Promise<string[]>(resolve => {
 			const e = this._onVipsResult((_channel, vips) => {
 				if (toUserName(_channel) === channel) {
-					resolve(vips);
+					resolve(vips!);
 					this.removeListener(e);
 				}
 			});
