@@ -108,7 +108,7 @@ export class WebHookListener {
 		this._logger = new Logger({
 			name: 'twitch-webhooks',
 			emoji: true,
-			...config.logger ?? {}
+			...(config.logger ?? {})
 		});
 	}
 

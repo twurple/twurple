@@ -136,7 +136,7 @@ export class User {
 	 */
 	async isSubscribedTo(channel: UserIdResolvable): Promise<boolean> {
 		try {
-			return await this.getSubscriptionTo(channel) !== null;
+			return (await this.getSubscriptionTo(channel)) !== null;
 		} catch (e) {
 			if (e instanceof NoSubscriptionProgramError) {
 				return false;
@@ -179,7 +179,7 @@ export class User {
 	 */
 	async follows(channel: UserIdResolvable): Promise<boolean> {
 		try {
-			return await this.getFollowTo(channel) !== null;
+			return (await this.getFollowTo(channel)) !== null;
 		} catch (e) {
 			throw e;
 		}

@@ -100,7 +100,7 @@ export class ChannelPlaceholder {
 	 */
 	async hasSubscriber(user: UserIdResolvable): Promise<boolean> {
 		try {
-			return await this.getSubscriptionBy(user) !== null;
+			return (await this.getSubscriptionBy(user)) !== null;
 		} catch (e) {
 			if (e instanceof NoSubscriptionProgramError) {
 				return false;

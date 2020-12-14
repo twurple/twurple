@@ -85,10 +85,10 @@ export class LegacyAdapter extends ConnectionAdapter {
 	 * @expandParams
 	 */
 	static async create(config: WebHookListenerConfig): Promise<LegacyAdapter> {
-		const listenerPort = config.port ?? await getPortPromise();
+		const listenerPort = config.port ?? (await getPortPromise());
 		const reverseProxy = config.reverseProxy ?? {};
 		return new LegacyAdapter({
-			hostName: config.hostName ?? await v4(),
+			hostName: config.hostName ?? (await v4()),
 			listenerPort: listenerPort,
 			sslCert: config.ssl,
 			connectUsingSsl: reverseProxy.ssl === undefined ? !!config.ssl : reverseProxy.ssl,

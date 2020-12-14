@@ -354,7 +354,7 @@ export class ApiClient implements AuthProvider {
 	 * @deprecated Use {@AuthProvider#refresh} directly instead.
 	 */
 	async refreshAccessToken(): Promise<AccessToken | undefined> {
-		return await this.refresh() ?? undefined;
+		return (await this.refresh()) ?? undefined;
 	}
 
 	/**

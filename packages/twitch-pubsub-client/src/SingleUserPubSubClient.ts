@@ -62,7 +62,7 @@ export class SingleUserPubSubClient {
 		this._pubSubClient = pubSubClient ?? new BasicPubSubClient(logLevel);
 		this._pubSubClient.onMessage(async (topic, messageData) => {
 			const [type, userId, ...args] = topic.split('.');
-			if (this._listeners.has(topic) && userId === await this._getUserId()) {
+			if (this._listeners.has(topic) && userId === (await this._getUserId())) {
 				let message: PubSubMessage;
 				switch (type) {
 					case 'channel-bits-events-v2': {
@@ -217,7 +217,7 @@ export class SingleUserPubSubClient {
 		if (tokenData) {
 			try {
 				const { userId } = await this._apiClient.getTokenInfo();
-				return this._userId = userId;
+				return (this._userId = userId);
 			} catch (e) {
 				if (e instanceof InvalidTokenError) {
 					lastTokenError = e;
@@ -231,7 +231,7 @@ export class SingleUserPubSubClient {
 			const newTokenInfo = await this._apiClient.refreshAccessToken();
 			if (newTokenInfo) {
 				const { userId } = await this._apiClient.getTokenInfo();
-				return this._userId = userId;
+				return (this._userId = userId);
 			}
 		} catch (e) {
 			if (e instanceof InvalidTokenError) {

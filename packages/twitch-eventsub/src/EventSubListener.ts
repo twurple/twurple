@@ -110,7 +110,7 @@ export class EventSubListener {
 		this._logger = new Logger({
 			name: 'twitch-eventsub',
 			emoji: true,
-			...config.logger ?? {}
+			...(config.logger ?? {})
 		});
 	}
 
@@ -139,7 +139,7 @@ export class EventSubListener {
 			next();
 		});
 		this._server.post('/:id', this._createHandleRequest());
-		const listenerPort = await this._adapter.getListenerPort() ?? port;
+		const listenerPort = (await this._adapter.getListenerPort()) ?? port;
 		if (!listenerPort) {
 			throw new Error("Adapter didn't define a listener port; please pass one as an argument");
 		}

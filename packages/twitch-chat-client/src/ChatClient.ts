@@ -690,7 +690,7 @@ export class ChatClient extends IrcClient {
 			webSocket: options.webSocket !== false,
 			logger: {
 				minLevel: options.logLevel,
-				...options.logger ?? {}
+				...(options.logger ?? {})
 			},
 			nonConformingCommands: ['004'],
 			channels: options.channels
@@ -709,7 +709,7 @@ export class ChatClient extends IrcClient {
 			name: 'twitch-chat',
 			emoji: true,
 			minLevel: options.logLevel,
-			...options.logger ?? {}
+			...(options.logger ?? {})
 		});
 
 		this._authProvider = authProvider;
