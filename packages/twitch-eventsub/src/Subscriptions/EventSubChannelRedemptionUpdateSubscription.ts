@@ -12,7 +12,7 @@ export class EventSubChannelRedemptionUpdateSubscription extends EventSubSubscri
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void,
 		client: EventSubListener,
 		private readonly _userId: string,
-		private readonly _rewardId: string
+		private readonly _rewardId?: string
 	) {
 		super(handler, client);
 	}

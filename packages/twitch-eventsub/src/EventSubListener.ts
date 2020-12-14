@@ -403,6 +403,29 @@ export class EventSubListener {
 		}
 		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
 	}
+
+	/**
+	 * Subscribes to events that represent a specific Channel Points reward being updated.
+	 *
+	 * @param user The user for which to get notifications for when they update the reward.
+	 * @param rewardId The ID of the reward for which to get notifications when it is updated.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelRewardUpdateEventsForReward(
+		user: UserIdResolvable,
+		rewardId: string,
+		handler: (data: EventSubChannelRewardUpdateEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
+	}
+
 	/**
 	 * Subscribes to events that represent a Channel Points reward being removed.
 	 *
@@ -421,6 +444,28 @@ export class EventSubListener {
 			);
 		}
 		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a specific Channel Points reward being removed.
+	 *
+	 * @param user The user for which to get notifications for when they remove the reward.
+	 * @param rewardId The ID of the reward to get notifications for when it is removed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelRewardRemoveEventsForReward(
+		user: UserIdResolvable,
+		rewardId: string,
+		handler: (data: EventSubChannelRewardRemoveEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToRewardRemoveEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -444,6 +489,28 @@ export class EventSubListener {
 	}
 
 	/**
+	 * Subscribes to events that represent a specific Channel Points reward being redeemed.
+	 *
+	 * @param user The user for which to get notifications when their reward is redeemed.
+	 * @param rewardId The ID of the reward for which to get notifications when it is redeemed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelRedemptionAddEventsForReward(
+		user: UserIdResolvable,
+		rewardId: string,
+		handler: (data: EventSubChannelRedemptionAddEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToRedemptionAddEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
+	}
+
+	/**
 	 * Subscribes to events that represent a Channel Points reward being updated by a broadcaster.
 	 *
 	 * @param user The user for which to get notifications for when they update a reward.
@@ -461,6 +528,28 @@ export class EventSubListener {
 			);
 		}
 		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a specific Channel Points reward being updated by a broadcaster.
+	 *
+	 * @param user The user for which to get notifications for when they update the reward.
+	 * @param rewardId The ID of the reward for which to get notifications when it gets updated.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelRedemptionUpdateEventsForReward(
+		user: UserIdResolvable,
+		rewardId: string,
+		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelRedemptionUpdateEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
