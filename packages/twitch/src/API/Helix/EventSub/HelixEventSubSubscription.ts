@@ -31,7 +31,7 @@ export interface HelixEventSubSubscriptionData {
 	status: HelixEventSubSubscriptionStatus;
 	type: string;
 	version: string;
-	condition: object;
+	condition: Record<string, unknown>;
 	created_at: string;
 	transport: HelixEventSubTransportData;
 }
@@ -72,14 +72,14 @@ export class HelixEventSubSubscription {
 	/**
 	 * The condition of the subscription.
 	 */
-	get condition(): object {
+	get condition(): Record<string, unknown> {
 		return this._data.condition;
 	}
 
 	/**
 	 * The date and time of creation of the subscription.
 	 */
-	get creationDate(): object {
+	get creationDate(): Date {
 		return new Date(this._data.created_at);
 	}
 

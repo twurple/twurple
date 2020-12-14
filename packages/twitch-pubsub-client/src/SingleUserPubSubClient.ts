@@ -48,7 +48,7 @@ export class SingleUserPubSubClient {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _pubSubClient: BasicPubSubClient;
 
-	private readonly _listeners: Map<string, PubSubListener[]> = new Map();
+	private readonly _listeners = new Map<string, PubSubListener[]>();
 
 	private _userId?: string;
 
@@ -59,10 +59,10 @@ export class SingleUserPubSubClient {
 	 */
 	constructor({ twitchClient, pubSubClient, logLevel = LogLevel.WARNING }: SingleUserPubSubClientOptions) {
 		this._apiClient = twitchClient;
-		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
+		this._pubSubClient = pubSubClient ?? new BasicPubSubClient(logLevel);
 		this._pubSubClient.onMessage(async (topic, messageData) => {
 			const [type, userId, ...args] = topic.split('.');
-			if (this._listeners.has(topic) && userId === (await this._getUserId())) {
+			if (this._listeners.has(topic) && userId === await this._getUserId()) {
 				let message: PubSubMessage;
 				switch (type) {
 					case 'channel-bits-events-v2': {
@@ -217,7 +217,7 @@ export class SingleUserPubSubClient {
 		if (tokenData) {
 			try {
 				const { userId } = await this._apiClient.getTokenInfo();
-				return (this._userId = userId);
+				return this._userId = userId;
 			} catch (e) {
 				if (e instanceof InvalidTokenError) {
 					lastTokenError = e;
@@ -231,7 +231,7 @@ export class SingleUserPubSubClient {
 			const newTokenInfo = await this._apiClient.refreshAccessToken();
 			if (newTokenInfo) {
 				const { userId } = await this._apiClient.getTokenInfo();
-				return (this._userId = userId);
+				return this._userId = userId;
 			}
 		} catch (e) {
 			if (e instanceof InvalidTokenError) {
@@ -241,7 +241,7 @@ export class SingleUserPubSubClient {
 			}
 		}
 
-		throw lastTokenError || new Error('PubSub authentication failed');
+		throw lastTokenError ?? new Error('PubSub authentication failed');
 	}
 
 	private async _addListener<T extends PubSubMessage>(

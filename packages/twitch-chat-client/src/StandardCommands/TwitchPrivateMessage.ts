@@ -26,7 +26,7 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 * Whether the message is a cheer.
 	 */
 	get isCheer(): boolean {
-		return this._tags.has('bits') ?? false;
+		return this._tags.has('bits');
 	}
 
 	/**

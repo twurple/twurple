@@ -53,7 +53,7 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 	}
 
 	/** @private */
-	_handleData(body: object): void {
+	_handleData(body: Record<string, unknown>): void {
 		this._handler(this.transformData(body));
 	}
 
@@ -92,7 +92,7 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 		if (!this._twitchSubscriptionData) {
 			return;
 		}
-		const unsubscribePromise = new Promise<void>(resolve => (this._unsubscribeResolver = resolve));
+		const unsubscribePromise = new Promise<void>(resolve => this._unsubscribeResolver = resolve);
 		await this._unsubscribe();
 		await unsubscribePromise;
 		this._twitchSubscriptionData = undefined;
@@ -119,7 +119,7 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 
 	protected abstract _subscribe(): Promise<HelixEventSubSubscription>;
 
-	protected abstract transformData(response: object): T;
+	protected abstract transformData(response: unknown): T;
 
 	private async _unsubscribe() {
 		if (this._twitchSubscriptionData) {

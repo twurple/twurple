@@ -272,7 +272,7 @@ export class ApiClient implements AuthProvider {
 			throw new ConfigError('No auth provider given. Please supply the `authProvider` option.');
 		}
 
-		this._helixRateLimiter = new HelixRateLimiter(config.logLevel || LogLevel.CRITICAL);
+		this._helixRateLimiter = new HelixRateLimiter(config.logLevel ?? LogLevel.CRITICAL);
 
 		this._config = {
 			preAuth: false,
@@ -286,8 +286,7 @@ export class ApiClient implements AuthProvider {
 		};
 
 		if (this._config.preAuth) {
-			// tslint:disable-next-line:no-floating-promises
-			authProvider.getAccessToken(this._config.initialScopes);
+			void authProvider.getAccessToken(this._config.initialScopes);
 		}
 	}
 
@@ -355,14 +354,14 @@ export class ApiClient implements AuthProvider {
 	 * @deprecated Use {@AuthProvider#refresh} directly instead.
 	 */
 	async refreshAccessToken(): Promise<AccessToken | undefined> {
-		return (await this.refresh()) ?? undefined;
+		return await this.refresh() ?? undefined;
 	}
 
 	/**
 	 * The type of token used by the client.
 	 */
 	get tokenType(): AuthProviderTokenType {
-		return this._config.authProvider.tokenType || 'user';
+		return this._config.authProvider.tokenType ?? 'user';
 	}
 
 	/**
@@ -380,7 +379,7 @@ export class ApiClient implements AuthProvider {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async callApi<T = any>(options: TwitchApiCallOptions): Promise<T> {
 		const { authProvider } = this._config;
-		const shouldAuth = options?.auth ?? true;
+		const shouldAuth = options.auth ?? true;
 		let accessToken = shouldAuth
 			? await authProvider.getAccessToken(options.scope ? [options.scope] : undefined)
 			: null;

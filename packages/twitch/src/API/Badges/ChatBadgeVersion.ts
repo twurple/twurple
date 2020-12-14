@@ -56,6 +56,7 @@ export class ChatBadgeVersion {
 	 * @param scale The scale of the badge image.
 	 */
 	getImageUrl(scale: ChatBadgeScale): string {
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
 		return this._data[`image_url_${scale}x`];
 	}
 

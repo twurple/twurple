@@ -4,7 +4,13 @@ import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { Request, RequestHandler } from 'httpanda';
 import { Server } from 'httpanda';
-import type { ApiClient, HelixEventSubSubscription, UserIdResolvable } from 'twitch';
+import type {
+	ApiClient,
+	HelixEventSubSubscription,
+	UserIdResolvable,
+	HelixEventSubSubscriptionStatus,
+	HelixEventSubTransportData
+} from 'twitch';
 import { extractUserId } from 'twitch';
 import { InvalidTokenTypeError } from 'twitch-auth';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
@@ -42,6 +48,35 @@ export interface EventSubConfig {
 
 const numberRegex = /^\d+$/;
 
+/** @private */
+interface EventSubSubscriptionBody {
+	id: string;
+	status: HelixEventSubSubscriptionStatus;
+	type: string;
+	version: string;
+	condition: Record<string, string>;
+	transport: HelixEventSubTransportData;
+	created_at: string;
+}
+
+/** @private */
+interface BaseEventSubBody {
+	subscription: EventSubSubscriptionBody;
+}
+
+/** @private */
+interface EventSubVerificationBody extends BaseEventSubBody {
+	challenge: string;
+}
+
+/** @private */
+interface EventSubNotificationBody extends BaseEventSubBody {
+	event: Record<string, unknown>;
+}
+
+/** @private */
+type EventSubBody = EventSubVerificationBody | EventSubNotificationBody;
+
 /**
  * A listener for the Twitch EventSub event distribution mechanism.
  */
@@ -75,7 +110,7 @@ export class EventSubListener {
 		this._logger = new Logger({
 			name: 'twitch-eventsub',
 			emoji: true,
-			...(config.logger ?? {})
+			...config.logger ?? {}
 		});
 	}
 
@@ -90,21 +125,22 @@ export class EventSubListener {
 		this._server = new Server({
 			server,
 			onError: (e, req: Request) => {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				if (e.code === 404) {
-					this._logger.warn(`Access to unknown URL/method attempted: ${req.method} ${req.url}`);
+					this._logger.warn(`Access to unknown URL/method attempted: ${req.method!} ${req.url!}`);
 				}
 			}
 		});
 		// needs to be first in chain but run last, for proper logging of status
 		this._server.use((req, res, next) => {
 			setImmediate(() => {
-				this._logger.debug(`${req.method} ${req.path} - ${res.statusCode}`);
+				this._logger.debug(`${req.method!} ${req.path} - ${res.statusCode}`);
 			});
 			next();
 		});
 		this._server.post('/:id', this._createHandleRequest());
-		const listenerPort = (await this._adapter.getListenerPort()) ?? port;
-		if (!port) {
+		const listenerPort = await this._adapter.getListenerPort() ?? port;
+		if (!listenerPort) {
 			throw new Error("Adapter didn't define a listener port; please pass one as an argument");
 		}
 		await this._server.listen(listenerPort);
@@ -116,10 +152,13 @@ export class EventSubListener {
 		this._twitchSubscriptions = new Map<string, HelixEventSubSubscription>(
 			subscriptions
 				.map(sub => {
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					if (sub._transport.method === 'webhook') {
 						const url = sub._transport.callback;
 						if (url.startsWith(urlPrefix)) {
 							const id = url.slice(urlPrefix.length);
+							// false positive
+							// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 							return [id, sub] as const;
 						}
 					}
@@ -265,18 +304,19 @@ export class EventSubListener {
 				const algoAndSignature = req.headers['twitch-eventsub-message-signature'] as string;
 				const verified = subscription._verifyData(messageId, timestamp, body, algoAndSignature);
 				if (verified) {
-					const data = JSON.parse(body);
+					const data = JSON.parse(body) as EventSubBody;
 					if (type === 'webhook_callback_verification') {
+						const verificationBody = data as EventSubVerificationBody;
 						subscription._verify();
 						if (twitchSubscription) {
 							twitchSubscription._status = 'enabled';
 						}
-						res.setHeader('Content-Length', data.challenge.length);
+						res.setHeader('Content-Length', verificationBody.challenge.length);
 						res.writeHead(200, undefined);
-						res.end(data.challenge);
+						res.end(verificationBody.challenge);
 						this._logger.debug(`Successfully subscribed to event: ${id}`);
 					} else if (type === 'notification') {
-						subscription._handleData(data.event);
+						subscription._handleData((data as EventSubNotificationBody).event);
 						res.writeHead(202);
 						res.end();
 					} else {

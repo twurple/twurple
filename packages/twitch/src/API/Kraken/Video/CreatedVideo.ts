@@ -18,7 +18,7 @@ export interface CreatedVideoData {
  * A Twitch video that was just created.
  */
 export class CreatedVideo extends Video {
-	private _uploadData: CreatedVideoUploadData;
+	private readonly _uploadData: CreatedVideoUploadData;
 
 	/** @private */
 	constructor(data: CreatedVideoData, client: ApiClient) {

@@ -154,7 +154,7 @@ export class HelixVideo {
 		}
 		return parts
 			.map(part => {
-				const partialMatch = part.match(/(\d+)([hms])/);
+				const partialMatch = /(\d+)([hms])/.exec(part);
 				if (!partialMatch) {
 					throw new HellFreezesOverError(`Could not parse partial duration string: ${part}`);
 				}

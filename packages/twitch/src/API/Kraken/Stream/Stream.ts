@@ -15,12 +15,7 @@ export type StreamPreviewUrlList = {
 
 /** @private */
 export interface StreamDataWrapper {
-	stream: StreamData;
-}
-
-/** @private */
-export interface StreamDataWrapper {
-	stream: StreamData;
+	stream: StreamData | null;
 }
 
 /** @private */

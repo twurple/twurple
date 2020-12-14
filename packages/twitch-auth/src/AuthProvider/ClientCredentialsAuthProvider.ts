@@ -56,7 +56,7 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 	 * Retrieves a new app access token.
 	 */
 	async refresh(): Promise<AccessToken> {
-		return (this._token = await getAppToken(this._clientId, this._clientSecret));
+		return this._token = await getAppToken(this._clientId, this._clientSecret);
 	}
 
 	/** @private */

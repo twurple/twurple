@@ -18,6 +18,7 @@ export class NgrokAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
+	// eslint-disable-next-line @typescript-eslint/class-literal-property-style
 	get connectUsingSsl(): boolean {
 		return true;
 	}

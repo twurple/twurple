@@ -11,7 +11,7 @@ export class ChatUser {
 	/** @private */
 	constructor(userName: string, userData: Map<string, string> | undefined) {
 		this._userName = userName.toLowerCase();
-		this._userData = userData ? new Map(userData) : new Map();
+		this._userData = userData ? new Map<string, string>(userData) : new Map<string, string>();
 	}
 
 	private _parseBadgesLike(badgesLikeStr?: string): Map<string, string> {

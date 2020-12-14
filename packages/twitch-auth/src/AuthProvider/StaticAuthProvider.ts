@@ -81,7 +81,7 @@ If you need dynamically upgrading scopes, please implement the AuthProvider inte
 			}
 		}
 
-		return this._accessToken || null;
+		return this._accessToken ?? null;
 	}
 
 	/** @private */
@@ -100,6 +100,6 @@ If you need dynamically upgrading scopes, please implement the AuthProvider inte
 	 * The scopes that are currently available using the access token.
 	 */
 	get currentScopes(): string[] {
-		return this._scopes || [];
+		return this._scopes ?? [];
 	}
 }

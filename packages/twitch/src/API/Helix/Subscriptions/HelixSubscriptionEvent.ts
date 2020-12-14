@@ -67,6 +67,6 @@ export class HelixSubscriptionEvent extends HelixSubscription {
 	 * The message sent with the subscription event.
 	 */
 	get eventMessage(): string {
-		return this._eventData.event_data.message || '';
+		return this._eventData.event_data.message ?? '';
 	}
 }

@@ -11,19 +11,16 @@ import type {
 import { BaseCheermoteList } from '../../Shared/BaseCheermoteList';
 
 /** @private */
-export type CheermoteActionImageUrlsByScale = {
-	[scale in CheermoteScale]: string;
-};
+export type CheermoteActionImageUrlsByScale = Record<CheermoteScale, string>;
 
 /** @private */
-export type CheermoteActionImageUrlsByStateAndScale = {
-	[state in CheermoteState]: CheermoteActionImageUrlsByScale;
-};
+export type CheermoteActionImageUrlsByStateAndScale = Record<CheermoteState, CheermoteActionImageUrlsByScale>;
 
 /** @private */
-export type CheermoteActionImageUrlsByBackgroundAndStateAndScale = {
-	[background in CheermoteBackground]: CheermoteActionImageUrlsByStateAndScale;
-};
+export type CheermoteActionImageUrlsByBackgroundAndStateAndScale = Record<
+	CheermoteBackground,
+	CheermoteActionImageUrlsByStateAndScale
+>;
 
 /** @private */
 export interface CheermoteActionTierData {
@@ -88,6 +85,7 @@ export class CheermoteList extends BaseCheermoteList {
 		}
 
 		return {
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
 			url: correctTier.images[background][state][scale],
 			color: correctTier.color
 		};

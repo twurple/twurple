@@ -108,7 +108,7 @@ export class WebHookListener {
 		this._logger = new Logger({
 			name: 'twitch-webhooks',
 			emoji: true,
-			...(config.logger ?? {})
+			...config.logger ?? {}
 		});
 	}
 
@@ -122,17 +122,17 @@ export class WebHookListener {
 		const server = this._adapter.createHttpServer();
 		this._server = new Server({
 			server,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			onError: (e, req: Request) => {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				if (e.code === 404) {
-					this._logger.warn(`Access to unknown URL/method attempted: ${req.method} ${req.url}`);
+					this._logger.warn(`Access to unknown URL/method attempted: ${req.method!} ${req.url!}`);
 				}
 			}
 		});
 		// needs to be first in chain but run last, for proper logging of status
 		this._server.use((req, res, next) => {
 			setImmediate(() => {
-				this._logger.debug(`${req.method} ${req.path} - ${res.statusCode}`);
+				this._logger.debug(`${req.method!} ${req.path} - ${res.statusCode}`);
 			});
 			next();
 		});
@@ -506,7 +506,7 @@ export class WebHookListener {
 		const { id } = req.param;
 		const subscription = this._subscriptions.get(id);
 		if (subscription) {
-			const hubMode = req.query?.['hub.mode'];
+			const hubMode = req.query['hub.mode'] as string;
 			if (hubMode === 'subscribe') {
 				subscription._verify();
 				res.writeHead(202);
@@ -520,7 +520,7 @@ export class WebHookListener {
 				res.end(req.query['hub.challenge']);
 				this._logger.debug(`Successfully unsubscribed from hook: ${id}`);
 			} else if (hubMode === 'denied') {
-				this._logger.error(`Subscription denied to hook: ${id} (${req.query['hub.reason']})`);
+				this._logger.error(`Subscription denied to hook: ${id} (${req.query['hub.reason'] as string})`);
 				res.writeHead(200);
 				res.end();
 			} else {

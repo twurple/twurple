@@ -13,7 +13,7 @@ export class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<
 	 */
 	async getTotalCount(): Promise<number> {
 		const data =
-			this._currentData ||
+			this._currentData ??
 			((await this._fetchData({ query: { after: undefined } })) as HelixPaginatedResponseWithTotal<D>);
 		return data.total;
 	}

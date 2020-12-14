@@ -33,7 +33,7 @@ import { UserSubscription } from './UserSubscription';
  */
 @Cacheable
 export class UserApi extends BaseApi {
-	private readonly _userByNameCache: Map<string, CacheEntry<User>> = new Map();
+	private readonly _userByNameCache = new Map<string, CacheEntry<User>>();
 
 	/**
 	 * Retrieves the user data of the currently authenticated user.
@@ -51,6 +51,7 @@ export class UserApi extends BaseApi {
 	@Cached(3600)
 	async getUser(userId: UserIdResolvable): Promise<User> {
 		const userData = await this._client.callApi<UserData>({ url: `users/${extractUserId(userId)}` });
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (!userData) {
 			throw new HellFreezesOverError('Could not get authenticated user');
 		}

@@ -52,7 +52,11 @@ export type {
 } from './API/Helix/EventSub/HelixEventSubApi';
 
 export { HelixEventSubSubscription } from './API/Helix/EventSub/HelixEventSubSubscription';
-export type { HelixEventSubSubscriptionStatus } from './API/Helix/EventSub/HelixEventSubSubscription';
+export type {
+	HelixEventSubSubscriptionData,
+	HelixEventSubSubscriptionStatus,
+	HelixEventSubTransportData
+} from './API/Helix/EventSub/HelixEventSubSubscription';
 
 export { HelixExtensionTransaction } from './API/Helix/Extensions/HelixExtensionTransaction';
 export type { HelixExtensionTransactionData } from './API/Helix/Extensions/HelixExtensionTransaction';

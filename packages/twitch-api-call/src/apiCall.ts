@@ -44,7 +44,7 @@ export async function callTwitchApiRaw(
 	}
 
 	const requestOptions: RequestInit = {
-		method: options.method || 'GET',
+		method: options.method ?? 'GET',
 		headers,
 		body
 	};

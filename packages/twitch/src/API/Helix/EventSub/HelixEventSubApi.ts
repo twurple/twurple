@@ -84,7 +84,7 @@ export class HelixEventSubApi extends BaseApi {
 	async createSubscription(
 		type: string,
 		version: string,
-		condition: object,
+		condition: Record<string, unknown>,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({

@@ -26,7 +26,7 @@ export class HelixHypeTrainEvent {
 	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private _data: HelixHypeTrainEventData, client: ApiClient) {
+	constructor(private readonly _data: HelixHypeTrainEventData, client: ApiClient) {
 		this._client = client;
 	}
 

@@ -143,11 +143,11 @@ export async function getValidTokenFromProvider(
 			const tokenInfo = await getTokenInfo(accessToken.accessToken);
 			return { accessToken, tokenInfo };
 		}
-	} catch (e) {
+	} catch (e: unknown) {
 		if (e instanceof InvalidTokenError) {
 			lastTokenError = e;
 		} else {
-			logger?.err(`Retrieving an access token failed: ${e.message}`);
+			logger?.err(`Retrieving an access token failed: ${(e as Error).message}`);
 		}
 	}
 
@@ -162,14 +162,14 @@ export async function getValidTokenFromProvider(
 				const tokenInfo = await getTokenInfo(newToken.accessToken);
 				return { accessToken: newToken, tokenInfo };
 			}
-		} catch (e) {
+		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				logger?.err(`Refreshing the access token failed: ${e.message}`);
+				logger?.err(`Refreshing the access token failed: ${(e as Error).message}`);
 			}
 		}
 	}
 
-	throw lastTokenError || new Error('Could not retrieve a valid token');
+	throw lastTokenError ?? new Error('Could not retrieve a valid token');
 }

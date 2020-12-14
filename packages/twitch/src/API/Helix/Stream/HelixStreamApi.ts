@@ -295,7 +295,7 @@ export class HelixStreamApi extends BaseApi {
 
 		return {
 			data: flatten(result.data.map(HelixStreamApi._mapGetStreamMarkersResult.bind(this._client))),
-			cursor: result.pagination && result.pagination.cursor
+			cursor: result.pagination?.cursor
 		};
 	}
 

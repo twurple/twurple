@@ -14,7 +14,7 @@ export class AccessToken {
 
 	/** @private */
 	constructor(private readonly _data: AccessTokenData, obtainmentDate?: Date) {
-		this._obtainmentDate = obtainmentDate || new Date();
+		this._obtainmentDate = obtainmentDate ?? new Date();
 	}
 
 	/**
@@ -55,6 +55,6 @@ export class AccessToken {
 	 * The scope the access token is valid for, i.e. what this token enables you to do.
 	 */
 	get scope(): string[] {
-		return this._data.scope || [];
+		return this._data.scope ?? [];
 	}
 }

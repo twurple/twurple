@@ -375,8 +375,7 @@ export class HelixChannelPointsApi extends BaseApi {
 	}
 
 	private static _transformRewardData(data: HelixCreateCustomRewardData | HelixUpdateCustomRewardData) {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const result: any = {
+		const result: Record<string, unknown> = {
 			title: data.title,
 			cost: data.cost,
 			prompt: data.prompt,

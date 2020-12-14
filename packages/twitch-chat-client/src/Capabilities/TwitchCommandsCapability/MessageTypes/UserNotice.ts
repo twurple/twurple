@@ -22,7 +22,7 @@ export class UserNotice extends Message<UserNotice> {
 	}
 
 	get channelId(): string | null {
-		return this._tags.get('room-id') || null;
+		return this._tags.get('room-id') ?? null;
 	}
 
 	get emoteOffsets(): Map<string, string[]> {

@@ -117,9 +117,9 @@ export class ChatClient extends IrcClient {
 	private _authToken?: AccessToken | null;
 	private _authVerified = false;
 	private _authFailureMessage?: string;
-	private _authRetryTimer?: Iterator<number>;
+	private _authRetryTimer?: Iterator<number, never>;
 
-	private _chatLogger: Logger;
+	private readonly _chatLogger: Logger;
 
 	/**
 	 * Fires when a user is timed out from a channel.
@@ -690,7 +690,7 @@ export class ChatClient extends IrcClient {
 			webSocket: options.webSocket !== false,
 			logger: {
 				minLevel: options.logLevel,
-				...(options.logger ?? {})
+				...options.logger ?? {}
 			},
 			nonConformingCommands: ['004'],
 			channels: options.channels
@@ -709,7 +709,7 @@ export class ChatClient extends IrcClient {
 			name: 'twitch-chat',
 			emoji: true,
 			minLevel: options.logLevel,
-			...(options.logger ?? {})
+			...options.logger ?? {}
 		});
 
 		this._authProvider = authProvider;
@@ -818,7 +818,7 @@ export class ChatClient extends IrcClient {
 				params: { channel, message },
 				tags
 			} = userNotice;
-			const messageType = tags.get('msg-id');
+			const messageType = tags.get('msg-id')!;
 
 			switch (messageType) {
 				case 'sub':
@@ -1009,7 +1009,7 @@ export class ChatClient extends IrcClient {
 				// ban
 				case 'already_banned': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onBanResult, channel, user, messageType);
 					}
@@ -1029,7 +1029,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_ban_admin':
 				case 'bad_ban_global_mod':
 				case 'bad_ban_staff': {
-					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
+					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(message);
 					if (match) {
 						this.emit(this._onBanResult, channel, match[1].toLowerCase(), messageType);
 					}
@@ -1038,7 +1038,7 @@ export class ChatClient extends IrcClient {
 
 				case 'ban_success': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onBanResult, channel, user);
 					}
@@ -1048,7 +1048,7 @@ export class ChatClient extends IrcClient {
 				// unban
 				case 'bad_unban_no_ban': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnbanResult, channel, user, messageType);
 					}
@@ -1057,7 +1057,7 @@ export class ChatClient extends IrcClient {
 
 				case 'unban_success': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnbanResult, channel, user);
 					}
@@ -1155,7 +1155,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_mod_banned':
 				case 'bad_mod_mod': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onModResult, channel, user, messageType);
 					}
@@ -1163,7 +1163,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'mod_success': {
-					const match = message.match(/^You have added (\w+) /);
+					const match = /^You have added (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onModResult, channel, match[1]);
 					}
@@ -1173,7 +1173,7 @@ export class ChatClient extends IrcClient {
 				// unmod
 				case 'bad_unmod_mod': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnmodResult, channel, user, messageType);
 					}
@@ -1181,7 +1181,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'unmod_success': {
-					const match = message.match(/^You have removed (\w+) /);
+					const match = /^You have removed (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onUnmodResult, channel, match[1]);
 					}
@@ -1261,7 +1261,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'bad_timeout_mod': {
-					const match = message.match(/^You cannot timeout moderator (\w+) unless/);
+					const match = /^You cannot timeout moderator (\w+) unless/.exec(message);
 					if (match) {
 						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
 					}
@@ -1271,7 +1271,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_timeout_admin':
 				case 'bad_timeout_global_mod':
 				case 'bad_timeout_staff': {
-					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
+					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(message);
 					if (match) {
 						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
 					}
@@ -1282,7 +1282,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_vip_grantee_banned':
 				case 'bad_vip_grantee_already_vip': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onVipResult, channel, user, messageType);
 					}
@@ -1290,7 +1290,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'vip_success': {
-					const match = message.match(/^You have added (\w+) /);
+					const match = /^You have added (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onVipResult, channel, match[1]);
 					}
@@ -1300,7 +1300,7 @@ export class ChatClient extends IrcClient {
 				// unvip
 				case 'bad_unvip_grantee_not_vip': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnvipResult, channel, user, messageType);
 					}
@@ -1308,7 +1308,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'unvip_success': {
-					const match = message.match(/^You have removed (\w+) /);
+					const match = /^You have removed (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onUnvipResult, channel, match[1]);
 					}
@@ -1389,7 +1389,7 @@ export class ChatClient extends IrcClient {
 						}
 						const secs = this._authRetryTimer.next().value;
 						if (secs !== 0) {
-							this._chatLogger?.info(`Retrying authentication in ${secs} seconds`);
+							this._chatLogger.info(`Retrying authentication in ${secs} seconds`);
 						}
 						await delay(secs * 1000);
 						await this.reconnect();
@@ -2081,7 +2081,7 @@ export class ChatClient extends IrcClient {
 	 * Disconnects from the chat server.
 	 */
 	async quit(): Promise<void> {
-		this._connection?.disconnect().then(() => {
+		void this._connection.disconnect().then(() => {
 			this._chatLogger.debug('Finished cleaning up old connection');
 		});
 	}
@@ -2122,11 +2122,12 @@ export class ChatClient extends IrcClient {
 		}
 	}
 
-	removeListener(): void;
-	removeListener(id: Listener): void;
+	removeListener(id?: Listener): void;
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	removeListener(event: Function, listener?: Function): void;
 
-	removeListener(...args: [] | [Listener] | [Function, Function?]): void {
+	// eslint-disable-next-line @typescript-eslint/ban-types
+	removeListener(...args: [Listener?] | [Function, Function?]): void {
 		// @ts-expect-error TS2557 - doesn't recognize tuple unions as overload possibilities
 		super.removeListener(...args);
 		if (args.length === 0) {
@@ -2165,15 +2166,15 @@ export class ChatClient extends IrcClient {
 			if (this._authToken) {
 				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
-					nick: token.userName!
+					nick: token.userName
 				});
 				return `oauth:${this._authToken.accessToken}`;
 			}
-		} catch (e) {
+		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+				this._chatLogger.err(`Retrieving an access token failed: ${(e as Error).message}`);
 			}
 		}
 
@@ -2185,20 +2186,20 @@ export class ChatClient extends IrcClient {
 			if (this._authToken) {
 				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
-					nick: token.userName!
+					nick: token.userName
 				});
 				return `oauth:${this._authToken.accessToken}`;
 			}
-		} catch (e) {
+		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+				this._chatLogger.err(`Refreshing the access token failed: ${(e as Error).message}`);
 			}
 		}
 
 		this._authVerified = false;
-		throw lastTokenError || new Error('Could not retrieve a valid token');
+		throw lastTokenError ?? new Error('Could not retrieve a valid token');
 	}
 
 	private static _generateJustinfanNick() {
@@ -2214,7 +2215,7 @@ export class ChatClient extends IrcClient {
 				// 1 = who hosted
 				// 2 = auto-host or not
 				// 3 = how many viewers (not always present)
-				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
+				const match = ChatClient.HOST_MESSAGE_REGEX.exec(message);
 				if (match) {
 					this.emit(
 						this.onHosted,
@@ -2231,7 +2232,7 @@ export class ChatClient extends IrcClient {
 	}
 
 	// yes, this is just fibonacci with a limit
-	private static *_getReauthenticateWaitTime(): IterableIterator<number> {
+	private static *_getReauthenticateWaitTime(): Iterator<number, never> {
 		let current = 0;
 		let next = 1;
 

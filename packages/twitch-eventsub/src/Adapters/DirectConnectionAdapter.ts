@@ -59,6 +59,7 @@ export class DirectConnectionAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
+	// eslint-disable-next-line @typescript-eslint/class-literal-property-style
 	get listenUsingSsl(): boolean {
 		return true;
 	}

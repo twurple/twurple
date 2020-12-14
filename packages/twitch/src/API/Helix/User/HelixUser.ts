@@ -182,7 +182,7 @@ export class HelixUser {
 	 * @param broadcaster The broadcaster to check the user's follow to.
 	 */
 	async follows(broadcaster: UserIdResolvable): Promise<boolean> {
-		return (await this.getFollowTo(broadcaster)) !== null;
+		return await this.getFollowTo(broadcaster) !== null;
 	}
 
 	/**
@@ -217,7 +217,7 @@ export class HelixUser {
 	 */
 	async isSubscribedTo(broadcaster: UserIdResolvable): Promise<boolean> {
 		try {
-			return (await this.getSubscriptionTo(broadcaster)) !== null;
+			return await this.getSubscriptionTo(broadcaster) !== null;
 		} catch (e) {
 			if (e instanceof NoSubscriptionProgramError) {
 				return false;

@@ -51,7 +51,7 @@ export class StreamApi extends BaseApi {
 	): Promise<Stream[]> {
 		const query: Record<string, string | undefined> = {
 			limit: limit.toString(),
-			channel: channels ? (typeof channels === 'string' ? channels : channels.join(',')) : undefined,
+			channel: typeof channels === 'string' ? channels : channels?.join(','),
 			game,
 			language: languageCode,
 			stream_type: type,

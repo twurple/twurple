@@ -89,7 +89,8 @@ export class HelixUserApi extends BaseApi {
 			scope: withEmail ? 'user:read:email' : ''
 		});
 
-		if (!result.data || !result.data.length) {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (!result.data?.length) {
 			throw new HellFreezesOverError('Could not get authenticated user');
 		}
 
