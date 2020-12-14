@@ -29,7 +29,7 @@
   "dependencies": {
     "@d-fischer/connection": "^6.3.1",
     "@d-fischer/logger": "^2.1.1",
-    "@d-fischer/shared-utils": "^2.4.1",
+    "@d-fischer/shared-utils": "^2.4.2",
     "@d-fischer/typed-event-emitter": "^3.1.1"
   },
   "devDependencies": {

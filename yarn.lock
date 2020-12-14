@@ -227,6 +227,14 @@
     "@types/node" "^14.11.2"
     tslib "^2.0.3"
 
+"@d-fischer/shared-utils@^2.4.2":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-2.4.2.tgz#c93a8619a5fbd45aac41a0c12064cf6614697582"
+  integrity sha512-th2EGPG8c6hrAPA0PmRQlwvWIVDDj+/1jitL+Dhoi414Zl6fKVKfm44xsLqIvtFm5pGJBXKQSrP+Lcyj7Akxlg==
+  dependencies:
+    "@types/node" "^14.11.2"
+    tslib "^2.0.3"
+
 "@d-fischer/typed-event-emitter@^3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@d-fischer/typed-event-emitter/-/typed-event-emitter-3.1.1.tgz#5858ce3c18fdb1c2ceaf3c6635d87c5f2a0ef02d"
