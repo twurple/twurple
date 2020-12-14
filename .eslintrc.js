@@ -71,7 +71,7 @@ const memberNames = [
 	'^can_cheer$',
 	'^show_in_bits_card$',
 	'^last_updated$',
-	'^cooldown$',
+	'^global_cooldown$',
 	// HTTP
 	'^Accept$'
 ];
