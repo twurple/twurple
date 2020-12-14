@@ -365,7 +365,7 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent a Channel Points Reward being added to a channel.
+	 * Subscribes to events that represent a Channel Points reward being added to a channel.
 	 *
 	 * @param user The user for which to get notifications for when they add a reward to their channel.
 	 * @param handler The function that will be called for any new notifications.
@@ -385,7 +385,7 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent a Channel Points Reward being updated.
+	 * Subscribes to events that represent a Channel Points reward being updated.
 	 *
 	 * @param user The user for which to get notifications for when they update a reward.
 	 * @param handler The function that will be called for any new notifications.
@@ -484,7 +484,7 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent progress in Hype Train in a channel
+	 * Subscribes to events that represent progress in a Hype Train in a channel.
 	 *
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
@@ -504,7 +504,7 @@ export class EventSubListener {
 	}
 
 	/**
-	 * Subscribes to events that represent the end of Hype Train in a channel.
+	 * Subscribes to events that represent the end of a Hype Train in a channel.
 	 *
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
@@ -526,7 +526,7 @@ export class EventSubListener {
 	/**
 	 * Subscribes to events that represent a user revoking authorization from an application.
 	 *
-	 * @param clientId The Client ID for which to get notifications about authorization revokations.
+	 * @param clientId The Client ID for which to get notifications about authorization revocations.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	async subscribeToUserAuthorizationRevokeEvents(

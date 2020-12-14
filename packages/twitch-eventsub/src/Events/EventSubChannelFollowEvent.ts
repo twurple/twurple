@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubChannelFollowEventData {
 	user_id: string;
 	user_name: string;
@@ -15,6 +16,7 @@ export class EventSubChannelFollowEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelFollowEventData, client: ApiClient) {
 		this._client = client;
 	}
@@ -48,7 +50,7 @@ export class EventSubChannelFollowEvent {
 	}
 
 	/**
-	 * The displayName of the broadcaster.
+	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
 		return this._data.broadcaster_user_name;

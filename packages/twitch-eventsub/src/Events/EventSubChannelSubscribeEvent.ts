@@ -2,6 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
 type EventSubChannelSubscribeEventTier = '1000' | '2000' | '3000';
+/** @private */
 export interface EventSubChannelSubscribeEventData {
 	user_id: string;
 	user_name: string;
@@ -18,6 +19,7 @@ export class EventSubChannelSubscribeEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelSubscribeEventData, client: ApiClient) {
 		this._client = client;
 	}

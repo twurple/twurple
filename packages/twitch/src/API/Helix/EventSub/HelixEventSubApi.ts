@@ -208,6 +208,12 @@ export class HelixEventSubApi extends BaseApi {
 		);
 	}
 
+	/**
+	 * Subscribe to events that represent a user cheering bits to a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to cheer events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelCheerEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
@@ -220,6 +226,12 @@ export class HelixEventSubApi extends BaseApi {
 		);
 	}
 
+	/**
+	 * Subscribe to events that represent a user being banned in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to ban events for.
+	 * @param transport The transport option.
+	 */
 	async subscribeToChannelBanEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
@@ -232,6 +244,12 @@ export class HelixEventSubApi extends BaseApi {
 		);
 	}
 
+	/**
+	 * Subscribe to events that represent a user being unbanned in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to unban events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelUnbanEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
@@ -244,6 +262,12 @@ export class HelixEventSubApi extends BaseApi {
 		);
 	}
 
+	/**
+	 * Subscribe to events that represent a Channel Points reward being added to a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to reward add events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelRewardAddEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
@@ -256,90 +280,164 @@ export class HelixEventSubApi extends BaseApi {
 		);
 	}
 
+	/**
+	 * Subscribe to events that represent a Channel Points reward being updated in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to reward update events for.
+	 * @param transport The transport options
+	 */
 	async subscribeToChannelRewardUpdateEvents(
 		broadcaster: UserIdResolvable,
-		transport: HelixEventSubTransportOptions,
-		rewardId?: string
+		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		if (rewardId)
-			return this.createSubscription(
-				'channel.channel_points_custom_reward.update',
-				'1',
-				{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
-				transport
-			);
-		else
-			return this.createSubscription(
-				'channel.channel_points_custom_reward.update',
-				'1',
-				{ broadcaster_user_id: extractUserId(broadcaster) },
-				transport
-			);
+		return this.createSubscription(
+			'channel.channel_points_custom_reward.update',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
 	}
 
+	/**
+	 * Subscribe to events that represent a specific Channel Points reward being updated.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to reward update events for.
+	 * @param rewardId The ID of the reward you want to listen to update events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelRewardUpdateEventsForReward(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.channel_points_custom_reward.update',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a Channel Points reward being removed from a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to reward remove events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelRewardRemoveEvents(
 		broadcaster: UserIdResolvable,
-		transport: HelixEventSubTransportOptions,
-		rewardId?: string
+		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		if (rewardId)
-			return this.createSubscription(
-				'channel.channel_points_custom_reward.remove',
-				'1',
-				{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
-				transport
-			);
-		else
-			return this.createSubscription(
-				'channel.channel_points_custom_rewards.remove',
-				'1',
-				{ broadcaster_user_id: extractUserId(broadcaster) },
-				transport
-			);
+		return this.createSubscription(
+			'channel.channel_points_custom_rewards.remove',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
 	}
 
+	/**
+	 * Subscribe to events that represent a specific Channel Points reward being removed from a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to reward remove events for.
+	 * @param rewardId The ID of the reward you want to listen to remove events for.
+	 * @param transport The transport events.
+	 */
+	async subscribeToChannelRewardRemoveEventsForReward(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.channel_points_custom_reward.remove',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a Channel Points reward being redeemed.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to redemption events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelRedemptionAddEvents(
 		broadcaster: UserIdResolvable,
-		transport: HelixEventSubTransportOptions,
-		rewardId?: string
+		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		if (rewardId)
-			return this.createSubscription(
-				'channel.channel_points_custom_reward_redemption.add',
-				'1',
-				{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
-				transport
-			);
-		else
-			return this.createSubscription(
-				'channel.channel_points_custom_reward_redemption.add',
-				'1',
-				{ broadcaster_user_id: extractUserId(broadcaster) },
-				transport
-			);
+		return this.createSubscription(
+			'channel.channel_points_custom_reward_redemption.add',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
 	}
 
+	/**
+	 * Subscribe to events that represent a specific Channel Points reward being redeemed.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to redemption events for.
+	 * @param rewardId The ID of the reward you want to listen to redemption events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelRedemptionAddEventsForReward(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.channel_points_custom_reward_redemption.add',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a Channel Points redemption being updated.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to redemption update events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelRedemptionUpdateEvents(
 		broadcaster: UserIdResolvable,
-		transport: HelixEventSubTransportOptions,
-		rewardId?: string
+		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		if (rewardId)
-			return this.createSubscription(
-				'channel.channel_points_custom_reward_redemption.update',
-				'1',
-				{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
-				transport
-			);
-		else
-			return this.createSubscription(
-				'channel.channel_points_custom_reward_redemption.update',
-				'1',
-				{ broadcaster_user_id: extractUserId(broadcaster) },
-				transport
-			);
+		return this.createSubscription(
+			'channel.channel_points_custom_reward_redemption.update',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
 	}
 
+	/**
+	 * Subscribe to events that represent a specific Channel Points reward's redemption being updated.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to redemption update events for.
+	 * @param rewardId The ID of the reward you want to listen to redemption updates for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelRedemptionUpdateEventsForReward(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.channel_points_custom_reward_redemption.update',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent the beginning of a Hype Train event in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to Hype train begin events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelHypeTrainBeginEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
@@ -352,6 +450,12 @@ export class HelixEventSubApi extends BaseApi {
 		);
 	}
 
+	/**
+	 * Subscribe to events that represent progress towards the Hype Train goal.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to Hype Train progress events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelHypeTrainProgressEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
@@ -364,6 +468,12 @@ export class HelixEventSubApi extends BaseApi {
 		);
 	}
 
+	/**
+	 * Subscribe to events that represent the end of a Hype Train event.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to Hype Train end events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToChannelHypeTrainEndEvents(
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
@@ -376,6 +486,12 @@ export class HelixEventSubApi extends BaseApi {
 		);
 	}
 
+	/**
+	 * Subscribe to events that represent a user revoking their authorization from an application.
+	 *
+	 * @param clientId The Client ID for the application you want to listen to authorization revoke events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToUserAuthorizationRevokeEvents(
 		clientId: string,
 		transport: HelixEventSubTransportOptions
@@ -383,6 +499,12 @@ export class HelixEventSubApi extends BaseApi {
 		return this.createSubscription('user.authorization.revoke', '1', { client_id: clientId }, transport);
 	}
 
+	/**
+	 * Subscribe to events that represent a user updating their account details.
+	 *
+	 * @param user The user you want to listen to user update events for.
+	 * @param transport The transport options.
+	 */
 	async subscribeToUserUpdateEvents(
 		user: UserIdResolvable,
 		transport: HelixEventSubTransportOptions

@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubChannelUpdateEventData {
 	user_id: string;
 	user_name: string;
@@ -17,6 +18,7 @@ export class EventSubChannelUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelUpdateEventData, client: ApiClient) {
 		this._client = client;
 	}
@@ -70,6 +72,9 @@ export class EventSubChannelUpdateEvent {
 		return this._data.category_name;
 	}
 
+	/**
+	 * Whether the channel is flagged as mature
+	 */
 	get isMature(): boolean {
 		return this._data.isMature;
 	}

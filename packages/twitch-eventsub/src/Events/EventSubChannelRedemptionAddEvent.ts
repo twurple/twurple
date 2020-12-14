@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubChannelRedemptionAddEventData {
 	id: string;
 	broadcaster_user_id: string;
@@ -25,6 +26,7 @@ export class EventSubChannelRedemptionAddEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelRedemptionAddEventData, client: ApiClient) {
 		this._client = client;
 	}

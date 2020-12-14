@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubChannelBanEventData {
 	user_id: string;
 	user_name: string;
@@ -15,6 +16,7 @@ export class EventSubChannelBanEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelBanEventData, client: ApiClient) {
 		this._client = client;
 	}

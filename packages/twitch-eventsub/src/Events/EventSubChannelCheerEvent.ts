@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubChannelCheerEventData {
 	is_anonymous: boolean;
 	user_id: string | null;
@@ -18,6 +19,7 @@ export class EventSubChannelCheerEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelCheerEventData, client: ApiClient) {
 		this._client = client;
 	}

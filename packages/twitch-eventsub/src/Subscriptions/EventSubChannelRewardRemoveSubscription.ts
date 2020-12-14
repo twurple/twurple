@@ -11,7 +11,8 @@ export class EventSubChannelRewardRemoveSubscription extends EventSubSubscriptio
 	constructor(
 		handler: (data: EventSubChannelRewardRemoveEvent) => void,
 		client: EventSubListener,
-		private readonly _userId: string
+		private readonly _userId: string,
+		private readonly _rewardId?: string
 	) {
 		super(handler, client);
 	}
@@ -25,9 +26,17 @@ export class EventSubChannelRewardRemoveSubscription extends EventSubSubscriptio
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToChannelRewardRemoveEvents(
-			this._userId,
-			await this._getTransportOptions()
-		);
+		if (this._rewardId) {
+			return this._client._apiClient.helix.eventSub.subscribeToChannelRewardRemoveEventsForReward(
+				this._userId,
+				this._rewardId,
+				await this._getTransportOptions()
+			);
+		} else {
+			return this._client._apiClient.helix.eventSub.subscribeToChannelRewardRemoveEvents(
+				this._userId,
+				await this._getTransportOptions()
+			);
+		}
 	}
 }

@@ -3,6 +3,7 @@ import type { ApiClient, HelixUser } from 'twitch';
 
 type EventSubStreamOnlineEventStreamType = 'live' | 'playlist' | 'watch_party' | 'premiere' | 'rerun';
 
+/** @private */
 export interface EventSubStreamOnlineEventData {
 	id: string;
 	broadcaster_user_id: string;
@@ -17,6 +18,7 @@ export class EventSubStreamOnlineEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubStreamOnlineEventData, client: ApiClient) {
 		this._client = client;
 	}

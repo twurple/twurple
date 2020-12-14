@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubUserUpdateEventData {
 	user_id: string;
 	user_name: string;
@@ -15,6 +16,7 @@ export class EventSubUserUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubUserUpdateEventData, client: ApiClient) {
 		this._client = client;
 	}
@@ -44,11 +46,7 @@ export class EventSubUserUpdateEvent {
 	 * The user's email address, if authorized
 	 */
 	get userEmail(): string | null {
-		if (this._data.email) {
-			return this._data.email;
-		} else {
-			return null;
-		}
+		return this._data.email ?? null;
 	}
 
 	/**

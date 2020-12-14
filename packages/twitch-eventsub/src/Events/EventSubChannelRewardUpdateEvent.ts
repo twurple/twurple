@@ -2,6 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
 export interface EventSubChannelRewardUpdateEventData {
+	/** @private */
 	id: string;
 	broadcaster_user_id: string;
 	broadcaster_user_name: string;
@@ -17,16 +18,16 @@ export interface EventSubChannelRewardUpdateEventData {
 	redemptions_redeemed_current_stream: number | null;
 	max_per_stream: EventSubMaxStreamData;
 	max_per_user_per_stream: EventSubMaxStreamData;
-	global_cooldown: EventSubCooldownData; // eslint-disable-line @typescript-eslint/naming-convention
+	global_cooldown: EventSubCoolDownData;
 	background_color: string;
 	image: EventSubRewardImageData;
-	default_image: EventSubRewardImageData;
+	default_image: Required<EventSubRewardImageData>;
 }
 interface EventSubMaxStreamData {
 	is_enabled: boolean;
 	value: number | null;
 }
-interface EventSubCooldownData {
+interface EventSubCoolDownData {
 	is_enabled: boolean;
 	seconds: number | null;
 }
@@ -43,12 +44,13 @@ export class EventSubChannelRewardUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelRewardUpdateEventData, client: ApiClient) {
 		this._client = client;
 	}
 
 	/**
-	 * The ID of the Reward added
+	 * The ID of the reward added
 	 */
 	get id(): string {
 		return this._data.id;
@@ -133,9 +135,12 @@ export class EventSubChannelRewardUpdateEvent {
 	/**
 	 * When the cooldown expires
 	 */
-	get cooldownExpiresAt(): Date | null {
-		if (this._data.cooldown_expires_at === null) return null;
-		else return new Date(this._data.cooldown_expires_at);
+	get cooldownExpiryDate(): Date | null {
+		if (this._data.cooldown_expires_at === null) {
+			return null;
+		} else {
+			return new Date(this._data.cooldown_expires_at);
+		}
 	}
 
 	/**

@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubChannelUnbanEventData {
 	user_id: string;
 	user_name: string;
@@ -15,6 +16,7 @@ export class EventSubChannelUnbanEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelUnbanEventData, client: ApiClient) {
 		this._client = client;
 	}
@@ -33,7 +35,9 @@ export class EventSubChannelUnbanEvent {
 		return this._data.user_name;
 	}
 
-	/** Retrieves more information about the unbanned user */
+	/**
+	 * Retrieves more information about the unbanned user
+	 */
 	async getUser(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.user_id))!;
 	}

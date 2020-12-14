@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubChannelHypeTrainBeginEventData {
 	broadcaster_user_id: string;
 	broadcaster_user_name: string;
@@ -26,6 +27,7 @@ export class EventSubChannelHypeTrainBeginEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubChannelHypeTrainBeginEventData, client: ApiClient) {
 		this._client = client;
 	}
@@ -89,14 +91,14 @@ export class EventSubChannelHypeTrainBeginEvent {
 	/**
 	 * The time when the hype train started
 	 */
-	get startedAt(): Date {
+	get startDate(): Date {
 		return new Date(this._data.started_at);
 	}
 
 	/**
 	 * The time when the hype train is expected to expire, unless a change of level occurs to extend the expiration
 	 */
-	get expiresAt(): Date {
+	get expiryDate(): Date {
 		return new Date(this._data.expires_at);
 	}
 }

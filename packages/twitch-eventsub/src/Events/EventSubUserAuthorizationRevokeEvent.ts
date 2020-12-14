@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubUserAuthorizationRevokeEventData {
 	client_id: string;
 	user_id: string;
@@ -13,6 +14,7 @@ export class EventSubUserAuthorizationRevokeEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(private readonly _data: EventSubUserAuthorizationRevokeEventData, client: ApiClient) {
 		this._client = client;
 	}
