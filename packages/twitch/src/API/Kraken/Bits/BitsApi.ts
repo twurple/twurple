@@ -1,4 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -17,6 +18,7 @@ import { CheermoteList } from './CheermoteList';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'BitsApi')
 export class BitsApi extends BaseApi {
 	/**
 	 * Retrieves global and channel cheermotes.

@@ -1,3 +1,5 @@
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { VideoData } from './Video';
 import { Video } from './Video';
@@ -17,8 +19,9 @@ export interface CreatedVideoData {
 /**
  * A Twitch video that was just created.
  */
+@rtfm<CreatedVideo>('twitch', 'CreatedVideo', 'id')
 export class CreatedVideo extends Video {
-	private readonly _uploadData: CreatedVideoUploadData;
+	@Enumerable(false) private readonly _uploadData: CreatedVideoUploadData;
 
 	/** @private */
 	constructor(data: CreatedVideoData, client: ApiClient) {

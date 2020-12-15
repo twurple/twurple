@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { HelixUser } from '../User/HelixUser';
 import type { ApiClient } from '../../../ApiClient';
 
@@ -12,12 +13,14 @@ export interface HelixBanData {
 /**
  * Information about the ban of a user.
  */
+@rtfm<HelixBan>('twitch', 'HelixBan', 'userId')
 export class HelixBan {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixBanData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixBanData, client: ApiClient) {
+	constructor(data: HelixBanData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

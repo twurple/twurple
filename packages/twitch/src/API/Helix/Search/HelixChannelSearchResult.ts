@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixGame } from '../Game/HelixGame';
 import type { HelixTag } from '../Tag/HelixTag';
@@ -20,12 +21,14 @@ export interface HelixChannelSearchResultData {
 /**
  * The result of a channel search.
  */
+@rtfm<HelixChannelSearchResult>('twitch', 'HelixChannelSearchResult', 'id')
 export class HelixChannelSearchResult {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixChannelSearchResultData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: HelixChannelSearchResultData, client: ApiClient) {
+	constructor(data: HelixChannelSearchResultData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

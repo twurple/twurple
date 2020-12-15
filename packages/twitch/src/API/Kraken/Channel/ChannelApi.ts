@@ -1,5 +1,6 @@
 import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
 import { HttpStatusCodeError } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
@@ -54,6 +55,7 @@ export interface ChannelUpdateData {
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'ChannelApi')
 export class ChannelApi extends BaseApi {
 	/**
 	 * Gets the channel the client is logged in to.

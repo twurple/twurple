@@ -1,4 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -17,6 +18,7 @@ import { Stream, StreamType } from './Stream';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'StreamApi')
 export class StreamApi extends BaseApi {
 	/**
 	 * Retrieves the current stream on the given channel.

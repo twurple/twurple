@@ -2,6 +2,7 @@ import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, UserIdResolvable } from 'twitch';
 import { extractUserId, InvalidTokenError } from 'twitch';
+import { rtfm } from 'twitch-common';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import type { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
 import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
@@ -44,6 +45,7 @@ interface SingleUserPubSubClientOptions {
 /**
  * A higher level PubSub client attached to a single user.
  */
+@rtfm('twitch-pubsub-client', 'SingleUserPubSubClient')
 export class SingleUserPubSubClient {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _pubSubClient: BasicPubSubClient;

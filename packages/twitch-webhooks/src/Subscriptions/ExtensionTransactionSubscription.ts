@@ -1,11 +1,13 @@
 import type { HelixExtensionTransactionData, HelixResponse } from 'twitch';
 import { HelixExtensionTransaction } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
  * @private
  */
+@rtfm<ExtensionTransactionSubscription>('twitch-webhooks', 'ExtensionTransactionSubscription', 'id')
 export class ExtensionTransactionSubscription extends Subscription<HelixExtensionTransaction> {
 	constructor(
 		handler: (data: HelixExtensionTransaction) => void,

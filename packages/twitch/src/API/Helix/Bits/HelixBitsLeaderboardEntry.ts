@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 
@@ -13,12 +14,14 @@ export interface HelixBitsLeaderboardEntryData {
 /**
  * A Bits leaderboard entry.
  */
+@rtfm<HelixBitsLeaderboardEntry>('twitch', 'HelixBitsLeaderboardEntry', 'userId')
 export class HelixBitsLeaderboardEntry {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixBitsLeaderboardEntryData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixBitsLeaderboardEntryData, client: ApiClient) {
+	constructor(data: HelixBitsLeaderboardEntryData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
@@ -51,7 +54,7 @@ export class HelixBitsLeaderboardEntry {
 	}
 
 	/**
-	 * Retrieves the user that's on this place on the leaderboard.
+	 * Retrieves the user of entry on the leaderboard.
 	 */
 	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.user_id);

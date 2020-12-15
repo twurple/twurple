@@ -23,7 +23,7 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/shared-utils": "^2.4.2",
+    "@d-fischer/shared-utils": "^3.0.1",
     "twitch": "^4.4.0-pre.1",
     "twitch-chat-client": "^4.4.0-pre.1"
   },

@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type * as http from 'http';
 import * as https from 'https';
+import { rtfm } from 'twitch-common';
 import type { EventSubListenerCertificateConfig } from '../EventSubListener';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
@@ -31,6 +32,7 @@ export interface DirectConnectionAdapterConfig {
  *
  * @hideProtected
  */
+@rtfm('twitch-eventsub', 'DirectConnectionAdapter')
 export class DirectConnectionAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _port: number;

@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { User } from '../User/User';
 
@@ -18,12 +19,14 @@ export interface TeamData {
 /**
  * A Twitch team.
  */
+@rtfm<Team>('twitch', 'Team', 'id')
 export class Team {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	/** @private */ @Enumerable(false) protected readonly _data: TeamData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: TeamData, client: ApiClient) {
+	constructor(data: TeamData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

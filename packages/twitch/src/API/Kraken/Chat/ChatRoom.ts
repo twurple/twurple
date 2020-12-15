@@ -16,11 +16,12 @@ export interface ChatRoomData {
 }
 
 export class ChatRoom {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: ChatRoomData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: ChatRoomData, client: ApiClient) {
+	constructor(data: ChatRoomData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
@@ -67,14 +68,14 @@ export class ChatRoom {
 	}
 
 	/**
-	 * The minimum role allowed to enter this chat room.
+	 * The minimum role allowed to enter the chat room.
 	 */
 	get minRole(): ChatRoomRole {
 		return this._data.minimum_allowed_role;
 	}
 
 	/**
-	 * The name of the IRC channel that corresponds to this chat room.
+	 * The name of the IRC channel that corresponds to the chat room.
 	 */
 	get ircName(): string {
 		return `#chatrooms:${this._data.owner_id}:${this._data._id}`;

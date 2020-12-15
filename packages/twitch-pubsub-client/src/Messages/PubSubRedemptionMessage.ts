@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 export interface PubSubRedemptionMessageUserData {
 	id: string;
@@ -59,11 +60,14 @@ export interface PubSubRedemptionMessageData {
 /**
  * A message that informs about a user redeeming a custom channel points reward.
  */
+@rtfm<PubSubRedemptionMessage>('twitch-pubsub-client', 'PubSubRedemptionMessage', 'id')
 export class PubSubRedemptionMessage {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubRedemptionMessageData;
 
 	/** @private */
-	constructor(private readonly _data: PubSubRedemptionMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubRedemptionMessageData, apiClient: ApiClient) {
+		this._data = data;
 		this._apiClient = apiClient;
 	}
 

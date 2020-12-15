@@ -1,11 +1,14 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 
 /**
  * A user in chat.
  */
 @Cacheable
+@rtfm<ChatUser>('twitch-chat-client', 'ChatUser', 'userId')
 export class ChatUser {
-	private readonly _userData: Map<string, string>;
+	@Enumerable(false) private readonly _userData: Map<string, string>;
 	private readonly _userName: string;
 
 	/** @private */

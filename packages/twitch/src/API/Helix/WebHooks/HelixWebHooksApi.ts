@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -70,6 +71,7 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  * await api.helix.webHooks.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
+@rtfm('twitch', 'HelixWebHooksApi')
 export class HelixWebHooksApi extends BaseApi {
 	// TODO rename to getSubscriptionsPaginated and make sync
 	/**

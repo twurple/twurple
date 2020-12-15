@@ -16,6 +16,7 @@ import type {
 	UserIdResolvable
 } from 'twitch';
 import { extractUserId } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { WebHookListenerConfig } from './Adapters/LegacyAdapter';
 import { LegacyAdapter } from './Adapters/LegacyAdapter';
@@ -71,6 +72,7 @@ const numberRegex = /^\d+$/;
 /**
  * A WebHook listener you can track changes in various channel and user data with.
  */
+@rtfm('twitch-webhooks', 'WebHookListener')
 export class WebHookListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();

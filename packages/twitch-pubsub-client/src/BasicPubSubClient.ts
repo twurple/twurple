@@ -8,6 +8,7 @@ import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from 'twitch';
 import { HellFreezesOverError } from 'twitch';
 import { getValidTokenFromProvider } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
 import type { PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
@@ -36,6 +37,7 @@ type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTok
 /**
  * A client for the Twitch PubSub interface.
  */
+@rtfm('twitch-pubsub-client', 'BasicPubSubClient')
 export class BasicPubSubClient extends EventEmitter {
 	@Enumerable(false) private readonly _logger: Logger;
 

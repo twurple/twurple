@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import { ReverseProxyAdapter } from './ReverseProxyAdapter';
 
 /**
@@ -29,6 +30,7 @@ export interface EnvPortAdapterConfig {
  *
  * @hideProtected
  */
+@rtfm('twitch-eventsub', 'EnvPortAdapter')
 export class EnvPortAdapter extends ReverseProxyAdapter {
 	/**
 	 * Creates a new environment port connection adapter.

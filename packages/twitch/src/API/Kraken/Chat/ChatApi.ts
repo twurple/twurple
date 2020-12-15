@@ -1,4 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -19,6 +20,7 @@ import { ChatRoom } from './ChatRoom';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'ChatApi')
 export class ChatApi extends BaseApi {
 	/**
 	 * Retrieves a list of emotes for a given list of enote set IDs.
@@ -38,7 +40,7 @@ export class ChatApi extends BaseApi {
 			}
 		});
 
-		return new ChatEmoteList(data.emoticons, this._client);
+		return new ChatEmoteList(data.emoticons);
 	}
 
 	/**

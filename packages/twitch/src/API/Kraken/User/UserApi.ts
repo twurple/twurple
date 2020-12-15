@@ -2,6 +2,7 @@ import type { CacheEntry } from '@d-fischer/cache-decorators';
 import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
 import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
 import { HttpStatusCodeError } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
@@ -32,6 +33,7 @@ import { UserSubscription } from './UserSubscription';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'UserApi')
 export class UserApi extends BaseApi {
 	private readonly _userByNameCache = new Map<string, CacheEntry<User>>();
 

@@ -1,3 +1,6 @@
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+
 /** @private */
 export interface AccessTokenData {
 	access_token: string;
@@ -9,11 +12,14 @@ export interface AccessTokenData {
 /**
  * Represents the data of an OAuth access token returned by Twitch.
  */
+@rtfm('twitch-auth', 'AccessToken')
 export class AccessToken {
+	@Enumerable(false) private readonly _data: AccessTokenData;
 	private readonly _obtainmentDate: Date;
 
 	/** @private */
-	constructor(private readonly _data: AccessTokenData, obtainmentDate?: Date) {
+	constructor(data: AccessTokenData, obtainmentDate?: Date) {
+		this._data = data;
 		this._obtainmentDate = obtainmentDate ?? new Date();
 	}
 
@@ -52,7 +58,7 @@ export class AccessToken {
 	}
 
 	/**
-	 * The scope the access token is valid for, i.e. what this token enables you to do.
+	 * The scope the access token is valid for, i.e. what the token enables you to do.
 	 */
 	get scope(): string[] {
 		return this._data.scope ?? [];

@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { HelixResponse } from '../HelixResponse';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
@@ -53,6 +54,7 @@ export interface HelixBitsLeaderboardQuery {
  * const leaderboard = await api.helix.bits.getLeaderboard({ period: 'day' });
  * ```
  */
+@rtfm('twitch', 'HelixBitsApi')
 export class HelixBitsApi extends BaseApi {
 	/**
 	 * Retrieves a bits leaderboard of your channel.

@@ -1,4 +1,5 @@
 import { getPortPromise } from '@d-fischer/portfinder';
+import { Enumerable } from '@d-fischer/shared-utils';
 import { connect } from 'ngrok';
 import { ConnectionAdapter } from 'twitch-webhooks';
 
@@ -6,8 +7,8 @@ import { ConnectionAdapter } from 'twitch-webhooks';
  * A connection adapter that uses ngrok to make local testing easy.
  */
 export class NgrokAdapter extends ConnectionAdapter {
-	private _listenerPortPromise?: Promise<number>;
-	private _hostNamePromise?: Promise<string>;
+	@Enumerable(false) private _listenerPortPromise?: Promise<number>;
+	@Enumerable(false) private _hostNamePromise?: Promise<string>;
 
 	/**
 	 * Creates a new ngrok connection adapter.

@@ -1,4 +1,7 @@
 /** @private */
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+
 export interface TokenInfoData {
 	client_id: string;
 	login: string;
@@ -10,11 +13,14 @@ export interface TokenInfoData {
 /**
  * Information about an access token.
  */
+@rtfm<TokenInfo>('twitch-auth', 'TokenInfo', 'clientId')
 export class TokenInfo {
 	private readonly _obtainmentDate: Date;
+	@Enumerable(false) private readonly _data: TokenInfoData;
 
 	/** @private */
-	constructor(private readonly _data: TokenInfoData) {
+	constructor(data: TokenInfoData) {
+		this._data = data;
 		this._obtainmentDate = new Date();
 	}
 
@@ -40,7 +46,7 @@ export class TokenInfo {
 	}
 
 	/**
-	 * The scopes for which this token is valid.
+	 * The scopes for which the token is valid.
 	 */
 	get scopes(): string[] {
 		return this._data.scopes;

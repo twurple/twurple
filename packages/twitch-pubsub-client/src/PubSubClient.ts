@@ -2,6 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, UserIdResolvable } from 'twitch';
 import { extractUserId } from 'twitch';
 import { getValidTokenFromProvider, InvalidTokenTypeError } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import type { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
 import type { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
@@ -15,6 +16,7 @@ import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 /**
  * A high level PubSub client attachable to a multiple users.
  */
+@rtfm('twitch-pubsub-client', 'PubSubClient')
 export class PubSubClient {
 	@Enumerable(false) private readonly _rootClient: BasicPubSubClient;
 	@Enumerable(false) private readonly _userClients = new Map<string, SingleUserPubSubClient>();
@@ -77,7 +79,7 @@ Register one using:
 	/**
 	 * Adds a listener to bits events to the client.
 	 *
-	 * @param user The user this event will be subscribed for.
+	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a bits event happens in the user's channel.
 	 *
 	 * It receives a {@PubSubBitsMessage} object.
@@ -89,7 +91,7 @@ Register one using:
 	/**
 	 * Adds a listener to bits badge unlock events to the client.
 	 *
-	 * @param user The user this event will be subscribed for.
+	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a bit badge is unlocked in the user's channel.
 	 *
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
@@ -104,7 +106,7 @@ Register one using:
 	/**
 	 * Adds a listener to redemption events to the client.
 	 *
-	 * @param user The user this event will be subscribed for.
+	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
 	 *
 	 * It receives a {@PubSubBitsRedemptionMessage} object.
@@ -119,7 +121,7 @@ Register one using:
 	/**
 	 * Adds a listener to subscription events to the client.
 	 *
-	 * @param user The user this event will be subscribed for.
+	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a subscription event happens in the user's channel.
 	 *
 	 * It receives a {@PubSubSubscriptionMessage} object.
@@ -134,7 +136,7 @@ Register one using:
 	/**
 	 * Adds a listener to whisper events to the client.
 	 *
-	 * @param user The user this event will be subscribed for.
+	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a whisper is sent to the user.
 	 *
 	 * It receives a {@PubSubWhisperMessage} object.
@@ -149,8 +151,8 @@ Register one using:
 	/**
 	 * Adds a listener to mod action events to the client.
 	 *
-	 * @param user The user this event will be subscribed for.
-	 * @param channel The channel this event will be subscribed for.
+	 * @param user The user the event will be subscribed for.
+	 * @param channel The channel the event will be subscribed for.
 	 * @param callback A function to be called when a mod action event is sent to the user.
 	 *
 	 * It receives a {@PubSubChatModActionMessage} object.

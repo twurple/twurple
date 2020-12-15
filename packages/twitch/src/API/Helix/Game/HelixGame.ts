@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 
 export interface HelixGameData {
@@ -10,12 +11,14 @@ export interface HelixGameData {
 /**
  * A game as displayed on Twitch.
  */
+@rtfm<HelixGame>('twitch', 'HelixGame', 'id')
 export class HelixGame {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixGameData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixGameData, client: ApiClient) {
+	constructor(data: HelixGameData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

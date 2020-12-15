@@ -3,6 +3,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { TwitchApiCallOptions } from 'twitch-api-call';
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../ApiClient';
 import type { HelixPaginatedResponse } from './HelixResponse';
 
@@ -23,6 +24,7 @@ if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
  * }
  * ```
  */
+@rtfm('twitch', 'HelixPaginatedRequest')
 export class HelixPaginatedRequest<D, T> {
 	@Enumerable(false) private readonly _client: ApiClient;
 

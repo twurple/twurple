@@ -8,6 +8,7 @@ import { IrcClient, MessageTypes } from 'ircv3';
 import type { CommercialLength } from 'twitch';
 import { getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from 'twitch-auth';
 import type { AuthProvider, AccessToken } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -105,6 +106,7 @@ export interface ChatClientOptions {
  * @inheritDoc
  * @hideProtected
  */
+@rtfm('twitch-chat-client', 'ChatClient')
 export class ChatClient extends IrcClient {
 	private static readonly HOST_MESSAGE_REGEX = /(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 

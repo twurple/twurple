@@ -1,5 +1,6 @@
 import { getPortPromise } from '@d-fischer/portfinder';
 import { v4 } from '@d-fischer/public-ip';
+import { rtfm } from 'twitch-common';
 import type { WebHookConfig, WebHookListenerCertificateConfig } from '../WebHookListener';
 import type { CommonConnectionAdapterConfig } from './ConnectionAdapter';
 import { ConnectionAdapter } from './ConnectionAdapter';
@@ -78,6 +79,7 @@ interface WebHookListenerComputedConfig extends CommonConnectionAdapterConfig {
  * @deprecated Use literally *any* other connection adapter instead.
  * @hideProtected
  */
+@rtfm('twitch-webhooks', 'LegacyAdapter')
 export class LegacyAdapter extends ConnectionAdapter {
 	/**
 	 * Takes the legacy WebHookListenerConfig and creates a connection adapter from it.

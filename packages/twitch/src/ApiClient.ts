@@ -22,6 +22,7 @@ import {
 	StaticAuthProvider,
 	TokenInfo
 } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
 
 import { BadgesApi } from './API/Badges/BadgesApi';
 import { HelixApiGroup } from './API/Helix/HelixApiGroup';
@@ -102,9 +103,10 @@ export interface TwitchApiCallOptionsInternal {
 }
 
 /**
- * The main entry point of this library. Manages API calls and the use of access tokens in these.
+ * An API client for the Twitch Kraken and Helix APIs.
  */
 @Cacheable
+@rtfm('twitch', 'ApiClient')
 export class ApiClient implements AuthProvider {
 	private readonly _config: ApiConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;

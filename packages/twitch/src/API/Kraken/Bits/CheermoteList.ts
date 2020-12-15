@@ -1,4 +1,5 @@
 import { Enumerable, indexBy } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import type {
@@ -52,9 +53,10 @@ export interface CheermoteListData {
  *
  * @inheritDoc
  */
+@rtfm('twitch', 'CheermoteList')
 export class CheermoteList extends BaseCheermoteList {
+	@Enumerable(false) private readonly _data: Record<string, CheermoteActionData>;
 	@Enumerable(false) private readonly _client: ApiClient;
-	private readonly _data: Record<string, CheermoteActionData>;
 
 	/** @private */
 	constructor(data: CheermoteActionData[], client: ApiClient) {

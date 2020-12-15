@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from '../../ApiClient';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface ChatBadgeVersionData {
@@ -18,13 +18,13 @@ export type ChatBadgeScale = 1 | 2 | 4;
 /**
  * A version of a badge.
  */
+@rtfm('twitch', 'ChatBadgeVersion')
 export class ChatBadgeVersion {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: ChatBadgeVersionData;
 
 	/** @private */
-	constructor(private readonly _data: ChatBadgeVersionData, client: ApiClient) {
-		this._client = client;
+	constructor(data: ChatBadgeVersionData) {
+		this._data = data;
 	}
 
 	/**

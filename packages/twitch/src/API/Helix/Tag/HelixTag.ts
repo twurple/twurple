@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from '../../../ApiClient';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface HelixTagData {
@@ -12,13 +12,13 @@ export interface HelixTagData {
 /**
  * A stream tag.
  */
+@rtfm<HelixTag>('twitch', 'HelixTag', 'id')
 export class HelixTag {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixTagData;
 
 	/** @private */
-	constructor(/** @private */ protected _data: HelixTagData, client: ApiClient) {
-		this._client = client;
+	constructor(data: HelixTagData) {
+		this._data = data;
 	}
 
 	/**

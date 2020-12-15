@@ -1,4 +1,5 @@
 import { Enumerable, indexBy } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import type {
@@ -49,15 +50,16 @@ export interface HelixCheermoteData {
  *
  * @inheritDoc
  */
+@rtfm('twitch', 'HelixCheermoteList')
 export class HelixCheermoteList extends BaseCheermoteList {
+	@Enumerable(false) private readonly _data: Record<string, HelixCheermoteData>;
 	@Enumerable(false) private readonly _client: ApiClient;
-	private readonly _data: Record<string, HelixCheermoteData>;
 
 	/** @private */
 	constructor(data: HelixCheermoteData[], client: ApiClient) {
 		super();
-		this._client = client;
 		this._data = indexBy(data, action => action.prefix.toLowerCase());
+		this._client = client;
 	}
 
 	/**

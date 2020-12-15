@@ -1,3 +1,5 @@
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixEventData } from '../HelixEvent';
 import type { HelixUser } from '../User/HelixUser';
@@ -33,10 +35,14 @@ export type HelixBanEventData = HelixEventData<HelixBanEventDetail, HelixBanEven
  *
  * @inheritDoc
  */
+@rtfm<HelixBanEvent>('twitch', 'HelixBanEvent', 'userId')
 export class HelixBanEvent extends HelixBan {
+	@Enumerable(false) private readonly _eventData: HelixBanEventData;
+
 	/** @private */
-	constructor(private readonly _eventData: HelixBanEventData, client: ApiClient) {
-		super(_eventData.event_data, client);
+	constructor(eventData: HelixBanEventData, client: ApiClient) {
+		super(eventData.event_data, client);
+		this._eventData = eventData;
 	}
 
 	/**

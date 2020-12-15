@@ -1,5 +1,6 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../Toolkit/UserTools';
 import { extractUserId } from '../../Toolkit/UserTools';
 import { BaseApi } from '../BaseApi';
@@ -18,6 +19,7 @@ import { ChatBadgeList } from './ChatBadgeList';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'BadgesApi')
 export class BadgesApi extends BaseApi {
 	/**
 	 * Retrieves all globally applicable chat badges.
@@ -34,7 +36,7 @@ export class BadgesApi extends BaseApi {
 			type: TwitchApiCallType.Custom
 		});
 
-		return new ChatBadgeList(data.badge_sets, this._client);
+		return new ChatBadgeList(data.badge_sets);
 	}
 
 	/**
@@ -58,7 +60,7 @@ export class BadgesApi extends BaseApi {
 			type: TwitchApiCallType.Custom
 		});
 
-		const channelBadges = new ChatBadgeList(data.badge_sets, this._client);
+		const channelBadges = new ChatBadgeList(data.badge_sets);
 
 		if (includeGlobal) {
 			return (await this.getGlobalBadges(language))._merge(channelBadges);

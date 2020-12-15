@@ -1,4 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import type { TeamData } from './Team';
 import { Team } from './Team';
@@ -16,6 +17,7 @@ import { TeamWithUsers } from './TeamWithUsers';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'TeamApi')
 export class TeamApi extends BaseApi {
 	/**
 	 * Get a list of teams.

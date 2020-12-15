@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
@@ -19,12 +20,10 @@ export interface ChannelPlaceholderData {
  * This is used for example when you only have retrieved user data, but not channel data.
  * This can do anything you can do with only a channel ID, as it's equivalent to the user ID.
  */
+@rtfm<ChannelPlaceholder>('twitch', 'ChannelPlaceholder', 'id')
 export class ChannelPlaceholder {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
-
-	/** @private */
-	protected _data: ChannelPlaceholderData;
+	/** @private */ @Enumerable(false) protected readonly _data: ChannelPlaceholderData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
 	constructor(id: string, client: ApiClient) {

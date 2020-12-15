@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 
 export type HelixEventSubSubscriptionStatus =
@@ -39,12 +40,14 @@ export interface HelixEventSubSubscriptionData {
 /**
  * An EventSub subscription.
  */
+@rtfm<HelixEventSubSubscription>('twitch', 'HelixEventSubSubscription', 'id')
 export class HelixEventSubSubscription {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixEventSubSubscriptionData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixEventSubSubscriptionData, client: ApiClient) {
+	constructor(data: HelixEventSubSubscriptionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixEventData } from '../HelixEvent';
 import type { HelixSubscriptionData } from './HelixSubscription';
@@ -29,10 +30,14 @@ export type HelixSubscriptionEventData = HelixEventData<HelixSubscriptionData, H
 /**
  * An event that indicates the change of a subscription status, i.e. subscribing, unsubscribing or sending the monthly notification.
  */
+@rtfm<HelixSubscriptionEvent>('twitch', 'HelixSubscriptionEvent', 'userId')
 export class HelixSubscriptionEvent extends HelixSubscription {
+	private readonly _eventData: HelixSubscriptionEventData;
+
 	/** @private */
-	constructor(private readonly _eventData: HelixSubscriptionEventData, client: ApiClient) {
-		super(_eventData.event_data, client);
+	constructor(eventData: HelixSubscriptionEventData, client: ApiClient) {
+		super(eventData.event_data, client);
+		this._eventData = eventData;
 	}
 
 	/**

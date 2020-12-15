@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -103,6 +104,7 @@ export interface HelixPaginatedCustomRewardRedemptionFilter
 	extends HelixCustomRewardRedemptionFilter,
 		HelixForwardPagination {}
 
+@rtfm('twitch', 'HelixChannelPointsApi')
 export class HelixChannelPointsApi extends BaseApi {
 	/**
 	 * Retrieves all custom rewards for the given broadcaster.

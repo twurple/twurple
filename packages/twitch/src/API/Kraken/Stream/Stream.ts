@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { ChannelData } from '../Channel/Channel';
 import { Channel } from '../Channel/Channel';
@@ -61,11 +62,14 @@ export enum StreamType {
 /**
  * A Twitch stream.
  */
+@rtfm<Stream>('twitch', 'Stream', 'id')
 export class Stream {
+	@Enumerable(false) private readonly _data: StreamData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: StreamData, client: ApiClient) {
+	constructor(data: StreamData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

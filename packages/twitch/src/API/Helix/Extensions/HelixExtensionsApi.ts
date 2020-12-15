@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -32,6 +33,7 @@ interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensionTransa
  * const transactions = await api.helix.extionsions.getExtensionTransactions('abcd');
  * ```
  */
+@rtfm('twitch', 'HelixExtensionsApi')
 export class HelixExtensionsApi extends BaseApi {
 	/**
 	 * Retrieves a list of transactions for the given extension.

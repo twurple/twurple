@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import type { HelixGameData } from '../Game/HelixGame';
 import { HelixGame } from '../Game/HelixGame';
@@ -35,6 +36,7 @@ export interface HelixPaginatedChannelSearchFilter extends HelixChannelSearchFil
  * const channels = await api.helix.search.searchChannels('pear');
  * ```
  */
+@rtfm('twitch', 'HelixSearchApi')
 export class HelixSearchApi extends BaseApi {
 	/**
 	 * Search categories/games for an exact or partial match.

@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixEventData } from '../HelixEvent';
 import type { HelixUser } from '../User/HelixUser';
@@ -31,10 +32,14 @@ export type HelixModeratorEventData = HelixEventData<HelixModeratorEventDetail, 
 /**
  * An event that indicates the change of a moderator status, i.e. gaining or losing moderation privileges.
  */
+@rtfm<HelixModeratorEvent>('twitch', 'HelixModeratorEvent', 'userId')
 export class HelixModeratorEvent extends HelixModerator {
+	private readonly _eventData: HelixModeratorEventData;
+
 	/** @private */
-	constructor(private readonly _eventData: HelixModeratorEventData, client: ApiClient) {
-		super(_eventData.event_data, client);
+	constructor(eventData: HelixModeratorEventData, client: ApiClient) {
+		super(eventData.event_data, client);
+		this._eventData = eventData;
 	}
 
 	/**

@@ -1,4 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import type { ChannelData } from '../Channel/Channel';
 import { Channel } from '../Channel/Channel';
@@ -17,6 +18,7 @@ import { Stream } from '../Stream/Stream';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'SearchApi')
 export class SearchApi extends BaseApi {
 	/**
 	 * Retrieves a list of channels that match the given search term.

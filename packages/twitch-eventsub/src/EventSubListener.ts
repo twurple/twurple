@@ -13,6 +13,7 @@ import type {
 } from 'twitch';
 import { extractUserId } from 'twitch';
 import { InvalidTokenTypeError } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
 import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
@@ -80,10 +81,11 @@ type EventSubBody = EventSubVerificationBody | EventSubNotificationBody;
 /**
  * A listener for the Twitch EventSub event distribution mechanism.
  */
+@rtfm('twitch-eventsub', 'EventSubListener')
 export class EventSubListener {
-	private _server?: Server;
-	private readonly _subscriptions = new Map<string, EventSubSubscription>();
-	private _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
+	@Enumerable(false) private _server?: Server;
+	@Enumerable(false) private readonly _subscriptions = new Map<string, EventSubSubscription>();
+	@Enumerable(false) private _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
 
 	/** @private */ @Enumerable(false) readonly _apiClient: ApiClient;
 	/** @private */ @Enumerable(false) readonly _secret: string;
