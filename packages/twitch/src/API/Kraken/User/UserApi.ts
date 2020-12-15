@@ -105,7 +105,7 @@ export class UserApi extends BaseApi {
 			url: 'users',
 			query: { login: toFetch.join(',') }
 		});
-		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
+		const usersArr: User[] = usersData.users.map(data => new User(data, this._client));
 		usersArr.forEach(user =>
 			this._userByNameCache.set(user.name, {
 				value: user,

@@ -62,6 +62,6 @@ export class SearchApi extends BaseApi {
 
 		const data = await this._client.callApi<{ streams: StreamData[] }>({ url: 'search/streams', query });
 
-		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
+		return data.streams.map(streamData => new Stream(streamData, this._client));
 	}
 }
