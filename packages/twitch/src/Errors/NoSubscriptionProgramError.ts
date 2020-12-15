@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from 'twitch-common';
 
 /**
  * Thrown whenever you try accessing a subscription-related resource

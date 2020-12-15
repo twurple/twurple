@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from 'twitch-common';
 
 /**
  * Thrown whenever a HTTP error occurs. Some HTTP errors are handled in the library when they're expected.
