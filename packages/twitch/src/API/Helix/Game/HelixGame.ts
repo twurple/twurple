@@ -1,6 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
+import type { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPagination } from '../HelixPagination';
+import type { HelixPaginatedResponse } from '../HelixResponse';
+import type { HelixStream, HelixStreamData } from '../Stream/HelixStream';
 
 export interface HelixGameData {
 	id: string;
@@ -14,7 +18,7 @@ export interface HelixGameData {
 @rtfm<HelixGame>('twitch', 'HelixGame', 'id')
 export class HelixGame {
 	@Enumerable(false) private readonly _data: HelixGameData;
-	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixGameData, client: ApiClient) {
@@ -41,5 +45,19 @@ export class HelixGame {
 	 */
 	get boxArtUrl(): string {
 		return this._data.box_art_url;
+	}
+
+	/**
+	 * Retrieves streams that are currently playing the game.
+	 */
+	async getStreams(pagination?: HelixPagination): Promise<HelixPaginatedResponse<HelixStream>> {
+		return this._client.helix.streams.getStreams({ ...pagination, game: this._data.id });
+	}
+
+	/**
+	 * Creates a paginator for streams that are currently playing the game.
+	 */
+	getStreamsPaginated(): HelixPaginatedRequest<HelixStreamData, HelixStream> {
+		return this._client.helix.streams.getStreamsPaginated({ game: this._data.id });
 	}
 }
