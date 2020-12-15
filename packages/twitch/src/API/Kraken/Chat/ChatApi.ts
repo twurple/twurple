@@ -1,12 +1,8 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { rtfm } from 'twitch-common';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import type { ChatEmoteData } from './ChatEmote';
 import { ChatEmoteList } from './ChatEmoteList';
-import type { ChatRoomData } from './ChatRoom';
-import { ChatRoom } from './ChatRoom';
 
 /**
  * The API methods that deal with chat and chatrooms.
@@ -41,19 +37,5 @@ export class ChatApi extends BaseApi {
 		});
 
 		return new ChatEmoteList(data.emoticons);
-	}
-
-	/**
-	 * Retrieves a list of chat rooms for a given channel.
-	 *
-	 * @param channel The channel to retrieve the chat rooms of.
-	 */
-	@Cached(3600)
-	async getChatRoomsForChannel(channel: UserIdResolvable): Promise<ChatRoom[]> {
-		const data = await this._client.callApi<{ rooms: ChatRoomData[] }>({
-			url: `chat/${extractUserId(channel)}/rooms`
-		});
-
-		return data.rooms.map(room => new ChatRoom(room, this._client));
 	}
 }

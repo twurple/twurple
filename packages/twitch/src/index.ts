@@ -111,7 +111,6 @@ export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
 
 export { ChatEmote } from './API/Kraken/Chat/ChatEmote';
 export { ChatEmoteList } from './API/Kraken/Chat/ChatEmoteList';
-export { ChatRoom } from './API/Kraken/Chat/ChatRoom';
 
 export { Stream, StreamType } from './API/Kraken/Stream/Stream';
 
