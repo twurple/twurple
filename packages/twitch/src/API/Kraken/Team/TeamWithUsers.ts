@@ -19,7 +19,16 @@ export class TeamWithUsers extends Team {
 	/**
 	 * The list of users in the team.
 	 */
+	get users(): User[] {
+		return this._data.users.map(data => new User(data, this._client));
+	}
+
+	/**
+	 * The list of users in the team.
+	 *
+	 * @deprecated Use {@TeamWithUsers#users} instead.
+	 */
 	async getUsers(): Promise<User[]> {
-		return this._data.users.map((data: UserData) => new User(data, this._client));
+		return this.users;
 	}
 }
