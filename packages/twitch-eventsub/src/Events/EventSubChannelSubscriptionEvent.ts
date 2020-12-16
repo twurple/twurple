@@ -1,26 +1,26 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
-type EventSubChannelSubscribeEventTier = '1000' | '2000' | '3000';
+type EventSubChannelSubscriptionEventTier = '1000' | '2000' | '3000';
 /** @private */
-export interface EventSubChannelSubscribeEventData {
+export interface EventSubChannelSubscriptionEventData {
 	user_id: string;
 	user_name: string;
 	broadcaster_user_id: string;
 	broadcaster_user_name: string;
-	tier: EventSubChannelSubscribeEventTier;
+	tier: EventSubChannelSubscriptionEventTier;
 	is_gift: boolean;
 }
 
 /**
  * An EventSub event representing a channel subscription.
  */
-export class EventSubChannelSubscribeEvent {
+export class EventSubChannelSubscriptionEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubChannelSubscribeEventData, client: ApiClient) {
+	constructor(private readonly _data: EventSubChannelSubscriptionEventData, client: ApiClient) {
 		this._client = client;
 	}
 
@@ -69,7 +69,7 @@ export class EventSubChannelSubscribeEvent {
 	/**
 	 * The tier of the subscription, either 1000, 2000 or 3000
 	 */
-	get tier(): EventSubChannelSubscribeEventTier {
+	get tier(): EventSubChannelSubscriptionEventTier {
 		return this._data.tier;
 	}
 

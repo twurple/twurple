@@ -13,7 +13,7 @@ import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineE
 import type { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
 import type { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
 import type { EventSubChannelFollowEvent } from './Events/EventSubChannelFollowEvent';
-import type { EventSubChannelSubscribeEvent } from './Events/EventSubChannelSubscribeEvent';
+import type { EventSubChannelSubscriptionEvent } from './Events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelCheerEvent } from './Events/EventSubChannelCheerEvent';
 import type { EventSubChannelBanEvent } from './Events/EventSubChannelBanEvent';
 import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
@@ -31,7 +31,7 @@ import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStrea
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
 import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChannelFollowSubscription';
-import { EventSubChannelSubscribeSubscription } from './Subscriptions/EventSubChannelSubscribeSubscription';
+import { EventSubChannelSubscribeSubscription } from './Subscriptions/EventSubChannelSubscriptionSubscription';
 import { EventSubChannelCheerSubscription } from './Subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelBanSubscription } from './Subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
@@ -290,9 +290,9 @@ export class EventSubListener {
 	 * @param user The user for which to get notifications for about their subscribers.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelSubscribeEvents(
+	async subscribeToChannelSubscriptionEvents(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscribeEvent) => void
+		handler: (event: EventSubChannelSubscriptionEvent) => void
 	): Promise<EventSubSubscription> {
 		const userId = extractUserId(user);
 

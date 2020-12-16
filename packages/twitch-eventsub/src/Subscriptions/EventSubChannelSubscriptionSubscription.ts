@@ -1,15 +1,15 @@
 import type { HelixEventSubSubscription } from 'twitch';
-import type { EventSubChannelSubscribeEventData } from '../Events/EventSubChannelSubscribeEvent';
-import { EventSubChannelSubscribeEvent } from '../Events/EventSubChannelSubscribeEvent';
+import type { EventSubChannelSubscriptionEventData } from '../Events/EventSubChannelSubscriptionEvent';
+import { EventSubChannelSubscriptionEvent } from '../Events/EventSubChannelSubscriptionEvent';
 import type { EventSubListener } from '../EventSubListener';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
  */
-export class EventSubChannelSubscribeSubscription extends EventSubSubscription<EventSubChannelSubscribeEvent> {
+export class EventSubChannelSubscriptionSubscription extends EventSubSubscription<EventSubChannelSubscriptionEvent> {
 	constructor(
-		handler: (data: EventSubChannelSubscribeEvent) => void,
+		handler: (data: EventSubChannelSubscriptionEvent) => void,
 		client: EventSubListener,
 		private readonly _userId: string
 	) {
@@ -20,8 +20,8 @@ export class EventSubChannelSubscribeSubscription extends EventSubSubscription<E
 		return `channel.subscribe.${this._userId}`;
 	}
 
-	protected transformData(data: EventSubChannelSubscribeEventData): EventSubChannelSubscribeEvent {
-		return new EventSubChannelSubscribeEvent(data, this._client._apiClient);
+	protected transformData(data: EventSubChannelSubscriptionEventData): EventSubChannelSubscriptionEvent {
+		return new EventSubChannelSubscriptionEvent(data, this._client._apiClient);
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
