@@ -3,11 +3,11 @@ import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
 import { Logger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { delay, Enumerable } from '@d-fischer/shared-utils';
-import type { Listener } from '@d-fischer/typed-event-emitter';
+import type { EventBinder, Listener } from '@d-fischer/typed-event-emitter';
 import { IrcClient, MessageTypes } from 'ircv3';
 import type { CommercialLength } from 'twitch';
+import type { AccessToken, AuthProvider } from 'twitch-auth';
 import { getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from 'twitch-auth';
-import type { AuthProvider, AccessToken } from 'twitch-auth';
 import { rtfm } from 'twitch-common';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
@@ -552,9 +552,7 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare onPrivmsg: (
-		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	declare onPrivmsg: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	/**
 	 * Fires when a user sends an action (/me) to a channel.
@@ -565,84 +563,82 @@ export class ChatClient extends IrcClient {
 	 * @param message The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare onAction: (
-		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	declare onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	// internal events to resolve promises and stuff
 	private readonly _onBanResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onTimeoutResult: (
 		handler: (channel: string, user: string, duration?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnbanResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
-	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
+	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerInternalEvent();
 	private readonly _onCommercialResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onDeleteMessageResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onEmoteOnlyResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onEmoteOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onFollowersOnlyResult: (
 		handler: (channel: string, minFollowTime?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onFollowersOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onHostResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnhostResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onModResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnmodResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onModsResult: (
 		handler: (channel: string, mods?: string[], error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onJoinResult: (
 		handler: (channel: string, state?: Map<string, string>, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onR9kResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onR9kOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSlowResult: (
 		handler: (channel: string, delay?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSlowOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSubsOnlyResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSubsOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onVipResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnvipResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onVipsResult: (
 		handler: (channel: string, vips?: string[], error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 
 	/**
 	 * Creates a new Twitch chat client with the user info from the {@AuthProvider} instance.
@@ -725,12 +721,30 @@ export class ChatClient extends IrcClient {
 			this.addCapability(TwitchMembershipCapability);
 		}
 
-		this.onRegister(() => {
+		this.addInternalListener(this.onRegister, () => {
 			this._authVerified = true;
 			this._authFailureMessage = undefined;
 		});
 
-		this._registerInternalOnPrivmsgHandler();
+		this.addInternalListener(this.onPrivmsg, (channel, user, message, msg) => {
+			if (user === 'jtv') {
+				// 1 = who hosted
+				// 2 = auto-host or not
+				// 3 = how many viewers (not always present)
+				const match = ChatClient.HOST_MESSAGE_REGEX.exec(message);
+				if (match) {
+					this.emit(
+						this.onHosted,
+						channel,
+						match[1],
+						Boolean(match[2]),
+						match[3] ? Number(match[3]) : undefined
+					);
+				}
+			} else {
+				this.emit(this.onMessage, channel, user, message, msg);
+			}
+		});
 
 		this.onTypedMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
@@ -1514,10 +1528,10 @@ export class ChatClient extends IrcClient {
 	async clear(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>(resolve => {
-			const e = this.onChatClear(_channel => {
+			const e = this.addInternalListener(this.onChatClear, _channel => {
 				if (toUserName(_channel) === channel) {
 					resolve();
-					this.removeListener(e);
+					e.unbind();
 				}
 			});
 			this.say(channel, '/clear');
@@ -2111,29 +2125,14 @@ export class ChatClient extends IrcClient {
 		try {
 			await Promise.race([
 				new Promise<never>((resolve, reject) => {
-					authListener = this.onAuthenticationFailure(message => {
+					authListener = this.addInternalListener(this.onAuthenticationFailure, message => {
 						reject(Error(`Registration failed. Response from Twitch: ${message}`));
 					});
 				}),
 				super.waitForRegistration()
 			]);
 		} finally {
-			if (authListener) {
-				this.removeListener(authListener);
-			}
-		}
-	}
-
-	removeListener(id?: Listener): void;
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	removeListener(event: Function, listener?: Function): void;
-
-	// eslint-disable-next-line @typescript-eslint/ban-types
-	removeListener(...args: [Listener?] | [Function, Function?]): void {
-		// @ts-expect-error TS2557 - doesn't recognize tuple unions as overload possibilities
-		super.removeListener(...args);
-		if (args.length === 0) {
-			this._registerInternalOnPrivmsgHandler();
+			authListener?.unbind();
 		}
 	}
 
@@ -2210,29 +2209,6 @@ export class ChatClient extends IrcClient {
 			.padStart(5, '0');
 		return `justinfan${randomSuffix}`;
 	}
-
-	private _registerInternalOnPrivmsgHandler() {
-		this.onPrivmsg((channel, user, message, msg) => {
-			if (user === 'jtv') {
-				// 1 = who hosted
-				// 2 = auto-host or not
-				// 3 = how many viewers (not always present)
-				const match = ChatClient.HOST_MESSAGE_REGEX.exec(message);
-				if (match) {
-					this.emit(
-						this.onHosted,
-						channel,
-						match[1],
-						Boolean(match[2]),
-						match[3] ? Number(match[3]) : undefined
-					);
-				}
-			} else {
-				this.emit(this.onMessage, channel, user, message, msg);
-			}
-		});
-	}
-
 	// yes, this is just fibonacci with a limit
 	private static *_getReauthenticateWaitTime(): Iterator<number, never> {
 		let current = 0;
