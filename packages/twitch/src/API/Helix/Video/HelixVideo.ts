@@ -163,7 +163,7 @@ export class HelixVideo {
 				}
 
 				const [, num, unit] = partialMatch;
-				return parseInt(num, 10) * { h: 3600, m: 60, s: 1 }[unit];
+				return parseInt(num, 10) * { h: 3600, m: 60, s: 1 }[unit as 'h' | 'm' | 's'];
 			})
 			.reduce((a, b) => a + b);
 	}

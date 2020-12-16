@@ -87,6 +87,7 @@ export class CheermoteList extends BaseCheermoteList {
 		}
 
 		return {
+			// @ts-expect-error TS7015 TODO will be fixed with the removal of enums
 			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
 			url: correctTier.images[background][state][scale],
 			color: correctTier.color

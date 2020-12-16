@@ -8,7 +8,7 @@ import { Subscription } from './Subscription';
  */
 export class StreamChangeSubscription extends Subscription<HelixStream | undefined> {
 	constructor(
-		handler: (data: HelixStream) => void,
+		handler: (data: HelixStream | undefined) => void,
 		client: WebHookListener,
 		validityInSeconds = 100000,
 		private readonly _userId: string

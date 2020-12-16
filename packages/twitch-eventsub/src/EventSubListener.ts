@@ -15,7 +15,7 @@ import { extractUserId } from 'twitch';
 import { InvalidTokenTypeError } from 'twitch-auth';
 import { rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
-import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
+import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
 import type { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
@@ -205,9 +205,13 @@ export class EventSubListener {
 		};
 		const requestHandler = this._createHandleRequest();
 		if (pathPrefix) {
-			app.use(pathPrefix, paramParser, requestHandler);
+			app.use(
+				pathPrefix,
+				paramParser as ConnectCompatibleMiddleware,
+				requestHandler as ConnectCompatibleMiddleware
+			);
 		} else {
-			app.use(paramParser, requestHandler);
+			app.use(paramParser as ConnectCompatibleMiddleware, requestHandler as ConnectCompatibleMiddleware);
 		}
 	}
 

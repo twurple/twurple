@@ -12,7 +12,7 @@ export type SubscriptionResultType<T extends Subscription> = T extends Subscript
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class Subscription</** @private */ T = any> {
 	private _verified: boolean = false;
-	protected _secret: string;
+	protected _secret?: string;
 	private _refreshTimer?: NodeJS.Timer;
 	private _unsubscribeResolver?: () => void;
 
@@ -44,7 +44,7 @@ export abstract class Subscription</** @private */ T = any> {
 	_handleData(data: string, algoAndSignature: string): boolean {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 
-		const hash = crypto.createHmac(algorithm, this._secret).update(data).digest('hex');
+		const hash = crypto.createHmac(algorithm, this._secret!).update(data).digest('hex');
 
 		if (hash === signature) {
 			this._handler(this.transformData(JSON.parse(data)));

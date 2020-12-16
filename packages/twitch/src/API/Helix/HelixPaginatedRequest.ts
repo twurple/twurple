@@ -154,7 +154,7 @@ export class HelixPaginatedRequest<D, T> {
 		}
 		this._currentData = result;
 
-		return result.data.reduce((acc, elem) => {
+		return result.data.reduce<T[]>((acc, elem) => {
 			const mapped = this._mapper(elem);
 			return Array.isArray(mapped) ? [...acc, ...mapped] : [...acc, mapped];
 		}, []);

@@ -50,7 +50,7 @@ export class SingleUserPubSubClient {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _pubSubClient: BasicPubSubClient;
 
-	private readonly _listeners = new Map<string, PubSubListener[]>();
+	private readonly _listeners = new Map<string, Array<PubSubListener<never>>>();
 
 	private _userId?: string;
 
@@ -108,7 +108,7 @@ export class SingleUserPubSubClient {
 						return;
 				}
 				for (const listener of this._listeners.get(topic)!) {
-					listener.call(message);
+					(listener as PubSubListener).call(message);
 				}
 			}
 		});
@@ -121,7 +121,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsMessage} object.
 	 */
-	async onBits(callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener> {
+	async onBits(callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-bits-events-v2', callback, 'bits:read');
 	}
 
@@ -132,7 +132,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
 	 */
-	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void): Promise<PubSubListener> {
+	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
 	}
 
@@ -143,7 +143,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsRedemptionMessage} object.
 	 */
-	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener> {
+	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');
 	}
 
@@ -154,7 +154,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubSubscriptionMessage} object.
 	 */
-	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void): Promise<PubSubListener> {
+	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
 	}
 
@@ -165,7 +165,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubWhisperMessage} object.
 	 */
-	async onWhisper(callback: (message: PubSubWhisperMessage) => void): Promise<PubSubListener> {
+	async onWhisper(callback: (message: PubSubWhisperMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('whispers', callback, 'whispers:read');
 	}
 
@@ -180,7 +180,7 @@ export class SingleUserPubSubClient {
 	async onModAction(
 		channelId: UserIdResolvable,
 		callback: (message: PubSubChatModActionMessage) => void
-	): Promise<PubSubListener> {
+	): Promise<PubSubListener<never>> {
 		return this._addListener('chat_moderator_actions', callback, 'channel:moderate', extractUserId(channelId));
 	}
 
@@ -189,7 +189,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param listener A listener returned by one of the `add*Listener` methods.
 	 */
-	async removeListener(listener: PubSubListener): Promise<void> {
+	async removeListener(listener: PubSubListener<never>): Promise<void> {
 		if (this._listeners.has(listener.topic)) {
 			const newListeners = this._listeners.get(listener.topic)!.filter(l => l !== listener);
 			if (newListeners.length === 0) {

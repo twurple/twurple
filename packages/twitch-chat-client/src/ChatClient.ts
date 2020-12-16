@@ -2029,7 +2029,7 @@ export class ChatClient extends IrcClient {
 	 * @param attributes The attributes to add to the message.
 	 */
 	say(channel: string, message: string, attributes: ChatSayMessageAttributes = {}): void {
-		const tags = {};
+		const tags: Record<string, string> = {};
 		if (attributes.replyTo) {
 			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
 		}

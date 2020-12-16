@@ -37,12 +37,23 @@ export interface HelixPaginatedResultWithTotal<T> {
 	total: number;
 }
 
-/** @private */
-export function createPaginatedResult<I, O extends new (data: I, client?: ApiClient) => ConstructedType<O>>(
+/** @private */ export function createPaginatedResult<
+	I,
+	O extends new (data: I, client: ApiClient) => ConstructedType<O>
+>(
 	response: HelixPaginatedResponse<I>,
 	type: O,
-	client?: ApiClient
-): HelixPaginatedResult<ConstructedType<O>> {
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	client: ApiClient
+): HelixPaginatedResult<ConstructedType<O>>;
+/** @private */ export function createPaginatedResult<I, O extends new (data: I) => ConstructedType<O>>(
+	response: HelixPaginatedResponse<I>,
+	type: O
+): HelixPaginatedResult<ConstructedType<O>>;
+/** @private */ export function createPaginatedResult<
+	I,
+	O extends new (data: I, client?: ApiClient) => ConstructedType<O>
+>(response: HelixPaginatedResponse<I>, type: O, client?: ApiClient): HelixPaginatedResult<ConstructedType<O>> {
 	return {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		data: response.data?.map(data => new type(data, client)) ?? [],
@@ -50,8 +61,23 @@ export function createPaginatedResult<I, O extends new (data: I, client?: ApiCli
 	};
 }
 
-/** @private */
-export function createPaginatedResultWithTotal<I, O extends new (data: I, client?: ApiClient) => ConstructedType<O>>(
+/** @private */ export function createPaginatedResultWithTotal<
+	I,
+	O extends new (data: I, client: ApiClient) => ConstructedType<O>
+>(
+	response: HelixPaginatedResponseWithTotal<I>,
+	type: O,
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	client: ApiClient
+): HelixPaginatedResultWithTotal<ConstructedType<O>>;
+/** @private */ export function createPaginatedResultWithTotal<I, O extends new (data: I) => ConstructedType<O>>(
+	response: HelixPaginatedResponseWithTotal<I>,
+	type: O
+): HelixPaginatedResultWithTotal<ConstructedType<O>>;
+/** @private */ export function createPaginatedResultWithTotal<
+	I,
+	O extends new (data: I, client?: ApiClient) => ConstructedType<O>
+>(
 	response: HelixPaginatedResponseWithTotal<I>,
 	type: O,
 	client?: ApiClient

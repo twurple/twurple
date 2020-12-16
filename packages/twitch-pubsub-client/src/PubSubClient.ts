@@ -84,7 +84,10 @@ Register one using:
 	 *
 	 * It receives a {@PubSubBitsMessage} object.
 	 */
-	async onBits(user: UserIdResolvable, callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener> {
+	async onBits(
+		user: UserIdResolvable,
+		callback: (message: PubSubBitsMessage) => void
+	): Promise<PubSubListener<never>> {
 		return this.getUserListener(user).onBits(callback);
 	}
 
@@ -99,7 +102,7 @@ Register one using:
 	async onBitsBadgeUnlock(
 		user: UserIdResolvable,
 		callback: (message: PubSubBitsBadgeUnlockMessage) => void
-	): Promise<PubSubListener> {
+	): Promise<PubSubListener<never>> {
 		return this.getUserListener(user).onBitsBadgeUnlock(callback);
 	}
 
@@ -114,7 +117,7 @@ Register one using:
 	async onRedemption(
 		user: UserIdResolvable,
 		callback: (message: PubSubRedemptionMessage) => void
-	): Promise<PubSubListener> {
+	): Promise<PubSubListener<never>> {
 		return this.getUserListener(user).onRedemption(callback);
 	}
 
@@ -129,7 +132,7 @@ Register one using:
 	async onSubscription(
 		user: UserIdResolvable,
 		callback: (message: PubSubSubscriptionMessage) => void
-	): Promise<PubSubListener> {
+	): Promise<PubSubListener<never>> {
 		return this.getUserListener(user).onSubscription(callback);
 	}
 
@@ -144,7 +147,7 @@ Register one using:
 	async onWhisper(
 		user: UserIdResolvable,
 		callback: (message: PubSubWhisperMessage) => void
-	): Promise<PubSubListener> {
+	): Promise<PubSubListener<never>> {
 		return this.getUserListener(user).onWhisper(callback);
 	}
 
@@ -161,7 +164,7 @@ Register one using:
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
 		callback: (message: PubSubChatModActionMessage) => void
-	): Promise<PubSubListener> {
+	): Promise<PubSubListener<never>> {
 		return this.getUserListener(user).onModAction(channel, callback);
 	}
 }

@@ -20,7 +20,7 @@ import { rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { WebHookListenerConfig } from './Adapters/LegacyAdapter';
 import { LegacyAdapter } from './Adapters/LegacyAdapter';
-import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
+import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import { BanEventSubscription } from './Subscriptions/BanEventSubscription';
 import { ExtensionTransactionSubscription } from './Subscriptions/ExtensionTransactionSubscription';
 import { FollowsFromUserSubscription } from './Subscriptions/FollowsFromUserSubscription';
@@ -177,9 +177,13 @@ export class WebHookListener {
 		};
 		const requestHandler = this._createHandleRequest();
 		if (pathPrefix) {
-			app.use(pathPrefix, paramParser, requestHandler);
+			app.use(
+				pathPrefix,
+				paramParser as ConnectCompatibleMiddleware,
+				requestHandler as ConnectCompatibleMiddleware
+			);
 		} else {
-			app.use(paramParser, requestHandler);
+			app.use(paramParser as ConnectCompatibleMiddleware, requestHandler as ConnectCompatibleMiddleware);
 		}
 	}
 
