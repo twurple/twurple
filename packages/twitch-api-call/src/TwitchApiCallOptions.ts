@@ -1,3 +1,7 @@
+/// <reference lib="dom" />
+
+import type { RequestInit as NodeRequestInit } from 'node-fetch';
+
 /**
  * The endpoint to call, i.e. /kraken, /helix or a custom (potentially unsupported) endpoint.
  */
@@ -85,3 +89,5 @@ export interface TwitchApiCallOptions {
 	 */
 	auth?: boolean;
 }
+
+export type TwitchApiCallFetchOptions = Omit<RequestInit | NodeRequestInit, 'headers' | 'method' | 'body'>;

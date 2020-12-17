@@ -5,8 +5,13 @@ import type { TwitchApiCallOptionsInternal } from '../../ApiClient';
 
 /** @private */
 export class HelixRateLimiter extends ResponseBasedRateLimiter<TwitchApiCallOptionsInternal, Response> {
-	protected async doRequest({ options, clientId, accessToken }: TwitchApiCallOptionsInternal): Promise<Response> {
-		return callTwitchApiRaw(options, clientId, accessToken);
+	protected async doRequest({
+		options,
+		clientId,
+		accessToken,
+		fetchOptions
+	}: TwitchApiCallOptionsInternal): Promise<Response> {
+		return callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
 	}
 
 	protected needsToRetryAfter(res: Response): number | null {
