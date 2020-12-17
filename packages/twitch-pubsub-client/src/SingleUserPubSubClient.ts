@@ -141,7 +141,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
 	 *
-	 * It receives a {@PubSubBitsRedemptionMessage} object.
+	 * It receives a {@PubSubRedemptionMessage} object.
 	 */
 	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');

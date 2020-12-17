@@ -112,7 +112,7 @@ Register one using:
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
 	 *
-	 * It receives a {@PubSubBitsRedemptionMessage} object.
+	 * It receives a {@PubSubRedemptionMessage} object.
 	 */
 	async onRedemption(
 		user: UserIdResolvable,
