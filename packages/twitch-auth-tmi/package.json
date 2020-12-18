@@ -1,0 +1,56 @@
+{
+  "name": "twitch-auth-tmi",
+  "version": "4.4.0-pre.2",
+  "description": "Use tmi.js with the benefits of the twitch-auth authentication providers.",
+  "keywords": [
+    "twitch",
+    "auth",
+    "authentication",
+    "oauth",
+    "stream",
+    "bot",
+    "tmi.js",
+    "refresh",
+    "token"
+  ],
+  "sideEffects": false,
+  "main": "lib",
+  "types": "lib",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d-fischer/twitch.git",
+    "directory": "packages/twitch-auth-tmi"
+  },
+  "homepage": "https://d-fischer.github.io/twitch-auth-tmi",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
+  "license": "MIT",
+  "dependencies": {
+    "@types/tmi.js": "^1.4.2",
+    "tslib": "^2.0.3"
+  },
+  "peerDependencies": {
+    "tmi.js": "^1.6.0",
+    "twitch-auth": "^4.4.0"
+  },
+  "devDependencies": {
+    "tmi.js": "^1.7.0",
+    "twitch-auth": "^4.4.0-pre.2"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
+  }
+}
