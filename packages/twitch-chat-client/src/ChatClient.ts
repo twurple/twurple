@@ -1661,20 +1661,24 @@ export class ChatClient extends IrcClient {
 	 * @param minFollowTime The time (in minutes) a user needs to be following before being able to send messages.
 	 */
 	async enableFollowersOnly(channel: string, minFollowTime: number = 0): Promise<void> {
-		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
-			const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
-				if (toUserName(_channel) === channel && _minFollowTime === minFollowTime) {
-					if (error) {
-						reject(error);
-					} else {
-						resolve();
+		if (!Number.isInteger(minFollowTime) || minFollowTime < 0 || minFollowTime > 129600) {
+			return void this.emit(this._onSlowResult, channel, minFollowTime, 'bad_follow_time');
+		} else {
+			channel = toUserName(channel);
+			return new Promise<void>((resolve, reject) => {
+				const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
+					if (toUserName(_channel) === channel && _minFollowTime === minFollowTime) {
+						if (error) {
+							reject(error);
+						} else {
+							resolve();
+						}
+						this.removeListener(e);
 					}
-					this.removeListener(e);
-				}
+				});
+				this.say(channel, `/followers ${minFollowTime || ''}`);
 			});
-			this.say(channel, `/followers ${minFollowTime || ''}`);
-		});
+		}
 	}
 
 	/**
