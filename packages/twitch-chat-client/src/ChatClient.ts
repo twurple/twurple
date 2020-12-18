@@ -1662,7 +1662,8 @@ export class ChatClient extends IrcClient {
 	 */
 	async enableFollowersOnly(channel: string, minFollowTime: number = 0): Promise<void> {
 		if (!Number.isInteger(minFollowTime) || minFollowTime < 0 || minFollowTime > 129600) {
-			return void this.emit(this._onFollowersOnlyResult, channel, minFollowTime, 'bad_follow_time');
+			this.emit(this._onFollowersOnlyResult, channel, minFollowTime, 'bad_follow_time');
+			return undefined;
 		} else {
 			channel = toUserName(channel);
 			return new Promise<void>((resolve, reject) => {
@@ -1821,7 +1822,8 @@ export class ChatClient extends IrcClient {
 	 */
 	async enableSlow(channel: string, delayBetweenMessages: number = 30): Promise<void> {
 		if (!Number.isInteger(delayBetweenMessages) || delayBetweenMessages < 1 || delayBetweenMessages > 1800) {
-			return void this.emit(this._onSlowResult, channel, delayBetweenMessages, 'bad_slow_duration');
+			this.emit(this._onSlowResult, channel, delayBetweenMessages, 'bad_slow_duration');
+			return undefined;
 		} else {
 			channel = toUserName(channel);
 			return new Promise<void>((resolve, reject) => {
@@ -1916,7 +1918,8 @@ export class ChatClient extends IrcClient {
 	 */
 	async timeout(channel: string, user: string, duration: number = 60, reason: string = ''): Promise<void> {
 		if (!Number.isInteger(duration) || duration < 0 || duration > 1209600) {
-			return void this.emit(this._onTimeoutResult, channel, user, duration, 'bad_timeout_time');
+			this.emit(this._onTimeoutResult, channel, user, duration, 'bad_timeout_time');
+			return undefined;
 		} else {
 			channel = toUserName(channel);
 			return new Promise<void>((resolve, reject) => {
