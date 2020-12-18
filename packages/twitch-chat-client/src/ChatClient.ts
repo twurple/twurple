@@ -1662,24 +1662,25 @@ export class ChatClient extends IrcClient {
 	 */
 	async enableFollowersOnly(channel: string, minFollowTime: number = 0): Promise<void> {
 		if (!Number.isInteger(minFollowTime) || minFollowTime < 0 || minFollowTime > 129600) {
-			this.emit(this._onFollowersOnlyResult, channel, minFollowTime, 'bad_follow_time');
+			throw new Error(
+				`Invalid minimum follow time: ${minFollowTime}. It must be an integer between 0 and 129600.`
+			);
 			return undefined;
-		} else {
-			channel = toUserName(channel);
-			return new Promise<void>((resolve, reject) => {
-				const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
-					if (toUserName(_channel) === channel && _minFollowTime === minFollowTime) {
-						if (error) {
-							reject(error);
-						} else {
-							resolve();
-						}
-						this.removeListener(e);
-					}
-				});
-				this.say(channel, `/followers ${minFollowTime || ''}`);
-			});
 		}
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
+				if (toUserName(_channel) === channel && _minFollowTime === minFollowTime) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/followers ${minFollowTime || ''}`);
+		});
 	}
 
 	/**
@@ -1822,24 +1823,25 @@ export class ChatClient extends IrcClient {
 	 */
 	async enableSlow(channel: string, delayBetweenMessages: number = 30): Promise<void> {
 		if (!Number.isInteger(delayBetweenMessages) || delayBetweenMessages < 1 || delayBetweenMessages > 1800) {
-			this.emit(this._onSlowResult, channel, delayBetweenMessages, 'bad_slow_duration');
+			throw new Error(
+				`Invalid delay between messages: ${delayBetweenMessages}. It must be an integer between 1 and 1800.`
+			);
 			return undefined;
-		} else {
-			channel = toUserName(channel);
-			return new Promise<void>((resolve, reject) => {
-				const e = this._onSlowResult((_channel, _delay, error) => {
-					if (toUserName(_channel) === channel) {
-						if (error) {
-							reject(error);
-						} else {
-							resolve();
-						}
-						this.removeListener(e);
-					}
-				});
-				this.say(channel, `/slow ${delayBetweenMessages}`);
-			});
 		}
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onSlowResult((_channel, _delay, error) => {
+				if (toUserName(_channel) === channel) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/slow ${delayBetweenMessages}`);
+		});
 	}
 
 	/**
@@ -1917,25 +1919,24 @@ export class ChatClient extends IrcClient {
 	 * @param reason
 	 */
 	async timeout(channel: string, user: string, duration: number = 60, reason: string = ''): Promise<void> {
-		if (!Number.isInteger(duration) || duration < 0 || duration > 1209600) {
-			this.emit(this._onTimeoutResult, channel, user, duration, 'bad_timeout_time');
+		if (!Number.isInteger(duration) || duration < 1 || duration > 1209600) {
+			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
 			return undefined;
-		} else {
-			channel = toUserName(channel);
-			return new Promise<void>((resolve, reject) => {
-				const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
-					if (toUserName(_channel) === channel && toUserName(_user) === user) {
-						if (error) {
-							reject(error);
-						} else {
-							resolve();
-						}
-						this.removeListener(e);
-					}
-				});
-				this.say(channel, `/timeout ${user} ${duration} ${reason}`);
-			});
 		}
+		channel = toUserName(channel);
+		return new Promise<void>((resolve, reject) => {
+			const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
+				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+					if (error) {
+						reject(error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			this.say(channel, `/timeout ${user} ${duration} ${reason}`);
+		});
 	}
 
 	/**
