@@ -1662,7 +1662,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async enableFollowersOnly(channel: string, minFollowTime: number = 0): Promise<void> {
 		if (!Number.isInteger(minFollowTime) || minFollowTime < 0 || minFollowTime > 129600) {
-			return void this.emit(this._onSlowResult, channel, minFollowTime, 'bad_follow_time');
+			return void this.emit(this._onFollowersOnlyResult, channel, minFollowTime, 'bad_follow_time');
 		} else {
 			channel = toUserName(channel);
 			return new Promise<void>((resolve, reject) => {
