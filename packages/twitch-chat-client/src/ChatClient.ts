@@ -1665,7 +1665,6 @@ export class ChatClient extends IrcClient {
 			throw new Error(
 				`Invalid minimum follow time: ${minFollowTime}. It must be an integer between 0 and 129600.`
 			);
-			return undefined;
 		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
@@ -1826,7 +1825,6 @@ export class ChatClient extends IrcClient {
 			throw new Error(
 				`Invalid delay between messages: ${delayBetweenMessages}. It must be an integer between 1 and 1800.`
 			);
-			return undefined;
 		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
@@ -1921,7 +1919,6 @@ export class ChatClient extends IrcClient {
 	async timeout(channel: string, user: string, duration: number = 60, reason: string = ''): Promise<void> {
 		if (!Number.isInteger(duration) || duration < 1 || duration > 1209600) {
 			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
-			return undefined;
 		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
