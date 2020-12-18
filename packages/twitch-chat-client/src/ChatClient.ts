@@ -1816,20 +1816,24 @@ export class ChatClient extends IrcClient {
 	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
 	 */
 	async enableSlow(channel: string, delayBetweenMessages: number = 30): Promise<void> {
-		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
-			const e = this._onSlowResult((_channel, _delay, error) => {
-				if (toUserName(_channel) === channel) {
-					if (error) {
-						reject(error);
-					} else {
-						resolve();
+		if (!Number.isInteger(delayBetweenMessages) || delayBetweenMessages < 1 || delayBetweenMessages > 1800) {
+			return void this.emit(this._onSlowResult, channel, delayBetweenMessages, 'bad_slow_duration');
+		} else {
+			channel = toUserName(channel);
+			return new Promise<void>((resolve, reject) => {
+				const e = this._onSlowResult((_channel, _delay, error) => {
+					if (toUserName(_channel) === channel) {
+						if (error) {
+							reject(error);
+						} else {
+							resolve();
+						}
+						this.removeListener(e);
 					}
-					this.removeListener(e);
-				}
+				});
+				this.say(channel, `/slow ${delayBetweenMessages}`);
 			});
-			this.say(channel, `/slow ${delayBetweenMessages}`);
-		});
+		}
 	}
 
 	/**
