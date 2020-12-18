@@ -1915,20 +1915,24 @@ export class ChatClient extends IrcClient {
 	 * @param reason
 	 */
 	async timeout(channel: string, user: string, duration: number = 60, reason: string = ''): Promise<void> {
-		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
-			const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
-				if (toUserName(_channel) === channel && toUserName(_user) === user) {
-					if (error) {
-						reject(error);
-					} else {
-						resolve();
+		if (!Number.isInteger(duration) || duration < 0 || duration > 1209600) {
+			return void this.emit(this._onTimeoutResult, channel, user, duration, 'bad_timeout_time');
+		} else {
+			channel = toUserName(channel);
+			return new Promise<void>((resolve, reject) => {
+				const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
+					if (toUserName(_channel) === channel && toUserName(_user) === user) {
+						if (error) {
+							reject(error);
+						} else {
+							resolve();
+						}
+						this.removeListener(e);
 					}
-					this.removeListener(e);
-				}
+				});
+				this.say(channel, `/timeout ${user} ${duration} ${reason}`);
 			});
-			this.say(channel, `/timeout ${user} ${duration} ${reason}`);
-		});
+		}
 	}
 
 	/**
