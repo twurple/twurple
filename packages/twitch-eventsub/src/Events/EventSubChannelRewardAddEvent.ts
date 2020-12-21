@@ -18,7 +18,7 @@ export interface EventSubChannelRewardAddEventData {
 	redemptions_redeemed_current_stream: number | null;
 	max_per_stream: EventSubMaxStreamData;
 	max_per_user_per_stream: EventSubMaxStreamData;
-	global_cooldown: EventSubCoolDownData;
+	global_cooldown: EventSubCooldownData;
 	background_color: string;
 	image: EventSubRewardImageData;
 	default_image: Required<EventSubRewardImageData>;
@@ -27,7 +27,7 @@ interface EventSubMaxStreamData {
 	is_enabled: boolean;
 	value: number | null;
 }
-interface EventSubCoolDownData {
+interface EventSubCooldownData {
 	is_enabled: boolean;
 	seconds: number | null;
 }
