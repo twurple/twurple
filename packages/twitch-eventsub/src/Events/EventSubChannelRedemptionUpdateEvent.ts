@@ -125,7 +125,7 @@ export class EventSubChannelRedemptionUpdateEvent {
 	/**
 	 * The time when the user redeemed the reward
 	 */
-	get redeemDate(): Date {
+	get redemptionDate(): Date {
 		return new Date(this._data.redeemed_at);
 	}
 }
