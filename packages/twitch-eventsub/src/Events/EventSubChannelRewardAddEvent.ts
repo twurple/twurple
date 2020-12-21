@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 
+/** @private */
 export interface EventSubChannelRewardAddEventData {
-	/** @private */
 	id: string;
 	broadcaster_user_id: string;
 	broadcaster_user_name: string;
