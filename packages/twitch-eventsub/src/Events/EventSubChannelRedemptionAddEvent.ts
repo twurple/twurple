@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import type { RedemptionReward } from '../RedemptionReward';
 
 /** @private */
 export interface EventSubChannelRedemptionAddEventData {
@@ -10,12 +11,7 @@ export interface EventSubChannelRedemptionAddEventData {
 	user_name: string;
 	user_input: string;
 	status: 'unfulfilled' | 'unknown' | 'fulfilled' | 'canceled';
-	reward: {
-		id: string;
-		title: string;
-		cost: number;
-		prompt: string;
-	};
+	reward: RedemptionReward;
 	redeemed_at: string;
 }
 
