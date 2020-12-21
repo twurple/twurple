@@ -31,7 +31,7 @@ import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStrea
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
 import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChannelFollowSubscription';
-import { EventSubChannelSubscribeSubscription } from './Subscriptions/EventSubChannelSubscriptionSubscription';
+import { EventSubChannelSubscriptionSubscription } from './Subscriptions/EventSubChannelSubscriptionSubscription';
 import { EventSubChannelCheerSubscription } from './Subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelBanSubscription } from './Subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
@@ -301,7 +301,7 @@ export class EventSubListener {
 				'EventSubListener#subscribeToChannelSubscribeEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelSubscribeSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
 	}
 
 	/**
