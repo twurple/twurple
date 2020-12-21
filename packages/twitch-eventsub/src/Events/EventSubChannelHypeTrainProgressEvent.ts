@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import type { HypeTrainContribution } from '../HypeTrainContribution';
 
 /** @private */
 export interface EventSubChannelHypeTrainProgressEventData {
@@ -9,17 +10,10 @@ export interface EventSubChannelHypeTrainProgressEventData {
 	total: number;
 	progress: number;
 	goal: number;
-	top_contributions: Contribution[];
-	last_contribution: Contribution;
+	top_contributions: HypeTrainContribution[];
+	last_contribution: HypeTrainContribution;
 	started_at: string;
 	expires_at: string;
-}
-
-interface Contribution {
-	user_id: string;
-	user_name: string;
-	type: 'bits' | 'subscription';
-	total: number;
 }
 
 /**
@@ -86,14 +80,14 @@ export class EventSubChannelHypeTrainProgressEvent {
 	/**
 	 * The contributors with the most points, for both bits and subscriptions.
 	 */
-	get topContributions(): Contribution[] {
+	get topContributions(): HypeTrainContribution[] {
 		return this._data.top_contributions;
 	}
 
 	/**
 	 * The most recent contribution.
 	 */
-	get lastContribution(): Contribution {
+	get lastContribution(): HypeTrainContribution {
 		return this._data.last_contribution;
 	}
 
