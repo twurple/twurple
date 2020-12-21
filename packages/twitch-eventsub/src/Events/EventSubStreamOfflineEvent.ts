@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface EventSubStreamOfflineEventData {
@@ -10,12 +11,14 @@ export interface EventSubStreamOfflineEventData {
 /**
  * An EventSub event representing a stream going offline.
  */
+@rtfm<EventSubStreamOfflineEvent>('twitch-eventsub', 'EventSubStreamOfflineEvent', 'broadcasterId')
 export class EventSubStreamOfflineEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: EventSubStreamOfflineEventData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubStreamOfflineEventData, client: ApiClient) {
+	constructor(data: EventSubStreamOfflineEventData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

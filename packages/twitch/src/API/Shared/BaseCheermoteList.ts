@@ -165,7 +165,6 @@ export abstract class BaseCheermoteList {
 		const result: MessageCheermote[] = [];
 
 		const names = this.getPossibleNames();
-		// TODO fix this regex so it works in firefox, which does not support lookbehind
 		const re = new RegExp('(?<=^|\\s)([a-z0-9]+?)(\\d+)(?=\\s|$)', 'gi');
 		let match: RegExpExecArray | null;
 		while ((match = re.exec(message))) {

@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { AccessToken } from '../AccessToken';
 import { refreshUserToken } from '../helpers';
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
@@ -34,6 +35,7 @@ export interface RefreshConfig {
  * Enhances another auth provider with the ability to make use of refresh
  * tokens, automatically refreshing the access token whenever necessary.
  */
+@rtfm<RefreshableAuthProvider>('twitch-auth', 'RefreshableAuthProvider', 'clientId')
 export class RefreshableAuthProvider implements AuthProvider {
 	@Enumerable(false) private readonly _clientSecret: string;
 	@Enumerable(false) private _refreshToken: string;
@@ -57,7 +59,7 @@ export class RefreshableAuthProvider implements AuthProvider {
 	}
 
 	/**
-	 * The type of tokens this provider generates.
+	 * The type of tokens the provider generates.
 	 *
 	 * It is the same as the underlying base auth provider's token type.
 	 */

@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { User } from './User';
 
@@ -21,11 +22,14 @@ export interface UserChatInfoData {
 /**
  * Information about a user's chat appearance and privileges.
  */
+@rtfm<UserChatInfo>('twitch-chat-client', 'UserChatInfo', 'userId')
 export class UserChatInfo {
+	@Enumerable(false) private readonly _data: UserChatInfoData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: UserChatInfoData, client: ApiClient) {
+	constructor(data: UserChatInfoData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

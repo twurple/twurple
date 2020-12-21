@@ -1,4 +1,5 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../BaseApi';
 
 import { HelixBitsApi } from './Bits/HelixBitsApi';
@@ -24,6 +25,7 @@ import { HelixWebHooksApi } from './WebHooks/HelixWebHooksApi';
  * Can be accessed using {@ApiClient#helix}.
  */
 @Cacheable
+@rtfm('twitch', 'HelixApiGroup')
 export class HelixApiGroup extends BaseApi {
 	/**
 	 * The Helix bits API methods.

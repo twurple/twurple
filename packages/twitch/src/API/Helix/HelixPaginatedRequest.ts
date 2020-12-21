@@ -3,12 +3,13 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { TwitchApiCallOptions } from 'twitch-api-call';
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../ApiClient';
 import type { HelixPaginatedResponse } from './HelixResponse';
 
 if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	(Symbol as any).asyncIterator = Symbol.asyncIterator || Symbol.for('Symbol.asyncIterator');
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unnecessary-condition,@typescript-eslint/no-unsafe-member-access
+	(Symbol as any).asyncIterator = Symbol.asyncIterator ?? Symbol.for('Symbol.asyncIterator');
 }
 
 /**
@@ -23,6 +24,7 @@ if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
  * }
  * ```
  */
+@rtfm('twitch', 'HelixPaginatedRequest')
 export class HelixPaginatedRequest<D, T> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
@@ -64,6 +66,8 @@ export class HelixPaginatedRequest<D, T> {
 
 		const result = await this._fetchData();
 
+		// should never be null, but in practice is sometimes
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (!result.data?.length) {
 			this._isFinished = true;
 			return [];
@@ -150,7 +154,7 @@ export class HelixPaginatedRequest<D, T> {
 		}
 		this._currentData = result;
 
-		return result.data.reduce((acc, elem) => {
+		return result.data.reduce<T[]>((acc, elem) => {
 			const mapped = this._mapper(elem);
 			return Array.isArray(mapped) ? [...acc, ...mapped] : [...acc, mapped];
 		}, []);

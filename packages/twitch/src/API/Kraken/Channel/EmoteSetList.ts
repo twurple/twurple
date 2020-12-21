@@ -1,4 +1,6 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface Emote {
@@ -13,9 +15,14 @@ export type EmoteSetListData = Record<string, Emote[]>;
  * A list of emotes, grouped into emote sets, that a user can use.
  */
 @Cacheable
+@rtfm('twitch', 'EmoteSetList')
 export class EmoteSetList {
+	@Enumerable(false) private readonly _data: EmoteSetListData;
+
 	/** @private */
-	constructor(private readonly _data: EmoteSetListData) {}
+	constructor(data: EmoteSetListData) {
+		this._data = data;
+	}
 
 	/**
 	 * Finds the emote ID for the given emote code.

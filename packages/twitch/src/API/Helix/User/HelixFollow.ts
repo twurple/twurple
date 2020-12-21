@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import type { HelixUser } from './HelixUser';
@@ -30,12 +31,14 @@ export interface HelixFollowData {
 /**
  * A relation of a user following a broadcaster.
  */
+@rtfm('twitch', 'HelixFollow')
 export class HelixFollow {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixFollowData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: HelixFollowData, client: ApiClient) {
+	constructor(data: HelixFollowData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

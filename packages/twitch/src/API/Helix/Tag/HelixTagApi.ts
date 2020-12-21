@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -20,6 +21,7 @@ import { HelixTag } from './HelixTag';
  * const tags = await api.helix.tags.getAllStreamTags();
  * ```
  */
+@rtfm('twitch', 'HelixTagApi')
 export class HelixTagApi extends BaseApi {
 	/**
 	 * Retrieves all stream tags.
@@ -35,7 +37,7 @@ export class HelixTagApi extends BaseApi {
 			query: makePaginationQuery(pagination)
 		});
 
-		return createPaginatedResult(result, HelixTag, this._client);
+		return createPaginatedResult(result, HelixTag);
 	}
 
 	/**
@@ -47,7 +49,7 @@ export class HelixTagApi extends BaseApi {
 				url: 'tags/streams'
 			},
 			this._client,
-			data => new HelixTag(data, this._client)
+			data => new HelixTag(data)
 		);
 	}
 
@@ -68,7 +70,7 @@ export class HelixTagApi extends BaseApi {
 			}
 		});
 
-		return result.data.map(data => new HelixTag(data, this._client));
+		return result.data.map(data => new HelixTag(data));
 	}
 
 	/**

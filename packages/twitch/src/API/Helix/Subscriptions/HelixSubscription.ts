@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 
@@ -17,12 +18,14 @@ export interface HelixSubscriptionData {
 /**
  * A (paid) subscription of a user to a broadcaster.
  */
+@rtfm<HelixSubscription>('twitch', 'HelixSubscription', 'userId')
 export class HelixSubscription {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixSubscriptionData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixSubscriptionData, client: ApiClient) {
+	constructor(data: HelixSubscriptionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

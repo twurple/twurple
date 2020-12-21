@@ -12,12 +12,13 @@ export interface SubscriptionData {
 /**
  * A subscription to a Twitch channel.
  */
-export class Subscription {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+export abstract class Subscription {
+	/** @private */ @Enumerable(false) protected readonly _data: SubscriptionData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: SubscriptionData, client: ApiClient) {
+	constructor(data: SubscriptionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

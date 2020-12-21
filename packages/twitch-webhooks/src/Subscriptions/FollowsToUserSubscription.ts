@@ -1,11 +1,13 @@
 import type { HelixFollowData, HelixResponse } from 'twitch';
 import { HelixFollow } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
  * @private
  */
+@rtfm<FollowsToUserSubscription>('twitch-webhooks', 'FollowsToUserSubscription', 'id')
 export class FollowsToUserSubscription extends Subscription<HelixFollow> {
 	constructor(
 		handler: (data: HelixFollow) => void,

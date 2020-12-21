@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -10,7 +11,7 @@ import type { HelixGameData } from './HelixGame';
 import { HelixGame } from './HelixGame';
 
 /** @private */
-export type HelixGameFilterType = 'id' | 'name';
+type HelixGameFilterType = 'id' | 'name';
 
 /**
  * The Helix API methods that deal with games.
@@ -23,6 +24,7 @@ export type HelixGameFilterType = 'id' | 'name';
  * const game = await api.helix.games.getGameByName('Hearthstone');
  * ```
  */
+@rtfm('twitch', 'HelixGameApi')
 export class HelixGameApi extends BaseApi {
 	/**
 	 * Retrieves the game data for the given list of game IDs.

@@ -1,6 +1,7 @@
 /// <reference lib="es2017.object" />
 
-import { flatten } from '@d-fischer/shared-utils';
+import { Enumerable, flatten } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface ChattersListData {
@@ -11,9 +12,14 @@ export interface ChattersListData {
 /**
  * A list of chatters in a Twitch chat.
  */
+@rtfm('twitch', 'ChattersList')
 export class ChattersList {
+	@Enumerable(false) private readonly _data: ChattersListData;
+
 	/** @private */
-	constructor(private readonly _data: ChattersListData) {}
+	constructor(data: ChattersListData) {
+		this._data = data;
+	}
 
 	/**
 	 * A list of user names of all chatters in the chat.

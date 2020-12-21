@@ -1,4 +1,5 @@
 import { Enumerable, indexBy } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import type {
@@ -11,19 +12,16 @@ import type {
 import { BaseCheermoteList } from '../../Shared/BaseCheermoteList';
 
 /** @private */
-export type CheermoteActionImageUrlsByScale = {
-	[scale in CheermoteScale]: string;
-};
+export type CheermoteActionImageUrlsByScale = Record<CheermoteScale, string>;
 
 /** @private */
-export type CheermoteActionImageUrlsByStateAndScale = {
-	[state in CheermoteState]: CheermoteActionImageUrlsByScale;
-};
+export type CheermoteActionImageUrlsByStateAndScale = Record<CheermoteState, CheermoteActionImageUrlsByScale>;
 
 /** @private */
-export type CheermoteActionImageUrlsByBackgroundAndStateAndScale = {
-	[background in CheermoteBackground]: CheermoteActionImageUrlsByStateAndScale;
-};
+export type CheermoteActionImageUrlsByBackgroundAndStateAndScale = Record<
+	CheermoteBackground,
+	CheermoteActionImageUrlsByStateAndScale
+>;
 
 /** @private */
 export interface CheermoteActionTierData {
@@ -55,9 +53,10 @@ export interface CheermoteListData {
  *
  * @inheritDoc
  */
+@rtfm('twitch', 'CheermoteList')
 export class CheermoteList extends BaseCheermoteList {
+	@Enumerable(false) private readonly _data: Record<string, CheermoteActionData>;
 	@Enumerable(false) private readonly _client: ApiClient;
-	private readonly _data: Record<string, CheermoteActionData>;
 
 	/** @private */
 	constructor(data: CheermoteActionData[], client: ApiClient) {
@@ -88,6 +87,8 @@ export class CheermoteList extends BaseCheermoteList {
 		}
 
 		return {
+			// @ts-expect-error TS7015 TODO will be fixed with the removal of enums
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-unsafe-member-access
 			url: correctTier.images[background][state][scale],
 			color: correctTier.color
 		};

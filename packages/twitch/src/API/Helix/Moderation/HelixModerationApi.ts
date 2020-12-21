@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -48,6 +49,7 @@ interface HelixModeratorFilter extends HelixForwardPagination {
  * const { data: users } = await api.helix.moderation.getBannedUsers('61369223');
  * ```
  */
+@rtfm('twitch', 'HelixModerationApi')
 export class HelixModerationApi extends BaseApi {
 	/**
 	 * Retrieves a list of banned users in a given channel.

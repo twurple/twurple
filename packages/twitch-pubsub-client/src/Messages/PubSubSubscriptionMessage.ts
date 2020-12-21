@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 
 export interface PubSubSubscriptionDetail {
@@ -27,11 +28,14 @@ export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 /**
  * A message that informs about a user subscribing to a channel.
  */
+@rtfm<PubSubSubscriptionMessage>('twitch-pubsub-client', 'PubSubSubscriptionMessage', 'userId')
 export class PubSubSubscriptionMessage {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubSubscriptionMessageData;
 
 	/** @private */
-	constructor(private readonly _data: PubSubSubscriptionMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubSubscriptionMessageData, apiClient: ApiClient) {
+		this._data = data;
 		this._apiClient = apiClient;
 	}
 

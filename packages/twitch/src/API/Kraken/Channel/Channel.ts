@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { Team } from '../Team/Team';
 import type { ChannelUpdateData } from './ChannelApi';
@@ -30,9 +31,9 @@ export interface ChannelData extends ChannelPlaceholderData {
 /**
  * A Twitch Channel.
  */
+@rtfm<Channel>('twitch', 'Channel', 'id')
 export class Channel extends ChannelPlaceholder {
-	/** @private */
-	protected _data: ChannelData;
+	/** @private */ protected declare readonly _data: ChannelData;
 
 	/** @private */
 	constructor(data: ChannelData, client: ApiClient) {

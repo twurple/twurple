@@ -2,6 +2,7 @@ import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, UserIdResolvable } from 'twitch';
 import { extractUserId, InvalidTokenError } from 'twitch';
+import { rtfm } from 'twitch-common';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import type { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
 import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
@@ -44,11 +45,12 @@ interface SingleUserPubSubClientOptions {
 /**
  * A higher level PubSub client attached to a single user.
  */
+@rtfm('twitch-pubsub-client', 'SingleUserPubSubClient')
 export class SingleUserPubSubClient {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _pubSubClient: BasicPubSubClient;
 
-	private readonly _listeners: Map<string, PubSubListener[]> = new Map();
+	private readonly _listeners = new Map<string, Array<PubSubListener<never>>>();
 
 	private _userId?: string;
 
@@ -59,7 +61,7 @@ export class SingleUserPubSubClient {
 	 */
 	constructor({ twitchClient, pubSubClient, logLevel = LogLevel.WARNING }: SingleUserPubSubClientOptions) {
 		this._apiClient = twitchClient;
-		this._pubSubClient = pubSubClient || new BasicPubSubClient(logLevel);
+		this._pubSubClient = pubSubClient ?? new BasicPubSubClient(logLevel);
 		this._pubSubClient.onMessage(async (topic, messageData) => {
 			const [type, userId, ...args] = topic.split('.');
 			if (this._listeners.has(topic) && userId === (await this._getUserId())) {
@@ -106,7 +108,7 @@ export class SingleUserPubSubClient {
 						return;
 				}
 				for (const listener of this._listeners.get(topic)!) {
-					listener.call(message);
+					(listener as PubSubListener).call(message);
 				}
 			}
 		});
@@ -119,7 +121,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsMessage} object.
 	 */
-	async onBits(callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener> {
+	async onBits(callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-bits-events-v2', callback, 'bits:read');
 	}
 
@@ -130,7 +132,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
 	 */
-	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void): Promise<PubSubListener> {
+	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
 	}
 
@@ -139,9 +141,9 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
 	 *
-	 * It receives a {@PubSubBitsRedemptionMessage} object.
+	 * It receives a {@PubSubRedemptionMessage} object.
 	 */
-	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener> {
+	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');
 	}
 
@@ -152,7 +154,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubSubscriptionMessage} object.
 	 */
-	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void): Promise<PubSubListener> {
+	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
 	}
 
@@ -163,7 +165,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * It receives a {@PubSubWhisperMessage} object.
 	 */
-	async onWhisper(callback: (message: PubSubWhisperMessage) => void): Promise<PubSubListener> {
+	async onWhisper(callback: (message: PubSubWhisperMessage) => void): Promise<PubSubListener<never>> {
 		return this._addListener('whispers', callback, 'whispers:read');
 	}
 
@@ -178,7 +180,7 @@ export class SingleUserPubSubClient {
 	async onModAction(
 		channelId: UserIdResolvable,
 		callback: (message: PubSubChatModActionMessage) => void
-	): Promise<PubSubListener> {
+	): Promise<PubSubListener<never>> {
 		return this._addListener('chat_moderator_actions', callback, 'channel:moderate', extractUserId(channelId));
 	}
 
@@ -187,7 +189,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param listener A listener returned by one of the `add*Listener` methods.
 	 */
-	async removeListener(listener: PubSubListener): Promise<void> {
+	async removeListener(listener: PubSubListener<never>): Promise<void> {
 		if (this._listeners.has(listener.topic)) {
 			const newListeners = this._listeners.get(listener.topic)!.filter(l => l !== listener);
 			if (newListeners.length === 0) {
@@ -241,7 +243,7 @@ export class SingleUserPubSubClient {
 			}
 		}
 
-		throw lastTokenError || new Error('PubSub authentication failed');
+		throw lastTokenError ?? new Error('PubSub authentication failed');
 	}
 
 	private async _addListener<T extends PubSubMessage>(

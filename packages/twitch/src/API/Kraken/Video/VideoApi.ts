@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -90,6 +91,7 @@ export interface VideoUpdateData extends VideoEditData {
  * const user = await api.kraken.videos.getVideo('85448040');
  * ```
  */
+@rtfm('twitch', 'VideoApi')
 export class VideoApi extends BaseApi {
 	/**
 	 * Retrieves a video by ID.

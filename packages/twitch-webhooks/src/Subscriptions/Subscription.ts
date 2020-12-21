@@ -1,6 +1,6 @@
 import generateRandomString from '@d-fischer/randomstring';
 import * as crypto from 'crypto';
-import type { HelixWebHookHubRequestOptions } from 'twitch';
+import type { HelixResponse, HelixWebHookHubRequestOptions } from 'twitch';
 import type { WebHookListener } from '../WebHookListener';
 
 /** @private */
@@ -12,15 +12,15 @@ export type SubscriptionResultType<T extends Subscription> = T extends Subscript
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class Subscription</** @private */ T = any> {
 	private _verified: boolean = false;
-	protected _secret: string;
+	protected _secret?: string;
 	private _refreshTimer?: NodeJS.Timer;
 	private _unsubscribeResolver?: () => void;
 
 	/** @private */
 	protected constructor(
-		protected _handler: (obj: T) => void,
-		protected _client: WebHookListener,
-		private _validityInSeconds: number = 100000
+		protected readonly _handler: (obj: T) => void,
+		protected readonly _client: WebHookListener,
+		private readonly _validityInSeconds: number = 100000
 	) {}
 
 	/**
@@ -44,7 +44,7 @@ export abstract class Subscription</** @private */ T = any> {
 	_handleData(data: string, algoAndSignature: string): boolean {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 
-		const hash = crypto.createHmac(algorithm, this._secret).update(data).digest('hex');
+		const hash = crypto.createHmac(algorithm, this._secret!).update(data).digest('hex');
 
 		if (hash === signature) {
 			this._handler(this.transformData(JSON.parse(data)));
@@ -85,7 +85,7 @@ export abstract class Subscription</** @private */ T = any> {
 			clearInterval(this._refreshTimer);
 			this._refreshTimer = undefined;
 		}
-		const unsubscribePromise = new Promise(resolve => (this._unsubscribeResolver = resolve));
+		const unsubscribePromise = new Promise<void>(resolve => (this._unsubscribeResolver = resolve));
 		await this._unsubscribe();
 		await unsubscribePromise;
 	}
@@ -113,7 +113,7 @@ export abstract class Subscription</** @private */ T = any> {
 
 	protected abstract _unsubscribe(): Promise<void>;
 
-	protected abstract transformData(response: object): T;
+	protected abstract transformData(response: HelixResponse<unknown>): T;
 
 	private async _createNewSubscription() {
 		this._generateNewCredentials();

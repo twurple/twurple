@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from 'twitch-common';
 
 /**
  * These are the kind of errors that should never happen.

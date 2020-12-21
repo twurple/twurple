@@ -1,4 +1,5 @@
 import { Enumerable, indexBy } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import type {
@@ -11,19 +12,16 @@ import type {
 import { BaseCheermoteList } from '../../Shared/BaseCheermoteList';
 
 /** @private */
-export type HelixCheermoteActionImageUrlsByScale = {
-	[scale in CheermoteScale]: string;
-};
+export type HelixCheermoteActionImageUrlsByScale = Record<CheermoteScale, string>;
 
 /** @private */
-export type HelixCheermoteActionImageUrlsByStateAndScale = {
-	[state in CheermoteState]: HelixCheermoteActionImageUrlsByScale;
-};
+export type HelixCheermoteActionImageUrlsByStateAndScale = Record<CheermoteState, HelixCheermoteActionImageUrlsByScale>;
 
 /** @private */
-export type HelixCheermoteActionImageUrlsByBackgroundAndStateAndScale = {
-	[background in CheermoteBackground]: HelixCheermoteActionImageUrlsByStateAndScale;
-};
+export type HelixCheermoteActionImageUrlsByBackgroundAndStateAndScale = Record<
+	CheermoteBackground,
+	HelixCheermoteActionImageUrlsByStateAndScale
+>;
 
 /** @private */
 export interface HelixCheermoteTierData {
@@ -52,15 +50,16 @@ export interface HelixCheermoteData {
  *
  * @inheritDoc
  */
+@rtfm('twitch', 'HelixCheermoteList')
 export class HelixCheermoteList extends BaseCheermoteList {
+	@Enumerable(false) private readonly _data: Record<string, HelixCheermoteData>;
 	@Enumerable(false) private readonly _client: ApiClient;
-	private readonly _data: Record<string, HelixCheermoteData>;
 
 	/** @private */
 	constructor(data: HelixCheermoteData[], client: ApiClient) {
 		super();
-		this._client = client;
 		this._data = indexBy(data, action => action.prefix.toLowerCase());
+		this._client = client;
 	}
 
 	/**
@@ -85,6 +84,8 @@ export class HelixCheermoteList extends BaseCheermoteList {
 		}
 
 		return {
+			// @ts-expect-error TS7015 TODO will be fixed with the removal of enums
+			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
 			url: correctTier.images[background][state][scale],
 			color: correctTier.color
 		};

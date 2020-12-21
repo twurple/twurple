@@ -1,5 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { HelixUser } from '../User/HelixUser';
 import type { ApiClient } from '../../../ApiClient';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
@@ -29,12 +30,14 @@ export interface HelixVideoData {
  * A video on Twitch.
  */
 @Cacheable
+@rtfm<HelixVideo>('twitch', 'HelixVideo', 'id')
 export class HelixVideo {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixVideoData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixVideoData, client: ApiClient) {
+	constructor(data: HelixVideoData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
@@ -154,13 +157,13 @@ export class HelixVideo {
 		}
 		return parts
 			.map(part => {
-				const partialMatch = part.match(/(\d+)([hms])/);
+				const partialMatch = /(\d+)([hms])/.exec(part);
 				if (!partialMatch) {
 					throw new HellFreezesOverError(`Could not parse partial duration string: ${part}`);
 				}
 
 				const [, num, unit] = partialMatch;
-				return parseInt(num, 10) * { h: 3600, m: 60, s: 1 }[unit];
+				return parseInt(num, 10) * { h: 3600, m: 60, s: 1 }[unit as 'h' | 'm' | 's'];
 			})
 			.reduce((a, b) => a + b);
 	}

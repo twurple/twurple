@@ -1,6 +1,7 @@
 import type { MakeOptional } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsBadgeUnlockMessageContent
@@ -19,11 +20,14 @@ export interface PubSubBitsBadgeUnlockMessageData {
 /**
  * A message that informs about a user unlocking a new bits badge.
  */
+@rtfm<PubSubBitsBadgeUnlockMessage>('twitch-pubsub-client', 'PubSubBitsBadgeUnlockMessage', 'userId')
 export class PubSubBitsBadgeUnlockMessage {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubBitsBadgeUnlockMessageData;
 
 	/** @private */
-	constructor(private readonly _data: PubSubBitsBadgeUnlockMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubBitsBadgeUnlockMessageData, apiClient: ApiClient) {
+		this._data = data;
 		this._apiClient = apiClient;
 	}
 

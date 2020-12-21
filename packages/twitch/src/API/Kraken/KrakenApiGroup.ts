@@ -1,4 +1,5 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../BaseApi';
 import { BitsApi } from './Bits/BitsApi';
 import { ChannelApi } from './Channel/ChannelApi';
@@ -15,6 +16,7 @@ import { VideoApi } from './Video/VideoApi';
  * Can be accessed using {@ApiClient#kraken}.
  */
 @Cacheable
+@rtfm('twitch', 'KrakenApiGroup')
 export class KrakenApiGroup extends BaseApi {
 	/**
 	 * The API methods that deal with bits.

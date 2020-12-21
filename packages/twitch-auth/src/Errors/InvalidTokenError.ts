@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from 'twitch-common';
 
 /**
  * Thrown whenever an invalid token is supplied.

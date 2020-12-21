@@ -22,6 +22,7 @@ import {
 	StaticAuthProvider,
 	TokenInfo
 } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
 
 import { BadgesApi } from './API/Badges/BadgesApi';
 import { HelixApiGroup } from './API/Helix/HelixApiGroup';
@@ -102,9 +103,10 @@ export interface TwitchApiCallOptionsInternal {
 }
 
 /**
- * The main entry point of this library. Manages API calls and the use of access tokens in these.
+ * An API client for the Twitch Kraken and Helix APIs.
  */
 @Cacheable
+@rtfm('twitch', 'ApiClient')
 export class ApiClient implements AuthProvider {
 	private readonly _config: ApiConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;
@@ -272,7 +274,7 @@ export class ApiClient implements AuthProvider {
 			throw new ConfigError('No auth provider given. Please supply the `authProvider` option.');
 		}
 
-		this._helixRateLimiter = new HelixRateLimiter(config.logLevel || LogLevel.CRITICAL);
+		this._helixRateLimiter = new HelixRateLimiter(config.logLevel ?? LogLevel.CRITICAL);
 
 		this._config = {
 			preAuth: false,
@@ -286,8 +288,7 @@ export class ApiClient implements AuthProvider {
 		};
 
 		if (this._config.preAuth) {
-			// tslint:disable-next-line:no-floating-promises
-			authProvider.getAccessToken(this._config.initialScopes);
+			void authProvider.getAccessToken(this._config.initialScopes);
 		}
 	}
 
@@ -362,7 +363,7 @@ export class ApiClient implements AuthProvider {
 	 * The type of token used by the client.
 	 */
 	get tokenType(): AuthProviderTokenType {
-		return this._config.authProvider.tokenType || 'user';
+		return this._config.authProvider.tokenType ?? 'user';
 	}
 
 	/**
@@ -380,7 +381,7 @@ export class ApiClient implements AuthProvider {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	async callApi<T = any>(options: TwitchApiCallOptions): Promise<T> {
 		const { authProvider } = this._config;
-		const shouldAuth = options?.auth ?? true;
+		const shouldAuth = options.auth ?? true;
 		let accessToken = shouldAuth
 			? await authProvider.getAccessToken(options.scope ? [options.scope] : undefined)
 			: null;

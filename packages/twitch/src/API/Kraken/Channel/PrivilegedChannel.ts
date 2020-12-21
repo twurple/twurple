@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { CommercialLength } from '../../Shared/CommercialLength';
 import type { User } from '../User/User';
 import type { ChannelData } from './Channel';
@@ -12,9 +13,9 @@ export interface PrivilegedChannelData extends ChannelData {
 /**
  * A channel you have extended privileges for, i.e. the channel of the currently authenticated user.
  */
+@rtfm<PrivilegedChannel>('twitch', 'PrivilegedChannel', 'id')
 export class PrivilegedChannel extends Channel {
-	/** @private */
-	protected declare _data: PrivilegedChannelData;
+	/** @private */ protected declare readonly _data: PrivilegedChannelData;
 
 	/**
 	 * The channel's stream key.

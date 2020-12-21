@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { AccessToken } from '../AccessToken';
 import { getAppToken } from '../helpers';
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
@@ -6,13 +7,14 @@ import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 /**
  * An auth provider that retrieve tokens using client credentials.
  */
+@rtfm<ClientCredentialsAuthProvider>('twitch-auth', 'ClientCredentialsAuthProvider', 'clientId')
 export class ClientCredentialsAuthProvider implements AuthProvider {
-	@Enumerable(false) private readonly _clientId: string;
+	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;
 	@Enumerable(false) private _token?: AccessToken;
 
 	/**
-	 * The type of tokens this provider generates.
+	 * The type of tokens the provider generates.
 	 *
 	 * This auth provider generates app tokens.
 	 */

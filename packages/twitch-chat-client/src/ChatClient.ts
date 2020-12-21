@@ -3,11 +3,12 @@ import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
 import { Logger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { delay, Enumerable } from '@d-fischer/shared-utils';
-import type { Listener } from '@d-fischer/typed-event-emitter';
+import type { EventBinder, Listener } from '@d-fischer/typed-event-emitter';
 import { IrcClient, MessageTypes } from 'ircv3';
 import type { CommercialLength } from 'twitch';
+import type { AccessToken, AuthProvider } from 'twitch-auth';
 import { getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from 'twitch-auth';
-import type { AuthProvider, AccessToken } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -105,6 +106,7 @@ export interface ChatClientOptions {
  * @inheritDoc
  * @hideProtected
  */
+@rtfm('twitch-chat-client', 'ChatClient')
 export class ChatClient extends IrcClient {
 	private static readonly HOST_MESSAGE_REGEX = /(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
@@ -117,9 +119,9 @@ export class ChatClient extends IrcClient {
 	private _authToken?: AccessToken | null;
 	private _authVerified = false;
 	private _authFailureMessage?: string;
-	private _authRetryTimer?: Iterator<number>;
+	private _authRetryTimer?: Iterator<number, never>;
 
-	private _chatLogger: Logger;
+	private readonly _chatLogger: Logger;
 
 	/**
 	 * Fires when a user is timed out from a channel.
@@ -550,9 +552,7 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare onPrivmsg: (
-		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	declare onPrivmsg: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	/**
 	 * Fires when a user sends an action (/me) to a channel.
@@ -563,84 +563,82 @@ export class ChatClient extends IrcClient {
 	 * @param message The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare onAction: (
-		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	declare onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	// internal events to resolve promises and stuff
 	private readonly _onBanResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onTimeoutResult: (
 		handler: (channel: string, user: string, duration?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnbanResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
-	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
+	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerInternalEvent();
 	private readonly _onCommercialResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onDeleteMessageResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onEmoteOnlyResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onEmoteOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onFollowersOnlyResult: (
 		handler: (channel: string, minFollowTime?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onFollowersOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onHostResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnhostResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onModResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnmodResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onModsResult: (
 		handler: (channel: string, mods?: string[], error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onJoinResult: (
 		handler: (channel: string, state?: Map<string, string>, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onR9kResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onR9kOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSlowResult: (
 		handler: (channel: string, delay?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSlowOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSubsOnlyResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSubsOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onVipResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnvipResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onVipsResult: (
 		handler: (channel: string, vips?: string[], error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 
 	/**
 	 * Creates a new Twitch chat client with the user info from the {@AuthProvider} instance.
@@ -723,12 +721,30 @@ export class ChatClient extends IrcClient {
 			this.addCapability(TwitchMembershipCapability);
 		}
 
-		this.onRegister(() => {
+		this.addInternalListener(this.onRegister, () => {
 			this._authVerified = true;
 			this._authFailureMessage = undefined;
 		});
 
-		this._registerInternalOnPrivmsgHandler();
+		this.addInternalListener(this.onPrivmsg, (channel, user, message, msg) => {
+			if (user === 'jtv') {
+				// 1 = who hosted
+				// 2 = auto-host or not
+				// 3 = how many viewers (not always present)
+				const match = ChatClient.HOST_MESSAGE_REGEX.exec(message);
+				if (match) {
+					this.emit(
+						this.onHosted,
+						channel,
+						match[1],
+						Boolean(match[2]),
+						match[3] ? Number(match[3]) : undefined
+					);
+				}
+			} else {
+				this.emit(this.onMessage, channel, user, message, msg);
+			}
+		});
 
 		this.onTypedMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
@@ -818,7 +834,7 @@ export class ChatClient extends IrcClient {
 				params: { channel, message },
 				tags
 			} = userNotice;
-			const messageType = tags.get('msg-id');
+			const messageType = tags.get('msg-id')!;
 
 			switch (messageType) {
 				case 'sub':
@@ -1009,7 +1025,7 @@ export class ChatClient extends IrcClient {
 				// ban
 				case 'already_banned': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onBanResult, channel, user, messageType);
 					}
@@ -1029,7 +1045,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_ban_admin':
 				case 'bad_ban_global_mod':
 				case 'bad_ban_staff': {
-					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
+					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(message);
 					if (match) {
 						this.emit(this._onBanResult, channel, match[1].toLowerCase(), messageType);
 					}
@@ -1038,7 +1054,7 @@ export class ChatClient extends IrcClient {
 
 				case 'ban_success': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onBanResult, channel, user);
 					}
@@ -1048,7 +1064,7 @@ export class ChatClient extends IrcClient {
 				// unban
 				case 'bad_unban_no_ban': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnbanResult, channel, user, messageType);
 					}
@@ -1057,7 +1073,7 @@ export class ChatClient extends IrcClient {
 
 				case 'unban_success': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnbanResult, channel, user);
 					}
@@ -1155,7 +1171,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_mod_banned':
 				case 'bad_mod_mod': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onModResult, channel, user, messageType);
 					}
@@ -1163,7 +1179,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'mod_success': {
-					const match = message.match(/^You have added (\w+) /);
+					const match = /^You have added (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onModResult, channel, match[1]);
 					}
@@ -1173,7 +1189,7 @@ export class ChatClient extends IrcClient {
 				// unmod
 				case 'bad_unmod_mod': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnmodResult, channel, user, messageType);
 					}
@@ -1181,7 +1197,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'unmod_success': {
-					const match = message.match(/^You have removed (\w+) /);
+					const match = /^You have removed (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onUnmodResult, channel, match[1]);
 					}
@@ -1261,7 +1277,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'bad_timeout_mod': {
-					const match = message.match(/^You cannot timeout moderator (\w+) unless/);
+					const match = /^You cannot timeout moderator (\w+) unless/.exec(message);
 					if (match) {
 						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
 					}
@@ -1271,7 +1287,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_timeout_admin':
 				case 'bad_timeout_global_mod':
 				case 'bad_timeout_staff': {
-					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
+					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(message);
 					if (match) {
 						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
 					}
@@ -1282,7 +1298,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_vip_grantee_banned':
 				case 'bad_vip_grantee_already_vip': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onVipResult, channel, user, messageType);
 					}
@@ -1290,7 +1306,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'vip_success': {
-					const match = message.match(/^You have added (\w+) /);
+					const match = /^You have added (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onVipResult, channel, match[1]);
 					}
@@ -1300,7 +1316,7 @@ export class ChatClient extends IrcClient {
 				// unvip
 				case 'bad_unvip_grantee_not_vip': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnvipResult, channel, user, messageType);
 					}
@@ -1308,7 +1324,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'unvip_success': {
-					const match = message.match(/^You have removed (\w+) /);
+					const match = /^You have removed (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onUnvipResult, channel, match[1]);
 					}
@@ -1389,7 +1405,7 @@ export class ChatClient extends IrcClient {
 						}
 						const secs = this._authRetryTimer.next().value;
 						if (secs !== 0) {
-							this._chatLogger?.info(`Retrying authentication in ${secs} seconds`);
+							this._chatLogger.info(`Retrying authentication in ${secs} seconds`);
 						}
 						await delay(secs * 1000);
 						await this.reconnect();
@@ -1512,10 +1528,10 @@ export class ChatClient extends IrcClient {
 	async clear(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>(resolve => {
-			const e = this.onChatClear(_channel => {
+			const e = this.addInternalListener(this.onChatClear, _channel => {
 				if (toUserName(_channel) === channel) {
 					resolve();
-					this.removeListener(e);
+					e.unbind();
 				}
 			});
 			this.say(channel, '/clear');
@@ -1741,7 +1757,7 @@ export class ChatClient extends IrcClient {
 		return new Promise<string[]>(resolve => {
 			const e = this._onModsResult((_channel, mods) => {
 				if (toUserName(_channel) === channel) {
-					resolve(mods);
+					resolve(mods!);
 					this.removeListener(e);
 				}
 			});
@@ -1990,7 +2006,7 @@ export class ChatClient extends IrcClient {
 		return new Promise<string[]>(resolve => {
 			const e = this._onVipsResult((_channel, vips) => {
 				if (toUserName(_channel) === channel) {
-					resolve(vips);
+					resolve(vips!);
 					this.removeListener(e);
 				}
 			});
@@ -2013,7 +2029,7 @@ export class ChatClient extends IrcClient {
 	 * @param attributes The attributes to add to the message.
 	 */
 	say(channel: string, message: string, attributes: ChatSayMessageAttributes = {}): void {
-		const tags = {};
+		const tags: Record<string, string> = {};
 		if (attributes.replyTo) {
 			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
 		}
@@ -2081,7 +2097,7 @@ export class ChatClient extends IrcClient {
 	 * Disconnects from the chat server.
 	 */
 	async quit(): Promise<void> {
-		this._connection?.disconnect().then(() => {
+		void this._connection.disconnect().then(() => {
 			this._chatLogger.debug('Finished cleaning up old connection');
 		});
 	}
@@ -2109,28 +2125,14 @@ export class ChatClient extends IrcClient {
 		try {
 			await Promise.race([
 				new Promise<never>((resolve, reject) => {
-					authListener = this.onAuthenticationFailure(message => {
+					authListener = this.addInternalListener(this.onAuthenticationFailure, message => {
 						reject(Error(`Registration failed. Response from Twitch: ${message}`));
 					});
 				}),
 				super.waitForRegistration()
 			]);
 		} finally {
-			if (authListener) {
-				this.removeListener(authListener);
-			}
-		}
-	}
-
-	removeListener(): void;
-	removeListener(id: Listener): void;
-	removeListener(event: Function, listener?: Function): void;
-
-	removeListener(...args: [] | [Listener] | [Function, Function?]): void {
-		// @ts-expect-error TS2557 - doesn't recognize tuple unions as overload possibilities
-		super.removeListener(...args);
-		if (args.length === 0) {
-			this._registerInternalOnPrivmsgHandler();
+			authListener?.unbind();
 		}
 	}
 
@@ -2165,15 +2167,15 @@ export class ChatClient extends IrcClient {
 			if (this._authToken) {
 				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
-					nick: token.userName!
+					nick: token.userName
 				});
 				return `oauth:${this._authToken.accessToken}`;
 			}
-		} catch (e) {
+		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+				this._chatLogger.err(`Retrieving an access token failed: ${(e as Error).message}`);
 			}
 		}
 
@@ -2185,20 +2187,20 @@ export class ChatClient extends IrcClient {
 			if (this._authToken) {
 				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
-					nick: token.userName!
+					nick: token.userName
 				});
 				return `oauth:${this._authToken.accessToken}`;
 			}
-		} catch (e) {
+		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+				this._chatLogger.err(`Refreshing the access token failed: ${(e as Error).message}`);
 			}
 		}
 
 		this._authVerified = false;
-		throw lastTokenError || new Error('Could not retrieve a valid token');
+		throw lastTokenError ?? new Error('Could not retrieve a valid token');
 	}
 
 	private static _generateJustinfanNick() {
@@ -2207,31 +2209,8 @@ export class ChatClient extends IrcClient {
 			.padStart(5, '0');
 		return `justinfan${randomSuffix}`;
 	}
-
-	private _registerInternalOnPrivmsgHandler() {
-		this.onPrivmsg((channel, user, message, msg) => {
-			if (user === 'jtv') {
-				// 1 = who hosted
-				// 2 = auto-host or not
-				// 3 = how many viewers (not always present)
-				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
-				if (match) {
-					this.emit(
-						this.onHosted,
-						channel,
-						match[1],
-						Boolean(match[2]),
-						match[3] ? Number(match[3]) : undefined
-					);
-				}
-			} else {
-				this.emit(this.onMessage, channel, user, message, msg);
-			}
-		});
-	}
-
 	// yes, this is just fibonacci with a limit
-	private static *_getReauthenticateWaitTime(): IterableIterator<number> {
+	private static *_getReauthenticateWaitTime(): Iterator<number, never> {
 		let current = 0;
 		let next = 1;
 

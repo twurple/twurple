@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from '../../../ApiClient';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface ChatEmoteData {
@@ -11,13 +11,13 @@ export interface ChatEmoteData {
 /**
  * A chat emote.
  */
+@rtfm<ChatEmote>('twitch', 'ChatEmote', 'id')
 export class ChatEmote {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: ChatEmoteData;
 
 	/** @private */
-	constructor(private readonly _data: ChatEmoteData, client: ApiClient) {
-		this._client = client;
+	constructor(data: ChatEmoteData) {
+		this._data = data;
 	}
 
 	/**

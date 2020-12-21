@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser, HelixUserType } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
 export interface PubSubWhisperTags {
@@ -41,11 +42,14 @@ export interface PubSubWhisperMessageData {
 /**
  * A message informing about a whisper being received from another user.
  */
+@rtfm<PubSubWhisperMessage>('twitch-pubsub-client', 'PubSubWhisperMessage', 'senderId')
 export class PubSubWhisperMessage {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubWhisperMessageData;
 
 	/** @private */
-	constructor(private readonly _data: PubSubWhisperMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubWhisperMessageData, apiClient: ApiClient) {
+		this._data = data;
 		this._apiClient = apiClient;
 	}
 

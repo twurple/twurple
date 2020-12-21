@@ -1,9 +1,11 @@
+import { rtfm } from 'twitch-common';
 import { HelixPaginatedRequest } from './HelixPaginatedRequest';
 import type { HelixPaginatedResponseWithTotal } from './HelixResponse';
 
 /**
  * A special case of {@HelixPaginatedRequest} with support for fetching the total number of entities, whenever an endpoint supports it.
  */
+@rtfm('twitch', 'HelixPaginatedRequestWithTotal')
 export class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<D, T> {
 	/** @private */
 	protected declare _currentData?: HelixPaginatedResponseWithTotal<D>;
@@ -13,7 +15,7 @@ export class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<
 	 */
 	async getTotalCount(): Promise<number> {
 		const data =
-			this._currentData ||
+			this._currentData ??
 			((await this._fetchData({ query: { after: undefined } })) as HelixPaginatedResponseWithTotal<D>);
 		return data.total;
 	}

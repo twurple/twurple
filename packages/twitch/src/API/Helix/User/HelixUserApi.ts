@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import type { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId, extractUserName } from '../../../Toolkit/UserTools';
@@ -38,6 +39,7 @@ export interface HelixUserUpdate {
  * const user = await api.helix.users.getUserById('125328655');
  * ```
  */
+@rtfm('twitch', 'HelixUserApi')
 export class HelixUserApi extends BaseApi {
 	/**
 	 * Retrieves the user data for the given list of user IDs.
@@ -89,7 +91,8 @@ export class HelixUserApi extends BaseApi {
 			scope: withEmail ? 'user:read:email' : ''
 		});
 
-		if (!result.data || !result.data.length) {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		if (!result.data?.length) {
 			throw new HellFreezesOverError('Could not get authenticated user');
 		}
 

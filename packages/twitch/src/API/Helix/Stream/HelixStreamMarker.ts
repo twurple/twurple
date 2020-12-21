@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 
 export interface HelixStreamMarkerData {
@@ -9,12 +10,17 @@ export interface HelixStreamMarkerData {
 	URL?: string;
 }
 
+/**
+ * A stream marker.
+ */
+@rtfm<HelixStreamMarker>('twitch', 'HelixStreamMarker', 'id')
 export class HelixStreamMarker {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	/** @private */ @Enumerable(false) protected readonly _data: HelixStreamMarkerData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected readonly _data: HelixStreamMarkerData, client: ApiClient) {
+	constructor(data: HelixStreamMarkerData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

@@ -70,13 +70,13 @@ export interface TwitchApiCallOptions {
 	scope?: string;
 
 	/**
-	 * The Kraken API version to request with. Defaults to 5.
+	 * Unused.
 	 *
-	 * If `type` is not `'kraken'`, this will be ignored.
+	 * Twitch removed Kraken v3 long ago, so this serves no purpose anymore.
 	 *
-	 * Note that v3 will be removed at some point and v5 will be the only Kraken version left, so you should only use this option if you want to rewrite everything in a few months.
+	 * This only still exists for compatibility in TypeScript.
 	 *
-	 * Internally, only v5 and Helix are used.
+	 * @deprecated No replacement.
 	 */
 	version?: number;
 

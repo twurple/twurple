@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { UserData } from '../User/User';
 import { User } from '../User/User';
 import type { TeamData } from './Team';
@@ -8,14 +9,26 @@ export interface TeamWithUsersData extends TeamData {
 	users: UserData[];
 }
 
+/**
+ * A Twitch team with additional data about its member users.
+ */
+@rtfm<TeamWithUsers>('twitch', 'TeamWithUsers', 'id')
 export class TeamWithUsers extends Team {
-	/** @private */
-	protected declare _data: TeamWithUsersData;
+	/** @private */ protected declare readonly _data: TeamWithUsersData;
 
 	/**
 	 * The list of users in the team.
 	 */
+	get users(): User[] {
+		return this._data.users.map(data => new User(data, this._client));
+	}
+
+	/**
+	 * The list of users in the team.
+	 *
+	 * @deprecated Use {@TeamWithUsers#users} instead.
+	 */
 	async getUsers(): Promise<User[]> {
-		return this._data.users.map((data: UserData) => new User(data, this._client));
+		return this.users;
 	}
 }

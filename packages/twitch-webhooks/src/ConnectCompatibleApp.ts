@@ -6,6 +6,7 @@ export type ConnectCompatibleMiddleware = (
 	next: (err?: unknown) => void
 ) => void;
 
+/* eslint-disable @typescript-eslint/method-signature-style */
 export interface ConnectCompatibleApp {
 	use(...middlewares: ConnectCompatibleMiddleware[]): unknown;
 	use(path: string, ...middlewares: ConnectCompatibleMiddleware[]): unknown;

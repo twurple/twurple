@@ -1,6 +1,7 @@
 import type { MakeOptional } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsMessageBadgeEntitlement {
@@ -28,11 +29,14 @@ export interface PubSubBitsMessageData {
 /**
  * A message that informs about bits being used in a channel.
  */
+@rtfm<PubSubBitsMessage>('twitch-pubsub-client', 'PubSubBitsMessage', 'userId')
 export class PubSubBitsMessage {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubBitsMessageData;
 
 	/** @private */
-	constructor(private readonly _data: PubSubBitsMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubBitsMessageData, apiClient: ApiClient) {
+		this._data = data;
 		this._apiClient = apiClient;
 	}
 

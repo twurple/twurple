@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { CommonConnectionAdapterConfig } from './ConnectionAdapter';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
@@ -37,6 +38,7 @@ export interface ReverseProxyAdapterConfig extends CommonConnectionAdapterConfig
  *
  * @hideProtected
  */
+@rtfm('twitch-webhooks', 'ReverseProxyAdapter')
 export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _connectUsingSsl: boolean;

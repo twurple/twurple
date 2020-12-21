@@ -32,7 +32,7 @@ export type ParsedMessagePart = ParsedMessageTextPart | ParsedMessageCheerPart |
 /** @private */
 export function parseEmoteOffsets(emotes?: string): Map<string, string[]> {
 	if (!emotes) {
-		return new Map();
+		return new Map<string, string[]>();
 	}
 
 	return new Map(

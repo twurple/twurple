@@ -1,5 +1,6 @@
 import { MessageTypes } from 'ircv3';
 import type { CheermoteList } from 'twitch';
+import { rtfm } from 'twitch-common';
 import { ChatUser } from '../ChatUser';
 import type { ParsedMessageCheerPart, ParsedMessagePart } from '../Toolkit/EmoteTools';
 import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../Toolkit/EmoteTools';
@@ -7,7 +8,15 @@ import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../To
 /**
  * An IRC PRIVMSG, with easy accessors for commonly used data from its tags.
  */
+@rtfm<TwitchPrivateMessage>('twitch-chat-client', 'TwitchPrivateMessage', 'id')
 export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
+	/**
+	 * The ID of the message.
+	 */
+	get id(): string {
+		return this._tags.get('id')!;
+	}
+
 	/**
 	 * Info about the user that send the message, like their user ID and their status in the current channel.
 	 */
@@ -26,7 +35,7 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 * Whether the message is a cheer.
 	 */
 	get isCheer(): boolean {
-		return this._tags.has('bits') ?? false;
+		return this._tags.has('bits');
 	}
 
 	/**

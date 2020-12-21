@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { HelixUser } from '../User/HelixUser';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixCustomReward } from './HelixCustomReward';
@@ -37,12 +38,14 @@ export interface HelixCustomRewardRedemptionData {
 /**
  * A redemption of a custom Channel Points reward.
  */
+@rtfm<HelixCustomRewardRedemption>('twitch', 'HelixCustomRewardRedemption', 'id')
 export class HelixCustomRewardRedemption {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixCustomRewardRedemptionData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixCustomRewardRedemptionData, client: ApiClient) {
+	constructor(data: HelixCustomRewardRedemptionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
