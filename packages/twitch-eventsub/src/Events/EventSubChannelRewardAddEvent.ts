@@ -20,8 +20,8 @@ export interface EventSubChannelRewardAddEventData {
 	max_per_user_per_stream: EventSubMaxStreamData;
 	global_cooldown: EventSubCooldownData;
 	background_color: string;
-	image: EventSubRewardImageData;
-	default_image: Required<EventSubRewardImageData>;
+	image: EventSubRewardImageData | null;
+	default_image: EventSubRewardImageData;
 }
 interface EventSubMaxStreamData {
 	is_enabled: boolean;
@@ -32,9 +32,9 @@ interface EventSubCooldownData {
 	seconds: number | null;
 }
 interface EventSubRewardImageData {
-	url_1x: string | null;
-	url_2x: string | null;
-	url_4x: string | null;
+	url_1x: string;
+	url_2x: string;
+	url_4x: string;
 }
 
 /**
@@ -203,41 +203,53 @@ export class EventSubChannelRewardAddEvent {
 	 * The 1x version of the reward image
 	 */
 	get image1x(): string | null {
-		return this._data.image.url_1x;
+		if (this._data.image === null) {
+			return null;
+		} else {
+			return this._data.image.url_1x;
+		}
 	}
 
 	/**
 	 * The 2x version of the reward image
 	 */
 	get image2x(): string | null {
-		return this._data.image.url_2x;
+		if (this._data.image === null) {
+			return null;
+		} else {
+			return this._data.image.url_2x;
+		}
 	}
 
 	/**
 	 * The 4x version of the reward image
 	 */
 	get image4x(): string | null {
-		return this._data.image.url_4x;
+		if (this._data.image === null) {
+			return null;
+		} else {
+			return this._data.image.url_4x;
+		}
 	}
 
 	/**
 	 * The 1x version of the default image
 	 */
 	get defaultImage1x(): string {
-		return this._data.default_image.url_1x!;
+		return this._data.default_image.url_1x;
 	}
 
 	/**
 	 * The 2x version of the default image
 	 */
 	get defaultImage2x(): string {
-		return this._data.default_image.url_2x!;
+		return this._data.default_image.url_2x;
 	}
 
 	/**
 	 * The 4x version of the default image
 	 */
 	get defaultImage4x(): string {
-		return this._data.default_image.url_4x!;
+		return this._data.default_image.url_4x;
 	}
 }
