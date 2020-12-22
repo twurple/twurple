@@ -1,17 +1,20 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 
 /**
  * A user in chat.
  */
 @Cacheable
+@rtfm<ChatUser>('twitch-chat-client', 'ChatUser', 'userId')
 export class ChatUser {
-	private readonly _userData: Map<string, string>;
+	@Enumerable(false) private readonly _userData: Map<string, string>;
 	private readonly _userName: string;
 
 	/** @private */
 	constructor(userName: string, userData: Map<string, string> | undefined) {
 		this._userName = userName.toLowerCase();
-		this._userData = userData ? new Map(userData) : new Map();
+		this._userData = userData ? new Map<string, string>(userData) : new Map<string, string>();
 	}
 
 	private _parseBadgesLike(badgesLikeStr?: string): Map<string, string> {

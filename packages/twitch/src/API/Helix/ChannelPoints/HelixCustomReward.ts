@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { HelixUser } from '../User/HelixUser';
 import type { ApiClient } from '../../../ApiClient';
 
@@ -56,12 +57,14 @@ export interface HelixCustomRewardData {
 /**
  * A custom Channel Points reward.
  */
+@rtfm<HelixCustomReward>('twitch', 'HelixCustomReward', 'id')
 export class HelixCustomReward {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixCustomRewardData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixCustomRewardData, client: ApiClient) {
+	constructor(data: HelixCustomRewardData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
@@ -99,7 +102,8 @@ export class HelixCustomReward {
 	 * @param scale The scale of the image.
 	 */
 	getImageUrl(scale: HelixCustomRewardImageScale): string {
-		const urlProp = `url_${scale}x`;
+		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+		const urlProp = `url_${scale}x` as const;
 		return this._data.image?.[urlProp] ?? this._data.default_image[urlProp];
 	}
 

@@ -23,10 +23,7 @@ export async function callTwitchApiRaw(
 	const url = getTwitchApiUrl(options.url, type);
 	const params = stringify(options.query, { arrayFormat: 'repeat' });
 	const headers = new Headers({
-		Accept:
-			type === TwitchApiCallType.Kraken
-				? `application/vnd.twitchtv.v${options.version || 5}+json`
-				: 'application/json'
+		Accept: type === TwitchApiCallType.Kraken ? 'application/vnd.twitchtv.v5+json' : 'application/json'
 	});
 
 	let body: string | undefined;
@@ -47,7 +44,7 @@ export async function callTwitchApiRaw(
 	}
 
 	const requestOptions: RequestInit = {
-		method: options.method || 'GET',
+		method: options.method ?? 'GET',
 		headers,
 		body
 	};

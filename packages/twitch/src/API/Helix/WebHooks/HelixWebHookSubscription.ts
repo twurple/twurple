@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 
 /** @private */
@@ -11,12 +12,14 @@ export interface HelixWebHookSubscriptionData {
 /**
  * A subscription to a Twitch WebHook.
  */
+@rtfm('twitch', 'HelixWebHookSubscription')
 export class HelixWebHookSubscription {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixWebHookSubscriptionData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixWebHookSubscriptionData, client: ApiClient) {
+	constructor(data: HelixWebHookSubscriptionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

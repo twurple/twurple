@@ -23,7 +23,7 @@ export interface ChatRewardGiftInfo {
 	gifterDisplayName: string;
 
 	/**
-	 * The amount of total rewards this user shared.
+	 * The amount of total rewards the user shared.
 	 */
 	gifterGiftCount: number;
 

@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 
@@ -11,12 +12,14 @@ export interface HelixModeratorData {
 /**
  * Information about the moderator status of a user.
  */
+@rtfm<HelixModerator>('twitch', 'HelixModerator', 'userId')
 export class HelixModerator {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixModeratorData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixModeratorData, client: ApiClient) {
+	constructor(data: HelixModeratorData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

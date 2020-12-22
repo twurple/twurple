@@ -72,21 +72,21 @@ export abstract class ConnectionAdapter {
 	}
 
 	/**
-	 * Returns the host name that should be used by Twitch to connect to this server.
+	 * Returns the host name that should be used by Twitch to connect to the server.
 	 *
 	 * @protected
 	 */
-	abstract async getHostName(): Promise<string>;
+	abstract getHostName(): Promise<string>;
 
 	/**
-	 * Returns the port that should be used by Twitch to connect to this server.
+	 * Returns the port that should be used by Twitch to connect to the server.
 	 *
 	 * @protected
 	 */
-	abstract async getExternalPort(): Promise<number>;
+	abstract getExternalPort(): Promise<number>;
 
 	/**
-	 * Whether to use SSL to connect to this server.
+	 * Whether to use SSL to connect to the server.
 	 *
 	 * This has nothing to do with the SSL configuration given.
 	 * For example, this can be true when a reverse proxy takes care of SSL and routes to this server internally using plain HTTP.
@@ -96,7 +96,7 @@ export abstract class ConnectionAdapter {
 	abstract get connectUsingSsl(): boolean;
 
 	/**
-	 * The path prefix an external connection needs to reach this server.
+	 * The path prefix an external connection needs to reach the server.
 	 *
 	 * Please note that the layer redirecting to this server needs to strip the path prefix in order for this to work.
 	 *

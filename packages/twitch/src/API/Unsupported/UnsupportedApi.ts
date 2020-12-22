@@ -1,5 +1,6 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserNameResolvable } from '../../Toolkit/UserTools';
 import { extractUserName } from '../../Toolkit/UserTools';
 import { BaseApi } from '../BaseApi';
@@ -18,6 +19,7 @@ import { ChattersList } from './ChattersList';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'UnsupportedApi')
 export class UnsupportedApi extends BaseApi {
 	/**
 	 * Retrieves a list of chatters in the Twitch chat of the given channel.

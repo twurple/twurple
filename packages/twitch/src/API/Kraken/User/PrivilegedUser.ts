@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import type { UserData } from './User';
 import { User } from './User';
@@ -24,9 +25,9 @@ export interface PrivilegedUserData extends UserData {
  *
  * @inheritDoc
  */
+@rtfm<PrivilegedUser>('twitch', 'PrivilegedUser', 'id')
 export class PrivilegedUser extends User {
-	/** @private */
-	protected declare _data: PrivilegedUserData;
+	/** @private */ protected declare readonly _data: PrivilegedUserData;
 
 	/**
 	 * The user's email address.

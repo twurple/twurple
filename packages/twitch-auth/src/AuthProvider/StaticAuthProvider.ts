@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import { AccessToken } from '../AccessToken';
 import { getTokenInfo } from '../helpers';
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
@@ -10,6 +11,7 @@ import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
  * or to plan ahead and supply only access tokens that account for all scopes
  * you will ever need.
  */
+@rtfm<StaticAuthProvider>('twitch-auth', 'StaticAuthProvider', 'clientId')
 export class StaticAuthProvider implements AuthProvider {
 	@Enumerable(false) private readonly _clientId: string;
 	@Enumerable(false) private _accessToken?: AccessToken;
@@ -27,7 +29,7 @@ export class StaticAuthProvider implements AuthProvider {
 	 * @param accessToken The access token to provide.
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
-	 * @param scopes The scopes this token has.
+	 * @param scopes The scopes the supplied token has.
 	 * @param tokenType The type of the supplied token.
 	 */
 	constructor(
@@ -81,7 +83,7 @@ If you need dynamically upgrading scopes, please implement the AuthProvider inte
 			}
 		}
 
-		return this._accessToken || null;
+		return this._accessToken ?? null;
 	}
 
 	/** @private */
@@ -100,6 +102,6 @@ If you need dynamically upgrading scopes, please implement the AuthProvider inte
 	 * The scopes that are currently available using the access token.
 	 */
 	get currentScopes(): string[] {
-		return this._scopes || [];
+		return this._scopes ?? [];
 	}
 }

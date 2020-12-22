@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from 'twitch-common';
 
 /**
  * Thrown whenever you try something that requires your own stream to be live.

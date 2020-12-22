@@ -1,11 +1,13 @@
 import type { HelixBanEventData, HelixResponse } from 'twitch';
 import { HelixBanEvent } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
  * @private
  */
+@rtfm('twitch-webhooks', 'BanEventSubscription')
 export class BanEventSubscription extends Subscription<HelixBanEvent> {
 	constructor(
 		handler: (data: HelixBanEvent) => void,

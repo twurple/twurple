@@ -1,5 +1,6 @@
 import { flatten } from '@d-fischer/shared-utils';
 import { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { StreamNotLiveError } from '../../../Errors/StreamNotLiveError';
 import type { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
@@ -84,6 +85,7 @@ interface HelixStreamGetMarkersResult {
  * const stream = await api.helix.streams.getStreamByUserId('125328655');
  * ```
  */
+@rtfm('twitch', 'HelixStreamApi')
 export class HelixStreamApi extends BaseApi {
 	/**
 	 * Retrieves a list of streams.
@@ -238,7 +240,7 @@ export class HelixStreamApi extends BaseApi {
 			}
 		});
 
-		return result.data.map(data => new HelixTag(data, this._client));
+		return result.data.map(data => new HelixTag(data));
 	}
 
 	/**
@@ -295,7 +297,7 @@ export class HelixStreamApi extends BaseApi {
 
 		return {
 			data: flatten(result.data.map(HelixStreamApi._mapGetStreamMarkersResult.bind(this._client))),
-			cursor: result.pagination && result.pagination.cursor
+			cursor: result.pagination?.cursor
 		};
 	}
 

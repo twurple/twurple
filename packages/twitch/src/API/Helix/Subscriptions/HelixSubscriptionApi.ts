@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -22,6 +23,7 @@ import { HelixSubscriptionEvent } from './HelixSubscriptionEvent';
  * const subscription = await api.helix.subscriptions.getSubscriptionForUser('61369223', '125328655');
  * ```
  */
+@rtfm('twitch', 'HelixSubscriptionApi')
 export class HelixSubscriptionApi extends BaseApi {
 	/**
 	 * Retrieves a list of all subscriptions to a given broadcaster.

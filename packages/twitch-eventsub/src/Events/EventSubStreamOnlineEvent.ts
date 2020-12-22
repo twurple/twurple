@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 type EventSubStreamOnlineEventStreamType = 'live' | 'playlist' | 'watch_party' | 'premiere' | 'rerun';
 
@@ -14,12 +15,14 @@ export interface EventSubStreamOnlineEventData {
 /**
  * An EventSub event representing a stream going live.
  */
+@rtfm<EventSubStreamOnlineEvent>('twitch-eventsub', 'EventSubStreamOnlineEvent', 'broadcasterId')
 export class EventSubStreamOnlineEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: EventSubStreamOnlineEventData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubStreamOnlineEventData, client: ApiClient) {
+	constructor(data: EventSubStreamOnlineEventData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

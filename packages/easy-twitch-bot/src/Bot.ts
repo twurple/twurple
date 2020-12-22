@@ -65,7 +65,7 @@ export class Bot {
 			}
 		});
 
-		this.chat.connect();
+		void this.chat.connect();
 	}
 
 	private findMatch(msg: PrivateMessage): BotCommandMatch | null {

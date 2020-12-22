@@ -16,10 +16,11 @@ import type {
 	UserIdResolvable
 } from 'twitch';
 import { extractUserId } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { WebHookListenerConfig } from './Adapters/LegacyAdapter';
 import { LegacyAdapter } from './Adapters/LegacyAdapter';
-import type { ConnectCompatibleApp } from './ConnectCompatibleApp';
+import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import { BanEventSubscription } from './Subscriptions/BanEventSubscription';
 import { ExtensionTransactionSubscription } from './Subscriptions/ExtensionTransactionSubscription';
 import { FollowsFromUserSubscription } from './Subscriptions/FollowsFromUserSubscription';
@@ -71,6 +72,7 @@ const numberRegex = /^\d+$/;
 /**
  * A WebHook listener you can track changes in various channel and user data with.
  */
+@rtfm('twitch-webhooks', 'WebHookListener')
 export class WebHookListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();
@@ -122,17 +124,17 @@ export class WebHookListener {
 		const server = this._adapter.createHttpServer();
 		this._server = new Server({
 			server,
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			onError: (e, req: Request) => {
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				if (e.code === 404) {
-					this._logger.warn(`Access to unknown URL/method attempted: ${req.method} ${req.url}`);
+					this._logger.warn(`Access to unknown URL/method attempted: ${req.method!} ${req.url!}`);
 				}
 			}
 		});
 		// needs to be first in chain but run last, for proper logging of status
 		this._server.use((req, res, next) => {
 			setImmediate(() => {
-				this._logger.debug(`${req.method} ${req.path} - ${res.statusCode}`);
+				this._logger.debug(`${req.method!} ${req.path} - ${res.statusCode}`);
 			});
 			next();
 		});
@@ -175,9 +177,13 @@ export class WebHookListener {
 		};
 		const requestHandler = this._createHandleRequest();
 		if (pathPrefix) {
-			app.use(pathPrefix, paramParser, requestHandler);
+			app.use(
+				pathPrefix,
+				paramParser as ConnectCompatibleMiddleware,
+				requestHandler as ConnectCompatibleMiddleware
+			);
 		} else {
-			app.use(paramParser, requestHandler);
+			app.use(paramParser as ConnectCompatibleMiddleware, requestHandler as ConnectCompatibleMiddleware);
 		}
 	}
 
@@ -506,7 +512,7 @@ export class WebHookListener {
 		const { id } = req.param;
 		const subscription = this._subscriptions.get(id);
 		if (subscription) {
-			const hubMode = req.query?.['hub.mode'];
+			const hubMode = req.query['hub.mode'] as string;
 			if (hubMode === 'subscribe') {
 				subscription._verify();
 				res.writeHead(202);
@@ -520,7 +526,7 @@ export class WebHookListener {
 				res.end(req.query['hub.challenge']);
 				this._logger.debug(`Successfully unsubscribed from hook: ${id}`);
 			} else if (hubMode === 'denied') {
-				this._logger.error(`Subscription denied to hook: ${id} (${req.query['hub.reason']})`);
+				this._logger.error(`Subscription denied to hook: ${id} (${req.query['hub.reason'] as string})`);
 				res.writeHead(200);
 				res.end();
 			} else {

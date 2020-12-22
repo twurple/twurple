@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { HelixUserData } from './HelixUser';
 import { HelixUser } from './HelixUser';
 
@@ -11,9 +12,9 @@ export interface HelixPrivilegedUserData extends HelixUserData {
  *
  * @inheritDoc
  */
+@rtfm<HelixPrivilegedUser>('twitch', 'HelixPrivilegedUser', 'id')
 export class HelixPrivilegedUser extends HelixUser {
-	/** @private */
-	protected declare _data: HelixPrivilegedUserData;
+	/** @private */ protected declare readonly _data: HelixPrivilegedUserData;
 
 	/**
 	 * The email address of the user.

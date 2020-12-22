@@ -1,4 +1,5 @@
 import type { HelixEventSubSubscription } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { EventSubStreamOfflineEventData } from '../Events/EventSubStreamOfflineEvent';
 import { EventSubStreamOfflineEvent } from '../Events/EventSubStreamOfflineEvent';
 import type { EventSubListener } from '../EventSubListener';
@@ -7,6 +8,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 /**
  * @private
  */
+@rtfm<EventSubStreamOfflineSubscription>('twitch-eventsub', 'EventSubStreamOfflineSubscription', 'id')
 export class EventSubStreamOfflineSubscription extends EventSubSubscription<EventSubStreamOfflineEvent> {
 	constructor(
 		handler: (data: EventSubStreamOfflineEvent) => void,

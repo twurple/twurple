@@ -46,10 +46,10 @@ export interface AuthProvider {
 	 *
 	 * @param scopes The requested scope(s).
 	 */
-	getAccessToken(scopes?: string | string[]): Promise<AccessToken | null>;
+	getAccessToken: (scopes?: string | string[]) => Promise<AccessToken | null>;
 
 	/** @private */
-	setAccessToken(token: AccessToken): void;
+	setAccessToken: (token: AccessToken) => void;
 
 	/**
 	 * Requests that the provider fetches a new token from Twitch.
@@ -58,5 +58,5 @@ export interface AuthProvider {
 	 * it might not be desirable to e.g. ask the user to log in
 	 * again at just any time.
 	 */
-	refresh?(): Promise<AccessToken | null>;
+	refresh?: () => Promise<AccessToken | null>;
 }

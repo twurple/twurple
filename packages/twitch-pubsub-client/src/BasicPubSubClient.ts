@@ -8,6 +8,7 @@ import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from 'twitch';
 import { HellFreezesOverError } from 'twitch';
 import { getValidTokenFromProvider } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
 import type { PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
@@ -36,16 +37,17 @@ type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTok
 /**
  * A client for the Twitch PubSub interface.
  */
+@rtfm('twitch-pubsub-client', 'BasicPubSubClient')
 export class BasicPubSubClient extends EventEmitter {
 	@Enumerable(false) private readonly _logger: Logger;
 
 	// topic => token
 	@Enumerable(false) private readonly _topics = new Map<string, TokenResolvable>();
 
-	private _connection: Connection;
+	private readonly _connection: Connection;
 
-	private _pingOnInactivity: number = 60;
-	private _pingTimeout: number = 60;
+	private readonly _pingOnInactivity: number = 60;
+	private readonly _pingTimeout: number = 60;
 	private _pingCheckTimer?: NodeJS.Timer;
 	private _pingTimeoutTimer?: NodeJS.Timer;
 
@@ -158,7 +160,7 @@ export class BasicPubSubClient extends EventEmitter {
 			topics = [topics];
 		}
 
-		const wrapped = this._wrapResolvable(tokenResolvable, scope);
+		const wrapped = BasicPubSubClient._wrapResolvable(tokenResolvable, scope);
 		for (const topic of topics) {
 			this._topics.set(topic, wrapped);
 		}
@@ -217,14 +219,14 @@ export class BasicPubSubClient extends EventEmitter {
 	 * Checks whether the client is currently connecting to the server.
 	 */
 	get isConnecting(): boolean {
-		return this._connection?.isConnecting ?? false;
+		return this._connection.isConnecting;
 	}
 
 	/**
 	 * Checks whether the client is currently connected to the server.
 	 */
 	get isConnected(): boolean {
-		return this._connection?.isConnected ?? false;
+		return this._connection.isConnected;
 	}
 
 	/** @private */
@@ -251,7 +253,7 @@ export class BasicPubSubClient extends EventEmitter {
 		});
 	}
 
-	private _wrapResolvable(
+	private static _wrapResolvable(
 		resolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
 		scope?: string
 	): TokenResolvable {
@@ -363,7 +365,7 @@ export class BasicPubSubClient extends EventEmitter {
 
 	private _receiveMessage(dataStr: string) {
 		this._logger.debug(`Received message: ${dataStr}`);
-		const data: PubSubIncomingPacket = JSON.parse(dataStr);
+		const data = JSON.parse(dataStr) as PubSubIncomingPacket;
 
 		switch (data.type) {
 			case 'PONG': {
@@ -371,8 +373,7 @@ export class BasicPubSubClient extends EventEmitter {
 				break;
 			}
 			case 'RECONNECT': {
-				// tslint:disable-next-line:no-floating-promises
-				this.reconnect();
+				void this.reconnect();
 				break;
 			}
 			case 'RESPONSE': {

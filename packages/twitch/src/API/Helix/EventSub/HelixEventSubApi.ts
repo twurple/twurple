@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -38,6 +39,7 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
  * await api.helix.eventSub.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
+@rtfm('twitch', 'HelixEventSubApi')
 export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Retrieves the current WebHook subscriptions for the current client.
@@ -84,7 +86,7 @@ export class HelixEventSubApi extends BaseApi {
 	async createSubscription(
 		type: string,
 		version: string,
-		condition: object,
+		condition: Record<string, unknown>,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({

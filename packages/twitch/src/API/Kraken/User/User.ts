@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
@@ -24,12 +25,13 @@ export interface UserData {
 /**
  * A Twitch user.
  */
+@rtfm<User>('twitch', 'User', 'id')
 export class User {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	/** @private */ @Enumerable(false) protected readonly _data: UserData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
-	/** @private */
-	constructor(/** @private */ protected _data: UserData, client: ApiClient) {
+	constructor(data: UserData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 import type { HelixExtensionProductData } from './HelixExtensionProductData';
@@ -20,11 +21,14 @@ export interface HelixExtensionTransactionData {
 /**
  * A bits transaction made inside an extension.
  */
+@rtfm<HelixExtensionTransaction>('twitch', 'HelixExtensionTransaction', 'id')
 export class HelixExtensionTransaction {
+	@Enumerable(false) private readonly _data: HelixExtensionTransactionData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixExtensionTransactionData, client: ApiClient) {
+	constructor(data: HelixExtensionTransactionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

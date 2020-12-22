@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -68,6 +69,7 @@ export interface HelixClipCreateResponse {
  * const clipId = await api.helix.clips.createClip({ channelId: '125328655' });
  * ```
  */
+@rtfm('twitch', 'HelixClipApi')
 export class HelixClipApi extends BaseApi {
 	/**
 	 * Retrieves the latest clips for the specified broadcaster.

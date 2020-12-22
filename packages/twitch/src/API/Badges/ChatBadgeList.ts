@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from '../../ApiClient';
+import { rtfm } from 'twitch-common';
 import type { ChatBadgeSetData } from './ChatBadgeSet';
 import { ChatBadgeSet } from './ChatBadgeSet';
 
@@ -9,13 +9,13 @@ export type ChatBadgeListData = Record<string, ChatBadgeSetData>;
 /**
  * A list of badge sets.
  */
+@rtfm('twitch', 'ChatBadgeList')
 export class ChatBadgeList {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: ChatBadgeListData;
 
 	/** @private */
-	constructor(private readonly _data: ChatBadgeListData, client: ApiClient) {
-		this._client = client;
+	constructor(data: ChatBadgeListData) {
+		this._data = data;
 	}
 
 	/**
@@ -31,7 +31,7 @@ export class ChatBadgeList {
 	 * @param name The name of the badge set.
 	 */
 	getBadgeSet(name: string): ChatBadgeSet {
-		return new ChatBadgeSet(this._data[name], this._client);
+		return new ChatBadgeSet(this._data[name]);
 	}
 
 	/** @private */
@@ -39,6 +39,6 @@ export class ChatBadgeList {
 		if (additionalData instanceof ChatBadgeList) {
 			additionalData = additionalData._data;
 		}
-		return new ChatBadgeList({ ...this._data, ...additionalData }, this._client);
+		return new ChatBadgeList({ ...this._data, ...additionalData });
 	}
 }

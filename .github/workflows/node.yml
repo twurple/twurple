@@ -22,9 +22,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn
       - run: yarn run lerna bootstrap
+      - run: yarn run build
       - run: yarn run lint
       - run: yarn run prettier:check
-      - run: yarn run build
   docs:
     if: ${{ github.event_name == 'push' }}
     needs: [ build ]

@@ -1,4 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
@@ -17,6 +18,7 @@ import { Stream, StreamType } from './Stream';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'StreamApi')
 export class StreamApi extends BaseApi {
 	/**
 	 * Retrieves the current stream on the given channel.
@@ -51,7 +53,7 @@ export class StreamApi extends BaseApi {
 	): Promise<Stream[]> {
 		const query: Record<string, string | undefined> = {
 			limit: limit.toString(),
-			channel: channels ? (typeof channels === 'string' ? channels : channels.join(',')) : undefined,
+			channel: typeof channels === 'string' ? channels : channels?.join(','),
 			game,
 			language: languageCode,
 			stream_type: type,

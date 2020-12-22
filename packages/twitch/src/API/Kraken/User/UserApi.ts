@@ -2,6 +2,7 @@ import type { CacheEntry } from '@d-fischer/cache-decorators';
 import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
 import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
 import { HttpStatusCodeError } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
@@ -32,8 +33,9 @@ import { UserSubscription } from './UserSubscription';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'UserApi')
 export class UserApi extends BaseApi {
-	private readonly _userByNameCache: Map<string, CacheEntry<User>> = new Map();
+	private readonly _userByNameCache = new Map<string, CacheEntry<User>>();
 
 	/**
 	 * Retrieves the user data of the currently authenticated user.
@@ -51,6 +53,7 @@ export class UserApi extends BaseApi {
 	@Cached(3600)
 	async getUser(userId: UserIdResolvable): Promise<User> {
 		const userData = await this._client.callApi<UserData>({ url: `users/${extractUserId(userId)}` });
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (!userData) {
 			throw new HellFreezesOverError('Could not get authenticated user');
 		}
@@ -102,7 +105,7 @@ export class UserApi extends BaseApi {
 			url: 'users',
 			query: { login: toFetch.join(',') }
 		});
-		const usersArr: User[] = usersData.users.map((data: UserData) => new User(data, this._client));
+		const usersArr: User[] = usersData.users.map(data => new User(data, this._client));
 		usersArr.forEach(user =>
 			this._userByNameCache.set(user.name, {
 				value: user,

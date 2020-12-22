@@ -1,4 +1,5 @@
 import { TwitchApiCallType } from 'twitch-api-call';
+import { rtfm } from 'twitch-common';
 import type { CommercialLength } from '../../Shared/CommercialLength';
 import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import { extractUserId } from '../../../Toolkit/UserTools';
@@ -38,6 +39,7 @@ export interface HelixChannelUpdate {
  * const channel = await api.helix.channels.getChannelInfo('125328655');
  * ```
  */
+@rtfm('twitch', 'HelixChannelApi')
 export class HelixChannelApi extends BaseApi {
 	/**
 	 * Retrieves the channel data for the given user.

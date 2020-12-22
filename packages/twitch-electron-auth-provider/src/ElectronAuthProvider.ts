@@ -50,8 +50,6 @@ export class ElectronAuthProvider implements AuthProvider {
 
 	readonly tokenType: AuthProviderTokenType = 'user';
 
-	constructor(clientCredentials: TwitchClientCredentials, options?: ElectronAuthProviderOptions);
-	constructor(clientCredentials: TwitchClientCredentials, options?: ElectronAuthProviderOptions<WindowOptions>);
 	constructor(
 		clientCredentials: TwitchClientCredentials,
 		options?: ElectronAuthProviderOptions | ElectronAuthProviderOptions<WindowOptions>
@@ -113,7 +111,7 @@ export class ElectronAuthProvider implements AuthProvider {
 			};
 			let done = false;
 			const authWindow =
-				this._options.window ||
+				this._options.window ??
 				new BrowserWindow(Object.assign(defaultBrowserWindowOptions, this._options.windowOptions));
 
 			authWindow.webContents.once('did-finish-load', () => authWindow.show());
@@ -152,8 +150,8 @@ export class ElectronAuthProvider implements AuthProvider {
 							return;
 						}
 					}
-					// eslint-disable-next-line @typescript-eslint/no-explicit-any
-					const params: any = url.hash ? parse(url.hash.substr(1)) : url.searchParams;
+					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+					const params: Record<string, string> = url.hash ? parse(url.hash.substr(1)) : url.searchParams;
 
 					if (params.error || params.access_token) {
 						done = true;
@@ -166,7 +164,7 @@ export class ElectronAuthProvider implements AuthProvider {
 					if (params.error) {
 						reject(new Error(`Error received from Twitch: ${params.error}`));
 					} else if (params.access_token) {
-						const accessToken = params.access_token as string;
+						const accessToken = params.access_token;
 						for (const scope of scopes!) {
 							this._currentScopes.add(scope);
 						}
@@ -184,7 +182,7 @@ export class ElectronAuthProvider implements AuthProvider {
 			);
 
 			// do this last so there is no race condition
-			authWindow.loadURL(authUrl);
+			void authWindow.loadURL(authUrl);
 		});
 	}
 

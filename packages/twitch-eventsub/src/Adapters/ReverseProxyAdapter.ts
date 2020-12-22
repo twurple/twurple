@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
 /**
@@ -29,6 +30,7 @@ export interface ReverseProxyAdapterConfig {
  *
  * @hideProtected
  */
+@rtfm('twitch-eventsub', 'ReverseProxyAdapter')
 export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _externalPort: number;

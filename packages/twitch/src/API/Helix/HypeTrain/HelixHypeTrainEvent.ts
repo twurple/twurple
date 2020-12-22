@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 import type { HelixHypeTrainContributionData } from './HelixHypeTrainContribution';
@@ -21,12 +22,14 @@ export interface HelixHypeTrainEventData {
 /**
  * A hype train event.
  */
+@rtfm<HelixHypeTrainEvent>('twitch', 'HelixHypeTrainEvent', 'id')
 export class HelixHypeTrainEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixHypeTrainEventData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private _data: HelixHypeTrainEventData, client: ApiClient) {
+	constructor(data: HelixHypeTrainEventData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

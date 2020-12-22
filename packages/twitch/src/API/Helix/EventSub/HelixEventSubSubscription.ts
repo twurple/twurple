@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 
 export type HelixEventSubSubscriptionStatus =
@@ -31,7 +32,7 @@ export interface HelixEventSubSubscriptionData {
 	status: HelixEventSubSubscriptionStatus;
 	type: string;
 	version: string;
-	condition: object;
+	condition: Record<string, unknown>;
 	created_at: string;
 	transport: HelixEventSubTransportData;
 }
@@ -39,12 +40,14 @@ export interface HelixEventSubSubscriptionData {
 /**
  * An EventSub subscription.
  */
+@rtfm<HelixEventSubSubscription>('twitch', 'HelixEventSubSubscription', 'id')
 export class HelixEventSubSubscription {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixEventSubSubscriptionData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixEventSubSubscriptionData, client: ApiClient) {
+	constructor(data: HelixEventSubSubscriptionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
@@ -72,14 +75,14 @@ export class HelixEventSubSubscription {
 	/**
 	 * The condition of the subscription.
 	 */
-	get condition(): object {
+	get condition(): Record<string, unknown> {
 		return this._data.condition;
 	}
 
 	/**
 	 * The date and time of creation of the subscription.
 	 */
-	get creationDate(): object {
+	get creationDate(): Date {
 		return new Date(this._data.created_at);
 	}
 

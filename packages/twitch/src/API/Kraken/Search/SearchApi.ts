@@ -1,4 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import type { ChannelData } from '../Channel/Channel';
 import { Channel } from '../Channel/Channel';
@@ -17,6 +18,7 @@ import { Stream } from '../Stream/Stream';
  * ```
  */
 @Cacheable
+@rtfm('twitch', 'SearchApi')
 export class SearchApi extends BaseApi {
 	/**
 	 * Retrieves a list of channels that match the given search term.
@@ -60,6 +62,6 @@ export class SearchApi extends BaseApi {
 
 		const data = await this._client.callApi<{ streams: StreamData[] }>({ url: 'search/streams', query });
 
-		return data.streams.map((streamData: StreamData) => new Stream(streamData, this._client));
+		return data.streams.map(streamData => new Stream(streamData, this._client));
 	}
 }

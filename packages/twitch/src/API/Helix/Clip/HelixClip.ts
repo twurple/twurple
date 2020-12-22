@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixGame } from '../Game/HelixGame';
 import type { HelixUser } from '../User/HelixUser';
@@ -21,12 +22,14 @@ export interface HelixClipData {
 	thumbnail_url: string;
 }
 
+@rtfm<HelixClip>('twitch', 'HelixClip', 'id')
 export class HelixClip {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: HelixClipData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixClipData, client: ApiClient) {
+	constructor(data: HelixClipData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 

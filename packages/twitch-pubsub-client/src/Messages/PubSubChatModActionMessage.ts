@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 export interface PubSubChatModActionMessageContent {
 	type: string;
@@ -16,15 +17,14 @@ export interface PubSubChatModActionMessageData {
 /**
  * A message that informs about a moderation action being performed in a channel.
  */
+@rtfm<PubSubChatModActionMessage>('twitch-pubsub-client', 'PubSubChatModActionMessage', 'userId')
 export class PubSubChatModActionMessage {
 	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubChatModActionMessageData;
 
 	/** @private */
-	constructor(
-		private readonly _data: PubSubChatModActionMessageData,
-		private readonly _channelId: string,
-		apiClient: ApiClient
-	) {
+	constructor(data: PubSubChatModActionMessageData, private readonly _channelId: string, apiClient: ApiClient) {
+		this._data = data;
 		this._apiClient = apiClient;
 	}
 

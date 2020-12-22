@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { UserData } from '../User/User';
 import { User } from '../User/User';
@@ -13,12 +14,14 @@ export interface ChannelFollowData {
 /**
  * A relation of a user following a previously given channel.
  */
+@rtfm<ChannelFollow>('twitch', 'ChannelFollow', 'userId')
 export class ChannelFollow {
-	/** @private */
+	@Enumerable(false) private readonly _data: ChannelFollowData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: ChannelFollowData, client: ApiClient) {
+	constructor(data: ChannelFollowData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
@@ -27,6 +30,13 @@ export class ChannelFollow {
 	 */
 	get user(): User {
 		return new User(this._data.user, this._client);
+	}
+
+	/**
+	 * The ID of the user following the given channel.
+	 */
+	get userId(): string {
+		return this._data.user._id;
 	}
 
 	/**

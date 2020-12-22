@@ -1,5 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
+import type { Channel } from '../Channel/Channel';
 
 /** @private */
 export interface VideoChannelData {
@@ -56,12 +58,15 @@ export interface VideoData {
 /**
  * A Twitch video.
  */
+@rtfm<Video>('twitch', 'Video', 'id')
 export class Video {
 	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) private readonly _data: VideoData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: VideoData, client: ApiClient) {
+	constructor(data: VideoData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
@@ -91,6 +96,13 @@ export class Video {
 	 */
 	get channelDisplayName(): string {
 		return this._data.channel.display_name;
+	}
+
+	/**
+	 * Retrieves more information about the channel the video was uploaded to.
+	 */
+	async getChannel(): Promise<Channel> {
+		return this._client.kraken.channels.getChannel(this._data.channel._id);
 	}
 
 	/**

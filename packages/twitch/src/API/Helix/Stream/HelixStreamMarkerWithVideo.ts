@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixVideo } from '../Video/HelixVideo';
 import type { HelixStreamMarkerData } from './HelixStreamMarker';
@@ -7,8 +8,12 @@ export interface HelixStreamMarkerVideoData extends HelixStreamMarkerData {
 	URL: string;
 }
 
+/**
+ * A stream marker, also containing some video data.
+ */
+@rtfm<HelixStreamMarkerWithVideo>('twitch', 'HelixStreamMarkerWithVideo', 'id')
 export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
-	protected declare readonly _data: HelixStreamMarkerVideoData;
+	/** @private */ protected declare readonly _data: HelixStreamMarkerVideoData;
 
 	/** @private */
 	constructor(data: HelixStreamMarkerVideoData, private readonly _videoId: string, client: ApiClient) {

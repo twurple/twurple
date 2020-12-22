@@ -1,3 +1,4 @@
+import { rtfm } from 'twitch-common';
 import type { CommonConnectionAdapterConfig } from './ConnectionAdapter';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
@@ -18,6 +19,7 @@ export interface SimpleAdapterConfig extends CommonConnectionAdapterConfig {
  *
  * @hideProtected
  */
+@rtfm('twitch-webhooks', 'SimpleAdapter')
 export class SimpleAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 

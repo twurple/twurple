@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { UserData } from './User';
 import { User } from './User';
@@ -13,11 +14,14 @@ export interface UserBlockData {
 /**
  * A relation of a previously givn user blocking another user.
  */
+@rtfm<UserBlock>('twitch', 'UserBlock', 'blockedUserId')
 export class UserBlock {
+	@Enumerable(false) private readonly _data: UserBlockData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: UserBlockData, client: ApiClient) {
+	constructor(data: UserBlockData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
@@ -26,5 +30,12 @@ export class UserBlock {
 	 */
 	get blockedUser(): User {
 		return new User(this._data.user, this._client);
+	}
+
+	/**
+	 * The ID of the blocked user.
+	 */
+	get blockedUserId(): string {
+		return this._data.user._id;
 	}
 }

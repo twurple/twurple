@@ -52,7 +52,11 @@ export type {
 } from './API/Helix/EventSub/HelixEventSubApi';
 
 export { HelixEventSubSubscription } from './API/Helix/EventSub/HelixEventSubSubscription';
-export type { HelixEventSubSubscriptionStatus } from './API/Helix/EventSub/HelixEventSubSubscription';
+export type {
+	HelixEventSubSubscriptionData,
+	HelixEventSubSubscriptionStatus,
+	HelixEventSubTransportData
+} from './API/Helix/EventSub/HelixEventSubSubscription';
 
 export { HelixExtensionTransaction } from './API/Helix/Extensions/HelixExtensionTransaction';
 export type { HelixExtensionTransactionData } from './API/Helix/Extensions/HelixExtensionTransaction';
@@ -107,7 +111,6 @@ export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
 
 export { ChatEmote } from './API/Kraken/Chat/ChatEmote';
 export { ChatEmoteList } from './API/Kraken/Chat/ChatEmoteList';
-export { ChatRoom } from './API/Kraken/Chat/ChatRoom';
 
 export { Stream, StreamType } from './API/Kraken/Stream/Stream';
 

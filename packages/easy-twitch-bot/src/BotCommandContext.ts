@@ -5,7 +5,7 @@ export class BotCommandContext {
 	readonly channel: string;
 
 	/** @private **/
-	constructor(private _client: ChatClient, public readonly msg: PrivateMessage) {
+	constructor(private readonly _client: ChatClient, public readonly msg: PrivateMessage) {
 		this.user = msg.userInfo.userName;
 		this.channel = msg.params.target;
 	}
