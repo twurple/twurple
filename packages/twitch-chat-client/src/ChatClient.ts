@@ -1,33 +1,40 @@
-import Logger, { LogLevel } from '@d-fischer/logger';
-import LoggerOptions from '@d-fischer/logger/lib/LoggerOptions';
-import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
-import { Listener } from '@d-fischer/typed-event-emitter';
-import * as deprecate from 'deprecate';
-import IRCClient from 'ircv3';
-import { ChannelJoin, ChannelPart, Notice, PrivateMessage } from 'ircv3/lib/Message/MessageTypes/Commands/';
-import TwitchClient, { CommercialLength, InvalidTokenError } from 'twitch';
-import TwitchCommandsCapability from './Capabilities/TwitchCommandsCapability';
-import ClearChat from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
-import HostTarget from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
-import RoomState from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
-import UserNotice from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
-import Whisper from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
-import TwitchMembershipCapability from './Capabilities/TwitchMembershipCapability';
-import TwitchTagsCapability from './Capabilities/TwitchTagsCapability';
-import ClearMsg from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
-import TwitchPrivateMessage from './StandardCommands/TwitchPrivateMessage';
+import deprecate from '@d-fischer/deprecate';
+import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
+import { Logger } from '@d-fischer/logger';
+import type { ResolvableValue } from '@d-fischer/shared-utils';
+import { delay, Enumerable } from '@d-fischer/shared-utils';
+import type { EventBinder, Listener } from '@d-fischer/typed-event-emitter';
+import { IrcClient, MessageTypes } from 'ircv3';
+import type { CommercialLength } from 'twitch';
+import type { AccessToken, AuthProvider } from 'twitch-auth';
+import { getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from 'twitch-auth';
+import { rtfm } from 'twitch-common';
+import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
+import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
+import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
+import { RoomState } from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
+import { UserNotice } from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
+import { Whisper } from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
+import { TwitchMembershipCapability } from './Capabilities/TwitchMembershipCapability';
+import { TwitchTagsCapability } from './Capabilities/TwitchTagsCapability';
+import { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
+import type { ChatSayMessageAttributes } from './ChatMessageAttributes';
+import { extractMessageId } from './ChatMessageAttributes';
+import { TwitchPrivateMessage } from './StandardCommands/TwitchPrivateMessage';
 import { toChannelName, toUserName } from './Toolkit/UserTools';
-import ChatBitsBadgeUpgradeInfo from './UserNotices/ChatBitsBadgeUpgradeInfo';
-import ChatCommunityPayForwardInfo from './UserNotices/ChatCommunityPayForwardInfo';
-import ChatCommunitySubInfo from './UserNotices/ChatCommunitySubInfo';
-import ChatPrimeCommunityGiftInfo from './UserNotices/ChatPrimeCommunityGiftInfo';
-import ChatRaidInfo from './UserNotices/ChatRaidInfo';
-import ChatRitualInfo from './UserNotices/ChatRitualInfo';
-import ChatStandardPayForwardInfo from './UserNotices/ChatStandardPayForwardInfo';
-import ChatSubInfo, {
+import type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
+import type { ChatCommunityPayForwardInfo } from './UserNotices/ChatCommunityPayForwardInfo';
+import type { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
+import type { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
+import type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
+import type { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
+import type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
+import type { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
+import type {
 	ChatSubExtendInfo,
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
+	ChatSubInfo,
 	ChatSubUpgradeInfo
 } from './UserNotices/ChatSubInfo';
 
@@ -71,6 +78,11 @@ export interface ChatClientOptions {
 	ssl?: boolean;
 
 	/**
+	 * Custom hostname for connecting to chat.
+	 */
+	hostName?: string;
+
+	/**
 	 * Whether to use a WebSocket to connect to chat.
 	 */
 	webSocket?: boolean;
@@ -94,19 +106,22 @@ export interface ChatClientOptions {
  * @inheritDoc
  * @hideProtected
  */
-export default class ChatClient extends IRCClient {
+@rtfm('twitch-chat-client', 'ChatClient')
+export class ChatClient extends IrcClient {
 	private static readonly HOST_MESSAGE_REGEX = /(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
 	/** @private */
-	@NonEnumerable readonly _twitchClient?: TwitchClient;
+	@Enumerable(false) readonly _authProvider?: AuthProvider;
 
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;
 
+	private _authToken?: AccessToken | null;
 	private _authVerified = false;
 	private _authFailureMessage?: string;
+	private _authRetryTimer?: Iterator<number, never>;
 
-	private _chatLogger: Logger;
+	private readonly _chatLogger: Logger;
 
 	/**
 	 * Fires when a user is timed out from a channel.
@@ -134,7 +149,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel where the bits badge was upgraded.
 	 * @param user The user that has upgraded their bits badge.
 	 * @param ritualInfo Additional information about the upgrade.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onBitsBadgeUpgrade: (
 		handler: (channel: string, user: string, upgradeInfo: ChatBitsBadgeUpgradeInfo, msg: UserNotice) => void
@@ -209,6 +224,8 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * The join/part events are cached by the Twitch chat server and will be batched and sent every 30-60 seconds.
 	 *
+	 * Please note that unless you enabled the `requestMembershipEvents` option, this will only react to your own joins.
+	 *
 	 * @eventListener
 	 * @param channel The channel that is being joined.
 	 * @param user The user that joined.
@@ -219,6 +236,8 @@ export default class ChatClient extends IRCClient {
 	 * Fires when a user leaves ("parts") a channel.
 	 *
 	 * The join/part events are cached by the Twitch chat server and will be batched and sent every 30-60 seconds.
+	 *
+	 * Please note that unless you enabled the `requestMembershipEvents` option, this will only react to your own parts.
 	 *
 	 * @eventListener
 	 * @param channel The channel that is being left.
@@ -232,7 +251,7 @@ export default class ChatClient extends IRCClient {
 	 * @eventListener
 	 * @param channel The channel where the message was removed.
 	 * @param messageId The ID of the message that was removed.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 *
 	 * This is *not* the message that was removed. The text of the message is available using `msg.params.message` though.
 	 */
@@ -264,7 +283,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel that was raided.
 	 * @param user The user that has raided the channel.
 	 * @param raidInfo Additional information about the raid.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onRaid: (
 		handler: (channel: string, user: string, raidInfo: ChatRaidInfo, msg: UserNotice) => void
@@ -275,7 +294,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @eventListener
 	 * @param channel The channel where the raid was cancelled.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onRaidCancel: (handler: (channel: string, msg: UserNotice) => void) => Listener = this.registerEvent();
 
@@ -286,7 +305,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel where the ritual was performed.
 	 * @param user The user that has performed the ritual.
 	 * @param ritualInfo Additional information about the ritual.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onRitual: (
 		handler: (channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice) => void
@@ -318,7 +337,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel that was subscribed to.
 	 * @param user The subscribing user.
 	 * @param subInfo Additional information about the subscription.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onSub: (
 		handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void
@@ -331,7 +350,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel that was resubscribed to.
 	 * @param user The resubscribing user.
 	 * @param subInfo Additional information about the resubscription.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onResub: (
 		handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void
@@ -340,11 +359,14 @@ export default class ChatClient extends IRCClient {
 	/**
 	 * Fires when a user gifts a subscription to a channel to another user.
 	 *
+	 * Community subs also fire multiple `onSubGift` events.
+	 * To prevent alert spam, check [Sub gift spam](/twitch-chat-client/docs/examples/sub-gift-spam).
+	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
 	 * @param user The user that the subscription was gifted to. The gifting user is defined in `subInfo.gifter`.
 	 * @param subInfo Additional information about the subscription.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onSubGift: (
 		handler: (channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice) => void
@@ -353,11 +375,14 @@ export default class ChatClient extends IRCClient {
 	/**
 	 * Fires when a user gifts random subscriptions to the community of a channel.
 	 *
+	 * Community subs also fire multiple `onSubGift` events.
+	 * To prevent alert spam, check [Sub gift spam](/twitch-chat-client/docs/examples/sub-gift-spam).
+	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
 	 * @param user The gifting user.
 	 * @param subInfo Additional information about the community subscription.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onCommunitySub: (
 		handler: (channel: string, user: string, subInfo: ChatCommunitySubInfo, msg: UserNotice) => void
@@ -370,10 +395,23 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel where the subscription was extended.
 	 * @param user The user that extended their subscription.
 	 * @param subInfo Additional information about the subscription extension.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onSubExtend: (
 		handler: (channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice) => void
+	) => Listener = this.registerEvent();
+
+	/**
+	 * Fires when a user gifts rewards during a special event.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the rewards were gifted.
+	 * @param user The user that gifted the rewards.
+	 * @param rewardGiftInfo Additional information about the reward gift.
+	 * @param msg The full message object containing all message and user information.
+	 */
+	onRewardGift: (
+		handler: (channel: string, user: string, rewardGiftInfo: ChatRewardGiftInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
 	/**
@@ -383,7 +421,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel where the subscription was upgraded.
 	 * @param user The user that upgraded their subscription.
 	 * @param subInfo Additional information about the subscription upgrade.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onPrimePaidUpgrade: (
 		handler: (channel: string, user: string, subInfo: ChatSubUpgradeInfo, msg: UserNotice) => void
@@ -396,7 +434,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel where the subscription was upgraded.
 	 * @param user The user that upgraded their subscription.
 	 * @param subInfo Additional information about the subscription upgrade.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onGiftPaidUpgrade: (
 		handler: (channel: string, user: string, subInfo: ChatSubGiftUpgradeInfo, msg: UserNotice) => void
@@ -411,7 +449,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * **WARNING:** This is a *display name* and thus will not work as an identifier for the API (login) in some cases.
 	 * @param subInfo Additional information about the gift.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onPrimeCommunityGift: (
 		handler: (channel: string, user: string, subInfo: ChatPrimeCommunityGiftInfo, msg: UserNotice) => void
@@ -424,7 +462,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel where the gift was forwarded.
 	 * @param user The user that forwarded the gift.
 	 * @param forwardInfo Additional information about the gift.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onStandardPayForward: (
 		handler: (channel: string, user: string, forwardInfo: ChatStandardPayForwardInfo, msg: UserNotice) => void
@@ -437,7 +475,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel where the gift was forwarded.
 	 * @param user The user that forwarded the gift.
 	 * @param forwardInfo Additional information about the gift.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onCommunityPayForward: (
 		handler: (channel: string, user: string, forwardInfo: ChatCommunityPayForwardInfo, msg: UserNotice) => void
@@ -449,7 +487,7 @@ export default class ChatClient extends IRCClient {
 	 * @eventListener
 	 * @param user The user that sent the whisper.
 	 * @param message The message text.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
 	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
 
@@ -489,7 +527,6 @@ export default class ChatClient extends IRCClient {
 	 */
 	onMessageFailed: (handler: (channel: string, reason: string) => void) => Listener = this.registerEvent();
 
-	// override for specific class
 	/**
 	 * Fires when a user sends a message to a channel.
 	 *
@@ -497,11 +534,25 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel the message was sent to.
 	 * @param user The user that send the message.
 	 * @param message The message text.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
-	onPrivmsg!: (
+	onMessage: (
 		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	) => Listener = this.registerEvent();
+
+	// override for specific class
+	/**
+	 * Fires when a user sends a message to a channel.
+	 *
+	 * @deprecated Use `onMessage` instead.
+	 *
+	 * @eventListener
+	 * @param channel The channel the message was sent to.
+	 * @param user The user that send the message.
+	 * @param message The message text.
+	 * @param msg The full message object containing all message and user information.
+	 */
+	declare onPrivmsg: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	/**
 	 * Fires when a user sends an action (/me) to a channel.
@@ -510,97 +561,98 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel the action was sent to.
 	 * @param user The user that send the action.
 	 * @param message The action text.
-	 * @param msg The raw message that was received.
+	 * @param msg The full message object containing all message and user information.
 	 */
-	onAction!: (
-		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	declare onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	// internal events to resolve promises and stuff
 	private readonly _onBanResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onTimeoutResult: (
 		handler: (channel: string, user: string, duration?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnbanResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
-	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
+	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerInternalEvent();
 	private readonly _onCommercialResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onDeleteMessageResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onEmoteOnlyResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onEmoteOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onFollowersOnlyResult: (
-		handler: (channel: string, delay?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+		handler: (channel: string, minFollowTime?: number, error?: string) => void
+	) => Listener = this.registerInternalEvent();
 	private readonly _onFollowersOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onHostResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnhostResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onModResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnmodResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onModsResult: (
 		handler: (channel: string, mods?: string[], error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onJoinResult: (
 		handler: (channel: string, state?: Map<string, string>, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onR9kResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onR9kOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSlowResult: (
 		handler: (channel: string, delay?: number, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSlowOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSubsOnlyResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onSubsOnlyOffResult: (
 		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onVipResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onUnvipResult: (
 		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 	private readonly _onVipsResult: (
 		handler: (channel: string, vips?: string[], error?: string) => void
-	) => Listener = this.registerEvent();
+	) => Listener = this.registerInternalEvent();
 
 	/**
-	 * Creates a new Twitch chat client with the user info from the TwitchClient instance.
+	 * Creates a new Twitch chat client with the user info from the {@AuthProvider} instance.
+	 *
+	 * @deprecated Use the {@ChatClient} constructor instead.
 	 *
 	 * @expandParams
 	 *
-	 * @param twitchClient The TwitchClient instance to use for user info and API requests.
+	 * @param authProvider The {@AuthProvider} instance to use for authentication.
 	 * @param options
 	 */
-	static forTwitchClient(twitchClient: TwitchClient, options: ChatClientOptions = {}) {
-		return new this(twitchClient, options);
+	static forTwitchClient(authProvider: AuthProvider, options: ChatClientOptions = {}): ChatClient {
+		deprecate('[twitch-chat-client] ChatClient.forTwitchClient', 'Use the `ChatClient` constructor instead.');
+		return new this(authProvider, options);
 	}
 
 	/**
@@ -610,7 +662,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param options
 	 */
-	static anonymous(options: ChatClientOptions = {}) {
+	static anonymous(options: ChatClientOptions = {}): ChatClient {
 		return new this(undefined, options);
 	}
 
@@ -619,14 +671,15 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @expandParams
 	 *
-	 * @param twitchClient The {@TwitchClient} instance to use for API requests.
+	 * @param authProvider The {@AuthProvider} instance to use for authentication.
 	 * @param options
 	 */
-	constructor(twitchClient: TwitchClient | undefined, options: ChatClientOptions = {}) {
+	constructor(authProvider: AuthProvider | undefined, options: ChatClientOptions = {}) {
 		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
-				hostName: options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv',
+				hostName:
+					options.hostName ?? (options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv'),
 				secure: options.ssl !== false
 			},
 			credentials: {
@@ -642,6 +695,14 @@ export default class ChatClient extends IRCClient {
 		});
 		/* eslint-enable no-restricted-syntax */
 
+		if (authProvider?.tokenType === 'app') {
+			throw new InvalidTokenTypeError(
+				'You can not connect to chat using an AuthProvider that supplies app access tokens.\n' +
+					'To get an anonymous, read-only connection, please use `ChatClient.anonymous()`.\n' +
+					'To get a read-write connection, please provide an auth provider that provides user access tokens, for example `RefreshableAuthProvider`.'
+			);
+		}
+
 		this._chatLogger = new Logger({
 			name: 'twitch-chat',
 			emoji: true,
@@ -649,25 +710,43 @@ export default class ChatClient extends IRCClient {
 			...(options.logger ?? {})
 		});
 
-		this._twitchClient = twitchClient;
+		this._authProvider = authProvider;
 
 		this._useLegacyScopes = !!options.legacyScopes;
 		this._readOnly = !!options.readOnly;
 
-		// tslint:disable:no-floating-promises
-		this.registerCapability(TwitchTagsCapability);
-		this.registerCapability(TwitchCommandsCapability);
+		this.addCapability(TwitchTagsCapability);
+		this.addCapability(TwitchCommandsCapability);
 		if (options.requestMembershipEvents) {
-			this.registerCapability(TwitchMembershipCapability);
+			this.addCapability(TwitchMembershipCapability);
 		}
-		// tslint:enable:no-floating-promises
 
-		this.onRegister(() => {
+		this.addInternalListener(this.onRegister, () => {
 			this._authVerified = true;
 			this._authFailureMessage = undefined;
 		});
 
-		this.onMessage(ClearChat, ({ params: { channel, user }, tags }) => {
+		this.addInternalListener(this.onPrivmsg, (channel, user, message, msg) => {
+			if (user === 'jtv') {
+				// 1 = who hosted
+				// 2 = auto-host or not
+				// 3 = how many viewers (not always present)
+				const match = ChatClient.HOST_MESSAGE_REGEX.exec(message);
+				if (match) {
+					this.emit(
+						this.onHosted,
+						channel,
+						match[1],
+						Boolean(match[2]),
+						match[3] ? Number(match[3]) : undefined
+					);
+				}
+			} else {
+				this.emit(this.onMessage, channel, user, message, msg);
+			}
+		});
+
+		this.onTypedMessage(ClearChat, ({ params: { channel, user }, tags }) => {
 			if (user) {
 				const duration = tags.get('ban-duration');
 				if (duration === undefined) {
@@ -684,7 +763,7 @@ export default class ChatClient extends IRCClient {
 			}
 		});
 
-		this.onMessage(ClearMsg, msg => {
+		this.onTypedMessage(ClearMsg, msg => {
 			const {
 				params: { channel },
 				targetMessageId
@@ -692,7 +771,7 @@ export default class ChatClient extends IRCClient {
 			this.emit(this.onMessageRemove, channel, targetMessageId, msg);
 		});
 
-		this.onMessage(HostTarget, ({ params: { channel, targetAndViewers } }) => {
+		this.onTypedMessage(HostTarget, ({ params: { channel, targetAndViewers } }) => {
 			const [target, viewers] = targetAndViewers.split(' ');
 			if (target === '-') {
 				// unhost
@@ -703,33 +782,15 @@ export default class ChatClient extends IRCClient {
 			}
 		});
 
-		this.onMessage(ChannelJoin, ({ prefix, params: { channel } }) => {
+		this.onTypedMessage(MessageTypes.Commands.ChannelJoin, ({ prefix, params: { channel } }) => {
 			this.emit(this.onJoin, channel, prefix!.nick);
 		});
 
-		this.onMessage(ChannelPart, ({ prefix, params: { channel } }: ChannelPart) => {
+		this.onTypedMessage(MessageTypes.Commands.ChannelPart, ({ prefix, params: { channel } }) => {
 			this.emit(this.onPart, channel, prefix!.nick);
 		});
 
-		this.onMessage(TwitchPrivateMessage, ({ prefix, params: { target: channel, message } }) => {
-			if (prefix && prefix.nick === 'jtv') {
-				// 1 = who hosted
-				// 2 = auto-host or not
-				// 3 = how many viewers (not always present)
-				const match = message.match(ChatClient.HOST_MESSAGE_REGEX);
-				if (match) {
-					this.emit(
-						this.onHosted,
-						channel,
-						match[1],
-						Boolean(match[2]),
-						match[3] === '' ? undefined : Number(match[3])
-					);
-				}
-			}
-		});
-
-		this.onMessage(RoomState, ({ params: { channel }, tags }) => {
+		this.onTypedMessage(RoomState, ({ params: { channel }, tags }) => {
 			let isInitial = false;
 			if (tags.has('subs-only') && tags.has('slow')) {
 				// this is the full state - so we just successfully joined
@@ -768,12 +829,12 @@ export default class ChatClient extends IRCClient {
 			}
 		});
 
-		this.onMessage(UserNotice, userNotice => {
+		this.onTypedMessage(UserNotice, userNotice => {
 			const {
 				params: { channel, message },
 				tags
 			} = userNotice;
-			const messageType = tags.get('msg-id');
+			const messageType = tags.get('msg-id')!;
 
 			switch (messageType) {
 				case 'sub':
@@ -805,7 +866,8 @@ export default class ChatClient extends IRCClient {
 						gifter: isAnon ? undefined : gifter,
 						gifterUserId: isAnon ? undefined : tags.get('user-id')!,
 						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
-						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
+						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')),
+						giftDuration: Number(tags.get('msg-param-gift-months')),
 						plan,
 						planName: tags.get('msg-param-sub-plan-name')!,
 						isPrime: plan === 'Prime',
@@ -822,7 +884,7 @@ export default class ChatClient extends IRCClient {
 						gifter: isAnon ? undefined : gifter,
 						gifterUserId: isAnon ? undefined : tags.get('user-id')!,
 						gifterDisplayName: isAnon ? undefined : tags.get('display-name')!,
-						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')!),
+						gifterGiftCount: isAnon ? undefined : Number(tags.get('msg-param-sender-count')),
 						count: Number(tags.get('msg-param-mass-gift-count')!),
 						plan: tags.get('msg-param-sub-plan')!
 					};
@@ -931,17 +993,29 @@ export default class ChatClient extends IRCClient {
 					this.emit(this.onSubExtend, channel, tags.get('login')!, extendInfo, userNotice);
 					break;
 				}
+				case 'rewardgift': {
+					const rewardGiftInfo: ChatRewardGiftInfo = {
+						domain: tags.get('msg-param-domain')!,
+						gifterId: tags.get('user-id')!,
+						gifterDisplayName: tags.get('display-name')!,
+						count: Number(tags.get('msg-param-selected-count')),
+						gifterGiftCount: Number(tags.get('msg-param-total-reward-count')),
+						triggerType: tags.get('msg-param-trigger-type')!
+					};
+					this.emit(this.onRewardGift, channel, tags.get('login')!, rewardGiftInfo, userNotice);
+					break;
+				}
 				default: {
 					this._chatLogger.warn(`Unrecognized usernotice ID: ${messageType}`);
 				}
 			}
 		});
 
-		this.onMessage(Whisper, whisper => {
+		this.onTypedMessage(Whisper, whisper => {
 			this.emit(this.onWhisper, whisper.prefix!.nick, whisper.params.message, whisper);
 		});
 
-		this.onMessage(Notice, ({ params: { target: channel, message }, tags }) => {
+		this.onTypedMessage(MessageTypes.Commands.Notice, async ({ params: { target: channel, message }, tags }) => {
 			const messageType = tags.get('msg-id');
 
 			// this event handler involves a lot of parsing strings you shouldn't parse...
@@ -951,7 +1025,7 @@ export default class ChatClient extends IRCClient {
 				// ban
 				case 'already_banned': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onBanResult, channel, user, messageType);
 					}
@@ -971,7 +1045,7 @@ export default class ChatClient extends IRCClient {
 				case 'bad_ban_admin':
 				case 'bad_ban_global_mod':
 				case 'bad_ban_staff': {
-					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
+					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(message);
 					if (match) {
 						this.emit(this._onBanResult, channel, match[1].toLowerCase(), messageType);
 					}
@@ -980,7 +1054,7 @@ export default class ChatClient extends IRCClient {
 
 				case 'ban_success': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onBanResult, channel, user);
 					}
@@ -990,7 +1064,7 @@ export default class ChatClient extends IRCClient {
 				// unban
 				case 'bad_unban_no_ban': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnbanResult, channel, user, messageType);
 					}
@@ -999,7 +1073,7 @@ export default class ChatClient extends IRCClient {
 
 				case 'unban_success': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnbanResult, channel, user);
 					}
@@ -1097,7 +1171,7 @@ export default class ChatClient extends IRCClient {
 				case 'bad_mod_banned':
 				case 'bad_mod_mod': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onModResult, channel, user, messageType);
 					}
@@ -1105,7 +1179,7 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'mod_success': {
-					const match = message.match(/^You have added (\w+) /);
+					const match = /^You have added (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onModResult, channel, match[1]);
 					}
@@ -1115,7 +1189,7 @@ export default class ChatClient extends IRCClient {
 				// unmod
 				case 'bad_unmod_mod': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnmodResult, channel, user, messageType);
 					}
@@ -1123,7 +1197,7 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'unmod_success': {
-					const match = message.match(/^You have removed (\w+) /);
+					const match = /^You have removed (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onUnmodResult, channel, match[1]);
 					}
@@ -1202,12 +1276,20 @@ export default class ChatClient extends IRCClient {
 					break;
 				}
 
+				case 'bad_timeout_mod': {
+					const match = /^You cannot timeout moderator (\w+) unless/.exec(message);
+					if (match) {
+						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
+					}
+					break;
+				}
+
 				case 'bad_timeout_admin':
 				case 'bad_timeout_global_mod':
 				case 'bad_timeout_staff': {
-					const match = message.match(/^You cannot ban (?:\w+ )+?(\w+)\.$/);
+					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(message);
 					if (match) {
-						this.emit(this._onTimeoutResult, channel, match[1].toLowerCase(), undefined, messageType);
+						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
 					}
 					break;
 				}
@@ -1216,7 +1298,7 @@ export default class ChatClient extends IRCClient {
 				case 'bad_vip_grantee_banned':
 				case 'bad_vip_grantee_already_vip': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onVipResult, channel, user, messageType);
 					}
@@ -1224,7 +1306,7 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'vip_success': {
-					const match = message.match(/^You have added (\w+) /);
+					const match = /^You have added (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onVipResult, channel, match[1]);
 					}
@@ -1234,7 +1316,7 @@ export default class ChatClient extends IRCClient {
 				// unvip
 				case 'bad_unvip_grantee_not_vip': {
 					const match = message.split(' ');
-					const user = match && /^\w+$/.test(match[0]) ? match[0] : undefined;
+					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnvipResult, channel, user, messageType);
 					}
@@ -1242,7 +1324,7 @@ export default class ChatClient extends IRCClient {
 				}
 
 				case 'unvip_success': {
-					const match = message.match(/^You have removed (\w+) /);
+					const match = /^You have removed (\w+) /.exec(message);
 					if (match) {
 						this.emit(this._onUnvipResult, channel, match[1]);
 					}
@@ -1318,7 +1400,15 @@ export default class ChatClient extends IRCClient {
 						this._authVerified = false;
 						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
-						this._connection!.disconnect(false);
+						if (!this._authRetryTimer) {
+							this._authRetryTimer = ChatClient._getReauthenticateWaitTime();
+						}
+						const secs = this._authRetryTimer.next().value;
+						if (secs !== 0) {
+							this._chatLogger.info(`Retrying authentication in ${secs} seconds`);
+						}
+						await delay(secs * 1000);
+						await this.reconnect();
 					}
 					break;
 				}
@@ -1332,8 +1422,8 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
-	async connect() {
-		if (!this._twitchClient) {
+	async connect(): Promise<void> {
+		if (!this._authProvider) {
 			this._updateCredentials({
 				nick: ChatClient._generateJustinfanNick(),
 				password: undefined
@@ -1349,7 +1439,7 @@ export default class ChatClient extends IRCClient {
 	 * @param target The host target, i.e. the channel that is being hosted.
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
 	 */
-	async host(channel: string = this._credentials.nick, target: string) {
+	async host(channel: string = this._credentials.nick, target: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onHostResult((chan, error) => {
@@ -1375,7 +1465,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
-	async unhost(channel: string = this._credentials.nick) {
+	async unhost(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onUnhostResult((chan, error) => {
@@ -1401,7 +1491,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
-	unhostOutside(channel: string = this._credentials.nick) {
+	unhostOutside(channel: string = this._credentials.nick): void {
 		this.say(channel, '/unhost');
 	}
 
@@ -1412,7 +1502,7 @@ export default class ChatClient extends IRCClient {
 	 * @param user The user to ban from the channel.
 	 * @param reason The reason for the ban.
 	 */
-	async ban(channel: string = this._credentials.nick, user: string, reason: string = '') {
+	async ban(channel: string = this._credentials.nick, user: string, reason: string = ''): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1435,13 +1525,13 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
 	 */
-	async clear(channel: string = this._credentials.nick) {
+	async clear(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>(resolve => {
-			const e = this.onChatClear(_channel => {
+			const e = this.addInternalListener(this.onChatClear, _channel => {
 				if (toUserName(_channel) === channel) {
 					resolve();
-					this.removeListener(e);
+					e.unbind();
 				}
 			});
 			this.say(channel, '/clear');
@@ -1459,7 +1549,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * Blue, BlueViolet, CadetBlue, Chocolate, Coral, DodgerBlue, Firebrick, GoldenRod, Green, HotPink, OrangeRed, Red, SeaGreen, SpringGreen, YellowGreen
 	 */
-	async changeColor(color: string) {
+	async changeColor(color: string): Promise<void> {
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onColorResult(error => {
 				if (error) {
@@ -1479,7 +1569,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to run the commercial break on.
 	 * @param duration The duration of the commercial break.
 	 */
-	async runCommercial(channel: string, duration: CommercialLength) {
+	async runCommercial(channel: string, duration: CommercialLength): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onCommercialResult((_channel, error) => {
@@ -1502,9 +1592,9 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to delete the message from.
 	 * @param message The message (as message ID or message object) to delete.
 	 */
-	async deleteMessage(channel: string, message: string | PrivateMessage) {
+	async deleteMessage(channel: string, message: string | TwitchPrivateMessage): Promise<void> {
 		channel = toUserName(channel);
-		const messageId = message instanceof PrivateMessage ? message.tags.get('id') : message;
+		const messageId = extractMessageId(message);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onDeleteMessageResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
@@ -1525,7 +1615,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to enable emote-only mode in.
 	 */
-	async enableEmoteOnly(channel: string) {
+	async enableEmoteOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onEmoteOnlyResult((_channel, error) => {
@@ -1547,7 +1637,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to disable emote-only mode in.
 	 */
-	async disableEmoteOnly(channel: string) {
+	async disableEmoteOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onEmoteOnlyOffResult((_channel, error) => {
@@ -1568,13 +1658,18 @@ export default class ChatClient extends IRCClient {
 	 * Enables followers-only mode in a channel.
 	 *
 	 * @param channel The channel to enable followers-only mode in.
-	 * @param delay The time (in minutes) a user needs to be following before being able to send messages.
+	 * @param minFollowTime The time (in minutes) a user needs to be following before being able to send messages.
 	 */
-	async enableFollowersOnly(channel: string, delay: number = 0) {
+	async enableFollowersOnly(channel: string, minFollowTime: number = 0): Promise<void> {
+		if (!Number.isInteger(minFollowTime) || minFollowTime < 0 || minFollowTime > 129600) {
+			throw new Error(
+				`Invalid minimum follow time: ${minFollowTime}. It must be an integer between 0 and 129600.`
+			);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
-			const e = this._onFollowersOnlyResult((_channel, _delay, error) => {
-				if (toUserName(_channel) === channel && _delay === delay) {
+			const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
+				if (toUserName(_channel) === channel && _minFollowTime === minFollowTime) {
 					if (error) {
 						reject(error);
 					} else {
@@ -1583,7 +1678,7 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/followers ${delay || ''}`);
+			this.say(channel, `/followers ${minFollowTime || ''}`);
 		});
 	}
 
@@ -1592,7 +1687,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to disable followers-only mode in.
 	 */
-	async disableFollowersOnly(channel: string) {
+	async disableFollowersOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onFollowersOnlyOffResult((_channel, error) => {
@@ -1615,7 +1710,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to give the user moderator rights in.
 	 * @param user The user to give moderator rights.
 	 */
-	async mod(channel: string, user: string) {
+	async mod(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1639,7 +1734,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to remove the user's moderator rights in.
 	 * @param user The user to take moderator rights from.
 	 */
-	async unmod(channel: string, user: string) {
+	async unmod(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1662,12 +1757,12 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to retrieve the moderators of.
 	 */
-	async getMods(channel: string) {
+	async getMods(channel: string): Promise<string[]> {
 		channel = toUserName(channel);
 		return new Promise<string[]>(resolve => {
 			const e = this._onModsResult((_channel, mods) => {
 				if (toUserName(_channel) === channel) {
-					resolve(mods);
+					resolve(mods!);
 					this.removeListener(e);
 				}
 			});
@@ -1680,7 +1775,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to enable r9k mode in.
 	 */
-	async enableR9k(channel: string) {
+	async enableR9k(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onR9kResult((_channel, error) => {
@@ -1702,7 +1797,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to disable r9k mode in.
 	 */
-	async disableR9k(channel: string) {
+	async disableR9k(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onR9kOffResult((_channel, error) => {
@@ -1723,12 +1818,17 @@ export default class ChatClient extends IRCClient {
 	 * Enables slow mode in a channel.
 	 *
 	 * @param channel The channel to enable slow mode in.
-	 * @param delay The time (in seconds) a user needs to wait between messages.
+	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
 	 */
-	async enableSlow(channel: string, delay: number) {
+	async enableSlow(channel: string, delayBetweenMessages: number = 30): Promise<void> {
+		if (!Number.isInteger(delayBetweenMessages) || delayBetweenMessages < 1 || delayBetweenMessages > 1800) {
+			throw new Error(
+				`Invalid delay between messages: ${delayBetweenMessages}. It must be an integer between 1 and 1800.`
+			);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
-			const e = this._onSlowResult((_channel, error) => {
+			const e = this._onSlowResult((_channel, _delay, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
 						reject(error);
@@ -1738,7 +1838,7 @@ export default class ChatClient extends IRCClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/slow');
+			this.say(channel, `/slow ${delayBetweenMessages}`);
 		});
 	}
 
@@ -1747,7 +1847,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to disable slow mode in.
 	 */
-	async disableSlow(channel: string) {
+	async disableSlow(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSlowOffResult((_channel, error) => {
@@ -1769,7 +1869,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to enable subscribers-only mode in.
 	 */
-	async enableSubsOnly(channel: string) {
+	async enableSubsOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSubsOnlyResult((_channel, error) => {
@@ -1791,7 +1891,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to disable subscribers-only mode in.
 	 */
-	async disableSubsOnly(channel: string) {
+	async disableSubsOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSubsOnlyOffResult((_channel, error) => {
@@ -1816,7 +1916,10 @@ export default class ChatClient extends IRCClient {
 	 * @param duration The time (in seconds) until the user can send messages again. Defaults to 1 minute.
 	 * @param reason
 	 */
-	async timeout(channel: string, user: string, duration: number = 60, reason: string = '') {
+	async timeout(channel: string, user: string, duration: number = 60, reason: string = ''): Promise<void> {
+		if (!Number.isInteger(duration) || duration < 1 || duration > 1209600) {
+			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
@@ -1840,7 +1943,7 @@ export default class ChatClient extends IRCClient {
 	 * @param user The user to purge.
 	 * @param reason The reason for the purge.
 	 */
-	async purge(channel: string, user: string, reason: string = '') {
+	async purge(channel: string, user: string, reason: string = ''): Promise<void> {
 		return this.timeout(channel, user, 1, reason);
 	}
 
@@ -1850,7 +1953,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to give the user VIP status in.
 	 * @param user The user to give VIP status.
 	 */
-	async addVIP(channel: string, user: string) {
+	async addVip(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1868,13 +1971,20 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	/** @deprecated Use addVip instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	async addVIP(channel: string, user: string): Promise<void> {
+		deprecate('[twitch-chat-client] ChatClient#addVIP', 'Use `addVip` instead.');
+		return this.addVip(channel, user);
+	}
+
 	/**
 	 * Takes VIP status from a user in a channel.
 	 *
 	 * @param channel The channel to remove the user's VIP status in.
 	 * @param user The user to take VIP status from.
 	 */
-	async removeVIP(channel: string, user: string) {
+	async removeVip(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
@@ -1892,17 +2002,24 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	/** @deprecated Use removeVip instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	async removeVIP(channel: string, user: string): Promise<void> {
+		deprecate('[twitch-chat-client] ChatClient#removeVIP', 'Use `removeVip` instead.');
+		return this.removeVip(channel, user);
+	}
+
 	/**
 	 * Retrieves a list of VIPs in a channel.
 	 *
 	 * @param channel The channel to retrieve the VIPs of.
 	 */
-	async getVIPs(channel: string) {
+	async getVips(channel: string): Promise<string[]> {
 		channel = toUserName(channel);
 		return new Promise<string[]>(resolve => {
 			const e = this._onVipsResult((_channel, vips) => {
 				if (toUserName(_channel) === channel) {
-					resolve(vips);
+					resolve(vips!);
 					this.removeListener(e);
 				}
 			});
@@ -1910,14 +2027,26 @@ export default class ChatClient extends IRCClient {
 		});
 	}
 
+	/** @deprecated Use getVips instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	async getVIPs(channel: string): Promise<string[]> {
+		deprecate('[twitch-chat-client] ChatClient#getVIPs', 'Use `getVips` instead.');
+		return this.getVips(channel);
+	}
+
 	/**
 	 * Sends a message to a channel.
 	 *
 	 * @param channel The channel to send the message to.
 	 * @param message The message to send.
+	 * @param attributes The attributes to add to the message.
 	 */
-	say(channel: string, message: string) {
-		super.say(toChannelName(channel), message);
+	say(channel: string, message: string, attributes: ChatSayMessageAttributes = {}): void {
+		const tags: Record<string, string> = {};
+		if (attributes.replyTo) {
+			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
+		}
+		super.say(toChannelName(channel), message, tags);
 	}
 
 	/**
@@ -1926,7 +2055,7 @@ export default class ChatClient extends IRCClient {
 	 * @param channel The channel to send the message to.
 	 * @param message The message to send.
 	 */
-	action(channel: string, message: string) {
+	action(channel: string, message: string): void {
 		super.action(toChannelName(channel), message);
 	}
 
@@ -1936,7 +2065,7 @@ export default class ChatClient extends IRCClient {
 	 * @param user The user to send the message to.
 	 * @param message The message to send.
 	 */
-	whisper(user: string, message: string) {
+	whisper(user: string, message: string): void {
 		super.say(GENERIC_CHANNEL, `/w ${toUserName(user)} ${message}`);
 	}
 
@@ -1945,7 +2074,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to join.
 	 */
-	async join(channel: string) {
+	async join(channel: string): Promise<void> {
 		channel = toChannelName(channel);
 		return new Promise<void>((resolve, reject) => {
 			let timer: NodeJS.Timer;
@@ -1973,24 +2102,16 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @param channel The channel to leave.
 	 */
-	part(channel: string) {
+	part(channel: string): void {
 		super.part(toChannelName(channel));
 	}
 
 	/**
 	 * Disconnects from the chat server.
 	 */
-	async quit() {
-		return new Promise<void>(resolve => {
-			if (this._connection) {
-				const thatConnection = this._connection;
-				const handler = () => {
-					thatConnection.removeListener('disconnect', handler);
-					resolve();
-				};
-				thatConnection.addListener('disconnect', handler);
-				thatConnection.disconnect();
-			}
+	async quit(): Promise<void> {
+		void this._connection.disconnect().then(() => {
+			this._chatLogger.debug('Finished cleaning up old connection');
 		});
 	}
 
@@ -1999,7 +2120,7 @@ export default class ChatClient extends IRCClient {
 	 *
 	 * @deprecated Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.
 	 */
-	async waitForRegistration() {
+	async waitForRegistration(): Promise<void> {
 		deprecate(
 			'[twitch-chat-client] ChatClient#waitForRegistration',
 			'Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.'
@@ -2017,32 +2138,30 @@ export default class ChatClient extends IRCClient {
 		try {
 			await Promise.race([
 				new Promise<never>((resolve, reject) => {
-					authListener = this.onAuthenticationFailure(message => {
+					authListener = this.addInternalListener(this.onAuthenticationFailure, message => {
 						reject(Error(`Registration failed. Response from Twitch: ${message}`));
 					});
 				}),
 				super.waitForRegistration()
 			]);
 		} finally {
-			if (authListener) {
-				this.removeListener(authListener);
-			}
+			authListener?.unbind();
 		}
 	}
 
-	protected registerCoreMessageTypes() {
+	protected registerCoreMessageTypes(): void {
 		super.registerCoreMessageTypes();
 		this.registerMessageType(TwitchPrivateMessage);
 	}
 
-	protected async getPassword(currentPassword?: string): Promise<string | undefined> {
-		if (!this._twitchClient) {
+	protected async getPassword(): Promise<string | undefined> {
+		if (!this._authProvider) {
 			return undefined;
 		}
 
-		if (currentPassword && this._authVerified) {
-			this._chatLogger.debug2('Password assumed to be correct from last connection');
-			return currentPassword;
+		if (this._authToken && !this._authToken.isExpired && this._authVerified) {
+			this._chatLogger.debug('AccessToken assumed to be correct from last connection');
+			return `oauth:${this._authToken.accessToken}`;
 		}
 
 		let scopes: string[];
@@ -2057,44 +2176,44 @@ export default class ChatClient extends IRCClient {
 		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		try {
-			const accessToken = await this._twitchClient.getAccessToken(scopes);
-			if (accessToken) {
-				const token = await this._twitchClient.getTokenInfo();
+			this._authToken = await this._authProvider.getAccessToken(scopes);
+			if (this._authToken) {
+				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
-					nick: token.userName!
+					nick: token.userName
 				});
-				return `oauth:${accessToken.accessToken}`;
+				return `oauth:${this._authToken.accessToken}`;
 			}
-		} catch (e) {
+		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				this._chatLogger.err(`Retrieving an access token failed: ${e.message}`);
+				this._chatLogger.err(`Retrieving an access token failed: ${(e as Error).message}`);
 			}
 		}
 
 		this._chatLogger.warning('No valid token available; trying to refresh');
 
 		try {
-			const newToken = await this._twitchClient.refreshAccessToken();
+			this._authToken = await this._authProvider.refresh?.();
 
-			if (newToken) {
-				const token = await this._twitchClient.getTokenInfo();
+			if (this._authToken) {
+				const token = await getTokenInfo(this._authToken.accessToken);
 				this._updateCredentials({
-					nick: token.userName!
+					nick: token.userName
 				});
-				return `oauth:${newToken.accessToken}`;
+				return `oauth:${this._authToken.accessToken}`;
 			}
-		} catch (e) {
+		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				this._chatLogger.err(`Refreshing the access token failed: ${e.message}`);
+				this._chatLogger.err(`Refreshing the access token failed: ${(e as Error).message}`);
 			}
 		}
 
 		this._authVerified = false;
-		throw lastTokenError || new Error('Could not retrieve a valid token');
+		throw lastTokenError ?? new Error('Could not retrieve a valid token');
 	}
 
 	private static _generateJustinfanNick() {
@@ -2102,5 +2221,19 @@ export default class ChatClient extends IRCClient {
 			.toString()
 			.padStart(5, '0');
 		return `justinfan${randomSuffix}`;
+	}
+	// yes, this is just fibonacci with a limit
+	private static *_getReauthenticateWaitTime(): Iterator<number, never> {
+		let current = 0;
+		let next = 1;
+
+		while (current < 120) {
+			yield current;
+			[current, next] = [next, current + next];
+		}
+
+		while (true) {
+			yield 120;
+		}
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * Information about a subscription.
  */
-export default interface ChatSubInfo {
+export interface ChatSubInfo {
 	/**
 	 * The user ID of the subscribing user.
 	 */
@@ -72,6 +72,11 @@ export interface ChatSubGiftInfo extends ChatSubInfo {
 	 * The number of subscriptions the gifting user has already gifted in total.
 	 */
 	gifterGiftCount?: number;
+
+	/**
+	 * The duration of the gifted subscription, in months.
+	 */
+	giftDuration: number;
 }
 
 /**

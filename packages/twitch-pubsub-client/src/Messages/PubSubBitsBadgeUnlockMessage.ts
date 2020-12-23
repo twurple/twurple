@@ -1,6 +1,8 @@
-import { MakeOptional, NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
-import { PubSubBasicMessageInfo } from './PubSubMessage';
+import type { MakeOptional } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
+import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsBadgeUnlockMessageContent
 	extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
@@ -18,46 +20,51 @@ export interface PubSubBitsBadgeUnlockMessageData {
 /**
  * A message that informs about a user unlocking a new bits badge.
  */
-export default class PubSubBitsBadgeUnlockMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+@rtfm<PubSubBitsBadgeUnlockMessage>('twitch-pubsub-client', 'PubSubBitsBadgeUnlockMessage', 'userId')
+export class PubSubBitsBadgeUnlockMessage {
+	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubBitsBadgeUnlockMessageData;
 
 	/** @private */
-	constructor(private readonly _data: PubSubBitsBadgeUnlockMessageData, twitchClient: TwitchClient) {
-		this._twitchClient = twitchClient;
+	constructor(data: PubSubBitsBadgeUnlockMessageData, apiClient: ApiClient) {
+		this._data = data;
+		this._apiClient = apiClient;
 	}
 
 	/**
 	 * The ID of the user that unlocked the badge.
 	 */
-	get userId() {
+	get userId(): string | undefined {
 		return this._data.data.user_id;
 	}
 
 	/**
 	 * The name of the user that unlocked the badge.
 	 */
-	get userName() {
+	get userName(): string | undefined {
 		return this._data.data.user_name;
 	}
 
 	/**
 	 * Retrieves more data about the user.
+	 *
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getUser() {
-		return this._data.data.user_id ? this._twitchClient.helix.users.getUserById(this._data.data.user_id) : null;
+	async getUser(): Promise<HelixUser | null> {
+		return this._data.data.user_id ? this._apiClient.helix.users.getUserById(this._data.data.user_id) : null;
 	}
 
 	/**
 	 * The full message that was sent with the notification.
 	 */
-	get message() {
+	get message(): string {
 		return this._data.data.chat_message;
 	}
 
 	/**
 	 * The new badge tier.
 	 */
-	get badgeTier() {
+	get badgeTier(): number {
 		return this._data.data.badge_tier;
 	}
 }

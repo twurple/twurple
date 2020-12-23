@@ -2,7 +2,7 @@ In this example, you learn how to set up a basic bot that reacts to a few comman
 
 We will achieve authorization by fetching an initial access token from Twitch and then refreshing that token using the refreh token provided by the same request.
 
-If you already have an authentication flow up and running with a `TwitchClient` instance, you find all you need in step 4 and 5.
+If you already have an authentication flow up and running with an `AuthProvider` instance, you find all you need in step 4 and 5.
 
 ## 1. Create a Twitch application
 
@@ -33,7 +33,7 @@ https://id.twitch.tv/oauth2/token?client_id=CLIENT_ID
 
 The response body should look similar to the following:
 
-```javascript
+```json
 {
   "access_token": "0123456789abcdefghijABCDEFGHIJ",
   "refresh_token": "eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj",
@@ -45,40 +45,42 @@ The response body should look similar to the following:
 
 Write down the `access_token` and `refresh_token` properties of the response body. These are important for all the other requests you're sending to Twitch!
 
-## 3. Create a `TwitchClient` instance
+## 3. Create an `AuthProvider` instance
 
-Now you can finally start writing code! First, import all the classes you're gonna need from `twitch` and `twitch-chat-client`.
+Now you can finally start writing code! First, import all the classes you're gonna need from `twitch-auth` and `twitch-chat-client`.
 
 ```typescript
-import TwitchClient from 'twitch';
-import ChatClient from 'twitch-chat-client';
+import { StaticAuthProvider } from 'twitch-auth';
+import { ChatClient } from 'twitch-chat-client';
 ```
 
-Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an immediately executed inline function expression.
+Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an async function and running it.
 
 ```typescript
-(async () => {
+async function main() {
 	// code goes here
-})();
+}
+
+main();
 ```
 
 All the following code needs to be inside this function (or at least called from inside it) so we can use `await` and still avoid race conditions.
 
-Now, we can construct a `TwitchClient` instance:
+Now, we can construct a `StaticAuthProvider` instance using a static auth provider:
 
 ```typescript
 const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
 const accessToken = '0123456789abcdefghijABCDEFGHIJ';
-const twitchClient = TwitchClient.withCredentials(clientId, accessToken);
+const auth = new StaticAuthProvider(clientId, accessToken);
 ```
 
 ## 4. Connect to chat
 
-Using the `TwitchClient` instance we just created, we can easily create a `ChatClient` instance and connect to the chat server.
+Using the `AuthProvider` instance we just created, we can easily create a `ChatClient` instance and connect to the chat server.
 The given channels will automatically be joined after connecting.
 
 ```typescript
-const chatClient = await ChatClient.forTwitchClient(twitchClient, { channels: ['satisfiedpear'] });
+const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
 await chatClient.connect();
 ```
 
@@ -86,10 +88,10 @@ Now you can run your code and see your bot sitting in your channel. But we want 
 
 ## 5. Listen and react to events
 
-Fortunately, reacting to things is easy. To listen to chat messages, just use the `onPrivmsg` method. As an example, we implement a few basic commands here:
+Fortunately, reacting to things is easy. To listen to chat messages, just use the `onMessage` method. As an example, we implement a few basic commands here:
 
 ```typescript
-chatClient.onPrivmsg((channel, user, message) => {
+chatClient.onMessage((channel, user, message) => {
 	if (message === '!ping') {
 		chatClient.say(channel, 'Pong!');
 	} else if (message === '!dice') {
@@ -121,18 +123,24 @@ Now you have a working bot! Until you have to restart it a few hours later...
 
 Fortunately, with the access token in step 2, we also got a refresh token! (You wrote that down, didn't you?)
 
-You can pass that to the `TwitchClient` factory method to create a client that automatically refreshes the given token.
+With that, you can create another type of auth provider that automatically refreshes the given token.
 
 Just replace the initialization line with this (but keep the `clientId` and `accessToken` constants):
 
 ```typescript
+// add new import to twitch-auth import line
+import { RefreshableAuthProvider, StaticAuthProvider } from 'twitch-auth';
+
 const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
 const refreshToken = 'eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj';
 
-const twitchClient = TwitchClient.withCredentials(clientId, accessToken, undefined, {
-	clientSecret,
-	refreshToken
-});
+const auth = new RefreshableAuthProvider(
+    new StaticAuthProvider(clientId, accessToken),
+    {
+        clientSecret,
+        refreshToken
+    }
+);
 ```
 
 ## 7. Persisting the refreshed token data
@@ -143,7 +151,7 @@ The `refreshConfig` parameter we just added can contain another property named `
 
 To prepare for this, let's move the tokens to a JSON file named `tokens.json`:
 
-```javascript
+```json
 {
 	"accessToken": "0123456789abcdefghijABCDEFGHIJ",
 	"refreshToken": "eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj",
@@ -153,15 +161,17 @@ To prepare for this, let's move the tokens to a JSON file named `tokens.json`:
 
 I also added a new property called `expiryTimestamp`. It will save the expiry time of the access token so the client can determine when to refresh the token without making a failing call first. If you didn't calculate the expiry timestamp after sending the manual code request (you probably didn't - I wouldn't either), you can initialize it to zero to always make a refresh call in the beginning.
 
-Now, we can parse this JSON file on startup, load the tokens from it and when the tokens refresh, save them back into the same file. For the file I/O, I prefer to use the `fs-extra` package because it provides a promisified interface to the filesystem, unlike the `fs` package shipped with Node, which still uses callbacks.
+Now, we can parse this JSON file on startup, load the tokens from it and when the tokens refresh, save them back into the same file.
 
 ```typescript
 // add to import block before async function
-import * as fs from 'fs-extra';
+import { promises as fs } from 'fs';
 
 // inside the async function again
 const tokenData = JSON.parse(await fs.readFile('./tokens.json'));
-const twitchClient = TwitchClient.withCredentials(clientId, tokenData.accessToken, undefined, {
+const auth = new RefreshableAuthProvider(
+    new StaticAuthProvider(clientId, tokenData.accessToken),
+    {
         clientSecret,
         refreshToken: tokenData.refreshToken,
         expiry: tokenData.expiryTimestamp === null ? null : new Date(tokenData.expiryTimestamp),
@@ -173,7 +183,8 @@ const twitchClient = TwitchClient.withCredentials(clientId, tokenData.accessToke
             };
             await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
         }
-    });
+    }
+);
 ```
 
 ## 8. ???
@@ -187,32 +198,35 @@ Now you can implement a more elaborated command system, add more events to react
 For reference, here's the full code that _should_ be the result of everything we just did:
 
 ```typescript
-import TwitchClient from 'twitch';
-import ChatClient from 'twitch-chat-client';
-import * as fs from 'fs-extra';
+import { RefreshableAuthProvider, StaticAuthProvider } from 'twitch-auth';
+import { ChatClient } from 'twitch-chat-client';
+import { promises as fs } from 'fs';
 
-(async () => {
+async function main() {
     const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
     const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
     const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
-    const twitchClient = TwitchClient.withCredentials(clientId, tokenData.accessToken, undefined, {
-        clientSecret,
-        refreshToken: tokenData.refreshToken,
-        expiry: tokenData.expiryTimestamp === null ? null : new Date(tokenData.expiryTimestamp),
-        onRefresh: async ({ accessToken, refreshToken, expiryDate }) => {
-            const newTokenData = {
-                accessToken,
-                refreshToken,
-                expiryTimestamp: expiryDate === null ? null : expiryDate.getTime()
-            };
-            await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+    const auth = new RefreshableAuthProvider(
+        new StaticAuthProvider(clientId, tokenData.accessToken),
+        {
+            clientSecret,
+            refreshToken: tokenData.refreshToken,
+            expiry: tokenData.expiryTimestamp === null ? null : new Date(tokenData.expiryTimestamp),
+            onRefresh: async ({ accessToken, refreshToken, expiryDate }) => {
+                const newTokenData = {
+                    accessToken,
+                    refreshToken,
+                    expiryTimestamp: expiryDate === null ? null : expiryDate.getTime()
+                };
+                await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+            }
         }
-    });
+    );
 
-    const chatClient = await ChatClient.forTwitchClient(twitchClient, { channels: ['satisfiedpear'] });
+    const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
     await chatClient.connect();
 
-    chatClient.onPrivmsg((channel, user, message) => {
+    chatClient.onMessage((channel, user, message) => {
         if (message === '!ping') {
             chatClient.say(channel, 'Pong!');
         } else if (message === '!dice') {
@@ -230,5 +244,7 @@ import * as fs from 'fs-extra';
     chatClient.onSubGift((channel, user, subInfo) => {
         chatClient.say(channel, `Thanks to ${subInfo.gifter} for gifting a subscription to ${user}!`);
     });
-})();
+}
+
+main();
 ```

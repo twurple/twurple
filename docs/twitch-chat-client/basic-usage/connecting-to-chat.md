@@ -1,14 +1,13 @@
-First, you have to create an instance of the core Twitch client, as outlined in [its own documentation](/twitch/docs/basic-usage/creating-instance.html).
+First, you have to create an auth provider instance, as outlined in [the Twitch API client documentation](/twitch/docs/basic-usage/creating-instance).
 
 Then, using that instance, you create a new {@ChatClient} instance, listen to events and connect it to the Twitch Chat server.
 
 Channel names are case insensitive and can start with a `#` or not. The name will be converted to the correct format internally.
 
 ```typescript
-import ChatClient from 'twitch-chat-client';
+import { ChatClient } from 'twitch-chat-client';
 
-const chatClient = await ChatClient.forTwitchClient(twitchClient);
-chatClient.onRegister(() => chatClient.join('lidlRini'));
+const chatClient = new ChatClient(authProvider, { channels: ['lidlrini'] });
 // listen to more events...
 await chatClient.connect();
 ```

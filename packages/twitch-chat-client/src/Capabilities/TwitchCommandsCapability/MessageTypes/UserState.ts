@@ -1,8 +1,9 @@
-import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
+import type { MessageParam } from 'ircv3';
+import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 
 /** @private */
 @MessageType('USERSTATE')
-export default class UserState extends Message<UserState> {
+export class UserState extends Message<UserState> {
 	@MessageParamDefinition({
 		type: 'channel'
 	})

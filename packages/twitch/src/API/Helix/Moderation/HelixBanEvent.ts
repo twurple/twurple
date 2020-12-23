@@ -1,6 +1,10 @@
-import TwitchClient from '../../../TwitchClient';
-import { HelixEventData } from '../HelixEvent';
-import HelixBan, { HelixBanData } from './HelixBan';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixEventData } from '../HelixEvent';
+import type { HelixUser } from '../User/HelixUser';
+import type { HelixBanData } from './HelixBan';
+import { HelixBan } from './HelixBan';
 
 /**
  * The different types a ban event can have.
@@ -28,59 +32,65 @@ export type HelixBanEventData = HelixEventData<HelixBanEventDetail, HelixBanEven
 
 /**
  * An event that indicates the change of a ban status, i.e. banning or unbanning a user.
+ *
+ * @inheritDoc
  */
-export default class HelixBanEvent extends HelixBan {
+@rtfm<HelixBanEvent>('twitch', 'HelixBanEvent', 'userId')
+export class HelixBanEvent extends HelixBan {
+	@Enumerable(false) private readonly _eventData: HelixBanEventData;
+
 	/** @private */
-	constructor(private readonly _eventData: HelixBanEventData, client: TwitchClient) {
-		super(_eventData.event_data, client);
+	constructor(eventData: HelixBanEventData, client: ApiClient) {
+		super(eventData.event_data, client);
+		this._eventData = eventData;
 	}
 
 	/**
 	 * The unique ID of the ban event.
 	 */
-	get eventId() {
+	get eventId(): string {
 		return this._eventData.id;
 	}
 
 	/**
 	 * The type of the ban event.
 	 */
-	get eventType() {
+	get eventType(): HelixBanEventType {
 		return this._eventData.event_type;
 	}
 
 	/**
 	 * The date of the ban event.
 	 */
-	get eventDate() {
+	get eventDate(): Date {
 		return new Date(this._eventData.event_timestamp);
 	}
 
 	/**
 	 * The version of the ban event.
 	 */
-	get eventVersion() {
+	get eventVersion(): string {
 		return this._eventData.version;
 	}
 
 	/**
 	 * The id of the broadcaster from whose chat the user was banned/unbanned.
 	 */
-	get broadcasterId() {
+	get broadcasterId(): string {
 		return this._eventData.event_data.broadcaster_id;
 	}
 
 	/**
 	 * Retrieves more data about the broadcaster.
 	 */
-	async getBroadcaster() {
+	async getBroadcaster(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id);
 	}
 
 	/**
 	 * The name of the broadcaster from whose chat the user was banned/unbanned.
 	 */
-	get broadcasterName() {
+	get broadcasterName(): string {
 		return this._eventData.event_data.broadcaster_id;
 	}
 }

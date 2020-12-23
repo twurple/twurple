@@ -1,9 +1,10 @@
-import { Message, MessageParam, MessageParamDefinition } from 'ircv3';
+import type { MessageParam } from 'ircv3';
+import { Message, MessageParamDefinition } from 'ircv3';
 
 /**
  * @private
  */
-export default class ClearMsg extends Message {
+export class ClearMsg extends Message<ClearMsg> {
 	static readonly COMMAND = 'CLEARMSG';
 
 	@MessageParamDefinition({
@@ -16,11 +17,11 @@ export default class ClearMsg extends Message {
 	})
 	message!: MessageParam;
 
-	get userName() {
+	get userName(): string {
 		return this._tags.get('login')!;
 	}
 
-	get targetMessageId() {
-		return this._tags.get('target-msg-id');
+	get targetMessageId(): string {
+		return this._tags.get('target-msg-id')!;
 	}
 }

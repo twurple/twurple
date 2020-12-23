@@ -1,6 +1,8 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { UserIdResolvable } from 'twitch-common';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from './HelixUser';
 
 /**
  * Filters for the follower request.
@@ -29,61 +31,63 @@ export interface HelixFollowData {
 /**
  * A relation of a user following a broadcaster.
  */
-export default class HelixFollow {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm('twitch', 'HelixFollow')
+export class HelixFollow {
+	@Enumerable(false) private readonly _data: HelixFollowData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: HelixFollowData, client: TwitchClient) {
+	constructor(data: HelixFollowData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/**
 	 * The user ID of the following user.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.from_id;
 	}
 
 	/**
 	 * The display name of the following user.
 	 */
-	get userDisplayName() {
+	get userDisplayName(): string {
 		return this._data.from_name;
 	}
 
 	/**
 	 * Retrieves the data of the following user.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.from_id);
 	}
 
 	/**
 	 * The user ID of the followed broadcaster.
 	 */
-	get followedUserId() {
+	get followedUserId(): string {
 		return this._data.to_id;
 	}
 
 	/**
 	 * The display name of the followed user.
 	 */
-	get followedUserDisplayName() {
+	get followedUserDisplayName(): string {
 		return this._data.to_name;
 	}
 
 	/**
 	 * Retrieves the data of the followed broadcaster.
 	 */
-	async getFollowedUser() {
+	async getFollowedUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.to_id);
 	}
 
 	/**
 	 * The date when the user followed the broadcaster.
 	 */
-	get followDate() {
+	get followDate(): Date {
 		return new Date(this._data.followed_at);
 	}
 }

@@ -1,18 +1,32 @@
 /* eslint-disable filenames/match-exported */
-import WebHookListener from './WebHookListener';
+import { deprecateClass } from '@d-fischer/shared-utils';
 
-export default WebHookListener;
+import { WebHookListener } from './WebHookListener';
 
-import Subscription from './Subscriptions/Subscription';
-import FollowsFromUserSubscription from './Subscriptions/FollowsFromUserSubscription';
-import FollowsToUserSubscription from './Subscriptions/FollowsToUserSubscription';
-import StreamChangeSubscription from './Subscriptions/StreamChangeSubscription';
-import UserChangeSubscription from './Subscriptions/UserChangeSubscription';
+/** @deprecated Use the named export `WebHookListener` instead. */
+const DeprecatedWebHookListener = deprecateClass(
+	WebHookListener,
+	`[twitch-webhooks] The default export has been deprecated. Use the named export instead:
 
-export {
-	Subscription,
-	FollowsFromUserSubscription,
-	FollowsToUserSubscription,
-	StreamChangeSubscription,
-	UserChangeSubscription
-};
+\timport { WebHookListener } from 'twitch-webhooks';`
+);
+/** @deprecated Use the named export `WebHookListener` instead. */
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+type DeprecatedWebHookListener = WebHookListener;
+/** @deprecated Use the named export `WebHookListener` instead. */
+export default DeprecatedWebHookListener;
+export { WebHookListener };
+
+export type { WebHookListenerCertificateConfig } from './WebHookListener';
+export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
+export { ConnectionAdapter } from './Adapters/ConnectionAdapter';
+export type { CommonConnectionAdapterConfig } from './Adapters/ConnectionAdapter';
+export { EnvPortAdapter } from './Adapters/EnvPortAdapter';
+export type { EnvPortAdapterConfig } from './Adapters/EnvPortAdapter';
+export { LegacyAdapter } from './Adapters/LegacyAdapter';
+export type { WebHookListenerConfig, WebHookListenerReverseProxyConfig } from './Adapters/LegacyAdapter';
+export { ReverseProxyAdapter } from './Adapters/ReverseProxyAdapter';
+export type { ReverseProxyAdapterConfig } from './Adapters/ReverseProxyAdapter';
+export { SimpleAdapter } from './Adapters/SimpleAdapter';
+export type { SimpleAdapterConfig } from './Adapters/SimpleAdapter';
+export { Subscription } from './Subscriptions/Subscription';

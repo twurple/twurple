@@ -1,15 +1,15 @@
-First, you have to create an instance of the core Twitch client, as outlined in [its own documentation](/twitch/docs/basic-usage/creating-instance.html).
+First, you have to create an instance of the Twitch API client, as outlined in [its own documentation](/twitch/docs/basic-usage/creating-instance).
 
 Then, you register that instance with a new {@PubSubClient} instance:
 
 ```typescript
-import PubSubClient from 'twitch-pubsub-client';
+import { PubSubClient } from 'twitch-pubsub-client';
 
 const pubSubClient = new PubSubClient();
-await pubSubClient.registerUserListener(twitchClient);
+const userId = await pubSubClient.registerUserListener(apiClient);
 ```
 
-It's very easy to listen to events in any channel a core client is registered for now:
+It's very easy to listen to events in any channel an API client is registered for now:
 
 ```typescript
 import { PubSubSubscriptionMessage } from 'twitch-pubsub-client';

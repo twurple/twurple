@@ -138,6 +138,96 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "talk2MeGooseman",
+      "name": "Erik Guzman",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1203718?v=4",
+      "profile": "https://github.com/talk2MeGooseman",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "trezy",
+      "name": "Trezy",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/442980?v=4",
+      "profile": "http://trezy.com",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "travtarr",
+      "name": "Travis Tarr",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/7989582?v=4",
+      "profile": "https://github.com/travtarr",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "gregoire78",
+      "name": "Grégoire Joncour",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/11161511?v=4",
+      "profile": "http://multitwitch.co",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "maciej-trebacz",
+      "name": "Maciej Trębacz",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/1614514?v=4",
+      "profile": "https://github.com/maciej-trebacz",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Technikkeller",
+      "name": "Justus Fluegel",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/29926093?v=4",
+      "profile": "https://github.com/Technikkeller",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "daniel0611",
+      "name": "Daniel Huber",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/30466471?v=4",
+      "profile": "https://github.com/daniel0611",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "cheeseandcereal",
+      "name": "Adam",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/11189778?v=4",
+      "profile": "https://adamcrowder.net",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "crutchcorn",
+      "name": "Corbin Crutchley",
+      "avatar_url": "https://avatars0.githubusercontent.com/u/9100169?v=4",
+      "profile": "https://crutchcorn.dev",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "Naeviant",
+      "name": "Sam Hirst",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/45145746?v=4",
+      "profile": "https://hirst.xyz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,

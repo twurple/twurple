@@ -1,6 +1,6 @@
 # Twitch.js
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-14-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-24-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 A set of libraries that aims to cover all of the existing Twitch APIs.
@@ -62,6 +62,20 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/Spidy88"><img src="https://avatars1.githubusercontent.com/u/1076168?v=4" width="100px;" alt=""/><br /><sub><b>Nick Ferraro</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=Spidy88" title="Code">💻</a></td>
     <td align="center"><a href="https://alca.tv"><img src="https://avatars2.githubusercontent.com/u/7132646?v=4" width="100px;" alt=""/><br /><sub><b>Jacob Foster</b></sub></a><br /><a href="#question-AlcaDesign" title="Answering Questions">💬</a> <a href="https://github.com/d-fischer/twitch/commits?author=AlcaDesign" title="Code">💻</a></td>
     <td align="center"><a href="http://blerp.com"><img src="https://avatars2.githubusercontent.com/u/10217999?v=4" width="100px;" alt=""/><br /><sub><b>Aaron Kc Hsu</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=aaronkchsu" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/talk2MeGooseman"><img src="https://avatars3.githubusercontent.com/u/1203718?v=4" width="100px;" alt=""/><br /><sub><b>Erik Guzman</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=talk2MeGooseman" title="Code">💻</a></td>
+    <td align="center"><a href="http://trezy.com"><img src="https://avatars2.githubusercontent.com/u/442980?v=4" width="100px;" alt=""/><br /><sub><b>Trezy</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=trezy" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/travtarr"><img src="https://avatars3.githubusercontent.com/u/7989582?v=4" width="100px;" alt=""/><br /><sub><b>Travis Tarr</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=travtarr" title="Code">💻</a></td>
+    <td align="center"><a href="http://multitwitch.co"><img src="https://avatars3.githubusercontent.com/u/11161511?v=4" width="100px;" alt=""/><br /><sub><b>Grégoire Joncour</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=gregoire78" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/maciej-trebacz"><img src="https://avatars3.githubusercontent.com/u/1614514?v=4" width="100px;" alt=""/><br /><sub><b>Maciej Trębacz</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=maciej-trebacz" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/Technikkeller"><img src="https://avatars1.githubusercontent.com/u/29926093?v=4" width="100px;" alt=""/><br /><sub><b>Justus Fluegel</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=Technikkeller" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/daniel0611"><img src="https://avatars0.githubusercontent.com/u/30466471?v=4" width="100px;" alt=""/><br /><sub><b>Daniel Huber</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=daniel0611" title="Code">💻</a></td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://adamcrowder.net"><img src="https://avatars1.githubusercontent.com/u/11189778?v=4" width="100px;" alt=""/><br /><sub><b>Adam</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=cheeseandcereal" title="Code">💻</a></td>
+    <td align="center"><a href="https://crutchcorn.dev"><img src="https://avatars0.githubusercontent.com/u/9100169?v=4" width="100px;" alt=""/><br /><sub><b>Corbin Crutchley</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=crutchcorn" title="Code">💻</a></td>
+    <td align="center"><a href="https://hirst.xyz"><img src="https://avatars3.githubusercontent.com/u/45145746?v=4" width="100px;" alt=""/><br /><sub><b>Sam Hirst</b></sub></a><br /><a href="https://github.com/d-fischer/twitch/commits?author=Naeviant" title="Code">💻</a></td>
   </tr>
 </table>
 

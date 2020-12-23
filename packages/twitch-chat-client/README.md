@@ -1,12 +1,14 @@
 # Twitch.js - Chat Client
 
+Interact with the Twitch Messaging Interface (aka Twitch chat).
+
 ## Installation
 
-	yarn add twitch twitch-chat-client
+	yarn add twitch-auth twitch-chat-client
 
 or using npm:
 
-	npm install --save twitch twitch-chat-client
+	npm install --save twitch-auth twitch-chat-client
 
 ## Documentation
 

@@ -1,5 +1,7 @@
 # Twitch.js - Bot framework
 
+A simplified framework to get a chat bot running easily.
+
 ## Installation
 
 	yarn add easy-twitch-bot
@@ -11,7 +13,7 @@ or using npm:
 ## Example
 
 ```typescript
-import Bot, { createBotCommand } from 'easy-twitch-bot';
+import { Bot, createBotCommand } from 'easy-twitch-bot';
 Bot.create({
     auth: 'YOURTOKENHERE',
     channel: 'satisfiedpear',

@@ -1,6 +1,8 @@
-import { MakeOptional, NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from 'twitch';
-import { PubSubBasicMessageInfo } from './PubSubMessage';
+import type { MakeOptional } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
+import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
 export interface PubSubBitsMessageBadgeEntitlement {
 	previous_version: number;
@@ -27,60 +29,65 @@ export interface PubSubBitsMessageData {
 /**
  * A message that informs about bits being used in a channel.
  */
-export default class PubSubBitsMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+@rtfm<PubSubBitsMessage>('twitch-pubsub-client', 'PubSubBitsMessage', 'userId')
+export class PubSubBitsMessage {
+	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubBitsMessageData;
 
 	/** @private */
-	constructor(private readonly _data: PubSubBitsMessageData, twitchClient: TwitchClient) {
-		this._twitchClient = twitchClient;
+	constructor(data: PubSubBitsMessageData, apiClient: ApiClient) {
+		this._data = data;
+		this._apiClient = apiClient;
 	}
 
 	/**
 	 * The ID of the user that sent the bits.
 	 */
-	get userId() {
+	get userId(): string | undefined {
 		return this._data.data.user_id;
 	}
 
 	/**
 	 * The name of the user that sent the bits.
 	 */
-	get userName() {
+	get userName(): string | undefined {
 		return this._data.data.user_name;
 	}
 
 	/**
 	 * Retrieves more data about the user.
+	 *
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getUser() {
-		return this._data.data.user_id ? this._twitchClient.helix.users.getUserById(this._data.data.user_id) : null;
+	async getUser(): Promise<HelixUser | null> {
+		return this._data.data.user_id ? this._apiClient.helix.users.getUserById(this._data.data.user_id) : null;
 	}
 
 	/**
 	 * The full message that was sent with the bits.
 	 */
-	get message() {
+	get message(): string {
 		return this._data.data.chat_message;
 	}
 
 	/**
 	 * The number of bits that were sent.
 	 */
-	get bits() {
+	get bits(): number {
 		return this._data.data.bits_used;
 	}
 
 	/**
 	 * The total number of bits that were ever sent by the user in the channel.
 	 */
-	get totalBits() {
+	get totalBits(): number {
 		return this._data.data.total_bits_used;
 	}
 
 	/**
 	 * Whether the cheer was anonymous.
 	 */
-	get isAnonymous() {
+	get isAnonymous(): boolean {
 		return this._data.data.is_anonymous;
 	}
 }

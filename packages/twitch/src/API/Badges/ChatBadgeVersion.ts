@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface ChatBadgeVersionData {
@@ -18,19 +18,19 @@ export type ChatBadgeScale = 1 | 2 | 4;
 /**
  * A version of a badge.
  */
-export default class ChatBadgeVersion {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm('twitch', 'ChatBadgeVersion')
+export class ChatBadgeVersion {
+	@Enumerable(false) private readonly _data: ChatBadgeVersionData;
 
 	/** @private */
-	constructor(private readonly _data: ChatBadgeVersionData, client: TwitchClient) {
-		this._client = client;
+	constructor(data: ChatBadgeVersionData) {
+		this._data = data;
 	}
 
 	/**
 	 * The action to execute when the badge is clicked.
 	 */
-	get clickAction() {
+	get clickAction(): string {
 		return this._data.click_action;
 	}
 
@@ -39,14 +39,14 @@ export default class ChatBadgeVersion {
 	 *
 	 * Only applies if clickAction === 'visit_url'.
 	 */
-	get clickUrl() {
+	get clickUrl(): string {
 		return this._data.click_url;
 	}
 
 	/**
 	 * The description of the badge.
 	 */
-	get description() {
+	get description(): string {
 		return this._data.description;
 	}
 
@@ -56,13 +56,14 @@ export default class ChatBadgeVersion {
 	 * @param scale The scale of the badge image.
 	 */
 	getImageUrl(scale: ChatBadgeScale): string {
-		return this._data[`image_url_${scale}x`];
+		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
+		return this._data[`image_url_${scale}x` as const];
 	}
 
 	/**
 	 * The title of the badge.
 	 */
-	get title() {
+	get title(): string {
 		return this._data.title;
 	}
 }

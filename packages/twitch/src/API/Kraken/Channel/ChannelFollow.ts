@@ -1,6 +1,8 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import User, { UserData } from '../User/User';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { UserData } from '../User/User';
+import { User } from '../User/User';
 
 /** @private */
 export interface ChannelFollowData {
@@ -12,33 +14,42 @@ export interface ChannelFollowData {
 /**
  * A relation of a user following a previously given channel.
  */
-export default class ChannelFollow {
-	/** @private */
-	@NonEnumerable private readonly _client: TwitchClient;
+@rtfm<ChannelFollow>('twitch', 'ChannelFollow', 'userId')
+export class ChannelFollow {
+	@Enumerable(false) private readonly _data: ChannelFollowData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: ChannelFollowData, client: TwitchClient) {
+	constructor(data: ChannelFollowData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/**
 	 * The user following the given channel.
 	 */
-	get user() {
+	get user(): User {
 		return new User(this._data.user, this._client);
+	}
+
+	/**
+	 * The ID of the user following the given channel.
+	 */
+	get userId(): string {
+		return this._data.user._id;
 	}
 
 	/**
 	 * Whether the user has notifications enabled for the channel.
 	 */
-	get hasNotifications() {
+	get hasNotifications(): boolean {
 		return this._data.notifications;
 	}
 
 	/**
 	 * The date when the user followed.
 	 */
-	get followDate() {
+	get followDate(): Date {
 		return new Date(this._data.created_at);
 	}
 }

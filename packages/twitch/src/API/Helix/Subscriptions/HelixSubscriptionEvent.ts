@@ -1,6 +1,8 @@
-import TwitchClient from '../../../TwitchClient';
-import { HelixEventData } from '../HelixEvent';
-import HelixSubscription, { HelixSubscriptionData } from './HelixSubscription';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixEventData } from '../HelixEvent';
+import type { HelixSubscriptionData } from './HelixSubscription';
+import { HelixSubscription } from './HelixSubscription';
 
 /**
  * The different types a subscription event can have.
@@ -28,44 +30,48 @@ export type HelixSubscriptionEventData = HelixEventData<HelixSubscriptionData, H
 /**
  * An event that indicates the change of a subscription status, i.e. subscribing, unsubscribing or sending the monthly notification.
  */
-export default class HelixSubscriptionEvent extends HelixSubscription {
+@rtfm<HelixSubscriptionEvent>('twitch', 'HelixSubscriptionEvent', 'userId')
+export class HelixSubscriptionEvent extends HelixSubscription {
+	private readonly _eventData: HelixSubscriptionEventData;
+
 	/** @private */
-	constructor(private readonly _eventData: HelixSubscriptionEventData, client: TwitchClient) {
-		super(_eventData.event_data, client);
+	constructor(eventData: HelixSubscriptionEventData, client: ApiClient) {
+		super(eventData.event_data, client);
+		this._eventData = eventData;
 	}
 
 	/**
 	 * The unique ID of the subscription event.
 	 */
-	get eventId() {
+	get eventId(): string {
 		return this._eventData.id;
 	}
 
 	/**
 	 * The type of the subscription event.
 	 */
-	get eventType() {
+	get eventType(): HelixSubscriptionEventType {
 		return this._eventData.event_type;
 	}
 
 	/**
 	 * The date of the subscription event.
 	 */
-	get eventDate() {
+	get eventDate(): Date {
 		return new Date(this._eventData.event_timestamp);
 	}
 
 	/**
 	 * The version of the subscription event.
 	 */
-	get eventVersion() {
+	get eventVersion(): string {
 		return this._eventData.version;
 	}
 
 	/**
 	 * The message sent with the subscription event.
 	 */
-	get eventMessage() {
-		return this._eventData.event_data.message || '';
+	get eventMessage(): string {
+		return this._eventData.event_data.message ?? '';
 	}
 }

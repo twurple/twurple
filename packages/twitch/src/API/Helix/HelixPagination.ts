@@ -18,7 +18,7 @@ export interface HelixForwardPagination {
  *
  * @inheritDoc
  */
-export default interface HelixPagination extends HelixForwardPagination {
+export interface HelixPagination extends HelixForwardPagination {
 	/**
 	 * A cursor to get the previous page of.
 	 */
@@ -26,7 +26,10 @@ export default interface HelixPagination extends HelixForwardPagination {
 }
 
 /** @private */
-export function makePaginationQuery({ after, before, limit }: HelixPagination = {}) {
+export function makePaginationQuery({ after, before, limit }: HelixPagination = {}): Record<
+	string,
+	string | undefined
+> {
 	return {
 		after,
 		before,

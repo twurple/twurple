@@ -1,5 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../User/HelixUser';
 
 /** @private */
 export interface HelixModeratorData {
@@ -10,33 +12,35 @@ export interface HelixModeratorData {
 /**
  * Information about the moderator status of a user.
  */
-export default class HelixModerator {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm<HelixModerator>('twitch', 'HelixModerator', 'userId')
+export class HelixModerator {
+	@Enumerable(false) private readonly _data: HelixModeratorData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixModeratorData, client: TwitchClient) {
+	constructor(data: HelixModeratorData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/**
 	 * The ID of the user.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
-	}
-
-	/**
-	 * Retrieves more data about the user.
-	 */
-	async getUser() {
-		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 
 	/**
 	 * The name of the user.
 	 */
-	get userName() {
+	get userName(): string {
 		return this._data.user_name;
+	}
+
+	/**
+	 * Retrieves more data about the user.
+	 */
+	async getUser(): Promise<HelixUser | null> {
+		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 }

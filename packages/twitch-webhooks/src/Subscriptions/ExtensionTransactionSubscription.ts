@@ -1,42 +1,42 @@
-import { HelixExtensionTransaction, HelixResponse } from 'twitch';
-import { HelixExtensionTransactionData } from 'twitch/lib/API/Helix/Extensions/HelixExtensionTransaction';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import type { HelixExtensionTransactionData, HelixResponse } from 'twitch';
+import { HelixExtensionTransaction } from 'twitch';
+import { rtfm } from 'twitch-common';
+import type { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
-export default class ExtensionTransactionSubscription extends Subscription<HelixExtensionTransaction> {
-	/** @private */
+@rtfm<ExtensionTransactionSubscription>('twitch-webhooks', 'ExtensionTransactionSubscription', 'id')
+export class ExtensionTransactionSubscription extends Subscription<HelixExtensionTransaction> {
 	constructor(
-		private readonly _extensionId: string,
 		handler: (data: HelixExtensionTransaction) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _extensionId: string
 	) {
 		super(handler, client, validityInSeconds);
 	}
 
-	get id() {
+	get id(): string {
 		return `extension.transaction.${this._extensionId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixExtensionTransactionData>) {
-		return new HelixExtensionTransaction(response.data[0], this._client._twitchClient);
+	protected transformData(response: HelixResponse<HelixExtensionTransactionData>): HelixExtensionTransaction {
+		return new HelixExtensionTransaction(response.data[0], this._client._apiClient);
 	}
 
-	protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToExtensionTransactions(
+	protected async _subscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.subscribeToExtensionTransactions(
 			this._extensionId,
-			this._options
+			await this._getOptions()
 		);
 	}
 
-	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromExtensionTransactions(
+	protected async _unsubscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.unsubscribeFromExtensionTransactions(
 			this._extensionId,
-			this._options
+			await this._getOptions()
 		);
 	}
 }

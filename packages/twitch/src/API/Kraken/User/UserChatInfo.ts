@@ -1,5 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { User } from './User';
 
 interface UserChatInfoGlobalBadgeData {
 	id: string;
@@ -20,67 +22,70 @@ export interface UserChatInfoData {
 /**
  * Information about a user's chat appearance and privileges.
  */
-export default class UserChatInfo {
-	@NonEnumerable private readonly _client: TwitchClient;
+@rtfm<UserChatInfo>('twitch-chat-client', 'UserChatInfo', 'userId')
+export class UserChatInfo {
+	@Enumerable(false) private readonly _data: UserChatInfoData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: UserChatInfoData, client: TwitchClient) {
+	constructor(data: UserChatInfoData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/**
 	 * The ID of the user.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data._id;
 	}
 
 	/**
 	 * Retrieves more data about the user.
 	 */
-	async getUser() {
+	async getUser(): Promise<User> {
 		return this._client.kraken.users.getUser(this._data._id);
 	}
 
 	/**
 	 * The name of the user.
 	 */
-	get userName() {
+	get userName(): string {
 		return this._data.login;
 	}
 
 	/**
 	 * The display name of the user.
 	 */
-	get displayName() {
+	get displayName(): string {
 		return this._data.display_name;
 	}
 
 	/**
 	 * The color that the user appears in in chat.
 	 */
-	get color() {
+	get color(): string {
 		return this._data.color;
 	}
 
 	/**
 	 * Whether the user is a known bot.
 	 */
-	get isKnownBot() {
+	get isKnownBot(): boolean {
 		return this._data.is_known_bot;
 	}
 
 	/**
 	 * Whether the user is a verified bot.
 	 */
-	get isVerifiedBot() {
+	get isVerifiedBot(): boolean {
 		return this._data.is_verified_bot;
 	}
 
 	/**
 	 * Whether the user is at least a known bot (i.e. known or verified).
 	 */
-	get isAtLeastKnownBot() {
+	get isAtLeastKnownBot(): boolean {
 		return this._data.is_known_bot || this._data.is_verified_bot;
 	}
 
@@ -89,7 +94,7 @@ export default class UserChatInfo {
 	 *
 	 * @param id The ID of a badge.
 	 */
-	hasBadge(id: string) {
+	hasBadge(id: string): boolean {
 		return this._data.badges.some(badge => badge.id === id);
 	}
 }

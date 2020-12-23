@@ -1,6 +1,8 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import Channel, { ChannelData } from '../Channel/Channel';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { ChannelData } from '../Channel/Channel';
+import { Channel } from '../Channel/Channel';
 
 /**
  * The possible sizes for a stream preview.
@@ -14,12 +16,7 @@ export type StreamPreviewUrlList = {
 
 /** @private */
 export interface StreamDataWrapper {
-	stream: StreamData;
-}
-
-/** @private */
-export interface StreamDataWrapper {
-	stream: StreamData;
+	stream: StreamData | null;
 }
 
 /** @private */
@@ -65,74 +62,83 @@ export enum StreamType {
 /**
  * A Twitch stream.
  */
-export default class Stream {
-	@NonEnumerable private readonly _client: TwitchClient;
+@rtfm<Stream>('twitch', 'Stream', 'id')
+export class Stream {
+	@Enumerable(false) private readonly _data: StreamData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: StreamData, client: TwitchClient) {
+	constructor(data: StreamData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/**
 	 * The ID of the stream.
 	 */
-	get id() {
+	get id(): string {
 		return this._data._id.toString();
 	}
 
 	/**
 	 * The game played on the stream.
 	 */
-	get game() {
+	get game(): string {
 		return this._data.game;
 	}
 
 	/**
 	 * The current number of concurrent viewers.
 	 */
-	get viewers() {
+	get viewers(): number {
 		return this._data.viewers;
 	}
 
 	/**
 	 * The height of the stream video.
 	 */
-	get videoHeight() {
+	get videoHeight(): number {
 		return this._data.video_height;
 	}
 
 	/**
 	 * The average FPS (frames per second) that are shown on the stream.
 	 */
-	get averageFPS() {
+	get averageFps(): number {
+		return this._data.average_fps;
+	}
+
+	/** @deprecated Use averageFps instead. */
+	// eslint-disable-next-line @typescript-eslint/naming-convention
+	get averageFPS(): number {
 		return this._data.average_fps;
 	}
 
 	/**
 	 * The delay of the stream, in seconds.
 	 */
-	get delay() {
+	get delay(): number {
 		return this._data.delay;
 	}
 
 	/**
 	 * The time when the stream started.
 	 */
-	get startDate() {
+	get startDate(): Date {
 		return new Date(this._data.created_at);
 	}
 
 	/**
 	 * Whether the stream is running a playlist.
 	 */
-	get isPlaylist() {
+	get isPlaylist(): boolean {
 		return this._data.is_playlist;
 	}
 
 	/**
 	 * The type of the stream.
 	 */
-	get type() {
+	get type(): StreamType {
 		return this._data.stream_type;
 	}
 
@@ -141,14 +147,14 @@ export default class Stream {
 	 *
 	 * @param size The size of the image.
 	 */
-	getPreviewUrl(size: StreamPreviewSize) {
+	getPreviewUrl(size: StreamPreviewSize): string {
 		return this._data.preview[size];
 	}
 
 	/**
 	 * The channel where the stream is shown.
 	 */
-	get channel() {
+	get channel(): Channel {
 		return new Channel(this._data.channel, this._client);
 	}
 }

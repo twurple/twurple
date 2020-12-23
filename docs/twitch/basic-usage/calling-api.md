@@ -4,11 +4,11 @@ All API methods are `async` and thus can be `await`ed. Here's a quick example:
 
 ```typescript
 async function isStreamLive(userName: string) {
-	const user = await twitchClient.helix.users.getUserByName(userName);
+	const user = await apiClient.helix.users.getUserByName(userName);
 	if (!user) {
 		return false;
 	}
-	return await twitchClient.helix.streams.getStreamByUserId(user.id) !== null;
+	return await apiClient.helix.streams.getStreamByUserId(user.id) !== null;
 }
 ```
 
@@ -16,7 +16,7 @@ We make extensive use of convenience methods that fetch related resources, so th
 
 ```typescript
 async function isStreamLive(userName: string) {
-	const user = await twitchClient.helix.users.getUserByName(userName);
+	const user = await apiClient.helix.users.getUserByName(userName);
 	if (!user) {
 		return false;
 	}
@@ -30,7 +30,7 @@ In Helix, some resources are paginated using a cursor. To faciliate easy paginat
 
 ```typescript
 async function getAllClipsForBroadcaster(userId: string) {
-	const request = twitchClient.helix.clips.getClipsForBroadcasterPaginated(userId);
+	const request = apiClient.helix.clips.getClipsForBroadcasterPaginated(userId);
 	let page: HelixClip[];
 	const result: HelixClip[] = [];
 
@@ -46,7 +46,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 
 ```typescript
 async function getAllClipsForBroadcaster(userId: string) {
-	const request = twitchClient.helix.clips.getClipsForBroadcasterPaginated(userId);
+	const request = apiClient.helix.clips.getClipsForBroadcasterPaginated(userId);
 
 	return request.getAll();
 }
@@ -56,7 +56,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 
 ```typescript
 async function findClipFromBroadcasterWithTitle(userId: string, searchTerm: string) {
-	for await (const clip of twitchClient.helix.clips.getClipsForBroadcasterPaginated(userId)) {
+	for await (const clip of apiClient.helix.clips.getClipsForBroadcasterPaginated(userId)) {
 		if (clip.title.includes(searchTerm)) {
 			return clip;
 		}
@@ -66,4 +66,4 @@ async function findClipFromBroadcasterWithTitle(userId: string, searchTerm: stri
 }
 ```
 
-**WARNING**: Uncontrolled use of the paginator may lead to quick exhaustion of your rate limit with big, unfiltered result sets. Please use filters and exit your loops as soon as you have enough data.
+**WARNING:** Uncontrolled use of the paginator may lead to quick exhaustion of your rate limit with big, unfiltered result sets. Please use filters and exit your loops as soon as you have enough data.

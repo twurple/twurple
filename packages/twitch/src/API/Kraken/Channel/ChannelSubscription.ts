@@ -1,5 +1,8 @@
-import Subscription, { SubscriptionData } from '../Subscription';
-import User, { UserData } from '../User/User';
+import { rtfm } from 'twitch-common';
+import type { SubscriptionData } from '../Subscription';
+import { Subscription } from '../Subscription';
+import type { UserData } from '../User/User';
+import { User } from '../User/User';
 
 /** @private */
 export interface ChannelSubscriptionsResponse {
@@ -15,14 +18,21 @@ export interface ChannelSubscriptionData extends SubscriptionData {
 /**
  * A relation of a user subscribing to a previously given channel.
  */
-export default class ChannelSubscription extends Subscription {
-	/** @private */
-	protected _data: ChannelSubscriptionData;
+@rtfm<ChannelSubscription>('twitch', 'ChannelSubscription', 'userId')
+export class ChannelSubscription extends Subscription {
+	/** @private */ protected declare readonly _data: ChannelSubscriptionData;
 
 	/**
 	 * The user subscribing to the given channel.
 	 */
-	get user() {
+	get user(): User {
 		return new User(this._data.user, this._client);
+	}
+
+	/**
+	 * The ID of the user subscribing to the given channel.
+	 */
+	get userId(): string {
+		return this._data.user._id;
 	}
 }

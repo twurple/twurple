@@ -1,7 +1,13 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import NoSubscriptionProgramError from '../../../Errors/NoSubscriptionProgramError';
-import { UserIdResolvable } from '../../../Toolkit/UserTools';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from 'twitch-common';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
+import type { UserFollow } from '../../Kraken/User/UserFollow';
+import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import type { HelixStream } from '../Stream/HelixStream';
+import type { HelixSubscription } from '../Subscriptions/HelixSubscription';
+import type { HelixFollow } from './HelixFollow';
 
 /**
  * The type of a broadcaster.
@@ -64,94 +70,96 @@ export interface HelixUserData {
 /**
  * A Twitch user.
  */
-export default class HelixUser {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm<HelixUser>('twitch', 'HelixUser', 'id')
+export class HelixUser implements UserIdResolvableType, UserNameResolveableType {
+	/** @private */ @Enumerable(false) protected readonly _data: HelixUserData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: HelixUserData, client: TwitchClient) {
+	constructor(data: HelixUserData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/** @private */
-	get cacheKey() {
+	get cacheKey(): string {
 		return this._data.id;
 	}
 
 	/**
 	 * The ID of the user.
 	 */
-	get id() {
+	get id(): string {
 		return this._data.id;
 	}
 
 	/**
 	 * The user name of the user.
 	 */
-	get name() {
+	get name(): string {
 		return this._data.login;
 	}
 
 	/**
 	 * The display name of the user.
 	 */
-	get displayName() {
+	get displayName(): string {
 		return this._data.display_name;
 	}
 
 	/**
 	 * The description of the user.
 	 */
-	get description() {
+	get description(): string {
 		return this._data.description;
 	}
 
 	/**
 	 * The type of the user.
 	 */
-	get type() {
+	get type(): HelixUserType {
 		return this._data.type;
 	}
 
 	/**
 	 * The type of the user.
 	 */
-	get broadcasterType() {
+	get broadcasterType(): string {
 		return this._data.broadcaster_type;
 	}
 
 	/**
 	 * The URL to the profile picture of the user.
 	 */
-	get profilePictureUrl() {
+	get profilePictureUrl(): string {
 		return this._data.profile_image_url;
 	}
 
 	/**
 	 * The URL to the offline video placeholder of the user.
 	 */
-	get offlinePlaceholderUrl() {
+	get offlinePlaceholderUrl(): string {
 		return this._data.offline_image_url;
 	}
 
 	/**
 	 * The total number of views of the user's channel.
 	 */
-	get views() {
+	get views(): number {
 		return this._data.view_count;
 	}
 
 	/**
 	 * Retrieves the channel's stream data.
 	 */
-	async getStream() {
+	async getStream(): Promise<HelixStream | null> {
 		return this._client.helix.streams.getStreamByUserId(this);
 	}
 
 	/**
 	 * Retrieves a list of broadcasters the user follows.
 	 */
-	async getFollows() {
+	async getFollows(): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
 		return this._client.helix.users.getFollows({ user: this });
 	}
 
@@ -160,7 +168,7 @@ export default class HelixUser {
 	 *
 	 * @param broadcaster The broadcaster to check the follow to.
 	 */
-	async getFollowTo(broadcaster: UserIdResolvable) {
+	async getFollowTo(broadcaster: UserIdResolvable): Promise<HelixFollow | null> {
 		const params = {
 			user: this.id,
 			followedUser: broadcaster
@@ -176,14 +184,14 @@ export default class HelixUser {
 	 *
 	 * @param broadcaster The broadcaster to check the user's follow to.
 	 */
-	async follows(broadcaster: UserIdResolvable) {
+	async follows(broadcaster: UserIdResolvable): Promise<boolean> {
 		return (await this.getFollowTo(broadcaster)) !== null;
 	}
 
 	/**
 	 * Follows the broadcaster.
 	 */
-	async follow() {
+	async follow(): Promise<UserFollow> {
 		const currentUser = await this._client.kraken.users.getMe();
 		return currentUser.followChannel(this);
 	}
@@ -191,7 +199,7 @@ export default class HelixUser {
 	/**
 	 * Unfollows the broadcaster.
 	 */
-	async unfollow() {
+	async unfollow(): Promise<void> {
 		const currentUser = await this._client.kraken.users.getMe();
 		return currentUser.unfollowChannel(this);
 	}
@@ -201,7 +209,7 @@ export default class HelixUser {
 	 *
 	 * @param broadcaster The broadcaster you want to get the subscription data for.
 	 */
-	async getSubscriptionTo(broadcaster: UserIdResolvable) {
+	async getSubscriptionTo(broadcaster: UserIdResolvable): Promise<HelixSubscription | null> {
 		return this._client.helix.subscriptions.getSubscriptionForUser(broadcaster, this);
 	}
 
@@ -210,7 +218,7 @@ export default class HelixUser {
 	 *
 	 * @param broadcaster The broadcaster you want to check the subscription for.
 	 */
-	async isSubscribedTo(broadcaster: UserIdResolvable) {
+	async isSubscribedTo(broadcaster: UserIdResolvable): Promise<boolean> {
 		try {
 			return (await this.getSubscriptionTo(broadcaster)) !== null;
 		} catch (e) {

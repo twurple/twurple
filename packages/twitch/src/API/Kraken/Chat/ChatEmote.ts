@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface ChatEmoteData {
@@ -13,42 +13,42 @@ export type EmoteSize = '1.0' | '2.0' | '3.0';
 /**
  * A chat emote.
  */
-export default class ChatEmote {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm<ChatEmote>('twitch', 'ChatEmote', 'id')
+export class ChatEmote {
+	@Enumerable(false) private readonly _data: ChatEmoteData;
 
 	/** @private */
-	constructor(private readonly _data: ChatEmoteData, client: TwitchClient) {
-		this._client = client;
+	constructor(data: ChatEmoteData) {
+		this._data = data;
 	}
 
 	/**
 	 * The emote ID.
 	 */
-	get id() {
+	get id(): number {
 		return this._data.id;
 	}
 
 	/**
 	 * The emote code, i.e. how you write it in chat.
 	 */
-	get code() {
+	get code(): string {
 		return this._data.code;
 	}
 
 	/**
 	 * The ID of the emote set.
 	 */
-	get setId() {
+	get setId(): number {
 		return this._data.emoticon_set;
 	}
 
 	/**
-	 * Build URL for the emote image.
+	 * Build the URL pointing to the emote image.
 	 *
-	 * @param size pixel density of the emote image
+	 * @param size The pixel density of the emote image.
 	 */
-	getUrl(size: EmoteSize) {
+	getUrl(size: EmoteSize): string {
 		return `https://static-cdn.jtvnw.net/emoticons/v1/${this.id}/${size}`;
 	}
 }

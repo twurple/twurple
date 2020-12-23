@@ -12,16 +12,16 @@ There is a [Discord server](https://discord.gg/b9ZqMfz) where you can ask questi
 
 ## Development
 
-**READ THIS FIRST:** If you want to create a new feature, please file a feature request first. State that you want to implement the feature by yourself, too.
+**READ THIS FIRST:** If you want to create a new feature, **please file a feature request first**. State that you want to implement the feature by yourself, too.
 We will decide whether we want this feature in the library. You don't want to spend your precious time for nothing, do you?
 
 ### General code conventions
 
 - Property names are always nouns.
 - Function and method names always start with verbs.
-- Acronyms shouldn't be camel cased - if they're at the beginning of a function or method name, they should be all lower case, otherwise they should be all upper case.
+- Acronyms should always be camel cased - if they're at the beginning of a function or method name, they should be all lower case, otherwise they should start with an upper case letter, like normal camel case.
 - All other code conventions are enforced by [ESLint](https://github.com/eslint/eslint), you'll notice when you're doing it wrong,
-  especially when using an IDE or text editor with TSLint support. ;)
+  especially when using an IDE or text editor with ESLint support. ;)
   Use your best judgement when you think you're writing something that needs an exception to the rules, especially the `no-any` rule. Annotate that exception so the lint step doesn't fail.
 
 ### Getting started
@@ -29,6 +29,13 @@ We will decide whether we want this feature in the library. You don't want to sp
 To get started, simply fork the repository, then clone the fork locally:
 
 	git clone https://github.com/your-username/twitch.git
+	
+If you want to send a bugfix to a non-prerelease version, please check out the respective branch named `support/x.y` (`x.y` being the current minor version).
+On master, only ongoing development of future minor and major versions happens.
+
+    git checkout support/4.1
+
+Bugfixes will be merged back to master if applicable.
 
 Then install the dependencies. We use yarn as our package manager, so to make sure you get the exact package versions of the lock file, you should use it too:
 
@@ -47,6 +54,6 @@ If you want to create a new documentation page, please reflect the outline struc
 
 ### Sending a Pull Request
 
-After writing your bug fix, feature or documentation improvement, send a pull request stating what it includes
+After writing your bug fix, feature or improvement, send a pull request stating what it includes
 and [which issue it fixes](https://help.github.com/articles/closing-issues-using-keywords/).
 We will then review the code changes and either merge it or request further changes.

@@ -1,11 +1,11 @@
-import BotCommandContext from './BotCommandContext';
+import type { BotCommandContext } from './BotCommandContext';
 
 export interface BotCommandMatch {
 	command: BotCommand;
 	params: string[];
 }
 
-abstract class BotCommand {
+export abstract class BotCommand {
 	abstract get name(): string;
 
 	get aliases(): string[] {
@@ -26,5 +26,3 @@ abstract class BotCommand {
 
 	abstract execute(params: string[], context: BotCommandContext): void | Promise<void>;
 }
-
-export default BotCommand;

@@ -1,6 +1,6 @@
 {
   "name": "twitch-electron-auth-provider",
-  "version": "4.0.9",
+  "version": "4.4.0-pre.3",
   "description": "Obtain auth tokens for Twitch using an Electron popup.",
   "keywords": [
     "twitch",
@@ -8,35 +8,43 @@
     "authentication",
     "stream"
   ],
+  "sideEffects": false,
   "main": "lib",
-  "types": "lib/index",
+  "types": "lib",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/d-fischer/twitch.git",
     "directory": "packages/twitch-electron-auth-provider"
   },
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@types/qs": "^6.5.2",
-    "qs": "^6.7.0",
-    "tslib": "^1.9.3"
+    "@d-fischer/qs": "^7.0.2",
+    "@d-fischer/shared-utils": "^3.0.1",
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "twitch": "^4.0.9"
+    "twitch": "^4.4.0-pre.3"
   },
   "peerDependencies": {
-    "electron": ">=4.1.1 <9.0.0",
-    "twitch": "^4.0.0"
+    "electron": ">=4.1.1 <10.0.0",
+    "twitch": "^4.4.0"
   },
   "files": [
     "LICENSE",
     "README.md",
-    "lib"
+    "lib",
+    "es"
   ],
   "scripts": {
-    "build": "tsc",
-    "rebuild": "rimraf lib && yarn run build",
-    "docs": "documen.ts"
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
   }
 }

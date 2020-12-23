@@ -13,11 +13,11 @@ or using npm:
 Using ES2015 modules:
 
 ```typescript
-import PubSubClient from 'twitch-pubsub-client';
+import { PubSubClient } from 'twitch-pubsub-client';
 ```
 
-Using CommonJS modules:
+Using CommonJS:
 
 ```typescript
-const PubSubClient = require('twitch-pubsub-client').default;
+const { PubSubClient } = require('twitch-pubsub-client');
 ```

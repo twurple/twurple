@@ -1,11 +1,11 @@
 /**
  * A result coming from a Helix resource that is paginated using a cursor.
  */
-import { ConstructedType } from '@d-fischer/shared-utils';
-import TwitchClient from '../../TwitchClient';
-import { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './HelixResponse';
+import type { ConstructedType } from '@d-fischer/shared-utils';
+import type { ApiClient } from '../../ApiClient';
+import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './HelixResponse';
 
-export default interface HelixPaginatedResult<T> {
+export interface HelixPaginatedResult<T> {
 	/**
 	 * The returned data.
 	 */
@@ -37,27 +37,50 @@ export interface HelixPaginatedResultWithTotal<T> {
 	total: number;
 }
 
-/** @private */
-export function createPaginatedResult<
-	I extends object,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	O extends new (data: I, client: TwitchClient) => any
->(response: HelixPaginatedResponse<I>, type: O, client: TwitchClient): HelixPaginatedResult<ConstructedType<O>> {
+/** @private */ export function createPaginatedResult<
+	I,
+	O extends new (data: I, client: ApiClient) => ConstructedType<O>
+>(
+	response: HelixPaginatedResponse<I>,
+	type: O,
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	client: ApiClient
+): HelixPaginatedResult<ConstructedType<O>>;
+/** @private */ export function createPaginatedResult<I, O extends new (data: I) => ConstructedType<O>>(
+	response: HelixPaginatedResponse<I>,
+	type: O
+): HelixPaginatedResult<ConstructedType<O>>;
+/** @private */ export function createPaginatedResult<
+	I,
+	O extends new (data: I, client?: ApiClient) => ConstructedType<O>
+>(response: HelixPaginatedResponse<I>, type: O, client?: ApiClient): HelixPaginatedResult<ConstructedType<O>> {
 	return {
-		data: response.data.map(data => new type(data, client)),
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+		data: response.data?.map(data => new type(data, client)) ?? [],
 		cursor: response.pagination?.cursor
 	};
 }
 
-/** @private */
-export function createPaginatedResultWithTotal<
-	I extends object,
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	O extends new (data: I, client: TwitchClient) => any
+/** @private */ export function createPaginatedResultWithTotal<
+	I,
+	O extends new (data: I, client: ApiClient) => ConstructedType<O>
 >(
 	response: HelixPaginatedResponseWithTotal<I>,
 	type: O,
-	client: TwitchClient
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	client: ApiClient
+): HelixPaginatedResultWithTotal<ConstructedType<O>>;
+/** @private */ export function createPaginatedResultWithTotal<I, O extends new (data: I) => ConstructedType<O>>(
+	response: HelixPaginatedResponseWithTotal<I>,
+	type: O
+): HelixPaginatedResultWithTotal<ConstructedType<O>>;
+/** @private */ export function createPaginatedResultWithTotal<
+	I,
+	O extends new (data: I, client?: ApiClient) => ConstructedType<O>
+>(
+	response: HelixPaginatedResponseWithTotal<I>,
+	type: O,
+	client?: ApiClient
 ): HelixPaginatedResultWithTotal<ConstructedType<O>> {
 	return {
 		data: response.data.map(data => new type(data, client)),

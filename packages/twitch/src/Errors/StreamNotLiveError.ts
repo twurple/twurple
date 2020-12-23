@@ -1,9 +1,10 @@
-import CustomError from './CustomError';
+import { CustomError } from 'twitch-common';
 
 /**
  * Thrown whenever you try something that requires your own stream to be live.
  */
-export default class StreamNotLiveError extends CustomError {
+export class StreamNotLiveError extends CustomError {
+	/** @private */
 	constructor() {
 		super('Your stream needs to be live to do this');
 	}

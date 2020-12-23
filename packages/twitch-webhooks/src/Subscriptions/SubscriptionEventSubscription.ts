@@ -1,36 +1,40 @@
-import { HelixResponse, HelixSubscriptionEvent } from 'twitch';
-import { HelixSubscriptionEventData } from 'twitch/lib/API/Helix/Subscriptions/HelixSubscriptionEvent';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import type { HelixResponse, HelixSubscriptionEventData } from 'twitch';
+import { HelixSubscriptionEvent } from 'twitch';
+import type { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
-export default class SubscriptionEventSubscription extends Subscription<HelixSubscriptionEvent> {
-	/** @private */
+export class SubscriptionEventSubscription extends Subscription<HelixSubscriptionEvent> {
 	constructor(
-		private readonly _userId: string,
 		handler: (data: HelixSubscriptionEvent) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _broadcasterId: string
 	) {
 		super(handler, client, validityInSeconds);
 	}
 
-	get id() {
-		return `subscription.event.${this._userId}`;
+	get id(): string {
+		return `subscription.event.${this._broadcasterId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixSubscriptionEventData>) {
-		return new HelixSubscriptionEvent(response.data[0], this._client._twitchClient);
+	protected transformData(response: HelixResponse<HelixSubscriptionEventData>): HelixSubscriptionEvent {
+		return new HelixSubscriptionEvent(response.data[0], this._client._apiClient);
 	}
 
-	protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToSubscriptionEvents(this._userId, this._options);
+	protected async _subscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.subscribeToSubscriptionEvents(
+			this._broadcasterId,
+			await this._getOptions()
+		);
 	}
 
-	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromSubscriptionEvents(this._userId, this._options);
+	protected async _unsubscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.unsubscribeFromSubscriptionEvents(
+			this._broadcasterId,
+			await this._getOptions()
+		);
 	}
 }

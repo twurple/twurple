@@ -1,5 +1,5 @@
 /** @private */
-export interface HelixEventData<T extends object, EventType extends string = string> {
+export interface HelixEventData<T, EventType extends string = string> {
 	id: string;
 	event_type: EventType;
 	event_timestamp: string;

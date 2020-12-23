@@ -1,6 +1,9 @@
-import TwitchClient from '../../../TwitchClient';
-import { HelixEventData } from '../HelixEvent';
-import HelixModerator, { HelixModeratorData } from './HelixModerator';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixEventData } from '../HelixEvent';
+import type { HelixUser } from '../User/HelixUser';
+import type { HelixModeratorData } from './HelixModerator';
+import { HelixModerator } from './HelixModerator';
 
 /**
  * The different types a moderator event can have.
@@ -29,58 +32,62 @@ export type HelixModeratorEventData = HelixEventData<HelixModeratorEventDetail, 
 /**
  * An event that indicates the change of a moderator status, i.e. gaining or losing moderation privileges.
  */
-export default class HelixModeratorEvent extends HelixModerator {
+@rtfm<HelixModeratorEvent>('twitch', 'HelixModeratorEvent', 'userId')
+export class HelixModeratorEvent extends HelixModerator {
+	private readonly _eventData: HelixModeratorEventData;
+
 	/** @private */
-	constructor(private readonly _eventData: HelixModeratorEventData, client: TwitchClient) {
-		super(_eventData.event_data, client);
+	constructor(eventData: HelixModeratorEventData, client: ApiClient) {
+		super(eventData.event_data, client);
+		this._eventData = eventData;
 	}
 
 	/**
 	 * The unique ID of the moderator event.
 	 */
-	get eventId() {
+	get eventId(): string {
 		return this._eventData.id;
 	}
 
 	/**
 	 * The type of the moderator event.
 	 */
-	get eventType() {
+	get eventType(): HelixModeratorEventType {
 		return this._eventData.event_type;
 	}
 
 	/**
 	 * The date of the moderator event.
 	 */
-	get eventDate() {
+	get eventDate(): Date {
 		return new Date(this._eventData.event_timestamp);
 	}
 
 	/**
 	 * The version of the moderator event.
 	 */
-	get eventVersion() {
+	get eventVersion(): string {
 		return this._eventData.version;
 	}
 
 	/**
 	 * The id of the broadcaster where the user gained/lost moderation privileges.
 	 */
-	get broadcasterId() {
+	get broadcasterId(): string {
 		return this._eventData.event_data.broadcaster_id;
-	}
-
-	/**
-	 * Retrieves more data about the broadcaster.
-	 */
-	async getBroadcaster() {
-		return this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id);
 	}
 
 	/**
 	 * The name of the broadcaster where the user gained/lost moderation privileges.
 	 */
-	get broadcasterName() {
-		return this._eventData.event_data.broadcaster_id;
+	get broadcasterName(): string {
+		return this._eventData.event_data.broadcaster_name;
+	}
+
+	/**
+	 * Retrieves more data about the broadcaster.
+	 */
+	async getBroadcaster(): Promise<HelixUser | null> {
+		return this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id);
 	}
 }

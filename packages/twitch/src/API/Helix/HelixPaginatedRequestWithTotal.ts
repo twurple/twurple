@@ -1,19 +1,21 @@
-import HelixPaginatedRequest from './HelixPaginatedRequest';
-import { HelixPaginatedResponseWithTotal } from './HelixResponse';
+import { rtfm } from 'twitch-common';
+import { HelixPaginatedRequest } from './HelixPaginatedRequest';
+import type { HelixPaginatedResponseWithTotal } from './HelixResponse';
 
 /**
  * A special case of {@HelixPaginatedRequest} with support for fetching the total number of entities, whenever an endpoint supports it.
  */
-export default class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<D, T> {
+@rtfm('twitch', 'HelixPaginatedRequestWithTotal')
+export class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<D, T> {
 	/** @private */
-	protected _currentData?: HelixPaginatedResponseWithTotal<D>;
+	protected declare _currentData?: HelixPaginatedResponseWithTotal<D>;
 
 	/**
 	 * Retrieves and returns the total number of entities existing in the queried result set.
 	 */
-	async getTotalCount() {
+	async getTotalCount(): Promise<number> {
 		const data =
-			this._currentData ||
+			this._currentData ??
 			((await this._fetchData({ query: { after: undefined } })) as HelixPaginatedResponseWithTotal<D>);
 		return data.total;
 	}

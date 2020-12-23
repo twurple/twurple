@@ -1,6 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../TwitchClient';
-import ChatBadgeVersion, { ChatBadgeVersionData } from './ChatBadgeVersion';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ChatBadgeVersionData } from './ChatBadgeVersion';
+import { ChatBadgeVersion } from './ChatBadgeVersion';
 
 /** @private */
 export interface ChatBadgeSetData {
@@ -10,19 +11,19 @@ export interface ChatBadgeSetData {
 /**
  * A set of badges.
  */
-export default class ChatBadgeSet {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm('twitch', 'ChatBadgeSet')
+export class ChatBadgeSet {
+	@Enumerable(false) private readonly _data: ChatBadgeSetData;
 
 	/** @private */
-	constructor(private readonly _data: ChatBadgeSetData, client: TwitchClient) {
-		this._client = client;
+	constructor(data: ChatBadgeSetData) {
+		this._data = data;
 	}
 
 	/**
 	 * Names of all versions of the badge set.
 	 */
-	get versionNames() {
+	get versionNames(): string[] {
 		return Object.keys(this._data.versions);
 	}
 
@@ -31,7 +32,7 @@ export default class ChatBadgeSet {
 	 *
 	 * @param name The name of the version.
 	 */
-	getVersion(name: string) {
-		return new ChatBadgeVersion(this._data.versions[name], this._client);
+	getVersion(name: string): ChatBadgeVersion {
+		return new ChatBadgeVersion(this._data.versions[name]);
 	}
 }

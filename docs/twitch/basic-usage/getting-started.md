@@ -13,11 +13,11 @@ or using npm:
 Using ES2015 modules:
 
 ```typescript
-import TwitchClient from 'twitch';
+import { ApiClient } from 'twitch';
 ```
 
-Using CommonJS modules:
+Using CommonJS:
 
 ```typescript
-const TwitchClient = require('twitch').default;
+const { ApiClient } = require('twitch');
 ```

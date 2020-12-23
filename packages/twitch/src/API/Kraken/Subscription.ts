@@ -1,5 +1,5 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { ApiClient } from '../../ApiClient';
 
 /** @private */
 export interface SubscriptionData {
@@ -12,40 +12,41 @@ export interface SubscriptionData {
 /**
  * A subscription to a Twitch channel.
  */
-export default class Subscription {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+export abstract class Subscription {
+	/** @private */ @Enumerable(false) protected readonly _data: SubscriptionData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: SubscriptionData, client: TwitchClient) {
+	constructor(data: SubscriptionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/**
 	 * The ID of the subscription.
 	 */
-	get id() {
+	get id(): string {
 		return this._data._id;
 	}
 
 	/**
 	 * The identifier of the subscription plan.
 	 */
-	get subPlan() {
+	get subPlan(): string {
 		return this._data.sub_plan;
 	}
 
 	/**
 	 * The name of the subscription plan.
 	 */
-	get subPlanName() {
+	get subPlanName(): string {
 		return this._data.sub_plan_name;
 	}
 
 	/**
 	 * The date when the subscription was started.
 	 */
-	get startDate() {
+	get startDate(): Date {
 		return new Date(this._data.created_at);
 	}
 }

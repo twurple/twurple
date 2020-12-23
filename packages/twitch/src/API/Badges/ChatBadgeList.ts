@@ -1,6 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../TwitchClient';
-import ChatBadgeSet, { ChatBadgeSetData } from './ChatBadgeSet';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ChatBadgeSetData } from './ChatBadgeSet';
+import { ChatBadgeSet } from './ChatBadgeSet';
 
 /** @private */
 export type ChatBadgeListData = Record<string, ChatBadgeSetData>;
@@ -8,19 +9,19 @@ export type ChatBadgeListData = Record<string, ChatBadgeSetData>;
 /**
  * A list of badge sets.
  */
-export default class ChatBadgeList {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm('twitch', 'ChatBadgeList')
+export class ChatBadgeList {
+	@Enumerable(false) private readonly _data: ChatBadgeListData;
 
 	/** @private */
-	constructor(private readonly _data: ChatBadgeListData, client: TwitchClient) {
-		this._client = client;
+	constructor(data: ChatBadgeListData) {
+		this._data = data;
 	}
 
 	/**
 	 * Names of all badge sets in the list.
 	 */
-	get badgeSetNames() {
+	get badgeSetNames(): string[] {
 		return Object.keys(this._data);
 	}
 
@@ -29,15 +30,15 @@ export default class ChatBadgeList {
 	 *
 	 * @param name The name of the badge set.
 	 */
-	getBadgeSet(name: string) {
-		return new ChatBadgeSet(this._data[name], this._client);
+	getBadgeSet(name: string): ChatBadgeSet {
+		return new ChatBadgeSet(this._data[name]);
 	}
 
 	/** @private */
-	_merge(additionalData: ChatBadgeList | ChatBadgeListData) {
+	_merge(additionalData: ChatBadgeList | ChatBadgeListData): ChatBadgeList {
 		if (additionalData instanceof ChatBadgeList) {
 			additionalData = additionalData._data;
 		}
-		return new ChatBadgeList({ ...this._data, ...additionalData }, this._client);
+		return new ChatBadgeList({ ...this._data, ...additionalData });
 	}
 }

@@ -1,0 +1,45 @@
+{
+  "name": "twitch-api-call",
+  "version": "4.4.0-pre.3",
+  "description": "A light wrapper around the Twitch API.",
+  "keywords": [
+    "twitch",
+    "api",
+    "stream",
+    "bot"
+  ],
+  "sideEffects": false,
+  "main": "lib",
+  "types": "lib",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d-fischer/twitch.git",
+    "directory": "packages/twitch-api-call"
+  },
+  "homepage": "https://d-fischer.github.io/twitch-api-call",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
+  "license": "MIT",
+  "dependencies": {
+    "@d-fischer/cross-fetch": "^4.0.2",
+    "@d-fischer/qs": "^7.0.2",
+    "tslib": "^2.0.3",
+    "twitch-common": "^4.4.0-pre.3"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
+  }
+}

@@ -1,6 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient, { HelixUserType } from 'twitch';
-import { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { ApiClient, HelixUser, HelixUserType } from 'twitch';
+import { rtfm } from 'twitch-common';
+import type { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
 export interface PubSubWhisperTags {
 	login: string;
@@ -41,46 +42,51 @@ export interface PubSubWhisperMessageData {
 /**
  * A message informing about a whisper being received from another user.
  */
-export default class PubSubWhisperMessage {
-	@NonEnumerable private readonly _twitchClient: TwitchClient;
+@rtfm<PubSubWhisperMessage>('twitch-pubsub-client', 'PubSubWhisperMessage', 'senderId')
+export class PubSubWhisperMessage {
+	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _data: PubSubWhisperMessageData;
 
 	/** @private */
-	constructor(private readonly _data: PubSubWhisperMessageData, twitchClient: TwitchClient) {
-		this._twitchClient = twitchClient;
+	constructor(data: PubSubWhisperMessageData, apiClient: ApiClient) {
+		this._data = data;
+		this._apiClient = apiClient;
 	}
 
 	/**
 	 * The message text.
 	 */
-	get text() {
+	get text(): string {
 		return this._data.data_object.body;
 	}
 
 	/**
 	 * The ID of the user who sent the whisper.
 	 */
-	get senderId() {
+	get senderId(): string {
 		return this._data.data_object.from_id.toString();
 	}
 
 	/**
 	 * The name of the user who sent the whisper.
 	 */
-	get senderName() {
+	get senderName(): string {
 		return this._data.data_object.tags.login;
 	}
 
 	/**
 	 * The display name of the user who sent the whisper.
 	 */
-	get senderDisplayName() {
+	get senderDisplayName(): string {
 		return this._data.data_object.tags.display_name;
 	}
 
 	/**
 	 * Retrieves more data about the user who sent the whisper.
+	 *
+	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
-	async getSender() {
-		return this._twitchClient.helix.users.getUserById(this._data.data_object.from_id.toString());
+	async getSender(): Promise<HelixUser | null> {
+		return this._apiClient.helix.users.getUserById(this._data.data_object.from_id.toString());
 	}
 }

@@ -1,8 +1,9 @@
-import { Message, MessageParam, MessageParamDefinition, MessageType } from 'ircv3';
+import type { MessageParam } from 'ircv3';
+import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 
 /** @private */
 @MessageType('CLEARCHAT')
-export default class ClearChat extends Message<ClearChat> {
+export class ClearChat extends Message<ClearChat> {
 	@MessageParamDefinition({
 		type: 'channel'
 	})

@@ -1,10 +1,15 @@
-import { Connection, WebSocketConnection } from '@d-fischer/connection';
-import Logger, { LogLevel } from '@d-fischer/logger';
-import { NonEnumerable, ResolvableValue } from '@d-fischer/shared-utils';
-import { EventEmitter, Listener } from '@d-fischer/typed-event-emitter';
-import TwitchClient, { AuthProvider, HellFreezesOverError, InvalidTokenError } from 'twitch';
-import { PubSubMessageData } from './Messages/PubSubMessage';
-import { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
+import type { Connection } from '@d-fischer/connection';
+import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
+import { Logger, LogLevel } from '@d-fischer/logger';
+import type { ResolvableValue } from '@d-fischer/shared-utils';
+import { Enumerable } from '@d-fischer/shared-utils';
+import type { Listener } from '@d-fischer/typed-event-emitter';
+import { EventEmitter } from '@d-fischer/typed-event-emitter';
+import type { AuthProvider } from 'twitch-auth';
+import { getValidTokenFromProvider } from 'twitch-auth';
+import { HellFreezesOverError, rtfm } from 'twitch-common';
+import type { PubSubMessageData } from './Messages/PubSubMessage';
+import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
 interface NullTokenResolvable {
 	type: 'null';
@@ -31,21 +36,19 @@ type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTok
 /**
  * A client for the Twitch PubSub interface.
  */
-export default class BasicPubSubClient extends EventEmitter {
-	@NonEnumerable private readonly _logger: Logger;
+@rtfm('twitch-pubsub-client', 'BasicPubSubClient')
+export class BasicPubSubClient extends EventEmitter {
+	@Enumerable(false) private readonly _logger: Logger;
 
 	// topic => token
-	@NonEnumerable private readonly _topics = new Map<string, TokenResolvable>();
+	@Enumerable(false) private readonly _topics = new Map<string, TokenResolvable>();
 
-	private _connection?: Connection;
+	private readonly _connection: Connection;
 
-	private _pingOnInactivity: number = 60;
-	private _pingTimeout: number = 60;
+	private readonly _pingOnInactivity: number = 60;
+	private readonly _pingTimeout: number = 60;
 	private _pingCheckTimer?: NodeJS.Timer;
 	private _pingTimeoutTimer?: NodeJS.Timer;
-
-	private _retryDelayGenerator?: IterableIterator<number>;
-	private _retryTimer?: NodeJS.Timer;
 
 	private readonly _onPong: (handler: () => void) => Listener = this.registerEvent();
 	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener = this.registerEvent();
@@ -94,7 +97,49 @@ export default class BasicPubSubClient extends EventEmitter {
 		super();
 		this._logger = new Logger({
 			name: 'twitch-pubsub-client',
+			emoji: true,
 			minLevel: logLevel
+		});
+
+		this._connection = new PersistentConnection(
+			WebSocketConnection,
+			{ hostName: 'pubsub-edge.twitch.tv', port: 443, secure: true },
+			{ logger: this._logger }
+		);
+
+		this._connection.onConnect(async () => {
+			this._logger.info('Connection established');
+			await this._resendListens();
+			if (this._topics.size) {
+				this._logger.info('Listened to previously registered topics');
+				this._logger.debug(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
+			}
+			this._startPingCheckTimer();
+			this.emit(this.onConnect);
+		});
+
+		this._connection.onReceive((line: string) => {
+			this._receiveMessage(line);
+			this._startPingCheckTimer();
+		});
+
+		this._connection.onDisconnect((manually: boolean, reason?: Error) => {
+			if (this._pingCheckTimer) {
+				clearTimeout(this._pingCheckTimer);
+			}
+			if (this._pingTimeoutTimer) {
+				clearTimeout(this._pingTimeoutTimer);
+			}
+			if (manually) {
+				this._logger.info('Disconnected');
+			} else {
+				if (reason) {
+					this._logger.err(`Disconnected unexpectedly: ${reason.message}`);
+				} else {
+					this._logger.err('Disconnected unexpectedly');
+				}
+			}
+			this.emit(this.onDisconnect, manually, reason);
 		});
 	}
 
@@ -102,19 +147,19 @@ export default class BasicPubSubClient extends EventEmitter {
 	 * Listens to one or more topics.
 	 *
 	 * @param topics A topic or a list of topics to listen to.
-	 * @param resolvable An access token, and AuthProvider or a function that returns a token. Only necessary for some topics.
+	 * @param tokenResolvable An access token, an AuthProvider or a function that returns a token.
 	 * @param scope The scope necessary for the topic(s).
 	 */
 	async listen(
 		topics: string | string[],
-		resolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
+		tokenResolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
 		scope?: string
-	) {
+	): Promise<void> {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
 
-		const wrapped = this._wrapResolvable(resolvable, scope);
+		const wrapped = BasicPubSubClient._wrapResolvable(tokenResolvable, scope);
 		for (const topic of topics) {
 			this._topics.set(topic, wrapped);
 		}
@@ -129,7 +174,7 @@ export default class BasicPubSubClient extends EventEmitter {
 	 *
 	 * @param topics A topic or a list of topics to not listen to anymore.
 	 */
-	async unlisten(topics: string | string[]) {
+	async unlisten(topics: string | string[]): Promise<void> {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
@@ -146,82 +191,46 @@ export default class BasicPubSubClient extends EventEmitter {
 	/**
 	 * Connects to the PubSub interface.
 	 */
-	async connect() {
-		if (!this._connection?.isConnected && !this._connection?.isConnecting) {
-			this.setupConnection();
+	async connect(): Promise<void> {
+		if (!this._connection.isConnected && !this._connection.isConnecting) {
 			this._logger.info('Connecting...');
-			await this._connection!.connect();
+			await this._connection.connect();
 		}
-	}
-
-	setupConnection() {
-		this._connection = new WebSocketConnection({ hostName: 'pubsub-edge.twitch.tv', secure: true });
-
-		this._connection.on('connect', async () => {
-			this._retryDelayGenerator = undefined;
-			this._logger.info('Connection established');
-			await this._resendListens();
-			if (this._topics.size) {
-				this._logger.info('Listened to previously registered topics');
-				this._logger.debug2(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
-			}
-			this._startPingCheckTimer();
-			this.emit(this.onConnect);
-		});
-
-		this._connection.on('receive', (line: string) => {
-			this._receiveMessage(line);
-			this._startPingCheckTimer();
-		});
-
-		this._connection.on('disconnect', (manually: boolean, reason?: Error) => {
-			if (this._pingCheckTimer) {
-				clearTimeout(this._pingCheckTimer);
-			}
-			if (this._pingTimeoutTimer) {
-				clearTimeout(this._pingTimeoutTimer);
-			}
-			if (manually) {
-				this._logger.info('Disconnected successfully');
-			} else {
-				if (reason) {
-					this._logger.err(`Disconnected unexpectedly: ${reason.message}`);
-				} else {
-					this._logger.err('Disconnected unexpectedly');
-				}
-			}
-			this.emit(this.onDisconnect, manually, reason);
-			this._connection = undefined;
-			if (!manually) {
-				if (!this._retryDelayGenerator) {
-					this._retryDelayGenerator = BasicPubSubClient._getReconnectWaitTime();
-				}
-				const delay = this._retryDelayGenerator.next().value;
-				this._logger.info(`Reconnecting in ${delay} seconds`);
-				this._retryTimer = setTimeout(async () => this.connect(), delay * 1000);
-			}
-		});
 	}
 
 	/**
 	 * Disconnects from the PubSub interface.
 	 */
-	disconnect() {
+	async disconnect(): Promise<void> {
 		this._logger.info('Disconnecting...');
-		if (this._retryTimer) {
-			clearInterval(this._retryTimer);
-		}
-		this._retryDelayGenerator = undefined;
-		this._connection?.disconnect();
-		this._connection = undefined;
+		return this._connection.disconnect();
 	}
 
 	/**
 	 * Reconnects to the PubSub interface.
 	 */
-	async reconnect() {
-		this.disconnect();
-		await this.connect();
+	async reconnect(): Promise<void> {
+		await this.disconnect();
+		return this.connect();
+	}
+
+	/**
+	 * Checks whether the client is currently connecting to the server.
+	 */
+	get isConnecting(): boolean {
+		return this._connection.isConnecting;
+	}
+
+	/**
+	 * Checks whether the client is currently connected to the server.
+	 */
+	get isConnected(): boolean {
+		return this._connection.isConnected;
+	}
+
+	/** @private */
+	get hasAnyTopics(): boolean {
+		return this._topics.size > 0;
 	}
 
 	private async _sendListen(topics: string[], accessToken?: string) {
@@ -243,7 +252,7 @@ export default class BasicPubSubClient extends EventEmitter {
 		});
 	}
 
-	private _wrapResolvable(
+	private static _wrapResolvable(
 		resolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
 		scope?: string
 	): TokenResolvable {
@@ -290,44 +299,8 @@ export default class BasicPubSubClient extends EventEmitter {
 		switch (resolvable.type) {
 			case 'provider': {
 				const { provider, scopes } = resolvable;
-				let lastTokenError: InvalidTokenError | undefined = undefined;
-
-				try {
-					const accessToken = await provider.getAccessToken(scopes);
-					if (accessToken) {
-						// check validity
-						await TwitchClient.getTokenInfo(accessToken.accessToken);
-						return accessToken.accessToken;
-					}
-				} catch (e) {
-					if (e instanceof InvalidTokenError) {
-						lastTokenError = e;
-					} else {
-						this._logger.err(`Retrieving an access token failed: ${e.message}`);
-					}
-				}
-
-				this._logger.warning('No valid token available; trying to refresh');
-
-				if (provider.refresh) {
-					try {
-						const newToken = await provider.refresh();
-
-						if (newToken) {
-							// check validity
-							await TwitchClient.getTokenInfo(newToken.accessToken);
-							return newToken.accessToken;
-						}
-					} catch (e) {
-						if (e instanceof InvalidTokenError) {
-							lastTokenError = e;
-						} else {
-							this._logger.err(`Refreshing the access token failed: ${e.message}`);
-						}
-					}
-				}
-
-				throw lastTokenError || new Error('Could not retrieve a valid token');
+				const { accessToken } = await getValidTokenFromProvider(provider, scopes, this._logger);
+				return accessToken.accessToken;
 			}
 			case 'function': {
 				return resolvable.function();
@@ -371,9 +344,7 @@ export default class BasicPubSubClient extends EventEmitter {
 
 	private async _sendNonced<T extends PubSubNoncedOutgoingPacket>(packet: T) {
 		return new Promise<void>((resolve, reject) => {
-			const nonce = Math.random()
-				.toString(16)
-				.slice(2);
+			const nonce = Math.random().toString(16).slice(2);
 
 			this._onResponse((recvNonce, error) => {
 				if (recvNonce === nonce) {
@@ -392,8 +363,8 @@ export default class BasicPubSubClient extends EventEmitter {
 	}
 
 	private _receiveMessage(dataStr: string) {
-		this._logger.debug2(`Received message: ${dataStr}`);
-		const data: PubSubIncomingPacket = JSON.parse(dataStr);
+		this._logger.debug(`Received message: ${dataStr}`);
+		const data = JSON.parse(dataStr) as PubSubIncomingPacket;
 
 		switch (data.type) {
 			case 'PONG': {
@@ -401,8 +372,7 @@ export default class BasicPubSubClient extends EventEmitter {
 				break;
 			}
 			case 'RECONNECT': {
-				// tslint:disable-next-line:no-floating-promises
-				this.reconnect();
+				void this.reconnect();
 				break;
 			}
 			case 'RESPONSE': {
@@ -423,9 +393,8 @@ export default class BasicPubSubClient extends EventEmitter {
 
 	private _sendPacket(data: PubSubOutgoingPacket) {
 		const dataStr = JSON.stringify(data);
-		this._logger.debug2(`Sending message: ${dataStr}`);
-
-		this._connection?.sendLine(dataStr);
+		this._logger.debug(`Sending message: ${dataStr}`);
+		this._connection.sendLine(dataStr);
 	}
 
 	private _pingCheck() {
@@ -433,7 +402,7 @@ export default class BasicPubSubClient extends EventEmitter {
 		const pongListener = this._onPong(() => {
 			const latency = Date.now() - pingTime;
 			this.emit(this.onPong, latency, pingTime);
-			this._logger.debug1(`Current latency: ${latency}ms`);
+			this._logger.info(`Current latency: ${latency}ms`);
 			if (this._pingTimeoutTimer) {
 				clearTimeout(this._pingTimeoutTimer);
 			}
@@ -447,39 +416,10 @@ export default class BasicPubSubClient extends EventEmitter {
 		this._sendPacket({ type: 'PING' });
 	}
 
-	/**
-	 * Checks whether the client is currently connecting to the server.
-	 */
-	protected get isConnecting() {
-		return this._connection ? this._connection.isConnecting : false;
-	}
-
-	/**
-	 * Checks whether the client is currently connected to the server.
-	 */
-	protected get isConnected() {
-		return this._connection ? this._connection.isConnected : false;
-	}
-
 	private _startPingCheckTimer() {
 		if (this._pingCheckTimer) {
 			clearInterval(this._pingCheckTimer);
 		}
 		this._pingCheckTimer = setInterval(() => this._pingCheck(), this._pingOnInactivity * 1000);
-	}
-
-	// yes, this is just fibonacci with a limit
-	private static *_getReconnectWaitTime(): IterableIterator<number> {
-		let current = 0;
-		let next = 1;
-
-		while (current < 120) {
-			yield current;
-			[current, next] = [next, current + next];
-		}
-
-		while (true) {
-			yield 120;
-		}
 	}
 }

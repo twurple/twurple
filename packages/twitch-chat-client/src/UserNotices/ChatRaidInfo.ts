@@ -1,7 +1,7 @@
 /**
  * Information about a raid.
  */
-export default interface ChatRaidInfo {
+export interface ChatRaidInfo {
 	/**
 	 * The display name of the raider.
 	 */

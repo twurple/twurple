@@ -1,5 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../User/HelixUser';
 
 /** @private */
 export interface HelixSubscriptionData {
@@ -16,68 +18,70 @@ export interface HelixSubscriptionData {
 /**
  * A (paid) subscription of a user to a broadcaster.
  */
-export default class HelixSubscription {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm<HelixSubscription>('twitch', 'HelixSubscription', 'userId')
+export class HelixSubscription {
+	@Enumerable(false) private readonly _data: HelixSubscriptionData;
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: HelixSubscriptionData, client: TwitchClient) {
+	constructor(data: HelixSubscriptionData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/**
 	 * The user ID of the broadcaster.
 	 */
-	get broadcasterId() {
+	get broadcasterId(): string {
 		return this._data.broadcaster_id;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
-	get broadcasterDisplayName() {
+	get broadcasterDisplayName(): string {
 		return this._data.broadcaster_name;
 	}
 
 	/**
 	 * Retrieves more data about the broadcaster.
 	 */
-	async getBroadcaster() {
+	async getBroadcaster(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this.broadcasterId);
 	}
 
 	/**
 	 * Whether the subscription has been gifted by another user.
 	 */
-	get isGift() {
+	get isGift(): boolean {
 		return this._data.is_gift;
 	}
 
 	/**
 	 * The tier of the subscription.
 	 */
-	get tier() {
+	get tier(): string {
 		return this._data.tier;
 	}
 
 	/**
 	 * The user ID of the subscribed user.
 	 */
-	get userId() {
+	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
 	 * The display name of the subscribed user.
 	 */
-	get userDisplayName() {
+	get userDisplayName(): string {
 		return this._data.user_name;
 	}
 
 	/**
 	 * Retrieves more data about the subscribed user.
 	 */
-	async getUser() {
+	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this.userId);
 	}
 }

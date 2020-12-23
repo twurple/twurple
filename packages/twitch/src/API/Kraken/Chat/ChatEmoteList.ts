@@ -1,27 +1,28 @@
 import { Cacheable, Cached, CachedGetter } from '@d-fischer/cache-decorators';
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
-import ChatEmote, { ChatEmoteData } from './ChatEmote';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ChatEmoteData } from './ChatEmote';
+import { ChatEmote } from './ChatEmote';
 
 /**
  * A list of emotes.
  */
 @Cacheable
-export default class ChatEmoteList {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm('twitch', 'ChatEmoteList')
+export class ChatEmoteList {
+	@Enumerable(false) private readonly _data: ChatEmoteData[];
 
 	/** @private */
-	constructor(private readonly _data: ChatEmoteData[], client: TwitchClient) {
-		this._client = client;
+	constructor(data: ChatEmoteData[]) {
+		this._data = data;
 	}
 
 	/**
 	 * A list of all emotes in the list.
 	 */
 	@CachedGetter()
-	get emotes() {
-		return this._data.map(emote => new ChatEmote(emote, this._client));
+	get emotes(): ChatEmote[] {
+		return this._data.map(emote => new ChatEmote(emote));
 	}
 
 	/**
@@ -30,10 +31,8 @@ export default class ChatEmoteList {
 	 * @param setId
 	 */
 	@Cached()
-	getAllFromSet(setId: number) {
-		return this._data
-			.filter(emote => emote.emoticon_set === setId)
-			.map(emote => new ChatEmote(emote, this._client));
+	getAllFromSet(setId: number): ChatEmote[] {
+		return this._data.filter(emote => emote.emoticon_set === setId).map(emote => new ChatEmote(emote));
 	}
 
 	/**
@@ -42,9 +41,9 @@ export default class ChatEmoteList {
 	 * @param id
 	 */
 	@Cached()
-	getById(id: number) {
+	getById(id: number): ChatEmote | null {
 		const data = this._data.find(emote => emote.id === id);
 
-		return data ? new ChatEmote(data, this._client) : null;
+		return data ? new ChatEmote(data) : null;
 	}
 }

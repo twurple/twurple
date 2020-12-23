@@ -1,36 +1,39 @@
-import { HelixFollow, HelixResponse } from 'twitch';
-import { HelixFollowData } from 'twitch/lib/API/Helix/User/HelixFollow';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import type { HelixFollowData, HelixResponse } from 'twitch';
+import { HelixFollow } from 'twitch';
+import { rtfm } from 'twitch-common';
+import type { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
-export default class FollowsToUserSubscription extends Subscription<HelixFollow> {
-	/** @private */
+@rtfm<FollowsToUserSubscription>('twitch-webhooks', 'FollowsToUserSubscription', 'id')
+export class FollowsToUserSubscription extends Subscription<HelixFollow> {
 	constructor(
-		private readonly _userId: string,
 		handler: (data: HelixFollow) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _userId: string
 	) {
 		super(handler, client, validityInSeconds);
 	}
 
-	get id() {
+	get id(): string {
 		return `follows.to.${this._userId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixFollowData>) {
-		return new HelixFollow(response.data[0], this._client._twitchClient);
+	protected transformData(response: HelixResponse<HelixFollowData>): HelixFollow {
+		return new HelixFollow(response.data[0], this._client._apiClient);
 	}
 
-	protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToUserFollowsTo(this._userId, this._options);
+	protected async _subscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.subscribeToUserFollowsTo(this._userId, await this._getOptions());
 	}
 
-	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromUserFollowsTo(this._userId, this._options);
+	protected async _unsubscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.unsubscribeFromUserFollowsTo(
+			this._userId,
+			await this._getOptions()
+		);
 	}
 }

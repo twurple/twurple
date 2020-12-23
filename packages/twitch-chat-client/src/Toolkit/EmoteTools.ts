@@ -1,5 +1,8 @@
+/// <reference lib="esnext.array" />
+
 import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
-import { CheermoteDisplayInfo, ChatEmote } from 'twitch';
+import type { CheermoteDisplayInfo } from 'twitch';
+import { ChatEmote } from 'twitch';
 
 export interface ParsedMessageTextPart {
 	type: 'text';
@@ -31,19 +34,25 @@ export type ParsedMessagePart = ParsedMessageTextPart | ParsedMessageCheerPart |
 /** @private */
 export function parseEmoteOffsets(emotes?: string): Map<string, string[]> {
 	if (!emotes) {
-		return new Map();
+		return new Map<string, string[]>();
 	}
 
 	return new Map(
-		emotes.split('/').map(emote => {
-			const [emoteId, placements] = emote.split(':', 2);
-			return [emoteId, placements.split(',')] as [string, string[]];
-		})
+		emotes
+			.split('/')
+			.map(emote => {
+				const [emoteId, placements] = emote.split(':', 2);
+				if (!placements) {
+					return null;
+				}
+				return [emoteId, placements.split(',')] as [string, string[]];
+			})
+			.filter((e): e is [string, string[]] => e !== null)
 	);
 }
 
 /** @private */
-export function parseEmotePositions(message: string, emoteOffsets: Map<string, string[]>) {
+export function parseEmotePositions(message: string, emoteOffsets: Map<string, string[]>): ParsedMessageEmotePart[] {
 	return [...emoteOffsets.entries()]
 		.flatMap(([emote, placements]) =>
 			placements.map(
@@ -62,7 +71,7 @@ export function parseEmotePositions(message: string, emoteOffsets: Map<string, s
 						displayInfo: new ChatEmote({
 							code: name,
 							id: parseInt(emote, 10),
-							emoticon_set: -1 // eslint-disable-line @typescript-eslint/camelcase
+							emoticon_set: -1
 						})
 					};
 				}

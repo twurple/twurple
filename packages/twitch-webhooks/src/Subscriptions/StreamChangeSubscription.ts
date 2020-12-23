@@ -1,39 +1,40 @@
-import { HelixResponse, HelixStream } from 'twitch';
-import { HelixStreamData } from 'twitch/lib/API/Helix/Stream/HelixStream';
-import WebHookListener from '../WebHookListener';
-import Subscription from './Subscription';
+import type { HelixResponse, HelixStreamData } from 'twitch';
+import { HelixStream } from 'twitch';
+import type { WebHookListener } from '../WebHookListener';
+import { Subscription } from './Subscription';
 
 /**
- * @inheritDoc
- * @hideProtected
+ * @private
  */
-export default class StreamChangeSubscription extends Subscription<HelixStream | undefined> {
-	/** @private */
+export class StreamChangeSubscription extends Subscription<HelixStream | undefined> {
 	constructor(
-		private readonly _userId: string,
-		handler: (data: HelixStream) => void,
+		handler: (data: HelixStream | undefined) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000
+		validityInSeconds = 100000,
+		private readonly _userId: string
 	) {
 		super(handler, client, validityInSeconds);
 	}
 
-	get id() {
+	get id(): string {
 		return `stream.change.${this._userId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixStreamData>) {
+	protected transformData(response: HelixResponse<HelixStreamData>): HelixStream | undefined {
 		if (!response.data.length) {
 			return undefined;
 		}
-		return new HelixStream(response.data[0], this._client._twitchClient);
+		return new HelixStream(response.data[0], this._client._apiClient);
 	}
 
-	protected async _subscribe() {
-		return this._client._twitchClient.helix.webHooks.subscribeToStreamChanges(this._userId, this._options);
+	protected async _subscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.subscribeToStreamChanges(this._userId, await this._getOptions());
 	}
 
-	protected async _unsubscribe() {
-		return this._client._twitchClient.helix.webHooks.unsubscribeFromStreamChanges(this._userId, this._options);
+	protected async _unsubscribe(): Promise<void> {
+		return this._client._apiClient.helix.webHooks.unsubscribeFromStreamChanges(
+			this._userId,
+			await this._getOptions()
+		);
 	}
 }

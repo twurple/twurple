@@ -1,5 +1,7 @@
-import { NonEnumerable } from '@d-fischer/shared-utils';
-import TwitchClient from '../../../TwitchClient';
+import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
+import type { User } from '../User/User';
 
 /** @private */
 export interface TeamData {
@@ -17,79 +19,81 @@ export interface TeamData {
 /**
  * A Twitch team.
  */
-export default class Team {
-	/** @private */
-	@NonEnumerable protected readonly _client: TwitchClient;
+@rtfm<Team>('twitch', 'Team', 'id')
+export class Team {
+	/** @private */ @Enumerable(false) protected readonly _data: TeamData;
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(/** @private */ protected _data: TeamData, client: TwitchClient) {
+	constructor(data: TeamData, client: ApiClient) {
+		this._data = data;
 		this._client = client;
 	}
 
 	/**
 	 * The ID of the team.
 	 */
-	get id() {
+	get id(): string {
 		return this._data._id;
 	}
 
 	/**
 	 * The background url of the team.
 	 */
-	get background() {
+	get background(): string {
 		return this._data.background;
 	}
 
 	/**
 	 * The banner url of the team.
 	 */
-	get banner() {
+	get banner(): string {
 		return this._data.banner;
 	}
 
 	/**
 	 * The date when the team was created.
 	 */
-	get creationDate() {
+	get creationDate(): Date {
 		return new Date(this._data.created_at);
 	}
 
 	/**
 	 * The last date when the team changed anything.
 	 */
-	get updateDate() {
+	get updateDate(): Date {
 		return new Date(this._data.updated_at);
 	}
 
 	/**
 	 * The name of the team.
 	 */
-	get name() {
+	get name(): string {
 		return this._data.name;
 	}
 
 	/**
 	 * The info of the team.
 	 */
-	get info() {
+	get info(): string {
 		return this._data.info;
 	}
 
 	/**
 	 * The display name of the team.
 	 */
-	get displayName() {
+	get displayName(): string {
 		return this._data.display_name;
 	}
 
 	/**
 	 * The URL to the profile picture of the team.
 	 */
-	get logoUrl() {
+	get logoUrl(): string {
 		return this._data.logo;
 	}
 
-	async getUsers() {
+	async getUsers(): Promise<User[]> {
 		const team = await this._client.kraken.teams.getTeamByName(this.name);
 		return team.getUsers();
 	}

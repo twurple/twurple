@@ -1,12 +1,26 @@
-First, you have to create an instance of the core Twitch client, as outlined in [its own documentation](/twitch/docs/basic-usage/creating-instance).
+First, you have to create an instance of any authentication provider. This example uses app credentials,
+but if you need other types of authentication, check out the [twitch-auth documentation](/twitch-auth).
 
-Then, you create a new {@WebHookListener} instance using the core client:
+Then, you create a new {@ApiClient}, and using that, a {@WebHookListener} instance:
 
-```typescript
-import WebHookListener from 'twitch-webhooks';
+```ts twoslash
+// @module: esnext
+// @target: ES2017
+import { ApiClient } from 'twitch';
+import { ClientCredentialsAuthProvider } from 'twitch-auth';
+import { SimpleAdapter, WebHookListener } from 'twitch-webhooks';
 
-const listener = await WebHookListener.create(twitchClient, {port: 8090});
-listener.listen();
+const clientId = 'YOUR_CLIENT_ID';
+const clientSecret = 'YOUR_CLIENT_SECRET';
+
+const authProvider = new ClientCredentialsAuthProvider(clientId, clientSecret);
+const apiClient = new ApiClient({ authProvider });
+
+const listener = new WebHookListener(apiClient, new SimpleAdapter({
+    hostName: 'example.com',
+    listenerPort: 8090
+}));
+await listener.listen();
 ```
 
 Please note that the port you supply needs to be **available from the outside**.
@@ -15,22 +29,42 @@ A very helpful tool for that is [ngrok](/twitch-webhooks/docs/special-hosting/ng
 
 When your listener is set up, you can subscribe to all supported events using this listener:
 
-```typescript
+```ts twoslash
+// @module: esnext
+// @target: ES2017
+import { ApiClient } from 'twitch';
+import { WebHookListener } from 'twitch-webhooks';
+declare const apiClient: ApiClient;
+declare const listener: WebHookListener
+// lib stub until @lib is fixed
+declare const console: {
+    log: (...args: any[]) => void;
+}
+// also silence TS complaining about Promise not existing (even a stub doesn't work)
+// @errors: 2697
+// ---cut---
 import { HelixStream } from 'twitch';
+    
+const userId = 'YOUR_USER_ID';
+// we need to track the previous status of the stream because there are other state changes than the live/offline switch
+let prevStream = await apiClient.helix.streams.getStreamByUserId(userId);
 
 const subscription = await listener.subscribeToStreamChanges(userId, async (stream?: HelixStream) => {
-	if (stream) {
-		console.log(`${stream.userDisplayName} just went live with title: ${stream.title}`);
-	} else {
-		// no stream, no display name
-		const user = await twitchClient.helix.users.getUserById(userId);
-		console.log(`${user.displayName} just went offline`);
-	}
+    if (stream) {
+        if (!prevStream) {
+            console.log(`${stream.userDisplayName} just went live with title: ${stream.title}`);
+        }
+    } else {
+        // no stream, no display name
+        const user = await apiClient.helix.users.getUserById(userId);
+        console.log(`${user.displayName} just went offline`);
+    }
+    prevStream = stream;
 });
 ```
 
 When you don't want to listen to a particular event anymore, you just stop its subscription:
 
 ```typescript
-subscription.stop();
+await subscription.stop();
 ```
