@@ -1627,6 +1627,11 @@
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.6.tgz#a9ca4b70a18b270ccb2bc0aaafefd1d486b7ea74"
   integrity sha512-W+bw9ds02rAQaMvaLYxAbJ6cvguW/iJXNT6lTssS1ps6QdrMKttqEAMEG/b5CR8TZl3/L7/lH0ZV5nNR1LXikA==
 
+"@types/tmi.js@^1.4.2":
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/@types/tmi.js/-/tmi.js-1.4.2.tgz#0eeecb2665d60ccfe7cec9755c905d3022456975"
+  integrity sha512-EqIctOMPIleqMAnXeCPe7QYt4/kwKQJWxgi6/PbXxVL+Z1w+Ow64QuAahgCDt82XPtnn8fmjJ77XKsiFiLvooQ==
+
 "@types/tmp@^0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@types/tmp/-/tmp-0.2.0.tgz#e3f52b4d7397eaa9193592ef3fdd44dc0af4298c"
@@ -9363,6 +9368,14 @@ tiny-warning@^1.0.0, tiny-warning@^1.0.2, tiny-warning@^1.0.3:
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
 
+tmi.js@^1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/tmi.js/-/tmi.js-1.7.0.tgz#6ad8c073447f675fb43ffebebaa18319332f04cc"
+  integrity sha512-om8YxnUHiNW2xDYuQkc+jgnoIEuaf9MGAceX4NMw02nxV5GFxaw23gTWlOe19LROGbnET+wYjlcuyoLaFcaWgw==
+  dependencies:
+    node-fetch "2.6.1"
+    ws "7.4.0"
+
 tmp-promise@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/tmp-promise/-/tmp-promise-3.0.2.tgz#6e933782abff8b00c3119d63589ca1fb9caaa62a"
@@ -10110,6 +10123,11 @@ write-pkg@^3.1.0:
   dependencies:
     sort-keys "^2.0.0"
     write-json-file "^2.2.0"
+
+ws@7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.0.tgz#a5dd76a24197940d4a8bb9e0e152bb4503764da7"
+  integrity sha512-kyFwXuV/5ymf+IXhS6f0+eAFvydbaBW3zjpT6hUdAh/hbVjTIB5EHBGi0bPoCLSK2wcuz3BrEkB9LrYv1Nm4NQ==
 
 ws@^7.3.1:
   version "7.4.1"
