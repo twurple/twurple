@@ -219,6 +219,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Naeviant",
+      "name": "Sam Hirst",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/45145746?v=4",
+      "profile": "https://hirst.xyz",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
