@@ -1661,6 +1661,11 @@ export class ChatClient extends IrcClient {
 	 * @param minFollowTime The time (in minutes) a user needs to be following before being able to send messages.
 	 */
 	async enableFollowersOnly(channel: string, minFollowTime: number = 0): Promise<void> {
+		if (!Number.isInteger(minFollowTime) || minFollowTime < 0 || minFollowTime > 129600) {
+			throw new Error(
+				`Invalid minimum follow time: ${minFollowTime}. It must be an integer between 0 and 129600.`
+			);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
@@ -1816,6 +1821,11 @@ export class ChatClient extends IrcClient {
 	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
 	 */
 	async enableSlow(channel: string, delayBetweenMessages: number = 30): Promise<void> {
+		if (!Number.isInteger(delayBetweenMessages) || delayBetweenMessages < 1 || delayBetweenMessages > 1800) {
+			throw new Error(
+				`Invalid delay between messages: ${delayBetweenMessages}. It must be an integer between 1 and 1800.`
+			);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSlowResult((_channel, _delay, error) => {
@@ -1907,6 +1917,9 @@ export class ChatClient extends IrcClient {
 	 * @param reason
 	 */
 	async timeout(channel: string, user: string, duration: number = 60, reason: string = ''): Promise<void> {
+		if (!Number.isInteger(duration) || duration < 1 || duration > 1209600) {
+			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
