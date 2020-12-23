@@ -1,7 +1,22 @@
-import type { HelixUser } from '../API/Helix/User/HelixUser';
-import type { Channel } from '../API/Kraken/Channel/Channel';
-import type { ChannelPlaceholder } from '../API/Kraken/Channel/ChannelPlaceholder';
-import type { User } from '../API/Kraken/User/User';
+/**
+ * A type that represents a user and contains a user ID.
+ */
+export interface UserIdResolvableType {
+	/**
+	 * The ID of the user.
+	 */
+	id: string;
+}
+
+/**
+ * A type that represents a user and contains a user name.
+ */
+export interface UserNameResolveableType {
+	/**
+	 * The name of the user.
+	 */
+	name: string;
+}
 
 /**
  * A user ID or a user or channel object.
@@ -9,12 +24,12 @@ import type { User } from '../API/Kraken/User/User';
  * This is not a user name.
  * Please use {@HelixUserApi#getUserByName} to fetch a user object by name.
  */
-export type UserIdResolvable = string | number | User | ChannelPlaceholder | HelixUser;
+export type UserIdResolvable = string | number | UserIdResolvableType;
 
 /**
  * A user name or a user or channel object.
  */
-export type UserNameResolvable = string | User | Channel | HelixUser;
+export type UserNameResolvable = string | UserNameResolveableType;
 
 /**
  * Extracts the user ID from an argument that is possibly an object containing that ID.

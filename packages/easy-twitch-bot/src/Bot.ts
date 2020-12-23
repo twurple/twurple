@@ -1,6 +1,6 @@
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import type { AuthProvider } from 'twitch';
 import { ApiClient } from 'twitch';
+import type { AuthProvider } from 'twitch-auth';
 import { getTokenInfo, StaticAuthProvider } from 'twitch-auth';
 import type { PrivateMessage } from 'twitch-chat-client';
 import { ChatClient, LogLevel } from 'twitch-chat-client';

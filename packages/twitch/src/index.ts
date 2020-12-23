@@ -134,12 +134,8 @@ export { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Share
 export type { CheermoteDisplayInfo } from './API/Shared/BaseCheermoteList';
 
 export { ConfigError } from './Errors/ConfigError';
-export { HellFreezesOverError } from './Errors/HellFreezesOverError';
 export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
 export { StreamNotLiveError } from './Errors/StreamNotLiveError';
-
-export { extractUserId, extractUserName } from './Toolkit/UserTools';
-export type { UserIdResolvable, UserNameResolvable } from './Toolkit/UserTools';
 
 /** @deprecated Import this from `twitch-api-call` instead. */
 export { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
@@ -162,4 +158,12 @@ export {
 	RefreshableAuthProvider,
 	TokenInfo
 } from 'twitch-auth';
+/** @deprecated Import this from `twitch-auth` instead. */
 export type { AuthProvider, AuthProviderTokenType, RefreshConfig } from 'twitch-auth';
+
+/** @deprecated Import this from `twitch-common` instead. */
+export { HellFreezesOverError } from 'twitch-common';
+/** @deprecated Import this from `twitch-common` instead. */
+export { extractUserId, extractUserName } from 'twitch-common';
+/** @deprecated Import this from `twitch-common` instead. */
+export type { UserIdResolvable, UserNameResolvable } from 'twitch-common';

@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import type { UserIdResolvable, UserIdResolvableType } from 'twitch-common';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import type { CheermoteList } from '../Bits/CheermoteList';
 import type { Stream } from '../Stream/Stream';
 import type { Channel } from './Channel';
@@ -21,7 +21,7 @@ export interface ChannelPlaceholderData {
  * This can do anything you can do with only a channel ID, as it's equivalent to the user ID.
  */
 @rtfm<ChannelPlaceholder>('twitch', 'ChannelPlaceholder', 'id')
-export class ChannelPlaceholder {
+export class ChannelPlaceholder implements UserIdResolvableType {
 	/** @private */ @Enumerable(false) protected readonly _data: ChannelPlaceholderData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 

@@ -1,11 +1,10 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { extractUserId } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
-import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
+import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponse } from '../HelixResponse';

@@ -1,8 +1,9 @@
 import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, UserIdResolvable } from 'twitch';
-import { extractUserId, InvalidTokenError } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { ApiClient } from 'twitch';
+import { InvalidTokenError } from 'twitch';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import type { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
 import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';

@@ -12,11 +12,10 @@ import type {
 	HelixModeratorEvent,
 	HelixStream,
 	HelixSubscriptionEvent,
-	HelixUser,
-	UserIdResolvable
+	HelixUser
 } from 'twitch';
-import { extractUserId } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { WebHookListenerConfig } from './Adapters/LegacyAdapter';
 import { LegacyAdapter } from './Adapters/LegacyAdapter';

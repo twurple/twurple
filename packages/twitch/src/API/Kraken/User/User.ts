@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import type { UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from 'twitch-common';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import type { Channel } from '../Channel/Channel';
 import { ChannelPlaceholder } from '../Channel/ChannelPlaceholder';
 import type { EmoteSetList } from '../Channel/EmoteSetList';
@@ -26,7 +26,7 @@ export interface UserData {
  * A Twitch user.
  */
 @rtfm<User>('twitch', 'User', 'id')
-export class User {
+export class User implements UserIdResolvableType, UserNameResolveableType {
 	/** @private */ @Enumerable(false) protected readonly _data: UserData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 

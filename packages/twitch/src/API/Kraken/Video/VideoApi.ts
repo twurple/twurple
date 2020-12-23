@@ -1,7 +1,6 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { extractUserId } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import type { CreatedVideoData } from './CreatedVideo';
 import { CreatedVideo } from './CreatedVideo';
