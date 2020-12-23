@@ -8,6 +8,8 @@ export interface ChatEmoteData {
 	id: number;
 }
 
+export type EmoteSize = '1.0' | '2.0' | '3.0';
+
 /**
  * A chat emote.
  */
@@ -39,5 +41,14 @@ export class ChatEmote {
 	 */
 	get setId(): number {
 		return this._data.emoticon_set;
+	}
+
+	/**
+	 * Build the URL pointing to the emote image.
+	 *
+	 * @param size The pixel density of the emote image.
+	 */
+	getUrl(size: EmoteSize): string {
+		return `https://static-cdn.jtvnw.net/emoticons/v1/${this.id}/${size}`;
 	}
 }
