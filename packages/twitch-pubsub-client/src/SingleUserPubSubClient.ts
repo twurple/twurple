@@ -1,3 +1,4 @@
+import type { LoggerOptions } from '@d-fischer/logger';
 import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, UserIdResolvable } from 'twitch';
@@ -37,7 +38,14 @@ interface SingleUserPubSubClientOptions {
 	pubSubClient?: BasicPubSubClient;
 
 	/**
+	 * Options to pass to the logger.
+	 */
+	logger?: Partial<LoggerOptions>;
+
+	/**
 	 * The level of logging to use for the PubSub client.
+	 *
+	 * @deprecated Use {@SingleUserPubSubClientOptions#logger} instead.
 	 */
 	logLevel?: LogLevel;
 }
@@ -59,9 +67,18 @@ export class SingleUserPubSubClient {
 	 *
 	 * @expandParams
 	 */
-	constructor({ twitchClient, pubSubClient, logLevel = LogLevel.WARNING }: SingleUserPubSubClientOptions) {
+	constructor({
+		twitchClient,
+		pubSubClient,
+		logLevel = LogLevel.WARNING,
+		logger = {}
+	}: SingleUserPubSubClientOptions) {
 		this._apiClient = twitchClient;
-		this._pubSubClient = pubSubClient ?? new BasicPubSubClient(logLevel);
+		const loggerOptions: Partial<LoggerOptions> = {
+			minLevel: logLevel,
+			...logger
+		};
+		this._pubSubClient = pubSubClient ?? new BasicPubSubClient({ logger: loggerOptions });
 		this._pubSubClient.onMessage(async (topic, messageData) => {
 			const [type, userId, ...args] = topic.split('.');
 			if (this._listeners.has(topic) && userId === (await this._getUserId())) {

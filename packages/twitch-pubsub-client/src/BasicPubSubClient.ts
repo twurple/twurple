@@ -1,6 +1,7 @@
 import type { Connection } from '@d-fischer/connection';
 import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
-import { Logger, LogLevel } from '@d-fischer/logger';
+import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
+import { Logger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
@@ -9,6 +10,7 @@ import type { AuthProvider } from 'twitch';
 import { HellFreezesOverError } from 'twitch';
 import { getValidTokenFromProvider } from 'twitch-auth';
 import { rtfm } from 'twitch-common';
+import type { ClientOptions } from '@d-fischer/isomorphic-ws';
 import type { PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
@@ -33,6 +35,21 @@ interface ProviderTokenResolvable {
 }
 
 type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTokenResolvable | ProviderTokenResolvable;
+
+/**
+ * Options for the basic PubSub client.
+ */
+export interface BasicPubSubClientOptions {
+	/**
+	 * Options to pass to the logger.
+	 */
+	logger?: Partial<LoggerOptions>;
+
+	/**
+	 * The client options to use for connecting to the WebSocket.
+	 */
+	wsOptions?: ClientOptions;
+}
 
 /**
  * A client for the Twitch PubSub interface.
@@ -92,20 +109,30 @@ export class BasicPubSubClient extends EventEmitter {
 	/**
 	 * Creates a new PubSub client.
 	 *
-	 * @param logLevel The level of logging to use for the PubSub client.
+	 * @param options
+	 *
+	 * @expandParams
 	 */
-	constructor(logLevel: LogLevel = LogLevel.WARNING) {
+	constructor(options?: BasicPubSubClientOptions) {
 		super();
+		if (options === undefined || typeof options === 'number') {
+			options = {
+				logger: {
+					minLevel: (options as unknown) as LogLevel | undefined
+				}
+			};
+		}
 		this._logger = new Logger({
 			name: 'twitch-pubsub-client',
 			emoji: true,
-			minLevel: logLevel
+			...(options.logger ?? {})
 		});
 
 		this._connection = new PersistentConnection(
 			WebSocketConnection,
 			{ hostName: 'pubsub-edge.twitch.tv', port: 443, secure: true },
-			{ logger: this._logger }
+			{ logger: this._logger },
+			{ wsOptions: options.wsOptions }
 		);
 
 		this._connection.onConnect(async () => {
