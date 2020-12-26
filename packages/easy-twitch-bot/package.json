@@ -24,6 +24,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/shared-utils": "^2.4.1",
+    "tslib": "^2.0.3",
     "twitch": "^4.3.6",
     "twitch-chat-client": "^4.3.6"
   },
