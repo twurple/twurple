@@ -41,7 +41,7 @@ export class EventSubChannelUpdateEvent {
 	 * Retrieves more information about the user
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id!))!;
+		return (await this._client.helix.users.getUserById(this._data.user_id))!;
 	}
 
 	/**
