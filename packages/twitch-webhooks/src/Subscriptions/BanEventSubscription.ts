@@ -12,7 +12,7 @@ export class BanEventSubscription extends Subscription<HelixBanEvent> {
 	constructor(
 		handler: (data: HelixBanEvent) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000,
+		validityInSeconds: number | undefined,
 		private readonly _broadcasterId: string,
 		private readonly _userId?: string
 	) {

@@ -10,7 +10,7 @@ export class UserChangeSubscription extends Subscription<HelixUser> {
 	constructor(
 		handler: (data: HelixUser) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000,
+		validityInSeconds: number | undefined,
 		private readonly _userId: string,
 		private readonly _withEmail: boolean
 	) {

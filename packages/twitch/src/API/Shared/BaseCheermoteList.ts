@@ -166,7 +166,7 @@ export abstract class BaseCheermoteList {
 
 		const names = this.getPossibleNames();
 		const re = new RegExp('(?<=^|\\s)([a-z0-9]+?)(\\d+)(?=\\s|$)', 'gi');
-		let match: RegExpExecArray | null;
+		let match: RegExpExecArray | null = null;
 		while ((match = re.exec(message))) {
 			const name = match[1].toLowerCase();
 			if (names.includes(name)) {

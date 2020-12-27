@@ -12,7 +12,7 @@ export class ExtensionTransactionSubscription extends Subscription<HelixExtensio
 	constructor(
 		handler: (data: HelixExtensionTransaction) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000,
+		validityInSeconds: number | undefined,
 		private readonly _extensionId: string
 	) {
 		super(handler, client, validityInSeconds);

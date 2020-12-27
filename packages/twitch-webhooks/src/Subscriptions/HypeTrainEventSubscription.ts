@@ -10,7 +10,7 @@ export class HypeTrainEventSubscription extends Subscription<HelixHypeTrainEvent
 	constructor(
 		handler: (data: HelixHypeTrainEvent) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000,
+		validityInSeconds: number | undefined,
 		private readonly _broadcasterId: string
 	) {
 		super(handler, client, validityInSeconds);
