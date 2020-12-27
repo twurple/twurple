@@ -1439,11 +1439,11 @@ export class ChatClient extends IrcClient {
 	 * @param target The host target, i.e. the channel that is being hosted.
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
 	 */
-	async host(channel: string = this._credentials.nick, target: string): Promise<void> {
-		channel = toUserName(channel);
+	async host(channel: string | undefined, target: string): Promise<void> {
+		const channelName = toUserName(channel ?? this._credentials.nick);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onHostResult((chan, error) => {
-				if (toUserName(chan) === channel) {
+				if (toUserName(chan) === channelName) {
 					if (error) {
 						reject(error);
 					} else {
@@ -1452,7 +1452,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/host ${target}`);
+			this.say(channelName, `/host ${target}`);
 		});
 	}
 
@@ -1502,12 +1502,12 @@ export class ChatClient extends IrcClient {
 	 * @param user The user to ban from the channel.
 	 * @param reason The reason for the ban.
 	 */
-	async ban(channel: string = this._credentials.nick, user: string, reason: string = ''): Promise<void> {
-		channel = toUserName(channel);
+	async ban(channel: string | undefined, user: string, reason: string = ''): Promise<void> {
+		const channelName = toUserName(channel ?? this._credentials.nick);
 		user = toUserName(user);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onBanResult((_channel, _user, error) => {
-				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+				if (toUserName(_channel) === channelName && toUserName(_user) === user) {
 					if (error) {
 						reject(error);
 					} else {
@@ -1516,7 +1516,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/ban ${user} ${reason}`);
+			this.say(channelName, `/ban ${user} ${reason}`);
 		});
 	}
 
@@ -1661,6 +1661,11 @@ export class ChatClient extends IrcClient {
 	 * @param minFollowTime The time (in minutes) a user needs to be following before being able to send messages.
 	 */
 	async enableFollowersOnly(channel: string, minFollowTime: number = 0): Promise<void> {
+		if (!Number.isInteger(minFollowTime) || minFollowTime < 0 || minFollowTime > 129600) {
+			throw new Error(
+				`Invalid minimum follow time: ${minFollowTime}. It must be an integer between 0 and 129600.`
+			);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
@@ -1816,6 +1821,11 @@ export class ChatClient extends IrcClient {
 	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
 	 */
 	async enableSlow(channel: string, delayBetweenMessages: number = 30): Promise<void> {
+		if (!Number.isInteger(delayBetweenMessages) || delayBetweenMessages < 1 || delayBetweenMessages > 1800) {
+			throw new Error(
+				`Invalid delay between messages: ${delayBetweenMessages}. It must be an integer between 1 and 1800.`
+			);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onSlowResult((_channel, _delay, error) => {
@@ -1907,6 +1917,9 @@ export class ChatClient extends IrcClient {
 	 * @param reason
 	 */
 	async timeout(channel: string, user: string, duration: number = 60, reason: string = ''): Promise<void> {
+		if (!Number.isInteger(duration) || duration < 1 || duration > 1209600) {
+			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
+		}
 		channel = toUserName(channel);
 		return new Promise<void>((resolve, reject) => {
 			const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
@@ -2064,6 +2077,7 @@ export class ChatClient extends IrcClient {
 	async join(channel: string): Promise<void> {
 		channel = toChannelName(channel);
 		return new Promise<void>((resolve, reject) => {
+			// eslint-disable-next-line @typescript-eslint/init-declarations
 			let timer: NodeJS.Timer;
 			const e = this._onJoinResult((chan, state, error) => {
 				if (chan === channel) {
@@ -2121,6 +2135,7 @@ export class ChatClient extends IrcClient {
 			throw new Error(`Registration failed. Response from Twitch: ${this._authFailureMessage}`);
 		}
 
+		// eslint-disable-next-line @typescript-eslint/init-declarations
 		let authListener: Listener | undefined;
 		try {
 			await Promise.race([
@@ -2151,15 +2166,7 @@ export class ChatClient extends IrcClient {
 			return `oauth:${this._authToken.accessToken}`;
 		}
 
-		let scopes: string[];
-		if (this._useLegacyScopes) {
-			scopes = ['chat_login'];
-		} else if (this._readOnly) {
-			scopes = ['chat:read'];
-		} else {
-			scopes = ['chat:read', 'chat:edit'];
-		}
-
+		const scopes = this._getNecessaryScopes();
 		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		try {
@@ -2201,6 +2208,16 @@ export class ChatClient extends IrcClient {
 
 		this._authVerified = false;
 		throw lastTokenError ?? new Error('Could not retrieve a valid token');
+	}
+
+	private _getNecessaryScopes() {
+		if (this._useLegacyScopes) {
+			return ['chat_login'];
+		}
+		if (this._readOnly) {
+			return ['chat:read'];
+		}
+		return ['chat:read', 'chat:edit'];
 	}
 
 	private static _generateJustinfanNick() {

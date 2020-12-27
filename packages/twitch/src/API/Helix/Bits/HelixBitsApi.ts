@@ -1,9 +1,8 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
-import type { HelixResponse } from '../HelixResponse';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { extractUserId } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
+import type { HelixResponse } from '../HelixResponse';
 import type { HelixBitsLeaderboardResponse } from './HelixBitsLeaderboard';
 import { HelixBitsLeaderboard } from './HelixBitsLeaderboard';
 import type { HelixCheermoteData } from './HelixCheermoteList';

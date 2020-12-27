@@ -1,8 +1,9 @@
 import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, UserIdResolvable } from 'twitch';
-import { extractUserId, InvalidTokenError } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { ApiClient } from 'twitch';
+import { InvalidTokenError } from 'twitch';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import type { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
 import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
@@ -10,7 +11,7 @@ import type { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
 import { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
 import type { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 import { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
-import type { PubSubMessage } from './Messages/PubSubMessage';
+import type { PubSubMessage, PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubRedemptionMessageData } from './Messages/PubSubRedemptionMessage';
 import { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
 import type { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
@@ -65,50 +66,11 @@ export class SingleUserPubSubClient {
 		this._pubSubClient.onMessage(async (topic, messageData) => {
 			const [type, userId, ...args] = topic.split('.');
 			if (this._listeners.has(topic) && userId === (await this._getUserId())) {
-				let message: PubSubMessage;
-				switch (type) {
-					case 'channel-bits-events-v2': {
-						message = new PubSubBitsMessage(messageData as PubSubBitsMessageData, this._apiClient);
-						break;
+				const message = this._parseMessage(type, args, messageData);
+				if (message) {
+					for (const listener of this._listeners.get(topic)!) {
+						(listener as PubSubListener).call(message);
 					}
-					case 'channel-bits-badge-unlocks': {
-						message = new PubSubBitsBadgeUnlockMessage(
-							messageData as PubSubBitsBadgeUnlockMessageData,
-							this._apiClient
-						);
-						break;
-					}
-					case 'channel-points-channel-v1': {
-						message = new PubSubRedemptionMessage(
-							messageData as PubSubRedemptionMessageData,
-							this._apiClient
-						);
-						break;
-					}
-					case 'channel-subscribe-events-v1': {
-						message = new PubSubSubscriptionMessage(
-							messageData as PubSubSubscriptionMessageData,
-							this._apiClient
-						);
-						break;
-					}
-					case 'chat_moderator_actions': {
-						message = new PubSubChatModActionMessage(
-							messageData as PubSubChatModActionMessageData,
-							args[0],
-							this._apiClient
-						);
-						break;
-					}
-					case 'whispers': {
-						message = new PubSubWhisperMessage(messageData as PubSubWhisperMessageData, this._apiClient);
-						break;
-					}
-					default:
-						return;
-				}
-				for (const listener of this._listeners.get(topic)!) {
-					(listener as PubSubListener).call(message);
 				}
 			}
 		});
@@ -204,6 +166,38 @@ export class SingleUserPubSubClient {
 			} else {
 				this._listeners.set(listener.topic, newListeners);
 			}
+		}
+	}
+
+	private _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage | undefined {
+		switch (type) {
+			case 'channel-bits-events-v2': {
+				return new PubSubBitsMessage(messageData as PubSubBitsMessageData, this._apiClient);
+			}
+			case 'channel-bits-badge-unlocks': {
+				return new PubSubBitsBadgeUnlockMessage(
+					messageData as PubSubBitsBadgeUnlockMessageData,
+					this._apiClient
+				);
+			}
+			case 'channel-points-channel-v1': {
+				return new PubSubRedemptionMessage(messageData as PubSubRedemptionMessageData, this._apiClient);
+			}
+			case 'channel-subscribe-events-v1': {
+				return new PubSubSubscriptionMessage(messageData as PubSubSubscriptionMessageData, this._apiClient);
+			}
+			case 'chat_moderator_actions': {
+				return new PubSubChatModActionMessage(
+					messageData as PubSubChatModActionMessageData,
+					args[0],
+					this._apiClient
+				);
+			}
+			case 'whispers': {
+				return new PubSubWhisperMessage(messageData as PubSubWhisperMessageData, this._apiClient);
+			}
+			default:
+				return undefined;
 		}
 	}
 

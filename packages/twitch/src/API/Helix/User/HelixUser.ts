@@ -1,12 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import type { UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from 'twitch-common';
 import { rtfm } from 'twitch-common';
-import type { HelixSubscription } from '../Subscriptions/HelixSubscription';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import type { UserFollow } from '../../Kraken/User/UserFollow';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixStream } from '../Stream/HelixStream';
+import type { HelixSubscription } from '../Subscriptions/HelixSubscription';
 import type { HelixFollow } from './HelixFollow';
 
 /**
@@ -71,7 +71,7 @@ export interface HelixUserData {
  * A Twitch user.
  */
 @rtfm<HelixUser>('twitch', 'HelixUser', 'id')
-export class HelixUser {
+export class HelixUser implements UserIdResolvableType, UserNameResolveableType {
 	/** @private */ @Enumerable(false) protected readonly _data: HelixUserData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 

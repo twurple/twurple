@@ -1,8 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
-import type { UserNameResolvable } from '../../Toolkit/UserTools';
-import { extractUserName } from '../../Toolkit/UserTools';
+import type { UserNameResolvable } from 'twitch-common';
+import { extractUserName, rtfm } from 'twitch-common';
 import { BaseApi } from '../BaseApi';
 import type { ChattersListData } from './ChattersList';
 import { ChattersList } from './ChattersList';

@@ -26,7 +26,7 @@ export async function callTwitchApiRaw(
 		Accept: type === TwitchApiCallType.Kraken ? 'application/vnd.twitchtv.v5+json' : 'application/json'
 	});
 
-	let body: string | undefined;
+	let body: string | undefined = undefined;
 	if (options.body) {
 		body = stringify(options.body);
 		headers.append('Content-Type', 'application/x-www-form-urlencoded');

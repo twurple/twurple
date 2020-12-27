@@ -1,7 +1,6 @@
 import { Enumerable, indexBy } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { HellFreezesOverError, rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
-import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
 import type {
 	CheermoteBackground,
 	CheermoteDisplayInfo,
