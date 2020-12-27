@@ -1,6 +1,6 @@
 {
   "name": "easy-twitch-bot",
-  "version": "4.3.7",
+  "version": "4.3.8",
   "description": "A simplified framework to get a chat bot running easily.",
   "keywords": [
     "twitch",
@@ -25,9 +25,9 @@
   "dependencies": {
     "@d-fischer/shared-utils": "^2.4.1",
     "tslib": "^2.0.3",
-    "twitch": "^4.3.7",
-    "twitch-auth": "^4.3.7",
-    "twitch-chat-client": "^4.3.7"
+    "twitch": "^4.3.8",
+    "twitch-auth": "^4.3.8",
+    "twitch-chat-client": "^4.3.8"
   },
   "files": [
     "LICENSE",
