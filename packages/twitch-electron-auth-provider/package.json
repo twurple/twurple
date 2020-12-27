@@ -28,7 +28,8 @@
   "dependencies": {
     "@d-fischer/qs": "^7.0.2",
     "@d-fischer/shared-utils": "^2.4.1",
-    "tslib": "^2.0.3"
+    "tslib": "^2.0.3",
+    "twitch-auth": "^4.3.7"
   },
   "devDependencies": {
     "twitch": "^4.3.7"
