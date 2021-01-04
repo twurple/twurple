@@ -55,3 +55,4 @@ export type {
 	ParsedMessageCheerPart,
 	ParsedMessageTextPart
 } from './Toolkit/EmoteTools';
+export { parseTwitchMessage } from './Toolkit/MessageTools';
