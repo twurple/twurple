@@ -99,7 +99,7 @@ export class EventSubListener {
 	 * @param adapter The connection adapter.
 	 * @param config
 	 */
-	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, secret: string, config: EventSubConfig = {}) {
+	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, secret: string, config?: EventSubConfig) {
 		if (apiClient.tokenType !== 'app') {
 			throw new InvalidTokenTypeError(
 				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
@@ -111,7 +111,7 @@ export class EventSubListener {
 		this._logger = new Logger({
 			name: 'twitch-eventsub',
 			emoji: true,
-			...(config.logger ?? {})
+			...config?.logger
 		});
 	}
 
