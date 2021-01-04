@@ -80,7 +80,7 @@ export class WebHookListener {
 	private readonly _adapter: ConnectionAdapter;
 	private readonly _logger: Logger;
 
-	private readonly _hookValidity?: number;
+	private declare readonly _defaultHookValidity?: number;
 
 	/**
 	 * Creates a new WebHook listener.
@@ -105,7 +105,7 @@ export class WebHookListener {
 	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, config: WebHookConfig = {}) {
 		this._apiClient = apiClient;
 		this._adapter = adapter;
-		this._hookValidity = config.hookValidity;
+		this._defaultHookValidity = config.hookValidity ?? adapter.overrideOptions.defaultHookValidity;
 		this._logger = new Logger({
 			name: 'twitch-webhooks',
 			emoji: true,
@@ -202,7 +202,7 @@ export class WebHookListener {
 		user: UserIdResolvable,
 		handler: (user: HelixUser) => void,
 		withEmail: boolean = false,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
@@ -229,7 +229,7 @@ export class WebHookListener {
 	async subscribeToFollowsToUser(
 		user: UserIdResolvable,
 		handler: (follow: HelixFollow) => void,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
@@ -256,7 +256,7 @@ export class WebHookListener {
 	async subscribeToFollowsFromUser(
 		user: UserIdResolvable,
 		handler: (follow: HelixFollow) => void,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
@@ -283,7 +283,7 @@ export class WebHookListener {
 	async subscribeToHypeTrainEvents(
 		broadcaster: UserIdResolvable,
 		handler: (hypeTrain: HelixHypeTrainEvent) => void,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		const broadcasterId = extractUserId(broadcaster);
 
@@ -310,7 +310,7 @@ export class WebHookListener {
 	async subscribeToStreamChanges(
 		user: UserIdResolvable,
 		handler: (stream?: HelixStream) => void,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		const userId = extractUserId(user);
 
@@ -337,7 +337,7 @@ export class WebHookListener {
 	async subscribeToSubscriptionEvents(
 		broadcaster: UserIdResolvable,
 		handler: (subscriptionEvent: HelixSubscriptionEvent) => void,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		const broadcasterId = extractUserId(broadcaster);
 
@@ -366,7 +366,7 @@ export class WebHookListener {
 		broadcaster: UserIdResolvable,
 		handler: (banEvent: HelixBanEvent) => void,
 		user?: UserIdResolvable,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		const broadcasterId = extractUserId(broadcaster);
 		const userId = user ? extractUserId(user) : undefined;
@@ -402,7 +402,7 @@ export class WebHookListener {
 		broadcaster: UserIdResolvable,
 		handler: (modEvent: HelixModeratorEvent) => void,
 		user?: UserIdResolvable,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		const broadcasterId = extractUserId(broadcaster);
 		const userId = user ? extractUserId(user) : undefined;
@@ -443,7 +443,7 @@ export class WebHookListener {
 	async subscribeToExtensionTransactions(
 		extensionId: string,
 		handler: (transaction: HelixExtensionTransaction) => void,
-		validityInSeconds = this._hookValidity
+		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
 		return this._genericSubscribe(ExtensionTransactionSubscription, handler, this, validityInSeconds, extensionId);
 	}

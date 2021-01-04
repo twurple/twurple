@@ -1,6 +1,7 @@
 import { getPortPromise } from '@d-fischer/portfinder';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { connect } from 'ngrok';
+import type { ConnectionAdapterOverrideOptions } from 'twitch-webhooks';
 import { ConnectionAdapter } from 'twitch-webhooks';
 
 /**
@@ -47,5 +48,11 @@ export class NgrokAdapter extends ConnectionAdapter {
 		}
 
 		return this._hostNamePromise;
+	}
+
+	get overrideOptions(): ConnectionAdapterOverrideOptions {
+		return {
+			defaultHookValidity: 60
+		};
 	}
 }

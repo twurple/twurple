@@ -20,7 +20,7 @@ export { WebHookListener };
 export type { WebHookListenerCertificateConfig } from './WebHookListener';
 export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 export { ConnectionAdapter } from './Adapters/ConnectionAdapter';
-export type { CommonConnectionAdapterConfig } from './Adapters/ConnectionAdapter';
+export type { CommonConnectionAdapterConfig, ConnectionAdapterOverrideOptions } from './Adapters/ConnectionAdapter';
 export { EnvPortAdapter } from './Adapters/EnvPortAdapter';
 export type { EnvPortAdapterConfig } from './Adapters/EnvPortAdapter';
 export { LegacyAdapter } from './Adapters/LegacyAdapter';
