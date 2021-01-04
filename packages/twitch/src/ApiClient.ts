@@ -1,7 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import deprecate from '@d-fischer/deprecate';
 import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
-import type { TwitchApiCallOptions } from 'twitch-api-call';
+import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from 'twitch-api-call';
 import {
 	callTwitchApi,
 	callTwitchApiRaw,
@@ -67,6 +67,11 @@ export interface ApiConfig {
 	authProvider: AuthProvider;
 
 	/**
+	 * Additional options to pass to the fetch method.
+	 */
+	fetchOptions?: TwitchApiCallFetchOptions;
+
+	/**
 	 * Whether to authenticate the client before a request is made.
 	 *
 	 * @deprecated Call {@ApiClient#requestScopes} after instantiating the client instead.
@@ -107,6 +112,7 @@ export interface TwitchApiCallOptionsInternal {
 	options: TwitchApiCallOptions;
 	clientId?: string;
 	accessToken?: string;
+	fetchOptions?: TwitchApiCallFetchOptions;
 }
 
 /**
@@ -393,7 +399,7 @@ export class ApiClient implements AuthProvider {
 			? await authProvider.getAccessToken(options.scope ? [options.scope] : undefined)
 			: null;
 		if (!accessToken) {
-			return callTwitchApi<T>(options, authProvider.clientId);
+			return callTwitchApi<T>(options, authProvider.clientId, undefined, this._config.fetchOptions);
 		}
 
 		if (accessToken.isExpired && authProvider.refresh) {
@@ -468,10 +474,11 @@ export class ApiClient implements AuthProvider {
 	}
 
 	private async _callApiInternal(options: TwitchApiCallOptions, clientId?: string, accessToken?: string) {
+		const { fetchOptions } = this._config;
 		if (options.type === TwitchApiCallType.Helix) {
-			return this._helixRateLimiter.request({ options, clientId, accessToken });
+			return this._helixRateLimiter.request({ options, clientId, accessToken, fetchOptions });
 		}
 
-		return callTwitchApiRaw(options, clientId, accessToken);
+		return callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
 	}
 }

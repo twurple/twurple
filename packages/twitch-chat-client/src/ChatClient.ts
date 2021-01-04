@@ -4,6 +4,7 @@ import { Logger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { delay, Enumerable } from '@d-fischer/shared-utils';
 import type { EventBinder, Listener } from '@d-fischer/typed-event-emitter';
+import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
 import type { CommercialLength } from 'twitch';
 import type { AccessToken, AuthProvider } from 'twitch-auth';
@@ -43,7 +44,7 @@ const GENERIC_CHANNEL = 'twjs';
 /**
  * Options for a chat client.
  */
-export interface ChatClientOptions {
+export interface BaseChatClientOptions {
 	/**
 	 * Whether to request a token with only read permission.
 	 *
@@ -99,6 +100,18 @@ export interface ChatClientOptions {
 	 */
 	channels?: ResolvableValue<string[]>;
 }
+
+export interface WebSocketChatClientOptions extends BaseChatClientOptions {
+	webSocket?: true;
+	connectionOptions?: WebSocketConnectionOptions;
+}
+
+export interface TcpChatClientOptions extends BaseChatClientOptions {
+	webSocket: false;
+	connectionOptions?: never;
+}
+
+export type ChatClientOptions = WebSocketChatClientOptions | TcpChatClientOptions;
 
 /**
  * An interface to Twitch chat.
@@ -679,13 +692,13 @@ export class ChatClient extends IrcClient {
 		super({
 			connection: {
 				hostName:
-					options.hostName ?? (options.webSocket === false ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv'),
+					options.hostName ?? (options.webSocket ?? true ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv'),
 				secure: options.ssl !== false
 			},
 			credentials: {
 				nick: ''
 			},
-			webSocket: options.webSocket !== false,
+			webSocket: options.webSocket ?? true,
 			logger: {
 				minLevel: options.logLevel,
 				...(options.logger ?? {})
