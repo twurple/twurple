@@ -1,0 +1,55 @@
+{
+  "name": "twitch-eventsub-ngrok",
+  "version": "4.4.0-pre.4",
+  "description": "Test your EventSub listener locally using ngrok.",
+  "keywords": [
+    "twitch",
+    "eventsub",
+    "stream",
+    "bot",
+    "events",
+    "ngrok"
+  ],
+  "sideEffects": false,
+  "main": "lib",
+  "types": "lib",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/d-fischer/twitch.git",
+    "directory": "packages/twitch-eventsub-ngrok"
+  },
+  "homepage": "https://d-fischer.github.io/twitch-eventsub-ngrok",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
+  "license": "MIT",
+  "dependencies": {
+    "@d-fischer/portfinder": "^1.0.28",
+    "@d-fischer/shared-utils": "^3.0.1",
+    "ngrok": "^3.4.0",
+    "tslib": "^2.0.3"
+  },
+  "devDependencies": {
+    "twitch": "^4.4.0-pre.4",
+    "twitch-eventsub": "^4.4.0-pre.4"
+  },
+  "peerDependencies": {
+    "twitch": "^4.4.0",
+    "twitch-eventsub": "^4.4.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "es"
+  ],
+  "scripts": {
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
+  }
+}
