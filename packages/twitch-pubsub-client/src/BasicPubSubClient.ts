@@ -134,9 +134,9 @@ export class BasicPubSubClient extends EventEmitter {
 				this._logger.info('Disconnected');
 			} else {
 				if (reason) {
-					this._logger.err(`Disconnected unexpectedly: ${reason.message}`);
+					this._logger.error(`Disconnected unexpectedly: ${reason.message}`);
 				} else {
-					this._logger.err('Disconnected unexpectedly');
+					this._logger.error('Disconnected unexpectedly');
 				}
 			}
 			this.emit(this.onDisconnect, manually, reason);
@@ -409,7 +409,7 @@ export class BasicPubSubClient extends EventEmitter {
 			this.removeListener(pongListener);
 		});
 		this._pingTimeoutTimer = setTimeout(async () => {
-			this._logger.err('Ping timeout');
+			this._logger.error('Ping timeout');
 			this.removeListener(pongListener);
 			return this.reconnect();
 		}, this._pingTimeout * 1000);

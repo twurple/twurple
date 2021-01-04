@@ -2182,11 +2182,11 @@ export class ChatClient extends IrcClient {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				this._chatLogger.err(`Retrieving an access token failed: ${(e as Error).message}`);
+				this._chatLogger.error(`Retrieving an access token failed: ${(e as Error).message}`);
 			}
 		}
 
-		this._chatLogger.warning('No valid token available; trying to refresh');
+		this._chatLogger.warn('No valid token available; trying to refresh');
 
 		try {
 			this._authToken = await this._authProvider.refresh?.();
@@ -2202,7 +2202,7 @@ export class ChatClient extends IrcClient {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				this._chatLogger.err(`Refreshing the access token failed: ${(e as Error).message}`);
+				this._chatLogger.error(`Refreshing the access token failed: ${(e as Error).message}`);
 			}
 		}
 

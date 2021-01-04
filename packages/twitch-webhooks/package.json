@@ -28,7 +28,7 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/logger": "^2.1.1",
+    "@d-fischer/logger": "^3.1.0",
     "@d-fischer/portfinder": "^1.0.28",
     "@d-fischer/public-ip": "^4.0.3",
     "@d-fischer/randomstring": "^1.1.7",
