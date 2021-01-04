@@ -38,6 +38,7 @@
     "@d-fischer/shared-utils" "^2.4.1"
     "@types/node" "^14.11.2"
     tslib "^2.0.3"
+
 "@d-fischer/connection@^6.4.1":
   version "6.4.1"
   resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.4.1.tgz#e89c0e9304939cbe84cd20235e4b48a1bac00f5e"
@@ -206,10 +207,10 @@
   dependencies:
     array-uniq "1.0.2"
 
-"@d-fischer/rate-limiter@^0.3.2":
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/@d-fischer/rate-limiter/-/rate-limiter-0.3.2.tgz#e02165709a82e5a83371884c45f8fe85723c821b"
-  integrity sha512-SfY1+LXAEih13tSaWUsMVEX/+fDX+hEjgtZaxIFZCQqwL7FwhudmzeGGO2caYDdVQKwlRtMG5Lyvjnx+W2+VEA==
+"@d-fischer/rate-limiter@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@d-fischer/rate-limiter/-/rate-limiter-0.4.2.tgz#81e8817f786eef104dc031549a994fa4726b8cdd"
+  integrity sha512-ei9SFxSMEQ0Z0R0VJeuqAJ5aQHWVDetjNX+Z7sU7cgxtF0842HIPQvzeaUx4/aPiW4UiirYsGFTLOkN8sbkmZA==
   dependencies:
     "@d-fischer/logger" "^3.1.0"
     "@d-fischer/promise.allsettled" "^2.0.1"

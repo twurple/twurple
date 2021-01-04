@@ -1,6 +1,13 @@
 import deprecate from '@d-fischer/deprecate';
-import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
-import { Logger } from '@d-fischer/logger';
+import type { LoggerOptions } from '@d-fischer/logger';
+import { Logger, LogLevel } from '@d-fischer/logger';
+import type { RateLimiter } from '@d-fischer/rate-limiter';
+import {
+	NullRateLimiter,
+	PartitionedTimeBasedRateLimiter,
+	TimeBasedRateLimiter,
+	TimedPassthruRateLimiter
+} from '@d-fischer/rate-limiter';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { delay, Enumerable } from '@d-fischer/shared-utils';
 import type { EventBinder, Listener } from '@d-fischer/typed-event-emitter';
@@ -40,6 +47,11 @@ import type {
 } from './UserNotices/ChatSubInfo';
 
 const GENERIC_CHANNEL = 'twjs';
+
+/**
+ * A Twitch bot level, i.e. whether you're connecting as a known or verified bot.
+ */
+export type TwitchBotLevel = 'none' | 'known' | 'verified';
 
 /**
  * Options for a chat client.
@@ -99,6 +111,22 @@ export interface BaseChatClientOptions {
 	 * May also be a function (sync or async) that returns a list of channels.
 	 */
 	channels?: ResolvableValue<string[]>;
+
+	/**
+	 * Whether you're guaranteed to be a mod in all joined channels.
+	 *
+	 * This raises the rate limit and lifts the one-second-between-messages rule, but subjects you to messages
+	 * possibly silently not being delivered and your bot possibly getting banned
+	 * if your bot is not a mod in one of the channels.
+	 */
+	isAlwaysMod?: boolean;
+
+	/**
+	 * Your bot level, i.e. whether you're a known or verified bot.
+	 *
+	 * Starting with 5.0, this will default to 'none', which will limit your messages to the standard rate limit.
+	 */
+	botLevel?: TwitchBotLevel;
 }
 
 export interface WebSocketChatClientOptions extends BaseChatClientOptions {
@@ -112,6 +140,20 @@ export interface TcpChatClientOptions extends BaseChatClientOptions {
 }
 
 export type ChatClientOptions = WebSocketChatClientOptions | TcpChatClientOptions;
+
+/** @private */
+export interface ChatMessageRequest {
+	type: 'say' | 'action';
+	channel: string;
+	message: string;
+	tags?: Record<string, string>;
+}
+
+/** @private */
+export interface WhisperRequest {
+	target: string;
+	message: string;
+}
 
 /**
  * An interface to Twitch chat.
@@ -135,6 +177,12 @@ export class ChatClient extends IrcClient {
 	private _authRetryTimer?: Iterator<number, never>;
 
 	private readonly _chatLogger: Logger;
+
+	private readonly _messageRateLimiter: RateLimiter<ChatMessageRequest, void>;
+	private readonly _joinRateLimiter: RateLimiter<string, void>;
+	private readonly _whisperRateLimiter: RateLimiter<WhisperRequest, void>;
+
+	private _needToShowWhisperWarning = false;
 
 	/**
 	 * Fires when a user is timed out from a channel.
@@ -688,12 +736,11 @@ export class ChatClient extends IrcClient {
 	 * @param options
 	 */
 	constructor(authProvider: AuthProvider | undefined, options: ChatClientOptions = {}) {
-		/* eslint-disable no-restricted-syntax */
 		super({
 			connection: {
 				hostName:
 					options.hostName ?? (options.webSocket ?? true ? 'irc-ws.chat.twitch.tv' : 'irc.chat.twitch.tv'),
-				secure: options.ssl !== false
+				secure: options.ssl ?? true
 			},
 			credentials: {
 				nick: ''
@@ -706,7 +753,6 @@ export class ChatClient extends IrcClient {
 			nonConformingCommands: ['004'],
 			channels: options.channels
 		});
-		/* eslint-enable no-restricted-syntax */
 
 		if (authProvider?.tokenType === 'app') {
 			throw new InvalidTokenTypeError(
@@ -727,6 +773,95 @@ export class ChatClient extends IrcClient {
 
 		this._useLegacyScopes = !!options.legacyScopes;
 		this._readOnly = !!options.readOnly;
+
+		const executeChatMessageRequest = async ({ type, message, channel, tags }: ChatMessageRequest) => {
+			if (type === 'say') {
+				super.say(channel, message, tags);
+			} else {
+				super.action(channel, message);
+			}
+		};
+
+		const executeJoinRequest = async (channel: string) =>
+			new Promise<void>((resolve, reject) => {
+				// eslint-disable-next-line @typescript-eslint/init-declarations
+				let timer: NodeJS.Timer;
+				const e = this._onJoinResult((chan, state, error) => {
+					if (chan === channel) {
+						clearTimeout(timer);
+						if (error) {
+							reject(error);
+						} else {
+							resolve();
+						}
+						this.removeListener(e);
+					}
+				});
+				timer = setTimeout(() => {
+					this.removeListener(e);
+					reject(
+						new Error(`Did not receive a reply to join ${channel} in time; assuming that the join failed`)
+					);
+				}, 10000);
+				super.join(channel);
+			});
+
+		const executeWhisperRequest = async ({ target, message }: WhisperRequest) => this._doWhisper(target, message);
+
+		if (options.botLevel) {
+			if (options.isAlwaysMod) {
+				this._messageRateLimiter = new TimeBasedRateLimiter({
+					bucketSize: options.botLevel === 'verified' ? 7500 : 100,
+					timeFrame: 32000,
+					doRequest: executeChatMessageRequest
+				});
+			} else {
+				let bucketSize = 20;
+				if (options.botLevel === 'verified') {
+					bucketSize = 7500;
+				} else if (options.botLevel === 'known') {
+					bucketSize = 50;
+				}
+				this._messageRateLimiter = new TimedPassthruRateLimiter(
+					new PartitionedTimeBasedRateLimiter({
+						bucketSize: 1,
+						timeFrame: 1200,
+						logger: { minLevel: LogLevel.ERROR },
+						doRequest: executeChatMessageRequest,
+						getPartitionKey: ({ channel }) => channel
+					}),
+					{ bucketSize, timeFrame: 32000 }
+				);
+			}
+			this._joinRateLimiter = new TimeBasedRateLimiter({
+				bucketSize: options.botLevel === 'verified' ? 2000 : 2,
+				timeFrame: 11000,
+				doRequest: executeJoinRequest
+			});
+			let whisperLimitPerSecond = 3;
+			let whisperLimitPerMinute = 100;
+			if (options.botLevel === 'verified') {
+				whisperLimitPerSecond = 20;
+				whisperLimitPerMinute = 1200;
+			} else if (options.botLevel === 'known') {
+				whisperLimitPerSecond = 10;
+				whisperLimitPerMinute = 200;
+			}
+			this._whisperRateLimiter = new TimedPassthruRateLimiter(
+				new TimeBasedRateLimiter({
+					bucketSize: whisperLimitPerSecond,
+					timeFrame: 1200,
+					logger: { minLevel: LogLevel.ERROR },
+					doRequest: executeWhisperRequest
+				}),
+				{ bucketSize: whisperLimitPerMinute, timeFrame: 64000 }
+			);
+		} else {
+			this._needToShowWhisperWarning = true;
+			this._messageRateLimiter = new NullRateLimiter(executeChatMessageRequest);
+			this._joinRateLimiter = new NullRateLimiter(executeJoinRequest);
+			this._whisperRateLimiter = new NullRateLimiter(executeWhisperRequest);
+		}
 
 		this.addCapability(TwitchTagsCapability);
 		this.addCapability(TwitchCommandsCapability);
@@ -1465,7 +1600,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channelName, `/host ${target}`);
+			void this.say(channelName, `/host ${target}`);
 		});
 	}
 
@@ -1491,7 +1626,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/unhost');
+			void this.say(channel, '/unhost');
 		});
 	}
 
@@ -1504,8 +1639,8 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
-	unhostOutside(channel: string = this._credentials.nick): void {
-		this.say(channel, '/unhost');
+	async unhostOutside(channel: string = this._credentials.nick): Promise<void> {
+		return this.say(channel, '/unhost');
 	}
 
 	/**
@@ -1529,7 +1664,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channelName, `/ban ${user} ${reason}`);
+			void this.say(channelName, `/ban ${user} ${reason}`);
 		});
 	}
 
@@ -1547,7 +1682,7 @@ export class ChatClient extends IrcClient {
 					e.unbind();
 				}
 			});
-			this.say(channel, '/clear');
+			void this.say(channel, '/clear');
 		});
 	}
 
@@ -1572,7 +1707,7 @@ export class ChatClient extends IrcClient {
 				}
 				this.removeListener(e);
 			});
-			this.say(GENERIC_CHANNEL, `/color ${color}`);
+			void this.say(GENERIC_CHANNEL, `/color ${color}`);
 		});
 	}
 
@@ -1595,7 +1730,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/commercial ${duration}`);
+			void this.say(channel, `/commercial ${duration}`);
 		});
 	}
 
@@ -1619,7 +1754,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/delete ${messageId}`);
+			void this.say(channel, `/delete ${messageId}`);
 		});
 	}
 
@@ -1641,7 +1776,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/emoteonly');
+			void this.say(channel, '/emoteonly');
 		});
 	}
 
@@ -1663,7 +1798,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/emoteonlyoff');
+			void this.say(channel, '/emoteonlyoff');
 		});
 	}
 
@@ -1691,7 +1826,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/followers ${minFollowTime || ''}`);
+			void this.say(channel, `/followers ${minFollowTime || ''}`);
 		});
 	}
 
@@ -1713,7 +1848,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/followersoff');
+			void this.say(channel, '/followersoff');
 		});
 	}
 
@@ -1737,7 +1872,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/mod ${user}`);
+			void this.say(channel, `/mod ${user}`);
 		});
 	}
 
@@ -1761,7 +1896,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/unmod ${user}`);
+			void this.say(channel, `/unmod ${user}`);
 		});
 	}
 
@@ -1779,7 +1914,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/mods');
+			void this.say(channel, '/mods');
 		});
 	}
 
@@ -1801,7 +1936,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/r9kbeta');
+			void this.say(channel, '/r9kbeta');
 		});
 	}
 
@@ -1823,7 +1958,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/r9kbetaoff');
+			void this.say(channel, '/r9kbetaoff');
 		});
 	}
 
@@ -1851,7 +1986,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/slow ${delayBetweenMessages}`);
+			void this.say(channel, `/slow ${delayBetweenMessages}`);
 		});
 	}
 
@@ -1873,7 +2008,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/slowoff');
+			void this.say(channel, '/slowoff');
 		});
 	}
 
@@ -1895,7 +2030,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/subscribers');
+			void this.say(channel, '/subscribers');
 		});
 	}
 
@@ -1917,7 +2052,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/subscribersoff');
+			void this.say(channel, '/subscribersoff');
 		});
 	}
 
@@ -1945,7 +2080,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/timeout ${user} ${duration} ${reason}`);
+			void this.say(channel, `/timeout ${user} ${duration} ${reason}`);
 		});
 	}
 
@@ -1980,7 +2115,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/vip ${user}`);
+			void this.say(channel, `/vip ${user}`);
 		});
 	}
 
@@ -2011,7 +2146,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, `/unvip ${user}`);
+			void this.say(channel, `/unvip ${user}`);
 		});
 	}
 
@@ -2036,7 +2171,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			this.say(channel, '/vips');
+			void this.say(channel, '/vips');
 		});
 	}
 
@@ -2054,12 +2189,17 @@ export class ChatClient extends IrcClient {
 	 * @param message The message to send.
 	 * @param attributes The attributes to add to the message.
 	 */
-	say(channel: string, message: string, attributes: ChatSayMessageAttributes = {}): void {
+	async say(channel: string, message: string, attributes: ChatSayMessageAttributes = {}): Promise<void> {
 		const tags: Record<string, string> = {};
 		if (attributes.replyTo) {
 			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
 		}
-		super.say(toChannelName(channel), message, tags);
+		return this._messageRateLimiter.request({
+			type: 'say',
+			channel: toChannelName(channel),
+			message,
+			tags
+		});
 	}
 
 	/**
@@ -2068,8 +2208,12 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to send the message to.
 	 * @param message The message to send.
 	 */
-	action(channel: string, message: string): void {
-		super.action(toChannelName(channel), message);
+	async action(channel: string, message: string): Promise<void> {
+		return this._messageRateLimiter.request({
+			type: 'action',
+			channel: toChannelName(channel),
+			message
+		});
 	}
 
 	/**
@@ -2078,8 +2222,18 @@ export class ChatClient extends IrcClient {
 	 * @param user The user to send the message to.
 	 * @param message The message to send.
 	 */
-	whisper(user: string, message: string): void {
-		super.say(GENERIC_CHANNEL, `/w ${toUserName(user)} ${message}`);
+	async whisper(user: string, message: string): Promise<void> {
+		if (!this._needToShowWhisperWarning) {
+			this._needToShowWhisperWarning = false;
+			this._chatLogger.warn(
+				`You did not set a botLevel option.
+Pleasae note that your whispers might not arrive reliably if your bot is not a known or verified bot.`
+			);
+		}
+		return this._whisperRateLimiter.request({
+			target: toUserName(user),
+			message
+		});
 	}
 
 	/**
@@ -2088,27 +2242,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to join.
 	 */
 	async join(channel: string): Promise<void> {
-		channel = toChannelName(channel);
-		return new Promise<void>((resolve, reject) => {
-			// eslint-disable-next-line @typescript-eslint/init-declarations
-			let timer: NodeJS.Timer;
-			const e = this._onJoinResult((chan, state, error) => {
-				if (chan === channel) {
-					clearTimeout(timer);
-					if (error) {
-						reject(error);
-					} else {
-						resolve();
-					}
-					this.removeListener(e);
-				}
-			});
-			timer = setTimeout(() => {
-				this.removeListener(e);
-				reject(new Error(`Did not receive a reply to join ${channel} in time; assuming that the join failed`));
-			}, 10000);
-			super.join(channel);
-		});
+		return this._joinRateLimiter.request(toChannelName(channel));
 	}
 
 	/**
@@ -2223,6 +2357,10 @@ export class ChatClient extends IrcClient {
 		throw lastTokenError ?? new Error('Could not retrieve a valid token');
 	}
 
+	private _doWhisper(user: string, message: string): void {
+		super.say(GENERIC_CHANNEL, `/w ${user} ${message}`);
+	}
+
 	private _getNecessaryScopes() {
 		if (this._useLegacyScopes) {
 			return ['chat_login'];
@@ -2239,6 +2377,7 @@ export class ChatClient extends IrcClient {
 			.padStart(5, '0');
 		return `justinfan${randomSuffix}`;
 	}
+
 	// yes, this is just fibonacci with a limit
 	private static *_getReauthenticateWaitTime(): Iterator<number, never> {
 		let current = 0;
