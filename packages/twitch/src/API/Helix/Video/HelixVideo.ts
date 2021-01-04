@@ -1,9 +1,8 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
-import type { HelixUser } from '../User/HelixUser';
+import { HellFreezesOverError, rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
-import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
+import type { HelixUser } from '../User/HelixUser';
 
 export type HelixVideoViewableStatus = 'public' | 'private';
 export type HelixVideoType = 'upload' | 'archive' | 'highlight';

@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import type { UserIdResolvable } from 'twitch-common';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import type { HelixUser } from './HelixUser';
 
 /**

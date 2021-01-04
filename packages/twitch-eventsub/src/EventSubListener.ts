@@ -7,13 +7,12 @@ import { Server } from 'httpanda';
 import type {
 	ApiClient,
 	HelixEventSubSubscription,
-	UserIdResolvable,
 	HelixEventSubSubscriptionStatus,
 	HelixEventSubTransportData
 } from 'twitch';
-import { extractUserId } from 'twitch';
 import { InvalidTokenTypeError } from 'twitch-auth';
-import { rtfm } from 'twitch-common';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';

@@ -1,8 +1,6 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
-import { HellFreezesOverError } from '../../../Errors/HellFreezesOverError';
-import type { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
-import { extractUserId, extractUserName } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable, UserNameResolvable } from 'twitch-common';
+import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';

@@ -1,6 +1,6 @@
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import type { AuthProvider } from 'twitch';
 import { ApiClient } from 'twitch';
+import type { AuthProvider } from 'twitch-auth';
 import { getTokenInfo, StaticAuthProvider } from 'twitch-auth';
 import type { PrivateMessage } from 'twitch-chat-client';
 import { ChatClient, LogLevel } from 'twitch-chat-client';
@@ -23,32 +23,12 @@ export class Bot {
 	private readonly _prefix: string;
 
 	static async create(config: BotConfig): Promise<Bot> {
-		const { auth } = config;
-		let apiClient: ApiClient;
-		if (config.client) {
-			apiClient = config.client;
-		} else if (auth) {
-			if (typeof auth === 'string') {
-				const info = await getTokenInfo(auth);
-				apiClient = new ApiClient({ authProvider: new StaticAuthProvider(info.clientId, auth, info.scopes) });
-			} else {
-				apiClient = new ApiClient({ authProvider: auth });
-			}
-		} else {
-			throw new Error("didn't pass client nor auth option, exiting");
-		}
-
-		return new this(apiClient, config);
+		return new this(await this._createApiClientForConfig(config), config);
 	}
 
 	constructor(public readonly api: ApiClient, { channel, channels, debug, commands, prefix }: BotConfig) {
 		this._prefix = prefix ?? '!';
-		let resolvableChannels: ResolvableValue<string[]> | undefined;
-		if (channel) {
-			resolvableChannels = [channel];
-		} else if (channels) {
-			resolvableChannels = channels;
-		}
+		const resolvableChannels = channel ? [channel] : channels;
 
 		if (!resolvableChannels) {
 			throw new Error("didn't pass channel nor channels option, exiting");
@@ -66,6 +46,21 @@ export class Bot {
 		});
 
 		void this.chat.connect();
+	}
+
+	private static async _createApiClientForConfig(config: BotConfig): Promise<ApiClient> {
+		if (config.client) {
+			return config.client;
+		} else if (config.auth) {
+			if (typeof config.auth === 'string') {
+				const info = await getTokenInfo(config.auth);
+				return new ApiClient({ authProvider: new StaticAuthProvider(info.clientId, config.auth, info.scopes) });
+			} else {
+				return new ApiClient({ authProvider: config.auth });
+			}
+		} else {
+			throw new Error("didn't pass client nor auth option, exiting");
+		}
 	}
 
 	private findMatch(msg: PrivateMessage): BotCommandMatch | null {

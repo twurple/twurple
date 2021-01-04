@@ -147,11 +147,11 @@ export async function getValidTokenFromProvider(
 		if (e instanceof InvalidTokenError) {
 			lastTokenError = e;
 		} else {
-			logger?.err(`Retrieving an access token failed: ${(e as Error).message}`);
+			logger?.error(`Retrieving an access token failed: ${(e as Error).message}`);
 		}
 	}
 
-	logger?.warning('No valid token available; trying to refresh');
+	logger?.warn('No valid token available; trying to refresh');
 
 	if (provider.refresh) {
 		try {
@@ -166,7 +166,7 @@ export async function getValidTokenFromProvider(
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
 			} else {
-				logger?.err(`Refreshing the access token failed: ${(e as Error).message}`);
+				logger?.error(`Refreshing the access token failed: ${(e as Error).message}`);
 			}
 		}
 	}

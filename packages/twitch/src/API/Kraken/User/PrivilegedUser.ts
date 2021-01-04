@@ -1,5 +1,5 @@
+import type { UserIdResolvable } from 'twitch-common';
 import { rtfm } from 'twitch-common';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
 import type { UserData } from './User';
 import { User } from './User';
 import type { UserBlock } from './UserBlock';

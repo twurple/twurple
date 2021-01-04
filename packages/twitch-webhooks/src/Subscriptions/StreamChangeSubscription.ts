@@ -10,7 +10,7 @@ export class StreamChangeSubscription extends Subscription<HelixStream | undefin
 	constructor(
 		handler: (data: HelixStream | undefined) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000,
+		validityInSeconds: number | undefined,
 		private readonly _userId: string
 	) {
 		super(handler, client, validityInSeconds);

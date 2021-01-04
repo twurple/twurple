@@ -1,7 +1,6 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import { rtfm } from 'twitch-common';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { extractUserId } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import type { CheermoteListData } from './CheermoteList';
 import { CheermoteList } from './CheermoteList';

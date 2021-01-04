@@ -1,9 +1,8 @@
 import { TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
-import type { CommercialLength } from '../../Shared/CommercialLength';
-import type { UserIdResolvable } from '../../../Toolkit/UserTools';
-import { extractUserId } from '../../../Toolkit/UserTools';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
+import type { CommercialLength } from '../../Shared/CommercialLength';
 import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixChannelData } from './HelixChannel';
 import { HelixChannel } from './HelixChannel';

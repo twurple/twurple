@@ -1,10 +1,9 @@
 import { flatten } from '@d-fischer/shared-utils';
 import { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
+import type { UserIdResolvable, UserNameResolvable } from 'twitch-common';
+import { extractUserId, extractUserName, rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { StreamNotLiveError } from '../../../Errors/StreamNotLiveError';
-import type { UserIdResolvable, UserNameResolvable } from '../../../Toolkit/UserTools';
-import { extractUserId, extractUserName } from '../../../Toolkit/UserTools';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';

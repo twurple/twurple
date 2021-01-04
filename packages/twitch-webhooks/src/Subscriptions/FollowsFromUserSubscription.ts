@@ -12,7 +12,7 @@ export class FollowsFromUserSubscription extends Subscription<HelixFollow> {
 	constructor(
 		handler: (data: HelixFollow) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000,
+		validityInSeconds: number | undefined,
 		private readonly _userId: string
 	) {
 		super(handler, client, validityInSeconds);

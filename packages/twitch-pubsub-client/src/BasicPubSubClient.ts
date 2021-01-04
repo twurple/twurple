@@ -6,10 +6,9 @@ import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
-import type { AuthProvider } from 'twitch';
-import { HellFreezesOverError } from 'twitch';
+import type { AuthProvider } from 'twitch-auth';
 import { getValidTokenFromProvider } from 'twitch-auth';
-import { rtfm } from 'twitch-common';
+import { HellFreezesOverError, rtfm } from 'twitch-common';
 import type { ClientOptions } from '@d-fischer/isomorphic-ws';
 import type { PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
@@ -162,9 +161,9 @@ export class BasicPubSubClient extends EventEmitter {
 				this._logger.info('Disconnected');
 			} else {
 				if (reason) {
-					this._logger.err(`Disconnected unexpectedly: ${reason.message}`);
+					this._logger.error(`Disconnected unexpectedly: ${reason.message}`);
 				} else {
-					this._logger.err('Disconnected unexpectedly');
+					this._logger.error('Disconnected unexpectedly');
 				}
 			}
 			this.emit(this.onDisconnect, manually, reason);
@@ -437,7 +436,7 @@ export class BasicPubSubClient extends EventEmitter {
 			this.removeListener(pongListener);
 		});
 		this._pingTimeoutTimer = setTimeout(async () => {
-			this._logger.err('Ping timeout');
+			this._logger.error('Ping timeout');
 			this.removeListener(pongListener);
 			return this.reconnect();
 		}, this._pingTimeout * 1000);

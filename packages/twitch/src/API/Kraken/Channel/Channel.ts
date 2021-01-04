@@ -1,3 +1,4 @@
+import type { UserNameResolveableType } from 'twitch-common';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { Team } from '../Team/Team';
@@ -32,7 +33,7 @@ export interface ChannelData extends ChannelPlaceholderData {
  * A Twitch Channel.
  */
 @rtfm<Channel>('twitch', 'Channel', 'id')
-export class Channel extends ChannelPlaceholder {
+export class Channel extends ChannelPlaceholder implements UserNameResolveableType {
 	/** @private */ protected declare readonly _data: ChannelData;
 
 	/** @private */

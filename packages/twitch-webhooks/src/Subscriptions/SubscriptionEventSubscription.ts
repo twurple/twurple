@@ -10,7 +10,7 @@ export class SubscriptionEventSubscription extends Subscription<HelixSubscriptio
 	constructor(
 		handler: (data: HelixSubscriptionEvent) => void,
 		client: WebHookListener,
-		validityInSeconds = 100000,
+		validityInSeconds: number | undefined,
 		private readonly _broadcasterId: string
 	) {
 		super(handler, client, validityInSeconds);

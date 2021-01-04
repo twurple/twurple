@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, UserIdResolvable } from 'twitch';
-import { extractUserId } from 'twitch';
+import type { ApiClient } from 'twitch';
 import { getValidTokenFromProvider, InvalidTokenTypeError } from 'twitch-auth';
-import { rtfm } from 'twitch-common';
+import type { UserIdResolvable } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import type { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
 import type { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
@@ -43,18 +43,7 @@ export class PubSubClient {
 	 * If not given, the user will be determined from the `apiClient`.
 	 */
 	async registerUserListener(apiClient: ApiClient, user?: UserIdResolvable): Promise<string> {
-		let userId;
-		if (user) {
-			userId = extractUserId(user);
-		} else {
-			if (apiClient.tokenType === 'app') {
-				throw new InvalidTokenTypeError(
-					'App tokens are not supported by PubSubClient; you need to pass authentication representing a user.'
-				);
-			}
-			const { tokenInfo } = await getValidTokenFromProvider(apiClient);
-			userId = tokenInfo.userId;
-		}
+		const userId = await PubSubClient._getCorrectUserId(apiClient, user);
 
 		this._userClients.set(
 			userId,
@@ -112,7 +101,7 @@ Register one using:
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
 	 *
-	 * It receives a {@PubSubBitsRedemptionMessage} object.
+	 * It receives a {@PubSubRedemptionMessage} object.
 	 */
 	async onRedemption(
 		user: UserIdResolvable,
@@ -166,5 +155,19 @@ Register one using:
 		callback: (message: PubSubChatModActionMessage) => void
 	): Promise<PubSubListener<never>> {
 		return this.getUserListener(user).onModAction(channel, callback);
+	}
+
+	private static async _getCorrectUserId(apiClient: ApiClient, user?: UserIdResolvable): Promise<string> {
+		if (user) {
+			return extractUserId(user);
+		} else {
+			if (apiClient.tokenType === 'app') {
+				throw new InvalidTokenTypeError(
+					'App tokens are not supported by PubSubClient; you need to pass authentication representing a user.'
+				);
+			}
+			const { tokenInfo } = await getValidTokenFromProvider(apiClient);
+			return tokenInfo.userId;
+		}
 	}
 }

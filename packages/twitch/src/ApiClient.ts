@@ -1,6 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import deprecate from '@d-fischer/deprecate';
-import { LogLevel } from '@d-fischer/logger';
+import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from 'twitch-api-call';
 import {
 	callTwitchApi,
@@ -94,8 +94,15 @@ export interface ApiConfig {
 
 	/**
 	 * The minimum level of log levels to see. Defaults to critical errors.
+	 *
+	 * @deprecated Use logger.minLevel instead.
 	 */
 	logLevel?: LogLevel;
+
+	/**
+	 * Options to pass to the logger.
+	 */
+	logger?: Partial<LoggerOptions>;
 }
 
 /**
@@ -280,7 +287,7 @@ export class ApiClient implements AuthProvider {
 			throw new ConfigError('No auth provider given. Please supply the `authProvider` option.');
 		}
 
-		this._helixRateLimiter = new HelixRateLimiter(config.logLevel ?? LogLevel.CRITICAL);
+		this._helixRateLimiter = new HelixRateLimiter({ logger: { minLevel: config.logLevel, ...config.logger } });
 
 		this._config = {
 			preAuth: false,
