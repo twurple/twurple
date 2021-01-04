@@ -692,7 +692,7 @@ export class ChatClient extends IrcClient {
 		super({
 			connection: {
 				hostName:
-					options.hostName ?? (options.webSocket ?? true ? 'irc.chat.twitch.tv' : 'irc-ws.chat.twitch.tv'),
+					options.hostName ?? (options.webSocket ?? true ? 'irc-ws.chat.twitch.tv' : 'irc.chat.twitch.tv'),
 				secure: options.ssl !== false
 			},
 			credentials: {
