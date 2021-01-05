@@ -1,6 +1,7 @@
 /// <reference lib="es2019.array" />
 
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { HelixExtensionData } from './HelixExtension';
 import type { HelixExtensionSlotType } from './HelixInstalledExtension';
 import { HelixInstalledExtension } from './HelixInstalledExtension';
@@ -28,6 +29,7 @@ export interface HelixInstalledExtensionListData {
 /**
  * A list of extensions installed in a channel.
  */
+@rtfm('twitch', 'HelixInstalledExtensionList')
 export class HelixInstalledExtensionList {
 	@Enumerable(false) private readonly _data: HelixInstalledExtensionListData;
 
