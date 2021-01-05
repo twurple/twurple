@@ -1,22 +1,4 @@
-/* eslint-disable filenames/match-exported */
-import { deprecateClass } from '@d-fischer/shared-utils';
-
-import { ApiClient } from './ApiClient';
-
-/** @deprecated Use the named export `ApiClient` instead. */
-const DeprecatedTwitchClient = deprecateClass(
-	ApiClient,
-	`[twitch] The default export has been deprecated. Use the named export instead:
-
-\timport { ApiClient } from 'twitch';`
-);
-/** @deprecated Use the named export `ApiClient` instead. */
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-type DeprecatedTwitchClient = ApiClient;
-/** @deprecated Use the named export `ApiClient` instead. */
-export default DeprecatedTwitchClient;
-export { ApiClient };
-
+export { ApiClient } from './ApiClient';
 export type { ApiConfig } from './ApiClient';
 
 export { ChatBadgeList } from './API/Badges/ChatBadgeList';

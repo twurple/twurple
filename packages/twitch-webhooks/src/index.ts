@@ -1,21 +1,4 @@
-/* eslint-disable filenames/match-exported */
-import { deprecateClass } from '@d-fischer/shared-utils';
-
-import { WebHookListener } from './WebHookListener';
-
-/** @deprecated Use the named export `WebHookListener` instead. */
-const DeprecatedWebHookListener = deprecateClass(
-	WebHookListener,
-	`[twitch-webhooks] The default export has been deprecated. Use the named export instead:
-
-\timport { WebHookListener } from 'twitch-webhooks';`
-);
-/** @deprecated Use the named export `WebHookListener` instead. */
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-type DeprecatedWebHookListener = WebHookListener;
-/** @deprecated Use the named export `WebHookListener` instead. */
-export default DeprecatedWebHookListener;
-export { WebHookListener };
+export { WebHookListener } from './WebHookListener';
 
 export type { WebHookListenerCertificateConfig } from './WebHookListener';
 export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
