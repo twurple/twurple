@@ -1,6 +1,6 @@
 {
   "name": "twitch",
-  "version": "4.4.0-pre.3",
+  "version": "4.4.0-pre.4",
   "description": "Interact with Twitch's API.",
   "keywords": [
     "twitch",
@@ -32,14 +32,14 @@
   "dependencies": {
     "@d-fischer/cache-decorators": "^2.1.1",
     "@d-fischer/deprecate": "^2.0.2",
-    "@d-fischer/logger": "^2.1.1",
-    "@d-fischer/rate-limiter": "^0.2.7",
+    "@d-fischer/logger": "^3.1.0",
+    "@d-fischer/rate-limiter": "^0.4.2",
     "@d-fischer/shared-utils": "^3.0.1",
     "top-package": "^1.0.0",
     "tslib": "^2.0.3",
-    "twitch-api-call": "^4.4.0-pre.3",
-    "twitch-auth": "^4.4.0-pre.3",
-    "twitch-common": "^4.4.0-pre.3"
+    "twitch-api-call": "^4.4.0-pre.4",
+    "twitch-auth": "^4.4.0-pre.4",
+    "twitch-common": "^4.4.0-pre.4"
   },
   "files": [
     "LICENSE",

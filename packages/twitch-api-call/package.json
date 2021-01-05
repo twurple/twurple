@@ -1,6 +1,6 @@
 {
   "name": "twitch-api-call",
-  "version": "4.4.0-pre.3",
+  "version": "4.4.0-pre.4",
   "description": "A light wrapper around the Twitch API.",
   "keywords": [
     "twitch",
@@ -29,8 +29,10 @@
   "dependencies": {
     "@d-fischer/cross-fetch": "^4.0.2",
     "@d-fischer/qs": "^7.0.2",
+    "@types/node-fetch": "^2.5.7",
+    "node-fetch": "^2.6.1",
     "tslib": "^2.0.3",
-    "twitch-common": "^4.4.0-pre.3"
+    "twitch-common": "^4.4.0-pre.4"
   },
   "files": [
     "LICENSE",

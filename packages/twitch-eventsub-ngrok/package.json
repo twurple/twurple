@@ -1,13 +1,14 @@
 {
-  "name": "twitch-webhooks",
+  "name": "twitch-eventsub-ngrok",
   "version": "4.4.0-pre.4",
-  "description": "Listen to events on Twitch via their WebHooks API.",
+  "description": "Test your EventSub listener locally using ngrok.",
   "keywords": [
     "twitch",
-    "webhooks",
+    "eventsub",
     "stream",
     "bot",
-    "events"
+    "events",
+    "ngrok"
   ],
   "sideEffects": false,
   "main": "lib",
@@ -21,28 +22,25 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/d-fischer/twitch.git",
-    "directory": "packages/twitch-webhooks"
+    "directory": "packages/twitch-eventsub-ngrok"
   },
-  "homepage": "https://d-fischer.github.io/twitch-webhooks",
+  "homepage": "https://d-fischer.github.io/twitch-eventsub-ngrok",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/logger": "^3.1.0",
     "@d-fischer/portfinder": "^1.0.28",
-    "@d-fischer/public-ip": "^4.0.3",
-    "@d-fischer/randomstring": "^1.1.7",
-    "@d-fischer/raw-body": "^2.4.3",
     "@d-fischer/shared-utils": "^3.0.1",
-    "httpanda": "^0.4.4",
-    "tslib": "^2.0.3",
-    "twitch-common": "^4.4.0-pre.4"
+    "ngrok": "^3.4.0",
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "twitch": "^4.4.0-pre.4"
+    "twitch": "^4.4.0-pre.4",
+    "twitch-eventsub": "^4.4.0-pre.4"
   },
   "peerDependencies": {
-    "twitch": "^4.4.0"
+    "twitch": "^4.4.0",
+    "twitch-eventsub": "^4.4.0"
   },
   "files": [
     "LICENSE",

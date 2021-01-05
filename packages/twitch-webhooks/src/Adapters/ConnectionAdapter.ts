@@ -20,6 +20,13 @@ export interface CommonConnectionAdapterConfig {
 }
 
 /**
+ * Options to override when using a {@ConnectionAdapter} instance.
+ */
+export interface ConnectionAdapterOverrideOptions {
+	defaultHookValidity?: number;
+}
+
+/**
  * An abstraction of a WebHook connection adapter.
  */
 export abstract class ConnectionAdapter {
@@ -94,6 +101,13 @@ export abstract class ConnectionAdapter {
 	 * @protected
 	 */
 	abstract get connectUsingSsl(): boolean;
+
+	/**
+	 * Options to override when using the adapter.
+	 */
+	get overrideOptions(): ConnectionAdapterOverrideOptions {
+		return {};
+	}
 
 	/**
 	 * The path prefix an external connection needs to reach the server.

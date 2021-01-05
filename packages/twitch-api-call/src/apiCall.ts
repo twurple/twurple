@@ -4,7 +4,7 @@ import fetch, { Headers } from '@d-fischer/cross-fetch';
 import { stringify } from '@d-fischer/qs';
 import { transformTwitchApiResponse } from './helpers/transform';
 import { getTwitchApiUrl } from './helpers/url';
-import type { TwitchApiCallOptions } from './TwitchApiCallOptions';
+import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchApiCallOptions';
 import { TwitchApiCallType } from './TwitchApiCallOptions';
 
 /**
@@ -13,11 +13,13 @@ import { TwitchApiCallType } from './TwitchApiCallOptions';
  * @param options
  * @param clientId
  * @param accessToken
+ * @param fetchOptions
  */
 export async function callTwitchApiRaw(
 	options: TwitchApiCallOptions,
 	clientId?: string,
-	accessToken?: string
+	accessToken?: string,
+	fetchOptions: TwitchApiCallFetchOptions = {}
 ): Promise<Response> {
 	const type = options.type === undefined ? TwitchApiCallType.Kraken : options.type;
 	const url = getTwitchApiUrl(options.url, type);
@@ -44,6 +46,7 @@ export async function callTwitchApiRaw(
 	}
 
 	const requestOptions: RequestInit = {
+		...(fetchOptions as RequestInit),
 		method: options.method ?? 'GET',
 		headers,
 		body
@@ -60,14 +63,16 @@ export async function callTwitchApiRaw(
  * @param accessToken The access token to call the API with.
  *
  * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
+ * @param fetchOptions Additional options to be passed to the `fetch` function.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function callTwitchApi<T = any>(
 	options: TwitchApiCallOptions,
 	clientId?: string,
-	accessToken?: string
+	accessToken?: string,
+	fetchOptions: TwitchApiCallFetchOptions = {}
 ): Promise<T> {
-	const response = await callTwitchApiRaw(options, clientId, accessToken);
+	const response = await callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
 
 	return transformTwitchApiResponse(response);
 }

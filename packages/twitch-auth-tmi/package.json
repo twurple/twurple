@@ -1,6 +1,6 @@
 {
   "name": "twitch-auth-tmi",
-  "version": "4.4.0-pre.3",
+  "version": "4.4.0-pre.4",
   "description": "Use tmi.js with the benefits of the twitch-auth authentication providers.",
   "keywords": [
     "twitch",
@@ -32,7 +32,7 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@types/tmi.js": "^1.4.2",
+    "@types/tmi.js": "^1.4.3",
     "tslib": "^2.0.3"
   },
   "peerDependencies": {
@@ -40,8 +40,8 @@
     "twitch-auth": "^4.4.0"
   },
   "devDependencies": {
-    "tmi.js": "^1.7.0",
-    "twitch-auth": "^4.4.0-pre.3"
+    "tmi.js": "^1.7.1",
+    "twitch-auth": "^4.4.0-pre.4"
   },
   "files": [
     "LICENSE",

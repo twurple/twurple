@@ -1,7 +1,7 @@
 import type { Options as BaseOptions } from 'tmi.js';
 import { Client as _BaseClient } from 'tmi.js';
 import type { AuthProvider } from 'twitch-auth';
-import { getValidTokenFromProvider } from 'twitch-auth';
+import { getValidTokenFromProvider, InvalidTokenTypeError } from 'twitch-auth';
 
 export interface Options extends Omit<BaseOptions, 'identity'> {
 	authProvider: AuthProvider;
@@ -19,6 +19,12 @@ class DecoratedClient extends BaseClient {
 				username: 'dummy',
 				// @ts-ignore TS2322 typings are not updated yet
 				password: async () => {
+					if (authProvider.tokenType === 'app') {
+						throw new InvalidTokenTypeError(
+							`You can not connect to chat using an AuthProvider that supplies app access tokens.
+Please provide an auth provider that provides user access tokens, for example \`RefreshableAuthProvider\`.`
+						);
+					}
 					const { accessToken } = await getValidTokenFromProvider(authProvider, ['chat:read', 'chat:edit']);
 					return accessToken.accessToken;
 				}
