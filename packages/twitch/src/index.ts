@@ -2,6 +2,7 @@
 import { deprecateClass } from '@d-fischer/shared-utils';
 
 import { ApiClient } from './ApiClient';
+
 /** @deprecated Use the named export `ApiClient` instead. */
 const DeprecatedTwitchClient = deprecateClass(
 	ApiClient,
@@ -92,6 +93,18 @@ export type { HelixFollowData } from './API/Helix/User/HelixFollow';
 export { HelixPrivilegedUser } from './API/Helix/User/HelixPrivilegedUser';
 export { HelixBroadcasterType, HelixUser, HelixUserType } from './API/Helix/User/HelixUser';
 export type { HelixUserData } from './API/Helix/User/HelixUser';
+
+export { HelixExtension } from './API/Helix/User/Extensions/HelixExtension';
+export { HelixInstalledExtension } from './API/Helix/User/Extensions/HelixInstalledExtension';
+export type { HelixExtensionSlotType } from './API/Helix/User/Extensions/HelixInstalledExtension';
+export { HelixInstalledExtensionList } from './API/Helix/User/Extensions/HelixInstalledExtensionList';
+export { HelixUserExtension } from './API/Helix/User/Extensions/HelixUserExtension';
+export type {
+	HelixUserExtensionUpdatePayload,
+	HelixUserExtensionUpdatePayloadSlot,
+	HelixUserExtensionUpdatePayloadActiveSlot,
+	HelixUserExtensionUpdatePayloadInactiveSlot
+} from './API/Helix/User/Extensions/HelixUserExtensionUpdatePayload';
 
 export { HelixVideo } from './API/Helix/Video/HelixVideo';
 

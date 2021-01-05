@@ -6,12 +6,17 @@ import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTota
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
+import type { HelixInstalledExtensionListData } from './Extensions/HelixInstalledExtensionList';
+import { HelixInstalledExtensionList } from './Extensions/HelixInstalledExtensionList';
+import type { HelixUserExtensionUpdatePayload } from './Extensions/HelixUserExtensionUpdatePayload';
 import type { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { HelixFollow } from './HelixFollow';
 import type { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import { HelixPrivilegedUser } from './HelixPrivilegedUser';
 import type { HelixUserData } from './HelixUser';
 import { HelixUser } from './HelixUser';
+import type { HelixUserExtensionData } from './Extensions/HelixUserExtension';
+import { HelixUserExtension } from './Extensions/HelixUserExtension';
 
 /** @private */
 export enum UserLookupType {
@@ -195,6 +200,56 @@ export class HelixUserApi extends BaseApi {
 				to_id: extractUserId(toUser)
 			}
 		});
+	}
+
+	/**
+	 * Get a list of all extensions for the authenticated user.
+	 */
+	async getMyExtensions(): Promise<HelixUserExtension[]> {
+		const result = await this._client.callApi<HelixResponse<HelixUserExtensionData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'users/extensions/list'
+		});
+
+		return result.data.map(data => new HelixUserExtension(data));
+	}
+
+	/**
+	 * Get a list of all installed extensions for the given user.
+	 *
+	 * @param user The user to get the installed extensions for.
+	 *
+	 * If not given, get the installed extensions for the authenticated user.
+	 */
+	async getActiveExtensions(user?: UserIdResolvable): Promise<HelixInstalledExtensionList> {
+		const userId = user ? extractUserId(user) : undefined;
+		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
+			type: TwitchApiCallType.Helix,
+			url: 'users/extensions',
+			query: {
+				user_id: userId
+			}
+		});
+
+		return new HelixInstalledExtensionList(result.data);
+	}
+
+	/**
+	 * Updates the installed extensions for the authenticated user.
+	 *
+	 * @param data The extension installation payload.
+	 *
+	 * The format is shown on the [Twitch documentation](https://dev.twitch.tv/docs/api/reference#update-user-extensions).
+	 * Don't use the "data" wrapper though.
+	 */
+	async updateMyActiveExtensions(data: HelixUserExtensionUpdatePayload): Promise<HelixInstalledExtensionList> {
+		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
+			type: TwitchApiCallType.Helix,
+			url: 'users/extensions',
+			jsonBody: { data }
+		});
+
+		return new HelixInstalledExtensionList(result.data);
 	}
 
 	private static _makeFollowsQuery(filter: HelixFollowFilter) {
