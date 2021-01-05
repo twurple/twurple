@@ -1,5 +1,4 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import deprecate from '@d-fischer/deprecate';
 import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from 'twitch-api-call';
 import {
@@ -195,23 +194,6 @@ export class ApiClient implements AuthProvider {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static async callApi<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
 		return callTwitchApi(options, clientId, accessToken);
-	}
-
-	/**
-	 * Makes a call to the Twitch API using given credentials.
-	 *
-	 * @deprecated Use `callTwitchApi` from `twitch-api-call` instead.
-	 *
-	 * @param options The configuration of the call.
-	 * @param clientId The client ID of your application.
-	 * @param accessToken The access token to call the API with.
-	 *
-	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
-	 */
-	// eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
-	static async callAPI<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
-		deprecate('[twitch] ChatClient.callAPI', 'Use callApi instead.');
-		return this.callApi<T>(options, clientId, accessToken);
 	}
 
 	/**
@@ -419,19 +401,6 @@ export class ApiClient implements AuthProvider {
 		}
 
 		return transformTwitchApiResponse<T>(response);
-	}
-
-	/**
-	 * Makes a call to the Twitch API using your access token.
-	 *
-	 * @deprecated Use callApi instead.
-	 *
-	 * @param options The configuration of the call.
-	 */
-	// eslint-disable-next-line @typescript-eslint/naming-convention,@typescript-eslint/no-explicit-any
-	async callAPI<T = any>(options: TwitchApiCallOptions): Promise<T> {
-		deprecate('[twitch] ChatClient#callAPI', 'Use callApi instead.');
-		return this.callApi<T>(options);
 	}
 
 	/**

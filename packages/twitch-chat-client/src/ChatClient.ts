@@ -2119,13 +2119,6 @@ export class ChatClient extends IrcClient {
 		});
 	}
 
-	/** @deprecated Use addVip instead. */
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	async addVIP(channel: string, user: string): Promise<void> {
-		deprecate('[twitch-chat-client] ChatClient#addVIP', 'Use `addVip` instead.');
-		return this.addVip(channel, user);
-	}
-
 	/**
 	 * Takes VIP status from a user in a channel.
 	 *
@@ -2150,13 +2143,6 @@ export class ChatClient extends IrcClient {
 		});
 	}
 
-	/** @deprecated Use removeVip instead. */
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	async removeVIP(channel: string, user: string): Promise<void> {
-		deprecate('[twitch-chat-client] ChatClient#removeVIP', 'Use `removeVip` instead.');
-		return this.removeVip(channel, user);
-	}
-
 	/**
 	 * Retrieves a list of VIPs in a channel.
 	 *
@@ -2173,13 +2159,6 @@ export class ChatClient extends IrcClient {
 			});
 			void this.say(channel, '/vips');
 		});
-	}
-
-	/** @deprecated Use getVips instead. */
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	async getVIPs(channel: string): Promise<string[]> {
-		deprecate('[twitch-chat-client] ChatClient#getVIPs', 'Use `getVips` instead.');
-		return this.getVips(channel);
 	}
 
 	/**

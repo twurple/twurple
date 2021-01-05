@@ -108,12 +108,6 @@ export class Stream {
 		return this._data.average_fps;
 	}
 
-	/** @deprecated Use averageFps instead. */
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	get averageFPS(): number {
-		return this._data.average_fps;
-	}
-
 	/**
 	 * The delay of the stream, in seconds.
 	 */
