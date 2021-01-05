@@ -72,6 +72,7 @@ const memberNames = [
 	'^show_in_bits_card$',
 	'^last_updated$',
 	'^global_cooldown$',
+	'^can_activate$',
 	// HTTP
 	'^Accept$'
 ];
