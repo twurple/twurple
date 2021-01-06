@@ -1,8 +1,7 @@
 import { Cacheable, Cached, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
-import type { ChatEmoteData } from './ChatEmote';
-import { ChatEmote } from './ChatEmote';
+import { ChatEmote, rtfm } from 'twitch-common';
+import type { ChatEmoteData } from 'twitch-common';
 
 /**
  * A list of emotes.

@@ -38,8 +38,13 @@
     "top-package": "^1.0.0",
     "tslib": "^2.0.3",
     "twitch-api-call": "^4.4.0-pre.4",
-    "twitch-auth": "^4.4.0-pre.4",
     "twitch-common": "^4.4.0-pre.4"
+  },
+  "peerDependencies": {
+    "twitch-auth": "^4.4.0-pre.4"
+  },
+  "devDependencies": {
+    "twitch-auth": "^4.4.0-pre.4"
   },
   "files": [
     "LICENSE",

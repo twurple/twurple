@@ -9,25 +9,14 @@ import {
 	TwitchApiCallType
 } from 'twitch-api-call';
 
-import type { AccessToken, AuthProvider, AuthProviderTokenType, RefreshConfig, TokenInfoData } from 'twitch-auth';
-import {
-	ClientCredentialsAuthProvider,
-	exchangeCode,
-	getAppToken,
-	getTokenInfo,
-	InvalidTokenError,
-	RefreshableAuthProvider,
-	refreshUserToken,
-	StaticAuthProvider,
-	TokenInfo
-} from 'twitch-auth';
-import { rtfm } from 'twitch-common';
+import type { AccessToken, AuthProvider, AuthProviderTokenType, TokenInfoData } from 'twitch-auth';
+import { InvalidTokenError, TokenInfo } from 'twitch-auth';
+import { CheermoteBackground, CheermoteScale, CheermoteState, rtfm } from 'twitch-common';
 
 import { BadgesApi } from './API/Badges/BadgesApi';
 import { HelixApiGroup } from './API/Helix/HelixApiGroup';
 import { HelixRateLimiter } from './API/Helix/HelixRateLimiter';
 import { KrakenApiGroup } from './API/Kraken/KrakenApiGroup';
-import { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Shared/BaseCheermoteList';
 import { UnsupportedApi } from './API/Unsupported/UnsupportedApi';
 
 import { ConfigError } from './Errors/ConfigError';
@@ -122,141 +111,6 @@ export interface TwitchApiCallOptionsInternal {
 export class ApiClient implements AuthProvider {
 	private readonly _config: ApiConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;
-
-	/**
-	 * Creates a new instance with fixed credentials.
-	 *
-	 * @deprecated Use the constructor of {@StaticAuthProvider} or {@RefreshableAuthProvider} and pass it as `authProvider` option to this class' constructor instead.
-	 *
-	 * @param clientId The client ID of your application.
-	 * @param accessToken The access token to call the API with.
-	 *
-	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
-	 * @param scopes The scopes your supplied token has.
-	 *
-	 * If this argument is given, the scopes need to be correct, or weird things might happen. If it's not (i.e. it's `undefined`), we fetch the correct scopes for you.
-	 *
-	 * If you can't exactly say which scopes your token has, don't use this parameter/set it to `undefined`.
-	 * @param refreshConfig Configuration to automatically refresh expired tokens.
-	 * @param config Additional configuration to pass to the constructor.
-	 * @param tokenType The type of token you passed.
-	 *
-	 * This should almost always be 'user' (which is the default).
-	 *
-	 * If you're passing 'app' here, please consider using {@ApiClient.withClientCredentials} instead.
-	 */
-	static withCredentials(
-		clientId: string,
-		accessToken?: string,
-		scopes?: string[],
-		refreshConfig?: RefreshConfig,
-		config: Partial<ApiConfig> = {},
-		tokenType: AuthProviderTokenType = 'user'
-	): ApiClient {
-		const authProvider = refreshConfig
-			? new RefreshableAuthProvider(
-					new StaticAuthProvider(clientId, accessToken, scopes, tokenType),
-					refreshConfig
-			  )
-			: new StaticAuthProvider(clientId, accessToken, scopes, tokenType);
-
-		return new this({ ...config, authProvider });
-	}
-
-	/**
-	 * Creates a new instance with client credentials.
-	 *
-	 * @deprecated Use the constructor of {@ClientCredentialsAuthProvider} and pass it as `authProvider` option to this class' constructor instead.
-	 *
-	 * @param clientId The client ID of your application.
-	 * @param clientSecret The client secret of your application.
-	 * @param config Additional configuration to pass to the constructor.
-	 */
-	static withClientCredentials(clientId: string, clientSecret?: string, config: Partial<ApiConfig> = {}): ApiClient {
-		const authProvider = clientSecret
-			? new ClientCredentialsAuthProvider(clientId, clientSecret)
-			: new StaticAuthProvider(clientId);
-
-		return new this({ ...config, authProvider });
-	}
-
-	/**
-	 * Makes a call to the Twitch API using given credentials.
-	 *
-	 * @deprecated Use `callTwitchApi` from `twitch-api-call` instead.
-	 *
-	 * @param options The configuration of the call.
-	 * @param clientId The client ID of your application.
-	 * @param accessToken The access token to call the API with.
-	 *
-	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
-	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	static async callApi<T = any>(options: TwitchApiCallOptions, clientId?: string, accessToken?: string): Promise<T> {
-		return callTwitchApi(options, clientId, accessToken);
-	}
-
-	/**
-	 * Retrieves an access token with your client credentials and an authorization code.
-	 *
-	 * @deprecated Use `exchangeCode` from `twitch-auth` instead.
-	 *
-	 * @param clientId The client ID of your application.
-	 * @param clientSecret The client secret of your application.
-	 * @param code The authorization code.
-	 * @param redirectUri The redirect URI. This serves no real purpose here, but must still match with the redirect URI you configured in the Twitch Developer dashboard.
-	 */
-	static async getAccessToken(
-		clientId: string,
-		clientSecret: string,
-		code: string,
-		redirectUri: string
-	): Promise<AccessToken> {
-		return exchangeCode(clientId, clientSecret, code, redirectUri);
-	}
-
-	/**
-	 * Retrieves an app access token with your client credentials.
-	 *
-	 * @deprecated Use `getAppToken` from `twitch-auth` instead.
-	 *
-	 * @param clientId The client ID of your application.
-	 * @param clientSecret The client secret of your application.
-	 */
-	static async getAppAccessToken(clientId: string, clientSecret: string): Promise<AccessToken> {
-		return getAppToken(clientId, clientSecret);
-	}
-
-	/**
-	 * Refreshes an expired access token with your client credentials and the refresh token that was given by the initial authentication.
-	 *
-	 * @deprecated Use `refreshUserToken` from `twitch-auth` instead.
-	 *
-	 * @param clientId The client ID of your application.
-	 * @param clientSecret The client secret of your application.
-	 * @param refreshToken The refresh token.
-	 */
-	static async refreshAccessToken(
-		clientId: string,
-		clientSecret: string,
-		refreshToken: string
-	): Promise<AccessToken> {
-		return refreshUserToken(clientId, clientSecret, refreshToken);
-	}
-
-	/**
-	 * Retrieves information about an access token.
-	 *
-	 * @deprecated Use `getTokenInfo` from `twitch-auth` instead.
-	 *
-	 * @param clientId The client ID of your application.
-	 * @param accessToken The access token to get the information of.
-	 *
-	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
-	 */
-	static async getTokenInfo(accessToken: string, clientId?: string): Promise<TokenInfo> {
-		return getTokenInfo(accessToken, clientId);
-	}
 
 	/**
 	 * Creates a new API client instance.

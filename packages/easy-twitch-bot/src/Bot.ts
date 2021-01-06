@@ -1,5 +1,4 @@
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import { ApiClient } from 'twitch';
 import type { AuthProvider } from 'twitch-auth';
 import { getTokenInfo, StaticAuthProvider } from 'twitch-auth';
 import type { PrivateMessage } from 'twitch-chat-client';
@@ -8,8 +7,7 @@ import type { BotCommand, BotCommandMatch } from './BotCommand';
 import { BotCommandContext } from './BotCommandContext';
 
 export interface BotConfig {
-	auth?: string | AuthProvider;
-	client?: ApiClient;
+	auth: string | AuthProvider;
 	debug?: boolean;
 	channel?: string;
 	channels?: ResolvableValue<string[]>;
@@ -23,10 +21,10 @@ export class Bot {
 	private readonly _prefix: string;
 
 	static async create(config: BotConfig): Promise<Bot> {
-		return new this(await this._createApiClientForConfig(config), config);
+		return new this(await this._createAuthProviderForConfig(config), config);
 	}
 
-	constructor(public readonly api: ApiClient, { channel, channels, debug, commands, prefix }: BotConfig) {
+	constructor(auth: AuthProvider, { channel, channels, debug, commands, prefix }: BotConfig) {
 		this._prefix = prefix ?? '!';
 		const resolvableChannels = channel ? [channel] : channels;
 
@@ -36,7 +34,7 @@ export class Bot {
 
 		this._commands = new Map<string, BotCommand>(commands?.map(cmd => [cmd.name, cmd]));
 
-		this.chat = new ChatClient(api, { logLevel: debug ? LogLevel.DEBUG : LogLevel.ERROR, channels });
+		this.chat = new ChatClient(auth, { logLevel: debug ? LogLevel.DEBUG : LogLevel.ERROR, channels });
 
 		this.chat.onPrivmsg(async (currentChannel, user, message, msg) => {
 			const match = this.findMatch(msg);
@@ -48,19 +46,12 @@ export class Bot {
 		void this.chat.connect();
 	}
 
-	private static async _createApiClientForConfig(config: BotConfig): Promise<ApiClient> {
-		if (config.client) {
-			return config.client;
-		} else if (config.auth) {
-			if (typeof config.auth === 'string') {
-				const info = await getTokenInfo(config.auth);
-				return new ApiClient({ authProvider: new StaticAuthProvider(info.clientId, config.auth, info.scopes) });
-			} else {
-				return new ApiClient({ authProvider: config.auth });
-			}
-		} else {
-			throw new Error("didn't pass client nor auth option, exiting");
+	private static async _createAuthProviderForConfig(config: BotConfig): Promise<AuthProvider> {
+		if (typeof config.auth === 'string') {
+			const info = await getTokenInfo(config.auth);
+			return new StaticAuthProvider(info.clientId, config.auth, info.scopes);
 		}
+		return config.auth;
 	}
 
 	private findMatch(msg: PrivateMessage): BotCommandMatch | null {

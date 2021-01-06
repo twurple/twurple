@@ -1,5 +1,4 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
 export interface PubSubChatModActionMessageContent {
@@ -19,13 +18,11 @@ export interface PubSubChatModActionMessageData {
  */
 @rtfm<PubSubChatModActionMessage>('twitch-pubsub-client', 'PubSubChatModActionMessage', 'userId')
 export class PubSubChatModActionMessage {
-	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _data: PubSubChatModActionMessageData;
 
 	/** @private */
-	constructor(data: PubSubChatModActionMessageData, private readonly _channelId: string, apiClient: ApiClient) {
+	constructor(data: PubSubChatModActionMessageData, private readonly _channelId: string) {
 		this._data = data;
-		this._apiClient = apiClient;
 	}
 
 	/**
@@ -33,15 +30,6 @@ export class PubSubChatModActionMessage {
 	 */
 	get channelId(): string {
 		return this._channelId;
-	}
-
-	/**
-	 * Retrieves more information about the channel where the action was performed.
-	 *
-	 * @deprecated Use {@HelixUserApi#getUserById} instead.
-	 */
-	async getChannel(): Promise<HelixUser | null> {
-		return this._apiClient.helix.users.getUserById(this._channelId);
 	}
 
 	/**
@@ -77,14 +65,5 @@ export class PubSubChatModActionMessage {
 	 */
 	get userName(): string {
 		return this._data.data.created_by;
-	}
-
-	/**
-	 * Retrieves more information about the user that performed the action.
-	 *
-	 * @deprecated Use {@HelixUserApi#getUserById} instead.
-	 */
-	async getUser(): Promise<HelixUser | null> {
-		return this._apiClient.helix.users.getUserById(this._data.data.created_by_user_id);
 	}
 }

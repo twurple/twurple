@@ -1,6 +1,5 @@
 import type { MakeOptional } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
@@ -31,13 +30,11 @@ export interface PubSubBitsMessageData {
  */
 @rtfm<PubSubBitsMessage>('twitch-pubsub-client', 'PubSubBitsMessage', 'userId')
 export class PubSubBitsMessage {
-	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _data: PubSubBitsMessageData;
 
 	/** @private */
-	constructor(data: PubSubBitsMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubBitsMessageData) {
 		this._data = data;
-		this._apiClient = apiClient;
 	}
 
 	/**
@@ -52,15 +49,6 @@ export class PubSubBitsMessage {
 	 */
 	get userName(): string | undefined {
 		return this._data.data.user_name;
-	}
-
-	/**
-	 * Retrieves more information about the user.
-	 *
-	 * @deprecated Use {@HelixUserApi#getUserById} instead.
-	 */
-	async getUser(): Promise<HelixUser | null> {
-		return this._data.data.user_id ? this._apiClient.helix.users.getUserById(this._data.data.user_id) : null;
 	}
 
 	/**

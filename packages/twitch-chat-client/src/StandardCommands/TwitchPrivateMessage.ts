@@ -1,6 +1,6 @@
 import { MessageTypes } from 'ircv3';
-import type { CheermoteList } from 'twitch';
 import { rtfm } from 'twitch-common';
+import type { BaseCheermoteList } from 'twitch-common';
 import { ChatUser } from '../ChatUser';
 import type { ParsedMessageCheerPart, ParsedMessagePart } from '../Toolkit/EmoteTools';
 import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../Toolkit/EmoteTools';
@@ -76,7 +76,7 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 *
 	 * @param cheermotes A list of cheermotes
 	 */
-	parseEmotesAndBits(cheermotes: CheermoteList): ParsedMessagePart[] {
+	parseEmotesAndBits(cheermotes: BaseCheermoteList): ParsedMessagePart[] {
 		const messageText = this.params.message;
 		const foundCheermotes = cheermotes.parseMessage(messageText);
 		const foundEmotesAndCheermotes: ParsedMessagePart[] = [

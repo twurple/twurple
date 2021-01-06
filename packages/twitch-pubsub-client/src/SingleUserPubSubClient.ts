@@ -1,8 +1,8 @@
 import type { LoggerOptions } from '@d-fischer/logger';
 import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from 'twitch';
-import { InvalidTokenError } from 'twitch';
+import type { AuthProvider } from 'twitch-auth';
+import { getValidTokenFromProvider } from 'twitch-auth';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
 import { BasicPubSubClient } from './BasicPubSubClient';
@@ -26,9 +26,9 @@ import { PubSubListener } from './PubSubListener';
  */
 interface SingleUserPubSubClientOptions {
 	/**
-	 * The {@ApiClient} instance to use for API requests and token management.
+	 * The {@AuthProvider} instance to use for token management.
 	 */
-	twitchClient: ApiClient;
+	authProvider: AuthProvider;
 
 	/**
 	 * The underlying {@BasicPubSubClient} instance. If not given, we'll create a new one.
@@ -56,7 +56,7 @@ interface SingleUserPubSubClientOptions {
  */
 @rtfm('twitch-pubsub-client', 'SingleUserPubSubClient')
 export class SingleUserPubSubClient {
-	@Enumerable(false) private readonly _apiClient: ApiClient;
+	@Enumerable(false) private readonly _authProvider: AuthProvider;
 	@Enumerable(false) private readonly _pubSubClient: BasicPubSubClient;
 
 	private readonly _listeners = new Map<string, Array<PubSubListener<never>>>();
@@ -69,12 +69,12 @@ export class SingleUserPubSubClient {
 	 * @expandParams
 	 */
 	constructor({
-		twitchClient,
+		authProvider,
 		pubSubClient,
 		logLevel = LogLevel.WARNING,
 		logger = {}
 	}: SingleUserPubSubClientOptions) {
-		this._apiClient = twitchClient;
+		this._authProvider = authProvider;
 		const loggerOptions: Partial<LoggerOptions> = {
 			minLevel: logLevel,
 			...logger
@@ -83,7 +83,7 @@ export class SingleUserPubSubClient {
 		this._pubSubClient.onMessage(async (topic, messageData) => {
 			const [type, userId, ...args] = topic.split('.');
 			if (this._listeners.has(topic) && userId === (await this._getUserId())) {
-				const message = this._parseMessage(type, args, messageData);
+				const message = SingleUserPubSubClient._parseMessage(type, args, messageData);
 				if (message) {
 					for (const listener of this._listeners.get(topic)!) {
 						(listener as PubSubListener).call(message);
@@ -186,32 +186,25 @@ export class SingleUserPubSubClient {
 		}
 	}
 
-	private _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage | undefined {
+	private static _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage | undefined {
 		switch (type) {
 			case 'channel-bits-events-v2': {
-				return new PubSubBitsMessage(messageData as PubSubBitsMessageData, this._apiClient);
+				return new PubSubBitsMessage(messageData as PubSubBitsMessageData);
 			}
 			case 'channel-bits-badge-unlocks': {
-				return new PubSubBitsBadgeUnlockMessage(
-					messageData as PubSubBitsBadgeUnlockMessageData,
-					this._apiClient
-				);
+				return new PubSubBitsBadgeUnlockMessage(messageData as PubSubBitsBadgeUnlockMessageData);
 			}
 			case 'channel-points-channel-v1': {
-				return new PubSubRedemptionMessage(messageData as PubSubRedemptionMessageData, this._apiClient);
+				return new PubSubRedemptionMessage(messageData as PubSubRedemptionMessageData);
 			}
 			case 'channel-subscribe-events-v1': {
-				return new PubSubSubscriptionMessage(messageData as PubSubSubscriptionMessageData, this._apiClient);
+				return new PubSubSubscriptionMessage(messageData as PubSubSubscriptionMessageData);
 			}
 			case 'chat_moderator_actions': {
-				return new PubSubChatModActionMessage(
-					messageData as PubSubChatModActionMessageData,
-					args[0],
-					this._apiClient
-				);
+				return new PubSubChatModActionMessage(messageData as PubSubChatModActionMessageData, args[0]);
 			}
 			case 'whispers': {
-				return new PubSubWhisperMessage(messageData as PubSubWhisperMessageData, this._apiClient);
+				return new PubSubWhisperMessage(messageData as PubSubWhisperMessageData);
 			}
 			default:
 				return undefined;
@@ -223,38 +216,9 @@ export class SingleUserPubSubClient {
 			return this._userId;
 		}
 
-		const tokenData = await this._apiClient.getAccessToken();
+		const { tokenInfo } = await getValidTokenFromProvider(this._authProvider);
 
-		let lastTokenError: InvalidTokenError | undefined = undefined;
-
-		if (tokenData) {
-			try {
-				const { userId } = await this._apiClient.getTokenInfo();
-				return (this._userId = userId);
-			} catch (e) {
-				if (e instanceof InvalidTokenError) {
-					lastTokenError = e;
-				} else {
-					throw e;
-				}
-			}
-		}
-
-		try {
-			const newTokenInfo = await this._apiClient.refreshAccessToken();
-			if (newTokenInfo) {
-				const { userId } = await this._apiClient.getTokenInfo();
-				return (this._userId = userId);
-			}
-		} catch (e) {
-			if (e instanceof InvalidTokenError) {
-				lastTokenError = e;
-			} else {
-				throw e;
-			}
-		}
-
-		throw lastTokenError ?? new Error('PubSub authentication failed');
+		return (this._userId = tokenInfo.userId);
 	}
 
 	private async _addListener<T extends PubSubMessage>(
@@ -271,7 +235,7 @@ export class SingleUserPubSubClient {
 			this._listeners.get(topicName)!.push(listener);
 		} else {
 			this._listeners.set(topicName, [listener]);
-			await this._pubSubClient.listen(topicName, this._apiClient, scope);
+			await this._pubSubClient.listen(topicName, this._authProvider, scope);
 		}
 		return listener;
 	}

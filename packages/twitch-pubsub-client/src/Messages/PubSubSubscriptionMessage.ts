@@ -1,5 +1,4 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 
@@ -30,13 +29,11 @@ export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
  */
 @rtfm<PubSubSubscriptionMessage>('twitch-pubsub-client', 'PubSubSubscriptionMessage', 'userId')
 export class PubSubSubscriptionMessage {
-	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _data: PubSubSubscriptionMessageData;
 
 	/** @private */
-	constructor(data: PubSubSubscriptionMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubSubscriptionMessageData) {
 		this._data = data;
-		this._apiClient = apiClient;
 	}
 
 	/**
@@ -177,29 +174,5 @@ export class PubSubSubscriptionMessage {
 		return this._data.context === 'subgift' || this._data.context === 'anonsubgift'
 			? this._data.multi_month_duration
 			: null;
-	}
-
-	/**
-	 * Retrieves more information about the subscribing user.
-	 *
-	 * @deprecated Use {@HelixUserApi#getUserById} instead.
-	 */
-	async getUser(): Promise<HelixUser | null> {
-		return this._apiClient.helix.users.getUserById(this.userId);
-	}
-
-	/**
-	 * Retrieves more information about the gifting user.
-	 *
-	 * Returns null if the subscription is not a gift.
-	 *
-	 * @deprecated Use {@HelixUserApi#getUserById} instead.
-	 */
-	async getGifter(): Promise<HelixUser | null> {
-		if (!this.isGift) {
-			return null;
-		}
-
-		return this._apiClient.helix.users.getUserById(this.gifterId!);
 	}
 }

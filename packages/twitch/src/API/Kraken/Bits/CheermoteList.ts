@@ -1,14 +1,13 @@
 import { Enumerable, indexBy } from '@d-fischer/shared-utils';
-import { HellFreezesOverError, rtfm } from 'twitch-common';
-import type { ApiClient } from '../../../ApiClient';
+import { BaseCheermoteList, HellFreezesOverError, rtfm } from 'twitch-common';
 import type {
 	CheermoteBackground,
 	CheermoteDisplayInfo,
 	CheermoteFormat,
 	CheermoteScale,
 	CheermoteState
-} from '../../Shared/BaseCheermoteList';
-import { BaseCheermoteList } from '../../Shared/BaseCheermoteList';
+} from 'twitch-common';
+import type { ApiClient } from '../../../ApiClient';
 
 /** @private */
 export type CheermoteActionImageUrlsByScale = Record<CheermoteScale, string>;

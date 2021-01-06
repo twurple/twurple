@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from 'twitch-common';
+import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from 'twitch-common';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
@@ -25,31 +25,6 @@ export enum HelixBroadcasterType {
 
 	/**
 	 * A user that's neither a partner nor an affiliate.
-	 */
-	None = ''
-}
-
-/**
- * The type of a user.
- */
-export enum HelixUserType {
-	/**
-	 * A Twitch staff member.
-	 */
-	Staff = 'staff',
-
-	/**
-	 * A Twitch administrator.
-	 */
-	Admin = 'admin',
-
-	/**
-	 * A global moderator.
-	 */
-	GlobalMod = 'global_mod',
-
-	/**
-	 * A user with no special permissions across Twitch.
 	 */
 	None = ''
 }

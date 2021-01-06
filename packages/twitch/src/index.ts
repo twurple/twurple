@@ -73,7 +73,7 @@ export { HelixTag } from './API/Helix/Tag/HelixTag';
 export { HelixFollow } from './API/Helix/User/HelixFollow';
 export type { HelixFollowData } from './API/Helix/User/HelixFollow';
 export { HelixPrivilegedUser } from './API/Helix/User/HelixPrivilegedUser';
-export { HelixBroadcasterType, HelixUser, HelixUserType } from './API/Helix/User/HelixUser';
+export { HelixBroadcasterType, HelixUser } from './API/Helix/User/HelixUser';
 export type { HelixUserData } from './API/Helix/User/HelixUser';
 
 export { HelixExtension } from './API/Helix/User/Extensions/HelixExtension';
@@ -104,7 +104,6 @@ export { ChannelSubscription } from './API/Kraken/Channel/ChannelSubscription';
 export { EmoteSetList } from './API/Kraken/Channel/EmoteSetList';
 export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
 
-export { ChatEmote } from './API/Kraken/Chat/ChatEmote';
 export { ChatEmoteList } from './API/Kraken/Chat/ChatEmoteList';
 
 export { Stream, StreamType } from './API/Kraken/Stream/Stream';
@@ -124,41 +123,23 @@ export { Video } from './API/Kraken/Video/Video';
 
 export { ChattersList } from './API/Unsupported/ChattersList';
 
-export type { CommercialLength } from './API/Shared/CommercialLength';
-export { CheermoteBackground, CheermoteScale, CheermoteState } from './API/Shared/BaseCheermoteList';
-export type { CheermoteDisplayInfo } from './API/Shared/BaseCheermoteList';
-
 export { ConfigError } from './Errors/ConfigError';
 export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
 export { StreamNotLiveError } from './Errors/StreamNotLiveError';
 
-/** @deprecated Import this from `twitch-api-call` instead. */
-export { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
-/** @deprecated Import this from `twitch-api-call` instead. */
-export type { TwitchApiCallOptions } from 'twitch-api-call';
-/** @deprecated Import `HttpStatusCodeError` from `twitch-api-call` instead. */
-export { HttpStatusCodeError as HTTPStatusCodeError } from 'twitch-api-call';
-/** @deprecated Import `TwitchApiCallType` from `twitch-api-call` instead. */
-export { TwitchApiCallType as TwitchAPICallType } from 'twitch-api-call';
-/** @deprecated Import `TwitchApiCallOptions` from `twitch-api-call` instead. */
-export type { TwitchApiCallOptions as TwitchAPICallOptions } from 'twitch-api-call';
-
-/** @deprecated Import this from `twitch-auth` instead. */
 export {
-	AccessToken,
-	InvalidTokenError,
-	InvalidTokenTypeError,
-	StaticAuthProvider,
-	ClientCredentialsAuthProvider,
-	RefreshableAuthProvider,
-	TokenInfo
-} from 'twitch-auth';
-/** @deprecated Import this from `twitch-auth` instead. */
-export type { AuthProvider, AuthProviderTokenType, RefreshConfig } from 'twitch-auth';
-
-/** @deprecated Import this from `twitch-common` instead. */
-export { HellFreezesOverError } from 'twitch-common';
-/** @deprecated Import this from `twitch-common` instead. */
-export { extractUserId, extractUserName } from 'twitch-common';
-/** @deprecated Import this from `twitch-common` instead. */
-export type { UserIdResolvable, UserNameResolvable } from 'twitch-common';
+	ChatEmote,
+	CheermoteBackground,
+	CheermoteScale,
+	CheermoteState,
+	extractUserId,
+	extractUserName,
+	HellFreezesOverError
+} from 'twitch-common';
+export type {
+	CheermoteDisplayInfo,
+	CommercialLength,
+	HelixUserType,
+	UserIdResolvable,
+	UserNameResolvable
+} from 'twitch-common';

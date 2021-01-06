@@ -1,5 +1,4 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
 export interface PubSubRedemptionMessageUserData {
@@ -62,13 +61,11 @@ export interface PubSubRedemptionMessageData {
  */
 @rtfm<PubSubRedemptionMessage>('twitch-pubsub-client', 'PubSubRedemptionMessage', 'id')
 export class PubSubRedemptionMessage {
-	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _data: PubSubRedemptionMessageData;
 
 	/** @private */
-	constructor(data: PubSubRedemptionMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubRedemptionMessageData) {
 		this._data = data;
-		this._apiClient = apiClient;
 	}
 
 	/**
@@ -100,28 +97,10 @@ export class PubSubRedemptionMessage {
 	}
 
 	/**
-	 * Retrieves more information about the user.
-	 *
-	 * @deprecated Use {@HelixUserApi#getUserById} instead.
-	 */
-	async getUser(): Promise<HelixUser | null> {
-		return this._apiClient.helix.users.getUserById(this._data.data.redemption.user.id);
-	}
-
-	/**
 	 * The ID of the channel where the reward was redeemed.
 	 */
 	get channelId(): string {
 		return this._data.data.redemption.channel_id;
-	}
-
-	/**
-	 * Retrieves more information about the channel where the reward was redeemed.
-	 *
-	 * @deprecated Use {@HelixUserApi#getUserById} instead.
-	 */
-	async getChannel(): Promise<HelixUser | null> {
-		return this._apiClient.helix.users.getUserById(this._data.data.redemption.channel_id);
 	}
 
 	/**
