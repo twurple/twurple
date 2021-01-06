@@ -17,8 +17,6 @@ import type {
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
-import type { WebHookListenerConfig } from './Adapters/LegacyAdapter';
-import { LegacyAdapter } from './Adapters/LegacyAdapter';
 import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import { BanEventSubscription } from './Subscriptions/BanEventSubscription';
 import { ExtensionTransactionSubscription } from './Subscriptions/ExtensionTransactionSubscription';
@@ -81,19 +79,6 @@ export class WebHookListener {
 	private readonly _logger: Logger;
 
 	private declare readonly _defaultHookValidity?: number;
-
-	/**
-	 * Creates a new WebHook listener.
-	 *
-	 * @deprecated Use the normal {@WebHookListener} constructor instead.
-	 *
-	 * @param apiClient The ApiClient instance to use for user info and API requests.
-	 * @param config
-	 */
-	static async create(apiClient: ApiClient, config: WebHookListenerConfig = {}): Promise<WebHookListener> {
-		const adapter = await LegacyAdapter.create(config);
-		return new WebHookListener(apiClient, adapter, config);
-	}
 
 	/**
 	 * Creates a new WebHook listener.

@@ -46,15 +46,6 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	}
 
 	/**
-	 * The number of bits cheered with the message.
-	 *
-	 * @deprecated Use {@TwitchPrivateMessage#bits} instead.
-	 */
-	get totalBits(): number {
-		return this.bits;
-	}
-
-	/**
 	 * The offsets of emote usages in the message.
 	 */
 	get emoteOffsets(): Map<string, string[]> {

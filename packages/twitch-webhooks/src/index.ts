@@ -6,8 +6,6 @@ export { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 export type { CommonConnectionAdapterConfig, ConnectionAdapterOverrideOptions } from './Adapters/ConnectionAdapter';
 export { EnvPortAdapter } from './Adapters/EnvPortAdapter';
 export type { EnvPortAdapterConfig } from './Adapters/EnvPortAdapter';
-export { LegacyAdapter } from './Adapters/LegacyAdapter';
-export type { WebHookListenerConfig, WebHookListenerReverseProxyConfig } from './Adapters/LegacyAdapter';
 export { ReverseProxyAdapter } from './Adapters/ReverseProxyAdapter';
 export type { ReverseProxyAdapterConfig } from './Adapters/ReverseProxyAdapter';
 export { SimpleAdapter } from './Adapters/SimpleAdapter';

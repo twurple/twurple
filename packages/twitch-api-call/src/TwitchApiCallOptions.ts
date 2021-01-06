@@ -74,17 +74,6 @@ export interface TwitchApiCallOptions {
 	scope?: string;
 
 	/**
-	 * Unused.
-	 *
-	 * Twitch removed Kraken v3 long ago, so this serves no purpose anymore.
-	 *
-	 * This only still exists for compatibility in TypeScript.
-	 *
-	 * @deprecated No replacement.
-	 */
-	version?: number;
-
-	/**
 	 * Whether OAuth credentials should be generated and sent with the request. Defaults to `true`.
 	 */
 	auth?: boolean;

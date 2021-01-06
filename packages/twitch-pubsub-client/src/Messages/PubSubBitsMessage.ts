@@ -13,7 +13,7 @@ export interface PubSubBitsMessageContent
 	chat_message: string;
 	bits_used: number;
 	total_bits_used: number;
-	context: 'cheer'; // TODO is this complete?
+	context: 'cheer';
 	badge_entitlement: PubSubBitsMessageBadgeEntitlement | null;
 	is_anonymous: boolean;
 }

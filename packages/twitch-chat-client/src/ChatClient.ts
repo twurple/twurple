@@ -1,4 +1,3 @@
-import deprecate from '@d-fischer/deprecate';
 import type { LoggerOptions } from '@d-fischer/logger';
 import { Logger, LogLevel } from '@d-fischer/logger';
 import type { RateLimiter } from '@d-fischer/rate-limiter';
@@ -15,8 +14,8 @@ import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
 import type { AccessToken, AuthProvider } from 'twitch-auth';
 import { getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from 'twitch-auth';
-import { rtfm } from 'twitch-common';
 import type { CommercialLength } from 'twitch-common';
+import { rtfm } from 'twitch-common';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
@@ -70,13 +69,6 @@ export interface BaseChatClientOptions {
 	 * If you're not sure whether this is necessary, just try leaving this off, and if it doesn't work, turn it on and try again.
 	 */
 	legacyScopes?: boolean;
-
-	/**
-	 * The minimum log level of messages that will be sent from the underlying IRC client.
-	 *
-	 * @deprecated Use logger.minLevel instead.
-	 */
-	logLevel?: LogLevel;
 
 	/**
 	 * Options to pass to the logger.
@@ -173,7 +165,6 @@ export class ChatClient extends IrcClient {
 
 	private _authToken?: AccessToken | null;
 	private _authVerified = false;
-	private _authFailureMessage?: string;
 	private _authRetryTimer?: Iterator<number, never>;
 
 	private readonly _chatLogger: Logger;
@@ -192,7 +183,9 @@ export class ChatClient extends IrcClient {
 	 * @param user The timed out user.
 	 * @param duration The duration of the timeout, in seconds.
 	 */
-	onTimeout: (handler: (channel: string, user: string, duration: number) => void) => Listener = this.registerEvent();
+	readonly onTimeout: (
+		handler: (channel: string, user: string, duration: number) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user is permanently banned from a channel.
@@ -201,7 +194,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel the user is banned from.
 	 * @param user The banned user.
 	 */
-	onBan: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+	readonly onBan: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user upgrades their bits badge in a channel.
@@ -212,7 +205,7 @@ export class ChatClient extends IrcClient {
 	 * @param ritualInfo Additional information about the upgrade.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onBitsBadgeUpgrade: (
+	readonly onBitsBadgeUpgrade: (
 		handler: (channel: string, user: string, upgradeInfo: ChatBitsBadgeUpgradeInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -222,7 +215,7 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param channel The channel whose chat is cleared.
 	 */
-	onChatClear: (handler: (channel: string) => void) => Listener = this.registerEvent();
+	readonly onChatClear: (handler: (channel: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when emote-only mode is toggled in a channel.
@@ -231,7 +224,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where emote-only mode is being toggled.
 	 * @param enabled Whether emote-only mode is being enabled. If false, it's being disabled.
 	 */
-	onEmoteOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	readonly onEmoteOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when followers-only mode is toggled in a channel.
@@ -241,7 +234,7 @@ export class ChatClient extends IrcClient {
 	 * @param enabled Whether followers-only mode is being enabled. If false, it's being disabled.
 	 * @param delay The time (in minutes) a user needs to follow the channel to be able to talk. Only available when `enabled === true`.
 	 */
-	onFollowersOnly: (
+	readonly onFollowersOnly: (
 		handler: (channel: string, enabled: boolean, delay?: number) => void
 	) => Listener = this.registerEvent();
 
@@ -255,7 +248,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * If you're not logged in as the owner of the channel, this is undefined.
 	 */
-	onHost: (handler: (channel: string, target: string, viewers?: number) => void) => Listener = this.registerEvent();
+	readonly onHost: (handler: (channel: string, target: string, viewers?: number) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a channel you're logged in as its owner is being hosted by another channel.
@@ -266,7 +259,7 @@ export class ChatClient extends IrcClient {
 	 * @param auto Whether the host was triggered automatically (by Twitch's auto-host functionality).
 	 * @param viewers The number of viewers in the hosting channel.
 	 */
-	onHosted: (
+	readonly onHosted: (
 		handler: (channel: string, byChannel: string, auto: boolean, viewers?: number) => void
 	) => Listener = this.registerEvent();
 
@@ -278,7 +271,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The hosting channel.
 	 * @param numberOfHosts The number of hosts remaining in the next half hour.
 	 */
-	onHostsRemaining: (handler: (channel: string, numberOfHosts: number) => void) => Listener = this.registerEvent();
+	readonly onHostsRemaining: (handler: (channel: string, numberOfHosts: number) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user joins a channel.
@@ -291,7 +284,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that is being joined.
 	 * @param user The user that joined.
 	 */
-	onJoin: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+	readonly onJoin: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user leaves ("parts") a channel.
@@ -304,7 +297,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that is being left.
 	 * @param user The user that left.
 	 */
-	onPart: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+	readonly onPart: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a single message is removed from a channel.
@@ -316,7 +309,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * This is *not* the message that was removed. The text of the message is available using `msg.params.message` though.
 	 */
-	onMessageRemove: (
+	readonly onMessageRemove: (
 		handler: (channel: string, messageId: string, msg: ClearMsg) => void
 	) => Listener = this.registerEvent();
 
@@ -327,7 +320,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where R9K mode is being toggled.
 	 * @param enabled Whether R9K mode is being enabled. If false, it's being disabled.
 	 */
-	onR9k: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	readonly onR9k: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when host mode is disabled in a channel.
@@ -335,7 +328,7 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param channel The channel where host mode is being disabled.
 	 */
-	onUnhost: (handler: (channel: string) => void) => Listener = this.registerEvent();
+	readonly onUnhost: (handler: (channel: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user raids a channel.
@@ -346,7 +339,7 @@ export class ChatClient extends IrcClient {
 	 * @param raidInfo Additional information about the raid.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onRaid: (
+	readonly onRaid: (
 		handler: (channel: string, user: string, raidInfo: ChatRaidInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -357,7 +350,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the raid was cancelled.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onRaidCancel: (handler: (channel: string, msg: UserNotice) => void) => Listener = this.registerEvent();
+	readonly onRaidCancel: (handler: (channel: string, msg: UserNotice) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user performs a "ritual" in a channel.
@@ -368,7 +361,7 @@ export class ChatClient extends IrcClient {
 	 * @param ritualInfo Additional information about the ritual.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onRitual: (
+	readonly onRitual: (
 		handler: (channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -380,7 +373,7 @@ export class ChatClient extends IrcClient {
 	 * @param enabled Whether slow mode is being enabled. If false, it's being disabled.
 	 * @param delay The time (in seconds) a user has to wait between sending messages. Only set when enabling slow mode.
 	 */
-	onSlow: (handler: (channel: string, enabled: boolean, delay?: number) => void) => Listener = this.registerEvent();
+	readonly onSlow: (handler: (channel: string, enabled: boolean, delay?: number) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when sub only mode is toggled in a channel.
@@ -389,7 +382,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where sub only mode is being toggled.
 	 * @param enabled Whether sub only mode is being enabled. If false, it's being disabled.
 	 */
-	onSubsOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	readonly onSubsOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user subscribes to a channel.
@@ -400,7 +393,7 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onSub: (
+	readonly onSub: (
 		handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -413,7 +406,7 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the resubscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onResub: (
+	readonly onResub: (
 		handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -429,7 +422,7 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onSubGift: (
+	readonly onSubGift: (
 		handler: (channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -445,7 +438,7 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the community subscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onCommunitySub: (
+	readonly onCommunitySub: (
 		handler: (channel: string, user: string, subInfo: ChatCommunitySubInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -458,7 +451,7 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription extension.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onSubExtend: (
+	readonly onSubExtend: (
 		handler: (channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -471,7 +464,7 @@ export class ChatClient extends IrcClient {
 	 * @param rewardGiftInfo Additional information about the reward gift.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onRewardGift: (
+	readonly onRewardGift: (
 		handler: (channel: string, user: string, rewardGiftInfo: ChatRewardGiftInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -484,7 +477,7 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription upgrade.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onPrimePaidUpgrade: (
+	readonly onPrimePaidUpgrade: (
 		handler: (channel: string, user: string, subInfo: ChatSubUpgradeInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -497,7 +490,7 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription upgrade.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onGiftPaidUpgrade: (
+	readonly onGiftPaidUpgrade: (
 		handler: (channel: string, user: string, subInfo: ChatSubGiftUpgradeInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -512,7 +505,7 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the gift.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onPrimeCommunityGift: (
+	readonly onPrimeCommunityGift: (
 		handler: (channel: string, user: string, subInfo: ChatPrimeCommunityGiftInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -525,7 +518,7 @@ export class ChatClient extends IrcClient {
 	 * @param forwardInfo Additional information about the gift.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onStandardPayForward: (
+	readonly onStandardPayForward: (
 		handler: (channel: string, user: string, forwardInfo: ChatStandardPayForwardInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -538,7 +531,7 @@ export class ChatClient extends IrcClient {
 	 * @param forwardInfo Additional information about the gift.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onCommunityPayForward: (
+	readonly onCommunityPayForward: (
 		handler: (channel: string, user: string, forwardInfo: ChatCommunityPayForwardInfo, msg: UserNotice) => void
 	) => Listener = this.registerEvent();
 
@@ -550,7 +543,7 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
+	readonly onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when you tried to execute a command you don't have sufficient permission for.
@@ -559,7 +552,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that a command without sufficient permissions was executed on.
 	 * @param message The message text.
 	 */
-	onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
+	readonly onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a message you tried to send gets rejected by the ratelimiter.
@@ -568,7 +561,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that was attempted to send to.
 	 * @param message The message text.
 	 */
-	onMessageRatelimit: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
+	readonly onMessageRatelimit: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when authentication fails.
@@ -577,7 +570,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that a command without sufficient permissions was executed on.
 	 * @param message The message text.
 	 */
-	onAuthenticationFailure: (handler: (message: string) => void) => Listener = this.registerEvent();
+	readonly onAuthenticationFailure: (handler: (message: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when sending a message fails.
@@ -586,7 +579,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that rejected the message.
 	 * @param reason The reason for the failure, e.g. you're banned (msg_banned)
 	 */
-	onMessageFailed: (handler: (channel: string, reason: string) => void) => Listener = this.registerEvent();
+	readonly onMessageFailed: (handler: (channel: string, reason: string) => void) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user sends a message to a channel.
@@ -597,23 +590,15 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	onMessage: (
+	readonly onMessage: (
 		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
 	) => Listener = this.registerEvent();
 
 	// override for specific class
-	/**
-	 * Fires when a user sends a message to a channel.
-	 *
-	 * @deprecated Use `onMessage` instead.
-	 *
-	 * @eventListener
-	 * @param channel The channel the message was sent to.
-	 * @param user The user that send the message.
-	 * @param message The message text.
-	 * @param msg The full message object containing all message and user information.
-	 */
-	declare onPrivmsg: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
+	/** @private */
+	declare readonly onPrivmsg: EventBinder<
+		[channel: string, user: string, message: string, msg: TwitchPrivateMessage]
+	>;
 
 	/**
 	 * Fires when a user sends an action (/me) to a channel.
@@ -624,7 +609,7 @@ export class ChatClient extends IrcClient {
 	 * @param message The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
+	declare readonly onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	// internal events to resolve promises and stuff
 	private readonly _onBanResult: (
@@ -702,21 +687,6 @@ export class ChatClient extends IrcClient {
 	) => Listener = this.registerInternalEvent();
 
 	/**
-	 * Creates a new Twitch chat client with the user info from the {@AuthProvider} instance.
-	 *
-	 * @deprecated Use the {@ChatClient} constructor instead.
-	 *
-	 * @expandParams
-	 *
-	 * @param authProvider The {@AuthProvider} instance to use for authentication.
-	 * @param options
-	 */
-	static forTwitchClient(authProvider: AuthProvider, options: ChatClientOptions = {}): ChatClient {
-		deprecate('[twitch-chat-client] ChatClient.forTwitchClient', 'Use the `ChatClient` constructor instead.');
-		return new this(authProvider, options);
-	}
-
-	/**
 	 * Creates a new anonymous Twitch chat client.
 	 *
 	 * @expandParams
@@ -746,10 +716,7 @@ export class ChatClient extends IrcClient {
 				nick: ''
 			},
 			webSocket: options.webSocket ?? true,
-			logger: {
-				minLevel: options.logLevel,
-				...(options.logger ?? {})
-			},
+			logger: options.logger,
 			nonConformingCommands: ['004'],
 			channels: options.channels
 		});
@@ -765,8 +732,7 @@ export class ChatClient extends IrcClient {
 		this._chatLogger = new Logger({
 			name: 'twitch-chat',
 			emoji: true,
-			minLevel: options.logLevel,
-			...(options.logger ?? {})
+			...options.logger
 		});
 
 		this._authProvider = authProvider;
@@ -871,7 +837,6 @@ export class ChatClient extends IrcClient {
 
 		this.addInternalListener(this.onRegister, () => {
 			this._authVerified = true;
-			this._authFailureMessage = undefined;
 		});
 
 		this.addInternalListener(this.onPrivmsg, (channel, user, message, msg) => {
@@ -1546,7 +1511,6 @@ export class ChatClient extends IrcClient {
 						message === 'Invalid NICK'
 					) {
 						this._authVerified = false;
-						this._authFailureMessage = message;
 						this.emit(this.onAuthenticationFailure, message);
 						if (!this._authRetryTimer) {
 							this._authRetryTimer = ChatClient._getReauthenticateWaitTime();
@@ -2240,41 +2204,6 @@ Pleasae note that your whispers might not arrive reliably if your bot is not a k
 		void this._connection.disconnect().then(() => {
 			this._chatLogger.debug('Finished cleaning up old connection');
 		});
-	}
-
-	/**
-	 * Waits for authentication (or "registration" in IRC terms) to finish.
-	 *
-	 * @deprecated Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.
-	 */
-	async waitForRegistration(): Promise<void> {
-		deprecate(
-			'[twitch-chat-client] ChatClient#waitForRegistration',
-			'Use the `onRegister` event instead. To join channels after connecting, use the `channels` option.'
-		);
-
-		if (this._registered) {
-			return;
-		}
-
-		if (this._authFailureMessage) {
-			throw new Error(`Registration failed. Response from Twitch: ${this._authFailureMessage}`);
-		}
-
-		// eslint-disable-next-line @typescript-eslint/init-declarations
-		let authListener: Listener | undefined;
-		try {
-			await Promise.race([
-				new Promise<never>((resolve, reject) => {
-					authListener = this.addInternalListener(this.onAuthenticationFailure, message => {
-						reject(Error(`Registration failed. Response from Twitch: ${message}`));
-					});
-				}),
-				super.waitForRegistration()
-			]);
-		} finally {
-			authListener?.unbind();
-		}
 	}
 
 	protected registerCoreMessageTypes(): void {

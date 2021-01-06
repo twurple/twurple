@@ -1,5 +1,5 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
+import type { LoggerOptions } from '@d-fischer/logger';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from 'twitch-api-call';
 import {
 	callTwitchApi,
@@ -11,7 +11,7 @@ import {
 
 import type { AccessToken, AuthProvider, AuthProviderTokenType, TokenInfoData } from 'twitch-auth';
 import { InvalidTokenError, TokenInfo } from 'twitch-auth';
-import { CheermoteBackground, CheermoteScale, CheermoteState, rtfm } from 'twitch-common';
+import { rtfm } from 'twitch-common';
 
 import { BadgesApi } from './API/Badges/BadgesApi';
 import { HelixApiGroup } from './API/Helix/HelixApiGroup';
@@ -20,28 +20,6 @@ import { KrakenApiGroup } from './API/Kraken/KrakenApiGroup';
 import { UnsupportedApi } from './API/Unsupported/UnsupportedApi';
 
 import { ConfigError } from './Errors/ConfigError';
-
-/**
- * Default configuration for the cheermote API.
- *
- * @deprecated Pass the full {@CheermoteFormat} to the applicable methods instead.
- */
-export interface TwitchCheermoteConfig {
-	/**
-	 * The default background type.
-	 */
-	defaultBackground: CheermoteBackground;
-
-	/**
-	 * The default cheermote state.
-	 */
-	defaultState: CheermoteState;
-
-	/**
-	 * The default cheermote scale.
-	 */
-	defaultScale: CheermoteScale;
-}
 
 /**
  * Configuration for an {@ApiClient} instance.
@@ -58,34 +36,6 @@ export interface ApiConfig {
 	 * Additional options to pass to the fetch method.
 	 */
 	fetchOptions?: TwitchApiCallFetchOptions;
-
-	/**
-	 * Whether to authenticate the client before a request is made.
-	 *
-	 * @deprecated Call {@ApiClient#requestScopes} after instantiating the client instead.
-	 */
-	preAuth: boolean;
-
-	/**
-	 * The scopes to request with the initial request, even if it's not necessary for the request.
-	 *
-	 * @deprecated Call {@ApiClient#requestScopes} after instantiating the client instead.
-	 */
-	initialScopes?: string[];
-
-	/**
-	 * Default values for fetched cheermotes.
-	 *
-	 * @deprecated Pass the full {@CheermoteFormat} to the applicable methods instead.
-	 */
-	cheermotes: TwitchCheermoteConfig;
-
-	/**
-	 * The minimum level of log levels to see. Defaults to critical errors.
-	 *
-	 * @deprecated Use logger.minLevel instead.
-	 */
-	logLevel?: LogLevel;
 
 	/**
 	 * Options to pass to the logger.
@@ -108,7 +58,7 @@ export interface TwitchApiCallOptionsInternal {
  */
 @Cacheable
 @rtfm('twitch', 'ApiClient')
-export class ApiClient implements AuthProvider {
+export class ApiClient {
 	private readonly _config: ApiConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;
 
@@ -117,28 +67,13 @@ export class ApiClient implements AuthProvider {
 	 *
 	 * @param config Configuration for the client instance.
 	 */
-	constructor(config: Partial<ApiConfig>) {
-		const { authProvider, ...restConfig } = config;
-		if (!authProvider) {
+	constructor(config: ApiConfig) {
+		if (!(config as Partial<ApiConfig>).authProvider) {
 			throw new ConfigError('No auth provider given. Please supply the `authProvider` option.');
 		}
 
-		this._helixRateLimiter = new HelixRateLimiter({ logger: { minLevel: config.logLevel, ...config.logger } });
-
-		this._config = {
-			preAuth: false,
-			cheermotes: {
-				defaultBackground: CheermoteBackground.dark,
-				defaultState: CheermoteState.animated,
-				defaultScale: CheermoteScale.x1
-			},
-			authProvider,
-			...restConfig
-		};
-
-		if (this._config.preAuth) {
-			void authProvider.getAccessToken(this._config.initialScopes);
-		}
+		this._helixRateLimiter = new HelixRateLimiter({ logger: config.logger });
+		this._config = config;
 	}
 
 	/**
@@ -165,47 +100,9 @@ export class ApiClient implements AuthProvider {
 		}
 	}
 
-	/**
-	 * Retrieves an access token for the authentication provider.
-	 *
-	 * @param scopes The scopes to request.
-	 *
-	 * @deprecated Use {@AuthProvider#getAccessToken} directly instead.
-	 */
-	async getAccessToken(scopes?: string | string[]): Promise<AccessToken | null> {
-		return this._config.authProvider.getAccessToken(scopes);
-	}
-
-	/**
-	 * The scopes that are currently available using the access token.
-	 *
-	 * @deprecated Use {@AuthProvider#currentScopes} directly instead.
-	 */
-	get currentScopes(): string[] {
-		return this._config.authProvider.currentScopes;
-	}
-
 	/** @private */
 	setAccessToken(token: AccessToken): void {
 		this._config.authProvider.setAccessToken(token);
-	}
-
-	/**
-	 * Forces the authentication provider to refresh the access token, if possible.
-	 *
-	 * @deprecated Use {@AuthProvider#refresh} directly instead.
-	 */
-	async refresh(): Promise<AccessToken | null> {
-		return this._config.authProvider.refresh?.() ?? null;
-	}
-
-	/**
-	 * Forces the authentication provider to refresh the access token, if possible.
-	 *
-	 * @deprecated Use {@AuthProvider#refresh} directly instead.
-	 */
-	async refreshAccessToken(): Promise<AccessToken | undefined> {
-		return (await this.refresh()) ?? undefined;
 	}
 
 	/**
@@ -255,13 +152,6 @@ export class ApiClient implements AuthProvider {
 		}
 
 		return transformTwitchApiResponse<T>(response);
-	}
-
-	/**
-	 * The default specs for cheermotes.
-	 */
-	get cheermoteDefaults(): TwitchCheermoteConfig {
-		return this._config.cheermotes;
 	}
 
 	/**
