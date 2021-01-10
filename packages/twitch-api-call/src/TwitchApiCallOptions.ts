@@ -54,13 +54,6 @@ export interface TwitchApiCallOptions {
 	query?: Record<string, string | string[] | undefined>;
 
 	/**
-	 * The form body to send with the API call.
-	 *
-	 * If this is given, `jsonBody` will be ignored.
-	 */
-	body?: Record<string, string | string[] | undefined>;
-
-	/**
 	 * The JSON body to send with the API call.
 	 *
 	 * If `body` is also given, this will be ignored.

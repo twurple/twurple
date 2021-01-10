@@ -264,7 +264,7 @@ export class UserApi extends BaseApi {
 			url: `users/${userId}/follows/channels/${channelId}`,
 			method: 'PUT',
 			scope: 'user_follows_edit',
-			body: { notifications: Boolean(notifications).toString() }
+			jsonBody: { notifications }
 		});
 		return new UserFollow(data, this._client);
 	}
