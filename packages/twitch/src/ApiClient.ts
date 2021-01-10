@@ -9,7 +9,7 @@ import {
 	TwitchApiCallType
 } from 'twitch-api-call';
 
-import type { AccessToken, AuthProvider, AuthProviderTokenType, TokenInfoData } from 'twitch-auth';
+import type { AuthProvider, TokenInfoData } from 'twitch-auth';
 import { InvalidTokenError, TokenInfo } from 'twitch-auth';
 import { rtfm } from 'twitch-common';
 
@@ -100,25 +100,6 @@ export class ApiClient {
 		}
 	}
 
-	/** @private */
-	setAccessToken(token: AccessToken): void {
-		this._config.authProvider.setAccessToken(token);
-	}
-
-	/**
-	 * The type of token used by the client.
-	 */
-	get tokenType(): AuthProviderTokenType {
-		return this._config.authProvider.tokenType ?? 'user';
-	}
-
-	/**
-	 * The client ID of your application.
-	 */
-	get clientId(): string {
-		return this._config.authProvider.clientId;
-	}
-
 	/**
 	 * Makes a call to the Twitch API using your access token.
 	 *
@@ -184,6 +165,11 @@ export class ApiClient {
 	@CachedGetter()
 	get unsupported(): UnsupportedApi {
 		return new UnsupportedApi(this);
+	}
+
+	/** @private */
+	get _authProvider(): AuthProvider {
+		return this._config.authProvider;
 	}
 
 	private async _callApiInternal(options: TwitchApiCallOptions, clientId?: string, accessToken?: string) {
