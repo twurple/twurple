@@ -10,10 +10,42 @@ or using npm:
 
 	npm install --save twitch-auth-tmi
 
-## Documentation
+## How to use
 
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-auth-tmi)
-which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
+This package is generally used like `tmi.js` is normally, with just a single minor change.
+
+It completely ignores the `identity` option, and instead takes an `authProvider` option which takes an
+[`AuthProvider`](https://d-fischer.github.io/twitch-auth/reference/interfaces/AuthProvider.html)
+instance that can be used for other `twitch` packages as well.
+
+This also offers the additional benefit of being able to refresh tokens internally using
+[a refreshable AuthProvider](https://d-fischer.github.io/twitch-auth/docs/providers/refreshable.html).
+
+### Example
+
+Taken from the [tmi.js README](https://www.npmjs.com/package/tmi.js) and adapted for this package:
+
+```js
+const tmi = require('twitch-auth-tmi');
+const { StaticAuthProvider } = require('twitch-auth');
+const authProvider = new StaticAuthProvider('my-client-id', 'my-bot-token');
+const client = new tmi.Client({
+	options: { debug: true, messagesLogLevel: 'info' },
+	connection: {
+		reconnect: true,
+		secure: true
+	},
+	authProvider: authProvider,
+	channels: ['my-channel']
+});
+client.connect().catch(console.error);
+client.on('message', (channel, tags, message, self) => {
+	if (self) return;
+	if (message.toLowerCase() === '!hello') {
+		client.say(channel, `@${tags.username}, heya!`);
+	}
+});
+```
 
 ## If you're getting stuck...
 
