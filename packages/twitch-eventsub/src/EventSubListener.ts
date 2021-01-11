@@ -15,43 +15,41 @@ import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
-import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
-import type { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
-import type { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
-import type { EventSubChannelFollowEvent } from './Events/EventSubChannelFollowEvent';
-import type { EventSubChannelSubscriptionEvent } from './Events/EventSubChannelSubscriptionEvent';
-import type { EventSubChannelCheerEvent } from './Events/EventSubChannelCheerEvent';
 import type { EventSubChannelBanEvent } from './Events/EventSubChannelBanEvent';
-import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
-import type { EventSubChannelRewardAddEvent } from './Events/EventSubChannelRewardAddEvent';
-import type { EventSubChannelRewardUpdateEvent } from './Events/EventSubChannelRewardUpdateEvent';
-import type { EventSubChannelRewardRemoveEvent } from './Events/EventSubChannelRewardRemoveEvent';
+import type { EventSubChannelCheerEvent } from './Events/EventSubChannelCheerEvent';
+import type { EventSubChannelFollowEvent } from './Events/EventSubChannelFollowEvent';
+import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChannelHypeTrainBeginEvent';
+import type { EventSubChannelHypeTrainEndEvent } from './Events/EventSubChannelHypeTrainEndEvent';
+import type { EventSubChannelHypeTrainProgressEvent } from './Events/EventSubChannelHypeTrainProgressEvent';
 import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
-import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChannelHypeTrainBeginEvent';
-import type { EventSubChannelHypeTrainProgressEvent } from './Events/EventSubChannelHypeTrainProgressEvent';
-import type { EventSubChannelHypeTrainEndEvent } from './Events/EventSubChannelHypeTrainEndEvent';
+import type { EventSubChannelRewardEvent } from './Events/EventSubChannelRewardEvent';
+import type { EventSubChannelSubscriptionEvent } from './Events/EventSubChannelSubscriptionEvent';
+import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
+import type { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
+import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
+import type { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './Events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './Events/EventSubUserUpdateEvent';
-import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
-import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
-import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
-import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChannelFollowSubscription';
-import { EventSubChannelSubscriptionSubscription } from './Subscriptions/EventSubChannelSubscriptionSubscription';
-import { EventSubChannelCheerSubscription } from './Subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelBanSubscription } from './Subscriptions/EventSubChannelBanSubscription';
-import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
-import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
-import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
-import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSubChannelRewardRemoveSubscription';
+import { EventSubChannelCheerSubscription } from './Subscriptions/EventSubChannelCheerSubscription';
+import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChannelFollowSubscription';
+import { EventSubChannelHypeTrainBeginSubscription } from './Subscriptions/EventSubChannelHypeTrainBeginSubscription';
+import { EventSubChannelHypeTrainEndSubscription } from './Subscriptions/EventSubChannelHypeTrainEndSubscription';
+import { EventSubChannelHypeTrainProgressSubscription } from './Subscriptions/EventSubChannelHypeTrainProgressSubscription';
 import { EventSubChannelRedemptionAddSubscription } from './Subscriptions/EventSubChannelRedemptionAddSubscription';
 import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/EventSubChannelRedemptionUpdateSubscription';
-import { EventSubChannelHypeTrainBeginSubscription } from './Subscriptions/EventSubChannelHypeTrainBeginSubscription';
-import { EventSubChannelHypeTrainProgressSubscription } from './Subscriptions/EventSubChannelHypeTrainProgressSubscription';
-import { EventSubChannelHypeTrainEndSubscription } from './Subscriptions/EventSubChannelHypeTrainEndSubscription';
+import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
+import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSubChannelRewardRemoveSubscription';
+import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
+import { EventSubChannelSubscriptionSubscription } from './Subscriptions/EventSubChannelSubscriptionSubscription';
+import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
+import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
+import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
+import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
+import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './Subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './Subscriptions/EventSubUserUpdateSubscription';
-import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 
 /**
  * Certificate data used to make the listener server SSL capable.
@@ -416,7 +414,7 @@ export class EventSubListener {
 	 */
 	async subscribeToChannelRewardAddEvents(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardAddEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
 		const userId = extractUserId(user);
 
@@ -436,7 +434,7 @@ export class EventSubListener {
 	 */
 	async subscribeToChannelRewardUpdateEvents(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardUpdateEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
 		const userId = extractUserId(user);
 
@@ -458,7 +456,7 @@ export class EventSubListener {
 	async subscribeToChannelRewardUpdateEventsForReward(
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRewardUpdateEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
 		const userId = extractUserId(user);
 
@@ -478,7 +476,7 @@ export class EventSubListener {
 	 */
 	async subscribeToChannelRewardRemoveEvents(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardRemoveEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
 		const userId = extractUserId(user);
 
@@ -500,7 +498,7 @@ export class EventSubListener {
 	async subscribeToChannelRewardRemoveEventsForReward(
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRewardRemoveEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
 		const userId = extractUserId(user);
 

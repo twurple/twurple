@@ -13,7 +13,7 @@ export interface EventSubChannelCheerEventData {
 }
 
 /**
- * An Eventsub event representing a user cheering bits
+ * An EventSub event representing a user cheering bits.
  */
 export class EventSubChannelCheerEvent {
 	/** @private */
@@ -39,10 +39,10 @@ export class EventSubChannelCheerEvent {
 	}
 
 	/**
-	 * Retrieves more information about the user, if available
+	 * Retrieves more information about the user.
 	 */
-	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id!))!;
+	async getUser(): Promise<HelixUser | null> {
+		return this._data.user_id ? this._client.helix.users.getUserById(this._data.user_id) : null;
 	}
 
 	/**
@@ -67,21 +67,21 @@ export class EventSubChannelCheerEvent {
 	}
 
 	/**
-	 * Whether the cheering user chose to be anonymous
+	 * Whether the cheering user chose to be anonymous.
 	 */
 	get isAnonymous(): boolean {
 		return this._data.is_anonymous;
 	}
 
 	/**
-	 * The message sent with the cheer
+	 * The message sent with the cheer.
 	 */
 	get message(): string {
 		return this._data.message;
 	}
 
 	/**
-	 * The number of bits cheered
+	 * The amount of bits cheered.
 	 */
 	get bits(): number {
 		return this._data.bits;

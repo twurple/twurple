@@ -82,7 +82,7 @@ export class PubSubWhisperMessage {
 	}
 
 	/**
-	 * Retrieves more data about the user who sent the whisper.
+	 * Retrieves more information about the user who sent the whisper.
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */

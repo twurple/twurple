@@ -23,9 +23,9 @@ import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
  */
 export default class HelixHypeTrainApi extends BaseApi {
 	/**
-	 * Retrieves the events of the current or latest hype train for the specified broadcaster.
+	 * Retrieves the events of the current or latest Hype Train for the specified broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to fetch hype train events for.
+	 * @param broadcaster The broadcaster to fetch Hype Train events for.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -51,9 +51,9 @@ export default class HelixHypeTrainApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for the events of the current or latest hype train for the specified broadcaster.
+	 * Creates a paginator for the events of the current or latest Hype Train for the specified broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to fetch hype train events for.
+	 * @param broadcaster The broadcaster to fetch Hype Train events for.
 	 */
 	getHypeTrainEventsForBroadcasterPaginated(
 		broadcaster: UserIdResolvable
@@ -72,9 +72,9 @@ export default class HelixHypeTrainApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a single hype train event by ID.
+	 * Retrieves a single Hype Train event by ID.
 	 *
-	 * @param id The ID of the hype train event.
+	 * @param id The ID of the Hype Train event.
 	 */
 	async getHypeTrainEventById(id: string): Promise<HelixHypeTrainEvent | null> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixHypeTrainEventData>>({

@@ -100,7 +100,7 @@ export class PubSubRedemptionMessage {
 	}
 
 	/**
-	 * Retrieves more data about the user.
+	 * Retrieves more information about the user.
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
@@ -116,7 +116,7 @@ export class PubSubRedemptionMessage {
 	}
 
 	/**
-	 * Retrieves more data about the channel where the reward was redeemed.
+	 * Retrieves more information about the channel where the reward was redeemed.
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */

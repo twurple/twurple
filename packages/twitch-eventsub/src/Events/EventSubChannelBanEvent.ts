@@ -10,7 +10,7 @@ export interface EventSubChannelBanEventData {
 }
 
 /**
- * An EventSub event representing a user being banned in a channel
+ * An EventSub event representing a user being banned in a channel.
  */
 export class EventSubChannelBanEvent {
 	/** @private */
@@ -43,14 +43,14 @@ export class EventSubChannelBanEvent {
 	}
 
 	/**
-	 * The ID of the broadcaster.
+	 * The ID of the broadcaster from whose chat the user was banned.
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
 	}
 
 	/**
-	 * The display name of the broadcaster.
+	 * The display name of the broadcaster from whose chat the user was banned.
 	 */
 	get broadcasterDisplayName(): string {
 		return this._data.broadcaster_user_name;

@@ -31,26 +31,26 @@ export class EventSubChannelUnbanEvent {
 	/**
 	 * The display name of the unbanned user.
 	 */
-	get userName(): string {
+	get userDisplayName(): string {
 		return this._data.user_name;
 	}
 
 	/**
-	 * Retrieves more information about the unbanned user
+	 * Retrieves more information about the unbanned user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.user_id))!;
 	}
 
 	/**
-	 * The ID of the broadcaster.
+	 * The ID of the broadcaster from whose chat the user was unbanned.
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
 	}
 
 	/**
-	 * The display name of the broadcaster.
+	 * The display name of the broadcaster from whose chat the user was unbanned.
 	 */
 	get broadcasterDisplayName(): string {
 		return this._data.broadcaster_user_name;

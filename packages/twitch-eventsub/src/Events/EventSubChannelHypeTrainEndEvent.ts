@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
-import type { HypeTrainContribution } from '../HypeTrainContribution';
+import type { EventSubChannelHypeTrainContribution } from './Common/EventSubChannelHypeTrainContribution';
 
 /** @private */
 export interface EventSubChannelHypeTrainEndEventData {
@@ -8,7 +8,7 @@ export interface EventSubChannelHypeTrainEndEventData {
 	broadcaster_user_name: string;
 	level: number;
 	total: number;
-	top_contributions: HypeTrainContribution[];
+	top_contributions: EventSubChannelHypeTrainContribution[];
 	started_at: string;
 	ended_at: string;
 	cooldown_ends_at: string;
@@ -48,14 +48,14 @@ export class EventSubChannelHypeTrainEndEvent {
 	}
 
 	/**
-	 * The level the Hype Train ended on
+	 * The level the Hype Train ended on.
 	 */
 	get level(): number {
 		return this._data.level;
 	}
 
 	/**
-	 * The total points contributed to the Hype Train
+	 * The total points contributed to the Hype Train.
 	 */
 	get total(): number {
 		return this._data.total;
@@ -64,7 +64,7 @@ export class EventSubChannelHypeTrainEndEvent {
 	/**
 	 * The contributors with the most points, for both bits and subscriptions.
 	 */
-	get topContributions(): HypeTrainContribution[] {
+	get topContributions(): EventSubChannelHypeTrainContribution[] {
 		return this._data.top_contributions;
 	}
 
@@ -83,7 +83,7 @@ export class EventSubChannelHypeTrainEndEvent {
 	}
 
 	/**
-	 * The time when the Hype Train cooldown ends
+	 * The time when the Hype Train cooldown ends.
 	 */
 	get cooldownEndDate(): Date {
 		return new Date(this._data.cooldown_ends_at);

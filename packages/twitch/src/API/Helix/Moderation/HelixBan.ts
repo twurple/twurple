@@ -25,24 +25,31 @@ export class HelixBan {
 	}
 
 	/**
-	 * The ID of the user.
+	 * The ID of the banned user.
 	 */
 	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
-	 * Retrieves more data about the user.
-	 */
-	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.user_id);
-	}
-
-	/**
-	 * The name of the user.
+	 * @deprecated Use {@HelixBan#userDisplayName} instead.
 	 */
 	get userName(): string {
 		return this._data.user_name;
+	}
+
+	/**
+	 * The display name of the banned user.
+	 */
+	get userDisplayName(): string {
+		return this._data.user_name;
+	}
+
+	/**
+	 * Retrieves more information about the user.
+	 */
+	async getUser(): Promise<HelixUser | null> {
+		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
-import type { HypeTrainContribution } from '../HypeTrainContribution';
+import type { EventSubChannelHypeTrainContribution } from './Common/EventSubChannelHypeTrainContribution';
 
 /** @private */
 export interface EventSubChannelHypeTrainBeginEventData {
@@ -9,8 +9,8 @@ export interface EventSubChannelHypeTrainBeginEventData {
 	total: number;
 	progress: number;
 	goal: number;
-	top_contributions: HypeTrainContribution[];
-	last_contribution: HypeTrainContribution;
+	top_contributions: EventSubChannelHypeTrainContribution[];
+	last_contribution: EventSubChannelHypeTrainContribution;
 	started_at: string;
 	expires_at: string;
 }
@@ -49,14 +49,14 @@ export class EventSubChannelHypeTrainBeginEvent {
 	}
 
 	/**
-	 * The total points already contributed to the hype train.
+	 * The total points already contributed to the Hype Train.
 	 */
 	get total(): number {
 		return this._data.total;
 	}
 
 	/**
-	 * The number of points contributed to the hype train at the current level.
+	 * The number of points contributed to the Hype Train at the current level.
 	 */
 	get progress(): number {
 		return this._data.progress;
@@ -70,28 +70,28 @@ export class EventSubChannelHypeTrainBeginEvent {
 	}
 
 	/**
-	 * The top contributors for the hype train in terms of bits and subscriptions
+	 * The top contributors for the Hype Train in terms of bits and subscriptions.
 	 */
-	get topContributors(): HypeTrainContribution[] {
+	get topContributors(): EventSubChannelHypeTrainContribution[] {
 		return this._data.top_contributions;
 	}
 
 	/**
-	 * The last contribution to the hype train
+	 * The last contribution to the Hype Train.
 	 */
-	get lastContribution(): HypeTrainContribution {
+	get lastContribution(): EventSubChannelHypeTrainContribution {
 		return this._data.last_contribution;
 	}
 
 	/**
-	 * The time when the hype train started
+	 * The time when the Hype Train started.
 	 */
 	get startDate(): Date {
 		return new Date(this._data.started_at);
 	}
 
 	/**
-	 * The time when the hype train is expected to expire, unless a change of level occurs to extend the expiration
+	 * The time when the Hype Train is expected to expire, unless a change of level occurs to extend the expiration.
 	 */
 	get expiryDate(): Date {
 		return new Date(this._data.expires_at);

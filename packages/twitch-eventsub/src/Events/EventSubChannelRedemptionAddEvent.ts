@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
-import type { RedemptionReward } from '../RedemptionReward';
+import type { EventSubChannelRedemptionReward } from './Common/EventSubChannelRedemptionReward';
 
 /** @private */
 export interface EventSubChannelRedemptionAddEventData {
@@ -11,12 +11,12 @@ export interface EventSubChannelRedemptionAddEventData {
 	user_name: string;
 	user_input: string;
 	status: 'unfulfilled' | 'unknown' | 'fulfilled' | 'canceled';
-	reward: RedemptionReward;
+	reward: EventSubChannelRedemptionReward;
 	redeemed_at: string;
 }
 
 /**
- * An EventSub event representing a Channel Point redemption
+ * An EventSub event representing a Channel Points redemption.
  */
 export class EventSubChannelRedemptionAddEvent {
 	/** @private */
@@ -28,7 +28,7 @@ export class EventSubChannelRedemptionAddEvent {
 	}
 
 	/**
-	 * The ID of the redemption
+	 * The ID of the redemption.
 	 */
 	get id(): string {
 		return this._data.id;
@@ -77,49 +77,51 @@ export class EventSubChannelRedemptionAddEvent {
 	}
 
 	/**
-	 * The input text given by the user, if any, else an empty string
+	 * The input text given by the user.
+	 *
+	 * If there is no input to be given, this is an empty string.
 	 */
 	get input(): string {
 		return this._data.user_input;
 	}
 
 	/**
-	 * The status of the redemption
+	 * The status of the redemption.
 	 */
 	get status(): string {
 		return this._data.status;
 	}
 
 	/**
-	 * The ID of the reward item redeemed
+	 * The ID of the reward that was redeemed.
 	 */
 	get rewardId(): string {
 		return this._data.reward.id;
 	}
 
 	/**
-	 * The title of the reward item redeemed
+	 * The title of the reward that was redeemed.
 	 */
 	get rewardTitle(): string {
 		return this._data.reward.title;
 	}
 
 	/**
-	 * The cost of the reward item redeemed
+	 * The cost of the reward that was redeemed.
 	 */
 	get rewardCost(): number {
 		return this._data.reward.cost;
 	}
 
 	/**
-	 * The description of the reward item redeemed
+	 * The description of the reward that was redeemed.
 	 */
 	get rewardPrompt(): string {
 		return this._data.reward.prompt;
 	}
 
 	/**
-	 * The time when the user redeemed the reward
+	 * The time when the user redeemed the reward.
 	 */
 	get redeemedAt(): Date {
 		return new Date(this._data.redeemed_at);

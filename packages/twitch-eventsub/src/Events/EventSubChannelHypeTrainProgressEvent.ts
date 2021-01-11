@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
-import type { HypeTrainContribution } from '../HypeTrainContribution';
+import type { EventSubChannelHypeTrainContribution } from './Common/EventSubChannelHypeTrainContribution';
 
 /** @private */
 export interface EventSubChannelHypeTrainProgressEventData {
@@ -10,14 +10,14 @@ export interface EventSubChannelHypeTrainProgressEventData {
 	total: number;
 	progress: number;
 	goal: number;
-	top_contributions: HypeTrainContribution[];
-	last_contribution: HypeTrainContribution;
+	top_contributions: EventSubChannelHypeTrainContribution[];
+	last_contribution: EventSubChannelHypeTrainContribution;
 	started_at: string;
 	expires_at: string;
 }
 
 /**
- * An EventSub event representing progress towards the Hype Train goal
+ * An EventSub event representing progress towards the Hype Train goal.
  */
 export class EventSubChannelHypeTrainProgressEvent {
 	/** @private */
@@ -50,21 +50,21 @@ export class EventSubChannelHypeTrainProgressEvent {
 	}
 
 	/**
-	 * The current level of the hype train.
+	 * The current level of the Hype Train.
 	 */
 	get level(): number {
 		return this._data.level;
 	}
 
 	/**
-	 * The total points contributed to the hype train.
+	 * The total points contributed to the Hype Train.
 	 */
 	get total(): number {
 		return this._data.total;
 	}
 
 	/**
-	 * The number of points contributed to the hype train at the current level.
+	 * The number of points contributed to the Hype Train at the current level.
 	 */
 	get progress(): number {
 		return this._data.progress;
@@ -80,26 +80,26 @@ export class EventSubChannelHypeTrainProgressEvent {
 	/**
 	 * The contributors with the most points, for both bits and subscriptions.
 	 */
-	get topContributions(): HypeTrainContribution[] {
+	get topContributions(): EventSubChannelHypeTrainContribution[] {
 		return this._data.top_contributions;
 	}
 
 	/**
 	 * The most recent contribution.
 	 */
-	get lastContribution(): HypeTrainContribution {
+	get lastContribution(): EventSubChannelHypeTrainContribution {
 		return this._data.last_contribution;
 	}
 
 	/**
-	 * The time when the hype train started.
+	 * The time when the Hype Train started.
 	 */
 	get startDate(): Date {
 		return new Date(this._data.started_at);
 	}
 
 	/**
-	 * The time when the hype train is expected to end, unless extended by reaching the goal.
+	 * The time when the Hype Train is expected to end, unless extended by reaching the goal.
 	 */
 	get expiryDate(): Date {
 		return new Date(this._data.expires_at);

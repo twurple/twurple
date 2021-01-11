@@ -41,7 +41,7 @@ export class UserChatInfo {
 	}
 
 	/**
-	 * Retrieves more data about the user.
+	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<User> {
 		return this._client.kraken.users.getUser(this._data._id);

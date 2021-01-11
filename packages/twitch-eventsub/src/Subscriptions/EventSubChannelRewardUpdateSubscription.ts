@@ -1,15 +1,15 @@
 import type { HelixEventSubSubscription } from 'twitch';
-import type { EventSubChannelRewardUpdateEventData } from '../Events/EventSubChannelRewardUpdateEvent';
-import { EventSubChannelRewardUpdateEvent } from '../Events/EventSubChannelRewardUpdateEvent';
+import type { EventSubChannelRewardEventData } from '../Events/EventSubChannelRewardEvent';
+import { EventSubChannelRewardEvent } from '../Events/EventSubChannelRewardEvent';
 import type { EventSubListener } from '../EventSubListener';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
  */
-export class EventSubChannelRewardUpdateSubscription extends EventSubSubscription<EventSubChannelRewardUpdateEvent> {
+export class EventSubChannelRewardUpdateSubscription extends EventSubSubscription<EventSubChannelRewardEvent> {
 	constructor(
-		handler: (data: EventSubChannelRewardUpdateEvent) => void,
+		handler: (data: EventSubChannelRewardEvent) => void,
 		client: EventSubListener,
 		private readonly _userId: string,
 		private readonly _rewardId?: string
@@ -21,8 +21,8 @@ export class EventSubChannelRewardUpdateSubscription extends EventSubSubscriptio
 		return `channel.channel_points_custom_reward.update.${this._userId}`;
 	}
 
-	protected transformData(data: EventSubChannelRewardUpdateEventData): EventSubChannelRewardUpdateEvent {
-		return new EventSubChannelRewardUpdateEvent(data, this._client._apiClient);
+	protected transformData(data: EventSubChannelRewardEventData): EventSubChannelRewardEvent {
+		return new EventSubChannelRewardEvent(data, this._client._apiClient);
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {

@@ -10,7 +10,7 @@ export interface EventSubUserUpdateEventData {
 }
 
 /**
- * An EventSub event representing updating their account details
+ * An EventSub event representing updating their account details.
  */
 export class EventSubUserUpdateEvent {
 	/** @private */
@@ -36,21 +36,24 @@ export class EventSubUserUpdateEvent {
 	}
 
 	/**
-	 * The user's profile description
+	 * The user's profile description.
 	 */
 	get userDescription(): string {
 		return this._data.description;
 	}
 
 	/**
-	 * The user's email address, if authorized
+	 * The user's email address.
+	 *
+	 * This is `null` if you are not authorized to read the email address,
+	 * i.e. you have never successfully requested the scope `user:read:email` from the user.
 	 */
 	get userEmail(): string | null {
 		return this._data.email ?? null;
 	}
 
 	/**
-	 * Retrieves more information about the user
+	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.user_id))!;

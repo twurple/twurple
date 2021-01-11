@@ -54,7 +54,7 @@ export class HelixChannelSearchResult {
 	}
 
 	/**
-	 * The display name of the channel
+	 * The display name of the channel.
 	 */
 	get displayName(): string {
 		return this._data.display_name;

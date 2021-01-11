@@ -152,11 +152,11 @@ export class HelixWebHooksApi extends BaseApi {
 	}
 
 	/**
-	 * Subscribes to events representing a hype train progressing.
+	 * Subscribes to events representing a Hype Train progressing.
 	 *
 	 * @expandParams
 	 *
-	 * @param broadcasterId The broadcaster / channel for which to get notifications about hype train events.
+	 * @param broadcasterId The broadcaster / channel for which to get notifications about Hype Train events.
 	 * @param options
 	 */
 	async subscribeToHypeTrainEvents(
@@ -167,11 +167,11 @@ export class HelixWebHooksApi extends BaseApi {
 	}
 
 	/**
-	 * Unsubscribes from events representing a hype train progressing.
+	 * Unsubscribes from events representing a Hype Train progressing.
 	 *
 	 * @expandParams
 	 *
-	 * @param broadcasterId The broadcaster / channel for which to get notifications about hype train events.
+	 * @param broadcasterId The broadcaster / channel for which to get notifications about Hype Train events.
 	 * @param options
 	 */
 	async unsubscribeFromHypeTrainEvents(

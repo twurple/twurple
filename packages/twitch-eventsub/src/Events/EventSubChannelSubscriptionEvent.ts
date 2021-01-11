@@ -67,14 +67,14 @@ export class EventSubChannelSubscriptionEvent {
 	}
 
 	/**
-	 * The tier of the subscription, either 1000, 2000 or 3000
+	 * The tier of the subscription, either 1000, 2000 or 3000.
 	 */
 	get tier(): EventSubChannelSubscriptionEventTier {
 		return this._data.tier;
 	}
 
 	/**
-	 * Whether the subscription has been gifted
+	 * Whether the subscription has been gifted.
 	 */
 	get isGift(): boolean {
 		return this._data.is_gift;
