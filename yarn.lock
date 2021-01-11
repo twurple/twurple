@@ -1648,10 +1648,10 @@
   resolved "https://registry.yarnpkg.com/@types/tapable/-/tapable-1.0.6.tgz#a9ca4b70a18b270ccb2bc0aaafefd1d486b7ea74"
   integrity sha512-W+bw9ds02rAQaMvaLYxAbJ6cvguW/iJXNT6lTssS1ps6QdrMKttqEAMEG/b5CR8TZl3/L7/lH0ZV5nNR1LXikA==
 
-"@types/tmi.js@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@types/tmi.js/-/tmi.js-1.7.0.tgz#aaf8195fbdc6c13a3522266e2117568088af5a55"
-  integrity sha512-D9RuctHOsFLRLYauFXQIq1Uy7iL1A7MIyHZ5V8bTToZTMrY9tor4c4Yq9eAeJwrAad0gxhpbt3xjk+kZj7qdsQ==
+"@types/tmi.js@^1.7.1":
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/@types/tmi.js/-/tmi.js-1.7.1.tgz#d45b1eb2506fa7e0e173cd3a1317c018f9ee7d1a"
+  integrity sha512-sZ/4WlCFSKIp6sPwRMpBlSvARXMaBzIQuxLQL4v+Ymga3LiH+Xw6WuPN5odkNWDmjPVoLqSwEuCCVsFjM4c7Ug==
 
 "@types/tmp@^0.2.0":
   version "0.2.0"

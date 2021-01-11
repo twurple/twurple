@@ -33,7 +33,6 @@ export class DecoratedClient extends BaseClient {
 			identity: {
 				// need this because we can't get a user name dynamically, but need something to not default to justinfan
 				username: 'dummy',
-				// @ts-expect-error TS2322 typings are not updated yet
 				password: async () => {
 					if (authProvider.tokenType === 'app') {
 						throw new InvalidTokenTypeError(
