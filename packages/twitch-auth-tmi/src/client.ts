@@ -20,7 +20,7 @@ export interface Options extends Omit<BaseOptions, 'identity'> {
 /**
  * An extension of the tmi.js client which extends it with {@AuthProvider} integration.
  */
-class DecoratedClient extends BaseClient {
+export class DecoratedClient extends BaseClient {
 	/**
 	 * Creates a new tmi.js client which utilizes the given {@AuthProvider} instance.
 	 *
