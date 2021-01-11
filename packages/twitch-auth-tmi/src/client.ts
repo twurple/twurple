@@ -3,11 +3,29 @@ import { Client as BaseClient } from 'tmi.js';
 import type { AuthProvider } from 'twitch-auth';
 import { getValidTokenFromProvider, InvalidTokenTypeError } from 'twitch-auth';
 
+/**
+ * The tmi.js options, with the auth provider replacing the identity option.
+ *
+ * @inheritDoc
+ */
 export interface Options extends Omit<BaseOptions, 'identity'> {
+	/**
+	 * An authentication provider that supplies tokens to the client.
+	 *
+	 * For more information, see the {@AuthProvider} documentation.
+	 */
 	authProvider: AuthProvider;
 }
 
+/**
+ * An extension of the tmi.js client which extends it with {@AuthProvider} integration.
+ */
 class DecoratedClient extends BaseClient {
+	/**
+	 * Creates a new tmi.js client which utilizes the given {@AuthProvider} instance.
+	 *
+	 * @param opts The tmi.js options, with the auth provider replacing the identity option.
+	 */
 	constructor(opts: Options) {
 		const { authProvider, ...tmiOpts } = opts;
 		super({
