@@ -9,7 +9,13 @@
 	"mainPackage": "twitch",
 	"versionBranchPrefix": "support/",
 	"versionFolder": "versions",
-	"ignoredPackages": ["twitch-electron-auth-provider", "twitch-webhooks-ngrok", "twitch-api-call", "twitch-common"],
+	"ignoredPackages": [
+		"twitch-electron-auth-provider",
+		"twitch-webhooks-ngrok",
+		"twitch-eventsub-ngrok",
+		"twitch-api-call",
+		"twitch-common"
+	],
 	"packages": {
 		"twitch": {
 			"indexTitle": "Welcome to Twitch.js",
