@@ -81,16 +81,23 @@ export class HelixBanEvent extends HelixBan {
 	}
 
 	/**
-	 * Retrieves more data about the broadcaster.
+	 * @deprecated Use {@HelixBanEvent#broadcasterDisplayName} instead.
 	 */
-	async getBroadcaster(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id);
+	get broadcasterName(): string {
+		return this._eventData.event_data.broadcaster_id;
 	}
 
 	/**
 	 * The name of the broadcaster from whose chat the user was banned/unbanned.
 	 */
-	get broadcasterName(): string {
+	get broadcasterDisplayName(): string {
 		return this._eventData.event_data.broadcaster_id;
+	}
+
+	/**
+	 * Retrieves more information about the broadcaster.
+	 */
+	async getBroadcaster(): Promise<HelixUser | null> {
+		return this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id);
 	}
 }

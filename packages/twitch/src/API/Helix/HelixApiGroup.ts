@@ -76,7 +76,7 @@ export class HelixApiGroup extends BaseApi {
 	}
 
 	/**
-	 * The Helix hype train API methods.
+	 * The Helix Hype Train API methods.
 	 */
 	@CachedGetter()
 	get hypeTrain(): HelixHypeTrainApi {

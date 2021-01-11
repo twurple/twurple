@@ -36,7 +36,7 @@ export class PubSubChatModActionMessage {
 	}
 
 	/**
-	 * Retrieves more data about the channel where the action was performed.
+	 * Retrieves more information about the channel where the action was performed.
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
@@ -80,7 +80,7 @@ export class PubSubChatModActionMessage {
 	}
 
 	/**
-	 * Retrieves more data about the user that performed the action.
+	 * Retrieves more information about the user that performed the action.
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */

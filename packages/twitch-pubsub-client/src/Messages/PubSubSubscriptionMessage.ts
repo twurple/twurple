@@ -180,7 +180,7 @@ export class PubSubSubscriptionMessage {
 	}
 
 	/**
-	 * Retrieves more data about the subscribing user.
+	 * Retrieves more information about the subscribing user.
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */
@@ -189,7 +189,7 @@ export class PubSubSubscriptionMessage {
 	}
 
 	/**
-	 * Retrieves more data about the gifting user.
+	 * Retrieves more information about the gifting user.
 	 *
 	 * Returns null if the subscription is not a gift.
 	 *

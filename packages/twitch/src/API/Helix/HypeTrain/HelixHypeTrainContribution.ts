@@ -4,7 +4,7 @@ import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 
 /**
- * The type of a hype train contribution.
+ * The type of a Hype Train contribution.
  */
 export type HelixHypeTrainContributionType = 'BITS' | 'SUBS';
 
@@ -16,7 +16,7 @@ export interface HelixHypeTrainContributionData {
 }
 
 /**
- * A hype train contributor.
+ * A Hype Train contributor.
  */
 @rtfm<HelixHypeTrainContribution>('twitch', 'HelixHypeTrainContribution', 'userId')
 export class HelixHypeTrainContribution {
@@ -30,21 +30,21 @@ export class HelixHypeTrainContribution {
 	}
 
 	/**
-	 * The ID of the user contributing to the hype train.
+	 * The ID of the user contributing to the Hype Train.
 	 */
 	get userId(): string {
 		return this._data.user;
 	}
 
 	/**
-	 * Retrieves additional information about the user contributing to the hype train.
+	 * Retrieves additional information about the user contributing to the Hype Train.
 	 */
 	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.user);
 	}
 
 	/**
-	 * The hype train event type.
+	 * The Hype Train event type.
 	 */
 	get type(): HelixHypeTrainContributionType {
 		return this._data.type;

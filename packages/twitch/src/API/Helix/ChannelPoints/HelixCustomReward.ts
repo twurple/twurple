@@ -198,7 +198,14 @@ export class HelixCustomReward {
 	}
 
 	/**
-	 * When the cooldown ends. `null` means there is currently no cooldown.
+	 * Whether redemptions should be automatically approved.
+	 */
+	get autoApproved(): boolean {
+		return this._data.should_redemptions_skip_request_queue;
+	}
+
+	/**
+	 * Them time when the cooldown ends. `null` means there is currently no cooldown.
 	 */
 	get cooldownExpiryDate(): Date | null {
 		return this._data.cooldown_expires_at ? new Date(this._data.cooldown_expires_at) : null;

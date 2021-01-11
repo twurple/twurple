@@ -20,7 +20,7 @@ export interface HelixHypeTrainEventData {
 }
 
 /**
- * A hype train event.
+ * A Hype Train event.
  */
 @rtfm<HelixHypeTrainEvent>('twitch', 'HelixHypeTrainEvent', 'id')
 export class HelixHypeTrainEvent {
@@ -34,63 +34,63 @@ export class HelixHypeTrainEvent {
 	}
 
 	/**
-	 * The id of the hype train event.
+	 * The ID of the Hype Train event.
 	 */
 	get id(): string {
 		return this._data.id;
 	}
 
 	/**
-	 * The user ID of the broadcaster where the hype train event was triggered.
+	 * The user ID of the broadcaster where the Hype Train event was triggered.
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_id;
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster where the hype train event was triggered.
+	 * Retrieves more information about the broadcaster where the Hype Train event was triggered.
 	 */
 	async getBroadcaster(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.broadcaster_id);
 	}
 
 	/**
-	 * The level of the hype train event.
+	 * The level of the Hype Train event.
 	 */
 	get level(): number {
 		return this._data.level;
 	}
 
 	/**
-	 * The start date of the hype train event.
+	 * The time when the Hype Train started.
 	 */
 	get startDate(): Date {
 		return new Date(this._data.started_at);
 	}
 
 	/**
-	 * The expiration date of the hype train event.
+	 * The time when the Hype Train is set to expire.
 	 */
 	get expiryDate(): Date {
 		return new Date(this._data.expires_at);
 	}
 
 	/**
-	 * The total amount of of the hype train event.
+	 * The total amount of progress points of the Hype Train event.
 	 */
 	get total(): number {
 		return this._data.total;
 	}
 
 	/**
-	 * The last contribution to the hype train event.
+	 * The last contribution to the Hype Train event.
 	 */
 	get lastContribution(): HelixHypeTrainContribution {
 		return new HelixHypeTrainContribution(this._data.last_contribution, this._client);
 	}
 
 	/**
-	 * Array list of the top contributions to the hype train event for bits and subs.
+	 * Array list of the top contributions to the Hype Train event for bits and subs.
 	 */
 	get topContributions(): HelixHypeTrainContribution[] {
 		return this._data.top_contributions.map(cont => new HelixHypeTrainContribution(cont, this._client));

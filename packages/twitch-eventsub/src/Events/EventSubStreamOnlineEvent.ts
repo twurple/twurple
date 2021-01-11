@@ -4,6 +4,7 @@ import { rtfm } from 'twitch-common';
 
 type EventSubStreamOnlineEventStreamType = 'live' | 'playlist' | 'watch_party' | 'premiere' | 'rerun';
 
+/** @private */
 export interface EventSubStreamOnlineEventData {
 	id: string;
 	broadcaster_user_id: string;
@@ -19,6 +20,7 @@ export class EventSubStreamOnlineEvent {
 	@Enumerable(false) private readonly _data: EventSubStreamOnlineEventData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
+	/** @private */
 	constructor(data: EventSubStreamOnlineEventData, client: ApiClient) {
 		this._data = data;
 		this._client = client;

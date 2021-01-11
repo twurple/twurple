@@ -2,6 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
+/** @private */
 export interface EventSubStreamOfflineEventData {
 	broadcaster_user_id: string;
 	broadcaster_user_name: string;
@@ -15,6 +16,7 @@ export class EventSubStreamOfflineEvent {
 	@Enumerable(false) private readonly _data: EventSubStreamOfflineEventData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
+	/** @private */
 	constructor(data: EventSubStreamOfflineEventData, client: ApiClient) {
 		this._data = data;
 		this._client = client;

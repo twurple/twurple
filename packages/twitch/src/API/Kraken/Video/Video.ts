@@ -231,7 +231,7 @@ export class Video {
 	}
 
 	/**
-	 * When the video will be viewable publicly.
+	 * The time when the video will be viewable publicly.
 	 */
 	get viewabilityDate(): Date | null {
 		return this._data.viewable_at ? new Date(this._data.viewable_at) : null;

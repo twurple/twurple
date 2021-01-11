@@ -60,7 +60,7 @@ interface VideoCreateData extends VideoEditData {
 	viewable: VideoViewability;
 
 	/**
-	 * When the video will become public.
+	 * The time when the video will become public.
 	 *
 	 * This only takes effect if `viewable` is `private`.
 	 */

@@ -55,7 +55,7 @@ export class PubSubBitsMessage {
 	}
 
 	/**
-	 * Retrieves more data about the user.
+	 * Retrieves more information about the user.
 	 *
 	 * @deprecated Use {@HelixUserApi#getUserById} instead.
 	 */

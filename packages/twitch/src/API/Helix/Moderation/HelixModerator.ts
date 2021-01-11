@@ -38,7 +38,7 @@ export class HelixModerator {
 	}
 
 	/**
-	 * Retrieves more data about the user.
+	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.user_id);

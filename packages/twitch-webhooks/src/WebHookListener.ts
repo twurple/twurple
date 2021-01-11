@@ -270,9 +270,9 @@ export class WebHookListener {
 	}
 
 	/**
-	 * Subscribes to events representing a hype train event.
+	 * Subscribes to events representing a Hype Train event.
 	 *
-	 * @param broadcaster The broadcaster / channel for which to get notifications about the hype train events.
+	 * @param broadcaster The broadcaster / channel for which to get notifications about the Hype Train events.
 	 * @param handler The function that will be called for any new notifications.
 	 * @param validityInSeconds The validity of the WebHook, in seconds.
 	 *
