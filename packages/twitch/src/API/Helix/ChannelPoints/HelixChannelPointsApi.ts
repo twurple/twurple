@@ -336,7 +336,8 @@ export class HelixChannelPointsApi extends BaseApi {
 				}
 			},
 			this._client,
-			data => new HelixCustomRewardRedemption(data, this._client)
+			data => new HelixCustomRewardRedemption(data, this._client),
+			50
 		);
 	}
 
