@@ -9,8 +9,10 @@ export type HelixExtensionSlotType = 'panel' | 'overlay' | 'component';
 
 /**
  * A Twitch Extension that is installed in a slot of a channel.
+ *
+ * @inheritDoc
  */
-@rtfm<HelixInstalledExtension>('twitch', 'HelixSlottedExtension', 'id')
+@rtfm<HelixInstalledExtension>('twitch', 'HelixInstalledExtension', 'id')
 export class HelixInstalledExtension extends HelixExtension {
 	private readonly _slotType: HelixExtensionSlotType;
 	private readonly _slotId: string;

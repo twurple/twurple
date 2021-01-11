@@ -14,6 +14,8 @@ export interface HelixUserExtensionData extends HelixExtensionData {
 
 /**
  * A Twitch Extension that was installed by a user.
+ *
+ * @inheritDoc
  */
 @rtfm<HelixUserExtension>('twitch', 'HelixUserExtension', 'id')
 export class HelixUserExtension extends HelixExtension {

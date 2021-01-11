@@ -1,5 +1,4 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface HelixExtensionData {
@@ -9,7 +8,6 @@ export interface HelixExtensionData {
 }
 
 /** @protected */
-@rtfm<HelixExtension>('twitch', 'HelixExtension', 'id')
 export abstract class HelixExtension {
 	/** @private */
 	@Enumerable(false) protected readonly _data: HelixExtensionData;
