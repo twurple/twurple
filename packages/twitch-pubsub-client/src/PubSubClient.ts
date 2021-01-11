@@ -45,10 +45,7 @@ export class PubSubClient {
 	async registerUserListener(authProvider: AuthProvider, user?: UserIdResolvable): Promise<string> {
 		const userId = await PubSubClient._getCorrectUserId(authProvider, user);
 
-		this._userClients.set(
-			userId,
-			new SingleUserPubSubClient({ authProvider, pubSubClient: this._rootClient })
-		);
+		this._userClients.set(userId, new SingleUserPubSubClient({ authProvider, pubSubClient: this._rootClient }));
 
 		return userId;
 	}

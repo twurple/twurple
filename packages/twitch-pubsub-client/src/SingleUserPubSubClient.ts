@@ -60,11 +60,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @expandParams
 	 */
-	constructor({
-		authProvider,
-		pubSubClient,
-		logger
-	}: SingleUserPubSubClientOptions) {
+	constructor({ authProvider, pubSubClient, logger }: SingleUserPubSubClientOptions) {
 		this._authProvider = authProvider;
 		this._pubSubClient = pubSubClient ?? new BasicPubSubClient({ logger });
 		this._pubSubClient.onMessage(async (topic, messageData) => {
@@ -173,7 +169,11 @@ export class SingleUserPubSubClient {
 		}
 	}
 
-	private static _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage | undefined {
+	private static _parseMessage(
+		type: string,
+		args: string[],
+		messageData: PubSubMessageData
+	): PubSubMessage | undefined {
 		switch (type) {
 			case 'channel-bits-events-v2': {
 				return new PubSubBitsMessage(messageData as PubSubBitsMessageData);

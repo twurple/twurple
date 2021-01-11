@@ -248,7 +248,9 @@ export class ChatClient extends IrcClient {
 	 *
 	 * If you're not logged in as the owner of the channel, this is undefined.
 	 */
-	readonly onHost: (handler: (channel: string, target: string, viewers?: number) => void) => Listener = this.registerEvent();
+	readonly onHost: (
+		handler: (channel: string, target: string, viewers?: number) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a channel you're logged in as its owner is being hosted by another channel.
@@ -271,7 +273,9 @@ export class ChatClient extends IrcClient {
 	 * @param channel The hosting channel.
 	 * @param numberOfHosts The number of hosts remaining in the next half hour.
 	 */
-	readonly onHostsRemaining: (handler: (channel: string, numberOfHosts: number) => void) => Listener = this.registerEvent();
+	readonly onHostsRemaining: (
+		handler: (channel: string, numberOfHosts: number) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when a user joins a channel.
@@ -373,7 +377,9 @@ export class ChatClient extends IrcClient {
 	 * @param enabled Whether slow mode is being enabled. If false, it's being disabled.
 	 * @param delay The time (in seconds) a user has to wait between sending messages. Only set when enabling slow mode.
 	 */
-	readonly onSlow: (handler: (channel: string, enabled: boolean, delay?: number) => void) => Listener = this.registerEvent();
+	readonly onSlow: (
+		handler: (channel: string, enabled: boolean, delay?: number) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when sub only mode is toggled in a channel.
@@ -543,7 +549,9 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onWhisper: (handler: (user: string, message: string, msg: Whisper) => void) => Listener = this.registerEvent();
+	readonly onWhisper: (
+		handler: (user: string, message: string, msg: Whisper) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when you tried to execute a command you don't have sufficient permission for.
@@ -561,7 +569,9 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that was attempted to send to.
 	 * @param message The message text.
 	 */
-	readonly onMessageRatelimit: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
+	readonly onMessageRatelimit: (
+		handler: (channel: string, message: string) => void
+	) => Listener = this.registerEvent();
 
 	/**
 	 * Fires when authentication fails.
