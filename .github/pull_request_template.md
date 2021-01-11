@@ -1,8 +1,8 @@
 <!--
 Please enter "Bugfix", "Improvement" or "Feature" here.
-Features will only get included in new major and minor versions and should be based on the master branch,
-while bugfixes will be released to `@latest` more quickly and should be based on the support branch of the current minor version, e.g. `support/4.1`.
-Don't worry - bugfixes will also be merged back to master, if applicable.
+Features will only get included in new major and minor versions and should be based on the main branch,
+while bugfixes will be released to `@latest` more quickly and should be based on the version branch of the current minor version, e.g. `versions/4.4`.
+Don't worry - bugfixes will also be merged back to the main branch, if applicable.
 -->
 Type: 
 <!--

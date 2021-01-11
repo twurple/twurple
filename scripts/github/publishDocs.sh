@@ -16,5 +16,5 @@ git config user.name "GitHub Actions"
 if [[ $(git status --porcelain) ]]; then
 	git add .
 	git commit -m "GitHub Actions build ${BUILD_NUMBER}, branch ${REPO_BRANCH}"
-	git push --quiet --set-upstream origin master
+	git push --quiet --set-upstream origin main
 fi

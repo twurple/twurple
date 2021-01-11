@@ -30,12 +30,12 @@ To get started, simply fork the repository, then clone the fork locally:
 
 	git clone https://github.com/your-username/twitch.git
 	
-If you want to send a bugfix to a non-prerelease version, please check out the respective branch named `support/x.y` (`x.y` being the current minor version).
-On master, only ongoing development of future minor and major versions happens.
+If you want to send a bugfix to a non-prerelease version, please check out the respective branch named `versions/x.y` (`x.y` being the current minor version).
+On the `main` branch, only ongoing development of future minor and major versions happens.
 
-    git checkout support/4.1
+    git checkout versions/4.4
 
-Bugfixes will be merged back to master if applicable.
+Bugfixes will be merged back to the `main` branch if applicable.
 
 Then install the dependencies. We use yarn as our package manager, so to make sure you get the exact package versions of the lock file, you should use it too:
 
