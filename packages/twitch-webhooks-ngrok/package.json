@@ -40,7 +40,7 @@
   },
   "peerDependencies": {
     "twitch": "^4.4.0",
-    "twitch-webhooks": "^4.1.0"
+    "twitch-webhooks": "^4.4.0"
   },
   "files": [
     "LICENSE",
