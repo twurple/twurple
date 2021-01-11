@@ -1,6 +1,7 @@
 import generateRandomString from '@d-fischer/randomstring';
 import * as crypto from 'crypto';
 import type { HelixResponse, HelixWebHookHubRequestOptions } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
 
 /** @private */
@@ -9,6 +10,7 @@ export type SubscriptionResultType<T extends Subscription> = T extends Subscript
 /**
  * @hideProtected
  */
+@rtfm('twitch-webhooks', 'Subscription')
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class Subscription</** @private */ T = any> {
 	private _verified: boolean = false;

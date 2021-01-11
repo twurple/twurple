@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface EventSubUserAuthorizationRevokeEventData {
@@ -10,6 +11,7 @@ export interface EventSubUserAuthorizationRevokeEventData {
 /**
  * An EventSub event representing a user revoking authorization for an application.
  */
+@rtfm<EventSubUserAuthorizationRevokeEvent>('twitch-eventsub', 'EventSubUserAuthorizationRevokeEvent', 'userId')
 export class EventSubUserAuthorizationRevokeEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

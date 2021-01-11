@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { EventSubChannelHypeTrainContribution } from './Common/EventSubChannelHypeTrainContribution';
 
 /** @private */
@@ -18,6 +19,7 @@ export interface EventSubChannelHypeTrainBeginEventData {
 /**
  * An EventSub event representing a Hype Train starting in a channel.
  */
+@rtfm<EventSubChannelHypeTrainBeginEvent>('twitch-eventsub', 'EventSubChannelHypeTrainBeginEvent', 'broadcasterId')
 export class EventSubChannelHypeTrainBeginEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

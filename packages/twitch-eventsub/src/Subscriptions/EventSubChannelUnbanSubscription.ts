@@ -1,4 +1,5 @@
 import type { HelixEventSubSubscription } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { EventSubChannelUnbanEventData } from '../Events/EventSubChannelUnbanEvent';
 import { EventSubChannelUnbanEvent } from '../Events/EventSubChannelUnbanEvent';
 import type { EventSubListener } from '../EventSubListener';
@@ -7,6 +8,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 /**
  * @private
  */
+@rtfm('twitch-eventsub', 'EventSubSubscription')
 export class EventSubChannelUnbanSubscription extends EventSubSubscription<EventSubChannelUnbanEvent> {
 	constructor(
 		handler: (data: EventSubChannelUnbanEvent) => void,

@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface EventSubChannelRewardMaxPerStreamData {
@@ -49,6 +50,7 @@ export interface EventSubChannelRewardEventData {
 /**
  * An EventSub event representing a broadcaster adding, updating or removing a Channel Points reward for their channel.
  */
+@rtfm<EventSubChannelRewardEvent>('twitch-eventsub', 'EventSubChannelRewardEvent', 'id')
 export class EventSubChannelRewardEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
@@ -59,7 +61,7 @@ export class EventSubChannelRewardEvent {
 	}
 
 	/**
-	 * The ID of the Reward added.
+	 * The ID of the reward.
 	 */
 	get id(): string {
 		return this._data.id;

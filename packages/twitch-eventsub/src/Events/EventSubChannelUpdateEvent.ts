@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixGame, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface EventSubChannelUpdateEventData {
@@ -14,6 +15,7 @@ export interface EventSubChannelUpdateEventData {
 /**
  * An EventSub event representing a change in channel metadata.
  */
+@rtfm<EventSubChannelUpdateEvent>('twitch-eventsub', 'EventSubChannelUpdateEvent', 'userId')
 export class EventSubChannelUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

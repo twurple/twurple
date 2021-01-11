@@ -8,7 +8,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 /**
  * @private
  */
-@rtfm<EventSubStreamOnlineSubscription>('twitch-eventsub', 'EventSubStreamOnlineSubscription', 'id')
+@rtfm('twitch-eventsub', 'EventSubSubscription')
 export class EventSubStreamOnlineSubscription extends EventSubSubscription<EventSubStreamOnlineEvent> {
 	constructor(
 		handler: (data: EventSubStreamOnlineEvent) => void,

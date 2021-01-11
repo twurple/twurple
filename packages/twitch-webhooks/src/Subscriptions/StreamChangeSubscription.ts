@@ -1,11 +1,13 @@
 import type { HelixResponse, HelixStreamData } from 'twitch';
 import { HelixStream } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
  * @private
  */
+@rtfm('twitch-webhooks', 'Subscription')
 export class StreamChangeSubscription extends Subscription<HelixStream | undefined> {
 	constructor(
 		handler: (data: HelixStream | undefined) => void,

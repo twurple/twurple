@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 type EventSubChannelSubscriptionEventTier = '1000' | '2000' | '3000';
 /** @private */
@@ -15,6 +16,7 @@ export interface EventSubChannelSubscriptionEventData {
 /**
  * An EventSub event representing a channel subscription.
  */
+@rtfm<EventSubChannelSubscriptionEvent>('twitch-eventsub', 'EventSubChannelSubscriptionEvent', 'userId')
 export class EventSubChannelSubscriptionEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

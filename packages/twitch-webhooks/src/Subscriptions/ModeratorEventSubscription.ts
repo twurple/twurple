@@ -1,11 +1,13 @@
 import type { HelixModeratorEventData, HelixResponse } from 'twitch';
 import { HelixModeratorEvent } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
  * @private
  */
+@rtfm('twitch-webhooks', 'Subscription')
 export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent> {
 	constructor(
 		handler: (data: HelixModeratorEvent) => void,

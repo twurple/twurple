@@ -1,4 +1,5 @@
 import type { HelixEventSubSubscription } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { EventSubChannelHypeTrainProgressEventData } from '../Events/EventSubChannelHypeTrainProgressEvent';
 import { EventSubChannelHypeTrainProgressEvent } from '../Events/EventSubChannelHypeTrainProgressEvent';
 import type { EventSubListener } from '../EventSubListener';
@@ -7,6 +8,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 /**
  * @private
  */
+@rtfm('twitch-eventsub', 'EventSubSubscription')
 export class EventSubChannelHypeTrainProgressSubscription extends EventSubSubscription<EventSubChannelHypeTrainProgressEvent> {
 	constructor(
 		handler: (data: EventSubChannelHypeTrainProgressEvent) => void,

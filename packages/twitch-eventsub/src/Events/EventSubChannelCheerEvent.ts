@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface EventSubChannelCheerEventData {
@@ -15,6 +16,7 @@ export interface EventSubChannelCheerEventData {
 /**
  * An EventSub event representing a user cheering bits.
  */
+@rtfm<EventSubChannelCheerEvent>('twitch-eventsub', 'EventSubChannelCheerEvent', 'userId')
 export class EventSubChannelCheerEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

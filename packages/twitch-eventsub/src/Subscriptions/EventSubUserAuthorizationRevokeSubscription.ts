@@ -1,4 +1,5 @@
 import type { HelixEventSubSubscription } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { EventSubUserAuthorizationRevokeEventData } from '../Events/EventSubUserAuthorizationRevokeEvent';
 import { EventSubUserAuthorizationRevokeEvent } from '../Events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubListener } from '../EventSubListener';
@@ -7,6 +8,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 /**
  * @private
  */
+@rtfm('twitch-eventsub', 'EventSubSubscription')
 export class EventSubUserAuthorizationRevokeSubscription extends EventSubSubscription<EventSubUserAuthorizationRevokeEvent> {
 	constructor(
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void,

@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { EventSubChannelRedemptionReward } from './Common/EventSubChannelRedemptionReward';
 
 /** @private */
@@ -18,6 +19,7 @@ export interface EventSubChannelRedemptionAddEventData {
 /**
  * An EventSub event representing a Channel Points redemption.
  */
+@rtfm<EventSubChannelRedemptionAddEvent>('twitch-eventsub', 'EventSubChannelRedemptionAddEvent', 'id')
 export class EventSubChannelRedemptionAddEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

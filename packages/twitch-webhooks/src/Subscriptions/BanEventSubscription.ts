@@ -7,7 +7,7 @@ import { Subscription } from './Subscription';
 /**
  * @private
  */
-@rtfm('twitch-webhooks', 'BanEventSubscription')
+@rtfm('twitch-webhooks', 'Subscription')
 export class BanEventSubscription extends Subscription<HelixBanEvent> {
 	constructor(
 		handler: (data: HelixBanEvent) => void,

@@ -1,11 +1,13 @@
-import type { HelixResponse, HelixHypeTrainEventData } from 'twitch';
+import type { HelixHypeTrainEventData, HelixResponse } from 'twitch';
 import { HelixHypeTrainEvent } from 'twitch';
+import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 
 /**
  * @private
  */
+@rtfm('twitch-webhooks', 'Subscription')
 export class HypeTrainEventSubscription extends Subscription<HelixHypeTrainEvent> {
 	constructor(
 		handler: (data: HelixHypeTrainEvent) => void,

@@ -1,5 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface EventSubChannelUnbanEventData {
@@ -12,6 +13,7 @@ export interface EventSubChannelUnbanEventData {
 /**
  * An EventSub event representing a user being unbanned in a channel.
  */
+@rtfm<EventSubChannelUnbanEvent>('twitch-eventsub', 'EventSubChannelUnbanEvent', 'userId')
 export class EventSubChannelUnbanEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
