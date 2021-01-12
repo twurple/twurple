@@ -2,6 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
+/** @private */
 export interface PubSubChatModActionMessageContent {
 	type: string;
 	moderation_action: string;
@@ -10,6 +11,7 @@ export interface PubSubChatModActionMessageContent {
 	created_by_user_id: string;
 }
 
+/** @private */
 export interface PubSubChatModActionMessageData {
 	data: PubSubChatModActionMessageContent;
 }

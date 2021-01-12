@@ -3,6 +3,7 @@ import type { ApiClient, HelixUser, HelixUserType } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
+/** @private */
 export interface PubSubWhisperTags {
 	login: string;
 	display_name: string;
@@ -12,6 +13,7 @@ export interface PubSubWhisperTags {
 	badges: PubSubChatMessageBadge[];
 }
 
+/** @private */
 export interface PubSubWhisperRecipient {
 	id: number; // Twitch pls...
 	username: string;
@@ -22,6 +24,7 @@ export interface PubSubWhisperRecipient {
 	profile_image: string | null;
 }
 
+/** @private */
 export interface PubSubWhisperMessageContent {
 	id: number;
 	message_id: string;
@@ -33,6 +36,7 @@ export interface PubSubWhisperMessageContent {
 	recipient: PubSubWhisperRecipient;
 }
 
+/** @private */
 export interface PubSubWhisperMessageData {
 	type: 'whisper_received';
 	data: string;

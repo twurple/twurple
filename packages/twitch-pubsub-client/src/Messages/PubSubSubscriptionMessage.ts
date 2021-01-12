@@ -3,12 +3,14 @@ import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
 
+/** @private */
 export interface PubSubSubscriptionDetail {
 	context: 'sub' | 'resub';
 	cumulative_months: number;
 	streak_months: number;
 }
 
+/** @private */
 export interface PubSubSubscriptionGiftDetail {
 	context: 'subgift' | 'anonsubgift';
 	recipient_id: string;
@@ -18,6 +20,7 @@ export interface PubSubSubscriptionGiftDetail {
 	multi_month_duration: number;
 }
 
+/** @private */
 export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 	display_name: string;
 	sub_plan: 'Prime' | '1000' | '2000' | '3000';
