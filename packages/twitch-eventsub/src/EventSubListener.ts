@@ -170,10 +170,12 @@ export class EventSubListener {
 			next();
 		});
 		this._server.post('/:id', this._createHandleRequest());
-		const listenerPort = (await this._adapter.getListenerPort()) ?? port;
-		if (!listenerPort) {
-			throw new Error("Adapter didn't define a listener port; please pass one as an argument");
+		const adapterListenerPort = await this._adapter.getListenerPort();
+		if (adapterListenerPort && port) {
+			this._logger.warn(`Your passed port (${port}) is being ignored because the adapter has overridden it.
+Listening on port ${adapterListenerPort} instead.`);
 		}
+		const listenerPort = adapterListenerPort ?? port ?? 443;
 		await this._server.listen(listenerPort);
 		this._logger.info(`Listening on port ${listenerPort}`);
 
