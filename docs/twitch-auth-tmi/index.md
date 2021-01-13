@@ -6,7 +6,7 @@ Use tmi.js with the added benefits of twitch-auth's automatic token handling.
 
 or using npm:
 
-	npm install --save twitch-auth twitch-auth-tmi
+	npm install twitch-auth twitch-auth-tmi
 
 ## If you're getting stuck...
 

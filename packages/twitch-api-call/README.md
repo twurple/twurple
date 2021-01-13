@@ -8,7 +8,7 @@ A basic Twitch API call wrapper.
 
 or using npm:
 
-	npm install --save twitch-api-call
+	npm install twitch-api-call
 
 ## Documentation
 

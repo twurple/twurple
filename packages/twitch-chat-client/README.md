@@ -8,7 +8,7 @@ Interact with the Twitch Messaging Interface (aka Twitch chat).
 
 or using npm:
 
-	npm install --save twitch-auth twitch-chat-client
+	npm install twitch-auth twitch-chat-client
 
 ## Documentation
 

@@ -8,7 +8,7 @@ Listen to events using the Twitch PubSub interface.
 
 or using npm:
 
-	npm install --save twitch twitch-pubsub-client
+	npm install twitch twitch-pubsub-client
 
 ## Documentation
 

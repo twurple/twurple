@@ -8,7 +8,7 @@ Authenticate with Twitch and stop caring about refreshing tokens.
 
 or using npm:
 
-	npm install --save twitch-auth
+	npm install twitch-auth
 
 ## Documentation
 

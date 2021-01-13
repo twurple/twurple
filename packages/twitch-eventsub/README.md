@@ -8,7 +8,7 @@ Listen to events on Twitch via their EventSub API.
 
 or using npm:
 
-	npm install --save twitch twitch-eventsub
+	npm install twitch twitch-eventsub
 
 ## Documentation
 

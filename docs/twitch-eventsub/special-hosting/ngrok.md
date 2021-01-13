@@ -11,7 +11,7 @@ Then, add the specialized apater for it to your packages:
 
 or using npm:
 
-    npm install --save twitch-eventsub-ngrok
+    npm install twitch-eventsub-ngrok
 
 ## 2. Setting up the listener
 

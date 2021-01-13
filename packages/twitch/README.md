@@ -8,7 +8,7 @@ Interact with Twitch's API.
 
 or using npm:
 
-	npm install --save twitch
+	npm install twitch
 
 ## Documentation
 

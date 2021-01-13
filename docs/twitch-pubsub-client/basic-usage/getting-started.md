@@ -6,7 +6,7 @@ To add Twitch.js and the PubSub client to your project, just execute:
 
 or using npm:
 
-	npm install --save twitch twitch-pubsub-client
+	npm install twitch twitch-pubsub-client
 
 ## Importing the library
 

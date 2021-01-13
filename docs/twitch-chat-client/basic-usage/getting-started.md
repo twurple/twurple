@@ -6,7 +6,7 @@ To add the authentication core and the chat client to your project, just execute
 
 or using npm:
 
-	npm install --save twitch-auth twitch-chat-client
+	npm install twitch-auth twitch-chat-client
 
 ## Importing the library
 

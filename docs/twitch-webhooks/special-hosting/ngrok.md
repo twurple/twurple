@@ -10,7 +10,7 @@ Then, add the specialized apater for it to your packages:
 
 or using npm:
 
-	npm install --save twitch-webhooks-ngrok
+	npm install twitch-webhooks-ngrok
 
 ## 2. Setting up the listener
 

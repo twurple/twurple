@@ -12,7 +12,7 @@ To install these, just execute:
 
 or using npm:
 
-	npm install --save twitch twitch-auth twitch-eventsub
+	npm install twitch twitch-auth twitch-eventsub
 
 ## Importing the library
 
