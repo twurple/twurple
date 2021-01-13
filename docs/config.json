@@ -281,6 +281,23 @@
 				}
 			]
 		},
+		"twitch-auth-tmi": {
+			"indexTitle": "Twitch.js - Authentication Manager for TMI.js",
+			"indexFile": "twitch-auth-tmi/index.md",
+			"categories": [
+				{
+					"name": "basic-usage",
+					"title": "Basic usage",
+					"articles": [
+						{
+							"name": "client-setup",
+							"title": "Setting up a tmi.js client",
+							"file": "twitch-auth-tmi/basic-usage/client-setup.md"
+						}
+					]
+				}
+			]
+		},
 		"easy-twitch-bot": {
 			"indexTitle": "Twitch.js - Bot framework"
 		}
