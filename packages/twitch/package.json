@@ -54,7 +54,6 @@
   ],
   "scripts": {
     "build": "tsukuru",
-    "rebuild": "tsukuru --clean",
-    "postinstall": "node ./scripts/npm/postinstall.js"
+    "rebuild": "tsukuru --clean"
   }
 }
