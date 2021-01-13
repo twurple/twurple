@@ -63,7 +63,7 @@ export class RefreshableAuthProvider implements AuthProvider {
 	 *
 	 * It is the same as the underlying base auth provider's token type.
 	 */
-	get tokenType(): AuthProviderTokenType | undefined {
+	get tokenType(): AuthProviderTokenType {
 		return this._childProvider.tokenType;
 	}
 
