@@ -120,6 +120,7 @@ export class EventSubListener {
 	/** @private */ @Enumerable(false) readonly _secret: string;
 	private readonly _adapter: ConnectionAdapter;
 	/** @private */ readonly _logger: Logger;
+	private _currentListenerPort?: number;
 
 	/**
 	 * Creates a new EventSub listener.
@@ -176,6 +177,7 @@ export class EventSubListener {
 Listening on port ${adapterListenerPort} instead.`);
 		}
 		const listenerPort = adapterListenerPort ?? port ?? 443;
+		this._currentListenerPort = listenerPort;
 		await this._server.listen(listenerPort);
 		this._logger.info(`Listening on port ${listenerPort}`);
 
@@ -217,6 +219,7 @@ Listening on port ${adapterListenerPort} instead.`);
 
 		await this._server.close();
 		this._server = undefined;
+		this._currentListenerPort = undefined;
 	}
 
 	/**
@@ -691,7 +694,10 @@ Listening on port ${adapterListenerPort} instead.`);
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
 		const hostName = await this._adapter.getHostName();
-		const externalPort = await this._adapter.getExternalPort();
+		const externalPort = (await this._adapter.getExternalPort()) ?? this._currentListenerPort;
+		if (!externalPort) {
+			throw new Error('Can not build hook URL with implicit external port while not listening');
+		}
 		const hostPortion = externalPort === 443 ? hostName : `${hostName}:${externalPort}`;
 
 		// trim slashes on both ends

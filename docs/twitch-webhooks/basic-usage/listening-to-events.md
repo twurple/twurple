@@ -32,24 +32,17 @@ When your listener is set up, you can subscribe to all supported events using th
 ```ts twoslash
 // @module: esnext
 // @target: ES2017
+// @lib: es2015,dom
 import { ApiClient } from 'twitch';
 import { WebHookListener } from 'twitch-webhooks';
 declare const apiClient: ApiClient;
 declare const listener: WebHookListener
-// lib stub until @lib is fixed
-declare const console: {
-    log: (...args: any[]) => void;
-}
-// also silence TS complaining about Promise not existing (even a stub doesn't work)
-// @errors: 2697
 // ---cut---
-import { HelixStream } from 'twitch';
-    
 const userId = 'YOUR_USER_ID';
 // we need to track the previous status of the stream because there are other state changes than the live/offline switch
 let prevStream = await apiClient.helix.streams.getStreamByUserId(userId);
 
-const subscription = await listener.subscribeToStreamChanges(userId, async (stream?: HelixStream) => {
+const subscription = await listener.subscribeToStreamChanges(userId, async stream => {
     if (stream) {
         if (!prevStream) {
             console.log(`${stream.userDisplayName} just went live with title: ${stream.title}`);
@@ -57,9 +50,9 @@ const subscription = await listener.subscribeToStreamChanges(userId, async (stre
     } else {
         // no stream, no display name
         const user = await apiClient.helix.users.getUserById(userId);
-        console.log(`${user.displayName} just went offline`);
+        console.log(`${user!.displayName} just went offline`);
     }
-    prevStream = stream;
+    prevStream = stream ?? null;
 });
 ```
 
