@@ -211,6 +211,44 @@
 				}
 			]
 		},
+		"twitch-eventsub": {
+			"indexTitle": "Twitch.js EventSub Listener",
+			"indexFile": "twitch-eventsub/index.md",
+			"categories": [
+				{
+					"name": "basic-usage",
+					"title": "Basic usage",
+					"articles": [
+						{
+							"name": "getting-started",
+							"title": "Getting started",
+							"file": "twitch-eventsub/basic-usage/getting-started.md"
+						},
+						{
+							"name": "listening-to-events",
+							"title": "Listening to events",
+							"file": "twitch-eventsub/basic-usage/listening-to-events.md"
+						}
+					]
+				},
+				{
+					"name": "special-hosting",
+					"title": "Special hosting",
+					"articles": [
+						{
+							"name": "reverse-proxy",
+							"title": "Serving through a reverse proxy",
+							"file": "twitch-eventsub/special-hosting/reverse-proxy.md"
+						},
+						{
+							"name": "ngrok",
+							"title": "Testing locally using ngrok",
+							"file": "twitch-eventsub/special-hosting/ngrok.md"
+						}
+					]
+				}
+			]
+		},
 		"twitch-auth": {
 			"indexTitle": "Twitch.js Authentication Manager",
 			"indexFile": "twitch-auth/index.md",
@@ -238,6 +276,23 @@
 							"name": "electron",
 							"title": "For Electron apps",
 							"file": "twitch-auth/providers/electron.md"
+						}
+					]
+				}
+			]
+		},
+		"twitch-auth-tmi": {
+			"indexTitle": "Twitch.js - Authentication Manager for TMI.js",
+			"indexFile": "twitch-auth-tmi/index.md",
+			"categories": [
+				{
+					"name": "basic-usage",
+					"title": "Basic usage",
+					"articles": [
+						{
+							"name": "client-setup",
+							"title": "Setting up a tmi.js client",
+							"file": "twitch-auth-tmi/basic-usage/client-setup.md"
 						}
 					]
 				}

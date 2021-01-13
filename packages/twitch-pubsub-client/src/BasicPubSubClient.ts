@@ -1,5 +1,6 @@
 import type { Connection } from '@d-fischer/connection';
 import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
+import type { ClientOptions } from '@d-fischer/isomorphic-ws';
 import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
 import { Logger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
@@ -9,30 +10,34 @@ import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from 'twitch-auth';
 import { getValidTokenFromProvider } from 'twitch-auth';
 import { HellFreezesOverError, rtfm } from 'twitch-common';
-import type { ClientOptions } from '@d-fischer/isomorphic-ws';
 import type { PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
+/** @private */
 interface NullTokenResolvable {
 	type: 'null';
 }
 
+/** @private */
 interface StaticTokenResolvable {
 	type: 'static';
 	token: string;
 }
 
+/** @private */
 interface FunctionTokenResolvable {
 	type: 'function';
 	function: () => string | Promise<string>;
 }
 
+/** @private */
 interface ProviderTokenResolvable {
 	type: 'provider';
 	provider: AuthProvider;
 	scopes: string[];
 }
 
+/** @private */
 type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTokenResolvable | ProviderTokenResolvable;
 
 /**

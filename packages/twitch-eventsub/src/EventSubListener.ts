@@ -120,6 +120,7 @@ export class EventSubListener {
 	/** @private */ @Enumerable(false) readonly _secret: string;
 	private readonly _adapter: ConnectionAdapter;
 	/** @private */ readonly _logger: Logger;
+	private _currentListenerPort?: number;
 
 	/**
 	 * Creates a new EventSub listener.
@@ -170,10 +171,13 @@ export class EventSubListener {
 			next();
 		});
 		this._server.post('/:id', this._createHandleRequest());
-		const listenerPort = (await this._adapter.getListenerPort()) ?? port;
-		if (!listenerPort) {
-			throw new Error("Adapter didn't define a listener port; please pass one as an argument");
+		const adapterListenerPort = await this._adapter.getListenerPort();
+		if (adapterListenerPort && port) {
+			this._logger.warn(`Your passed port (${port}) is being ignored because the adapter has overridden it.
+Listening on port ${adapterListenerPort} instead.`);
 		}
+		const listenerPort = adapterListenerPort ?? port ?? 443;
+		this._currentListenerPort = listenerPort;
 		await this._server.listen(listenerPort);
 		this._logger.info(`Listening on port ${listenerPort}`);
 
@@ -215,6 +219,7 @@ export class EventSubListener {
 
 		await this._server.close();
 		this._server = undefined;
+		this._currentListenerPort = undefined;
 	}
 
 	/**
@@ -689,7 +694,10 @@ export class EventSubListener {
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
 		const hostName = await this._adapter.getHostName();
-		const externalPort = await this._adapter.getExternalPort();
+		const externalPort = (await this._adapter.getExternalPort()) ?? this._currentListenerPort;
+		if (!externalPort) {
+			throw new Error('Can not build hook URL with implicit external port while not listening');
+		}
 		const hostPortion = externalPort === 443 ? hostName : `${hostName}:${externalPort}`;
 
 		// trim slashes on both ends

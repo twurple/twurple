@@ -3,11 +3,13 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
 import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
+/** @private */
 export interface PubSubBitsMessageBadgeEntitlement {
 	previous_version: number;
 	new_version: number;
 }
 
+/** @private */
 export interface PubSubBitsMessageContent
 	extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
 	chat_message: string;
@@ -18,6 +20,7 @@ export interface PubSubBitsMessageContent
 	is_anonymous: boolean;
 }
 
+/** @private */
 export interface PubSubBitsMessageData {
 	data: PubSubBitsMessageContent;
 	version: string;

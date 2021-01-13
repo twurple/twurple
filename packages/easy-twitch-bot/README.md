@@ -8,7 +8,7 @@ A simplified framework to get a chat bot running easily.
 
 or using npm:
 
-	npm install --save easy-twitch-bot
+	npm install easy-twitch-bot
 
 ## Example
 

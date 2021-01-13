@@ -1,18 +1,21 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
 
+/** @private */
 export interface PubSubRedemptionMessageUserData {
 	id: string;
 	login: string;
 	display_name: string;
 }
 
+/** @private */
 export interface PubSubRedemptionMessageImageData {
 	url_1x: string;
 	url_2x: string;
 	url_4x: string;
 }
 
+/** @private */
 export interface PubSubRedemptionMessageRewardData {
 	id: string;
 	channel_id: string;
@@ -34,8 +37,10 @@ export interface PubSubRedemptionMessageRewardData {
 	should_redemptions_skip_request_queue: boolean;
 }
 
+/** @private */
 export type PubSubRedemptionStatus = 'FULFILLED' | 'UNFULFILLED';
 
+/** @private */
 export interface PubSubRedemptionMessageRedemptionData {
 	id: string;
 	user: PubSubRedemptionMessageUserData;
@@ -46,11 +51,13 @@ export interface PubSubRedemptionMessageRedemptionData {
 	status: PubSubRedemptionStatus;
 }
 
+/** @private */
 export interface PubSubRedemptionMessageContent {
 	timestamp: string;
 	redemption: PubSubRedemptionMessageRedemptionData;
 }
 
+/** @private */
 export interface PubSubRedemptionMessageData {
 	type: 'reward-redeemed';
 	data: PubSubRedemptionMessageContent;

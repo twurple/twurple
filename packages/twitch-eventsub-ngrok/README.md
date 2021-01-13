@@ -8,7 +8,7 @@ Test your EventSub listener locally using ngrok.
 
 or using npm:
 
-	npm install --save twitch twitch-eventsub twitch-eventsub-ngrok
+	npm install twitch twitch-eventsub twitch-eventsub-ngrok
 
 ## Documentation
 

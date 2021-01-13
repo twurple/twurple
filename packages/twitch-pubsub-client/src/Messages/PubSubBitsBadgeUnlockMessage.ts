@@ -3,12 +3,14 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
 import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
+/** @private */
 export interface PubSubBitsBadgeUnlockMessageContent
 	extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
 	chat_message: string;
 	badge_tier: number;
 }
 
+/** @private */
 export interface PubSubBitsBadgeUnlockMessageData {
 	data: PubSubBitsBadgeUnlockMessageContent;
 	version: string;

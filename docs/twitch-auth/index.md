@@ -11,7 +11,7 @@ To add Twitch.js and the WebHook listener to your project, just execute:
 
 or using npm:
 
-	npm install --save twitch-auth
+	npm install twitch-auth
 
 ## Setting up authentication
 

@@ -24,7 +24,9 @@ export abstract class ConnectionAdapter {
 	}
 
 	/**
-	 * The port the HTTP server should listen on. If not given, this should be a parameter to `EventSub#listen` instead.
+	 * The port the HTTP server should listen on.
+	 *
+	 * If not given, this should be a parameter to `EventSub#listen` instead.
 	 *
 	 * @protected
 	 */
@@ -42,9 +44,13 @@ export abstract class ConnectionAdapter {
 	/**
 	 * Returns the port that should be used by Twitch to connect to this server.
 	 *
+	 * If not given, this is equal to the listener port.
+	 *
 	 * @protected
 	 */
-	abstract getExternalPort(): Promise<number>;
+	async getExternalPort(): Promise<number | undefined> {
+		return;
+	}
 
 	/**
 	 * The path prefix an external connection needs to reach this server.

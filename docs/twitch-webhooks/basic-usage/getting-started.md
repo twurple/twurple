@@ -6,7 +6,7 @@ To add Twitch.js and the WebHook listener to your project, just execute:
 
 or using npm:
 
-	npm install --save twitch twitch-webhooks
+	npm install twitch twitch-webhooks
 
 ## Importing the library
 

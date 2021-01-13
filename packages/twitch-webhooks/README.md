@@ -8,7 +8,7 @@ Listen to events on Twitch via their WebHooks API.
 
 or using npm:
 
-	npm install --save twitch twitch-webhooks
+	npm install twitch twitch-webhooks
 
 ## Documentation
 

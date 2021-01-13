@@ -6,7 +6,7 @@ To add Twitch.js to your project, just execute:
 
 or using npm:
 
-	npm install --save twitch
+	npm install twitch
 
 ## Importing the library
 

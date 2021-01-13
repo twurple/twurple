@@ -1,25 +1,11 @@
-# Twitch.js - Authentication for TMI.js
-
-Use tmi.js with the added benefits of twitch-auth's automatic token handling.
-
-## Installation
-
-	yarn add twitch-auth twitch-auth-tmi
-
-or using npm:
-
-	npm install twitch-auth twitch-auth-tmi
-
-## How to use
-
 This package is generally used like `tmi.js` is normally, with just a single minor change.
 
 It completely ignores the `identity` option, and instead takes an `authProvider` option which takes an
-[`AuthProvider`](https://d-fischer.github.io/twitch-auth/reference/interfaces/AuthProvider.html)
+[`AuthProvider`](/twitch-auth/reference/interfaces/AuthProvider)
 instance that can be used for other `twitch` packages as well.
 
 This also offers the additional benefit of being able to refresh tokens internally using
-[a refreshable AuthProvider](https://d-fischer.github.io/twitch-auth/docs/providers/refreshable.html).
+[a refreshable AuthProvider](/twitch-auth/docs/providers/refreshable).
 
 ### Example
 
@@ -46,7 +32,3 @@ client.on('message', (channel, tags, message, self) => {
 	}
 });
 ```
-
-## If you're getting stuck...
-
-You can join the [Discord server](https://discord.gg/b9ZqMfz) for support.
