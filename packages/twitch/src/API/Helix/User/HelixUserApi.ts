@@ -8,6 +8,8 @@ import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
 import type { HelixInstalledExtensionListData } from './Extensions/HelixInstalledExtensionList';
 import { HelixInstalledExtensionList } from './Extensions/HelixInstalledExtensionList';
+import type { HelixUserExtensionData } from './Extensions/HelixUserExtension';
+import { HelixUserExtension } from './Extensions/HelixUserExtension';
 import type { HelixUserExtensionUpdatePayload } from './Extensions/HelixUserExtensionUpdatePayload';
 import type { HelixFollowData, HelixFollowFilter } from './HelixFollow';
 import { HelixFollow } from './HelixFollow';
@@ -15,8 +17,6 @@ import type { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import { HelixPrivilegedUser } from './HelixPrivilegedUser';
 import type { HelixUserData } from './HelixUser';
 import { HelixUser } from './HelixUser';
-import type { HelixUserExtensionData } from './Extensions/HelixUserExtension';
-import { HelixUserExtension } from './Extensions/HelixUserExtension';
 
 /** @private */
 export enum UserLookupType {
@@ -154,6 +154,31 @@ export class HelixUserApi extends BaseApi {
 			this._client,
 			(data: HelixFollowData) => new HelixFollow(data, this._client)
 		);
+	}
+
+	/**
+	 * Retrieves the follow relation bewteen a given user and a given broadcaster.
+	 *
+	 * @param user The user to retrieve the follow relation for.
+	 * @param broadcaster The broadcaster to retrieve the follow relation for.
+	 */
+	async getFollowFromUserToBroadcaster(
+		user: UserIdResolvable,
+		broadcaster: UserIdResolvable
+	): Promise<HelixFollow | null> {
+		const { data: result } = await this.getFollows({ user, followedUser: broadcaster });
+
+		return result.length ? result[0] : null;
+	}
+
+	/**
+	 * Checks whether the given user follows the given broadcaster.
+	 *
+	 * @param user The user to check the follow for.
+	 * @param broadcaster The broadcaster to check the follow for.
+	 */
+	async userFollowsBroadcaster(user: UserIdResolvable, broadcaster: UserIdResolvable): Promise<boolean> {
+		return (await this.getFollowFromUserToBroadcaster(user, broadcaster)) !== null;
 	}
 
 	/**
