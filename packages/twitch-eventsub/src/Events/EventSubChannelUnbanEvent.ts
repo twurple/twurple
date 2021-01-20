@@ -5,8 +5,10 @@ import { rtfm } from 'twitch-common';
 /** @private */
 export interface EventSubChannelUnbanEventData {
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 }
 
@@ -31,6 +33,13 @@ export class EventSubChannelUnbanEvent {
 	}
 
 	/**
+	 * The name of the unbanned user.
+	 */
+	get userName(): string {
+		return this._data.user_login;
+	}
+
+	/**
 	 * The display name of the unbanned user.
 	 */
 	get userDisplayName(): string {
@@ -49,6 +58,13 @@ export class EventSubChannelUnbanEvent {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster from whose chat the user was unbanned.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**

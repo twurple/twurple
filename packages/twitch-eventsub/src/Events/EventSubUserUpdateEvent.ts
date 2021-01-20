@@ -5,6 +5,7 @@ import { rtfm } from 'twitch-common';
 /** @private */
 export interface EventSubUserUpdateEventData {
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	email?: string;
 	description: string;
@@ -28,6 +29,13 @@ export class EventSubUserUpdateEvent {
 	 */
 	get userId(): string {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The name of the user.
+	 */
+	get userName(): string {
+		return this._data.user_login;
 	}
 
 	/**

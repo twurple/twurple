@@ -6,6 +6,7 @@ import { rtfm } from 'twitch-common';
 export interface EventSubUserAuthorizationRevokeEventData {
 	client_id: string;
 	user_id: string;
+	user_login: string | null;
 	user_name: string | null;
 }
 /**
@@ -26,6 +27,15 @@ export class EventSubUserAuthorizationRevokeEvent {
 	 */
 	get userId(): string {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The name of the user who revoked their authorization.
+	 *
+	 * This is `null` if the user no longer exists.
+	 */
+	get userName(): string | null {
+		return this._data.user_login;
 	}
 
 	/**
