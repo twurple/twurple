@@ -2,7 +2,7 @@ import type { LoggerOptions } from '@d-fischer/logger';
 import { LogLevel } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from 'twitch';
-import { InvalidTokenError } from 'twitch';
+import { getValidTokenFromProvider } from 'twitch-auth';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
 import { BasicPubSubClient } from './BasicPubSubClient';
@@ -223,38 +223,9 @@ export class SingleUserPubSubClient {
 			return this._userId;
 		}
 
-		const tokenData = await this._apiClient.getAccessToken();
+		const { tokenInfo } = await getValidTokenFromProvider(this._apiClient);
 
-		let lastTokenError: InvalidTokenError | undefined = undefined;
-
-		if (tokenData) {
-			try {
-				const { userId } = await this._apiClient.getTokenInfo();
-				return (this._userId = userId);
-			} catch (e) {
-				if (e instanceof InvalidTokenError) {
-					lastTokenError = e;
-				} else {
-					throw e;
-				}
-			}
-		}
-
-		try {
-			const newTokenInfo = await this._apiClient.refreshAccessToken();
-			if (newTokenInfo) {
-				const { userId } = await this._apiClient.getTokenInfo();
-				return (this._userId = userId);
-			}
-		} catch (e) {
-			if (e instanceof InvalidTokenError) {
-				lastTokenError = e;
-			} else {
-				throw e;
-			}
-		}
-
-		throw lastTokenError ?? new Error('PubSub authentication failed');
+		return (this._userId = tokenInfo.userId);
 	}
 
 	private async _addListener<T extends PubSubMessage>(
