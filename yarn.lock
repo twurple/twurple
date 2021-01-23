@@ -31,13 +31,13 @@
     regenerator-runtime "^0.13.4"
 
 "@d-fischer/cache-decorators@^2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@d-fischer/cache-decorators/-/cache-decorators-2.1.1.tgz#0e702b69312406ecf747b76ad9fc644b154498d1"
-  integrity sha512-qdRejrYFStvdreFFUH4Tl1AvH+MV34vATj8yqrbis5HVwMqbLbLyb38H1hSKEiWFGBjLtCcgfJtC0LvgJivgzg==
+  version "2.1.3"
+  resolved "https://registry.yarnpkg.com/@d-fischer/cache-decorators/-/cache-decorators-2.1.3.tgz#989c5efd89eb9581b9e7638b71deec4e62174903"
+  integrity sha512-MlM8ipg5Exkc0Ok//sG83smBW4mLRL+/ZngfxYQ8IgxBjfpM3m2M+Y2X+a9St3EyJfYoVKHR8RWdICsU+W3gSA==
   dependencies:
-    "@d-fischer/shared-utils" "^2.4.1"
-    "@types/node" "^14.11.2"
-    tslib "^2.0.3"
+    "@d-fischer/shared-utils" "^3.0.1"
+    "@types/node" "^14.14.22"
+    tslib "^2.1.0"
 
 "@d-fischer/connection@^6.4.1":
   version "6.4.1"
@@ -225,14 +225,6 @@
     http-errors "1.7.3"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
-
-"@d-fischer/shared-utils@^2.4.1":
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-2.4.2.tgz#c93a8619a5fbd45aac41a0c12064cf6614697582"
-  integrity sha512-th2EGPG8c6hrAPA0PmRQlwvWIVDDj+/1jitL+Dhoi414Zl6fKVKfm44xsLqIvtFm5pGJBXKQSrP+Lcyj7Akxlg==
-  dependencies:
-    "@types/node" "^14.11.2"
-    tslib "^2.0.3"
 
 "@d-fischer/shared-utils@^3.0.1":
   version "3.0.1"
@@ -1522,6 +1514,11 @@
   version "14.14.19"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.19.tgz#5135176a8330b88ece4e9ab1fdcfc0a545b4bab4"
   integrity sha512-4nhBPStMK04rruRVtVc6cDqhu7S9GZai0fpXgPXrFpcPX6Xul8xnrjSdGB4KPBVYG/R5+fXWdCM8qBoiULWGPQ==
+
+"@types/node@^14.14.22":
+  version "14.14.22"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.22.tgz#0d29f382472c4ccf3bd96ff0ce47daf5b7b84b18"
+  integrity sha512-g+f/qj/cNcqKkc3tFqlXOYjrmZA+jNBiDzbP3kH+B+otKFqAdPgVTGP1IeKRdMml/aE69as5S4FqtxAbl+LaMw==
 
 "@types/node@^8.10.50":
   version "8.10.66"
@@ -5498,10 +5495,10 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.26.11:
-  version "0.26.11"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.11.tgz#4950bc4d218531921b4d88355683c98dce7f189d"
-  integrity sha512-FG8t226WkpGhaiM4umpnEiqNMfsIiNz2wQ3iokvEa7/ZgXUVWtlUmdZ1GOc/pFmVeJ8Q8B2Ji8jgrT4EXpUNEA==
+ircv3@^0.26.12:
+  version "0.26.12"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.12.tgz#9f5ce627d45c7ea2c4670bcd38fedbbcf1fa5ba5"
+  integrity sha512-lPshVcxYHLboS+EgsFZQE3i4J/yTsCTj/m2wTyJ7TFZz+AQGDBnmD+7UA/94q6exe3Ql4XOLWfRkBC7rdFc2cg==
   dependencies:
     "@d-fischer/connection" "^6.4.1"
     "@d-fischer/escape-string-regexp" "^5.0.0"
@@ -9538,6 +9535,11 @@ tslib@^2.0.0, tslib@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.3.tgz#8e0741ac45fc0c226e58a17bfc3e64b9bc6ca61c"
   integrity sha512-uZtkfKblCEQtZKBF6EBXVZeQNl82yqtDQdv+eck8u7tdPxjLu2/lp5/uPW+um2tpuxINHWy3GhiccY7QgEaVHQ==
+
+tslib@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.1.0.tgz#da60860f1c2ecaa5703ab7d39bc05b6bf988b97a"
+  integrity sha512-hcVC3wYEziELGGmEEXue7D75zbwIIVUMWAVbHItGPx0ziyXxrOMQx4rQEVEV45Ut/1IotuEvwqPopzIOkDMf0A==
 
 tsukuru@^0.7.2:
   version "0.7.2"

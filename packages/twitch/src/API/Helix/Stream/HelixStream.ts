@@ -40,7 +40,7 @@ export interface HelixStreamData {
 	started_at: string;
 	language: string;
 	thumbnail_url: string;
-	tag_ids: string[];
+	tag_ids: string[] | null;
 }
 
 /**
@@ -145,13 +145,13 @@ export class HelixStream {
 	 * The IDs of the tags of the stream.
 	 */
 	get tagIds(): string[] {
-		return this._data.tag_ids;
+		return this._data.tag_ids ?? [];
 	}
 
 	/**
 	 * Retrieves the tags of the stream.
 	 */
 	async getTags(): Promise<HelixTag[]> {
-		return this._client.helix.tags.getStreamTagsByIds(this._data.tag_ids);
+		return this._client.helix.tags.getStreamTagsByIds(this._data.tag_ids ?? []);
 	}
 }

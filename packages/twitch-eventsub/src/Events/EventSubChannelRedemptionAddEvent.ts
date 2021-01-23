@@ -7,8 +7,10 @@ import type { EventSubChannelRedemptionReward } from './Common/EventSubChannelRe
 export interface EventSubChannelRedemptionAddEventData {
 	id: string;
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	user_input: string;
 	status: 'unfulfilled' | 'unknown' | 'fulfilled' | 'canceled';
@@ -44,6 +46,13 @@ export class EventSubChannelRedemptionAddEvent {
 	}
 
 	/**
+	 * The name of the broadcaster.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
+	}
+
+	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
@@ -62,6 +71,13 @@ export class EventSubChannelRedemptionAddEvent {
 	 */
 	get userId(): string {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The name of the user.
+	 */
+	get userName(): string {
+		return this._data.user_login;
 	}
 
 	/**

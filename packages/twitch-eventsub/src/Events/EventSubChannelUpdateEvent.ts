@@ -5,6 +5,7 @@ import { rtfm } from 'twitch-common';
 /** @private */
 export interface EventSubChannelUpdateEventData {
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	title: string;
 	language: string;
@@ -26,10 +27,17 @@ export class EventSubChannelUpdateEvent {
 	}
 
 	/**
-	 * The ID of the user..
+	 * The ID of the user.
 	 */
 	get userId(): string {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The name of the user.
+	 */
+	get userName(): string {
+		return this._data.user_login;
 	}
 
 	/**

@@ -6,6 +6,7 @@ import type { EventSubChannelHypeTrainContribution } from './Common/EventSubChan
 /** @private */
 export interface EventSubChannelHypeTrainBeginEventData {
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 	total: number;
 	progress: number;
@@ -34,6 +35,13 @@ export class EventSubChannelHypeTrainBeginEvent {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**

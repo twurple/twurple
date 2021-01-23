@@ -9,7 +9,7 @@ import {
 } from '@d-fischer/rate-limiter';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { delay, Enumerable } from '@d-fischer/shared-utils';
-import type { EventBinder, Listener } from '@d-fischer/typed-event-emitter';
+import type { Listener } from '@d-fischer/typed-event-emitter';
 import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
 import type { AccessToken, AuthProvider } from 'twitch-auth';
@@ -605,10 +605,20 @@ export class ChatClient extends IrcClient {
 	) => Listener = this.registerEvent();
 
 	// override for specific class
-	/** @private */
-	declare readonly onPrivmsg: EventBinder<
-		[channel: string, user: string, message: string, msg: TwitchPrivateMessage]
-	>;
+	/**
+	 * Fires when a user sends a message to a channel.
+	 *
+	 * @deprecated Use `onMessage` instead.
+	 *
+	 * @eventListener
+	 * @param channel The channel the message was sent to.
+	 * @param user The user that send the message.
+	 * @param message The message text.
+	 * @param msg The full message object containing all message and user information.
+	 */
+	declare onPrivmsg: (
+		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
+	) => Listener;
 
 	/**
 	 * Fires when a user sends an action (/me) to a channel.
@@ -619,7 +629,9 @@ export class ChatClient extends IrcClient {
 	 * @param message The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare readonly onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
+	declare onAction: (
+		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
+	) => Listener;
 
 	// internal events to resolve promises and stuff
 	private readonly _onBanResult: (

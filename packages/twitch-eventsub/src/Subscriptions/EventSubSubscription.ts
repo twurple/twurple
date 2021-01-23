@@ -29,7 +29,7 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 	}
 
 	private get _secret() {
-		return `${this.id}.${this._client._secret}`;
+		return `${this.id}.${this._client._secret}`.slice(-100);
 	}
 
 	/** @private */

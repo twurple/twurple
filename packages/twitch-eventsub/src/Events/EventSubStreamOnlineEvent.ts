@@ -8,6 +8,7 @@ type EventSubStreamOnlineEventStreamType = 'live' | 'playlist' | 'watch_party' |
 export interface EventSubStreamOnlineEventData {
 	id: string;
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 	type: EventSubStreamOnlineEventStreamType;
 }
@@ -31,6 +32,13 @@ export class EventSubStreamOnlineEvent {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**

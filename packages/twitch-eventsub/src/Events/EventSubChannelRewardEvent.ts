@@ -28,6 +28,7 @@ export type EventSubChannelRewardImageScale = 1 | 2 | 4;
 export interface EventSubChannelRewardEventData {
 	id: string;
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 	is_enabled: boolean;
 	is_paused: boolean;
@@ -72,6 +73,13 @@ export class EventSubChannelRewardEvent {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster the reward belongs to.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**

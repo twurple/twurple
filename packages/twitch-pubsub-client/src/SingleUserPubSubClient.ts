@@ -1,6 +1,6 @@
 import type { LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { AuthProvider } from 'twitch-auth';
+import type { ApiClient } from 'twitch';
 import { getValidTokenFromProvider } from 'twitch-auth';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
@@ -203,7 +203,7 @@ export class SingleUserPubSubClient {
 			return this._userId;
 		}
 
-		const { tokenInfo } = await getValidTokenFromProvider(this._authProvider);
+		const { tokenInfo } = await getValidTokenFromProvider(this._apiClient);
 
 		return (this._userId = tokenInfo.userId);
 	}
