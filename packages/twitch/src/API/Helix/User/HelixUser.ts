@@ -128,8 +128,8 @@ export class HelixUser implements UserIdResolvableType, UserNameResolveableType 
 	/**
 	 * The date when the user was created, i.e. when they registered on Twitch.
 	 */
-	get creationDate(): string {
-		return this._data.created_at;
+	get creationDate(): Date {
+		return new Date(this._data.created_at);
 	}
 
 	/**
