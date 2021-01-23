@@ -25,9 +25,9 @@ const authProvider = new ClientCredentialsAuthProvider(clientId, clientSecret);
 const apiClient = new ApiClient({ authProvider });
 
 const listener = new EventSubListener(apiClient, new DirectConnectionAdapter({
-    hostName: 'example.com',
+	hostName: 'example.com',
 	sslCert: {
-    	key: 'aaaaaaaaaaaaaaa',
+		key: 'aaaaaaaaaaaaaaa',
 		cert: 'bbbbbbbbbbbbbbb'
 	}
 }), 'thisShouldBeARandomlyGeneratedFixedString');
