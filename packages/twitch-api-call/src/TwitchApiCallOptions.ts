@@ -54,13 +54,6 @@ export interface TwitchApiCallOptions {
 	query?: Record<string, string | string[] | undefined>;
 
 	/**
-	 * The form body to send with the API call.
-	 *
-	 * If this is given, `jsonBody` will be ignored.
-	 */
-	body?: Record<string, string | string[] | undefined>;
-
-	/**
 	 * The JSON body to send with the API call.
 	 *
 	 * If `body` is also given, this will be ignored.
@@ -72,17 +65,6 @@ export interface TwitchApiCallOptions {
 	 * The scope the request needs.
 	 */
 	scope?: string;
-
-	/**
-	 * Unused.
-	 *
-	 * Twitch removed Kraken v3 long ago, so this serves no purpose anymore.
-	 *
-	 * This only still exists for compatibility in TypeScript.
-	 *
-	 * @deprecated No replacement.
-	 */
-	version?: number;
 
 	/**
 	 * Whether OAuth credentials should be generated and sent with the request. Defaults to `true`.

@@ -1,5 +1,5 @@
 import { rtfm } from 'twitch-common';
-import type { CommercialLength } from '../../Shared/CommercialLength';
+import type { CommercialLength } from 'twitch-common';
 import type { User } from '../User/User';
 import type { ChannelData } from './Channel';
 import { Channel } from './Channel';

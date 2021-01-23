@@ -1,14 +1,12 @@
 import { Enumerable, indexBy } from '@d-fischer/shared-utils';
-import { HellFreezesOverError, rtfm } from 'twitch-common';
-import type { ApiClient } from '../../../ApiClient';
 import type {
 	CheermoteBackground,
 	CheermoteDisplayInfo,
 	CheermoteFormat,
 	CheermoteScale,
 	CheermoteState
-} from '../../Shared/BaseCheermoteList';
-import { BaseCheermoteList } from '../../Shared/BaseCheermoteList';
+} from 'twitch-common';
+import { BaseCheermoteList, HellFreezesOverError, rtfm } from 'twitch-common';
 
 /** @private */
 export type CheermoteActionImageUrlsByScale = Record<CheermoteScale, string>;
@@ -55,12 +53,10 @@ export interface CheermoteListData {
 @rtfm('twitch', 'CheermoteList')
 export class CheermoteList extends BaseCheermoteList {
 	@Enumerable(false) private readonly _data: Record<string, CheermoteActionData>;
-	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(data: CheermoteActionData[], client: ApiClient) {
+	constructor(data: CheermoteActionData[]) {
 		super();
-		this._client = client;
 		this._data = indexBy(data, action => action.prefix.toLowerCase());
 	}
 
@@ -71,12 +67,9 @@ export class CheermoteList extends BaseCheermoteList {
 	 * @param bits The amount of bits cheered.
 	 * @param format The format of the cheermote you want to request.
 	 */
-	getCheermoteDisplayInfo(name: string, bits: number, format: Partial<CheermoteFormat> = {}): CheermoteDisplayInfo {
+	getCheermoteDisplayInfo(name: string, bits: number, format: CheermoteFormat): CheermoteDisplayInfo {
 		name = name.toLowerCase();
-		const cheermoteDefaults = this._client.cheermoteDefaults;
-		const background = format.background ?? cheermoteDefaults.defaultBackground;
-		const state = format.state ?? cheermoteDefaults.defaultState;
-		const scale = format.scale ?? cheermoteDefaults.defaultScale;
+		const { background, state, scale } = format;
 
 		const tiers = this._data[name].tiers;
 		const correctTier = tiers.sort((a, b) => b.min_bits - a.min_bits).find(tier => tier.min_bits <= bits);

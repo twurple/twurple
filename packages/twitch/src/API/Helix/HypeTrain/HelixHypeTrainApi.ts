@@ -21,7 +21,7 @@ import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
  * const { data: events } = await api.helix.hypeTrain.getHypeTrainEventsForBroadcaster('125328655');
  * ```
  */
-export default class HelixHypeTrainApi extends BaseApi {
+export class HelixHypeTrainApi extends BaseApi {
 	/**
 	 * Retrieves the events of the current or latest Hype Train for the specified broadcaster.
 	 *

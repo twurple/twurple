@@ -37,6 +37,6 @@ export class BitsApi extends BaseApi {
 		}
 
 		const data = await this._client.callApi<CheermoteListData>({ url: 'bits/actions', query });
-		return new CheermoteList(data.actions, this._client);
+		return new CheermoteList(data.actions);
 	}
 }

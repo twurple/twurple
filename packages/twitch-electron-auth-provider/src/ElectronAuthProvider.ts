@@ -30,11 +30,7 @@ export interface TwitchClientCredentials {
 	/**
 	 * A redirect URI that was added to your application.
 	 */
-	redirectUri?: string;
-
-	/** @deprecated Use redirectUri instead. */
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	redirectURI?: string;
+	redirectUri: string;
 }
 
 const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> = {
@@ -57,13 +53,7 @@ export class ElectronAuthProvider implements AuthProvider {
 		options?: ElectronAuthProviderOptions | ElectronAuthProviderOptions<WindowOptions>
 	) {
 		this._clientId = clientCredentials.clientId;
-		if (clientCredentials.redirectUri) {
-			this._redirectUri = clientCredentials.redirectUri;
-		} else if (clientCredentials.redirectURI) {
-			this._redirectUri = clientCredentials.redirectURI;
-		} else {
-			throw new Error('Please supply a redirect URI');
-		}
+		this._redirectUri = clientCredentials.redirectUri;
 		this._options = { ...defaultOptions, ...options };
 	}
 

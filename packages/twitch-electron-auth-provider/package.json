@@ -35,8 +35,8 @@
     "twitch": "^4.4.3"
   },
   "peerDependencies": {
-    "electron": ">=4.1.1 <10.0.0",
-    "twitch": "^4.4.0"
+    "electron": ">=9.0.0 <12.0.0",
+    "twitch-auth": "^4.4.0"
   },
   "files": [
     "LICENSE",

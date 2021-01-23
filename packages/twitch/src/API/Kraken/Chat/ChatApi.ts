@@ -1,7 +1,7 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
-import type { ChatEmoteData } from './ChatEmote';
+import type { ChatEmoteData } from 'twitch-common';
 import { ChatEmoteList } from './ChatEmoteList';
 
 /**

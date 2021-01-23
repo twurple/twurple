@@ -4,6 +4,7 @@ type PackageName =
 	| 'twitch'
 	| 'twitch-auth'
 	| 'twitch-chat-client'
+	| 'twitch-common'
 	| 'twitch-eventsub'
 	| 'twitch-pubsub-client'
 	| 'twitch-webhooks';

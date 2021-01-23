@@ -1,4 +1,3 @@
-/* eslint-disable filenames/match-exported */
 export { EventSubListener } from './EventSubListener';
 export type { EventSubListenerCertificateConfig } from './EventSubListener';
 export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';

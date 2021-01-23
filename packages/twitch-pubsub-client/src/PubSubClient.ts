@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from 'twitch';
+import type { AuthProvider } from 'twitch-auth';
 import { getValidTokenFromProvider, InvalidTokenTypeError } from 'twitch-auth';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
@@ -35,20 +35,17 @@ export class PubSubClient {
 	/**
 	 * Attaches a new user to the listener and returns the user ID for convenience.
 	 *
-	 * @param apiClient The client that provides authentication for the user.
+	 * @param authProvider The authentication provider for the user.
 	 * @param user The user that the client will be attached to.
 	 *
-	 * This should only be passed manually if you fetched the token info for the `apiClient` before.
+	 * This should only be passed manually if you fetched the token info for the `authProvider` before.
 	 *
-	 * If not given, the user will be determined from the `apiClient`.
+	 * If not given, the user will be determined from the `authProvider`.
 	 */
-	async registerUserListener(apiClient: ApiClient, user?: UserIdResolvable): Promise<string> {
-		const userId = await PubSubClient._getCorrectUserId(apiClient, user);
+	async registerUserListener(authProvider: AuthProvider, user?: UserIdResolvable): Promise<string> {
+		const userId = await PubSubClient._getCorrectUserId(authProvider, user);
 
-		this._userClients.set(
-			userId,
-			new SingleUserPubSubClient({ twitchClient: apiClient, pubSubClient: this._rootClient })
-		);
+		this._userClients.set(userId, new SingleUserPubSubClient({ authProvider, pubSubClient: this._rootClient }));
 
 		return userId;
 	}
@@ -157,16 +154,16 @@ Register one using:
 		return this.getUserListener(user).onModAction(channel, callback);
 	}
 
-	private static async _getCorrectUserId(apiClient: ApiClient, user?: UserIdResolvable): Promise<string> {
+	private static async _getCorrectUserId(authProvider: AuthProvider, user?: UserIdResolvable): Promise<string> {
 		if (user) {
 			return extractUserId(user);
 		} else {
-			if (apiClient.tokenType === 'app') {
+			if (authProvider.tokenType === 'app') {
 				throw new InvalidTokenTypeError(
 					'App tokens are not supported by PubSubClient; you need to pass authentication representing a user.'
 				);
 			}
-			const { tokenInfo } = await getValidTokenFromProvider(apiClient);
+			const { tokenInfo } = await getValidTokenFromProvider(authProvider);
 			return tokenInfo.userId;
 		}
 	}

@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser, HelixUserType } from 'twitch';
 import { rtfm } from 'twitch-common';
+import type { HelixUserType } from 'twitch-common';
 import type { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
 /** @private */
@@ -48,13 +48,11 @@ export interface PubSubWhisperMessageData {
  */
 @rtfm<PubSubWhisperMessage>('twitch-pubsub-client', 'PubSubWhisperMessage', 'senderId')
 export class PubSubWhisperMessage {
-	@Enumerable(false) private readonly _apiClient: ApiClient;
 	@Enumerable(false) private readonly _data: PubSubWhisperMessageData;
 
 	/** @private */
-	constructor(data: PubSubWhisperMessageData, apiClient: ApiClient) {
+	constructor(data: PubSubWhisperMessageData) {
 		this._data = data;
-		this._apiClient = apiClient;
 	}
 
 	/**
@@ -83,14 +81,5 @@ export class PubSubWhisperMessage {
 	 */
 	get senderDisplayName(): string {
 		return this._data.data_object.tags.display_name;
-	}
-
-	/**
-	 * Retrieves more information about the user who sent the whisper.
-	 *
-	 * @deprecated Use {@HelixUserApi#getUserById} instead.
-	 */
-	async getSender(): Promise<HelixUser | null> {
-		return this._apiClient.helix.users.getUserById(this._data.data_object.from_id.toString());
 	}
 }

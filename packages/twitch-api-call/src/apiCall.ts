@@ -29,10 +29,7 @@ export async function callTwitchApiRaw(
 	});
 
 	let body: string | undefined = undefined;
-	if (options.body) {
-		body = stringify(options.body);
-		headers.append('Content-Type', 'application/x-www-form-urlencoded');
-	} else if (options.jsonBody) {
+	if (options.jsonBody) {
 		body = JSON.stringify(options.jsonBody);
 		headers.append('Content-Type', 'application/json');
 	}

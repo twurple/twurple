@@ -9,7 +9,7 @@ import { HelixClipApi } from './Clip/HelixClipApi';
 import { HelixEventSubApi } from './EventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from './Extensions/HelixExtensionsApi';
 import { HelixGameApi } from './Game/HelixGameApi';
-import HelixHypeTrainApi from './HypeTrain/HelixHypeTrainApi';
+import { HelixHypeTrainApi } from './HypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './Moderation/HelixModerationApi';
 import { HelixSearchApi } from './Search/HelixSearchApi';
 import { HelixStreamApi } from './Stream/HelixStreamApi';

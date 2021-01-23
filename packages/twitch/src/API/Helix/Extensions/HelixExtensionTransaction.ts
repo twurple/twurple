@@ -102,12 +102,6 @@ export class HelixExtensionTransaction {
 		return this._data.product_data.sku;
 	}
 
-	/** @deprecated Use productSku instead. */
-	// eslint-disable-next-line @typescript-eslint/naming-convention
-	get productSKU(): string {
-		return this._data.product_data.sku;
-	}
-
 	/**
 	 * The cost of the product, in bits.
 	 */

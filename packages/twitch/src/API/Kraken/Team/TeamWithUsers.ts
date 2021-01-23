@@ -11,6 +11,8 @@ export interface TeamWithUsersData extends TeamData {
 
 /**
  * A Twitch team with additional data about its member users.
+ *
+ * @inheritDoc
  */
 @rtfm<TeamWithUsers>('twitch', 'TeamWithUsers', 'id')
 export class TeamWithUsers extends Team {
@@ -21,14 +23,5 @@ export class TeamWithUsers extends Team {
 	 */
 	get users(): User[] {
 		return this._data.users.map(data => new User(data, this._client));
-	}
-
-	/**
-	 * The list of users in the team.
-	 *
-	 * @deprecated Use {@TeamWithUsers#users} instead.
-	 */
-	async getUsers(): Promise<User[]> {
-		return this.users;
 	}
 }

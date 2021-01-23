@@ -131,7 +131,7 @@ export class EventSubListener {
 	 * @param config
 	 */
 	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, secret: string, config?: EventSubConfig) {
-		if (apiClient.tokenType !== 'app') {
+		if (apiClient._authProvider.tokenType !== 'app') {
 			throw new InvalidTokenTypeError(
 				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
 			);

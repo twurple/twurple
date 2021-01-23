@@ -1,10 +1,9 @@
 import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
 import { HttpStatusCodeError } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
+import type { CommercialLength, UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { BaseApi } from '../../BaseApi';
-import type { CommercialLength } from '../../Shared/CommercialLength';
 import type { TeamData } from '../Team/Team';
 import { Team } from '../Team/Team';
 import type { UserData } from '../User/User';

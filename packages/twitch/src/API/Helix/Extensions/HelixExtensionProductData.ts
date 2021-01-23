@@ -1,7 +1,7 @@
 /** @private */
 export interface HelixExtensionProductCostData {
 	amount: number;
-	type: 'bits'; // TODO is this complete?
+	type: 'bits';
 }
 
 /** @private */

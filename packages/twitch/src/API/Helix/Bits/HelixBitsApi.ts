@@ -94,6 +94,6 @@ export class HelixBitsApi extends BaseApi {
 			}
 		});
 
-		return new HelixCheermoteList(result.data, this._client);
+		return new HelixCheermoteList(result.data);
 	}
 }
