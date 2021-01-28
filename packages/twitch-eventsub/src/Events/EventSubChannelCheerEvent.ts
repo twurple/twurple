@@ -6,8 +6,10 @@ import { rtfm } from 'twitch-common';
 export interface EventSubChannelCheerEventData {
 	is_anonymous: boolean;
 	user_id: string | null;
+	user_login: string | null;
 	user_name: string | null;
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 	message: string;
 	bits: number;
@@ -34,6 +36,13 @@ export class EventSubChannelCheerEvent {
 	}
 
 	/**
+	 * The name of the cheering user, null if anonymous.
+	 */
+	get userName(): string | null {
+		return this._data.user_login;
+	}
+
+	/**
 	 * The display name of the cheering user, null if anonymous.
 	 */
 	get userDisplayName(): string | null {
@@ -52,6 +61,13 @@ export class EventSubChannelCheerEvent {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**

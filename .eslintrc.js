@@ -4,7 +4,7 @@ const baseRules = require('@d-fischer/eslint-config');
 const memberNames = [
 	// Twitch API
 	'_(id|name|at)$',
-	'^user_login$',
+	'^(broadcaster_)?user_login$',
 	'^client_secret$',
 	'^redirect_uri$',
 	'^(access|refresh|auth|upload)_token$',

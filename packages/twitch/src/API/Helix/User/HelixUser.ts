@@ -40,6 +40,7 @@ export interface HelixUserData {
 	profile_image_url: string;
 	offline_image_url: string;
 	view_count: number;
+	created_at: string;
 }
 
 /**
@@ -125,6 +126,13 @@ export class HelixUser implements UserIdResolvableType, UserNameResolveableType 
 	}
 
 	/**
+	 * The date when the user was created, i.e. when they registered on Twitch.
+	 */
+	get creationDate(): Date {
+		return new Date(this._data.created_at);
+	}
+
+	/**
 	 * Retrieves the channel's stream data.
 	 */
 	async getStream(): Promise<HelixStream | null> {
@@ -139,19 +147,21 @@ export class HelixUser implements UserIdResolvableType, UserNameResolveableType 
 	}
 
 	/**
+	 * Retrieves the follow data of the given user to the broadcaster.
+	 *
+	 * @param user The user to check the follow from.
+	 */
+	async getFollowFrom(user: UserIdResolvable): Promise<HelixFollow | null> {
+		return this._client.helix.users.getFollowFromUserToBroadcaster(user, this);
+	}
+
+	/**
 	 * Retrieves the follow data of the user to the given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to check the follow to.
 	 */
 	async getFollowTo(broadcaster: UserIdResolvable): Promise<HelixFollow | null> {
-		const params = {
-			user: this.id,
-			followedUser: broadcaster
-		};
-
-		const { data: result } = await this._client.helix.users.getFollows(params);
-
-		return result.length ? result[0] : null;
+		return this._client.helix.users.getFollowFromUserToBroadcaster(this, broadcaster);
 	}
 
 	/**
@@ -160,7 +170,16 @@ export class HelixUser implements UserIdResolvableType, UserNameResolveableType 
 	 * @param broadcaster The broadcaster to check the user's follow to.
 	 */
 	async follows(broadcaster: UserIdResolvable): Promise<boolean> {
-		return (await this.getFollowTo(broadcaster)) !== null;
+		return this._client.helix.users.userFollowsBroadcaster(this, broadcaster);
+	}
+
+	/**
+	 * Checks whether the given user is following the broadcaster.
+	 *
+	 * @param user The user to check the broadcaster's follow from.
+	 */
+	async isFollowedBy(user: UserIdResolvable): Promise<boolean> {
+		return this._client.helix.users.userFollowsBroadcaster(user, this);
 	}
 
 	/**

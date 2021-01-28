@@ -5,6 +5,7 @@ import { rtfm } from 'twitch-common';
 /** @private */
 export interface EventSubStreamOfflineEventData {
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 }
 
@@ -27,6 +28,13 @@ export class EventSubStreamOfflineEvent {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**

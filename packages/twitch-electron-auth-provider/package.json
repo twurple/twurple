@@ -1,6 +1,6 @@
 {
   "name": "twitch-electron-auth-provider",
-  "version": "4.4.0",
+  "version": "4.4.6",
   "description": "Obtain auth tokens for Twitch using an Electron popup.",
   "keywords": [
     "twitch",
@@ -32,7 +32,7 @@
   },
   "devDependencies": {
     "electron": "^11.1.1",
-    "twitch-auth": "^4.4.0"
+    "twitch-auth": "^4.4.6"
   },
   "peerDependencies": {
     "electron": ">=9.0.0 <12.0.0",

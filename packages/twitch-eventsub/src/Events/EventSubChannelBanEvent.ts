@@ -5,8 +5,10 @@ import { rtfm } from 'twitch-common';
 /** @private */
 export interface EventSubChannelBanEventData {
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 }
 
@@ -31,6 +33,13 @@ export class EventSubChannelBanEvent {
 	}
 
 	/**
+	 * The name of the banned user.
+	 */
+	get userName(): string {
+		return this._data.user_login;
+	}
+
+	/**
 	 * The display name of the banned user.
 	 */
 	get userDisplayName(): string {
@@ -49,6 +58,13 @@ export class EventSubChannelBanEvent {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster from whose chat the user was banned.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**

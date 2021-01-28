@@ -1,6 +1,6 @@
 {
   "name": "twitch-common",
-  "version": "4.4.0",
+  "version": "4.4.6",
   "description": "Common functions used by the `twitch*` library family.",
   "keywords": [
     "twitch",
@@ -27,6 +27,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/logger": "^3.1.0",
+    "@d-fischer/shared-utils": "^3.0.1",
     "tslib": "^2.0.3"
   },
   "files": [

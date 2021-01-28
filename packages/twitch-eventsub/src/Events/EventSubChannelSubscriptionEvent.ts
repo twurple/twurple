@@ -6,8 +6,10 @@ type EventSubChannelSubscriptionEventTier = '1000' | '2000' | '3000';
 /** @private */
 export interface EventSubChannelSubscriptionEventData {
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	broadcaster_user_id: string;
+	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 	tier: EventSubChannelSubscriptionEventTier;
 	is_gift: boolean;
@@ -34,6 +36,13 @@ export class EventSubChannelSubscriptionEvent {
 	}
 
 	/**
+	 * The name of the subscribing user.
+	 */
+	get userName(): string {
+		return this._data.user_login;
+	}
+
+	/**
 	 * The display name of the subscribing user.
 	 */
 	get userDisplayName(): string {
@@ -52,6 +61,13 @@ export class EventSubChannelSubscriptionEvent {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**
