@@ -65,6 +65,7 @@ export interface HelixUserData {
 	profile_image_url: string;
 	offline_image_url: string;
 	view_count: number;
+	created_at: string;
 }
 
 /**
@@ -147,6 +148,13 @@ export class HelixUser implements UserIdResolvableType, UserNameResolveableType 
 	 */
 	get views(): number {
 		return this._data.view_count;
+	}
+
+	/**
+	 * The date when the user was created, i.e. when they registered on Twitch.
+	 */
+	get creationDate(): Date {
+		return new Date(this._data.created_at);
 	}
 
 	/**
