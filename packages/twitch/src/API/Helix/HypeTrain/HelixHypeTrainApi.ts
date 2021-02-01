@@ -37,7 +37,9 @@ export default class HelixHypeTrainApi extends BaseApi {
 	): Promise<HelixPaginatedResult<HelixHypeTrainEvent>> {
 		const { after, limit = '20' } = pagination;
 
-		const result = await this._client.callApi<HelixPaginatedResponse<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>>>({
+		const result = await this._client.callApi<
+			HelixPaginatedResponse<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>>
+		>({
 			type: TwitchApiCallType.Helix,
 			url: 'hypetrain/events',
 			scope: 'channel:read:hype_train',
@@ -68,7 +70,8 @@ export default class HelixHypeTrainApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>) => new HelixHypeTrainEvent(data, this._client)
+			(data: HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>) =>
+				new HelixHypeTrainEvent(data, this._client)
 		);
 	}
 
@@ -78,7 +81,9 @@ export default class HelixHypeTrainApi extends BaseApi {
 	 * @param id The ID of the Hype Train event.
 	 */
 	async getHypeTrainEventById(id: string): Promise<HelixHypeTrainEvent | null> {
-		const result = await this._client.callApi<HelixPaginatedResponse<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>>>({
+		const result = await this._client.callApi<
+			HelixPaginatedResponse<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>>
+		>({
 			type: TwitchApiCallType.Helix,
 			url: 'hypetrain/events',
 			scope: 'channel:read:hype_train',
