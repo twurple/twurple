@@ -120,6 +120,22 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Deletes *all* subscriptions.
+	 */
+	async deleteAllSubscriptions(): Promise<void> {
+		return this._deleteSubscriptionsWithCondition();
+	}
+
+	/**
+	 * Deletes all broken subscriptions, i.e. all that are not enabled or pending verification.
+	 */
+	async deleteBrokenSubscriptions(): Promise<void> {
+		return this._deleteSubscriptionsWithCondition(
+			sub => sub.status !== 'enabled' && sub.status !== 'webhook_callback_verification_pending'
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a stream going live.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to online events for.
@@ -511,5 +527,15 @@ export class HelixEventSubApi extends BaseApi {
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
 		return this.createSubscription('user.update', '1', { user_id: extractUserId(user) }, transport);
+	}
+
+	private async _deleteSubscriptionsWithCondition(cond?: (sub: HelixEventSubSubscription) => boolean): Promise<void> {
+		const subsPaginator = this.getSubscriptionsPaginated();
+
+		for await (const sub of subsPaginator) {
+			if (!cond || cond(sub)) {
+				await sub.unsubscribe();
+			}
+		}
 	}
 }
