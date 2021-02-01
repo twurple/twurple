@@ -24,6 +24,7 @@ export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
 export { ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
 export type { ChatBadgeScale } from './API/Badges/ChatBadgeVersion';
 
+export type { HelixEventData } from './API/Helix/HelixEvent';
 export { HelixPaginatedRequest } from './API/Helix/HelixPaginatedRequest';
 export type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './API/Helix/HelixPaginatedResult';
 export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './API/Helix/HelixResponse';
@@ -66,7 +67,7 @@ export { HelixGame } from './API/Helix/Game/HelixGame';
 
 export { HelixHypeTrainContribution } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
 export { HelixHypeTrainEvent } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
-export type { HelixHypeTrainEventData } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
+export type { HelixHypeTrainEventData, HelixHypeTrainEventType } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
 
 export { HelixBan } from './API/Helix/Moderation/HelixBan';
 export { HelixBanEvent } from './API/Helix/Moderation/HelixBanEvent';

@@ -1,4 +1,4 @@
-import type { HelixHypeTrainEventData, HelixResponse } from 'twitch';
+import type { HelixEventData, HelixHypeTrainEventData, HelixHypeTrainEventType, HelixResponse } from 'twitch';
 import { HelixHypeTrainEvent } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
@@ -22,7 +22,9 @@ export class HypeTrainEventSubscription extends Subscription<HelixHypeTrainEvent
 		return `hypetrain.event.${this._broadcasterId}`;
 	}
 
-	protected transformData(response: HelixResponse<HelixHypeTrainEventData>): HelixHypeTrainEvent {
+	protected transformData(
+		response: HelixResponse<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>>
+	): HelixHypeTrainEvent {
 		return new HelixHypeTrainEvent(response.data[0], this._client._apiClient);
 	}
 
