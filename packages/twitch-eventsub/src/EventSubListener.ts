@@ -177,8 +177,8 @@ export class EventSubListener {
 Listening on port ${adapterListenerPort} instead.`);
 		}
 		const listenerPort = adapterListenerPort ?? port ?? 443;
-		this._currentListenerPort = listenerPort;
 		await this._server.listen(listenerPort);
+		this._currentListenerPort = listenerPort;
 		this._logger.info(`Listening on port ${listenerPort}`);
 
 		const subscriptions = await this._apiClient.helix.eventSub.getSubscriptionsPaginated().getAll();
@@ -186,15 +186,13 @@ Listening on port ${adapterListenerPort} instead.`);
 		const urlPrefix = await this._buildHookUrl('');
 		this._twitchSubscriptions = new Map<string, HelixEventSubSubscription>(
 			subscriptions
-				.map(sub => {
+				.map((sub): [string, HelixEventSubSubscription] | undefined => {
 					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					if (sub._transport.method === 'webhook') {
 						const url = sub._transport.callback;
 						if (url.startsWith(urlPrefix)) {
 							const id = url.slice(urlPrefix.length);
-							// false positive
-							// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-							return [id, sub] as const;
+							return [id, sub];
 						}
 					}
 					return undefined;
@@ -728,7 +726,9 @@ Listening on port ${adapterListenerPort} instead.`);
 		...params: Args
 	): Promise<EventSubSubscription> {
 		const subscription = new clazz(handler, client, ...params);
-		await subscription.start(this._twitchSubscriptions.get(subscription.id));
+		if (this._currentListenerPort) {
+			await subscription.start(this._twitchSubscriptions.get(subscription.id));
+		}
 		this._subscriptions.set(subscription.id, subscription);
 
 		return subscription;
