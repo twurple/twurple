@@ -11,8 +11,10 @@ export interface HelixExtensionTransactionData {
 	id: string;
 	timestamp: string;
 	broadcaster_id: string;
+	broadcaster_login: string;
 	broadcaster_name: string;
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	product_type: HelixExtensionProductType;
 	product_data: HelixExtensionProductData;
@@ -54,6 +56,13 @@ export class HelixExtensionTransaction {
 	}
 
 	/**
+	 * The name of the broadcaster that runs the extension on their channel.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_name;
+	}
+
+	/**
 	 * The display name of the broadcaster that runs the extension on their channel.
 	 */
 	get broadcasterDisplayName(): string {
@@ -72,6 +81,13 @@ export class HelixExtensionTransaction {
 	 */
 	get userId(): string {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The name of the user that made the transaction.
+	 */
+	get userName(): string {
+		return this._data.user_login;
 	}
 
 	/**

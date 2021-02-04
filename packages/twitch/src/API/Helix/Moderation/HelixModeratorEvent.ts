@@ -23,6 +23,7 @@ export enum HelixModeratorEventType {
 /** @private */
 export interface HelixModeratorEventDetail extends HelixModeratorData {
 	broadcaster_id: string;
+	broadcaster_login: string;
 	broadcaster_name: string;
 }
 
@@ -81,6 +82,13 @@ export class HelixModeratorEvent extends HelixModerator {
 	 * The name of the broadcaster where the user gained/lost moderation privileges.
 	 */
 	get broadcasterName(): string {
+		return this._eventData.event_data.broadcaster_login;
+	}
+
+	/**
+	 * The display name of the broadcaster where the user gained/lost moderation privileges.
+	 */
+	get broadcasterDisplayName(): string {
 		return this._eventData.event_data.broadcaster_name;
 	}
 

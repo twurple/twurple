@@ -69,7 +69,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	}
 
 	/**
-	 * The user name of the user.
+	 * The name of the user.
 	 */
 	get name(): string {
 		return this._data.name;

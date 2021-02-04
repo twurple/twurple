@@ -6,6 +6,7 @@ import type { ApiClient } from '../../../ApiClient';
 /** @private */
 export interface HelixChannelData {
 	broadcaster_id: string;
+	broadcaster_login: string;
 	broadcaster_name: string;
 	broadcaster_language: string;
 	game_id: string;
@@ -32,6 +33,13 @@ export class HelixChannel {
 	 */
 	get id(): string {
 		return this._data.broadcaster_id;
+	}
+
+	/**
+	 * The name of the channel.
+	 */
+	get name(): string {
+		return this._data.broadcaster_login;
 	}
 
 	/**

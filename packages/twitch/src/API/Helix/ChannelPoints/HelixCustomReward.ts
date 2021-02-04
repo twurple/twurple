@@ -33,8 +33,9 @@ export type HelixCustomRewardImageScale = 1 | 2 | 4;
 
 /** @private */
 export interface HelixCustomRewardData {
-	broadcaster_name: string;
 	broadcaster_id: string;
+	broadcaster_login: string;
+	broadcaster_name: string;
 	id: string;
 	image: HelixCustomRewardImageData | null;
 	background_color: string;
@@ -80,6 +81,13 @@ export class HelixCustomReward {
 	 */
 	get broadcasterId(): string {
 		return this._data.broadcaster_id;
+	}
+
+	/**
+	 * The name of the broadcaster the reward belongs to.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_login;
 	}
 
 	/**

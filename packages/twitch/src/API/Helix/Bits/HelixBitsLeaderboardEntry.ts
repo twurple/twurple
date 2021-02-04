@@ -6,6 +6,7 @@ import type { HelixUser } from '../User/HelixUser';
 /** @private */
 export interface HelixBitsLeaderboardEntryData {
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	rank: number;
 	score: number;
@@ -30,6 +31,13 @@ export class HelixBitsLeaderboardEntry {
 	 */
 	get userId(): string {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The name of the user on the leaderboard.
+	 */
+	get userName(): string {
+		return this._data.user_login;
 	}
 
 	/**

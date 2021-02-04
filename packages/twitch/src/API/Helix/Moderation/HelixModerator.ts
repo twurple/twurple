@@ -6,6 +6,7 @@ import type { HelixUser } from '../User/HelixUser';
 /** @private */
 export interface HelixModeratorData {
 	user_id: string;
+	user_login: string;
 	user_name: string;
 }
 
@@ -34,6 +35,13 @@ export class HelixModerator {
 	 * The name of the user.
 	 */
 	get userName(): string {
+		return this._data.user_login;
+	}
+
+	/**
+	 * The display name of the user.
+	 */
+	get userDisplayName(): string {
 		return this._data.user_name;
 	}
 

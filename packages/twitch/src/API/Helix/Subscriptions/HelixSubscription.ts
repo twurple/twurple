@@ -6,11 +6,16 @@ import type { HelixUser } from '../User/HelixUser';
 /** @private */
 export interface HelixSubscriptionData {
 	broadcaster_id: string;
+	broadcaster_login: string;
 	broadcaster_name: string;
+	gifter_id: string;
+	gifter_login: string;
+	gifter_name: string;
 	is_gift: boolean;
 	plan_name: string;
 	tier: string;
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	message?: string;
 }
@@ -37,6 +42,13 @@ export class HelixSubscription {
 	}
 
 	/**
+	 * The name of the broadcaster.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_login;
+	}
+
+	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
@@ -47,7 +59,35 @@ export class HelixSubscription {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this.broadcasterId);
+		return this._client.helix.users.getUserById(this._data.broadcaster_id);
+	}
+
+	/**
+	 * The user ID of the gifter.
+	 */
+	get gifterId(): string {
+		return this._data.gifter_id;
+	}
+
+	/**
+	 * The name of the gifter.
+	 */
+	get gifterName(): string {
+		return this._data.gifter_login;
+	}
+
+	/**
+	 * The display name of the gifter.
+	 */
+	get giftName(): string {
+		return this._data.user_name;
+	}
+
+	/**
+	 * Retrieves more information about the gifter.
+	 */
+	async getGifter(): Promise<HelixUser | null> {
+		return this._client.helix.users.getUserById(this._data.gifter_id);
 	}
 
 	/**
@@ -72,6 +112,13 @@ export class HelixSubscription {
 	}
 
 	/**
+	 * The name of the subscribed user.
+	 */
+	get userName(): string {
+		return this._data.user_login;
+	}
+
+	/**
 	 * The display name of the subscribed user.
 	 */
 	get userDisplayName(): string {
@@ -82,6 +129,6 @@ export class HelixSubscription {
 	 * Retrieves more information about the subscribed user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this.userId);
+		return this._client.helix.users.getUserById(this._data.user_id);
 	}
 }
