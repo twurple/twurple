@@ -12,8 +12,12 @@ There is a [Discord server](https://discord.gg/b9ZqMfz) where you can ask questi
 
 ## Development
 
-**READ THIS FIRST:** If you want to create a new feature, **please file a feature request first**. State that you want to implement the feature by yourself, too.
+### READ THIS FIRST!
+
+If you want to create a new feature, **please file a feature request first**. State that you want to implement the feature by yourself, too.  
 We will decide whether we want this feature in the library. You don't want to spend your precious time for nothing, do you?
+
+Alternatively, you can talk to us on [Discord](https://discord.gg/b9ZqMfz) about the feature.
 
 ### General code conventions
 
@@ -21,8 +25,8 @@ We will decide whether we want this feature in the library. You don't want to sp
 - Function and method names always start with verbs.
 - Acronyms should always be camel cased - if they're at the beginning of a function or method name, they should be all lower case, otherwise they should start with an upper case letter, like normal camel case.
 - All other code conventions are enforced by [ESLint](https://github.com/eslint/eslint), you'll notice when you're doing it wrong,
-  especially when using an IDE or text editor with ESLint support. ;)
-  Use your best judgement when you think you're writing something that needs an exception to the rules, especially the `no-any` rule. Annotate that exception so the lint step doesn't fail.
+  especially when using an IDE or text editor with ESLint support. ;)  
+  Use your best judgement when you think you're writing something that needs an exception to the rules, especially the `no-explicit-any` rule. Annotate that exception, so the lint step doesn't fail.
 
 ### Getting started
 
@@ -41,9 +45,9 @@ Then install the dependencies. We use yarn as our package manager, so to make su
 
 	yarn
 
-After fixing the bug you wanted to fix, or implementing a new feature, you have to both lint and build the package:
+After fixing the bug you wanted to fix, or implementing a new feature, you should build and lint the whole package in order to prevent unnecessary waiting for the CI to tell you about it:
 
-	yarn run lint && yarn run build
+	yarn run build && yarn run lint
 
 ### Documentation & Examples
 
@@ -55,5 +59,6 @@ If you want to create a new documentation page, please reflect the outline struc
 ### Sending a Pull Request
 
 After writing your bug fix, feature or improvement, send a pull request stating what it includes
-and [which issue it fixes](https://help.github.com/articles/closing-issues-using-keywords/).
+and [which issue it fixes](https://help.github.com/articles/closing-issues-using-keywords/).  
+If the issue was discussed on Discord (so there is no GitHub issue), please state that in the PR.  
 We will then review the code changes and either merge it or request further changes.

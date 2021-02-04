@@ -39,7 +39,7 @@ export class TokenInfo {
 	}
 
 	/**
-	 * The user name of the authenticated user.
+	 * The name of the authenticated user.
 	 */
 	get userName(): string {
 		return this._data.login;

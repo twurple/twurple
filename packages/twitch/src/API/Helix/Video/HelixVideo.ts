@@ -11,6 +11,7 @@ export type HelixVideoType = 'upload' | 'archive' | 'highlight';
 export interface HelixVideoData {
 	id: string;
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	title: string;
 	description: string;
@@ -52,6 +53,13 @@ export class HelixVideo {
 	 */
 	get userId(): string {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The name of the user who created the video.
+	 */
+	get userName(): string {
+		return this._data.user_login;
 	}
 
 	/**

@@ -5,6 +5,7 @@ const memberNames = [
 	// Twitch API
 	'_(id|name|at)$',
 	'^(broadcaster_)?user_login$',
+	'^(broadcaster|gifter|from|to)_login$',
 	'^client_secret$',
 	'^redirect_uri$',
 	'^(access|refresh|auth|upload)_token$',

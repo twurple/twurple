@@ -6,6 +6,7 @@ import type { ApiClient } from '../../../ApiClient';
 /** @private */
 export interface HelixBanData {
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	expires_at: string;
 }
@@ -32,10 +33,10 @@ export class HelixBan {
 	}
 
 	/**
-	 * @deprecated Use {@HelixBan#userDisplayName} instead.
+	 * The name of the banned user.
 	 */
 	get userName(): string {
-		return this._data.user_name;
+		return this._data.user_login;
 	}
 
 	/**

@@ -24,10 +24,12 @@ export interface HelixCustomRewardRedemptionRewardData {
 
 /** @private */
 export interface HelixCustomRewardRedemptionData {
-	broadcaster_name: string;
 	broadcaster_id: string;
+	broadcaster_login: string;
+	broadcaster_name: string;
 	id: string;
 	user_id: string;
+	user_login: string;
 	user_name: string;
 	user_input: string;
 	status: HelixCustomRewardRedemptionStatus;
@@ -64,6 +66,13 @@ export class HelixCustomRewardRedemption {
 	}
 
 	/**
+	 * The name of the broadcaster where the reward was redeemed.
+	 */
+	get broadcasterName(): string {
+		return this._data.broadcaster_login;
+	}
+
+	/**
 	 * The display name of the broadcaster where the reward was redeemed.
 	 */
 	get broadcasterDisplayName(): string {
@@ -82,6 +91,13 @@ export class HelixCustomRewardRedemption {
 	 */
 	get userId(): string {
 		return this._data.user_id;
+	}
+
+	/**
+	 * The name of the user that redeemed the reward.
+	 */
+	get userName(): string {
+		return this._data.user_login;
 	}
 
 	/**
