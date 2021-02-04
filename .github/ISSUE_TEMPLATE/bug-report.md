@@ -7,6 +7,9 @@ labels: bug
 <!--
 Before you report a bug, please check the FAQ to see whether the behavior is actually desired or already known:
 https://d-fischer.github.io/twitch/docs/basic-usage/faq.html
+
+Please make sure that all your packages from the package family are on the exact same version.
+
 Also, please check whether an issue already exists for the behavior you're experiencing.
 -->
 
