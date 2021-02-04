@@ -3,7 +3,7 @@
  */
 export interface ChatCommunitySubInfo {
 	/**
-	 * The user name of the user that gifted the subscription(s).
+	 * The name of the user that gifted the subscription(s).
 	 */
 	gifter?: string;
 

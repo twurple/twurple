@@ -8,9 +8,10 @@ import type { HelixUser } from '../User/HelixUser';
 /** @private */
 export interface HelixChannelSearchResultData {
 	broadcaster_language: string;
+	id: string;
+	broadcaster_login: string;
 	display_name: string;
 	game_id: string;
-	id: string;
 	is_live: boolean;
 	tag_ids: string[];
 	thumbnail_url: string;
@@ -47,10 +48,10 @@ export class HelixChannelSearchResult {
 	}
 
 	/**
-	 * Retrieves additional information about the owner of the channel.
+	 * The name of the channel.
 	 */
-	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.id);
+	get name(): string {
+		return this._data.broadcaster_login;
 	}
 
 	/**
@@ -58,6 +59,13 @@ export class HelixChannelSearchResult {
 	 */
 	get displayName(): string {
 		return this._data.display_name;
+	}
+
+	/**
+	 * Retrieves additional information about the owner of the channel.
+	 */
+	async getUser(): Promise<HelixUser | null> {
+		return this._client.helix.users.getUserById(this._data.id);
 	}
 
 	/**

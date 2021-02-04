@@ -24,6 +24,7 @@ export enum HelixBanEventType {
 /** @private */
 export interface HelixBanEventDetail extends HelixBanData {
 	broadcaster_id: string;
+	broadcaster_login: string;
 	broadcaster_name: string;
 }
 
@@ -81,17 +82,17 @@ export class HelixBanEvent extends HelixBan {
 	}
 
 	/**
-	 * @deprecated Use {@HelixBanEvent#broadcasterDisplayName} instead.
+	 * The name of the broadcaster from whose chat the user was banned/unbanned.
 	 */
 	get broadcasterName(): string {
-		return this._eventData.event_data.broadcaster_id;
+		return this._eventData.event_data.broadcaster_login;
 	}
 
 	/**
-	 * The name of the broadcaster from whose chat the user was banned/unbanned.
+	 * The display name of the broadcaster from whose chat the user was banned/unbanned.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._eventData.event_data.broadcaster_id;
+		return this._eventData.event_data.broadcaster_name;
 	}
 
 	/**
