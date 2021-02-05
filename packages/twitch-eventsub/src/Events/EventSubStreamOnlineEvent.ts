@@ -11,6 +11,7 @@ export interface EventSubStreamOnlineEventData {
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
 	type: EventSubStreamOnlineEventStreamType;
+	started_at: string;
 }
 
 /**
@@ -60,5 +61,12 @@ export class EventSubStreamOnlineEvent {
 	 */
 	get streamType(): EventSubStreamOnlineEventStreamType {
 		return this._data.type;
+	}
+
+	/**
+	 * The date and time when the stream was started.
+	 */
+	get startDate(): Date {
+		return new Date(this._data.started_at);
 	}
 }
