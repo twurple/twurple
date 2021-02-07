@@ -16,7 +16,6 @@ export type SubscriptionResultType<T extends EventSubSubscription> = T extends E
 export abstract class EventSubSubscription</** @private */ T = any> {
 	private _verified: boolean = false;
 	private _twitchSubscriptionData?: HelixEventSubSubscription;
-	private _unsubscribeResolver?: () => void;
 
 	/** @private */
 	protected constructor(protected _handler: (obj: T) => void, protected _client: EventSubListener) {}
@@ -59,16 +58,6 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 		this._handler(this.transformData(body));
 	}
 
-	/** @private */
-	_handleUnsubscribe(): boolean {
-		if (this._unsubscribeResolver) {
-			this._unsubscribeResolver();
-			this._unsubscribeResolver = undefined;
-			return true;
-		}
-		return false;
-	}
-
 	/**
 	 * Activates the subscription.
 	 */
@@ -94,9 +83,7 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 		if (!this._twitchSubscriptionData) {
 			return;
 		}
-		const unsubscribePromise = new Promise<void>(resolve => (this._unsubscribeResolver = resolve));
 		await this._unsubscribe();
-		await unsubscribePromise;
 		this._twitchSubscriptionData = undefined;
 	}
 
