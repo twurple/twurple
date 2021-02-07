@@ -744,33 +744,39 @@ Listening on port ${adapterListenerPort} instead.`);
 				const messageId = req.headers['twitch-eventsub-message-id'] as string;
 				const timestamp = req.headers['twitch-eventsub-message-timestamp'] as string;
 				const body = await getRawBody(req, true);
-				const algoAndSignature = req.headers['twitch-eventsub-message-signature'] as string;
-				const verified = subscription._verifyData(messageId, timestamp, body, algoAndSignature);
-				if (verified) {
-					const data = JSON.parse(body) as EventSubBody;
-					if (type === 'webhook_callback_verification') {
-						const verificationBody = data as EventSubVerificationBody;
-						subscription._verify();
-						if (twitchSubscription) {
-							twitchSubscription._status = 'enabled';
-						}
-						res.setHeader('Content-Length', verificationBody.challenge.length);
-						res.writeHead(200, undefined);
-						res.end(verificationBody.challenge);
-						this._logger.debug(`Successfully subscribed to event: ${id}`);
-					} else if (type === 'notification') {
-						subscription._handleData((data as EventSubNotificationBody).event);
-						res.writeHead(202);
-						res.end();
-					} else {
-						this._logger.warn(`Unknown action ${type} for event: ${id}`);
-						res.writeHead(400);
-						res.end();
-					}
-				} else {
-					this._logger.warn(`Could not verify action ${type} of event: ${id}`);
+				const algoAndSignature = req.headers['twitch-eventsub-message-signature'] as string | undefined;
+				if (algoAndSignature === undefined) {
+					this._logger.warn(`Dropping unsigned message for action ${type} of event: ${id}`);
 					res.writeHead(410);
 					res.end();
+				} else {
+					const verified = subscription._verifyData(messageId, timestamp, body, algoAndSignature);
+					if (verified) {
+						const data = JSON.parse(body) as EventSubBody;
+						if (type === 'webhook_callback_verification') {
+							const verificationBody = data as EventSubVerificationBody;
+							subscription._verify();
+							if (twitchSubscription) {
+								twitchSubscription._status = 'enabled';
+							}
+							res.setHeader('Content-Length', verificationBody.challenge.length);
+							res.writeHead(200, undefined);
+							res.end(verificationBody.challenge);
+							this._logger.debug(`Successfully subscribed to event: ${id}`);
+						} else if (type === 'notification') {
+							subscription._handleData((data as EventSubNotificationBody).event);
+							res.writeHead(202);
+							res.end();
+						} else {
+							this._logger.warn(`Unknown action ${type} for event: ${id}`);
+							res.writeHead(400);
+							res.end();
+						}
+					} else {
+						this._logger.warn(`Could not verify action ${type} of event: ${id}`);
+						res.writeHead(410);
+						res.end();
+					}
 				}
 			} else {
 				this._logger.warn(`Action ${type} of unknown event attempted: ${id}`);
