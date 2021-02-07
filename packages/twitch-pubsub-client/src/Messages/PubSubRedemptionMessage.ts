@@ -125,9 +125,9 @@ export class PubSubRedemptionMessage {
 	}
 
 	/**
-	 * The name of the reward.
+	 * The title of the reward.
 	 */
-	get rewardName(): string {
+	get rewardTitle(): string {
 		return this._data.data.redemption.reward.title;
 	}
 

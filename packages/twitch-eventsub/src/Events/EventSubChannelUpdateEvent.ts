@@ -55,14 +55,14 @@ export class EventSubChannelUpdateEvent {
 	}
 
 	/**
-	 * The title of the channel.
+	 * The title of the stream.
 	 */
 	get streamTitle(): string {
 		return this._data.title;
 	}
 
 	/**
-	 * The language of the channel.
+	 * The language of the stream.
 	 */
 	get streamLanguage(): string {
 		return this._data.language;
