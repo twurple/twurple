@@ -117,6 +117,13 @@ export class HelixHypeTrainEvent {
 	}
 
 	/**
+	 * The progress points goal to reach the next Hype Train level.
+	 */
+	get goal(): number {
+		return this._data.event_data.goal;
+	}
+
+	/**
 	 * The last contribution to the Hype Train event.
 	 */
 	get lastContribution(): HelixHypeTrainContribution {
