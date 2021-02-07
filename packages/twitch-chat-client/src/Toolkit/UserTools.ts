@@ -1,5 +1,5 @@
-// valid names must be alphanumberic or underscores between 4 and 25 characters (cannot start with underscore)
-const validNames = /^[a-zA-Z0-9][a-zA-Z0-9_]{3,24}$/;
+// valid names must be alphanumberic or underscores between 1 and 25 characters (cannot start with underscore)
+const validNames = /^[a-zA-Z0-9][a-zA-Z0-9_]{0,24}$/;
 
 /** @private */
 export function toUserName(channel: string): string {
@@ -7,7 +7,7 @@ export function toUserName(channel: string): string {
 	const name = channel.replace(/^#/, '').toLowerCase();
 	if (!validNames.test(name)) {
 		throw new Error(
-			`"${name}" is not a valid user or channel name. It must be 4-25 characters long, can only include letters, numbers and underscores, and can not start with an underscore.`
+			`"${name}" is not a valid user or channel name. It must be at most 25 characters long, can only include letters, numbers and underscores, and can not start with an underscore.`
 		);
 	}
 	return name;
