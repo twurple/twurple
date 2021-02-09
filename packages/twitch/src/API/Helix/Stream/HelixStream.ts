@@ -156,7 +156,7 @@ export class HelixStream {
 	 * @param {number} height Height of the thumbnail.
 	 */
 	getThumbnailUrl(width: number, hieght: number): string {
-		return `https://static-cdn.jtvnw.net/previews-ttv/live_user_${this.userName}-${width}x${hieght}.jpg`;
+		return this.thumbnailUrl.replace('{width}', width.toString()).replace('{height}', hieght.toString());
 	}
 
 	/**
