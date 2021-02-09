@@ -150,6 +150,16 @@ export class HelixStream {
 	}
 
 	/**
+	 * The URL of the thumbnail of the stream with a width and height.
+	 *
+	 * @param {number} width Width of the thumbnail.
+	 * @param {number} height Height of the thumbnail.
+	 */
+	getThumbnailUrl(width: number, hieght: number): string {
+		return `https://static-cdn.jtvnw.net/previews-ttv/live_user_${this.userName}-${width}x${hieght}.jpg`;
+	}
+
+	/**
 	 * The IDs of the tags of the stream.
 	 */
 	get tagIds(): string[] {
