@@ -68,12 +68,12 @@ export class BasicPubSubClient extends EventEmitter {
 	private readonly _connection: Connection;
 
 	private readonly _pingOnInactivity: number = 60;
-	private readonly _pingTimeout: number = 60;
+	private readonly _pingTimeout: number = 10;
 	private _pingCheckTimer?: NodeJS.Timer;
 	private _pingTimeoutTimer?: NodeJS.Timer;
 
-	private readonly _onPong: (handler: () => void) => Listener = this.registerEvent();
-	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener = this.registerEvent();
+	private readonly _onPong: (handler: () => void) => Listener = this.registerInternalEvent();
+	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener = this.registerInternalEvent();
 
 	/**
 	 * Fires when a message that matches your listening topics is received.
@@ -162,6 +162,7 @@ export class BasicPubSubClient extends EventEmitter {
 			if (this._pingTimeoutTimer) {
 				clearTimeout(this._pingTimeoutTimer);
 			}
+			this.removeInternalListener();
 			if (manually) {
 				this._logger.info('Disconnected');
 			} else {
@@ -378,13 +379,14 @@ export class BasicPubSubClient extends EventEmitter {
 		return new Promise<void>((resolve, reject) => {
 			const nonce = Math.random().toString(16).slice(2);
 
-			this._onResponse((recvNonce, error) => {
+			const responseListener = this._onResponse((recvNonce, error) => {
 				if (recvNonce === nonce) {
 					if (error) {
 						reject(new Error(`Error sending nonced ${packet.type} packet: ${error}`));
 					} else {
 						resolve();
 					}
+					responseListener.unbind();
 				}
 			});
 
@@ -431,19 +433,19 @@ export class BasicPubSubClient extends EventEmitter {
 
 	private _pingCheck() {
 		const pingTime = Date.now();
-		const pongListener = this._onPong(() => {
+		this._onPong(() => {
 			const latency = Date.now() - pingTime;
 			this.emit(this.onPong, latency, pingTime);
 			this._logger.info(`Current latency: ${latency}ms`);
 			if (this._pingTimeoutTimer) {
 				clearTimeout(this._pingTimeoutTimer);
 			}
-			this.removeListener(pongListener);
+			this.removeInternalListener(this._onPong);
 		});
 		this._pingTimeoutTimer = setTimeout(async () => {
 			this._logger.error('Ping timeout');
-			this.removeListener(pongListener);
-			return this.reconnect();
+			this.removeInternalListener(this._onPong);
+			this._connection.assumeExternalDisconnect();
 		}, this._pingTimeout * 1000);
 		this._sendPacket({ type: 'PING' });
 	}
@@ -452,6 +454,10 @@ export class BasicPubSubClient extends EventEmitter {
 		if (this._pingCheckTimer) {
 			clearInterval(this._pingCheckTimer);
 		}
-		this._pingCheckTimer = setInterval(() => this._pingCheck(), this._pingOnInactivity * 1000);
+		if (this._connection.isConnected) {
+			this._pingCheckTimer = setInterval(() => this._pingCheck(), this._pingOnInactivity * 1000);
+		} else {
+			this._pingCheckTimer = undefined;
+		}
 	}
 }
