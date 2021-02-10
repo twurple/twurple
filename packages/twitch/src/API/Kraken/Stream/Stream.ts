@@ -143,7 +143,7 @@ export class Stream {
 	}
 
 	/**
-	 * Gets the URL of a preview image for the stream
+	 * Gets the URL of a preview image for the stream.
 	 *
 	 * @param size The size of the image.
 	 */
