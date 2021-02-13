@@ -10,6 +10,12 @@ export interface EventSubChannelBanEventData {
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
+	moderator_user_id: string;
+	moderator_user_login: string;
+	moderator_user_name: string;
+	reason: string;
+	ends_at: string | null;
+	is_permanent: boolean;
 }
 
 /**
@@ -79,5 +85,54 @@ export class EventSubChannelBanEvent {
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+	}
+
+	/**
+	 * The ID of the moderator who issued the ban/timeout.
+	 */
+	get moderatorId(): string {
+		return this._data.moderator_user_id;
+	}
+
+	/**
+	 * The name of the moderator who issued the ban/timeout.
+	 */
+	get moderatorName(): string {
+		return this._data.moderator_user_login;
+	}
+
+	/**
+	 * The display name of the moderator who issued the ban/timeout.
+	 */
+	get moderatorDisplayName(): string {
+		return this._data.moderator_user_name;
+	}
+
+	/**
+	 * Retrieves more information about the moderator.
+	 */
+	async getModerator(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.moderator_user_id))!;
+	}
+
+	/**
+	 * The reason behind the ban.
+	 */
+	get reason(): string {
+		return this._data.reason;
+	}
+
+	/**
+	 * If it is a timeout, the date and time when the timeout will end. Will be null if permanent ban.
+	 */
+	get endDate(): Date | null {
+		return this._data.ends_at ? new Date(this._data.ends_at) : null;
+	}
+
+	/**
+	 * Whether the ban is permanent.
+	 */
+	get isPermanent(): boolean {
+		return this._data.is_permanent;
 	}
 }
