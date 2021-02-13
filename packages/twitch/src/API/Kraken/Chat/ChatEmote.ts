@@ -47,7 +47,7 @@ export class ChatEmote {
 	}
 
 	/**
-	 * Build the URL pointing to the emote image.
+	 * Builds the URL pointing to the emote image.
 	 *
 	 * @param size The pixel density of the emote image.
 	 */

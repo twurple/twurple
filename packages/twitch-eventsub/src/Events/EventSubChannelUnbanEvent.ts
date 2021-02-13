@@ -10,6 +10,9 @@ export interface EventSubChannelUnbanEventData {
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
+	moderator_user_id: string;
+	moderator_user_login: string;
+	moderator_user_name: string;
 }
 
 /**
@@ -79,5 +82,33 @@ export class EventSubChannelUnbanEvent {
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+	}
+
+	/**
+	 * The ID of the moderator who issued the unban.
+	 */
+	get moderatorId(): string {
+		return this._data.moderator_user_id;
+	}
+
+	/**
+	 * The name of the moderator who issued the unban.
+	 */
+	get moderatorName(): string {
+		return this._data.moderator_user_login;
+	}
+
+	/**
+	 * The display name of the moderator who issued the unban.
+	 */
+	get moderatorDisplayName(): string {
+		return this._data.moderator_user_name;
+	}
+
+	/**
+	 * Retrieves more information about the moderator.
+	 */
+	async getModerator(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.moderator_user_id))!;
 	}
 }

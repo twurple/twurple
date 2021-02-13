@@ -812,7 +812,7 @@ export class ChatClient extends IrcClient {
 				);
 			}
 			this._joinRateLimiter = new TimeBasedRateLimiter({
-				bucketSize: options.botLevel === 'verified' ? 2000 : 2,
+				bucketSize: options.botLevel === 'verified' ? 2000 : 20,
 				timeFrame: 11000,
 				doRequest: executeJoinRequest
 			});

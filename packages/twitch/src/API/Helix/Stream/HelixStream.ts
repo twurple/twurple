@@ -150,6 +150,16 @@ export class HelixStream {
 	}
 
 	/**
+	 * Builds the thumbnail URL of the stream using the given dimensions.
+	 *
+	 * @param width The width of the thumbnail.
+	 * @param height The height of the thumbnail.
+	 */
+	getThumbnailUrl(width: number, height: number): string {
+		return this._data.thumbnail_url.replace('{width}', width.toString()).replace('{height}', height.toString());
+	}
+
+	/**
 	 * The IDs of the tags of the stream.
 	 */
 	get tagIds(): string[] {
