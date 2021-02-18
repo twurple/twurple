@@ -18,7 +18,7 @@ or using npm:
 Listening to events using ngrok is easy since the ngrok adapter benefits from the ability to set itself up completely on its own:
 
 ```typescript
-const listener = new EventSubListener(client, new NgrokAdapter());
+const listener = new EventSubListener(client, new NgrokAdapter(), 'thisShouldBeARandomlyGeneratedFixedString');
 ```
 
 ## 3. Listening to events
