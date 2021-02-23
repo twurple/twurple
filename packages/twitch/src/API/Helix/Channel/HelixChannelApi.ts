@@ -92,6 +92,7 @@ export class HelixChannelApi extends BaseApi {
 		await this._client.callApi({
 			type: TwitchApiCallType.Helix,
 			url: 'channels/commercial',
+			method: 'POST',
 			scope: 'channel:edit:commercial',
 			jsonBody: {
 				broadcaster_id: extractUserId(broadcaster),
