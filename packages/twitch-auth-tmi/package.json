@@ -1,6 +1,6 @@
 {
   "name": "twitch-auth-tmi",
-  "version": "5.0.0-pre.0",
+  "version": "5.0.0-pre.1",
   "description": "Use tmi.js with the benefits of the twitch-auth authentication providers.",
   "keywords": [
     "twitch",
@@ -42,7 +42,7 @@
   },
   "devDependencies": {
     "tmi.js": "^1.7.1",
-    "twitch-auth": "^5.0.0-pre.0"
+    "twitch-auth": "^5.0.0-pre.1"
   },
   "files": [
     "LICENSE",
