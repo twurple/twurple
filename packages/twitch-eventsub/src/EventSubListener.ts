@@ -180,7 +180,13 @@ Listening on port ${adapterListenerPort} instead.`);
 		await this._server.listen(listenerPort);
 		this._currentListenerPort = listenerPort;
 		this._logger.info(`Listening on port ${listenerPort}`);
+		await this.resumeExistingSubscriptions();
+	}
 
+	/**
+	 * Resumes subscriptions that are already registered with Twitch.
+	 */
+	async resumeExistingSubscriptions(): Promise<void> {
 		const subscriptions = await this._apiClient.helix.eventSub.getSubscriptionsPaginated().getAll();
 
 		const urlPrefix = await this._buildHookUrl('');
@@ -223,9 +229,11 @@ Listening on port ${adapterListenerPort} instead.`);
 	/**
 	 * Applies middleware that handles EventSub notifications to a connect-compatible app (like express).
 	 *
+	 * The express app should be started before this.
+	 *
 	 * @param app The app the middleware should be applied to.
 	 */
-	applyMiddleware(app: ConnectCompatibleApp): void {
+	async applyMiddleware(app: ConnectCompatibleApp): Promise<void> {
 		let { pathPrefix } = this._adapter;
 		if (pathPrefix) {
 			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/, '')}`;
@@ -245,6 +253,9 @@ Listening on port ${adapterListenerPort} instead.`);
 		} else {
 			app.use(paramParser as ConnectCompatibleMiddleware, requestHandler as ConnectCompatibleMiddleware);
 		}
+
+		// stub to fix subscription registration
+		this._currentListenerPort = -1;
 	}
 
 	/**
@@ -669,7 +680,6 @@ Listening on port ${adapterListenerPort} instead.`);
 	): Promise<EventSubSubscription> {
 		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
-
 	/**
 	 * Subscribes to events that represent a user updating their account details.
 	 *
@@ -689,6 +699,7 @@ Listening on port ${adapterListenerPort} instead.`);
 		}
 		return this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
 	}
+
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
 		const hostName = await this._adapter.getHostName();
