@@ -1,6 +1,6 @@
 {
   "name": "twitch-common",
-  "version": "4.4.12",
+  "version": "4.4.13",
   "description": "Common functions used by the `twitch*` library family.",
   "keywords": [
     "twitch",
