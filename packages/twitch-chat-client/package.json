@@ -1,6 +1,6 @@
 {
   "name": "twitch-chat-client",
-  "version": "4.4.13",
+  "version": "4.5.0",
   "description": "Interact with the Twitch Messaging Interface (aka Twitch chat).",
   "keywords": [
     "twitch",
@@ -37,11 +37,11 @@
     "@d-fischer/typed-event-emitter": "^3.2.2",
     "ircv3": "^0.26.13",
     "tslib": "^2.0.3",
-    "twitch-auth": "^4.4.13",
-    "twitch-common": "^4.4.13"
+    "twitch-auth": "^4.5.0",
+    "twitch-common": "^4.5.0"
   },
   "devDependencies": {
-    "twitch": "^4.4.13"
+    "twitch": "^4.5.0"
   },
   "peerDependencies": {
     "twitch": "^4.4.0"
