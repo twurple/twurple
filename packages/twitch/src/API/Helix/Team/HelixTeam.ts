@@ -1,7 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUserRelation } from '../Relations/HelixUserRelation';
 
+/** @private */
 export interface HelixTeamData {
 	id: string;
 	team_name: string;
@@ -17,6 +19,7 @@ export interface HelixTeamData {
 /**
  * A Stream Team.
  */
+@rtfm<HelixTeam>('twitch', 'HelixTeam', 'id')
 export class HelixTeam {
 	/** @private */
 	@Enumerable(false) protected readonly _data: HelixTeamData;

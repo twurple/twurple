@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 
@@ -12,6 +13,7 @@ export interface HelixUserRelationData {
 /**
  * A relation of anything with a user.
  */
+@rtfm<HelixUserRelation>('twitch', 'HelixUserRelation', 'id')
 export class HelixUserRelation {
 	@Enumerable(false) private readonly _data: HelixUserRelationData;
 	@Enumerable(false) private readonly _client: ApiClient;
