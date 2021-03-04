@@ -25,14 +25,14 @@ export class HelixChannelEditor {
 	/**
 	 * The ID of the user.
 	 */
-	get id(): string {
+	get userId(): string {
 		return this._data.user_id;
 	}
 
 	/**
 	 * The display name of the user.
 	 */
-	get displayName(): string {
+	get userDisplayName(): string {
 		return this._data.user_name;
 	}
 
