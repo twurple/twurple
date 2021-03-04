@@ -280,6 +280,42 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a broadcaster raiding another broadcaster.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to outgoing raid events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelRaidEventsFrom(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.raid',
+			'1',
+			{ from_broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a broadcaster being raided by another broadcaster.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to incoming raid events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelRaidEventsTo(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.raid',
+			'1',
+			{ to_broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a Channel Points reward being added to a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to reward add events for.
