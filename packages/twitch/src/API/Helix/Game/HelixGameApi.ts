@@ -67,7 +67,9 @@ export class HelixGameApi extends BaseApi {
 	/**
 	 * Retrieves a list of the most viewed games at the moment.
 	 *
-	 * @param pagination Pagination info.
+	 * @param pagination
+	 *
+	 * @expandParams
 	 */
 	async getTopGames(pagination?: HelixPagination): Promise<HelixPaginatedResult<HelixGame>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixGameData>>({

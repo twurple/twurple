@@ -2,9 +2,12 @@ import { TwitchApiCallType } from 'twitch-api-call';
 import type { UserIdResolvable, UserNameResolvable } from 'twitch-common';
 import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
-import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
-import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import { createPaginatedResult, createPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import type { HelixForwardPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
 import type { HelixInstalledExtensionListData } from './Extensions/HelixInstalledExtensionList';
 import { HelixInstalledExtensionList } from './Extensions/HelixInstalledExtensionList';
@@ -17,6 +20,8 @@ import type { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import { HelixPrivilegedUser } from './HelixPrivilegedUser';
 import type { HelixUserData } from './HelixUser';
 import { HelixUser } from './HelixUser';
+import type { HelixUserBlockData } from './HelixUserBlock';
+import { HelixUserBlock } from './HelixUserBlock';
 
 /** @private */
 export enum UserLookupType {
@@ -29,6 +34,21 @@ export enum UserLookupType {
  */
 export interface HelixUserUpdate {
 	description?: string;
+}
+
+/**
+ * Additional info for a block to be created.
+ */
+export interface HelixUserBlockAdditionalInfo {
+	/**
+	 * The source context for blocking the user.
+	 */
+	sourceContext?: 'chat' | 'whisper';
+
+	/**
+	 * The reason for blocking the user.
+	 */
+	reason?: 'spam' | 'harassment' | 'other';
 }
 
 /**
@@ -228,7 +248,90 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Get a list of all extensions for the authenticated user.
+	 * Retrieves a list of users blocked by the given user.
+	 *
+	 * @param user The user to retrieve blocks for.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getBlocks(
+		user: UserIdResolvable,
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResult<HelixUserBlock>> {
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserBlockData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'users/blocks',
+			scope: 'user:read:blocked_users',
+			query: {
+				broadcaster_id: extractUserId(user),
+				...makePaginationQuery(pagination)
+			}
+		});
+
+		return createPaginatedResult(result, HelixUserBlock, this._client);
+	}
+
+	/**
+	 * Creates a paginator for users blocked by the given user.
+	 *
+	 * @param user The user to retrieve blocks for.
+	 */
+	getBlocksPaginated(user: UserIdResolvable): HelixPaginatedRequest<HelixUserBlockData, HelixUserBlock> {
+		return new HelixPaginatedRequest<HelixUserBlockData, HelixUserBlock>(
+			{
+				url: 'users/blocks',
+				scope: 'user:read:blocked_users',
+				query: {
+					broadcaster_id: extractUserId(user)
+				}
+			},
+			this._client,
+			data => new HelixUserBlock(data, this._client)
+		);
+	}
+
+	/**
+	 * Blocks the given user.
+	 *
+	 * @param target The user to block.
+	 * @param additionalInfo Additional info to give context to the block.
+	 *
+	 * @expandParams
+	 */
+	async createBlock(target: UserIdResolvable, additionalInfo: HelixUserBlockAdditionalInfo = {}): Promise<void> {
+		await this._client.callApi({
+			type: TwitchApiCallType.Helix,
+			url: 'users/blocks',
+			method: 'PUT',
+			scope: 'user:manage:blocked_users',
+			query: {
+				target_user_id: extractUserId(target),
+				source_context: additionalInfo.sourceContext,
+				reason: additionalInfo.reason
+			}
+		});
+	}
+
+	/**
+	 * Unblocks the given user.
+	 *
+	 * @param target The user to unblock.
+	 */
+	async deleteBlock(target: UserIdResolvable): Promise<void> {
+		await this._client.callApi({
+			type: TwitchApiCallType.Helix,
+			url: 'users/blocks',
+			method: 'DELETE',
+			scope: 'user:manage:blocked_users',
+			query: {
+				target_user_id: extractUserId(target)
+			}
+		});
+	}
+
+	/**
+	 * Retrieves a list of all extensions for the authenticated user.
 	 */
 	async getMyExtensions(): Promise<HelixUserExtension[]> {
 		const result = await this._client.callApi<HelixResponse<HelixUserExtensionData>>({
@@ -240,7 +343,7 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Get a list of all installed extensions for the given user.
+	 * Retrieves a list of all installed extensions for the given user.
 	 *
 	 * @param user The user to get the installed extensions for.
 	 *

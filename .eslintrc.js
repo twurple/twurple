@@ -74,6 +74,7 @@ const memberNames = [
 	'^last_updated$',
 	'^global_cooldown$',
 	'^can_activate$',
+	'^source_context$',
 	// HTTP
 	'^Accept$'
 ];
