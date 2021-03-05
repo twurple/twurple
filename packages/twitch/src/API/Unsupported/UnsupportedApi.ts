@@ -1,4 +1,3 @@
-import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { TwitchApiCallType } from 'twitch-api-call';
 import type { UserNameResolvable } from 'twitch-common';
 import { extractUserName, rtfm } from 'twitch-common';
@@ -17,7 +16,6 @@ import { ChattersList } from './ChattersList';
  * const events = await api.unsupported.getChatters('yourfavoritestreamer');
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'UnsupportedApi')
 export class UnsupportedApi extends BaseApi {
 	/**
@@ -27,7 +25,6 @@ export class UnsupportedApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve the chatters for.
 	 */
-	@Cached(60)
 	async getChatters(channel: UserNameResolvable): Promise<ChattersList> {
 		const channelName = extractUserName(channel);
 

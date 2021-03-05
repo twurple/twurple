@@ -1,4 +1,3 @@
-import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
@@ -16,7 +15,6 @@ import { Stream, StreamType } from './Stream';
  * const stream = await api.kraken.streams.getStreamByChannel('125328655');
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'StreamApi')
 export class StreamApi extends BaseApi {
 	/**
@@ -24,7 +22,6 @@ export class StreamApi extends BaseApi {
 	 *
 	 * @param channel
 	 */
-	@Cached(60)
 	async getStreamByChannel(channel: UserIdResolvable): Promise<Stream | null> {
 		const channelId = extractUserId(channel);
 		const data = await this._client.callApi<StreamDataWrapper>({ url: `streams/${channelId}` });
@@ -91,7 +88,6 @@ export class StreamApi extends BaseApi {
 	 * @param page The result page you want to retrieve.
 	 * @param limit The number of results you want to retrieve.
 	 */
-	@Cached(60)
 	async getFollowedStreams(type?: StreamType, page?: number, limit: number = 25): Promise<Stream[]> {
 		const query: Record<string, string> = { limit: limit.toString() };
 

@@ -1,6 +1,4 @@
-import type { CacheEntry } from '@d-fischer/cache-decorators';
-import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
-import { entriesToObject, indexBy, mapObject } from '@d-fischer/shared-utils';
+import { indexBy } from '@d-fischer/shared-utils';
 import { HttpStatusCodeError } from 'twitch-api-call';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, HellFreezesOverError, rtfm } from 'twitch-common';
@@ -30,15 +28,11 @@ import { UserSubscription } from './UserSubscription';
  * const user = await api.kraken.users.getUser('125328655');
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'UserApi')
 export class UserApi extends BaseApi {
-	private readonly _userByNameCache = new Map<string, CacheEntry<User>>();
-
 	/**
 	 * Retrieves the user data of the currently authenticated user.
 	 */
-	@Cached(3600)
 	async getMe(): Promise<PrivilegedUser> {
 		return new PrivilegedUser(await this._client.callApi({ url: 'user', scope: 'user_read' }), this._client);
 	}
@@ -48,7 +42,6 @@ export class UserApi extends BaseApi {
 	 *
 	 * @param userId The user ID you want to look up.
 	 */
-	@Cached(3600)
 	async getUser(userId: UserIdResolvable): Promise<User> {
 		const userData = await this._client.callApi<UserData>({ url: `users/${extractUserId(userId)}` });
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -64,11 +57,6 @@ export class UserApi extends BaseApi {
 	 * @param userName The user name you want to look up.
 	 */
 	async getUserByName(userName: string): Promise<User | null> {
-		// not using the decorator's cache here as users-by-name is slightly more complex to cache
-		this._cleanUserCache();
-		if (this._userByNameCache.has(userName)) {
-			return this._userByNameCache.get(userName)!.value;
-		}
 		const { users } = await this._client.callApi<{ users: UserData[] }>({
 			url: 'users',
 			query: { login: userName }
@@ -76,12 +64,7 @@ export class UserApi extends BaseApi {
 		if (users.length === 0) {
 			return null;
 		}
-		const user = new User(users[0], this._client);
-		this._userByNameCache.set(userName, {
-			value: user,
-			expires: Date.now() + 3600 * 1000
-		});
-		return user;
+		return new User(users[0], this._client);
 	}
 
 	/**
@@ -90,29 +73,15 @@ export class UserApi extends BaseApi {
 	 * @param userNames The user names you want to look up.
 	 */
 	async getUsersByNames(userNames: string[]): Promise<Record<string, User>> {
-		this._cleanUserCache();
 		userNames = userNames.map(name => name.toLowerCase());
-		const cachedEntries = Array.from(this._userByNameCache.entries()).filter(([key]) => userNames.includes(key));
-		const cachedObject = entriesToObject(cachedEntries);
-		const cachedUsers = mapObject(cachedObject, (entry: CacheEntry<User>) => entry.value);
-		const toFetch = userNames.filter(name => !(name in cachedUsers));
-		if (!toFetch.length) {
-			return cachedUsers;
-		}
 		const usersData = await this._client.callApi<{ users: UserData[] }>({
 			url: 'users',
-			query: { login: toFetch.join(',') }
+			query: { login: userNames.join(',') }
 		});
 		const usersArr: User[] = usersData.users.map(data => new User(data, this._client));
-		usersArr.forEach(user =>
-			this._userByNameCache.set(user.name, {
-				value: user,
-				expires: Date.now() + 3600 * 1000
-			})
-		);
 		const users = indexBy(usersArr, 'name');
 
-		return { ...cachedUsers, ...users };
+		return { ...users };
 	}
 
 	/**
@@ -120,7 +89,6 @@ export class UserApi extends BaseApi {
 	 *
 	 * @param user The user you want to get chat info for.
 	 */
-	@Cached(3600)
 	async getChatInfo(user: UserIdResolvable): Promise<UserChatInfo> {
 		const userId = extractUserId(user);
 
@@ -133,7 +101,6 @@ export class UserApi extends BaseApi {
 	 *
 	 * @param user The user you want to get emotes for.
 	 */
-	@Cached(3600)
 	async getUserEmotes(user: UserIdResolvable): Promise<EmoteSetList> {
 		const userId = extractUserId(user);
 
@@ -150,7 +117,6 @@ export class UserApi extends BaseApi {
 	 * @param user The user to retrieve the subscription data of.
 	 * @param toChannel The channel you want to retrieve the subscription data to.
 	 */
-	@Cached(3600)
 	async getSubscriptionData(user: UserIdResolvable, toChannel: UserIdResolvable): Promise<UserSubscription | null> {
 		const userId = extractUserId(user);
 		const channelId = extractUserId(toChannel);
@@ -185,7 +151,6 @@ export class UserApi extends BaseApi {
 	 * @param orderBy The field to order by.
 	 * @param orderDirection The direction to order in - ascending or descending.
 	 */
-	@Cached(300)
 	async getFollowedChannels(
 		user: UserIdResolvable,
 		page?: number,
@@ -224,7 +189,6 @@ export class UserApi extends BaseApi {
 	 * @param user The user you want to retrieve follow data of.
 	 * @param channel The channel you want to retrieve follow data to.
 	 */
-	@Cached(300)
 	async getFollowedChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<UserFollow | null> {
 		const userId = extractUserId(user);
 		const channelId = extractUserId(channel);
@@ -251,8 +215,6 @@ export class UserApi extends BaseApi {
 	 * @param channel The channel to follow.
 	 * @param notifications Whether the user will receive notifications.
 	 */
-	@ClearsCache<UserApi>('getFollowedChannels', 1)
-	@ClearsCache<UserApi>('getFollowedChannel', 2)
 	async followChannel(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
@@ -275,8 +237,6 @@ export class UserApi extends BaseApi {
 	 * @param user The user you want to unfollow with.
 	 * @param channel The channel to unfollow.
 	 */
-	@ClearsCache<UserApi>('getFollowedChannels', 1)
-	@ClearsCache<UserApi>('getFollowedChannel', 2)
 	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<void> {
 		const userId = extractUserId(user);
 		const channelId = extractUserId(channel);
@@ -294,7 +254,6 @@ export class UserApi extends BaseApi {
 	 * @param page The result page you want to retrieve.
 	 * @param limit The number of results you want to retrieve.
 	 */
-	@Cached(3600)
 	async getBlockedUsers(user: UserIdResolvable, page?: number, limit: number = 25): Promise<UserBlock[]> {
 		const userId = extractUserId(user);
 		const query: Record<string, string> = { limit: limit.toString() };
@@ -318,7 +277,6 @@ export class UserApi extends BaseApi {
 	 * @param user The user you want to block with.
 	 * @param userToBlock The user to block.
 	 */
-	@ClearsCache<UserApi>('getBlockedUsers', 1)
 	async blockUser(user: UserIdResolvable, userToBlock: UserIdResolvable): Promise<UserBlock> {
 		const userId = extractUserId(user);
 		const userIdToBlock = extractUserId(userToBlock);
@@ -336,7 +294,6 @@ export class UserApi extends BaseApi {
 	 * @param user The user you want to unblock with.
 	 * @param userToUnblock The user to unblock.
 	 */
-	@ClearsCache<UserApi>('getBlockedUsers', 1)
 	async unblockUser(user: UserIdResolvable, userToUnblock: UserIdResolvable): Promise<void> {
 		const userId = extractUserId(user);
 		const userIdToUnblock = extractUserId(userToUnblock);
@@ -344,15 +301,6 @@ export class UserApi extends BaseApi {
 			url: `users/${userId}/blocks/${userIdToUnblock}`,
 			method: 'DELETE',
 			scope: 'user_blocks_edit'
-		});
-	}
-
-	private _cleanUserCache() {
-		const now = Date.now();
-		this._userByNameCache.forEach((val, key) => {
-			if (val.expires < now) {
-				this._userByNameCache.delete(key);
-			}
 		});
 	}
 }

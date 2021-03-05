@@ -1,4 +1,3 @@
-import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import type { TeamData } from './Team';
@@ -16,7 +15,6 @@ import { TeamWithUsers } from './TeamWithUsers';
  * const team = await api.kraken.teams.getTeamByName('staff');
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'TeamApi')
 export class TeamApi extends BaseApi {
 	/**
@@ -25,7 +23,6 @@ export class TeamApi extends BaseApi {
 	 * @param page The result page you want to retrieve.
 	 * @param limit The number of results you want to retrieve.
 	 */
-	@Cached(3600)
 	async getTeams(page?: number, limit: number = 25): Promise<Team[]> {
 		const query: Record<string, string> = {};
 
@@ -48,7 +45,6 @@ export class TeamApi extends BaseApi {
 	 *
 	 * @param team The team name you want to look up.
 	 */
-	@Cached(3600)
 	async getTeamByName(team: string): Promise<TeamWithUsers> {
 		const teamData = await this._client.callApi<TeamData>({ url: `teams/${team}` });
 		return new TeamWithUsers(teamData, this._client);

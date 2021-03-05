@@ -1,4 +1,3 @@
-import { Cacheable, Cached, ClearsCache } from '@d-fischer/cache-decorators';
 import { HttpStatusCodeError } from 'twitch-api-call';
 import type { CommercialLength, UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
@@ -52,13 +51,11 @@ export interface ChannelUpdateData {
  * const channel = await api.kraken.channels.getMyChannel();
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'ChannelApi')
 export class ChannelApi extends BaseApi {
 	/**
 	 * Gets the channel the client is logged in to.
 	 */
-	@Cached(3600)
 	async getMyChannel(): Promise<PrivilegedChannel> {
 		return new PrivilegedChannel(
 			await this._client.callApi<PrivilegedChannelData>({ url: 'channel', scope: 'channel_read' }),
@@ -71,7 +68,6 @@ export class ChannelApi extends BaseApi {
 	 *
 	 * @param user The user you want to retrieve the channel for.
 	 */
-	@Cached(3600)
 	async getChannel(user: UserIdResolvable): Promise<Channel> {
 		return new Channel(await this._client.callApi({ url: `channels/${extractUserId(user)}` }), this._client);
 	}
@@ -82,7 +78,6 @@ export class ChannelApi extends BaseApi {
 	 * @param channel The channel you want to update.
 	 * @param data The updated channel data.
 	 */
-	@ClearsCache<ChannelApi>('getChannel', 1)
 	async updateChannel(channel: UserIdResolvable, data: ChannelUpdateData): Promise<void> {
 		const channelId = extractUserId(channel);
 		await this._client.callApi({
@@ -98,7 +93,6 @@ export class ChannelApi extends BaseApi {
 	 *
 	 * @param channel The channel you want to retrieve the list of editors for.
 	 */
-	@Cached(3600)
 	async getChannelEditors(channel: UserIdResolvable): Promise<User[]> {
 		const channelId = extractUserId(channel);
 		const data = await this._client.callApi<{ users: UserData[] }>({
@@ -116,7 +110,6 @@ export class ChannelApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 * @param orderDirection The direction to order in - ascending or descending.
 	 */
-	@Cached(30)
 	async getChannelFollowers(
 		channel: UserIdResolvable,
 		page?: number,
@@ -149,7 +142,6 @@ export class ChannelApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 * @param orderDirection The direction to order in - ascending or descending.
 	 */
-	@Cached(30)
 	async getChannelSubscriptions(
 		channel: UserIdResolvable,
 		page?: number,
@@ -166,7 +158,6 @@ export class ChannelApi extends BaseApi {
 	 *
 	 * @param channel The channel you want to retrieve the number of subscribers for.
 	 */
-	@Cached(30)
 	async getChannelSubscriptionCount(channel: UserIdResolvable): Promise<number> {
 		const data = await this._getChannelSubscriptions(channel, 0, 1);
 
@@ -184,7 +175,6 @@ export class ChannelApi extends BaseApi {
 	 * @param channel The channel to check the subscription to.
 	 * @param byUser The user to check the subscription for.
 	 */
-	@Cached(3600)
 	async getChannelSubscriptionByUser(
 		channel: UserIdResolvable,
 		byUser: UserIdResolvable
@@ -218,7 +208,6 @@ export class ChannelApi extends BaseApi {
 	 *
 	 * @param channel The channel you want to retrieve the list of teams of.
 	 */
-	@Cached(30)
 	async getChannelTeams(channel: UserIdResolvable): Promise<Team[]> {
 		const channelId = extractUserId(channel);
 
@@ -251,7 +240,6 @@ export class ChannelApi extends BaseApi {
 	 *
 	 * @param channel The channel to reset the stream key for.
 	 */
-	@ClearsCache<ChannelApi>('getMyChannel')
 	async resetChannelStreamKey(channel: UserIdResolvable): Promise<PrivilegedChannel> {
 		const channelId = extractUserId(channel);
 		const channelData = await this._client.callApi<PrivilegedChannelData>({

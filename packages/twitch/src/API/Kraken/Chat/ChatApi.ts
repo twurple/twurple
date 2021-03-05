@@ -1,7 +1,6 @@
-import { Cacheable, Cached } from '@d-fischer/cache-decorators';
+import type { ChatEmoteData } from 'twitch-common';
 import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
-import type { ChatEmoteData } from 'twitch-common';
 import { ChatEmoteList } from './ChatEmoteList';
 
 /**
@@ -15,7 +14,6 @@ import { ChatEmoteList } from './ChatEmoteList';
  * const emotes = await api.kraken.chat.getEmotesBySets('1');
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'ChatApi')
 export class ChatApi extends BaseApi {
 	/**
@@ -23,7 +21,6 @@ export class ChatApi extends BaseApi {
 	 *
 	 * @param emotesets The list of emote set IDs, either as array of strings or as a comma separated string.
 	 */
-	@Cached(3600)
 	async getEmotesBySets(emotesets: string[] | string): Promise<ChatEmoteList> {
 		if (typeof emotesets !== 'string') {
 			emotesets = emotesets.join(',');

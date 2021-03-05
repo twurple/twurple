@@ -1,4 +1,3 @@
-import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { TwitchApiCallType } from 'twitch-api-call';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
@@ -17,7 +16,6 @@ import { ChatBadgeList } from './ChatBadgeList';
  * const cheermotes = await api.badges.getGlobalBadges();
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'BadgesApi')
 export class BadgesApi extends BaseApi {
 	/**
@@ -25,7 +23,6 @@ export class BadgesApi extends BaseApi {
 	 *
 	 * @param language The language of the retrieved badge descriptions.
 	 */
-	@Cached(3600)
 	async getGlobalBadges(language?: string): Promise<ChatBadgeList> {
 		const data = await this._client.callApi<{ badge_sets: ChatBadgeListData }>({
 			url: 'https://badges.twitch.tv/v1/badges/global/display',
@@ -45,7 +42,6 @@ export class BadgesApi extends BaseApi {
 	 * @param includeGlobal Whether to include global badges in the result list.
 	 * @param language The language of the retrieved badge descriptions.
 	 */
-	@Cached(3600)
 	async getChannelBadges(
 		channel: UserIdResolvable,
 		includeGlobal: boolean = true,

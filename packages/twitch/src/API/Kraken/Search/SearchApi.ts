@@ -1,4 +1,3 @@
-import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import { rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import type { ChannelData } from '../Channel/Channel';
@@ -17,7 +16,6 @@ import { Stream } from '../Stream/Stream';
  * const channel = await api.kraken.search.searchStreams('Hearthstone');
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'SearchApi')
 export class SearchApi extends BaseApi {
 	/**
@@ -27,7 +25,6 @@ export class SearchApi extends BaseApi {
 	 * @param page The result page you want to retrieve.
 	 * @param limit The number of results you want to retrieve.
 	 */
-	@Cached(300)
 	async searchChannels(term: string, page?: number, limit: number = 25): Promise<Channel[]> {
 		const query: Record<string, string> = { query: term, limit: limit.toString() };
 
@@ -48,7 +45,6 @@ export class SearchApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 * @param hls Whether you want only HLS or only non-HLS (RTMP) streams. If not set, finds both types of streams.
 	 */
-	@Cached(300)
 	async searchStreams(term: string, page?: number, limit: number = 25, hls?: boolean): Promise<Stream[]> {
 		const query: Record<string, string> = { query: term, limit: limit.toString() };
 

@@ -1,4 +1,3 @@
-import { Cacheable, Cached } from '@d-fischer/cache-decorators';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
@@ -16,7 +15,6 @@ import { CheermoteList } from './CheermoteList';
  * const cheermotes = await api.kraken.bits.getCheermotes();
  * ```
  */
-@Cacheable
 @rtfm('twitch', 'BitsApi')
 export class BitsApi extends BaseApi {
 	/**
@@ -26,7 +24,6 @@ export class BitsApi extends BaseApi {
 	 * If not given, this method retrieves a list of globally available cheermotes.
 	 * @param includeSponsored Whether to include sponsored cheermotes in the list.
 	 */
-	@Cached(3600)
 	async getCheermotes(channel?: UserIdResolvable, includeSponsored: boolean = true): Promise<CheermoteList> {
 		const query: Record<string, string> = {};
 		if (channel) {
