@@ -137,6 +137,8 @@ export class ApiClient {
 
 	/**
 	 * A group of Kraken API methods.
+	 *
+	 * @deprecated Use Helix wherever possible.
 	 */
 	@CachedGetter()
 	get kraken(): KrakenApiGroup {
