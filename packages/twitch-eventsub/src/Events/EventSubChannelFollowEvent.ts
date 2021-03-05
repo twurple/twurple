@@ -10,6 +10,7 @@ export interface EventSubChannelFollowEventData {
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
+	followed_at: string;
 }
 
 /**
@@ -79,5 +80,12 @@ export class EventSubChannelFollowEvent {
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+	}
+
+	/**
+	 * The date when the user followed.
+	 */
+	get followDate(): Date {
+		return new Date(this._data.followed_at);
 	}
 }

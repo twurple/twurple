@@ -2,9 +2,11 @@ import { TwitchApiCallType } from 'twitch-api-call';
 import type { UserIdResolvable, CommercialLength } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
-import type { HelixPaginatedResponse } from '../HelixResponse';
+import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
 import type { HelixChannelData } from './HelixChannel';
 import { HelixChannel } from './HelixChannel';
+import type { HelixChannelEditorData } from './HelixChannelEditor';
+import { HelixChannelEditor } from './HelixChannelEditor';
 
 /**
  * Channel data to update using {@HelixChannelApi#updateChannel}.
@@ -98,5 +100,21 @@ export class HelixChannelApi extends BaseApi {
 				length: length
 			}
 		});
+	}
+
+	/**
+	 * Retrieves a list of users who have editor permissions on your channel.
+	 */
+	async getChannelEditors(broadcaster: UserIdResolvable): Promise<HelixChannelEditor[]> {
+		const result = await this._client.callApi<HelixResponse<HelixChannelEditorData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'channels/editors',
+			scope: 'channel:read:editors',
+			query: {
+				broadcaster_id: extractUserId(broadcaster)
+			}
+		});
+
+		return result.data.map(data => new HelixChannelEditor(data, this._client));
 	}
 }

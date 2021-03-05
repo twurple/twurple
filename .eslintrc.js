@@ -4,7 +4,7 @@ const baseRules = require('@d-fischer/eslint-config');
 const memberNames = [
 	// Twitch API
 	'_(id|name|at)$',
-	'^(broadcaster_|moderator_)?user_login$',
+	'^((to_|from_)?broadcaster_|moderator_)?user_login$',
 	'^(broadcaster|gifter|from|to)_login$',
 	'^client_secret$',
 	'^redirect_uri$',
@@ -21,7 +21,7 @@ const memberNames = [
 	'^video_banner$',
 	'^channel_feed_enabled$',
 	'^(start|end)_time$',
-	'^((offline|profile)_image|edit|embed|thumbnail|box_art|click)_url$',
+	'^((offline|profile|background)_image|edit|embed|thumbnail|box_art|click)_url$',
 	'^click_action$',
 	'^(image_)?url_\\dx$',
 	'^emoticon_sets?$',
@@ -74,6 +74,7 @@ const memberNames = [
 	'^last_updated$',
 	'^global_cooldown$',
 	'^can_activate$',
+	'^source_context$',
 	// HTTP
 	'^Accept$'
 ];

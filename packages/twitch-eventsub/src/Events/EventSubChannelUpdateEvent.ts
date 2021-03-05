@@ -4,9 +4,9 @@ import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface EventSubChannelUpdateEventData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
+	broadcaster_user_id: string;
+	broadcaster_user_login: string;
+	broadcaster_user_name: string;
 	title: string;
 	language: string;
 	category_id: string;
@@ -16,7 +16,7 @@ export interface EventSubChannelUpdateEventData {
 /**
  * An EventSub event representing a change in channel metadata.
  */
-@rtfm<EventSubChannelUpdateEvent>('twitch-eventsub', 'EventSubChannelUpdateEvent', 'userId')
+@rtfm<EventSubChannelUpdateEvent>('twitch-eventsub', 'EventSubChannelUpdateEvent', 'broadcasterId')
 export class EventSubChannelUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
@@ -27,31 +27,31 @@ export class EventSubChannelUpdateEvent {
 	}
 
 	/**
-	 * The ID of the user.
+	 * The ID of the broadcaster.
 	 */
-	get userId(): string {
-		return this._data.user_id;
+	get broadcasterId(): string {
+		return this._data.broadcaster_user_id;
 	}
 
 	/**
-	 * The name of the user.
+	 * The name of the broadcaster.
 	 */
-	get userName(): string {
-		return this._data.user_login;
+	get broadcasterName(): string {
+		return this._data.broadcaster_user_login;
 	}
 
 	/**
-	 * The display name of the user.
+	 * The display name of the broadcaster.
 	 */
-	get userDisplayName(): string {
-		return this._data.user_name;
+	get broadcasterDisplayName(): string {
+		return this._data.broadcaster_user_name;
 	}
 
 	/**
-	 * Retrieves more information about the user.
+	 * Retrieves more information about the broadcaster.
 	 */
-	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+	async getBroadcaster(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
 	}
 
 	/**

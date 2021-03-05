@@ -135,6 +135,23 @@ export class HelixVideoApi extends BaseApi {
 		return this._getVideosPaginated('game_id', gameId, filter);
 	}
 
+	/**
+	 * Deletes videos by its IDs.
+	 *
+	 * @param ids The IDs of the videos to delete.
+	 */
+	async deleteVideosByIds(ids: string[]): Promise<void> {
+		await this._client.callApi({
+			type: TwitchApiCallType.Helix,
+			url: 'videos',
+			method: 'DELETE',
+			scope: 'channel:manage:videos',
+			query: {
+				id: ids
+			}
+		});
+	}
+
 	private async _getVideos(
 		filterType: HelixVideoFilterType,
 		filterValues: string | string[],

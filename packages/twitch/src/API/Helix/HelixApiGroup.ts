@@ -15,6 +15,7 @@ import { HelixSearchApi } from './Search/HelixSearchApi';
 import { HelixStreamApi } from './Stream/HelixStreamApi';
 import { HelixSubscriptionApi } from './Subscriptions/HelixSubscriptionApi';
 import { HelixTagApi } from './Tag/HelixTagApi';
+import { HelixTeamApi } from './Team/HelixTeamApi';
 import { HelixUserApi } from './User/HelixUserApi';
 import { HelixVideoApi } from './Video/HelixVideoApi';
 import { HelixWebHooksApi } from './WebHooks/HelixWebHooksApi';
@@ -129,6 +130,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get tags(): HelixTagApi {
 		return new HelixTagApi(this._client);
+	}
+
+	/**
+	 * The Helix team API methods.
+	 */
+	@CachedGetter()
+	get teams(): HelixTeamApi {
+		return new HelixTeamApi(this._client);
 	}
 
 	/**

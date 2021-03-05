@@ -58,6 +58,8 @@ export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
 export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
 export type { HelixModeratorEventData } from './API/Helix/Moderation/HelixModeratorEvent';
 
+export { HelixUserRelation } from './API/Helix/Relations/HelixUserRelation';
+
 export { HelixChannelSearchResult } from './API/Helix/Search/HelixChannelSearchResult';
 
 export { HelixStream, HelixStreamType } from './API/Helix/Stream/HelixStream';
@@ -70,6 +72,9 @@ export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscript
 export type { HelixSubscriptionEventData } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
 
 export { HelixTag } from './API/Helix/Tag/HelixTag';
+
+export { HelixTeam } from './API/Helix/Team/HelixTeam';
+export { HelixTeamWithUsers } from './API/Helix/Team/HelixTeamWithUsers';
 
 export { HelixFollow } from './API/Helix/User/HelixFollow';
 export type { HelixFollowData } from './API/Helix/User/HelixFollow';

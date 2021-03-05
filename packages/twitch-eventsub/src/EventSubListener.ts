@@ -21,6 +21,7 @@ import type { EventSubChannelFollowEvent } from './Events/EventSubChannelFollowE
 import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChannelHypeTrainBeginEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './Events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './Events/EventSubChannelHypeTrainProgressEvent';
+import type { EventSubChannelRaidEvent } from './Events/EventSubChannelRaidEvent';
 import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './Events/EventSubChannelRewardEvent';
@@ -37,6 +38,7 @@ import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChann
 import { EventSubChannelHypeTrainBeginSubscription } from './Subscriptions/EventSubChannelHypeTrainBeginSubscription';
 import { EventSubChannelHypeTrainEndSubscription } from './Subscriptions/EventSubChannelHypeTrainEndSubscription';
 import { EventSubChannelHypeTrainProgressSubscription } from './Subscriptions/EventSubChannelHypeTrainProgressSubscription';
+import { EventSubChannelRaidSubscription } from './Subscriptions/EventSubChannelRaidSubscription';
 import { EventSubChannelRedemptionAddSubscription } from './Subscriptions/EventSubChannelRedemptionAddSubscription';
 import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/EventSubChannelRedemptionUpdateSubscription';
 import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
@@ -180,7 +182,13 @@ Listening on port ${adapterListenerPort} instead.`);
 		await this._server.listen(listenerPort);
 		this._currentListenerPort = listenerPort;
 		this._logger.info(`Listening on port ${listenerPort}`);
+		await this.resumeExistingSubscriptions();
+	}
 
+	/**
+	 * Resumes subscriptions that are already registered with Twitch.
+	 */
+	async resumeExistingSubscriptions(): Promise<void> {
 		const subscriptions = await this._apiClient.helix.eventSub.getSubscriptionsPaginated().getAll();
 
 		const urlPrefix = await this._buildHookUrl('');
@@ -223,9 +231,11 @@ Listening on port ${adapterListenerPort} instead.`);
 	/**
 	 * Applies middleware that handles EventSub notifications to a connect-compatible app (like express).
 	 *
+	 * The express app should be started before this.
+	 *
 	 * @param app The app the middleware should be applied to.
 	 */
-	applyMiddleware(app: ConnectCompatibleApp): void {
+	async applyMiddleware(app: ConnectCompatibleApp): Promise<void> {
 		let { pathPrefix } = this._adapter;
 		if (pathPrefix) {
 			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/, '')}`;
@@ -245,6 +255,9 @@ Listening on port ${adapterListenerPort} instead.`);
 		} else {
 			app.use(paramParser as ConnectCompatibleMiddleware, requestHandler as ConnectCompatibleMiddleware);
 		}
+
+		// stub to fix subscription registration
+		this._currentListenerPort = -1;
 	}
 
 	/**
@@ -407,6 +420,46 @@ Listening on port ${adapterListenerPort} instead.`);
 			);
 		}
 		return this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a broadcaster raiding another broadcaster.
+	 *
+	 * @param user The broadcaster for which to get outgoing raid notifications.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelRaidEventsFrom(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelRaidEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelRaidEventsFrom: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
+	}
+
+	/**
+	 * Subscribes to events that represent a broadcaster being raided by another broadcaster.
+	 *
+	 * @param user The broadcaster for which to get incoming raid notifications.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelRaidEventsTo(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelRaidEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelRaidEventsTo: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
 	}
 
 	/**
@@ -669,7 +722,6 @@ Listening on port ${adapterListenerPort} instead.`);
 	): Promise<EventSubSubscription> {
 		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
-
 	/**
 	 * Subscribes to events that represent a user updating their account details.
 	 *
@@ -689,6 +741,7 @@ Listening on port ${adapterListenerPort} instead.`);
 		}
 		return this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
 	}
+
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
 		const hostName = await this._adapter.getHostName();
