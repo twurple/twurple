@@ -63,7 +63,7 @@ export async function callTwitchApiRaw(
  * @param fetchOptions Additional options to be passed to the `fetch` function.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function callTwitchApi<T = any>(
+export async function callTwitchApi<T = unknown>(
 	options: TwitchApiCallOptions,
 	clientId?: string,
 	accessToken?: string,
@@ -71,5 +71,5 @@ export async function callTwitchApi<T = any>(
 ): Promise<T> {
 	const response = await callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
 
-	return transformTwitchApiResponse(response);
+	return transformTwitchApiResponse<T>(response);
 }
