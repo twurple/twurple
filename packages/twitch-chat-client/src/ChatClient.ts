@@ -2,7 +2,6 @@ import type { LoggerOptions } from '@d-fischer/logger';
 import { Logger, LogLevel } from '@d-fischer/logger';
 import type { RateLimiter } from '@d-fischer/rate-limiter';
 import {
-	NullRateLimiter,
 	PartitionedTimeBasedRateLimiter,
 	TimeBasedRateLimiter,
 	TimedPassthruRateLimiter
@@ -116,7 +115,7 @@ export interface BaseChatClientOptions {
 	/**
 	 * Your bot level, i.e. whether you're a known or verified bot.
 	 *
-	 * Starting with 5.0, this will default to 'none', which will limit your messages to the standard rate limit.
+	 * This defaults to 'none', which limits your messages to the standard rate limit.
 	 */
 	botLevel?: TwitchBotLevel;
 }
@@ -786,60 +785,53 @@ export class ChatClient extends IrcClient {
 
 		const executeWhisperRequest = async ({ target, message }: WhisperRequest) => this._doWhisper(target, message);
 
-		if (options.botLevel) {
-			if (options.isAlwaysMod) {
-				this._messageRateLimiter = new TimeBasedRateLimiter({
-					bucketSize: options.botLevel === 'verified' ? 7500 : 100,
-					timeFrame: 32000,
-					doRequest: executeChatMessageRequest
-				});
-			} else {
-				let bucketSize = 20;
-				if (options.botLevel === 'verified') {
-					bucketSize = 7500;
-				} else if (options.botLevel === 'known') {
-					bucketSize = 50;
-				}
-				this._messageRateLimiter = new TimedPassthruRateLimiter(
-					new PartitionedTimeBasedRateLimiter({
-						bucketSize: 1,
-						timeFrame: 1200,
-						logger: { minLevel: LogLevel.ERROR },
-						doRequest: executeChatMessageRequest,
-						getPartitionKey: ({ channel }) => channel
-					}),
-					{ bucketSize, timeFrame: 32000 }
-				);
-			}
-			this._joinRateLimiter = new TimeBasedRateLimiter({
-				bucketSize: options.botLevel === 'verified' ? 2000 : 20,
-				timeFrame: 11000,
-				doRequest: executeJoinRequest
+		if (options.isAlwaysMod) {
+			this._messageRateLimiter = new TimeBasedRateLimiter({
+				bucketSize: options.botLevel === 'verified' ? 7500 : 100,
+				timeFrame: 32000,
+				doRequest: executeChatMessageRequest
 			});
-			let whisperLimitPerSecond = 3;
-			let whisperLimitPerMinute = 100;
+		} else {
+			let bucketSize = 20;
 			if (options.botLevel === 'verified') {
-				whisperLimitPerSecond = 20;
-				whisperLimitPerMinute = 1200;
+				bucketSize = 7500;
 			} else if (options.botLevel === 'known') {
-				whisperLimitPerSecond = 10;
-				whisperLimitPerMinute = 200;
+				bucketSize = 50;
 			}
-			this._whisperRateLimiter = new TimedPassthruRateLimiter(
-				new TimeBasedRateLimiter({
-					bucketSize: whisperLimitPerSecond,
+			this._messageRateLimiter = new TimedPassthruRateLimiter(
+				new PartitionedTimeBasedRateLimiter({
+					bucketSize: 1,
 					timeFrame: 1200,
 					logger: { minLevel: LogLevel.ERROR },
-					doRequest: executeWhisperRequest
+					doRequest: executeChatMessageRequest,
+					getPartitionKey: ({ channel }) => channel
 				}),
-				{ bucketSize: whisperLimitPerMinute, timeFrame: 64000 }
+				{ bucketSize, timeFrame: 32000 }
 			);
-		} else {
-			this._needToShowWhisperWarning = true;
-			this._messageRateLimiter = new NullRateLimiter(executeChatMessageRequest);
-			this._joinRateLimiter = new NullRateLimiter(executeJoinRequest);
-			this._whisperRateLimiter = new NullRateLimiter(executeWhisperRequest);
 		}
+		this._joinRateLimiter = new TimeBasedRateLimiter({
+			bucketSize: options.botLevel === 'verified' ? 2000 : 20,
+			timeFrame: 11000,
+			doRequest: executeJoinRequest
+		});
+		let whisperLimitPerSecond = 3;
+		let whisperLimitPerMinute = 100;
+		if (options.botLevel === 'verified') {
+			whisperLimitPerSecond = 20;
+			whisperLimitPerMinute = 1200;
+		} else if (options.botLevel === 'known') {
+			whisperLimitPerSecond = 10;
+			whisperLimitPerMinute = 200;
+		}
+		this._whisperRateLimiter = new TimedPassthruRateLimiter(
+			new TimeBasedRateLimiter({
+				bucketSize: whisperLimitPerSecond,
+				timeFrame: 1200,
+				logger: { minLevel: LogLevel.ERROR },
+				doRequest: executeWhisperRequest
+			}),
+			{ bucketSize: whisperLimitPerMinute, timeFrame: 64000 }
+		);
 
 		this.addCapability(TwitchTagsCapability);
 		this.addCapability(TwitchCommandsCapability);
