@@ -10,9 +10,9 @@ import type { PubSubChatModActionMessage } from './Messages/PubSubChatModActionM
 import type { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
 import type { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
 import type { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+import type { PubSubUndocumentedMessage } from './Messages/PubSubUndocumentedMessage';
 import type { PubSubListener } from './PubSubListener';
 import { SingleUserPubSubClient } from './SingleUserPubSubClient';
-import type { PubSubMessage } from './Messages/PubSubMessage';
 
 /**
  * A high level PubSub client attachable to a multiple users.
@@ -168,7 +168,7 @@ Register one using:
 	async onUndocumentedEvent(
 		user: UserIdResolvable,
 		topic: string,
-		callback: (message: PubSubMessage) => void,
+		callback: (message: PubSubUndocumentedMessage) => void,
 		scope?: string,
 		channel?: UserIdResolvable
 	): Promise<PubSubListener<never>> {

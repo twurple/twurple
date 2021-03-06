@@ -18,6 +18,8 @@ import type { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptio
 import { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
 import type { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+import type { PubSubUndocumentedMessageData } from './Messages/PubSubUndocumentedMessage';
+import { PubSubUndocumentedMessage } from './Messages/PubSubUndocumentedMessage';
 import { PubSubListener } from './PubSubListener';
 
 /**
@@ -158,7 +160,7 @@ export class SingleUserPubSubClient {
 	 */
 	async onUndocumentedAction(
 		topic: string,
-		callback: (message: PubSubMessage) => void,
+		callback: (message: PubSubUndocumentedMessage) => void,
 		scope?: string,
 		channelId?: UserIdResolvable
 	): Promise<PubSubListener<never>> {
@@ -217,7 +219,7 @@ export class SingleUserPubSubClient {
 				return new PubSubWhisperMessage(messageData as PubSubWhisperMessageData);
 			}
 			default:
-				return undefined;
+				return new PubSubUndocumentedMessage(messageData as PubSubUndocumentedMessageData);
 		}
 	}
 
