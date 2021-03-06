@@ -39,7 +39,7 @@
     "@types/node" "^14.14.22"
     tslib "^2.1.0"
 
-"@d-fischer/connection@^6.4.2":
+"@d-fischer/connection@^6.4.1", "@d-fischer/connection@^6.4.2":
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.4.2.tgz#b4b0a65ccfd745292a91d3b738d3d57e95cd105e"
   integrity sha512-1ABkXOJWuIg21sumWVjzpYk+LWYvKWR8fBe/xRn9KcNver4ktOpq6ne/QwjQ1KDVHm1N61y+GzVMMZiOaGla6w==
@@ -65,10 +65,10 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/deprecate/-/deprecate-2.0.2.tgz#d1f0d40acc881edd771cace7992a1070460608c8"
   integrity sha512-wlw3HwEanJFJKctwLzhfOM6LKwR70FPfGZGoKOhWBKyOPXk+3a9Cc6S9zhm6tka7xKtpmfxVIReGUwPnMbIaZg==
 
-"@d-fischer/documen.ts@^0.11.19":
-  version "0.11.19"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.11.19.tgz#135272102aa5405cd6f0b2ea9e94dfbb1461316b"
-  integrity sha512-0H1U2r/Gwj3X8QVAt5qqXMEoHBv+p4nxuAGx8QvRV5ZkiJehhZIFqQqUXhh/1sXq5tVzO9ELdZyHA46bQDxeeg==
+"@d-fischer/documen.ts@^0.11.20":
+  version "0.11.20"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.11.20.tgz#8b0d56b559a7e1e6d0ed53ad71647a88999da4d1"
+  integrity sha512-i/yuwYu2Gvw0puEDabAhMqHJa0PRGhAsIc3Q9HAMJ9wNvGjEhGEOCOcHoA60D2z3JpU+2pKZDdSY41THK9AJRw==
   dependencies:
     "@fortawesome/fontawesome-svg-core" "^1.2.28"
     "@fortawesome/free-solid-svg-icons" "^5.13.0"
@@ -5506,7 +5506,7 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.26.13:
+ircv3@^0.26.12:
   version "0.26.13"
   resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.13.tgz#98d1b81dd3b73e0430cad06faf236e6ca8151264"
   integrity sha512-h2DM250qxBWvr/ZcxxuCIeYQSSJU5ScvfBhUEjGQkYslbkXzdlylo7mvkABueyQqV729Bnu/EW6FP2MpHlbY1g==
