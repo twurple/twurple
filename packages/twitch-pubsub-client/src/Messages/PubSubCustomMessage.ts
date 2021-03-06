@@ -4,7 +4,7 @@ import { rtfm } from 'twitch-common';
 /**
  * A message in response to a subscription to a custom topic.
  */
-@rtfm('twitch-pubsub-client', 'PubSuCustomMessage')
+@rtfm('twitch-pubsub-client', 'PubSubCustomMessage')
 export class PubSubCustomMessage {
 	@Enumerable(false) private readonly _data: unknown;
 
