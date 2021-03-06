@@ -10,7 +10,7 @@ import type { PubSubChatModActionMessage } from './Messages/PubSubChatModActionM
 import type { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
 import type { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
 import type { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
-import type { PubSubUndocumentedMessage } from './Messages/PubSubUndocumentedMessage';
+import type { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
 import type { PubSubListener } from './PubSubListener';
 import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
@@ -160,19 +160,20 @@ Register one using:
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param topic The topic to subscribe to.
-	 * @param callback A function to be called when an event is received.
+	 * @param callback A function to be called when a custom event is sent to the user.
+	 *
+	 * It receives a {@PubSubCustomMessage} object.
 	 * @param scope An optional scope if the topic requires it.
-	 * @param channel An optional second usedid if the topic requires it.
-	 * It receives a {@PubSubMessageData} object.
+	 * @param channel An optional second userId if the topic requires it, usually a channel.
 	 */
-	async onUndocumentedEvent(
+	async onCustomTopic(
 		user: UserIdResolvable,
 		topic: string,
-		callback: (message: PubSubUndocumentedMessage) => void,
+		callback: (message: PubSubCustomMessage) => void,
 		scope?: string,
 		channel?: UserIdResolvable
 	): Promise<PubSubListener<never>> {
-		return this.getUserListener(user).onUndocumentedAction(topic, callback, scope, channel);
+		return this.getUserListener(user).onCustomTopic(topic, callback, scope, channel);
 	}
 
 	private static async _getCorrectUserId(authProvider: AuthProvider, user?: UserIdResolvable): Promise<string> {

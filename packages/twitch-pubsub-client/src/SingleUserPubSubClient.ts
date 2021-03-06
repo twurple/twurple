@@ -18,8 +18,7 @@ import type { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptio
 import { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
 import type { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
-import type { PubSubUndocumentedMessageData } from './Messages/PubSubUndocumentedMessage';
-import { PubSubUndocumentedMessage } from './Messages/PubSubUndocumentedMessage';
+import { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
 import { PubSubListener } from './PubSubListener';
 
 /**
@@ -69,10 +68,8 @@ export class SingleUserPubSubClient {
 			const [type, userId, ...args] = topic.split('.');
 			if (this._listeners.has(topic) && userId === (await this._getUserId())) {
 				const message = SingleUserPubSubClient._parseMessage(type, args, messageData);
-				if (message) {
-					for (const listener of this._listeners.get(topic)!) {
-						(listener as PubSubListener).call(message);
-					}
+				for (const listener of this._listeners.get(topic)!) {
+					(listener as PubSubListener).call(message);
 				}
 			}
 		});
@@ -149,18 +146,18 @@ export class SingleUserPubSubClient {
 	}
 
 	/**
-	 * Adds a listener to undocumented events to the client.
+	 * Adds a listener for arbitrary/undocumented events to the client.
 	 *
-	 * @param topic The topic to subscribe to
-	 * @param callback A function to be called when a mod action event is sent to the user.
-	 * @param scope The scope required for the event subscription
+	 * @param topic The topic to subscribe to.
+	 * @param callback A function to be called when a custom event is sent to the user.
+	 *
+	 * It receives a {@PubSubCustomMessage} object.
+	 * @param scope An optional scope if the topic requires it.
 	 * @param channelId The ID of the channel to listen to, if the topic requires it.
-	 *
-	 * It receives a {@PubSubChatModActionMessage} object.
 	 */
-	async onUndocumentedAction(
+	async onCustomTopic(
 		topic: string,
-		callback: (message: PubSubUndocumentedMessage) => void,
+		callback: (message: PubSubCustomMessage) => void,
 		scope?: string,
 		channelId?: UserIdResolvable
 	): Promise<PubSubListener<never>> {
@@ -194,11 +191,7 @@ export class SingleUserPubSubClient {
 		}
 	}
 
-	private static _parseMessage(
-		type: string,
-		args: string[],
-		messageData: PubSubMessageData
-	): PubSubMessage | undefined {
+	private static _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage {
 		switch (type) {
 			case 'channel-bits-events-v2': {
 				return new PubSubBitsMessage(messageData as PubSubBitsMessageData);
@@ -219,7 +212,7 @@ export class SingleUserPubSubClient {
 				return new PubSubWhisperMessage(messageData as PubSubWhisperMessageData);
 			}
 			default:
-				return new PubSubUndocumentedMessage(messageData as PubSubUndocumentedMessageData);
+				return new PubSubCustomMessage(messageData);
 		}
 	}
 
