@@ -147,6 +147,29 @@ export class SingleUserPubSubClient {
 	}
 
 	/**
+	 * Adds a listener to undocumented events to the client.
+	 *
+	 * @param topic The topic to subscribe to
+	 * @param callback A function to be called when a mod action event is sent to the user.
+	 * @param scope The scope required for the event subscription
+	 * @param channelId The ID of the channel to listen to, if the topic requires it.
+	 *
+	 * It receives a {@PubSubChatModActionMessage} object.
+	 */
+	async onUndocumentedAction(
+		topic: string,
+		callback: (message: PubSubMessage) => void,
+		scope?: string,
+		channelId?: UserIdResolvable
+	): Promise<PubSubListener<never>> {
+		if (channelId) {
+			return this._addListener(topic, callback, scope, extractUserId(channelId));
+		} else {
+			return this._addListener(topic, callback, scope);
+		}
+	}
+
+	/**
 	 * Removes a listener from the client.
 	 *
 	 * @param listener A listener returned by one of the `add*Listener` methods.

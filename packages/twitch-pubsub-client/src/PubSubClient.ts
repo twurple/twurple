@@ -12,6 +12,7 @@ import type { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMes
 import type { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
 import type { PubSubListener } from './PubSubListener';
 import { SingleUserPubSubClient } from './SingleUserPubSubClient';
+import type { PubSubMessage } from './Messages/PubSubMessage';
 
 /**
  * A high level PubSub client attachable to a multiple users.
@@ -152,6 +153,26 @@ Register one using:
 		callback: (message: PubSubChatModActionMessage) => void
 	): Promise<PubSubListener<never>> {
 		return this.getUserListener(user).onModAction(channel, callback);
+	}
+
+	/**
+	 * Adds a listener for arbitrary/undocumented events to the client.
+	 *
+	 * @param user The user the event will be subscribed for.
+	 * @param topic The topic to subscribe to.
+	 * @param callback A function to be called when an event is received.
+	 * @param scope An optional scope if the topic requires it.
+	 * @param channel An optional second usedid if the topic requires it.
+	 * It receives a {@PubSubMessageData} object.
+	 */
+	async onUndocumentedEvent(
+		user: UserIdResolvable,
+		topic: string,
+		callback: (message: PubSubMessage) => void,
+		scope?: string,
+		channel?: UserIdResolvable
+	): Promise<PubSubListener<never>> {
+		return this.getUserListener(user).onUndocumentedAction(topic, callback, scope, channel);
 	}
 
 	private static async _getCorrectUserId(authProvider: AuthProvider, user?: UserIdResolvable): Promise<string> {
