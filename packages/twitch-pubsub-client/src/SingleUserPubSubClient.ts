@@ -18,6 +18,7 @@ import type { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptio
 import { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
 import type { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+import { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
 import { PubSubListener } from './PubSubListener';
 
 /**
@@ -67,10 +68,8 @@ export class SingleUserPubSubClient {
 			const [type, userId, ...args] = topic.split('.');
 			if (this._listeners.has(topic) && userId === (await this._getUserId())) {
 				const message = SingleUserPubSubClient._parseMessage(type, args, messageData);
-				if (message) {
-					for (const listener of this._listeners.get(topic)!) {
-						(listener as PubSubListener).call(message);
-					}
+				for (const listener of this._listeners.get(topic)!) {
+					(listener as PubSubListener).call(message);
 				}
 			}
 		});
@@ -147,6 +146,29 @@ export class SingleUserPubSubClient {
 	}
 
 	/**
+	 * Adds a listener for arbitrary/undocumented events to the client.
+	 *
+	 * @param topic The topic to subscribe to.
+	 * @param callback A function to be called when a custom event is sent to the user.
+	 *
+	 * It receives a {@PubSubCustomMessage} object.
+	 * @param scope An optional scope if the topic requires it.
+	 * @param channelId The ID of the channel to listen to, if the topic requires it.
+	 */
+	async onCustomTopic(
+		topic: string,
+		callback: (message: PubSubCustomMessage) => void,
+		scope?: string,
+		channelId?: UserIdResolvable
+	): Promise<PubSubListener<never>> {
+		if (channelId) {
+			return this._addListener(topic, callback, scope, extractUserId(channelId));
+		} else {
+			return this._addListener(topic, callback, scope);
+		}
+	}
+
+	/**
 	 * Removes a listener from the client.
 	 *
 	 * @param listener A listener returned by one of the `add*Listener` methods.
@@ -169,11 +191,7 @@ export class SingleUserPubSubClient {
 		}
 	}
 
-	private static _parseMessage(
-		type: string,
-		args: string[],
-		messageData: PubSubMessageData
-	): PubSubMessage | undefined {
+	private static _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage {
 		switch (type) {
 			case 'channel-bits-events-v2': {
 				return new PubSubBitsMessage(messageData as PubSubBitsMessageData);
@@ -194,7 +212,7 @@ export class SingleUserPubSubClient {
 				return new PubSubWhisperMessage(messageData as PubSubWhisperMessageData);
 			}
 			default:
-				return undefined;
+				return new PubSubCustomMessage(messageData);
 		}
 	}
 

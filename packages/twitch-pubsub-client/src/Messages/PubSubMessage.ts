@@ -4,6 +4,7 @@ import type { PubSubChatModActionMessage, PubSubChatModActionMessageData } from 
 import type { PubSubRedemptionMessage, PubSubRedemptionMessageData } from './PubSubRedemptionMessage';
 import type { PubSubSubscriptionMessage, PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage';
 import type { PubSubWhisperMessage, PubSubWhisperMessageData } from './PubSubWhisperMessage';
+import type { PubSubCustomMessage } from './PubSubCustomMessage';
 
 /** @private */
 export interface PubSubBasicMessageInfo {
@@ -40,7 +41,8 @@ export type PubSubMessageData =
 	| PubSubChatModActionMessageData
 	| PubSubRedemptionMessageData
 	| PubSubSubscriptionMessageData
-	| PubSubWhisperMessageData;
+	| PubSubWhisperMessageData
+	| unknown;
 
 /** @private */
 export type PubSubMessage =
@@ -49,4 +51,5 @@ export type PubSubMessage =
 	| PubSubChatModActionMessage
 	| PubSubRedemptionMessage
 	| PubSubSubscriptionMessage
-	| PubSubWhisperMessage;
+	| PubSubWhisperMessage
+	| PubSubCustomMessage;
