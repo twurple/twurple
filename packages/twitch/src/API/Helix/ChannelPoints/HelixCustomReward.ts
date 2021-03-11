@@ -144,13 +144,6 @@ export class HelixCustomReward {
 	}
 
 	/**
-	 * @deprecated Use `prompt` instead.
-	 */
-	get propmt(): string {
-		return this._data.prompt;
-	}
-
-	/**
 	 * The prompt shown to users when redeeming the reward.
 	 */
 	get prompt(): string {
