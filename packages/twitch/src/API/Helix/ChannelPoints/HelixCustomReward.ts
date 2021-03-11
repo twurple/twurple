@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
-import type { HelixUser } from '../User/HelixUser';
 import type { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../User/HelixUser';
 
 /** @private */
 export interface HelixCustomRewardImageData {
@@ -144,9 +144,16 @@ export class HelixCustomReward {
 	}
 
 	/**
-	 * The prompt shown to users when redeeming the reward.
+	 * @deprecated Use `prompt` instead.
 	 */
 	get propmt(): string {
+		return this._data.prompt;
+	}
+
+	/**
+	 * The prompt shown to users when redeeming the reward.
+	 */
+	get prompt(): string {
 		return this._data.prompt;
 	}
 
