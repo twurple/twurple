@@ -4,7 +4,19 @@ export { PubSubListener } from './PubSubListener';
 export { BasicPubSubClient } from './BasicPubSubClient';
 export { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
-export * from './PubSubPacket';
+export type {
+	PubSubIncomingPacket,
+	PubSubListenPacket,
+	PubSubMessagePacket,
+	PubSubNoncedOutgoingPacket,
+	PubSubNoncedPacket,
+	PubSubOutgoingPacket,
+	PubSubPingPacket,
+	PubSubPongPacket,
+	PubSubReconnectPacket,
+	PubSubResponsePacket,
+	PubSubUnlistenPacket
+} from './PubSubPacket';
 
 export type { PubSubMessage } from './Messages/PubSubMessage';
 export { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
