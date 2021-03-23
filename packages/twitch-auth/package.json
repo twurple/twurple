@@ -1,6 +1,6 @@
 {
   "name": "twitch-auth",
-  "version": "4.5.1",
+  "version": "4.5.2",
   "description": "Authenticate with Twitch and stop caring about refreshing tokens.",
   "keywords": [
     "twitch",
@@ -33,8 +33,8 @@
     "@d-fischer/logger": "^3.1.0",
     "@d-fischer/shared-utils": "^3.0.1",
     "tslib": "^2.0.3",
-    "twitch-api-call": "^4.5.1",
-    "twitch-common": "^4.5.1"
+    "twitch-api-call": "^4.5.2",
+    "twitch-common": "^4.5.2"
   },
   "files": [
     "LICENSE",

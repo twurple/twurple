@@ -1,6 +1,6 @@
 {
   "name": "twitch-api-call",
-  "version": "4.5.1",
+  "version": "4.5.2",
   "description": "A light wrapper around the Twitch API.",
   "keywords": [
     "twitch",
@@ -32,7 +32,7 @@
     "@types/node-fetch": "^2.5.7",
     "node-fetch": "^2.6.1",
     "tslib": "^2.0.3",
-    "twitch-common": "^4.5.1"
+    "twitch-common": "^4.5.2"
   },
   "files": [
     "LICENSE",
