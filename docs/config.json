@@ -2,6 +2,7 @@
 	"inputDirs": ["src", "types"],
 	"outputDir": "generatedDocs",
 	"mode": "html",
+	"prettier": true,
 	"routerMode": "htmlSuffix",
 	"repoUser": "d-fischer",
 	"repoName": "twitch",
