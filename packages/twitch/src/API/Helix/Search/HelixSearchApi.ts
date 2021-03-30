@@ -9,8 +9,8 @@ import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponse } from '../HelixResponse';
-import { HelixUser } from '../User/HelixUser';
-import type { HelixUserData } from '../User/HelixUser';
+import type { HelixChannelSearchResultData } from './HelixChannelSearchResult';
+import { HelixChannelSearchResult } from './HelixChannelSearchResult';
 
 /**
  * Filters for a channel search.
@@ -91,8 +91,8 @@ export class HelixSearchApi extends BaseApi {
 	async searchChannels(
 		query: string,
 		filter: HelixPaginatedChannelSearchFilter = {}
-	): Promise<HelixPaginatedResult<HelixUser>> {
-		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserData>>({
+	): Promise<HelixPaginatedResult<HelixChannelSearchResult>> {
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixChannelSearchResultData>>({
 			type: TwitchApiCallType.Helix,
 			url: 'search/channels',
 			query: {
@@ -102,7 +102,7 @@ export class HelixSearchApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResult(result, HelixUser, this._client);
+		return createPaginatedResult(result, HelixChannelSearchResult, this._client);
 	}
 
 	/**
@@ -116,8 +116,8 @@ export class HelixSearchApi extends BaseApi {
 	searchChannelsPaginated(
 		query: string,
 		filter: HelixChannelSearchFilter = {}
-	): HelixPaginatedRequest<HelixUserData, HelixUser> {
-		return new HelixPaginatedRequest<HelixUserData, HelixUser>(
+	): HelixPaginatedRequest<HelixChannelSearchResultData, HelixChannelSearchResult> {
+		return new HelixPaginatedRequest<HelixChannelSearchResultData, HelixChannelSearchResult>(
 			{
 				url: 'search/channels',
 				query: {
@@ -126,7 +126,7 @@ export class HelixSearchApi extends BaseApi {
 				}
 			},
 			this._client,
-			data => new HelixUser(data, this._client)
+			data => new HelixChannelSearchResult(data, this._client)
 		);
 	}
 }

@@ -2170,11 +2170,11 @@ export class ChatClient extends IrcClient {
 	 * @param message The message to send.
 	 */
 	async whisper(user: string, message: string): Promise<void> {
-		if (!this._needToShowWhisperWarning) {
+		if (this._needToShowWhisperWarning) {
 			this._needToShowWhisperWarning = false;
 			this._chatLogger.warn(
 				`You did not set a botLevel option.
-Pleasae note that your whispers might not arrive reliably if your bot is not a known or verified bot.`
+Please note that your whispers might not arrive reliably if your bot is not a known or verified bot.`
 			);
 		}
 		return this._whisperRateLimiter.request({

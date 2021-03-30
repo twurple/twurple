@@ -34,6 +34,7 @@ export interface HelixStreamData {
 	user_login: string;
 	user_name: string;
 	game_id: string;
+	game_name: string;
 	community_ids: string[];
 	type: HelixStreamType;
 	title: string;
@@ -98,6 +99,13 @@ export class HelixStream {
 	 */
 	get gameId(): string {
 		return this._data.game_id;
+	}
+
+	/**
+	 * The game name.
+	 */
+	get gameName(): string {
+		return this._data.game_name;
 	}
 
 	/**
