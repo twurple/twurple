@@ -24,6 +24,7 @@ export type { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
 export type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
 export type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
 export type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
+export type { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
 
 export type { ChatSayMessageAttributes } from './ChatMessageAttributes';
 

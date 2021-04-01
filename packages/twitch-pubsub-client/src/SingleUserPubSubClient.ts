@@ -11,6 +11,7 @@ import type { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
 import { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
 import type { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
 import { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
+import { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
 import type { PubSubMessage, PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubRedemptionMessageData } from './Messages/PubSubRedemptionMessage';
 import { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
@@ -18,13 +19,12 @@ import type { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptio
 import { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
 import type { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
 import { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
-import { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
 import { PubSubListener } from './PubSubListener';
 
 /**
  * Options for creating the single-user PubSub client.
  */
-interface SingleUserPubSubClientOptions {
+export interface SingleUserPubSubClientOptions {
 	/**
 	 * The {@AuthProvider} instance to use for token management.
 	 */

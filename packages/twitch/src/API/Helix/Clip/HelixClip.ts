@@ -5,6 +5,7 @@ import type { HelixGame } from '../Game/HelixGame';
 import type { HelixUser } from '../User/HelixUser';
 import type { HelixVideo } from '../Video/HelixVideo';
 
+/** @private */
 export interface HelixClipData {
 	id: string;
 	url: string;

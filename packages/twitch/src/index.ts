@@ -7,6 +7,7 @@ export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
 export { ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
 export type { ChatBadgeScale } from './API/Badges/ChatBadgeVersion';
 
+export { HelixApiGroup } from './API/Helix/HelixApiGroup';
 export type { HelixEventData } from './API/Helix/HelixEvent';
 export { HelixPaginatedRequest } from './API/Helix/HelixPaginatedRequest';
 export { HelixPaginatedRequestWithTotal } from './API/Helix/HelixPaginatedRequestWithTotal';
@@ -43,6 +44,7 @@ export { HelixClipApi } from './API/Helix/Clip/HelixClipApi';
 export type { HelixClipCreateParams, HelixClipFilter } from './API/Helix/Clip/HelixClipApi';
 export { HelixClip } from './API/Helix/Clip/HelixClip';
 
+export { HelixEventSubApi } from './API/Helix/EventSub/HelixEventSubApi';
 export type {
 	HelixEventSubTransportOptions,
 	HelixEventSubWebHookTransportOptions
