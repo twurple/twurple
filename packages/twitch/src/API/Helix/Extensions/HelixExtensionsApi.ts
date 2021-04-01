@@ -13,14 +13,17 @@ import { HelixExtensionTransaction } from './HelixExtensionTransaction';
 /**
  * Filters for the extension transactions request.
  */
-interface HelixExtensionTransactionsFilter {
+export interface HelixExtensionTransactionsFilter {
+	/**
+	 * The IDs of the transactions.
+	 */
 	transactionIds?: string[];
 }
 
 /**
  * @inheritDoc
  */
-interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensionTransactionsFilter, HelixPagination {}
+export interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensionTransactionsFilter, HelixPagination {}
 
 /**
  * The Helix API methods that deal with extensions.

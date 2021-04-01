@@ -4,6 +4,7 @@ import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 import type { HelixExtensionProductData } from './HelixExtensionProductData';
 
+/** @private */
 type HelixExtensionProductType = 'BITS_IN_EXTENSION';
 
 /** @private */

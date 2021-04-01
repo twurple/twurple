@@ -47,8 +47,10 @@ export interface VideoEditData {
 
 /**
  * Video data for a new video using {@VideoApi#createVideo}.
+ *
+ * @inheritDoc
  */
-interface VideoCreateData extends VideoEditData {
+export interface VideoCreateData extends VideoEditData {
 	/**
 	 * The new title of the video.
 	 */

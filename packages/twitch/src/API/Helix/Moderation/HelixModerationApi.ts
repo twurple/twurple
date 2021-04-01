@@ -30,7 +30,7 @@ export interface HelixBanFilter extends HelixForwardPagination {
 /**
  * Filters for the moderators request.
  */
-interface HelixModeratorFilter extends HelixForwardPagination {
+export interface HelixModeratorFilter extends HelixForwardPagination {
 	/**
 	 * A user ID or a list thereof.
 	 */

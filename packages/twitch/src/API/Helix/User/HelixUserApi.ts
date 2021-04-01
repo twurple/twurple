@@ -14,7 +14,7 @@ import { HelixInstalledExtensionList } from './Extensions/HelixInstalledExtensio
 import type { HelixUserExtensionData } from './Extensions/HelixUserExtension';
 import { HelixUserExtension } from './Extensions/HelixUserExtension';
 import type { HelixUserExtensionUpdatePayload } from './Extensions/HelixUserExtensionUpdatePayload';
-import type { HelixFollowData, HelixFollowFilter } from './HelixFollow';
+import type { HelixFollowData } from './HelixFollow';
 import { HelixFollow } from './HelixFollow';
 import type { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import { HelixPrivilegedUser } from './HelixPrivilegedUser';
@@ -49,6 +49,21 @@ export interface HelixUserBlockAdditionalInfo {
 	 * The reason for blocking the user.
 	 */
 	reason?: 'spam' | 'harassment' | 'other';
+}
+
+/**
+ * Filters for the follower request.
+ */
+export interface HelixFollowFilter {
+	/**
+	 * The following user.
+	 */
+	user?: UserIdResolvable;
+
+	/**
+	 * The followed user.
+	 */
+	followedUser?: UserIdResolvable;
 }
 
 /**

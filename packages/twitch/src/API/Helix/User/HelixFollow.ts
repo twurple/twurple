@@ -1,23 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { UserIdResolvable } from 'twitch-common';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from './HelixUser';
-
-/**
- * Filters for the follower request.
- */
-export interface HelixFollowFilter {
-	/**
-	 * The following user.
-	 */
-	user?: UserIdResolvable;
-
-	/**
-	 * The followed user.
-	 */
-	followedUser?: UserIdResolvable;
-}
 
 /** @private */
 export interface HelixFollowData {
