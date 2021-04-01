@@ -4,6 +4,7 @@ import type { HelixVideo } from '../Video/HelixVideo';
 import type { HelixStreamMarkerData } from './HelixStreamMarker';
 import { HelixStreamMarker } from './HelixStreamMarker';
 
+/** @private */
 export interface HelixStreamMarkerVideoData extends HelixStreamMarkerData {
 	URL: string;
 }

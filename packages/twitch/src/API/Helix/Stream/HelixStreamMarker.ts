@@ -2,6 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 
+/** @private */
 export interface HelixStreamMarkerData {
 	id: string;
 	created_at: string;

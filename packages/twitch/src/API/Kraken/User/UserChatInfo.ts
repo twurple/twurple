@@ -3,6 +3,7 @@ import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { User } from './User';
 
+/** @private */
 interface UserChatInfoGlobalBadgeData {
 	id: string;
 	version: string;

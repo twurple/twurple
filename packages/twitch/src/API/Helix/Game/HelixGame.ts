@@ -6,6 +6,7 @@ import type { HelixPagination } from '../HelixPagination';
 import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixStream, HelixStreamData } from '../Stream/HelixStream';
 
+/** @private */
 export interface HelixGameData {
 	id: string;
 	name: string;
