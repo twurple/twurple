@@ -115,7 +115,7 @@ export class HelixHypeTrainEvent {
 	get cooldownDate(): Date {
 		return new Date(this._data.event_data.cooldown_end_time);
 	}
-	
+
 	/**
 	 * The total amount of progress points of the Hype Train event.
 	 */
