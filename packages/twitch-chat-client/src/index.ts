@@ -13,6 +13,14 @@ export { Whisper } from './Capabilities/TwitchCommandsCapability/MessageTypes/Wh
 export { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
 export { GlobalUserState } from './Capabilities/TwitchTagsCapability/MessageTypes/GlobalUserState';
 
+export type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
+export type { ChatCommunityPayForwardInfo } from './UserNotices/ChatCommunityPayForwardInfo';
+export type { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
+export type { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
+export type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
+export type { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
+export type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
+export type { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
 export type {
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
@@ -20,11 +28,6 @@ export type {
 	ChatSubExtendInfo,
 	ChatSubInfo
 } from './UserNotices/ChatSubInfo';
-export type { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
-export type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
-export type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
-export type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
-export type { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
 
 export type { ChatSayMessageAttributes } from './ChatMessageAttributes';
 
