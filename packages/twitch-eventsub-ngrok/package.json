@@ -1,6 +1,6 @@
 {
   "name": "twitch-eventsub-ngrok",
-  "version": "4.5.3",
+  "version": "4.5.4",
   "description": "Test your EventSub listener locally using ngrok.",
   "keywords": [
     "twitch",
@@ -35,8 +35,8 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "twitch": "^4.5.3",
-    "twitch-eventsub": "^4.5.3"
+    "twitch": "^4.5.4",
+    "twitch-eventsub": "^4.5.4"
   },
   "peerDependencies": {
     "twitch": "^4.4.0",
