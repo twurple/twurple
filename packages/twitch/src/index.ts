@@ -16,7 +16,7 @@ export type { HelixForwardPagination, HelixPagination } from './API/Helix/HelixP
 export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './API/Helix/HelixResponse';
 
 export { HelixBitsApi } from './API/Helix/Bits/HelixBitsApi';
-export type { HelixBitsLeaderboardQuery } from './API/Helix/Bits/HelixBitsApi';
+export type { HelixBitsLeaderboardPeriod, HelixBitsLeaderboardQuery } from './API/Helix/Bits/HelixBitsApi';
 export { HelixBitsLeaderboard } from './API/Helix/Bits/HelixBitsLeaderboard';
 export { HelixBitsLeaderboardEntry } from './API/Helix/Bits/HelixBitsLeaderboardEntry';
 export { HelixCheermoteList } from './API/Helix/Bits/HelixCheermoteList';
@@ -70,6 +70,7 @@ export { HelixGame } from './API/Helix/Game/HelixGame';
 
 export { HelixHypeTrainApi } from './API/Helix/HypeTrain/HelixHypeTrainApi';
 export { HelixHypeTrainContribution } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
+export type { HelixHypeTrainContributionType } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
 export { HelixHypeTrainEvent } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
 export type { HelixHypeTrainEventData, HelixHypeTrainEventType } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
 
@@ -131,9 +132,14 @@ export type {
 export { HelixVideoApi } from './API/Helix/Video/HelixVideoApi';
 export type { HelixPaginatedVideoFilter, HelixVideoFilter } from './API/Helix/Video/HelixVideoApi';
 export { HelixVideo } from './API/Helix/Video/HelixVideo';
+export type { HelixVideoType } from './API/Helix/Video/HelixVideo';
 
 export { HelixWebHooksApi } from './API/Helix/WebHooks/HelixWebHooksApi';
-export type { HelixWebHookHubRequest, HelixWebHookHubRequestOptions } from './API/Helix/WebHooks/HelixWebHooksApi';
+export type {
+	HelixWebHookHubRequest,
+	HelixWebHookHubRequestOptions,
+	HubMode
+} from './API/Helix/WebHooks/HelixWebHooksApi';
 export { HelixWebHookSubscription } from './API/Helix/WebHooks/HelixWebHookSubscription';
 
 export { KrakenApiGroup } from './API/Kraken/KrakenApiGroup';

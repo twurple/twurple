@@ -30,6 +30,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	/** @private */ @Enumerable(false) protected readonly _data: UserData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
+	/** @private */
 	constructor(data: UserData, client: ApiClient) {
 		this._data = data;
 		this._client = client;
