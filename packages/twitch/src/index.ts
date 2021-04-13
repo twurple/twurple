@@ -1,6 +1,8 @@
 export { ApiClient } from './ApiClient';
 export type { ApiConfig } from './ApiClient';
 
+export type { BaseApi } from './API/BaseApi';
+
 export { BadgesApi } from './API/Badges/BadgesApi';
 export { ChatBadgeList } from './API/Badges/ChatBadgeList';
 export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
@@ -165,6 +167,7 @@ export { SearchApi } from './API/Kraken/Search/SearchApi';
 
 export { StreamApi } from './API/Kraken/Stream/StreamApi';
 export { Stream, StreamType } from './API/Kraken/Stream/Stream';
+export type { StreamPreviewSize } from './API/Kraken/Stream/Stream';
 
 export { TeamApi } from './API/Kraken/Team/TeamApi';
 export { Team } from './API/Kraken/Team/Team';
@@ -179,7 +182,13 @@ export { UserFollow } from './API/Kraken/User/UserFollow';
 export { UserSubscription } from './API/Kraken/User/UserSubscription';
 
 export { VideoApi } from './API/Kraken/Video/VideoApi';
-export type { VideoCreateData, VideoUpdateData } from './API/Kraken/Video/VideoApi';
+export type {
+	VideoCreateData,
+	VideoSearchPeriod,
+	VideoSort,
+	VideoType,
+	VideoUpdateData
+} from './API/Kraken/Video/VideoApi';
 export { CreatedVideo } from './API/Kraken/Video/CreatedVideo';
 export { Video } from './API/Kraken/Video/Video';
 

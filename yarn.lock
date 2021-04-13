@@ -142,10 +142,10 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/escape-string-regexp/-/escape-string-regexp-5.0.0.tgz#40b1d52529c5674caf510213efc9c982877d01c4"
   integrity sha512-7eoxnxcto5eVPW5h1T+ePnVFukmI9f/ZR9nlBLh1t3kyzJDUNor2C+YW9H/Terw3YnbZSDgDYrpCJCHtOtAQHw==
 
-"@d-fischer/eslint-config@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@d-fischer/eslint-config/-/eslint-config-4.3.0.tgz#ab74e5ef8ffd6e728308c0cc058bca62cbc4d4ec"
-  integrity sha512-FmtgFCS+aWQlXysMcFLIFqaV/VDXNFC6silr/3DnysAwwqWASIwX9/NiPPBqGt0k2khfxNr+BEZhhz1UY3tHMA==
+"@d-fischer/eslint-config@^4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/eslint-config/-/eslint-config-4.3.1.tgz#24712d711581b30a43c338defc19bae01f3949ca"
+  integrity sha512-JxfchRr69WdsY7xJrtCRP++SPG+dc8gMgV0ermTIC2Dv+ZMTlXxcB+8VgUX87kUrg9qh2UXMb+NVBPogK0uK0Q==
   dependencies:
     "@typescript-eslint/eslint-plugin" "^4.10.0"
     "@typescript-eslint/parser" "^4.4.0"

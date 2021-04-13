@@ -2,7 +2,10 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
-type EventSubStreamOnlineEventStreamType = 'live' | 'playlist' | 'watch_party' | 'premiere' | 'rerun';
+/**
+ * The type of the stream going live.
+ */
+export type EventSubStreamOnlineEventStreamType = 'live' | 'playlist' | 'watch_party' | 'premiere' | 'rerun';
 
 /** @private */
 export interface EventSubStreamOnlineEventData {

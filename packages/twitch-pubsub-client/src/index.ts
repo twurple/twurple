@@ -26,6 +26,7 @@ export type { PubSubMessage } from './Messages/PubSubMessage';
 export { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
 export { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
 export { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
+export { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
 export { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
 export { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
 export { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';

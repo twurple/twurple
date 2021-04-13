@@ -15,6 +15,8 @@ export type AuthProviderTokenType = 'user' | 'app';
  * but can't do anything to upgrade it by itself. {@RefreshableAuthProvider}
  * is used as a wrapper around another `AuthProvider` and can make use of
  * refresh tokens.
+ *
+ * @neverExpand
  */
 export interface AuthProvider {
 	/**

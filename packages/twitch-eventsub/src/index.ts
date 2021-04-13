@@ -1,5 +1,5 @@
 export { EventSubListener } from './EventSubListener';
-export type { EventSubListenerCertificateConfig } from './EventSubListener';
+export type { EventSubConfig, EventSubListenerCertificateConfig } from './EventSubListener';
 export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 export { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 export { DirectConnectionAdapter } from './Adapters/DirectConnectionAdapter';
@@ -22,10 +22,12 @@ export { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedem
 export { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
 export { EventSubChannelRewardEvent } from './Events/EventSubChannelRewardEvent';
 export { EventSubChannelSubscriptionEvent } from './Events/EventSubChannelSubscriptionEvent';
+export type { EventSubChannelSubscriptionEventTier } from './Events/EventSubChannelSubscriptionEvent';
 export { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
 export { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
 export { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
 export { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
+export type { EventSubStreamOnlineEventStreamType } from './Events/EventSubStreamOnlineEvent';
 export { EventSubUserAuthorizationRevokeEvent } from './Events/EventSubUserAuthorizationRevokeEvent';
 export { EventSubUserUpdateEvent } from './Events/EventSubUserUpdateEvent';
 

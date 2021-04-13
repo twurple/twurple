@@ -2,7 +2,11 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
-type EventSubChannelSubscriptionEventTier = '1000' | '2000' | '3000';
+/**
+ * The tier of the subscription.
+ */
+export type EventSubChannelSubscriptionEventTier = '1000' | '2000' | '3000';
+
 /** @private */
 export interface EventSubChannelSubscriptionEventData {
 	user_id: string;

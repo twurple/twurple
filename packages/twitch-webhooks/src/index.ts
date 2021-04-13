@@ -1,6 +1,6 @@
 export { WebHookListener } from './WebHookListener';
+export type { WebHookConfig, WebHookListenerCertificateConfig } from './WebHookListener';
 
-export type { WebHookListenerCertificateConfig } from './WebHookListener';
 export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 export { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 export type { CommonConnectionAdapterConfig, ConnectionAdapterOverrideOptions } from './Adapters/ConnectionAdapter';
