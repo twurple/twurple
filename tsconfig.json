@@ -12,7 +12,8 @@
 		"noUnusedLocals": true,
 		"experimentalDecorators": true,
 		"downlevelIteration": true,
-		"isolatedModules": true
+		"isolatedModules": true,
+		"declarationMap": true
 	},
 	"exclude": ["node_modules", "lib", "es"]
 }

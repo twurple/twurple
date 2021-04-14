@@ -49,8 +49,8 @@
     "LICENSE",
     "README.md",
     "lib",
-    "es",
-    "scripts/npm"
+    "!lib/**/*.d.ts.map",
+    "es"
   ],
   "scripts": {
     "build": "tsukuru",

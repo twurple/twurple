@@ -31,7 +31,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "lib"
+    "lib",
+    "!lib/**/*.d.ts.map"
   ],
   "scripts": {
     "build": "tsc",

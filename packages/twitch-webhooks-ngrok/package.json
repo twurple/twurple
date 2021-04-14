@@ -46,6 +46,7 @@
     "LICENSE",
     "README.md",
     "lib",
+    "!lib/**/*.d.ts.map",
     "es"
   ],
   "scripts": {
