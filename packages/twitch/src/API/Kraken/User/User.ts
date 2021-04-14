@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from 'twitch-common';
-import { rtfm } from 'twitch-common';
+import type { UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { Channel } from '../Channel/Channel';

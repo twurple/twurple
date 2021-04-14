@@ -1,6 +1,6 @@
 import type { RateLimiterResponseParameters } from '@d-fischer/rate-limiter';
 import { ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';
-import { callTwitchApiRaw } from 'twitch-api-call';
+import { callTwitchApiRaw } from '@twurple/api-call';
 import type { TwitchApiCallOptionsInternal } from '../../ApiClient';
 
 /** @private */

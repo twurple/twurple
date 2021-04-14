@@ -1,23 +1,23 @@
 ## Installation
 
-To add Twitch.js and the PubSub client to your project, just execute:
+To add the PubSub client (and the required authentication module) to your project, just execute:
 
-	yarn add twitch twitch-pubsub-client
+	yarn add @twurple/auth @twurple/pubsub
 
 or using npm:
 
-	npm install twitch twitch-pubsub-client
+	npm install @twurple/auth @twurple/pubsub
 
 ## Importing the library
 
 Using ES2015 modules:
 
 ```typescript
-import { PubSubClient } from 'twitch-pubsub-client';
+import { PubSubClient } from '@twurple/pubsub';
 ```
 
 Using CommonJS:
 
 ```typescript
-const { PubSubClient } = require('twitch-pubsub-client');
+const { PubSubClient } = require('@twurple/pubsub');
 ```

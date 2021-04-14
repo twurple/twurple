@@ -1,5 +1,5 @@
-import type { HelixEventSubSubscription } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { HelixEventSubSubscription } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import type { EventSubChannelFollowEventData } from '../Events/EventSubChannelFollowEvent';
 import { EventSubChannelFollowEvent } from '../Events/EventSubChannelFollowEvent';
 import type { EventSubListener } from '../EventSubListener';

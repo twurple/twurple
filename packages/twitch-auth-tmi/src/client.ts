@@ -1,7 +1,7 @@
+import type { AuthProvider } from '@twurple/auth';
+import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth';
 import type { Options as BaseOptions } from 'tmi.js';
 import { Client as BaseClient } from 'tmi.js';
-import type { AuthProvider } from 'twitch-auth';
-import { getValidTokenFromProvider, InvalidTokenTypeError } from 'twitch-auth';
 
 /**
  * The tmi.js options, with the auth provider replacing the identity option.

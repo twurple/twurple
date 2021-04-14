@@ -1,5 +1,5 @@
-import type { ChatEmoteData } from 'twitch-common';
-import { rtfm } from 'twitch-common';
+import type { ChatEmoteData } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { ChatEmoteList } from './ChatEmoteList';
 

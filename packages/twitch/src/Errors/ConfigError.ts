@@ -1,4 +1,4 @@
-import { CustomError } from 'twitch-common';
+import { CustomError } from '@twurple/common';
 
 /**
  * Thrown whenever you try using invalid values in the client configuration.

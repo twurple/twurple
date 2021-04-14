@@ -1,4 +1,4 @@
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { HelixExtensionData } from './HelixExtension';
 import { HelixExtension } from './HelixExtension';
 import type { HelixExtensionSlotType } from './HelixInstalledExtension';

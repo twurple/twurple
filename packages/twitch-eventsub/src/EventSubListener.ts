@@ -2,17 +2,17 @@ import type { LoggerOptions } from '@d-fischer/logger';
 import { Logger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { Request, RequestHandler } from 'httpanda';
-import { Server } from 'httpanda';
 import type {
 	ApiClient,
 	HelixEventSubSubscription,
 	HelixEventSubSubscriptionStatus,
 	HelixEventSubTransportData
-} from 'twitch';
-import { InvalidTokenTypeError } from 'twitch-auth';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+} from '@twurple/api';
+import { InvalidTokenTypeError } from '@twurple/auth';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
+import type { Request, RequestHandler } from 'httpanda';
+import { Server } from 'httpanda';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import type { EventSubChannelBanEvent } from './Events/EventSubChannelBanEvent';

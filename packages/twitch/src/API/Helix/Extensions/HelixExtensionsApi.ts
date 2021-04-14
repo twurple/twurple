@@ -1,5 +1,5 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
+import { TwitchApiCallType } from '@twurple/api-call';
+import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';

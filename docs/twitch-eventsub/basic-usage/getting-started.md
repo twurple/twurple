@@ -2,29 +2,29 @@
 
 To add EventSub support to your project, you need three packages:
 
-- `twitch-auth`, the authentication core
-- `twitch`, the API client
-- `twitch-eventsub`, the actual EventSub listener
+- `@twurple/auth`, the authentication core
+- `@twurple/api`, the API client
+- `@twurple/eventsub`, the actual EventSub listener
 
 To install these, just execute:
 
-	yarn add twitch twitch-auth twitch-eventsub
+	yarn add twitch @twurple/auth @twurple/api @twurple/eventsub
 
 or using npm:
 
-	npm install twitch twitch-auth twitch-eventsub
+	npm install twitch @twurple/auth @twurple/api @twurple/eventsub
 
 ## Importing the library
 
 Using ES2015 modules:
 
 ```typescript
-import { EventSubListener } from 'twitch-eventsub';
+import { EventSubListener } from '@twurple/eventsub';
 ```
 
 Using CommonJS:
 
 ```typescript
-const { EventSubListener } = require('twitch-eventsub');
+const { EventSubListener } = require('@twurple/eventsub');
 ```
 

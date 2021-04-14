@@ -1,5 +1,5 @@
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { CheermoteListData } from './CheermoteList';
 import { CheermoteList } from './CheermoteList';

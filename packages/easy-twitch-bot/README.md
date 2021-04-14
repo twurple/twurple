@@ -13,7 +13,7 @@ or using npm:
 ## Example
 
 ```typescript
-import { Bot, createBotCommand } from 'easy-twitch-bot';
+import { Bot, createBotCommand } from '@twurple/easy-bot';
 Bot.create({
     auth: 'YOURTOKENHERE',
     channel: 'satisfiedpear',

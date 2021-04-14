@@ -1,23 +1,23 @@
 ## Installation
 
-To add Twitch.js to your project, just execute:
+To add the API client to your project, just execute:
 
-	yarn add twitch
+	yarn add @twurple/api
 
 or using npm:
 
-	npm install twitch
+	npm install @twurple/api
 
 ## Importing the library
 
 Using ES2015 modules:
 
 ```typescript
-import { ApiClient } from 'twitch';
+import { ApiClient } from '@twurple/api';
 ```
 
 Using CommonJS:
 
 ```typescript
-const { ApiClient } = require('twitch');
+const { ApiClient } = require('@twurple/api');
 ```

@@ -1,5 +1,5 @@
 {
-  "name": "twitch",
+  "name": "@twurple/api",
   "version": "5.0.0-pre.2",
   "description": "Interact with Twitch's API.",
   "keywords": [
@@ -22,7 +22,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-fischer/twitch.git",
+    "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch"
   },
   "homepage": "https://d-fischer.github.io/twitch",
@@ -34,16 +34,16 @@
     "@d-fischer/logger": "^3.1.0",
     "@d-fischer/rate-limiter": "^0.4.2",
     "@d-fischer/shared-utils": "^3.0.1",
+    "@twurple/api-call": "^5.0.0-pre.2",
+    "@twurple/common": "^5.0.0-pre.2",
     "top-package": "^1.0.0",
-    "tslib": "^2.0.3",
-    "twitch-api-call": "^5.0.0-pre.2",
-    "twitch-common": "^5.0.0-pre.2"
-  },
-  "peerDependencies": {
-    "twitch-auth": "^4.4.0"
+    "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "twitch-auth": "^5.0.0-pre.2"
+    "@twurple/auth": "^5.0.0-pre.2"
+  },
+  "peerDependencies": {
+    "@twurple/auth": "^5.0.0"
   },
   "files": [
     "LICENSE",

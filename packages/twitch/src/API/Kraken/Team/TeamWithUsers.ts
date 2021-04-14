@@ -1,4 +1,4 @@
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { UserData } from '../User/User';
 import { User } from '../User/User';
 import type { TeamData } from './Team';

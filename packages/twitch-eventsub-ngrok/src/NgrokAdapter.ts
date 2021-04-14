@@ -1,7 +1,7 @@
 import { getPortPromise } from '@d-fischer/portfinder';
 import { Enumerable } from '@d-fischer/shared-utils';
+import { ConnectionAdapter } from '@twurple/eventsub';
 import { connect } from 'ngrok';
-import { ConnectionAdapter } from 'twitch-eventsub';
 
 /**
  * A connection adapter that uses ngrok to make local testing easy.

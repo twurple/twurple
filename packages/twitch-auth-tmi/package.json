@@ -1,5 +1,5 @@
 {
-  "name": "twitch-auth-tmi",
+  "name": "@twurple/auth-tmi",
   "version": "5.0.0-pre.2",
   "description": "Use tmi.js with the benefits of the twitch-auth authentication providers.",
   "keywords": [
@@ -24,7 +24,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-fischer/twitch.git",
+    "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-auth-tmi"
   },
   "homepage": "https://d-fischer.github.io/twitch-auth-tmi",
@@ -36,13 +36,13 @@
     "@types/tmi.js": "^1.7.1",
     "tslib": "^2.0.3"
   },
-  "peerDependencies": {
-    "tmi.js": "^1.6.0",
-    "twitch-auth": "^4.4.0"
-  },
   "devDependencies": {
-    "tmi.js": "^1.7.1",
-    "twitch-auth": "^5.0.0-pre.2"
+    "@twurple/api": "^5.0.0-pre.2",
+    "tmi.js": "^1.7.1"
+  },
+  "peerDependencies": {
+    "@twurple/api": "^5.0.0",
+    "tmi.js": "^1.6.0"
   },
   "files": [
     "LICENSE",

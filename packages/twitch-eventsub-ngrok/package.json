@@ -1,5 +1,5 @@
 {
-  "name": "twitch-eventsub-ngrok",
+  "name": "@twurple/eventsub-ngrok",
   "version": "5.0.0-pre.2",
   "description": "Test your EventSub listener locally using ngrok.",
   "keywords": [
@@ -21,7 +21,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-fischer/twitch.git",
+    "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-eventsub-ngrok"
   },
   "homepage": "https://d-fischer.github.io/twitch-eventsub-ngrok",
@@ -35,12 +35,12 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "twitch": "^5.0.0-pre.2",
-    "twitch-eventsub": "^5.0.0-pre.2"
+    "@twurple/api": "^5.0.0-pre.2",
+    "@twurple/eventsub": "^5.0.0-pre.2"
   },
   "peerDependencies": {
-    "twitch": "^4.4.0",
-    "twitch-eventsub": "^4.4.0"
+    "@twurple/api": "^5.0.0",
+    "@twurple/eventsub": "^5.0.0"
   },
   "files": [
     "LICENSE",

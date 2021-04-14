@@ -1,9 +1,9 @@
 /// <reference lib="esnext.asynciterable" />
 
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { TwitchApiCallOptions } from 'twitch-api-call';
-import { TwitchApiCallType } from 'twitch-api-call';
-import { rtfm } from 'twitch-common';
+import type { TwitchApiCallOptions } from '@twurple/api-call';
+import { TwitchApiCallType } from '@twurple/api-call';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../ApiClient';
 import type { HelixPaginatedResponse } from './HelixResponse';
 

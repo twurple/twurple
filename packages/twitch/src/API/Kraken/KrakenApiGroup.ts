@@ -1,5 +1,5 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import { BaseApi } from '../BaseApi';
 import { BitsApi } from './Bits/BitsApi';
 import { ChannelApi } from './Channel/ChannelApi';

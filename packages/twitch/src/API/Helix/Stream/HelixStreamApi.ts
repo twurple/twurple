@@ -1,7 +1,7 @@
 import { flatten } from '@d-fischer/shared-utils';
-import { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable, UserNameResolvable } from 'twitch-common';
-import { extractUserId, extractUserName, rtfm } from 'twitch-common';
+import { HttpStatusCodeError, TwitchApiCallType } from '@twurple/api-call';
+import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
+import { extractUserId, extractUserName, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { StreamNotLiveError } from '../../../Errors/StreamNotLiveError';
 import { BaseApi } from '../../BaseApi';

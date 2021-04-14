@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { AccessToken } from '../AccessToken';
 import { getAppToken } from '../helpers';
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';

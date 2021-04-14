@@ -1,6 +1,6 @@
 import type { MakeOptional } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { PubSubBasicMessageInfo } from './PubSubMessage';
 
 /** @private */

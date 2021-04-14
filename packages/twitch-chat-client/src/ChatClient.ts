@@ -9,12 +9,12 @@ import {
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { delay, Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
+import type { AccessToken, AuthProvider } from '@twurple/auth';
+import { getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from '@twurple/auth';
+import type { CommercialLength } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
-import type { AccessToken, AuthProvider } from 'twitch-auth';
-import { getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from 'twitch-auth';
-import type { CommercialLength } from 'twitch-common';
-import { rtfm } from 'twitch-common';
 import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
 import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
 import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';

@@ -1,6 +1,6 @@
-import type { HelixFollowData, HelixResponse } from 'twitch';
-import { HelixFollow } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { HelixFollowData, HelixResponse } from '@twurple/api';
+import { HelixFollow } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 

@@ -1,6 +1,6 @@
-import type { HelixEventData, HelixHypeTrainEventData, HelixHypeTrainEventType, HelixResponse } from 'twitch';
-import { HelixHypeTrainEvent } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { HelixEventData, HelixHypeTrainEventData, HelixHypeTrainEventType, HelixResponse } from '@twurple/api';
+import { HelixHypeTrainEvent } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 

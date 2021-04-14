@@ -1,5 +1,5 @@
 {
-  "name": "easy-twitch-bot",
+  "name": "@twurple/easy-bot",
   "version": "5.0.0-pre.2",
   "description": "A simplified framework to get a chat bot running easily.",
   "keywords": [
@@ -15,7 +15,7 @@
   "types": "lib",
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-fischer/twitch.git",
+    "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-chat-client"
   },
   "homepage": "https://d-fischer.github.io/easy-twitch-bot",
@@ -24,9 +24,9 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/shared-utils": "^3.0.1",
-    "tslib": "^2.0.3",
-    "twitch-auth": "^5.0.0-pre.2",
-    "twitch-chat-client": "^5.0.0-pre.2"
+    "@twurple/auth": "^5.0.0-pre.2",
+    "@twurple/chat": "^5.0.0-pre.2",
+    "tslib": "^2.0.3"
   },
   "files": [
     "LICENSE",

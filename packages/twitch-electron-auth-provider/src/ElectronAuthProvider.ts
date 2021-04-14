@@ -1,10 +1,10 @@
 /// <reference lib="dom" />
 
 import { parse, stringify } from '@d-fischer/qs';
+import type { AuthProvider, AuthProviderTokenType } from '@twurple/auth';
+import { AccessToken } from '@twurple/auth';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { BrowserWindow } from 'electron';
-import type { AuthProvider, AuthProviderTokenType } from 'twitch-auth';
-import { AccessToken } from 'twitch-auth';
 import type {
 	BaseOptions,
 	ElectronAuthProviderOptions,

@@ -1,16 +1,16 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { AuthProvider } from 'twitch-auth';
-import { getValidTokenFromProvider, InvalidTokenTypeError } from 'twitch-auth';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import type { AuthProvider } from '@twurple/auth';
+import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { BasicPubSubClient } from './BasicPubSubClient';
 import type { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
 import type { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
 import type { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
+import type { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
 import type { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
 import type { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
 import type { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
-import type { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
 import type { PubSubListener } from './PubSubListener';
 import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 

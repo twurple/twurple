@@ -1,5 +1,5 @@
-import type { UserNameResolveableType } from 'twitch-common';
-import { rtfm } from 'twitch-common';
+import type { UserNameResolveableType } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { Team } from '../Team/Team';
 import type { ChannelUpdateData } from './ChannelApi';

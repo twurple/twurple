@@ -14,9 +14,9 @@ which will start the listener in order to receive events from Twitch.
 ```ts twoslash
 // @module: esnext
 // @target: ES2017
-import { ApiClient } from 'twitch';
-import { ClientCredentialsAuthProvider } from 'twitch-auth';
-import { DirectConnectionAdapter, EventSubListener } from 'twitch-eventsub';
+import { ClientCredentialsAuthProvider } from '@twurple/auth';
+import { ApiClient } from '@twurple/api';
+import { DirectConnectionAdapter, EventSubListener } from '@twurple/eventsub';
 
 const clientId = 'YOUR_CLIENT_ID';
 const clientSecret = 'YOUR_CLIENT_SECRET';
@@ -39,7 +39,7 @@ but keep in mind that the SSL certificate needs to reflect that.
 
 Please note that the port you supply needs to be **available from the outside**.
 If you are testing locally, you may need to forward the port to your development machine.  
-A very helpful tool for that is [ngrok](/twitch-eventsub/docs/special-hosting/ngrok) -
+A very helpful tool for that is [ngrok](/eventsub/docs/special-hosting/ngrok) -
 this even spares you from creating your own certificate in development!
 
 When your listener is set up, you can subscribe to all supported events using this listener:
@@ -48,7 +48,7 @@ When your listener is set up, you can subscribe to all supported events using th
 // @module: esnext
 // @target: ES2017
 // @lib: es2015,dom
-import { EventSubListener } from 'twitch-eventsub';
+import { EventSubListener } from '@twurple/eventsub';
 declare const listener: EventSubListener
 // ---cut---
 const userId = 'YOUR_USER_ID';

@@ -2,7 +2,7 @@
 
 ## Reporting issues
 
-Just create an issue in the [issue tracker](https://github.com/d-fischer/twitch/issues) for both bugs and feature requests.
+Just create an issue in the [issue tracker](https://github.com/twurple/twurple/issues) for both bugs and feature requests.
 
 When creating an issue, you can choose between a bug and a feature request.
 

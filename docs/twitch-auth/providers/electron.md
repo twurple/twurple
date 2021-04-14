@@ -1,15 +1,15 @@
 For Electron apps, there is a separate package that can handle authentication on its own. To install it, run:
 
-	yarn add twitch-electron-auth-provider
+	yarn add @twurple/auth-electron
 
 or using npm:
 
-	npm install twitch-electron-auth-provider
+	npm install @twurple/auth-electron
 	
 After that, you just have to provide some basic information to the library to make it provide user access tokens to your application:
 
 ```ts twoslash
-import { ElectronAuthProvider } from 'twitch-electron-auth-provider';
+import { ElectronAuthProvider } from '@twurple/auth-electron';
 
 const clientId = 'YOUR_CLIENT_ID';
 const redirectUri = 'http://foo.bar/login';

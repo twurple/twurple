@@ -1,6 +1,6 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable, CommercialLength } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import { TwitchApiCallType } from '@twurple/api-call';
+import type { CommercialLength, UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
 import type { HelixChannelData } from './HelixChannel';

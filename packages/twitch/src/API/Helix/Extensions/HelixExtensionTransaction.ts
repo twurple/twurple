@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 import type { HelixExtensionProductData } from './HelixExtensionProductData';

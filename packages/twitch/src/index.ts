@@ -207,11 +207,11 @@ export {
 	extractUserId,
 	extractUserName,
 	HellFreezesOverError
-} from 'twitch-common';
+} from '@twurple/common';
 export type {
 	CheermoteDisplayInfo,
 	CommercialLength,
 	HelixUserType,
 	UserIdResolvable,
 	UserNameResolvable
-} from 'twitch-common';
+} from '@twurple/common';

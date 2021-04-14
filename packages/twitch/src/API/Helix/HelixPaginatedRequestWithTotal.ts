@@ -1,4 +1,4 @@
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import { HelixPaginatedRequest } from './HelixPaginatedRequest';
 import type { HelixPaginatedResponseWithTotal } from './HelixResponse';
 

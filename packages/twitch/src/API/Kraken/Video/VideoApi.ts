@@ -1,6 +1,6 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import { TwitchApiCallType } from '@twurple/api-call';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { CreatedVideoData } from './CreatedVideo';
 import { CreatedVideo } from './CreatedVideo';

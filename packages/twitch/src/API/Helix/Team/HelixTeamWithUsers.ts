@@ -1,4 +1,4 @@
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { HelixUserRelationData } from '../Relations/HelixUserRelation';
 import { HelixUserRelation } from '../Relations/HelixUserRelation';
 import type { HelixTeamData } from './HelixTeam';

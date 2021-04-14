@@ -1,4 +1,4 @@
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { CommonConnectionAdapterConfig } from './ConnectionAdapter';
 import { ConnectionAdapter } from './ConnectionAdapter';
 

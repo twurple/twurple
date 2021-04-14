@@ -1,7 +1,7 @@
 Using a fixed token is pretty straightforward. Just pass your application's client ID and your token to {@StaticAuthProvider}.
 
 ```ts twoslash
-import { StaticAuthProvider } from 'twitch-auth';
+import { StaticAuthProvider } from '@twurple/auth';
 
 const clientId = 'YOUR_CLIENT_ID';
 const accessToken = 'YOUR_ACCESS_TOKEN';

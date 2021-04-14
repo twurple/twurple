@@ -1,14 +1,14 @@
 First, you have to create an instance of any authentication provider. This example uses app credentials,
-but if you need other types of authentication, check out the [twitch-auth documentation](/twitch-auth).
+but if you need other types of authentication, check out the [@twurple/auth documentation](/auth).
 
 Then, you create a new {@ApiClient}, and using that, a {@WebHookListener} instance:
 
 ```ts twoslash
 // @module: esnext
 // @target: ES2017
-import { ApiClient } from 'twitch';
-import { ClientCredentialsAuthProvider } from 'twitch-auth';
-import { SimpleAdapter, WebHookListener } from 'twitch-webhooks';
+import { ClientCredentialsAuthProvider } from '@twurple/auth';
+import { ApiClient } from '@twurple/api';
+import { SimpleAdapter, WebHookListener } from '@twurple/webhooks';
 
 const clientId = 'YOUR_CLIENT_ID';
 const clientSecret = 'YOUR_CLIENT_SECRET';
@@ -25,7 +25,7 @@ await listener.listen();
 
 Please note that the port you supply needs to be **available from the outside**.
 If you are testing locally, you may need to forward the port to your development machine.
-A very helpful tool for that is [ngrok](/twitch-webhooks/docs/special-hosting/ngrok).
+A very helpful tool for that is [ngrok](/@twurple/webhooks/docs/special-hosting/ngrok).
 
 When your listener is set up, you can subscribe to all supported events using this listener:
 
@@ -33,8 +33,8 @@ When your listener is set up, you can subscribe to all supported events using th
 // @module: esnext
 // @target: ES2017
 // @lib: es2015,dom
-import { ApiClient } from 'twitch';
-import { WebHookListener } from 'twitch-webhooks';
+import { ApiClient } from '@twurple/api';
+import { WebHookListener } from '@twurple/webhooks';
 declare const apiClient: ApiClient;
 declare const listener: WebHookListener
 // ---cut---

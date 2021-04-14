@@ -1,4 +1,4 @@
-import type { ChatClient, PrivateMessage } from 'twitch-chat-client';
+import type { ChatClient, PrivateMessage } from '@twurple/chat';
 
 export class BotCommandContext {
 	readonly user: string;

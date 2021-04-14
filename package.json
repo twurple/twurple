@@ -4,7 +4,7 @@
   ],
   "private": true,
   "name": "twitch-workspace",
-  "repository": "github:d-fischer/twitch",
+  "repository": "github:twurple/twurple",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "devDependencies": {

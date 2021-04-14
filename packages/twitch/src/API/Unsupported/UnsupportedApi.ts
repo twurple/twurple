@@ -1,6 +1,6 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import type { UserNameResolvable } from 'twitch-common';
-import { extractUserName, rtfm } from 'twitch-common';
+import { TwitchApiCallType } from '@twurple/api-call';
+import type { UserNameResolvable } from '@twurple/common';
+import { extractUserName, rtfm } from '@twurple/common';
 import { BaseApi } from '../BaseApi';
 import type { ChattersListData } from './ChattersList';
 import { ChattersList } from './ChattersList';

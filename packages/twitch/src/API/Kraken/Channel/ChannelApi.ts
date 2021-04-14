@@ -1,6 +1,6 @@
-import { HttpStatusCodeError } from 'twitch-api-call';
-import type { CommercialLength, UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import { HttpStatusCodeError } from '@twurple/api-call';
+import type { CommercialLength, UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { BaseApi } from '../../BaseApi';
 import type { TeamData } from '../Team/Team';

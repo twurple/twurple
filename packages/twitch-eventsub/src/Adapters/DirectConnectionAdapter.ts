@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from '@twurple/common';
 import type * as http from 'http';
 import * as https from 'https';
-import { rtfm } from 'twitch-common';
 import type { EventSubListenerCertificateConfig } from '../EventSubListener';
 import { ConnectionAdapter } from './ConnectionAdapter';
 

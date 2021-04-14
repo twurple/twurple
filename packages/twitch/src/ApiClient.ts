@@ -1,17 +1,17 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { LoggerOptions } from '@d-fischer/logger';
-import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from 'twitch-api-call';
+import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from '@twurple/api-call';
 import {
 	callTwitchApi,
 	callTwitchApiRaw,
 	HttpStatusCodeError,
 	transformTwitchApiResponse,
 	TwitchApiCallType
-} from 'twitch-api-call';
+} from '@twurple/api-call';
 
-import type { AuthProvider, TokenInfoData } from 'twitch-auth';
-import { InvalidTokenError, TokenInfo } from 'twitch-auth';
-import { rtfm } from 'twitch-common';
+import type { AuthProvider, TokenInfoData } from '@twurple/auth';
+import { InvalidTokenError, TokenInfo } from '@twurple/auth';
+import { rtfm } from '@twurple/common';
 
 import { BadgesApi } from './API/Badges/BadgesApi';
 import { HelixApiGroup } from './API/Helix/HelixApiGroup';

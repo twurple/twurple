@@ -1,24 +1,30 @@
 ## Installation
 
-To add Twitch.js and the WebHook listener to your project, just execute:
+To add WebHook support to your project, you need three packages:
 
-	yarn add twitch twitch-webhooks
+- `@twurple/auth`, the authentication core
+- `@twurple/api`, the API client
+- `@twurple/webhooks`, the actual WebHook listener
+
+To install these, just execute:
+
+	yarn add @twurple/auth @twurple/api @twurple/webhooks
 
 or using npm:
 
-	npm install twitch twitch-webhooks
+	npm install @twurple/auth @twurple/api @twurple/webhooks
 
 ## Importing the library
 
 Using ES2015 modules:
 
 ```typescript
-import { WebHookListener } from 'twitch-webhooks';
+import { WebHookListener } from '@twurple/webhooks';
 ```
 
 Using CommonJS:
 
 ```typescript
-const { WebHookListener } = require('twitch-webhooks');
+const { WebHookListener } = require('@twurple/webhooks');
 ```
 

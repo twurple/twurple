@@ -10,7 +10,7 @@ Here's a helpful snippet that can help with this:
 // @module: esnext
 // @target: esnext
 // @lib: es2015
-import { ChatClient } from 'twitch-chat-client';
+import { ChatClient } from '@twurple/chat';
 declare const chatClient: ChatClient;
 // ---cut---
 // adding undefined as possible key because of anonymous gifts

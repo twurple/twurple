@@ -1,6 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { HellFreezesOverError, rtfm } from 'twitch-common';
+import { HellFreezesOverError, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
 

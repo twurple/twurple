@@ -1,8 +1,8 @@
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import type { AuthProvider } from 'twitch-auth';
-import { getTokenInfo, StaticAuthProvider } from 'twitch-auth';
-import type { PrivateMessage } from 'twitch-chat-client';
-import { ChatClient, LogLevel } from 'twitch-chat-client';
+import type { AuthProvider } from '@twurple/auth';
+import { getTokenInfo, StaticAuthProvider } from '@twurple/auth';
+import type { PrivateMessage } from '@twurple/chat';
+import { ChatClient, LogLevel } from '@twurple/chat';
 import type { BotCommand, BotCommandMatch } from './BotCommand';
 import { BotCommandContext } from './BotCommandContext';
 

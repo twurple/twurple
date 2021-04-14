@@ -1,6 +1,6 @@
 /** @private */
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 
 export interface TokenInfoData {
 	client_id: string;

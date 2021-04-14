@@ -1,4 +1,4 @@
-import { CustomError } from 'twitch-common';
+import { CustomError } from '@twurple/common';
 
 /**
  * Thrown whenever an invalid token is supplied.

@@ -1,7 +1,7 @@
 /// <reference lib="es2019.array" />
 
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { HelixExtensionData } from './HelixExtension';
 import type { HelixExtensionSlotType } from './HelixInstalledExtension';
 import { HelixInstalledExtension } from './HelixInstalledExtension';

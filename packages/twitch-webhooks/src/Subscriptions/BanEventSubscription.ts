@@ -1,6 +1,6 @@
-import type { HelixBanEventData, HelixResponse } from 'twitch';
-import { HelixBanEvent } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { HelixBanEventData, HelixResponse } from '@twurple/api';
+import { HelixBanEvent } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import type { WebHookListener } from '../WebHookListener';
 import { Subscription } from './Subscription';
 

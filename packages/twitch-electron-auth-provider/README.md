@@ -1,6 +1,6 @@
 # Twitch.js - Electron auth provider
 
-This is an {@AuthProvider} implementation for [the `twitch` package family](https://github.com/d-fischer/twitch)
+This is an {@AuthProvider} implementation for [the `twurple` package family](https://github.com/twurple/twurple)
 that will automatically pop up a Twitch OAuth dialog in an Electron `BrowserWindow`
 as soon as new scopes are requested.
 
@@ -8,19 +8,19 @@ as soon as new scopes are requested.
 
 To add this library to your project, just execute:
 	
-	yarn add twitch-electron-auth-provider
+	yarn add @twurple/auth-electron
 
 or using npm:
 
-	npm install twitch-electron-auth-provider
+	npm install @twurple/auth-electron
 
 ## Basic usage
 
 To instantiate an {@ApiClient} with this auth provider, just pass it to its constructor:
 
 ```ts
-import { ApiClient } from 'twitch';
-import { ElectronAuthProvider } from 'twitch-electron-auth-provider';
+import { ApiClient } from '@twurple/api';
+import { ElectronAuthProvider } from '@twurple/auth-electron';
 
 const clientId = 'abc123';
 const redirectUri = 'http://foo.bar/login';

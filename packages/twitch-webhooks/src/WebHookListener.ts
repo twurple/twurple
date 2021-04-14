@@ -1,8 +1,6 @@
 import type { LoggerOptions } from '@d-fischer/logger';
 import { Logger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
-import type { Request, RequestHandler, Response } from 'httpanda';
-import { Server } from 'httpanda';
 import type {
 	ApiClient,
 	HelixBanEvent,
@@ -13,9 +11,11 @@ import type {
 	HelixStream,
 	HelixSubscriptionEvent,
 	HelixUser
-} from 'twitch';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+} from '@twurple/api';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
+import type { Request, RequestHandler, Response } from 'httpanda';
+import { Server } from 'httpanda';
 import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import { BanEventSubscription } from './Subscriptions/BanEventSubscription';

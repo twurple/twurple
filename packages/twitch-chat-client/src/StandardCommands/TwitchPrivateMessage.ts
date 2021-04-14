@@ -1,6 +1,6 @@
+import type { BaseCheermoteList } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import { MessageTypes } from 'ircv3';
-import { rtfm } from 'twitch-common';
-import type { BaseCheermoteList } from 'twitch-common';
 import { ChatUser } from '../ChatUser';
 import type { ParsedMessageCheerPart, ParsedMessagePart } from '../Toolkit/EmoteTools';
 import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../Toolkit/EmoteTools';

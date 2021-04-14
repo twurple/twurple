@@ -5,8 +5,8 @@ import type {
 	CheermoteFormat,
 	CheermoteScale,
 	CheermoteState
-} from 'twitch-common';
-import { BaseCheermoteList, HellFreezesOverError, rtfm } from 'twitch-common';
+} from '@twurple/common';
+import { BaseCheermoteList, HellFreezesOverError, rtfm } from '@twurple/common';
 
 /** @private */
 export type CheermoteActionImageUrlsByScale = Record<CheermoteScale, string>;

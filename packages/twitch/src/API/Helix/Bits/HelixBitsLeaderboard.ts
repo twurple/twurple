@@ -1,6 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixDateRangeData } from '../HelixDateRangeData';
 import type { HelixResponse } from '../HelixResponse';

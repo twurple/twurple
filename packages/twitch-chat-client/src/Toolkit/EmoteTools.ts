@@ -1,8 +1,8 @@
 /// <reference lib="esnext.array" />
 
 import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
-import { ChatEmote } from 'twitch-common';
-import type { CheermoteDisplayInfo } from 'twitch-common';
+import type { CheermoteDisplayInfo } from '@twurple/common';
+import { ChatEmote } from '@twurple/common';
 
 export interface ParsedMessageTextPart {
 	type: 'text';

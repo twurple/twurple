@@ -47,11 +47,11 @@ Write down the `access_token` and `refresh_token` properties of the response bod
 
 ## 3. Create an `AuthProvider` instance
 
-Now you can finally start writing code! First, import all the classes you're gonna need from `twitch-auth` and `twitch-chat-client`.
+Now you can finally start writing code! First, import all the classes you're gonna need from `@twurple/auth` and `@twurple/chat`.
 
 ```typescript
-import { StaticAuthProvider } from 'twitch-auth';
-import { ChatClient } from 'twitch-chat-client';
+import { StaticAuthProvider } from '@twurple/auth';
+import { ChatClient } from '@twurple/chat';
 ```
 
 Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an async function and running it.
@@ -128,8 +128,8 @@ With that, you can create another type of auth provider that automatically refre
 Just replace the initialization line with this (but keep the `clientId` and `accessToken` constants):
 
 ```typescript
-// add new import to twitch-auth import line
-import { RefreshableAuthProvider, StaticAuthProvider } from 'twitch-auth';
+// add new import to @twurple/auth import line
+import { RefreshableAuthProvider, StaticAuthProvider } from '@twurple/auth';
 
 const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
 const refreshToken = 'eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj';
@@ -198,8 +198,8 @@ Now you can implement a more elaborated command system, add more events to react
 For reference, here's the full code that _should_ be the result of everything we just did:
 
 ```typescript
-import { RefreshableAuthProvider, StaticAuthProvider } from 'twitch-auth';
-import { ChatClient } from 'twitch-chat-client';
+import { RefreshableAuthProvider, StaticAuthProvider } from '@twurple/auth';
+import { ChatClient } from '@twurple/chat';
 import { promises as fs } from 'fs';
 
 async function main() {

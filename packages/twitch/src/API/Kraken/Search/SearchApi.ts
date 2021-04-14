@@ -1,4 +1,4 @@
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { ChannelData } from '../Channel/Channel';
 import { Channel } from '../Channel/Channel';

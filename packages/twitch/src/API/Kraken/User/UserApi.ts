@@ -1,7 +1,7 @@
 import { indexBy } from '@d-fischer/shared-utils';
-import { HttpStatusCodeError } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, HellFreezesOverError, rtfm } from 'twitch-common';
+import { HttpStatusCodeError } from '@twurple/api-call';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, HellFreezesOverError, rtfm } from '@twurple/common';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import { BaseApi } from '../../BaseApi';
 import type { EmoteSetListData } from '../Channel/EmoteSetList';

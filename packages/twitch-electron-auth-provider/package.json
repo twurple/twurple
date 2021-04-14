@@ -1,5 +1,5 @@
 {
-  "name": "twitch-electron-auth-provider",
+  "name": "@twurple/auth-electron",
   "version": "5.0.0-pre.2",
   "description": "Obtain auth tokens for Twitch using an Electron popup.",
   "keywords": [
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-fischer/twitch.git",
+    "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-electron-auth-provider"
   },
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
@@ -31,12 +31,12 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "electron": "^11.1.1",
-    "twitch-auth": "^5.0.0-pre.2"
+    "@twurple/auth": "^5.0.0-pre.2",
+    "electron": "^11.1.1"
   },
   "peerDependencies": {
-    "electron": ">=9.0.0 <12.0.0",
-    "twitch-auth": "^4.4.0"
+    "@twurple/auth": "^5.0.0",
+    "electron": ">=9.0.0 <12.0.0"
   },
   "files": [
     "LICENSE",

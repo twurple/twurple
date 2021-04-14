@@ -1,8 +1,8 @@
 import { getPortPromise } from '@d-fischer/portfinder';
 import { Enumerable } from '@d-fischer/shared-utils';
+import type { ConnectionAdapterOverrideOptions } from '@twurple/webhooks';
+import { ConnectionAdapter } from '@twurple/webhooks';
 import { connect } from 'ngrok';
-import type { ConnectionAdapterOverrideOptions } from 'twitch-webhooks';
-import { ConnectionAdapter } from 'twitch-webhooks';
 
 /**
  * A connection adapter that uses ngrok to make local testing easy.

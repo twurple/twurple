@@ -1,4 +1,4 @@
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixEventData } from '../HelixEvent';
 import type { HelixUser } from '../User/HelixUser';

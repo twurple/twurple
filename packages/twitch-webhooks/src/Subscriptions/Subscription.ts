@@ -1,7 +1,7 @@
 import generateRandomString from '@d-fischer/randomstring';
+import type { HelixResponse, HelixWebHookHubRequestOptions } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import * as crypto from 'crypto';
-import type { HelixResponse, HelixWebHookHubRequestOptions } from 'twitch';
-import { rtfm } from 'twitch-common';
 import type { WebHookListener } from '../WebHookListener';
 
 /** @private */

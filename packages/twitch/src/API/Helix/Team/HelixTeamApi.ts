@@ -1,6 +1,6 @@
-import { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import { HttpStatusCodeError, TwitchApiCallType } from '@twurple/api-call';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { HelixResponse } from '../HelixResponse';
 import type { HelixTeamData } from './HelixTeam';

@@ -27,7 +27,7 @@ declare const Date: any;
 // + declare module 'fs'; errors
 // @errors: 2307 2697
 // ---cut---
-import { RefreshableAuthProvider, StaticAuthProvider } from 'twitch-auth';
+import { RefreshableAuthProvider, StaticAuthProvider } from '@twurple/auth';
 import { promises as fs } from 'fs';
 
 const clientId = 'YOUR_CLIENT_ID';

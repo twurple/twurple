@@ -1,5 +1,5 @@
 {
-  "name": "twitch-api-call",
+  "name": "@twurple/api-call",
   "version": "5.0.0-pre.2",
   "description": "A light wrapper around the Twitch API.",
   "keywords": [
@@ -19,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/d-fischer/twitch.git",
+    "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-api-call"
   },
   "homepage": "https://d-fischer.github.io/twitch-api-call",
@@ -32,7 +32,7 @@
     "@types/node-fetch": "^2.5.7",
     "node-fetch": "^2.6.1",
     "tslib": "^2.0.3",
-    "twitch-common": "^5.0.0-pre.2"
+    "@twurple/common": "^5.0.0-pre.2"
   },
   "files": [
     "LICENSE",

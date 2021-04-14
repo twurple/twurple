@@ -7,9 +7,9 @@ import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
-import type { AuthProvider } from 'twitch-auth';
-import { getValidTokenFromProvider } from 'twitch-auth';
-import { HellFreezesOverError, rtfm } from 'twitch-common';
+import type { AuthProvider } from '@twurple/auth';
+import { getValidTokenFromProvider } from '@twurple/auth';
+import { HellFreezesOverError, rtfm } from '@twurple/common';
 import type { PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 

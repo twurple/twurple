@@ -1,6 +1,6 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable, UserNameResolvable } from 'twitch-common';
-import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from 'twitch-common';
+import { TwitchApiCallType } from '@twurple/api-call';
+import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
+import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';

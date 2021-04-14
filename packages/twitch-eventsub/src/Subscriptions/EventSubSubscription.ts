@@ -1,6 +1,6 @@
+import type { HelixEventSubSubscription, HelixEventSubTransportOptions } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import * as crypto from 'crypto';
-import type { HelixEventSubSubscription, HelixEventSubTransportOptions } from 'twitch';
-import { rtfm } from 'twitch-common';
 import type { EventSubListener } from '../EventSubListener';
 
 /** @private */

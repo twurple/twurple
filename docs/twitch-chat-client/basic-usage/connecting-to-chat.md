@@ -5,7 +5,7 @@ Then, using that instance, you create a new {@ChatClient} instance, listen to ev
 Channel names are case insensitive and can start with a `#` or not. The name will be converted to the correct format internally.
 
 ```typescript
-import { ChatClient } from 'twitch-chat-client';
+import { ChatClient } from '@twurple/chat';
 
 const chatClient = new ChatClient(authProvider, { channels: ['lidlrini'] });
 // listen to more events...

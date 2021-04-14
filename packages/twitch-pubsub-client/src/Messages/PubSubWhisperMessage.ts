@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
-import type { HelixUserType } from 'twitch-common';
+import type { HelixUserType } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import type { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
 /** @private */

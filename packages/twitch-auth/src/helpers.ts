@@ -1,5 +1,5 @@
 import type { Logger } from '@d-fischer/logger';
-import { callTwitchApi, HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
+import { callTwitchApi, HttpStatusCodeError, TwitchApiCallType } from '@twurple/api-call';
 import type { AccessTokenData } from './AccessToken';
 import { AccessToken } from './AccessToken';
 import type { AuthProvider } from './AuthProvider/AuthProvider';
