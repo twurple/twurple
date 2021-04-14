@@ -43,14 +43,14 @@ export class HelixTeam {
 	 * The name of the team.
 	 */
 	get name(): string {
-		return this._data.id;
+		return this._data.team_name;
 	}
 
 	/**
 	 * The display name of the team.
 	 */
 	get displayName(): string {
-		return this._data.id;
+		return this._data.team_display_name;
 	}
 
 	/**
