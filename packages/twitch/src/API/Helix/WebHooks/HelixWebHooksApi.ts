@@ -70,7 +70,7 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  * await api.helix.webHooks.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
-@rtfm('twitch', 'HelixWebHooksApi')
+@rtfm('api', 'HelixWebHooksApi')
 export class HelixWebHooksApi extends BaseApi {
 	// TODO rename to getSubscriptionsPaginated and make sync
 	/**

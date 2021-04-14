@@ -12,7 +12,7 @@ export interface EventSubUserAuthorizationRevokeEventData {
 /**
  * An EventSub event representing a user revoking authorization for an application.
  */
-@rtfm<EventSubUserAuthorizationRevokeEvent>('twitch-eventsub', 'EventSubUserAuthorizationRevokeEvent', 'userId')
+@rtfm<EventSubUserAuthorizationRevokeEvent>('eventsub', 'EventSubUserAuthorizationRevokeEvent', 'userId')
 export class EventSubUserAuthorizationRevokeEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

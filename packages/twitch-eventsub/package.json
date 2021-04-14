@@ -24,7 +24,7 @@
     "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-eventsub"
   },
-  "homepage": "https://d-fischer.github.io/twitch-eventsub",
+  "homepage": "https://twurple.github.io/eventsub",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",

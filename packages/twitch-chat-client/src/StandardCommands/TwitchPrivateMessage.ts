@@ -8,7 +8,7 @@ import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../To
 /**
  * An IRC PRIVMSG, with easy accessors for commonly used data from its tags.
  */
-@rtfm<TwitchPrivateMessage>('twitch-chat-client', 'TwitchPrivateMessage', 'id')
+@rtfm<TwitchPrivateMessage>('chat', 'TwitchPrivateMessage', 'id')
 export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	/**
 	 * The ID of the message.

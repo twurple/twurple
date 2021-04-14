@@ -29,7 +29,7 @@ export interface MiddlewareAdapterConfig {
  *
  * @hideProtected
  */
-@rtfm('twitch-eventsub', 'MiddlewareAdapter')
+@rtfm('eventsub', 'MiddlewareAdapter')
 export class MiddlewareAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _port: number;

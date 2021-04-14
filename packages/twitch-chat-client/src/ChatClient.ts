@@ -152,7 +152,7 @@ export interface WhisperRequest {
  * @inheritDoc
  * @hideProtected
  */
-@rtfm('twitch-chat-client', 'ChatClient')
+@rtfm('chat', 'ChatClient')
 export class ChatClient extends IrcClient {
 	private static readonly HOST_MESSAGE_REGEX = /(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
 
@@ -419,7 +419,7 @@ export class ChatClient extends IrcClient {
 	 * Fires when a user gifts a subscription to a channel to another user.
 	 *
 	 * Community subs also fire multiple `onSubGift` events.
-	 * To prevent alert spam, check [Sub gift spam](/twitch-chat-client/docs/examples/sub-gift-spam).
+	 * To prevent alert spam, check [Sub gift spam](/chat/docs/examples/sub-gift-spam).
 	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
@@ -435,7 +435,7 @@ export class ChatClient extends IrcClient {
 	 * Fires when a user gifts random subscriptions to the community of a channel.
 	 *
 	 * Community subs also fire multiple `onSubGift` events.
-	 * To prevent alert spam, check [Sub gift spam](/twitch-chat-client/docs/examples/sub-gift-spam).
+	 * To prevent alert spam, check [Sub gift spam](/chat/docs/examples/sub-gift-spam).
 	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
@@ -741,7 +741,7 @@ export class ChatClient extends IrcClient {
 		}
 
 		this._chatLogger = new Logger({
-			name: 'twitch-chat',
+			name: '@twurple/chat',
 			emoji: true,
 			...options.logger
 		});

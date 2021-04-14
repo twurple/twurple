@@ -12,7 +12,7 @@ export interface EventSubStreamOfflineEventData {
 /**
  * An EventSub event representing a stream going offline.
  */
-@rtfm<EventSubStreamOfflineEvent>('twitch-eventsub', 'EventSubStreamOfflineEvent', 'broadcasterId')
+@rtfm<EventSubStreamOfflineEvent>('eventsub', 'EventSubStreamOfflineEvent', 'broadcasterId')
 export class EventSubStreamOfflineEvent {
 	@Enumerable(false) private readonly _data: EventSubStreamOfflineEventData;
 	@Enumerable(false) private readonly _client: ApiClient;

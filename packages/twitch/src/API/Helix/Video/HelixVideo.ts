@@ -30,7 +30,7 @@ export interface HelixVideoData {
  * A video on Twitch.
  */
 @Cacheable
-@rtfm<HelixVideo>('twitch', 'HelixVideo', 'id')
+@rtfm<HelixVideo>('api', 'HelixVideo', 'id')
 export class HelixVideo {
 	@Enumerable(false) private readonly _data: HelixVideoData;
 	@Enumerable(false) private readonly _client: ApiClient;

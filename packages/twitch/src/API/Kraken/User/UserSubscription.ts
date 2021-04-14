@@ -12,7 +12,7 @@ export interface UserSubscriptionData extends SubscriptionData {
 /**
  * A relation of a previously given user subscribing to a channel.
  */
-@rtfm<UserSubscription>('twitch', 'UserSubscription', 'channelId')
+@rtfm<UserSubscription>('api', 'UserSubscription', 'channelId')
 export class UserSubscription extends Subscription {
 	/** @private */ protected declare readonly _data: UserSubscriptionData;
 

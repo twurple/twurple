@@ -15,7 +15,7 @@ import { TeamWithUsers } from './TeamWithUsers';
  * const team = await api.kraken.teams.getTeamByName('staff');
  * ```
  */
-@rtfm('twitch', 'TeamApi')
+@rtfm('api', 'TeamApi')
 export class TeamApi extends BaseApi {
 	/**
 	 * Get a list of teams.

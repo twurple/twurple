@@ -13,7 +13,7 @@ export interface PrivilegedChannelData extends ChannelData {
 /**
  * A channel you have extended privileges for, i.e. the channel of the currently authenticated user.
  */
-@rtfm<PrivilegedChannel>('twitch', 'PrivilegedChannel', 'id')
+@rtfm<PrivilegedChannel>('api', 'PrivilegedChannel', 'id')
 export class PrivilegedChannel extends Channel {
 	/** @private */ protected declare readonly _data: PrivilegedChannelData;
 

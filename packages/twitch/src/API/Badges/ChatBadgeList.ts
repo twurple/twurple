@@ -9,7 +9,7 @@ export type ChatBadgeListData = Record<string, ChatBadgeSetData>;
 /**
  * A list of badge sets.
  */
-@rtfm('twitch', 'ChatBadgeList')
+@rtfm('api', 'ChatBadgeList')
 export class ChatBadgeList {
 	@Enumerable(false) private readonly _data: ChatBadgeListData;
 

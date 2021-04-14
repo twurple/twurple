@@ -17,7 +17,7 @@ export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLea
  * A leaderboard where the users who used the most bits to a broadcaster are listed.
  */
 @Cacheable
-@rtfm('twitch', 'HelixBitsLeaderboard')
+@rtfm('api', 'HelixBitsLeaderboard')
 export class HelixBitsLeaderboard {
 	@Enumerable(false) private readonly _data: HelixBitsLeaderboardResponse;
 	@Enumerable(false) private readonly _client: ApiClient;

@@ -58,7 +58,7 @@ export interface HelixCustomRewardData {
 /**
  * A custom Channel Points reward.
  */
-@rtfm<HelixCustomReward>('twitch', 'HelixCustomReward', 'id')
+@rtfm<HelixCustomReward>('api', 'HelixCustomReward', 'id')
 export class HelixCustomReward {
 	@Enumerable(false) private readonly _data: HelixCustomRewardData;
 	@Enumerable(false) private readonly _client: ApiClient;

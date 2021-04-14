@@ -21,7 +21,7 @@ import { HelixTag } from './HelixTag';
  * const tags = await api.helix.tags.getAllStreamTags();
  * ```
  */
-@rtfm('twitch', 'HelixTagApi')
+@rtfm('api', 'HelixTagApi')
 export class HelixTagApi extends BaseApi {
 	/**
 	 * Retrieves all stream tags.

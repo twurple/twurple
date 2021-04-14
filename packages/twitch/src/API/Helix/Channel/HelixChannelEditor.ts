@@ -13,7 +13,7 @@ export interface HelixChannelEditorData {
 /**
  * An editor of a previously given channel.
  */
-@rtfm<HelixChannelEditor>('twitch', 'HelixChannelEditor', 'userId')
+@rtfm<HelixChannelEditor>('api', 'HelixChannelEditor', 'userId')
 export class HelixChannelEditor {
 	@Enumerable(false) private readonly _data: HelixChannelEditorData;
 	@Enumerable(false) private readonly _client: ApiClient;

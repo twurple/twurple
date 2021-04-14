@@ -1,12 +1,12 @@
-Use tmi.js with the added benefits of twitch-auth's automatic token handling.
+Use tmi.js with the added benefits of `@twurple/auth`'s automatic token handling.
 
 ## Installation
 
-	yarn add twitch-auth twitch-auth-tmi
+	yarn add @twurple/auth @twurple/auth-tmi
 
 or using npm:
 
-	npm install twitch-auth twitch-auth-tmi
+	npm install @twurple/auth @twurple/auth-tmi
 
 ## If you're getting stuck...
 

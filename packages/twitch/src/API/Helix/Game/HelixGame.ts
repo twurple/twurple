@@ -16,7 +16,7 @@ export interface HelixGameData {
 /**
  * A game as displayed on Twitch.
  */
-@rtfm<HelixGame>('twitch', 'HelixGame', 'id')
+@rtfm<HelixGame>('api', 'HelixGame', 'id')
 export class HelixGame {
 	@Enumerable(false) private readonly _data: HelixGameData;
 	@Enumerable(false) private readonly _client: ApiClient;

@@ -27,4 +27,4 @@ A full list of configuration options is available on the {@ReverseProxyAdapter} 
 
 ## Listening to events
 
-Now you can continue to follow the [basic listening help](/twitch-webhooks/docs/basic-usage/listening-to-events).
+Now you can continue to follow the [basic listening help](/webhooks/docs/basic-usage/listening-to-events).

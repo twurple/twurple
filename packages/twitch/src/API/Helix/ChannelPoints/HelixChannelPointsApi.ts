@@ -103,7 +103,7 @@ export interface HelixPaginatedCustomRewardRedemptionFilter
 	extends HelixCustomRewardRedemptionFilter,
 		HelixForwardPagination {}
 
-@rtfm('twitch', 'HelixChannelPointsApi')
+@rtfm('api', 'HelixChannelPointsApi')
 export class HelixChannelPointsApi extends BaseApi {
 	/**
 	 * Retrieves all custom rewards for the given broadcaster.

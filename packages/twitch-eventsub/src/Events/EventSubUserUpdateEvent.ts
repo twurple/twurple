@@ -14,7 +14,7 @@ export interface EventSubUserUpdateEventData {
 /**
  * An EventSub event representing updating their account details.
  */
-@rtfm<EventSubUserUpdateEvent>('twitch-eventsub', 'EventSubUserUpdateEvent', 'userId')
+@rtfm<EventSubUserUpdateEvent>('eventsub', 'EventSubUserUpdateEvent', 'userId')
 export class EventSubUserUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

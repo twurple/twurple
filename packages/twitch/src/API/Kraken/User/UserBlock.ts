@@ -14,7 +14,7 @@ export interface UserBlockData {
 /**
  * A relation of a previously givn user blocking another user.
  */
-@rtfm<UserBlock>('twitch', 'UserBlock', 'blockedUserId')
+@rtfm<UserBlock>('api', 'UserBlock', 'blockedUserId')
 export class UserBlock {
 	@Enumerable(false) private readonly _data: UserBlockData;
 	@Enumerable(false) private readonly _client: ApiClient;

@@ -1,4 +1,4 @@
-First, you have to create an auth provider instance, as outlined in [the Twitch API client documentation](/twitch/docs/basic-usage/creating-instance).
+First, you have to create an auth provider instance, as outlined in [the Twurple API client documentation](/api/docs/basic-usage/creating-instance).
 
 Then, using that instance, you create a new {@ChatClient} instance, listen to events and connect it to the Twitch Chat server.
 

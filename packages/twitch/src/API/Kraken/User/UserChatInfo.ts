@@ -23,7 +23,7 @@ export interface UserChatInfoData {
 /**
  * Information about a user's chat appearance and privileges.
  */
-@rtfm<UserChatInfo>('twitch-chat-client', 'UserChatInfo', 'userId')
+@rtfm<UserChatInfo>('chat', 'UserChatInfo', 'userId')
 export class UserChatInfo {
 	@Enumerable(false) private readonly _data: UserChatInfoData;
 	@Enumerable(false) private readonly _client: ApiClient;

@@ -18,7 +18,7 @@ export type ChatBadgeScale = 1 | 2 | 4;
 /**
  * A version of a badge.
  */
-@rtfm('twitch', 'ChatBadgeVersion')
+@rtfm('api', 'ChatBadgeVersion')
 export class ChatBadgeVersion {
 	@Enumerable(false) private readonly _data: ChatBadgeVersionData;
 

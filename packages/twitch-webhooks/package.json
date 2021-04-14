@@ -23,7 +23,7 @@
     "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-webhooks"
   },
-  "homepage": "https://d-fischer.github.io/twitch-webhooks",
+  "homepage": "https://twurple.github.io/webhooks",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",

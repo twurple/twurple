@@ -16,7 +16,7 @@ export interface EventSubChannelFollowEventData {
 /**
  * An EventSub event representing a channel being followed.
  */
-@rtfm<EventSubChannelFollowEvent>('twitch-eventsub', 'EventSubChannelFollowEvent', 'userId')
+@rtfm<EventSubChannelFollowEvent>('eventsub', 'EventSubChannelFollowEvent', 'userId')
 export class EventSubChannelFollowEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

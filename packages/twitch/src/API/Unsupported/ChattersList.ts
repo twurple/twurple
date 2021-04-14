@@ -12,7 +12,7 @@ export interface ChattersListData {
 /**
  * A list of chatters in a Twitch chat.
  */
-@rtfm('twitch', 'ChattersList')
+@rtfm('api', 'ChattersList')
 export class ChattersList {
 	@Enumerable(false) private readonly _data: ChattersListData;
 

@@ -20,7 +20,7 @@ export interface ChannelPlaceholderData {
  * This is used for example when you only have retrieved user data, but not channel data.
  * This can do anything you can do with only a channel ID, as it's equivalent to the user ID.
  */
-@rtfm<ChannelPlaceholder>('twitch', 'ChannelPlaceholder', 'id')
+@rtfm<ChannelPlaceholder>('api', 'ChannelPlaceholder', 'id')
 export class ChannelPlaceholder implements UserIdResolvableType {
 	/** @private */ @Enumerable(false) protected readonly _data: ChannelPlaceholderData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;

@@ -1,19 +1,8 @@
-# Twitch.js - API call
+# Twurple - API call
 
 A basic Twitch API call wrapper.
 
-## Installation
-
-	yarn add twitch-api-call
-
-or using npm:
-
-	npm install twitch-api-call
-
-## Documentation
-
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-api-call)
-which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
+This is mostly intended for internal use in the other packages of [Twurple](https://github.com/twurple/twurple).
 
 ## If you're getting stuck...
 

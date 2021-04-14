@@ -13,7 +13,7 @@ export async function transformTwitchApiResponse<T>(response: Response): Promise
 	const text = await response.text();
 
 	if (!text) {
-		return (undefined as unknown) as T; // mega oof - twitch doesn't return a response when it should
+		return (undefined as unknown) as T; // mega oof - Twitch doesn't return a response when it should
 	}
 
 	return JSON.parse(text) as T;

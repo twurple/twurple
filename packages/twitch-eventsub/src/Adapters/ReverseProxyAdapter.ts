@@ -35,7 +35,7 @@ export interface ReverseProxyAdapterConfig {
  *
  * @hideProtected
  */
-@rtfm('twitch-eventsub', 'ReverseProxyAdapter')
+@rtfm('eventsub', 'ReverseProxyAdapter')
 export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _port: number;

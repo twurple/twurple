@@ -15,7 +15,7 @@ export interface HelixBitsLeaderboardEntryData {
 /**
  * A Bits leaderboard entry.
  */
-@rtfm<HelixBitsLeaderboardEntry>('twitch', 'HelixBitsLeaderboardEntry', 'userId')
+@rtfm<HelixBitsLeaderboardEntry>('api', 'HelixBitsLeaderboardEntry', 'userId')
 export class HelixBitsLeaderboardEntry {
 	@Enumerable(false) private readonly _data: HelixBitsLeaderboardEntryData;
 	@Enumerable(false) private readonly _client: ApiClient;

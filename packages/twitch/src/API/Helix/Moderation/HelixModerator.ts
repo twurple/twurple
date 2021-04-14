@@ -13,7 +13,7 @@ export interface HelixModeratorData {
 /**
  * Information about the moderator status of a user.
  */
-@rtfm<HelixModerator>('twitch', 'HelixModerator', 'userId')
+@rtfm<HelixModerator>('api', 'HelixModerator', 'userId')
 export class HelixModerator {
 	@Enumerable(false) private readonly _data: HelixModeratorData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;

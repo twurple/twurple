@@ -1,18 +1,18 @@
-# Twitch.js - PubSub Client
+# Twurple - PubSub Client
 
 Listen to events using the Twitch PubSub interface.
 
 ## Installation
 
-	yarn add twitch twitch-pubsub-client
+	yarn add @twurple/auth @twurple/pubsub-client
 
 or using npm:
 
-	npm install twitch twitch-pubsub-client
+	npm install @twurple/auth @twurple/pubsub-client
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-pubsub-client)
+A good place to start with this library is the [documentation](https://twurple.github.io/pubsub)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## If you're getting stuck...

@@ -1,18 +1,18 @@
-# Twitch.js - Authentication
+# Twurple - Authentication
 
 Authenticate with Twitch and stop caring about refreshing tokens.
 
 ## Installation
 
-	yarn add twitch-auth
+	yarn add @twurple/auth
 
 or using npm:
 
-	npm install twitch-auth
+	npm install @twurple/auth
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch-auth)
+A good place to start with this library is the [documentation](https://twurple.github.io/auth)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## If you're getting stuck...

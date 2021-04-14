@@ -15,7 +15,7 @@ export type EmoteSetListData = Record<string, Emote[]>;
  * A list of emotes, grouped into emote sets, that a user can use.
  */
 @Cacheable
-@rtfm('twitch', 'EmoteSetList')
+@rtfm('api', 'EmoteSetList')
 export class EmoteSetList {
 	@Enumerable(false) private readonly _data: EmoteSetListData;
 

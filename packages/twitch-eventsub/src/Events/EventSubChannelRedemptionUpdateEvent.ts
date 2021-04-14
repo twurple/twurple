@@ -21,7 +21,7 @@ export interface EventSubChannelRedemptionUpdateEventData {
 /**
  * An EventSub event representing a Channel Points redemption being updated.
  */
-@rtfm<EventSubChannelRedemptionUpdateEvent>('twitch-eventsub', 'EventSubChannelRedemptionUpdateEvent', 'id')
+@rtfm<EventSubChannelRedemptionUpdateEvent>('eventsub', 'EventSubChannelRedemptionUpdateEvent', 'id')
 export class EventSubChannelRedemptionUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

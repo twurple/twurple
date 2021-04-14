@@ -25,7 +25,7 @@ export interface PrivilegedUserData extends UserData {
  *
  * @inheritDoc
  */
-@rtfm<PrivilegedUser>('twitch', 'PrivilegedUser', 'id')
+@rtfm<PrivilegedUser>('api', 'PrivilegedUser', 'id')
 export class PrivilegedUser extends User {
 	/** @private */ protected declare readonly _data: PrivilegedUserData;
 

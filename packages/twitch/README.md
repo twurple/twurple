@@ -1,27 +1,19 @@
-# Twitch.js - Core
+# Twurple - API
 
 Interact with Twitch's API.
 
 ## Installation
 
-	yarn add twitch
+	yarn add @twurple/auth @twurple/api
 
 or using npm:
 
-	npm install twitch
+	npm install @twurple/auth @twurple/api
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch)
+A good place to start with this library is the [documentation](https://twurple.github.io/api)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
-
-## Additional packages
-
-This core package only provides API and authentication functionality. All the other things are located in separate packages:
-
-- [twitch-chat-client](https://d-fischer.github.io/twitch-chat-client) - connect to and interact with Twitch Chat
-- [twitch-pubsub-client](https://d-fischer.github.io/twitch-pubsub-client) - listen to events using the Twitch PubSub interface
-- [twitch-webhooks](https://d-fischer.github.io/twitch-webhooks) - listen to events using WebHooks
 
 ## If you're getting stuck...
 

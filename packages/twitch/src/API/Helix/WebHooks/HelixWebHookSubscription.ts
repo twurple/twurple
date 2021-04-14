@@ -12,7 +12,7 @@ export interface HelixWebHookSubscriptionData {
 /**
  * A subscription to a Twitch WebHook.
  */
-@rtfm('twitch', 'HelixWebHookSubscription')
+@rtfm('api', 'HelixWebHookSubscription')
 export class HelixWebHookSubscription {
 	@Enumerable(false) private readonly _data: HelixWebHookSubscriptionData;
 	@Enumerable(false) private readonly _client: ApiClient;

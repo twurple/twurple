@@ -18,7 +18,7 @@ export interface HelixHypeTrainContributionData {
 /**
  * A Hype Train contributor.
  */
-@rtfm<HelixHypeTrainContribution>('twitch', 'HelixHypeTrainContribution', 'userId')
+@rtfm<HelixHypeTrainContribution>('api', 'HelixHypeTrainContribution', 'userId')
 export class HelixHypeTrainContribution {
 	@Enumerable(false) private readonly _data: HelixHypeTrainContributionData;
 	@Enumerable(false) private readonly _client: ApiClient;

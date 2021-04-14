@@ -19,7 +19,7 @@ export interface CreatedVideoData {
 /**
  * A Twitch video that was just created.
  */
-@rtfm<CreatedVideo>('twitch', 'CreatedVideo', 'id')
+@rtfm<CreatedVideo>('api', 'CreatedVideo', 'id')
 export class CreatedVideo extends Video {
 	@Enumerable(false) private readonly _uploadData: CreatedVideoUploadData;
 

@@ -30,7 +30,7 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
  *
  * All of the methods in this class assume that you are already running a working EventSub listener at the given callback URL.
  *
- * If you don't already have one, we recommend use of the `twitch-eventsub` library, which handles subscribing and unsubscribing to these topics automatically.
+ * If you don't already have one, we recommend use of the `@twurple/eventsub` library, which handles subscribing and unsubscribing to these topics automatically.
  *
  * ## Example
  * ```ts
@@ -38,7 +38,7 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
  * await api.helix.eventSub.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
-@rtfm('twitch', 'HelixEventSubApi')
+@rtfm('api', 'HelixEventSubApi')
 export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Retrieves the current WebHook subscriptions for the current client.

@@ -21,7 +21,7 @@ export interface EventSubChannelBanEventData {
 /**
  * An EventSub event representing a user being banned in a channel.
  */
-@rtfm<EventSubChannelBanEvent>('twitch-eventsub', 'EventSubChannelBanEvent', 'userId')
+@rtfm<EventSubChannelBanEvent>('eventsub', 'EventSubChannelBanEvent', 'userId')
 export class EventSubChannelBanEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

@@ -46,7 +46,7 @@ export interface HelixUserData {
 /**
  * A Twitch user.
  */
-@rtfm<HelixUser>('twitch', 'HelixUser', 'id')
+@rtfm<HelixUser>('api', 'HelixUser', 'id')
 export class HelixUser implements UserIdResolvableType, UserNameResolveableType {
 	/** @private */ @Enumerable(false) protected readonly _data: HelixUserData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;

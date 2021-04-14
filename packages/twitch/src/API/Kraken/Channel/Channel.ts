@@ -32,7 +32,7 @@ export interface ChannelData extends ChannelPlaceholderData {
 /**
  * A Twitch Channel.
  */
-@rtfm<Channel>('twitch', 'Channel', 'id')
+@rtfm<Channel>('api', 'Channel', 'id')
 export class Channel extends ChannelPlaceholder implements UserNameResolveableType {
 	/** @private */ protected declare readonly _data: ChannelData;
 

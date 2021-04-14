@@ -13,7 +13,7 @@ export interface HelixUserBlockData {
 /**
  * An user blocked by a previously given user.
  */
-@rtfm<HelixUserBlock>('twitch', 'HelixUserBlock', 'userId')
+@rtfm<HelixUserBlock>('api', 'HelixUserBlock', 'userId')
 export class HelixUserBlock {
 	@Enumerable(false) private readonly _data: HelixUserBlockData;
 	@Enumerable(false) private readonly _client: ApiClient;

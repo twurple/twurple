@@ -66,7 +66,7 @@ export interface PubSubRedemptionMessageData {
 /**
  * A message that informs about a user redeeming a custom channel points reward.
  */
-@rtfm<PubSubRedemptionMessage>('twitch-pubsub-client', 'PubSubRedemptionMessage', 'id')
+@rtfm<PubSubRedemptionMessage>('pubsub', 'PubSubRedemptionMessage', 'id')
 export class PubSubRedemptionMessage {
 	@Enumerable(false) private readonly _data: PubSubRedemptionMessageData;
 

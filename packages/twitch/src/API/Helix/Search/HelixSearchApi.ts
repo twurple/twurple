@@ -36,7 +36,7 @@ export interface HelixPaginatedChannelSearchFilter extends HelixChannelSearchFil
  * const channels = await api.helix.search.searchChannels('pear');
  * ```
  */
-@rtfm('twitch', 'HelixSearchApi')
+@rtfm('api', 'HelixSearchApi')
 export class HelixSearchApi extends BaseApi {
 	/**
 	 * Search categories/games for an exact or partial match.

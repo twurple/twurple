@@ -51,7 +51,7 @@ export interface EventSubChannelRewardEventData {
 /**
  * An EventSub event representing a broadcaster adding, updating or removing a Channel Points reward for their channel.
  */
-@rtfm<EventSubChannelRewardEvent>('twitch-eventsub', 'EventSubChannelRewardEvent', 'id')
+@rtfm<EventSubChannelRewardEvent>('eventsub', 'EventSubChannelRewardEvent', 'id')
 export class EventSubChannelRewardEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

@@ -17,7 +17,7 @@ export interface HelixUserExtensionData extends HelixExtensionData {
  *
  * @inheritDoc
  */
-@rtfm<HelixUserExtension>('twitch', 'HelixUserExtension', 'id')
+@rtfm<HelixUserExtension>('api', 'HelixUserExtension', 'id')
 export class HelixUserExtension extends HelixExtension {
 	/** @private */ protected declare readonly _data: HelixUserExtensionData;
 

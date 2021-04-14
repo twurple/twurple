@@ -25,7 +25,7 @@ export interface UserData {
 /**
  * A Twitch user.
  */
-@rtfm<User>('twitch', 'User', 'id')
+@rtfm<User>('api', 'User', 'id')
 export class User implements UserIdResolvableType, UserNameResolveableType {
 	/** @private */ @Enumerable(false) protected readonly _data: UserData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;

@@ -23,7 +23,7 @@ export interface HelixClipData {
 	thumbnail_url: string;
 }
 
-@rtfm<HelixClip>('twitch', 'HelixClip', 'id')
+@rtfm<HelixClip>('api', 'HelixClip', 'id')
 export class HelixClip {
 	@Enumerable(false) private readonly _data: HelixClipData;
 	@Enumerable(false) private readonly _client: ApiClient;

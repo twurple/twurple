@@ -14,7 +14,7 @@ export interface HelixStreamMarkerData {
 /**
  * A stream marker.
  */
-@rtfm<HelixStreamMarker>('twitch', 'HelixStreamMarker', 'id')
+@rtfm<HelixStreamMarker>('api', 'HelixStreamMarker', 'id')
 export class HelixStreamMarker {
 	/** @private */ @Enumerable(false) protected readonly _data: HelixStreamMarkerData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;

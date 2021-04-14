@@ -16,7 +16,7 @@ export interface EventSubChannelUpdateEventData {
 /**
  * An EventSub event representing a change in channel metadata.
  */
-@rtfm<EventSubChannelUpdateEvent>('twitch-eventsub', 'EventSubChannelUpdateEvent', 'broadcasterId')
+@rtfm<EventSubChannelUpdateEvent>('eventsub', 'EventSubChannelUpdateEvent', 'broadcasterId')
 export class EventSubChannelUpdateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

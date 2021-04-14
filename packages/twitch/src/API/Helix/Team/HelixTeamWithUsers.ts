@@ -14,7 +14,7 @@ export interface HelixTeamWithUsersData extends HelixTeamData {
  *
  * @inheritDoc
  */
-@rtfm<HelixTeamWithUsers>('twitch', 'HelixTeamWithUsers', 'id')
+@rtfm<HelixTeamWithUsers>('api', 'HelixTeamWithUsers', 'id')
 export class HelixTeamWithUsers extends HelixTeam {
 	/** @private */ protected declare readonly _data: HelixTeamWithUsersData;
 

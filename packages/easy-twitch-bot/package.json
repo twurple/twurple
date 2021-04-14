@@ -18,7 +18,7 @@
     "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-chat-client"
   },
-  "homepage": "https://d-fischer.github.io/easy-twitch-bot",
+  "homepage": "https://twurple.github.io/easy-bot",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",

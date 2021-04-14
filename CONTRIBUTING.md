@@ -32,7 +32,7 @@ Alternatively, you can talk to us on [Discord](https://discord.gg/b9ZqMfz) about
 
 To get started, simply fork the repository, then clone the fork locally:
 
-	git clone https://github.com/your-username/twitch.git
+	git clone https://github.com/your-username/twurple.git
 	
 If you want to send a bugfix to a non-prerelease version, please check out the respective branch named `versions/x.y` (`x.y` being the current minor version).
 On the `main` branch, only ongoing development of future minor and major versions happens.

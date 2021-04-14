@@ -8,11 +8,11 @@ To add EventSub support to your project, you need three packages:
 
 To install these, just execute:
 
-	yarn add twitch @twurple/auth @twurple/api @twurple/eventsub
+	yarn add @twurple/auth @twurple/api @twurple/eventsub
 
 or using npm:
 
-	npm install twitch @twurple/auth @twurple/api @twurple/eventsub
+	npm install @twurple/auth @twurple/api @twurple/eventsub
 
 ## Importing the library
 

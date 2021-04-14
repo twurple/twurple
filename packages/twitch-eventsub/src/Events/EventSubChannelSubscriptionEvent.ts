@@ -22,7 +22,7 @@ export interface EventSubChannelSubscriptionEventData {
 /**
  * An EventSub event representing a channel subscription.
  */
-@rtfm<EventSubChannelSubscriptionEvent>('twitch-eventsub', 'EventSubChannelSubscriptionEvent', 'userId')
+@rtfm<EventSubChannelSubscriptionEvent>('eventsub', 'EventSubChannelSubscriptionEvent', 'userId')
 export class EventSubChannelSubscriptionEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

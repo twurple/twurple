@@ -35,7 +35,7 @@ export interface RefreshConfig {
  * Enhances another auth provider with the ability to make use of refresh
  * tokens, automatically refreshing the access token whenever necessary.
  */
-@rtfm<RefreshableAuthProvider>('twitch-auth', 'RefreshableAuthProvider', 'clientId')
+@rtfm<RefreshableAuthProvider>('auth', 'RefreshableAuthProvider', 'clientId')
 export class RefreshableAuthProvider implements AuthProvider {
 	@Enumerable(false) private readonly _clientSecret: string;
 	@Enumerable(false) private _refreshToken: string;

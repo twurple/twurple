@@ -1,7 +1,7 @@
 {
   "name": "@twurple/common",
   "version": "5.0.0-pre.2",
-  "description": "Common functions used by the `twitch*` library family.",
+  "description": "Common functions used by the `@twurple` library family.",
   "keywords": [
     "twitch",
     "common",
@@ -21,7 +21,7 @@
     "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/twitch-common"
   },
-  "homepage": "https://d-fischer.github.io/twitch-common",
+  "homepage": "https://twurple.github.io",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",

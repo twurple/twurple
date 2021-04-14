@@ -12,7 +12,7 @@ export interface HelixTagData {
 /**
  * A stream tag.
  */
-@rtfm<HelixTag>('twitch', 'HelixTag', 'id')
+@rtfm<HelixTag>('api', 'HelixTag', 'id')
 export class HelixTag {
 	@Enumerable(false) private readonly _data: HelixTagData;
 

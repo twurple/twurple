@@ -50,7 +50,7 @@ export interface CheermoteListData {
  *
  * @inheritDoc
  */
-@rtfm('twitch', 'CheermoteList')
+@rtfm('api', 'CheermoteList')
 export class CheermoteList extends BaseCheermoteList {
 	@Enumerable(false) private readonly _data: Record<string, CheermoteActionData>;
 

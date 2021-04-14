@@ -29,7 +29,7 @@ export interface HelixInstalledExtensionListData {
 /**
  * A list of extensions installed in a channel.
  */
-@rtfm('twitch', 'HelixInstalledExtensionList')
+@rtfm('api', 'HelixInstalledExtensionList')
 export class HelixInstalledExtensionList {
 	@Enumerable(false) private readonly _data: HelixInstalledExtensionListData;
 

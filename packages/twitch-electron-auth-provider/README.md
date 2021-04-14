@@ -1,4 +1,4 @@
-# Twitch.js - Electron auth provider
+# Twurple - Electron auth provider
 
 This is an {@AuthProvider} implementation for [the `twurple` package family](https://github.com/twurple/twurple)
 that will automatically pop up a Twitch OAuth dialog in an Electron `BrowserWindow`

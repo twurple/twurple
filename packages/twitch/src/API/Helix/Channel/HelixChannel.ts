@@ -17,7 +17,7 @@ export interface HelixChannelData {
 /**
  * A Twitch channel.
  */
-@rtfm<HelixChannel>('twitch', 'HelixChannel', 'id')
+@rtfm<HelixChannel>('api', 'HelixChannel', 'id')
 export class HelixChannel {
 	@Enumerable(false) private readonly _data: HelixChannelData;
 	@Enumerable(false) private readonly _client: ApiClient;

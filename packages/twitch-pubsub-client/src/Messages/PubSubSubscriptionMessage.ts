@@ -30,7 +30,7 @@ export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 /**
  * A message that informs about a user subscribing to a channel.
  */
-@rtfm<PubSubSubscriptionMessage>('twitch-pubsub-client', 'PubSubSubscriptionMessage', 'userId')
+@rtfm<PubSubSubscriptionMessage>('pubsub', 'PubSubSubscriptionMessage', 'userId')
 export class PubSubSubscriptionMessage {
 	@Enumerable(false) private readonly _data: PubSubSubscriptionMessageData;
 

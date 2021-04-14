@@ -14,7 +14,7 @@ export interface ChannelFollowData {
 /**
  * A relation of a user following a previously given channel.
  */
-@rtfm<ChannelFollow>('twitch', 'ChannelFollow', 'userId')
+@rtfm<ChannelFollow>('api', 'ChannelFollow', 'userId')
 export class ChannelFollow {
 	@Enumerable(false) private readonly _data: ChannelFollowData;
 	@Enumerable(false) private readonly _client: ApiClient;

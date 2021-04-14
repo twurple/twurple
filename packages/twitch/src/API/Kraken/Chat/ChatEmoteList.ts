@@ -7,7 +7,7 @@ import { ChatEmote, rtfm } from '@twurple/common';
  * A list of emotes.
  */
 @Cacheable
-@rtfm('twitch', 'ChatEmoteList')
+@rtfm('api', 'ChatEmoteList')
 export class ChatEmoteList {
 	@Enumerable(false) private readonly _data: ChatEmoteData[];
 

@@ -1,19 +1,19 @@
 This package is generally used like `tmi.js` is normally, with just a single minor change.
 
 It completely ignores the `identity` option, and instead takes an `authProvider` option which takes an
-[`AuthProvider`](/twitch-auth/reference/interfaces/AuthProvider)
-instance that can be used for other `twitch` packages as well.
+[`AuthProvider`](/auth/reference/interfaces/AuthProvider)
+instance that can be used for other `@twurple` packages as well.
 
 This also offers the additional benefit of being able to refresh tokens internally using
-[a refreshable AuthProvider](/twitch-auth/docs/providers/refreshable).
+[a refreshable AuthProvider](/auth/docs/providers/refreshable).
 
 ### Example
 
 Taken from the [tmi.js README](https://www.npmjs.com/package/tmi.js) and adapted for this package:
 
 ```js
-const tmi = require('twitch-auth-tmi');
-const { StaticAuthProvider } = require('twitch-auth');
+const tmi = require('@twurple/auth-tmi');
+const { StaticAuthProvider } = require('@twurple/auth');
 const authProvider = new StaticAuthProvider('my-client-id', 'my-bot-token');
 const client = new tmi.Client({
 	options: { debug: true, messagesLogLevel: 'info' },

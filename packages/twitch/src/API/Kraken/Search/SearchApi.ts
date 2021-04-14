@@ -16,7 +16,7 @@ import { Stream } from '../Stream/Stream';
  * const channel = await api.kraken.search.searchStreams('Hearthstone');
  * ```
  */
-@rtfm('twitch', 'SearchApi')
+@rtfm('api', 'SearchApi')
 export class SearchApi extends BaseApi {
 	/**
 	 * Retrieves a list of channels that match the given search term.

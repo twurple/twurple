@@ -15,7 +15,7 @@ import { CheermoteList } from './CheermoteList';
  * const cheermotes = await api.kraken.bits.getCheermotes();
  * ```
  */
-@rtfm('twitch', 'BitsApi')
+@rtfm('api', 'BitsApi')
 export class BitsApi extends BaseApi {
 	/**
 	 * Retrieves global and channel cheermotes.

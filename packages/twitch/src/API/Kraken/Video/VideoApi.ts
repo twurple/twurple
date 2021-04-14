@@ -92,7 +92,7 @@ export interface VideoUpdateData extends VideoEditData {
  * const user = await api.kraken.videos.getVideo('85448040');
  * ```
  */
-@rtfm('twitch', 'VideoApi')
+@rtfm('api', 'VideoApi')
 export class VideoApi extends BaseApi {
 	/**
 	 * Retrieves a video by ID.

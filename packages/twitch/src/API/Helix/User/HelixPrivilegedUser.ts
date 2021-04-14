@@ -12,7 +12,7 @@ export interface HelixPrivilegedUserData extends HelixUserData {
  *
  * @inheritDoc
  */
-@rtfm<HelixPrivilegedUser>('twitch', 'HelixPrivilegedUser', 'id')
+@rtfm<HelixPrivilegedUser>('api', 'HelixPrivilegedUser', 'id')
 export class HelixPrivilegedUser extends HelixUser {
 	/** @private */ protected declare readonly _data: HelixPrivilegedUserData;
 

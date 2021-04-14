@@ -61,7 +61,7 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
  * const { data: videos } = await api.helix.videos.getVideosByUser('125328655');
  * ```
  */
-@rtfm('twitch', 'HelixVideoApi')
+@rtfm('api', 'HelixVideoApi')
 export class HelixVideoApi extends BaseApi {
 	/**
 	 * Retrieves the video data for the given list of video IDs.

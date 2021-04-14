@@ -12,7 +12,7 @@ export type HelixExtensionSlotType = 'panel' | 'overlay' | 'component';
  *
  * @inheritDoc
  */
-@rtfm<HelixInstalledExtension>('twitch', 'HelixInstalledExtension', 'id')
+@rtfm<HelixInstalledExtension>('api', 'HelixInstalledExtension', 'id')
 export class HelixInstalledExtension extends HelixExtension {
 	private readonly _slotType: HelixExtensionSlotType;
 	private readonly _slotId: string;

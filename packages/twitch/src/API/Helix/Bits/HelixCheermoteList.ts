@@ -47,7 +47,7 @@ export interface HelixCheermoteData {
  *
  * @inheritDoc
  */
-@rtfm('twitch', 'HelixCheermoteList')
+@rtfm('api', 'HelixCheermoteList')
 export class HelixCheermoteList extends BaseCheermoteList {
 	@Enumerable(false) private readonly _data: Record<string, HelixCheermoteData>;
 

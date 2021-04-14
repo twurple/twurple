@@ -16,7 +16,7 @@ import { ChattersList } from './ChattersList';
  * const events = await api.unsupported.getChatters('yourfavoritestreamer');
  * ```
  */
-@rtfm('twitch', 'UnsupportedApi')
+@rtfm('api', 'UnsupportedApi')
 export class UnsupportedApi extends BaseApi {
 	/**
 	 * Retrieves a list of chatters in the Twitch chat of the given channel.

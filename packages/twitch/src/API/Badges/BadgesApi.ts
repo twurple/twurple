@@ -16,7 +16,7 @@ import { ChatBadgeList } from './ChatBadgeList';
  * const cheermotes = await api.badges.getGlobalBadges();
  * ```
  */
-@rtfm('twitch', 'BadgesApi')
+@rtfm('api', 'BadgesApi')
 export class BadgesApi extends BaseApi {
 	/**
 	 * Retrieves all globally applicable chat badges.

@@ -13,7 +13,7 @@ export interface HelixUserRelationData {
 /**
  * A relation of anything with a user.
  */
-@rtfm<HelixUserRelation>('twitch', 'HelixUserRelation', 'id')
+@rtfm<HelixUserRelation>('api', 'HelixUserRelation', 'id')
 export class HelixUserRelation {
 	@Enumerable(false) private readonly _data: HelixUserRelationData;
 	@Enumerable(false) private readonly _client: ApiClient;

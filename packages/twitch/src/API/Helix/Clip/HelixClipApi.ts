@@ -68,7 +68,7 @@ export interface HelixClipCreateResponse {
  * const clipId = await api.helix.clips.createClip({ channelId: '125328655' });
  * ```
  */
-@rtfm('twitch', 'HelixClipApi')
+@rtfm('api', 'HelixClipApi')
 export class HelixClipApi extends BaseApi {
 	/**
 	 * Retrieves the latest clips for the specified broadcaster.

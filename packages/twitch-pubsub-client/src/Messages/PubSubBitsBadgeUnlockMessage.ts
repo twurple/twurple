@@ -21,7 +21,7 @@ export interface PubSubBitsBadgeUnlockMessageData {
 /**
  * A message that informs about a user unlocking a new bits badge.
  */
-@rtfm<PubSubBitsBadgeUnlockMessage>('twitch-pubsub-client', 'PubSubBitsBadgeUnlockMessage', 'userId')
+@rtfm<PubSubBitsBadgeUnlockMessage>('pubsub', 'PubSubBitsBadgeUnlockMessage', 'userId')
 export class PubSubBitsBadgeUnlockMessage {
 	@Enumerable(false) private readonly _data: PubSubBitsBadgeUnlockMessageData;
 

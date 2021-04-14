@@ -62,7 +62,7 @@ export enum StreamType {
 /**
  * A Twitch stream.
  */
-@rtfm<Stream>('twitch', 'Stream', 'id')
+@rtfm<Stream>('api', 'Stream', 'id')
 export class Stream {
 	@Enumerable(false) private readonly _data: StreamData;
 	@Enumerable(false) private readonly _client: ApiClient;

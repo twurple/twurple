@@ -37,7 +37,7 @@ export interface EnvPortAdapterConfig {
  *
  * @hideProtected
  */
-@rtfm('twitch-webhooks', 'EnvPortAdapter')
+@rtfm('webhooks', 'EnvPortAdapter')
 export class EnvPortAdapter extends ReverseProxyAdapter {
 	/**
 	 * Creates a new environment port connection adapter.

@@ -14,7 +14,7 @@ export interface HelixBanData {
 /**
  * Information about the ban of a user.
  */
-@rtfm<HelixBan>('twitch', 'HelixBan', 'userId')
+@rtfm<HelixBan>('api', 'HelixBan', 'userId')
 export class HelixBan {
 	@Enumerable(false) private readonly _data: HelixBanData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;

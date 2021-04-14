@@ -14,7 +14,7 @@ import { ChatEmoteList } from './ChatEmoteList';
  * const emotes = await api.kraken.chat.getEmotesBySets('1');
  * ```
  */
-@rtfm('twitch', 'ChatApi')
+@rtfm('api', 'ChatApi')
 export class ChatApi extends BaseApi {
 	/**
 	 * Retrieves a list of emotes for a given list of enote set IDs.

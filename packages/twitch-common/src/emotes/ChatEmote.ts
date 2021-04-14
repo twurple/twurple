@@ -16,7 +16,7 @@ export type EmoteSize = '1.0' | '2.0' | '3.0';
 /**
  * A chat emote.
  */
-@rtfm<ChatEmote>('twitch-common', 'ChatEmote', 'id')
+@rtfm<ChatEmote>('common', 'ChatEmote', 'id')
 export class ChatEmote {
 	@Enumerable(false) private readonly _data: ChatEmoteData;
 

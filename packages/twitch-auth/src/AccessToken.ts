@@ -12,7 +12,7 @@ export interface AccessTokenData {
 /**
  * Represents the data of an OAuth access token returned by Twitch.
  */
-@rtfm('twitch-auth', 'AccessToken')
+@rtfm('auth', 'AccessToken')
 export class AccessToken {
 	@Enumerable(false) private readonly _data: AccessTokenData;
 	private readonly _obtainmentDate: Date;

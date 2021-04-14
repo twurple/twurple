@@ -40,7 +40,7 @@ export interface HelixEventSubSubscriptionData {
 /**
  * An EventSub subscription.
  */
-@rtfm<HelixEventSubSubscription>('twitch', 'HelixEventSubSubscription', 'id')
+@rtfm<HelixEventSubSubscription>('api', 'HelixEventSubSubscription', 'id')
 export class HelixEventSubSubscription {
 	@Enumerable(false) private readonly _data: HelixEventSubSubscriptionData;
 	@Enumerable(false) private readonly _client: ApiClient;

@@ -15,7 +15,7 @@ import { Stream, StreamType } from './Stream';
  * const stream = await api.kraken.streams.getStreamByChannel('125328655');
  * ```
  */
-@rtfm('twitch', 'StreamApi')
+@rtfm('api', 'StreamApi')
 export class StreamApi extends BaseApi {
 	/**
 	 * Retrieves the current stream on the given channel.

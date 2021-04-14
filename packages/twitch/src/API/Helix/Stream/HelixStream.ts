@@ -48,7 +48,7 @@ export interface HelixStreamData {
 /**
  * A Twitch stream.
  */
-@rtfm<HelixStream>('twitch', 'HelixStream', 'id')
+@rtfm<HelixStream>('api', 'HelixStream', 'id')
 export class HelixStream {
 	@Enumerable(false) private readonly _data: HelixStreamData;
 	@Enumerable(false) private readonly _client: ApiClient;

@@ -39,7 +39,7 @@ export interface HelixChannelUpdate {
  * const channel = await api.helix.channels.getChannelInfo('125328655');
  * ```
  */
-@rtfm('twitch', 'HelixChannelApi')
+@rtfm('api', 'HelixChannelApi')
 export class HelixChannelApi extends BaseApi {
 	/**
 	 * Retrieves the channel data for the given user.

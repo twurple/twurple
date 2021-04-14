@@ -112,7 +112,7 @@ type EventSubBody = EventSubVerificationBody | EventSubNotificationBody;
 /**
  * A listener for the Twitch EventSub event distribution mechanism.
  */
-@rtfm('twitch-eventsub', 'EventSubListener')
+@rtfm('eventsub', 'EventSubListener')
 export class EventSubListener {
 	@Enumerable(false) private _server?: Server;
 	@Enumerable(false) private readonly _subscriptions = new Map<string, EventSubSubscription>();
@@ -142,7 +142,7 @@ export class EventSubListener {
 		this._secret = secret;
 		this._adapter = adapter;
 		this._logger = new Logger({
-			name: 'twitch-eventsub',
+			name: '@twurple/eventsub',
 			emoji: true,
 			...config?.logger
 		});

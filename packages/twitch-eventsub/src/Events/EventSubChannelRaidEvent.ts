@@ -16,7 +16,7 @@ export interface EventSubChannelRaidEventData {
 /**
  * An EventSub event representing a broadcaster raiding another broadcaster.
  */
-@rtfm<EventSubChannelRaidEvent>('twitch-eventsub', 'EventSubChannelRaidEvent', 'raidedBroadcasterId')
+@rtfm<EventSubChannelRaidEvent>('eventsub', 'EventSubChannelRaidEvent', 'raidedBroadcasterId')
 export class EventSubChannelRaidEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

@@ -16,7 +16,7 @@ import { VideoApi } from './Video/VideoApi';
  * Can be accessed using {@ApiClient#kraken}.
  */
 @Cacheable
-@rtfm('twitch', 'KrakenApiGroup')
+@rtfm('api', 'KrakenApiGroup')
 export class KrakenApiGroup extends BaseApi {
 	/**
 	 * The API methods that deal with bits.

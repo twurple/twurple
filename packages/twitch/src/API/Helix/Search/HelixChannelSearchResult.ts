@@ -22,7 +22,7 @@ export interface HelixChannelSearchResultData {
 /**
  * The result of a channel search.
  */
-@rtfm<HelixChannelSearchResult>('twitch', 'HelixChannelSearchResult', 'id')
+@rtfm<HelixChannelSearchResult>('api', 'HelixChannelSearchResult', 'id')
 export class HelixChannelSearchResult {
 	@Enumerable(false) private readonly _data: HelixChannelSearchResultData;
 	@Enumerable(false) private readonly _client: ApiClient;

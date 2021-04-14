@@ -36,7 +36,7 @@ export interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensio
  * const transactions = await api.helix.extionsions.getExtensionTransactions('abcd');
  * ```
  */
-@rtfm('twitch', 'HelixExtensionsApi')
+@rtfm('api', 'HelixExtensionsApi')
 export class HelixExtensionsApi extends BaseApi {
 	/**
 	 * Retrieves a list of transactions for the given extension.

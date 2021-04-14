@@ -7,7 +7,7 @@ import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 /**
  * An auth provider that retrieve tokens using client credentials.
  */
-@rtfm<ClientCredentialsAuthProvider>('twitch-auth', 'ClientCredentialsAuthProvider', 'clientId')
+@rtfm<ClientCredentialsAuthProvider>('auth', 'ClientCredentialsAuthProvider', 'clientId')
 export class ClientCredentialsAuthProvider implements AuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;

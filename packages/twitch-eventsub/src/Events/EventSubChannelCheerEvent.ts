@@ -18,7 +18,7 @@ export interface EventSubChannelCheerEventData {
 /**
  * An EventSub event representing a user cheering bits.
  */
-@rtfm<EventSubChannelCheerEvent>('twitch-eventsub', 'EventSubChannelCheerEvent', 'userId')
+@rtfm<EventSubChannelCheerEvent>('eventsub', 'EventSubChannelCheerEvent', 'userId')
 export class EventSubChannelCheerEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

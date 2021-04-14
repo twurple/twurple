@@ -4,24 +4,24 @@
 	"mode": "html",
 	"prettier": true,
 	"routerMode": "htmlSuffix",
-	"repoUser": "d-fischer",
-	"repoName": "twitch",
+	"repoUser": "twurple",
+	"repoName": "twurple",
 	"monorepoRoot": "packages",
-	"mainPackage": "twitch",
+	"mainPackage": "@twurple/api",
 	"mainBranchName": "main",
 	"versionBranchPrefix": "versions/",
 	"versionFolder": "versions",
 	"ignoredPackages": [
-		"twitch-electron-auth-provider",
-		"twitch-webhooks-ngrok",
-		"twitch-eventsub-ngrok",
-		"twitch-api-call",
-		"twitch-common"
+		"@twurple/auth-electron",
+		"@twurple/webhooks-ngrok",
+		"@twurple/eventsub-ngrok",
+		"@twurple/api-call",
+		"@twurple/common"
 	],
 	"packages": {
-		"twitch": {
-			"indexTitle": "Welcome to Twitch.js",
-			"indexFile": "twitch/index.md",
+		"@twurple/api": {
+			"indexTitle": "Welcome to Twurple",
+			"indexFile": "api/index.md",
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -30,51 +30,30 @@
 						{
 							"name": "getting-started",
 							"title": "Getting started",
-							"file": "twitch/basic-usage/getting-started.md"
+							"file": "api/basic-usage/getting-started.md"
 						},
 						{
 							"name": "creating-instance",
 							"title": "Creating a client instance",
-							"file": "twitch/basic-usage/creating-instance.md"
+							"file": "api/basic-usage/creating-instance.md"
 						},
 						{
 							"name": "calling-api",
 							"title": "Calling the Twitch API",
-							"file": "twitch/basic-usage/calling-api.md"
+							"file": "api/basic-usage/calling-api.md"
 						},
 						{
 							"name": "faq",
 							"title": "FAQ",
-							"file": "twitch/basic-usage/faq.md"
-						}
-					]
-				},
-				{
-					"name": "upgrading",
-					"title": "Upgrading",
-					"articles": [
-						{
-							"name": "v2",
-							"title": "Upgrading to 2.x",
-							"externalLink": "https://github.com/twurple/twurple/releases/tag/twitch@2.0.0"
-						},
-						{
-							"name": "v3",
-							"title": "Upgrading to 3.x",
-							"externalLink": "https://github.com/twurple/twurple/releases/tag/twitch@3.0.0"
-						},
-						{
-							"name": "v4",
-							"title": "Upgrading to 4.x",
-							"externalLink": "https://github.com/twurple/twurple/releases/tag/v4.0.0"
+							"file": "api/basic-usage/faq.md"
 						}
 					]
 				}
 			]
 		},
-		"twitch-chat-client": {
-			"indexTitle": "Twitch.js Chat Client",
-			"indexFile": "twitch-chat-client/index.md",
+		"@twurple/chat": {
+			"indexTitle": "Twurple - Chat Client",
+			"indexFile": "chat/index.md",
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -83,38 +62,17 @@
 						{
 							"name": "getting-started",
 							"title": "Getting started",
-							"file": "twitch-chat-client/basic-usage/getting-started.md"
+							"file": "chat/basic-usage/getting-started.md"
 						},
 						{
 							"name": "connecting-to-chat",
 							"title": "Connecting to Chat",
-							"file": "twitch-chat-client/basic-usage/connecting-to-chat.md"
+							"file": "chat/basic-usage/connecting-to-chat.md"
 						},
 						{
 							"name": "listening-to-events",
 							"title": "Listening to events",
-							"file": "twitch-chat-client/basic-usage/listening-to-events.md"
-						}
-					]
-				},
-				{
-					"name": "upgrading",
-					"title": "Upgrading",
-					"articles": [
-						{
-							"name": "v2",
-							"title": "Upgrading to 2.x",
-							"externalLink": "https://github.com/twurple/twurple/releases/tag/twitch@2.0.0"
-						},
-						{
-							"name": "v3",
-							"title": "Upgrading to 3.x",
-							"externalLink": "https://github.com/twurple/twurple/releases/tag/twitch@3.0.0"
-						},
-						{
-							"name": "v4",
-							"title": "Upgrading to 4.x",
-							"externalLink": "https://github.com/twurple/twurple/releases/tag/v4.0.0"
+							"file": "chat/basic-usage/listening-to-events.md"
 						}
 					]
 				},
@@ -125,20 +83,20 @@
 						{
 							"name": "basic-bot",
 							"title": "Basic bot",
-							"file": "twitch-chat-client/examples/basic-bot.md"
+							"file": "chat/examples/basic-bot.md"
 						},
 						{
 							"name": "sub-gift-spam",
 							"title": "Preventing sub gift spam",
-							"file": "twitch-chat-client/examples/sub-gift-spam.md"
+							"file": "chat/examples/sub-gift-spam.md"
 						}
 					]
 				}
 			]
 		},
-		"twitch-pubsub-client": {
-			"indexTitle": "Twitch.js PubSub Client",
-			"indexFile": "twitch-pubsub-client/index.md",
+		"@twurple/pubsub": {
+			"indexTitle": "Twurple - PubSub Client",
+			"indexFile": "pubsub/index.md",
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -147,36 +105,20 @@
 						{
 							"name": "getting-started",
 							"title": "Getting started",
-							"file": "twitch-pubsub-client/basic-usage/getting-started.md"
+							"file": "pubsub/basic-usage/getting-started.md"
 						},
 						{
 							"name": "listening-to-topics",
 							"title": "Listening to topics",
-							"file": "twitch-pubsub-client/basic-usage/listening-to-topics.md"
-						}
-					]
-				},
-				{
-					"name": "upgrading",
-					"title": "Upgrading",
-					"articles": [
-						{
-							"name": "v2",
-							"title": "Upgrading to 2.x",
-							"externalLink": "https://github.com/twurple/twurple/releases/tag/twitch@2.0.0"
-						},
-						{
-							"name": "v4",
-							"title": "Upgrading to 4.x",
-							"externalLink": "https://github.com/twurple/twurple/releases/tag/v4.0.0"
+							"file": "pubsub/basic-usage/listening-to-topics.md"
 						}
 					]
 				}
 			]
 		},
-		"twitch-webhooks": {
-			"indexTitle": "Twitch.js WebHook Listener",
-			"indexFile": "twitch-webhooks/index.md",
+		"@twurple/webhooks": {
+			"indexTitle": "Twurple - WebHook Listener",
+			"indexFile": "webhooks/index.md",
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -185,12 +127,12 @@
 						{
 							"name": "getting-started",
 							"title": "Getting started",
-							"file": "twitch-webhooks/basic-usage/getting-started.md"
+							"file": "webhooks/basic-usage/getting-started.md"
 						},
 						{
 							"name": "listening-to-events",
 							"title": "Listening to events",
-							"file": "twitch-webhooks/basic-usage/listening-to-events.md"
+							"file": "webhooks/basic-usage/listening-to-events.md"
 						}
 					]
 				},
@@ -201,20 +143,20 @@
 						{
 							"name": "reverse-proxy",
 							"title": "Serving through a reverse proxy",
-							"file": "twitch-webhooks/special-hosting/reverse-proxy.md"
+							"file": "webhooks/special-hosting/reverse-proxy.md"
 						},
 						{
 							"name": "ngrok",
 							"title": "Testing locally using ngrok",
-							"file": "twitch-webhooks/special-hosting/ngrok.md"
+							"file": "webhooks/special-hosting/ngrok.md"
 						}
 					]
 				}
 			]
 		},
-		"twitch-eventsub": {
-			"indexTitle": "Twitch.js EventSub Listener",
-			"indexFile": "twitch-eventsub/index.md",
+		"@twurple/eventsub": {
+			"indexTitle": "Twurple - EventSub Listener",
+			"indexFile": "eventsub/index.md",
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -223,12 +165,12 @@
 						{
 							"name": "getting-started",
 							"title": "Getting started",
-							"file": "twitch-eventsub/basic-usage/getting-started.md"
+							"file": "eventsub/basic-usage/getting-started.md"
 						},
 						{
 							"name": "listening-to-events",
 							"title": "Listening to events",
-							"file": "twitch-eventsub/basic-usage/listening-to-events.md"
+							"file": "eventsub/basic-usage/listening-to-events.md"
 						}
 					]
 				},
@@ -239,20 +181,20 @@
 						{
 							"name": "reverse-proxy",
 							"title": "Serving through a reverse proxy",
-							"file": "twitch-eventsub/special-hosting/reverse-proxy.md"
+							"file": "eventsub/special-hosting/reverse-proxy.md"
 						},
 						{
 							"name": "ngrok",
 							"title": "Testing locally using ngrok",
-							"file": "twitch-eventsub/special-hosting/ngrok.md"
+							"file": "eventsub/special-hosting/ngrok.md"
 						}
 					]
 				}
 			]
 		},
-		"twitch-auth": {
-			"indexTitle": "Twitch.js Authentication Manager",
-			"indexFile": "twitch-auth/index.md",
+		"@twurple/auth": {
+			"indexTitle": "Twurple - Authentication Manager",
+			"indexFile": "auth/index.md",
 			"categories": [
 				{
 					"name": "providers",
@@ -261,30 +203,30 @@
 						{
 							"name": "static",
 							"title": "Using a fixed token",
-							"file": "twitch-auth/providers/static.md"
+							"file": "auth/providers/static.md"
 						},
 						{
 							"name": "refreshable",
 							"title": "Auto-refreshing tokens",
-							"file": "twitch-auth/providers/refreshable.md"
+							"file": "auth/providers/refreshable.md"
 						},
 						{
 							"name": "client-credentials",
 							"title": "Using app tokens",
-							"file": "twitch-auth/providers/client-credentials.md"
+							"file": "auth/providers/client-credentials.md"
 						},
 						{
 							"name": "electron",
 							"title": "For Electron apps",
-							"file": "twitch-auth/providers/electron.md"
+							"file": "auth/providers/electron.md"
 						}
 					]
 				}
 			]
 		},
-		"twitch-auth-tmi": {
-			"indexTitle": "Twitch.js - Authentication Manager for TMI.js",
-			"indexFile": "twitch-auth-tmi/index.md",
+		"@twurple/auth-tmi": {
+			"indexTitle": "Twurple - Authentication Manager for TMI.js",
+			"indexFile": "auth-tmi/index.md",
 			"categories": [
 				{
 					"name": "basic-usage",
@@ -293,14 +235,14 @@
 						{
 							"name": "client-setup",
 							"title": "Setting up a tmi.js client",
-							"file": "twitch-auth-tmi/basic-usage/client-setup.md"
+							"file": "auth-tmi/basic-usage/client-setup.md"
 						}
 					]
 				}
 			]
 		},
-		"easy-twitch-bot": {
-			"indexTitle": "Twitch.js - Bot framework"
+		"@twurple/easy-bot": {
+			"indexTitle": "Twurple - Bot framework"
 		}
 	}
 }

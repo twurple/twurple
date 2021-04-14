@@ -19,7 +19,7 @@ export interface SimpleAdapterConfig extends CommonConnectionAdapterConfig {
  *
  * @hideProtected
  */
-@rtfm('twitch-webhooks', 'SimpleAdapter')
+@rtfm('webhooks', 'SimpleAdapter')
 export class SimpleAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 

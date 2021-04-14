@@ -51,7 +51,7 @@ export interface ChannelUpdateData {
  * const channel = await api.kraken.channels.getMyChannel();
  * ```
  */
-@rtfm('twitch', 'ChannelApi')
+@rtfm('api', 'ChannelApi')
 export class ChannelApi extends BaseApi {
 	/**
 	 * Gets the channel the client is logged in to.

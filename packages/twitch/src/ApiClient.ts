@@ -57,7 +57,7 @@ export interface TwitchApiCallOptionsInternal {
  * An API client for the Twitch Kraken and Helix APIs.
  */
 @Cacheable
-@rtfm('twitch', 'ApiClient')
+@rtfm('api', 'ApiClient')
 export class ApiClient {
 	private readonly _config: ApiConfig;
 	private readonly _helixRateLimiter: HelixRateLimiter;

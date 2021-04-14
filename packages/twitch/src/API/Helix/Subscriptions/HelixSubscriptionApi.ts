@@ -22,7 +22,7 @@ import { HelixSubscriptionEvent } from './HelixSubscriptionEvent';
  * const subscription = await api.helix.subscriptions.getSubscriptionForUser('61369223', '125328655');
  * ```
  */
-@rtfm('twitch', 'HelixSubscriptionApi')
+@rtfm('api', 'HelixSubscriptionApi')
 export class HelixSubscriptionApi extends BaseApi {
 	/**
 	 * Retrieves a list of all subscriptions to a given broadcaster.

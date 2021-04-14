@@ -58,7 +58,7 @@ export interface BasicPubSubClientOptions {
 /**
  * A client for the Twitch PubSub interface.
  */
-@rtfm('twitch-pubsub-client', 'BasicPubSubClient')
+@rtfm('pubsub', 'BasicPubSubClient')
 export class BasicPubSubClient extends EventEmitter {
 	@Enumerable(false) private readonly _logger: Logger;
 

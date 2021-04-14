@@ -26,7 +26,7 @@ import { HelixWebHooksApi } from './WebHooks/HelixWebHooksApi';
  * Can be accessed using {@ApiClient#helix}.
  */
 @Cacheable
-@rtfm('twitch', 'HelixApiGroup')
+@rtfm('api', 'HelixApiGroup')
 export class HelixApiGroup extends BaseApi {
 	/**
 	 * The Helix bits API methods.

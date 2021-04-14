@@ -77,7 +77,7 @@ export interface HelixFollowFilter {
  * const user = await api.helix.users.getUserById('125328655');
  * ```
  */
-@rtfm('twitch', 'HelixUserApi')
+@rtfm('api', 'HelixUserApi')
 export class HelixUserApi extends BaseApi {
 	/**
 	 * Retrieves the user data for the given list of user IDs.

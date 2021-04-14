@@ -69,7 +69,7 @@ const numberRegex = /^\d+$/;
 /**
  * A WebHook listener you can track changes in various channel and user data with.
  */
-@rtfm('twitch-webhooks', 'WebHookListener')
+@rtfm('webhooks', 'WebHookListener')
 export class WebHookListener {
 	private _server?: Server;
 	private readonly _subscriptions = new Map<string, Subscription>();
@@ -92,7 +92,7 @@ export class WebHookListener {
 		this._adapter = adapter;
 		this._defaultHookValidity = config.hookValidity ?? adapter.overrideOptions.defaultHookValidity;
 		this._logger = new Logger({
-			name: 'twitch-webhooks',
+			name: '@twurple/webhooks',
 			emoji: true,
 			...(config.logger ?? {})
 		});

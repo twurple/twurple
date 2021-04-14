@@ -31,7 +31,7 @@ export interface PubSubBitsMessageData {
 /**
  * A message that informs about bits being used in a channel.
  */
-@rtfm<PubSubBitsMessage>('twitch-pubsub-client', 'PubSubBitsMessage', 'userId')
+@rtfm<PubSubBitsMessage>('pubsub', 'PubSubBitsMessage', 'userId')
 export class PubSubBitsMessage {
 	@Enumerable(false) private readonly _data: PubSubBitsMessageData;
 

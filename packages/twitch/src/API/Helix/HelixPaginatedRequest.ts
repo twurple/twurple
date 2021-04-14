@@ -24,7 +24,7 @@ if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
  * }
  * ```
  */
-@rtfm('twitch', 'HelixPaginatedRequest')
+@rtfm('api', 'HelixPaginatedRequest')
 export class HelixPaginatedRequest<D, T> {
 	@Enumerable(false) private readonly _client: ApiClient;
 

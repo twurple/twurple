@@ -11,7 +11,7 @@ export interface ChatBadgeSetData {
 /**
  * A set of badges.
  */
-@rtfm('twitch', 'ChatBadgeSet')
+@rtfm('api', 'ChatBadgeSet')
 export class ChatBadgeSet {
 	@Enumerable(false) private readonly _data: ChatBadgeSetData;
 

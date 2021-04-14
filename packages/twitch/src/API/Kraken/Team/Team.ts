@@ -19,7 +19,7 @@ export interface TeamData {
 /**
  * A Twitch team.
  */
-@rtfm<Team>('twitch', 'Team', 'id')
+@rtfm<Team>('api', 'Team', 'id')
 export class Team {
 	/** @private */ @Enumerable(false) protected readonly _data: TeamData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;

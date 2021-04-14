@@ -6,11 +6,11 @@ Download and install ngrok from their [download page](https://ngrok.com/download
 
 Then, add the specialized apater for it to your packages:
 
-	yarn add twitch-webhooks-ngrok
+	yarn add @twurple/webhooks-ngrok
 
 or using npm:
 
-	npm install twitch-webhooks-ngrok
+	npm install @twurple/webhooks-ngrok
 
 ## 2. Setting up the listener
 
@@ -23,4 +23,4 @@ const listener = new WebHookListener(client, new NgrokAdapter(), { hookValidity:
 
 ## 3. Listening to events
 
-Now you can continue to follow the [basic listening help](/twitch-webhooks/docs/basic-usage/listening-to-events).
+Now you can continue to follow the [basic listening help](/webhooks/docs/basic-usage/listening-to-events).

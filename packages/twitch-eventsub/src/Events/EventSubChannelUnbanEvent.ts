@@ -18,7 +18,7 @@ export interface EventSubChannelUnbanEventData {
 /**
  * An EventSub event representing a user being unbanned in a channel.
  */
-@rtfm<EventSubChannelUnbanEvent>('twitch-eventsub', 'EventSubChannelUnbanEvent', 'userId')
+@rtfm<EventSubChannelUnbanEvent>('eventsub', 'EventSubChannelUnbanEvent', 'userId')
 export class EventSubChannelUnbanEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

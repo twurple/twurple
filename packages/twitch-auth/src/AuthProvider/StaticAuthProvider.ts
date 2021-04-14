@@ -11,7 +11,7 @@ import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
  * or to plan ahead and supply only access tokens that account for all scopes
  * you will ever need.
  */
-@rtfm<StaticAuthProvider>('twitch-auth', 'StaticAuthProvider', 'clientId')
+@rtfm<StaticAuthProvider>('auth', 'StaticAuthProvider', 'clientId')
 export class StaticAuthProvider implements AuthProvider {
 	@Enumerable(false) private readonly _clientId: string;
 	@Enumerable(false) private _accessToken?: AccessToken;
@@ -78,7 +78,7 @@ export class StaticAuthProvider implements AuthProvider {
 					`This token does not have the requested scopes (${scopes.join(', ')}) and can not be upgraded.
 If you need dynamically upgrading scopes, please implement the AuthProvider interface accordingly:
 
-\thttps://d-fischer.github.io/twitch-auth/reference/interfaces/AuthProvider.html`
+\thttps://twurple.github.io/auth/reference/interfaces/AuthProvider.html`
 				);
 			}
 		}

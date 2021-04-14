@@ -46,7 +46,7 @@ export interface PubSubWhisperMessageData {
 /**
  * A message informing about a whisper being received from another user.
  */
-@rtfm<PubSubWhisperMessage>('twitch-pubsub-client', 'PubSubWhisperMessage', 'senderId')
+@rtfm<PubSubWhisperMessage>('pubsub', 'PubSubWhisperMessage', 'senderId')
 export class PubSubWhisperMessage {
 	@Enumerable(false) private readonly _data: PubSubWhisperMessageData;
 

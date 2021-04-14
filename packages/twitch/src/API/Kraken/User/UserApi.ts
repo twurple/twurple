@@ -28,7 +28,7 @@ import { UserSubscription } from './UserSubscription';
  * const user = await api.kraken.users.getUser('125328655');
  * ```
  */
-@rtfm('twitch', 'UserApi')
+@rtfm('api', 'UserApi')
 export class UserApi extends BaseApi {
 	/**
 	 * Retrieves the user data of the currently authenticated user.

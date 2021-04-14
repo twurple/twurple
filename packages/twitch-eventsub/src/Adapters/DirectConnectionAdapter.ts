@@ -27,7 +27,7 @@ export interface DirectConnectionAdapterConfig {
  *
  * @hideProtected
  */
-@rtfm('twitch-eventsub', 'DirectConnectionAdapter')
+@rtfm('eventsub', 'DirectConnectionAdapter')
 export class DirectConnectionAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	@Enumerable(false) private readonly _ssl: EventSubListenerCertificateConfig;

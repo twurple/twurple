@@ -6,7 +6,7 @@ import type { SingleUserPubSubClient } from './SingleUserPubSubClient';
 /**
  * A listener attached to a single PubSub topic.
  */
-@rtfm<PubSubListener>('twitch-pubsub-client', 'PubSubListener', 'userId')
+@rtfm<PubSubListener>('pubsub', 'PubSubListener', 'userId')
 export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	@Enumerable(false) private readonly _client: SingleUserPubSubClient;
 

@@ -28,7 +28,7 @@ export type HelixHypeTrainEventType = 'hypetrain.progression';
 /**
  * A Hype Train event.
  */
-@rtfm<HelixHypeTrainEvent>('twitch', 'HelixHypeTrainEvent', 'id')
+@rtfm<HelixHypeTrainEvent>('api', 'HelixHypeTrainEvent', 'id')
 export class HelixHypeTrainEvent {
 	@Enumerable(false) private readonly _data: HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>;
 	@Enumerable(false) private readonly _client: ApiClient;

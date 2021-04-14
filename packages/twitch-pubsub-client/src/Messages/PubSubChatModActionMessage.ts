@@ -18,7 +18,7 @@ export interface PubSubChatModActionMessageData {
 /**
  * A message that informs about a moderation action being performed in a channel.
  */
-@rtfm<PubSubChatModActionMessage>('twitch-pubsub-client', 'PubSubChatModActionMessage', 'userId')
+@rtfm<PubSubChatModActionMessage>('pubsub', 'PubSubChatModActionMessage', 'userId')
 export class PubSubChatModActionMessage {
 	@Enumerable(false) private readonly _data: PubSubChatModActionMessageData;
 

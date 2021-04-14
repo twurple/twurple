@@ -12,7 +12,7 @@ export interface HelixStreamMarkerVideoData extends HelixStreamMarkerData {
 /**
  * A stream marker, also containing some video data.
  */
-@rtfm<HelixStreamMarkerWithVideo>('twitch', 'HelixStreamMarkerWithVideo', 'id')
+@rtfm<HelixStreamMarkerWithVideo>('api', 'HelixStreamMarkerWithVideo', 'id')
 export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
 	/** @private */ protected declare readonly _data: HelixStreamMarkerVideoData;
 

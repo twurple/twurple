@@ -1,4 +1,4 @@
-# Twitch.js
+# Twurple
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-25-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -12,26 +12,28 @@ A set of libraries that aims to cover all of the existing Twitch APIs.
 
 ## Installation
 
-To add Twitch.js to your project, just execute:
+To add Twurple to your project, just execute:
 
-	yarn add twitch
+	yarn add @twurple/auth
 
 or using npm:
 
-	npm install twitch
+	npm install @twurple/auth
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://d-fischer.github.io/twitch)
+A good place to start with this library is the [documentation](https://twurple.github.io)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## Additional packages
 
-This core package only provides API and authentication functionality. All the other things are located in separate packages:
+The mentioned `@twurple/auth` package only provides authentication functionality. All the other things are located in separate packages:
 
-- [twitch-chat-client](https://d-fischer.github.io/twitch-chat-client) - connect to and interact with Twitch Chat
-- [twitch-pubsub-client](https://d-fischer.github.io/twitch-pubsub-client) - listen to events using the Twitch PubSub interface
-- [twitch-webhooks](https://d-fischer.github.io/twitch-webhooks) - listen to events using WebHooks
+- [@twurple/api](https://twurple.github.io/chat) - make calls to the Kraken and Helix APIs
+- [@twurple/chat](https://twurple.github.io/chat) - connect to and interact with Twitch Chat
+- [@twurple/pubsub](https://twurple.github.io/pubsub) - listen to events using the Twitch PubSub interface
+- [@twurple/webhooks](https://twurple.github.io/webhooks) - listen to events using WebHooks
+- [@twurple/eventsub](https://twurple.github.io/eventsub) - listen to events using EventSub
 
 ## If you're getting stuck...
 

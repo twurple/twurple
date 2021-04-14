@@ -47,7 +47,7 @@ export interface SingleUserPubSubClientOptions {
 /**
  * A higher level PubSub client attached to a single user.
  */
-@rtfm('twitch-pubsub-client', 'SingleUserPubSubClient')
+@rtfm('pubsub', 'SingleUserPubSubClient')
 export class SingleUserPubSubClient {
 	@Enumerable(false) private readonly _authProvider: AuthProvider;
 	@Enumerable(false) private readonly _pubSubClient: BasicPubSubClient;

@@ -20,7 +20,7 @@ export interface EventSubStreamOnlineEventData {
 /**
  * An EventSub event representing a stream going live.
  */
-@rtfm<EventSubStreamOnlineEvent>('twitch-eventsub', 'EventSubStreamOnlineEvent', 'broadcasterId')
+@rtfm<EventSubStreamOnlineEvent>('eventsub', 'EventSubStreamOnlineEvent', 'broadcasterId')
 export class EventSubStreamOnlineEvent {
 	@Enumerable(false) private readonly _data: EventSubStreamOnlineEventData;
 	@Enumerable(false) private readonly _client: ApiClient;

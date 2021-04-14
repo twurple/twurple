@@ -20,7 +20,7 @@ export interface EventSubChannelHypeTrainBeginEventData {
 /**
  * An EventSub event representing a Hype Train starting in a channel.
  */
-@rtfm<EventSubChannelHypeTrainBeginEvent>('twitch-eventsub', 'EventSubChannelHypeTrainBeginEvent', 'broadcasterId')
+@rtfm<EventSubChannelHypeTrainBeginEvent>('eventsub', 'EventSubChannelHypeTrainBeginEvent', 'broadcasterId')
 export class EventSubChannelHypeTrainBeginEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

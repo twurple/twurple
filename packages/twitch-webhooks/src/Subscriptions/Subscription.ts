@@ -10,7 +10,7 @@ export type SubscriptionResultType<T extends Subscription> = T extends Subscript
 /**
  * @hideProtected
  */
-@rtfm('twitch-webhooks', 'Subscription')
+@rtfm('webhooks', 'Subscription')
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export abstract class Subscription</** @private */ T = any> {
 	private _verified: boolean = false;

@@ -14,7 +14,7 @@ export interface TeamWithUsersData extends TeamData {
  *
  * @inheritDoc
  */
-@rtfm<TeamWithUsers>('twitch', 'TeamWithUsers', 'id')
+@rtfm<TeamWithUsers>('api', 'TeamWithUsers', 'id')
 export class TeamWithUsers extends Team {
 	/** @private */ protected declare readonly _data: TeamWithUsersData;
 

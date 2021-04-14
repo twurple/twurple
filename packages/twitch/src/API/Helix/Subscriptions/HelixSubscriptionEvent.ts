@@ -30,7 +30,7 @@ export type HelixSubscriptionEventData = HelixEventData<HelixSubscriptionData, H
 /**
  * An event that indicates the change of a subscription status, i.e. subscribing, unsubscribing or sending the monthly notification.
  */
-@rtfm<HelixSubscriptionEvent>('twitch', 'HelixSubscriptionEvent', 'userId')
+@rtfm<HelixSubscriptionEvent>('api', 'HelixSubscriptionEvent', 'userId')
 export class HelixSubscriptionEvent extends HelixSubscription {
 	private readonly _eventData: HelixSubscriptionEventData;
 

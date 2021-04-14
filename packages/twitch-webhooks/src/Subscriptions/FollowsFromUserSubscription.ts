@@ -7,7 +7,7 @@ import { Subscription } from './Subscription';
 /**
  * @private
  */
-@rtfm('twitch-webhooks', 'Subscription')
+@rtfm('webhooks', 'Subscription')
 export class FollowsFromUserSubscription extends Subscription<HelixFollow> {
 	constructor(
 		handler: (data: HelixFollow) => void,

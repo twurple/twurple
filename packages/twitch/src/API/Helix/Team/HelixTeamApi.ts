@@ -19,7 +19,7 @@ import { HelixTeamWithUsers } from './HelixTeamWithUsers';
  * const tags = await api.helix.teams.getChannelTeams('125328655');
  * ```
  */
-@rtfm('twitch', 'HelixTeamApi')
+@rtfm('api', 'HelixTeamApi')
 export class HelixTeamApi extends BaseApi {
 	/**
 	 * Retrieves a list of all teams a broadcaster is a member of.

@@ -19,7 +19,7 @@ export interface HelixTeamData {
 /**
  * A Stream Team.
  */
-@rtfm<HelixTeam>('twitch', 'HelixTeam', 'id')
+@rtfm<HelixTeam>('api', 'HelixTeam', 'id')
 export class HelixTeam {
 	/** @private */
 	@Enumerable(false) protected readonly _data: HelixTeamData;

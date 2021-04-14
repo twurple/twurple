@@ -48,7 +48,7 @@ export interface HelixModeratorFilter extends HelixForwardPagination {
  * const { data: users } = await api.helix.moderation.getBannedUsers('61369223');
  * ```
  */
-@rtfm('twitch', 'HelixModerationApi')
+@rtfm('api', 'HelixModerationApi')
 export class HelixModerationApi extends BaseApi {
 	/**
 	 * Retrieves a list of banned users in a given channel.

@@ -6,7 +6,7 @@ import { rtfm } from '@twurple/common';
  * A user in chat.
  */
 @Cacheable
-@rtfm<ChatUser>('twitch-chat-client', 'ChatUser', 'userId')
+@rtfm<ChatUser>('chat', 'ChatUser', 'userId')
 export class ChatUser {
 	@Enumerable(false) private readonly _userData: Map<string, string>;
 	private readonly _userName: string;

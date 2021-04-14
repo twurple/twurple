@@ -7,11 +7,11 @@ Download and install ngrok from their [download page](https://ngrok.com/download
 
 Then, add the specialized apater for it to your packages:
 
-    yarn add twitch-eventsub-ngrok
+    yarn add @twurple/eventsub-ngrok
 
 or using npm:
 
-    npm install twitch-eventsub-ngrok
+    npm install @twurple/eventsub-ngrok
 
 ## 2. Setting up the listener
 
@@ -23,4 +23,4 @@ const listener = new EventSubListener(client, new NgrokAdapter(), 'thisShouldBeA
 
 ## 3. Listening to events
 
-Now you can continue to follow the [basic listening help](/twitch-eventsub/docs/basic-usage/listening-to-events).
+Now you can continue to follow the [basic listening help](/eventsub/docs/basic-usage/listening-to-events).

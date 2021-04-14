@@ -58,7 +58,7 @@ export interface VideoData {
 /**
  * A Twitch video.
  */
-@rtfm<Video>('twitch', 'Video', 'id')
+@rtfm<Video>('api', 'Video', 'id')
 export class Video {
 	/** @private */
 	@Enumerable(false) private readonly _data: VideoData;

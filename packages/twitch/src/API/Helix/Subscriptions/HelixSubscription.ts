@@ -23,7 +23,7 @@ export interface HelixSubscriptionData {
 /**
  * A (paid) subscription of a user to a broadcaster.
  */
-@rtfm<HelixSubscription>('twitch', 'HelixSubscription', 'userId')
+@rtfm<HelixSubscription>('api', 'HelixSubscription', 'userId')
 export class HelixSubscription {
 	@Enumerable(false) private readonly _data: HelixSubscriptionData;
 	@Enumerable(false) private readonly _client: ApiClient;

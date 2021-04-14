@@ -1,14 +1,14 @@
-# Twitch.js - Bot framework
+# Twurple - Bot framework
 
 A simplified framework to get a chat bot running easily.
 
 ## Installation
 
-	yarn add easy-twitch-bot
+	yarn add @twurple/easy-bot
 
 or using npm:
 
-	npm install easy-twitch-bot
+	npm install @twurple/easy-bot
 
 ## Example
 

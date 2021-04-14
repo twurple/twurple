@@ -13,7 +13,7 @@ export interface TokenInfoData {
 /**
  * Information about an access token.
  */
-@rtfm<TokenInfo>('twitch-auth', 'TokenInfo', 'clientId')
+@rtfm<TokenInfo>('auth', 'TokenInfo', 'clientId')
 export class TokenInfo {
 	private readonly _obtainmentDate: Date;
 	@Enumerable(false) private readonly _data: TokenInfoData;

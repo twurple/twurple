@@ -53,7 +53,7 @@ export interface HelixBitsLeaderboardQuery {
  * const leaderboard = await api.helix.bits.getLeaderboard({ period: 'day' });
  * ```
  */
-@rtfm('twitch', 'HelixBitsApi')
+@rtfm('api', 'HelixBitsApi')
 export class HelixBitsApi extends BaseApi {
 	/**
 	 * Retrieves a bits leaderboard of your channel.

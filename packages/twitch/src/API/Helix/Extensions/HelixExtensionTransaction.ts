@@ -24,7 +24,7 @@ export interface HelixExtensionTransactionData {
 /**
  * A bits transaction made inside an extension.
  */
-@rtfm<HelixExtensionTransaction>('twitch', 'HelixExtensionTransaction', 'id')
+@rtfm<HelixExtensionTransaction>('api', 'HelixExtensionTransaction', 'id')
 export class HelixExtensionTransaction {
 	@Enumerable(false) private readonly _data: HelixExtensionTransactionData;
 	@Enumerable(false) private readonly _client: ApiClient;

@@ -17,7 +17,7 @@ export interface HelixFollowData {
 /**
  * A relation of a user following a broadcaster.
  */
-@rtfm('twitch', 'HelixFollow')
+@rtfm('api', 'HelixFollow')
 export class HelixFollow {
 	@Enumerable(false) private readonly _data: HelixFollowData;
 	@Enumerable(false) private readonly _client: ApiClient;

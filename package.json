@@ -3,7 +3,7 @@
     "packages/*"
   ],
   "private": true,
-  "name": "twitch-workspace",
+  "name": "twurple-workspace",
   "repository": "github:twurple/twurple",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",

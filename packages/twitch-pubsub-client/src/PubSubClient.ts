@@ -17,7 +17,7 @@ import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 /**
  * A high level PubSub client attachable to a multiple users.
  */
-@rtfm('twitch-pubsub-client', 'PubSubClient')
+@rtfm('pubsub', 'PubSubClient')
 export class PubSubClient {
 	@Enumerable(false) private readonly _rootClient: BasicPubSubClient;
 	@Enumerable(false) private readonly _userClients = new Map<string, SingleUserPubSubClient>();

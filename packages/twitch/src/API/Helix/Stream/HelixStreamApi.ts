@@ -85,7 +85,7 @@ interface HelixStreamGetMarkersResult {
  * const stream = await api.helix.streams.getStreamByUserId('125328655');
  * ```
  */
-@rtfm('twitch', 'HelixStreamApi')
+@rtfm('api', 'HelixStreamApi')
 export class HelixStreamApi extends BaseApi {
 	/**
 	 * Retrieves a list of streams.

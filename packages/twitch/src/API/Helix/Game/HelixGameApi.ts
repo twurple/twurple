@@ -24,7 +24,7 @@ type HelixGameFilterType = 'id' | 'name';
  * const game = await api.helix.games.getGameByName('Hearthstone');
  * ```
  */
-@rtfm('twitch', 'HelixGameApi')
+@rtfm('api', 'HelixGameApi')
 export class HelixGameApi extends BaseApi {
 	/**
 	 * Retrieves the game data for the given list of game IDs.

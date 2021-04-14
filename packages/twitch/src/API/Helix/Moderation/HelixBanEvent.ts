@@ -36,7 +36,7 @@ export type HelixBanEventData = HelixEventData<HelixBanEventDetail, HelixBanEven
  *
  * @inheritDoc
  */
-@rtfm<HelixBanEvent>('twitch', 'HelixBanEvent', 'userId')
+@rtfm<HelixBanEvent>('api', 'HelixBanEvent', 'userId')
 export class HelixBanEvent extends HelixBan {
 	@Enumerable(false) private readonly _eventData: HelixBanEventData;
 

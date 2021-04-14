@@ -21,11 +21,7 @@ export interface EventSubChannelHypeTrainProgressEventData {
 /**
  * An EventSub event representing progress towards the Hype Train goal.
  */
-@rtfm<EventSubChannelHypeTrainProgressEvent>(
-	'twitch-eventsub',
-	'EventSubChannelHypeTrainProgressEvent',
-	'broadcasterId'
-)
+@rtfm<EventSubChannelHypeTrainProgressEvent>('eventsub', 'EventSubChannelHypeTrainProgressEvent', 'broadcasterId')
 export class EventSubChannelHypeTrainProgressEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

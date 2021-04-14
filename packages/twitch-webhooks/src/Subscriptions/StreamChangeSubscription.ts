@@ -7,7 +7,7 @@ import { Subscription } from './Subscription';
 /**
  * @private
  */
-@rtfm('twitch-webhooks', 'Subscription')
+@rtfm('webhooks', 'Subscription')
 export class StreamChangeSubscription extends Subscription<HelixStream | undefined> {
 	constructor(
 		handler: (data: HelixStream | undefined) => void,

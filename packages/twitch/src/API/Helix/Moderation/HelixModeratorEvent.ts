@@ -33,7 +33,7 @@ export type HelixModeratorEventData = HelixEventData<HelixModeratorEventDetail, 
 /**
  * An event that indicates the change of a moderator status, i.e. gaining or losing moderation privileges.
  */
-@rtfm<HelixModeratorEvent>('twitch', 'HelixModeratorEvent', 'userId')
+@rtfm<HelixModeratorEvent>('api', 'HelixModeratorEvent', 'userId')
 export class HelixModeratorEvent extends HelixModerator {
 	private readonly _eventData: HelixModeratorEventData;
 
