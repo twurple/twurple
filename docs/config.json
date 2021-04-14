@@ -2,7 +2,6 @@
 	"inputDirs": ["src", "types"],
 	"outputDir": "generatedDocs",
 	"mode": "html",
-	"prettier": true,
 	"routerMode": "htmlSuffix",
 	"repoUser": "twurple",
 	"repoName": "twurple",
