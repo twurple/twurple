@@ -1,6 +1,9 @@
 {
   "name": "@twurple/auth-tmi",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Use tmi.js with the benefits of the @twurple/auth authentication providers.",
   "keywords": [
     "twitch",

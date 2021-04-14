@@ -1,6 +1,9 @@
 {
   "name": "@twurple/common",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Common functions used by the `@twurple` library family.",
   "keywords": [
     "twitch",

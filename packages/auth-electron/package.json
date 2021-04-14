@@ -1,6 +1,9 @@
 {
   "name": "@twurple/auth-electron",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Obtain auth tokens for Twitch using an Electron popup.",
   "keywords": [
     "twitch",

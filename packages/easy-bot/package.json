@@ -1,6 +1,9 @@
 {
   "name": "@twurple/easy-bot",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "A simplified framework to get a chat bot running easily.",
   "keywords": [
     "twitch",

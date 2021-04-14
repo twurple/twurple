@@ -1,6 +1,9 @@
 {
   "name": "@twurple/api",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Interact with Twitch's API.",
   "keywords": [
     "twitch",

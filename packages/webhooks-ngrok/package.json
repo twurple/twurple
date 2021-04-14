@@ -1,6 +1,9 @@
 {
   "name": "@twurple/webhooks-ngrok",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Test your WebHooks locally using ngrok.",
   "keywords": [
     "twitch",

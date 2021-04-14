@@ -1,6 +1,9 @@
 {
   "name": "@twurple/api-call",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "A light wrapper around the Twitch API.",
   "keywords": [
     "twitch",

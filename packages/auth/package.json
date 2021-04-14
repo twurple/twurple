@@ -1,6 +1,9 @@
 {
   "name": "@twurple/auth",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Authenticate with Twitch and stop caring about refreshing tokens.",
   "keywords": [
     "twitch",

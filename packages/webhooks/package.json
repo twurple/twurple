@@ -1,6 +1,9 @@
 {
   "name": "@twurple/webhooks",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Listen to events on Twitch via their WebHooks API.",
   "keywords": [
     "twitch",

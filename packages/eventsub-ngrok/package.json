@@ -1,6 +1,9 @@
 {
   "name": "@twurple/eventsub-ngrok",
   "version": "5.0.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
   "description": "Test your EventSub listener locally using ngrok.",
   "keywords": [
     "twitch",
