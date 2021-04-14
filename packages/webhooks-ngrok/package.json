@@ -1,0 +1,56 @@
+{
+  "name": "@twurple/webhooks-ngrok",
+  "version": "5.0.0-pre.2",
+  "description": "Test your WebHooks locally using ngrok.",
+  "keywords": [
+    "twitch",
+    "webhooks",
+    "stream",
+    "bot",
+    "events",
+    "ngrok"
+  ],
+  "sideEffects": false,
+  "main": "lib",
+  "types": "lib",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twurple/twurple.git",
+    "directory": "packages/webhooks-ngrok"
+  },
+  "homepage": "https://twurple.github.io/webhooks",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
+  "license": "MIT",
+  "dependencies": {
+    "@d-fischer/portfinder": "^1.0.28",
+    "@d-fischer/shared-utils": "^3.0.1",
+    "ngrok": "^3.4.0",
+    "tslib": "^2.0.3"
+  },
+  "devDependencies": {
+    "@twurple/api": "^5.0.0-pre.2",
+    "@twurple/webhooks": "^5.0.0-pre.2"
+  },
+  "peerDependencies": {
+    "@twurple/api": "^5.0.0",
+    "@twurple/webhooks": "^5.0.0"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "!lib/**/*.d.ts.map",
+    "es"
+  ],
+  "scripts": {
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
+  }
+}

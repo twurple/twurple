@@ -1,0 +1,41 @@
+{
+  "name": "@twurple/easy-bot",
+  "version": "5.0.0-pre.2",
+  "description": "A simplified framework to get a chat bot running easily.",
+  "keywords": [
+    "twitch",
+    "tmi",
+    "stream",
+    "chat",
+    "bot",
+    "events"
+  ],
+  "sideEffects": false,
+  "main": "lib",
+  "types": "lib",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twurple/twurple.git",
+    "directory": "packages/easy-bot"
+  },
+  "homepage": "https://twurple.github.io/easy-bot",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
+  "license": "MIT",
+  "dependencies": {
+    "@d-fischer/shared-utils": "^3.0.1",
+    "@twurple/auth": "^5.0.0-pre.2",
+    "@twurple/chat": "^5.0.0-pre.2",
+    "tslib": "^2.0.3"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "!lib/**/*.d.ts.map"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "rebuild": "rimraf lib && yarn run build"
+  }
+}
