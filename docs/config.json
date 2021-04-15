@@ -5,20 +5,15 @@
 	"routerMode": "htmlSuffix",
 	"repoUser": "twurple",
 	"repoName": "twurple",
+	"packageScope": "twurple",
 	"monorepoRoot": "packages",
-	"mainPackage": "@twurple/api",
+	"mainPackage": "api",
 	"mainBranchName": "main",
 	"versionBranchPrefix": "versions/",
 	"versionFolder": "versions",
-	"ignoredPackages": [
-		"@twurple/auth-electron",
-		"@twurple/webhooks-ngrok",
-		"@twurple/eventsub-ngrok",
-		"@twurple/api-call",
-		"@twurple/common"
-	],
+	"ignoredPackages": ["auth-electron", "webhooks-ngrok", "eventsub-ngrok", "api-call", "common"],
 	"packages": {
-		"@twurple/api": {
+		"api": {
 			"indexTitle": "Welcome to Twurple",
 			"indexFile": "api/index.md",
 			"categories": [
@@ -50,7 +45,7 @@
 				}
 			]
 		},
-		"@twurple/chat": {
+		"chat": {
 			"indexTitle": "Twurple - Chat Client",
 			"indexFile": "chat/index.md",
 			"categories": [
@@ -93,7 +88,7 @@
 				}
 			]
 		},
-		"@twurple/pubsub": {
+		"pubsub": {
 			"indexTitle": "Twurple - PubSub Client",
 			"indexFile": "pubsub/index.md",
 			"categories": [
@@ -115,7 +110,7 @@
 				}
 			]
 		},
-		"@twurple/webhooks": {
+		"webhooks": {
 			"indexTitle": "Twurple - WebHook Listener",
 			"indexFile": "webhooks/index.md",
 			"categories": [
@@ -153,7 +148,7 @@
 				}
 			]
 		},
-		"@twurple/eventsub": {
+		"eventsub": {
 			"indexTitle": "Twurple - EventSub Listener",
 			"indexFile": "eventsub/index.md",
 			"categories": [
@@ -191,7 +186,7 @@
 				}
 			]
 		},
-		"@twurple/auth": {
+		"auth": {
 			"indexTitle": "Twurple - Authentication Manager",
 			"indexFile": "auth/index.md",
 			"categories": [
@@ -223,7 +218,7 @@
 				}
 			]
 		},
-		"@twurple/auth-tmi": {
+		"auth-tmi": {
 			"indexTitle": "Twurple - Authentication Manager for TMI.js",
 			"indexFile": "auth-tmi/index.md",
 			"categories": [
@@ -240,7 +235,7 @@
 				}
 			]
 		},
-		"@twurple/easy-bot": {
+		"easy-bot": {
 			"indexTitle": "Twurple - Bot framework"
 		}
 	}
