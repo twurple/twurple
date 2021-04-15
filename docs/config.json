@@ -11,7 +11,7 @@
 	"mainBranchName": "main",
 	"versionBranchPrefix": "versions/",
 	"versionFolder": "versions",
-	"ignoredPackages": ["auth-electron", "webhooks-ngrok", "eventsub-ngrok", "api-call", "common"],
+	"ignoredPackages": ["auth-electron", "webhooks-ngrok", "eventsub-ngrok", "api-call"],
 	"packages": {
 		"api": {
 			"indexTitle": "Welcome to Twurple",
