@@ -232,10 +232,10 @@
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-"@d-fischer/shared-utils@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-3.0.1.tgz#f66ce592d172c6c1aac51a866cbb7e18de381a7d"
-  integrity sha512-q+ipJ0HN1SeC9MXYLpZvtNjNwaEhqmVK0pquaEjWWAZGntEzTQ1KugBUHeYo04dPdOCh7Eovn/hp1mvobc0rgg==
+"@d-fischer/shared-utils@^3.0.1", "@d-fischer/shared-utils@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/shared-utils/-/shared-utils-3.1.1.tgz#77491f05e0124857339c5cd2ce7db07a5519c7b2"
+  integrity sha512-5BUoGTBpMVw2nF8mIElhX8IXnfnl9ZNMdjQyJYFOcOQjbu+26ej0Nyq8mNipDImLIigzxaIznCv3RUCbZ3qnIg==
   dependencies:
     "@types/node" "^14.11.2"
     tslib "^2.0.3"

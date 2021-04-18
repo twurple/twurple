@@ -1,4 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
+import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 
 /** @private */
@@ -15,7 +15,10 @@ export interface AccessTokenData {
 @rtfm('auth', 'AccessToken')
 export class AccessToken {
 	@Enumerable(false) private readonly _data: AccessTokenData;
-	private readonly _obtainmentDate: Date;
+	@Enumerable(false) private readonly _obtainmentDate: Date;
+
+	// expire a bit before Twitch says it does, a minute by default
+	private _expiryGracePeriod = 60000;
 
 	/** @private */
 	constructor(data: AccessTokenData, obtainmentDate?: Date) {
@@ -38,23 +41,43 @@ export class AccessToken {
 	}
 
 	/**
+	 * The time, in seconds from the obtainment date, when the access token expires.
+	 *
+	 * May be `null`, in which case the token does not expire.
+	 * This can only be the case with very old Client IDs.
+	 *
+	 * This does **not** honor the expiry grace period; it contains the exact value from Twitch.
+	 */
+	get expiresIn(): number | null {
+		return this._data.expires_in ?? null;
+	}
+
+	/**
+	 * The date when the token was obtained.
+	 */
+	get obtainmentDate(): Date {
+		return this._obtainmentDate;
+	}
+
+	/**
 	 * The time when the access token will expire.
 	 *
 	 * May be `null`, in which case the token does not expire.
 	 * This can only be the case with very old Client IDs.
+	 *
+	 * This honors the expiry grace period (1 minute by default).
 	 */
 	get expiryDate(): Date | null {
-		if (!this._data.expires_in) {
-			return null;
-		}
-		return new Date(this._obtainmentDate.getTime() + this._data.expires_in * 1000);
+		return mapNullable(this.expiryMillis, _ => new Date(_));
 	}
 
+	/**
+	 * Whether the token is expired.
+	 *
+	 * This honors the expiry grace period (1 minute by default).
+	 */
 	get isExpired(): boolean {
-		if (!this._data.expires_in) {
-			return false;
-		}
-		return Date.now() > this._obtainmentDate.getTime() + this._data.expires_in * 1000;
+		return mapNullable(this.expiryMillis, _ => Date.now() > _) ?? false;
 	}
 
 	/**
@@ -62,5 +85,21 @@ export class AccessToken {
 	 */
 	get scope(): string[] {
 		return this._data.scope ?? [];
+	}
+
+	/**
+	 * Changes the grace period in which the access token is considered expired before Twitch says it does, in milliseconds.
+	 *
+	 * @param millis The length of the grace period.
+	 */
+	setExpiryGracePeriod(millis: number): void {
+		this._expiryGracePeriod = millis;
+	}
+
+	private get expiryMillis() {
+		return mapNullable(
+			this._data.expires_in,
+			_ => this._obtainmentDate.getTime() + _ * 1000 - this._expiryGracePeriod
+		);
 	}
 }
