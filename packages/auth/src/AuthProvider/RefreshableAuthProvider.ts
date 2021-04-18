@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import type { AccessToken } from '../AccessToken';
+import { accessTokenIsExpired } from '../AccessToken';
 import { refreshUserToken } from '../helpers';
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
@@ -98,7 +99,7 @@ export class RefreshableAuthProvider implements AuthProvider {
 				if (now < this._initialExpiry) {
 					return oldToken;
 				}
-			} else if (!oldToken.isExpired) {
+			} else if (!accessTokenIsExpired(oldToken)) {
 				return oldToken;
 			}
 		}
@@ -119,7 +120,7 @@ export class RefreshableAuthProvider implements AuthProvider {
 	async refresh(): Promise<AccessToken> {
 		const tokenData = await refreshUserToken(this.clientId, this._clientSecret, this._refreshToken);
 		this.setAccessToken(tokenData);
-		this._refreshToken = tokenData.refreshToken;
+		this._refreshToken = tokenData.refreshToken!;
 		this._initialExpiry = undefined;
 
 		if (this._onRefresh) {

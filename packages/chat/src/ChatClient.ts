@@ -10,7 +10,7 @@ import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { delay, Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
-import { getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from '@twurple/auth';
+import { accessTokenIsExpired, getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from '@twurple/auth';
 import type { CommercialLength } from '@twurple/common';
 import { rtfm } from '@twurple/common';
 import type { WebSocketConnectionOptions } from 'ircv3';
@@ -2220,7 +2220,7 @@ Please note that your whispers might not arrive reliably if your bot is not a kn
 			return undefined;
 		}
 
-		if (this._authToken && !this._authToken.isExpired && this._authVerified) {
+		if (this._authToken && !accessTokenIsExpired(this._authToken) && this._authVerified) {
 			this._chatLogger.debug('AccessToken assumed to be correct from last connection');
 			return `oauth:${this._authToken.accessToken}`;
 		}

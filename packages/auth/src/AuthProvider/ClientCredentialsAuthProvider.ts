@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import type { AccessToken } from '../AccessToken';
+import { accessTokenIsExpired } from '../AccessToken';
 import { getAppToken } from '../helpers';
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
@@ -47,7 +48,7 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 			);
 		}
 
-		if (!this._token || this._token.isExpired) {
+		if (!this._token || accessTokenIsExpired(this._token)) {
 			return this.refresh();
 		}
 

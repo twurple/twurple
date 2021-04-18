@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
-import { AccessToken } from '../AccessToken';
+import type { AccessToken } from '../AccessToken';
 import { getTokenInfo } from '../helpers';
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
@@ -31,6 +31,10 @@ export class StaticAuthProvider implements AuthProvider {
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param scopes The scopes the supplied token has.
 	 * @param tokenType The type of the supplied token.
+	 *
+	 * This has to match with the actual type of the token. If it doesn't match, the behavior is undefined.
+	 *
+	 * The Client Credentials flow only produces app tokens, while the other flows produce user tokens.
 	 */
 	constructor(
 		clientId: string,
@@ -43,11 +47,13 @@ export class StaticAuthProvider implements AuthProvider {
 		if (accessToken) {
 			this._accessToken =
 				typeof accessToken === 'string'
-					? new AccessToken({
-							access_token: accessToken,
-							scope: scopes,
-							refresh_token: ''
-					  })
+					? {
+							accessToken,
+							refreshToken: null,
+							scope: scopes ?? [],
+							expiresIn: null,
+							obtainmentDate: new Date()
+					  }
 					: accessToken;
 			this._scopes = scopes;
 		}

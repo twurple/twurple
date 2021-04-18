@@ -10,7 +10,7 @@ import {
 } from '@twurple/api-call';
 
 import type { AuthProvider, TokenInfoData } from '@twurple/auth';
-import { InvalidTokenError, TokenInfo } from '@twurple/auth';
+import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
 
 import { BadgesApi } from './API/Badges/BadgesApi';
@@ -116,7 +116,7 @@ export class ApiClient {
 			return callTwitchApi<T>(options, authProvider.clientId, undefined, this._config.fetchOptions);
 		}
 
-		if (accessToken.isExpired && authProvider.refresh) {
+		if (accessTokenIsExpired(accessToken) && authProvider.refresh) {
 			const newAccessToken = await authProvider.refresh();
 			if (newAccessToken) {
 				accessToken = newAccessToken;

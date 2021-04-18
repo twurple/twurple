@@ -1,11 +1,29 @@
 import type { Logger } from '@d-fischer/logger';
 import { callTwitchApi, HttpStatusCodeError, TwitchApiCallType } from '@twurple/api-call';
-import type { AccessTokenData } from './AccessToken';
-import { AccessToken } from './AccessToken';
+import type { AccessToken } from './AccessToken';
 import type { AuthProvider } from './AuthProvider/AuthProvider';
 import { InvalidTokenError } from './Errors/InvalidTokenError';
 import type { TokenInfoData } from './TokenInfo';
 import { TokenInfo } from './TokenInfo';
+
+/** @private */
+interface AccessTokenData {
+	access_token: string;
+	refresh_token: string;
+	expires_in?: number;
+	scope?: string[];
+}
+
+/** @private */
+function createAccessTokenFromData(data: AccessTokenData): AccessToken {
+	return {
+		accessToken: data.access_token,
+		refreshToken: data.refresh_token || null,
+		scope: data.scope ?? [],
+		expiresIn: data.expires_in ?? null,
+		obtainmentDate: new Date()
+	};
+}
 
 /**
  * Retrieves an access token with your client credentials and an authorization code.
@@ -21,7 +39,7 @@ export async function exchangeCode(
 	code: string,
 	redirectUri: string
 ): Promise<AccessToken> {
-	return new AccessToken(
+	return createAccessTokenFromData(
 		await callTwitchApi<AccessTokenData>({
 			type: TwitchApiCallType.Auth,
 			url: 'token',
@@ -45,7 +63,7 @@ export async function exchangeCode(
  * @param clientSecret
  */
 export async function getAppToken(clientId: string, clientSecret: string): Promise<AccessToken> {
-	return new AccessToken(
+	return createAccessTokenFromData(
 		await callTwitchApi<AccessTokenData>({
 			type: TwitchApiCallType.Auth,
 			url: 'token',
@@ -71,7 +89,7 @@ export async function refreshUserToken(
 	clientSecret: string,
 	refreshToken: string
 ): Promise<AccessToken> {
-	return new AccessToken(
+	return createAccessTokenFromData(
 		await callTwitchApi<AccessTokenData>({
 			type: TwitchApiCallType.Auth,
 			url: 'token',

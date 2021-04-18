@@ -1,8 +1,7 @@
 /// <reference lib="dom" />
 
 import { parse, stringify } from '@d-fischer/qs';
-import type { AuthProvider, AuthProviderTokenType } from '@twurple/auth';
-import { AccessToken } from '@twurple/auth';
+import type { AccessToken, AuthProvider, AuthProviderTokenType } from '@twurple/auth';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { BrowserWindow } from 'electron';
 import type {
@@ -160,11 +159,13 @@ export class ElectronAuthProvider implements AuthProvider {
 						for (const scope of scopes!) {
 							this._currentScopes.add(scope);
 						}
-						this._accessToken = new AccessToken({
-							access_token: accessToken,
+						this._accessToken = {
+							accessToken,
 							scope: this.currentScopes,
-							refresh_token: ''
-						});
+							refreshToken: null,
+							expiresIn: null,
+							obtainmentDate: new Date()
+						};
 						this._allowUserChange = false;
 						resolve(this._accessToken);
 					}

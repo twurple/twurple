@@ -1,5 +1,5 @@
-export { AccessToken } from './AccessToken';
-export type { AccessTokenData } from './AccessToken';
+export type { AccessToken } from './AccessToken';
+export { accessTokenIsExpired, getExpiryDateOfAccessToken } from './AccessToken';
 
 export {
 	exchangeCode,
