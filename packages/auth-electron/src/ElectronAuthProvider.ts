@@ -164,7 +164,7 @@ export class ElectronAuthProvider implements AuthProvider {
 							scope: this.currentScopes,
 							refreshToken: null,
 							expiresIn: null,
-							obtainmentDate: new Date()
+							obtainmentTimestamp: Date.now()
 						};
 						this._allowUserChange = false;
 						resolve(this._accessToken);
@@ -177,9 +177,5 @@ export class ElectronAuthProvider implements AuthProvider {
 			// do this last so there is no race condition
 			void authWindow.loadURL(authUrl);
 		});
-	}
-
-	setAccessToken(token: AccessToken): void {
-		this._accessToken = token;
 	}
 }

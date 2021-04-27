@@ -62,11 +62,6 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 		return (this._token = await getAppToken(this._clientId, this._clientSecret));
 	}
 
-	/** @private */
-	setAccessToken(token: AccessToken): void {
-		this._token = token;
-	}
-
 	/**
 	 * The client ID.
 	 */

@@ -21,7 +21,7 @@ function createAccessTokenFromData(data: AccessTokenData): AccessToken {
 		refreshToken: data.refresh_token || null,
 		scope: data.scope ?? [],
 		expiresIn: data.expires_in ?? null,
-		obtainmentDate: new Date()
+		obtainmentTimestamp: Date.now()
 	};
 }
 
@@ -190,4 +190,45 @@ export async function getValidTokenFromProvider(
 	}
 
 	throw lastTokenError ?? new Error('Could not retrieve a valid token');
+}
+
+/**
+ * Compares scopes for a non-upgradable `AuthProvider` instance.
+ *
+ * @param scopesToCompare The scopes to compare against.
+ * @param requestedScopes The scopes you requested.
+ */
+export function compareScopes(scopesToCompare: string[], requestedScopes?: string[]): void {
+	if (requestedScopes?.some(scope => !scopesToCompare.includes(scope))) {
+		throw new Error(
+			`This token does not have the requested scopes (${requestedScopes.join(', ')}) and can not be upgraded.
+If you need dynamically upgrading scopes, please implement the AuthProvider interface accordingly:
+
+\thttps://twurple.github.io/auth/reference/interfaces/AuthProvider.html`
+		);
+	}
+}
+
+/**
+ * Compares scopes for a non-upgradable `AuthProvider` instance, loading them from the token if necessary.
+ *
+ * @param clientId The client ID of your application.
+ * @param token The access token.
+ * @param loadedScopes The scopes that were already loaded.
+ * @param requestedScopes The scopes you requested.
+ */
+export async function loadAndCompareScopes(
+	clientId: string,
+	token: string,
+	loadedScopes?: string[],
+	requestedScopes?: string[]
+): Promise<string[] | undefined> {
+	if (requestedScopes?.length) {
+		const scopesToCompare = loadedScopes ?? (await getTokenInfo(token, clientId)).scopes;
+		compareScopes(scopesToCompare, requestedScopes);
+
+		return scopesToCompare;
+	}
+
+	return loadedScopes;
 }

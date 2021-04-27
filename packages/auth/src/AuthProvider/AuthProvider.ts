@@ -46,10 +46,7 @@ export interface AuthProvider {
 	 *
 	 * @param scopes The requested scope(s).
 	 */
-	getAccessToken: (scopes?: string | string[]) => Promise<AccessToken | null>;
-
-	/** @private */
-	setAccessToken: (token: AccessToken) => void;
+	getAccessToken: (scopes?: string[]) => Promise<AccessToken | null>;
 
 	/**
 	 * Requests that the provider fetches a new token from Twitch.

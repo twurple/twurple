@@ -1,4 +1,4 @@
-export type { AccessToken } from './AccessToken';
+export type { AccessToken, ExpireableAccessToken } from './AccessToken';
 export { accessTokenIsExpired, getExpiryDateOfAccessToken } from './AccessToken';
 
 export {
@@ -15,8 +15,8 @@ export type { TokenInfoData } from './TokenInfo';
 
 export type { AuthProvider, AuthProviderTokenType } from './AuthProvider/AuthProvider';
 export { ClientCredentialsAuthProvider } from './AuthProvider/ClientCredentialsAuthProvider';
-export { RefreshableAuthProvider } from './AuthProvider/RefreshableAuthProvider';
-export type { RefreshConfig } from './AuthProvider/RefreshableAuthProvider';
+export { RefreshingAuthProvider } from './AuthProvider/RefreshingAuthProvider';
+export type { RefreshConfig } from './AuthProvider/RefreshingAuthProvider';
 export { StaticAuthProvider } from './AuthProvider/StaticAuthProvider';
 
 export { InvalidTokenError } from './Errors/InvalidTokenError';

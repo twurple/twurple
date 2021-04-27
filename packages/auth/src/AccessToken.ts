@@ -30,16 +30,21 @@ export interface AccessToken {
 	expiresIn: number | null;
 
 	/**
-	 * The date when the token was obtained.
+	 * The date when the token was obtained, in epoch milliseconds.
 	 */
-	obtainmentDate: Date;
+	obtainmentTimestamp: number;
 }
+
+/**
+ * The part of an access token that is required to calculate expiredness.
+ */
+export type ExpireableAccessToken = Pick<AccessToken, 'expiresIn' | 'obtainmentTimestamp'>;
 
 // one minute
 const EXPIRY_GRACE_PERIOD = 60000;
 
-function getExpiryMillis(token: AccessToken) {
-	return mapNullable(token.expiresIn, _ => token.obtainmentDate.getTime() + _ * 1000 - EXPIRY_GRACE_PERIOD);
+function getExpiryMillis(token: ExpireableAccessToken) {
+	return mapNullable(token.expiresIn, _ => token.obtainmentTimestamp + _ * 1000 - EXPIRY_GRACE_PERIOD);
 }
 
 /**
@@ -52,7 +57,7 @@ function getExpiryMillis(token: AccessToken) {
  *
  * @param token The access token.
  */
-export function getExpiryDateOfAccessToken(token: AccessToken): Date | null {
+export function getExpiryDateOfAccessToken(token: ExpireableAccessToken): Date | null {
 	return mapNullable(getExpiryMillis(token), _ => new Date(_));
 }
 
@@ -65,6 +70,6 @@ export function getExpiryDateOfAccessToken(token: AccessToken): Date | null {
  *
  * Defaults to a minute.
  */
-export function accessTokenIsExpired(token: AccessToken): boolean {
+export function accessTokenIsExpired(token: ExpireableAccessToken): boolean {
 	return mapNullable(getExpiryMillis(token), _ => Date.now() > _) ?? false;
 }

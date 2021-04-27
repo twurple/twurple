@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import type { AccessToken } from '../AccessToken';
-import { getTokenInfo } from '../helpers';
+import { loadAndCompareScopes } from '../helpers';
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
@@ -14,7 +14,7 @@ import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 @rtfm<StaticAuthProvider>('auth', 'StaticAuthProvider', 'clientId')
 export class StaticAuthProvider implements AuthProvider {
 	@Enumerable(false) private readonly _clientId: string;
-	@Enumerable(false) private _accessToken?: AccessToken;
+	@Enumerable(false) private readonly _accessToken: AccessToken;
 	private _scopes?: string[];
 
 	/**
@@ -25,11 +25,15 @@ export class StaticAuthProvider implements AuthProvider {
 	/**
 	 * Creates a new auth provider with static credentials.
 	 *
-	 * @param clientId The client ID.
+	 * @param clientId The client ID of your application.
 	 * @param accessToken The access token to provide.
 	 *
 	 * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
 	 * @param scopes The scopes the supplied token has.
+	 *
+	 * If this argument is given, the scopes need to be correct, or weird things might happen. If it's not (i.e. it's `undefined`), we fetch the correct scopes for you.
+	 *
+	 * If you can't exactly say which scopes your token has, don't use this parameter/set it to `undefined`.
 	 * @param tokenType The type of the supplied token.
 	 *
 	 * This has to match with the actual type of the token. If it doesn't match, the behavior is undefined.
@@ -38,25 +42,23 @@ export class StaticAuthProvider implements AuthProvider {
 	 */
 	constructor(
 		clientId: string,
-		accessToken?: string | AccessToken,
+		accessToken: string | AccessToken,
 		scopes?: string[],
 		tokenType: AuthProviderTokenType = 'user'
 	) {
 		this._clientId = clientId || '';
 		this.tokenType = tokenType;
-		if (accessToken) {
-			this._accessToken =
-				typeof accessToken === 'string'
-					? {
-							accessToken,
-							refreshToken: null,
-							scope: scopes ?? [],
-							expiresIn: null,
-							obtainmentDate: new Date()
-					  }
-					: accessToken;
-			this._scopes = scopes;
-		}
+		this._accessToken =
+			typeof accessToken === 'string'
+				? {
+						accessToken,
+						refreshToken: null,
+						scope: scopes ?? [],
+						expiresIn: null,
+						obtainmentTimestamp: Date.now()
+				  }
+				: accessToken;
+		this._scopes = scopes;
 	}
 
 	/**
@@ -65,36 +67,17 @@ export class StaticAuthProvider implements AuthProvider {
 	 * If the current access token does not have the requested scopes, this method throws.
 	 * This makes supplying an access token with the correct scopes from the beginning necessary.
 	 *
-	 * @param scopes The requested scopes.
+	 * @param requestedScopes The requested scopes.
 	 */
-	async getAccessToken(scopes?: string | string[]): Promise<AccessToken | null> {
-		if (scopes && scopes.length > 0) {
-			if (!this._scopes) {
-				if (!this._accessToken) {
-					throw new Error('Auth provider has not been initialized with a token yet and is requesting scopes');
-				}
-				const tokenInfo = await getTokenInfo(this._accessToken.accessToken, this._clientId);
-				this._scopes = tokenInfo.scopes;
-			}
-			if (typeof scopes === 'string') {
-				scopes = scopes.split(' ');
-			}
-			if (scopes.some(scope => !this._scopes!.includes(scope))) {
-				throw new Error(
-					`This token does not have the requested scopes (${scopes.join(', ')}) and can not be upgraded.
-If you need dynamically upgrading scopes, please implement the AuthProvider interface accordingly:
+	async getAccessToken(requestedScopes?: string[]): Promise<AccessToken | null> {
+		this._scopes = await loadAndCompareScopes(
+			this._clientId,
+			this._accessToken.accessToken,
+			this._scopes,
+			requestedScopes
+		);
 
-\thttps://twurple.github.io/auth/reference/interfaces/AuthProvider.html`
-				);
-			}
-		}
-
-		return this._accessToken ?? null;
-	}
-
-	/** @private */
-	setAccessToken(token: AccessToken): void {
-		this._accessToken = token;
+		return this._accessToken;
 	}
 
 	/**
