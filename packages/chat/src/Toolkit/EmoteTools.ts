@@ -1,5 +1,3 @@
-/// <reference lib="esnext.array" />
-
 import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
 import type { CheermoteDisplayInfo } from '@twurple/common';
 import { ChatEmote } from '@twurple/common';

@@ -1,5 +1,3 @@
-/// <reference lib="es2016.array.include" />
-
 import { utf8Length } from '@d-fischer/shared-utils';
 
 /**

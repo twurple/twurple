@@ -1,5 +1,3 @@
-/// <reference lib="es2019.array" />
-
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import type { HelixExtensionData } from './HelixExtension';

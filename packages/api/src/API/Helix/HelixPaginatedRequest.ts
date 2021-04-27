@@ -1,5 +1,3 @@
-/// <reference lib="esnext.asynciterable" />
-
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { TwitchApiCallOptions } from '@twurple/api-call';
 import { TwitchApiCallType } from '@twurple/api-call';

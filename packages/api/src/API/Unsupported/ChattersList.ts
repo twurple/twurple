@@ -1,5 +1,3 @@
-/// <reference lib="es2017.object" />
-
 import { Enumerable, flatten } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 

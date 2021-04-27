@@ -1,8 +1,8 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es5",
-		"lib": ["es6"],
+		"target": "es2019",
+		"lib": ["es2019"],
 		"moduleResolution": "node",
 		"declaration": true,
 		"forceConsistentCasingInFileNames": true,
