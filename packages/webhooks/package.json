@@ -1,6 +1,6 @@
 {
   "name": "@twurple/webhooks",
-  "version": "5.0.0-pre.3",
+  "version": "5.0.0-pre.4",
   "publishConfig": {
     "access": "public"
   },
@@ -37,12 +37,12 @@
     "@d-fischer/randomstring": "^1.1.7",
     "@d-fischer/raw-body": "^2.4.3",
     "@d-fischer/shared-utils": "^3.0.1",
-    "@twurple/common": "^5.0.0-pre.3",
+    "@twurple/common": "^5.0.0-pre.4",
     "httpanda": "^0.4.4",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/api": "^5.0.0-pre.3"
+    "@twurple/api": "^5.0.0-pre.4"
   },
   "peerDependencies": {
     "@twurple/api": "^5.0.0"
