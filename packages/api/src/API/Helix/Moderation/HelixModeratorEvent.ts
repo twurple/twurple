@@ -96,6 +96,6 @@ export class HelixModeratorEvent extends HelixModerator {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id);
+		return await this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id);
 	}
 }

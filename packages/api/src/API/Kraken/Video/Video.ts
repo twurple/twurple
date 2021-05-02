@@ -102,7 +102,7 @@ export class Video {
 	 * Retrieves more information about the channel the video was uploaded to.
 	 */
 	async getChannel(): Promise<Channel> {
-		return this._client.kraken.channels.getChannel(this._data.channel._id);
+		return await this._client.kraken.channels.getChannel(this._data.channel._id);
 	}
 
 	/**

@@ -108,7 +108,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	async getSubscriptionEventsForBroadcaster(
 		broadcaster: UserIdResolvable
 	): Promise<HelixPaginatedResult<HelixSubscriptionEvent>> {
-		return this._getSubscriptionEvents('broadcaster_id', extractUserId(broadcaster));
+		return await this._getSubscriptionEvents('broadcaster_id', extractUserId(broadcaster));
 	}
 
 	/**

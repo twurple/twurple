@@ -161,7 +161,7 @@ export class HelixStreamApi extends BaseApi {
 	 * @param user The user to list the stream markers for.
 	 */
 	async getStreamMarkersForUser(user: UserIdResolvable): Promise<HelixPaginatedResult<HelixStreamMarker>> {
-		return this._getStreamMarkers('user_id', extractUserId(user));
+		return await this._getStreamMarkers('user_id', extractUserId(user));
 	}
 
 	/**
@@ -181,7 +181,7 @@ export class HelixStreamApi extends BaseApi {
 	 * @param videoId The video to list the stream markers for.
 	 */
 	async getStreamMarkersForVideo(videoId: string): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
-		return this._getStreamMarkers('video_id', videoId);
+		return await this._getStreamMarkers('video_id', videoId);
 	}
 
 	/**

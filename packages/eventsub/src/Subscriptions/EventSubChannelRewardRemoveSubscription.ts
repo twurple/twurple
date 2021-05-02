@@ -29,13 +29,13 @@ export class EventSubChannelRewardRemoveSubscription extends EventSubSubscriptio
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		if (this._rewardId) {
-			return this._client._apiClient.helix.eventSub.subscribeToChannelRewardRemoveEventsForReward(
+			return await this._client._apiClient.helix.eventSub.subscribeToChannelRewardRemoveEventsForReward(
 				this._userId,
 				this._rewardId,
 				await this._getTransportOptions()
 			);
 		} else {
-			return this._client._apiClient.helix.eventSub.subscribeToChannelRewardRemoveEvents(
+			return await this._client._apiClient.helix.eventSub.subscribeToChannelRewardRemoveEvents(
 				this._userId,
 				await this._getTransportOptions()
 			);

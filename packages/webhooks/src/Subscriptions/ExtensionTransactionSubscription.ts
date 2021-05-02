@@ -27,14 +27,14 @@ export class ExtensionTransactionSubscription extends Subscription<HelixExtensio
 	}
 
 	protected async _subscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.subscribeToExtensionTransactions(
+		await this._client._apiClient.helix.webHooks.subscribeToExtensionTransactions(
 			this._extensionId,
 			await this._getOptions()
 		);
 	}
 
 	protected async _unsubscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.unsubscribeFromExtensionTransactions(
+		await this._client._apiClient.helix.webHooks.unsubscribeFromExtensionTransactions(
 			this._extensionId,
 			await this._getOptions()
 		);

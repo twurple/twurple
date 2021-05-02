@@ -52,7 +52,7 @@ export class HelixGame {
 	 * Retrieves streams that are currently playing the game.
 	 */
 	async getStreams(pagination?: HelixPagination): Promise<HelixPaginatedResponse<HelixStream>> {
-		return this._client.helix.streams.getStreams({ ...pagination, game: this._data.id });
+		return await this._client.helix.streams.getStreams({ ...pagination, game: this._data.id });
 	}
 
 	/**

@@ -10,5 +10,5 @@ export class BotCommandContext {
 		this.channel = msg.params.target;
 	}
 
-	say = async (message: string): Promise<void> => this._client.say(this.msg.params.target, message);
+	say = async (message: string): Promise<void> => await this._client.say(this.msg.params.target, message);
 }

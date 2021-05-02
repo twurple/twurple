@@ -48,7 +48,7 @@ export class HelixWebHookSubscription {
 	 * Unsubscribe from the WebHook.
 	 */
 	async unsubscribe(): Promise<void> {
-		return this._client.helix.webHooks.sendHubRequest({
+		await this._client.helix.webHooks.sendHubRequest({
 			mode: 'unsubscribe',
 			topicUrl: this.topicUrl,
 			callbackUrl: this.callbackUrl

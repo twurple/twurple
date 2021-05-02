@@ -238,7 +238,7 @@ export class BasicPubSubClient extends EventEmitter {
 	 */
 	async disconnect(): Promise<void> {
 		this._logger.info('Disconnecting...');
-		return this._connection.disconnect();
+		await this._connection.disconnect();
 	}
 
 	/**
@@ -246,7 +246,7 @@ export class BasicPubSubClient extends EventEmitter {
 	 */
 	async reconnect(): Promise<void> {
 		await this.disconnect();
-		return this.connect();
+		await this.connect();
 	}
 
 	/**
@@ -269,7 +269,7 @@ export class BasicPubSubClient extends EventEmitter {
 	}
 
 	private async _sendListen(topics: string[], accessToken?: string) {
-		return this._sendNonced({
+		await this._sendNonced({
 			type: 'LISTEN',
 			data: {
 				topics,
@@ -279,7 +279,7 @@ export class BasicPubSubClient extends EventEmitter {
 	}
 
 	private async _sendUnlisten(topics: string[]) {
-		return this._sendNonced({
+		await this._sendNonced({
 			type: 'UNLISTEN',
 			data: {
 				topics
@@ -338,7 +338,7 @@ export class BasicPubSubClient extends EventEmitter {
 				return accessToken.accessToken;
 			}
 			case 'function': {
-				return resolvable.function();
+				return await resolvable.function();
 			}
 			case 'static': {
 				return resolvable.token;
@@ -372,13 +372,13 @@ export class BasicPubSubClient extends EventEmitter {
 				topicsByToken.set(token, topics);
 			}
 		}
-		return Promise.all(
-			Array.from(topicsByToken.entries()).map(async ([token, topics]) => this._sendListen(topics, token))
+		return await Promise.all(
+			Array.from(topicsByToken.entries()).map(async ([token, topics]) => await this._sendListen(topics, token))
 		);
 	}
 
 	private async _sendNonced<T extends PubSubNoncedOutgoingPacket>(packet: T) {
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const nonce = Math.random().toString(16).slice(2);
 
 			const responseListener = this._onResponse((recvNonce, error) => {

@@ -27,7 +27,7 @@ export class EventSubStreamOnlineSubscription extends EventSubSubscription<Event
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToStreamOnlineEvents(
+		return await this._client._apiClient.helix.eventSub.subscribeToStreamOnlineEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

@@ -49,6 +49,6 @@ export class HelixUserRelation {
 	 * Retrieves additional information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.user_id);
+		return await this._client.helix.users.getUserById(this._data.user_id);
 	}
 }

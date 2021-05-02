@@ -91,7 +91,7 @@ export class HelixStream {
 	 * Retrieves information about the user broadcasting the stream.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.user_id);
+		return await this._client.helix.users.getUserById(this._data.user_id);
 	}
 
 	/**
@@ -112,7 +112,7 @@ export class HelixStream {
 	 * Retrieves information about the game that is being played on the stream.
 	 */
 	async getGame(): Promise<HelixGame | null> {
-		return this._client.helix.games.getGameById(this._data.game_id);
+		return await this._client.helix.games.getGameById(this._data.game_id);
 	}
 
 	/**
@@ -178,6 +178,6 @@ export class HelixStream {
 	 * Retrieves the tags of the stream.
 	 */
 	async getTags(): Promise<HelixTag[]> {
-		return this._client.helix.tags.getStreamTagsByIds(this._data.tag_ids ?? []);
+		return await this._client.helix.tags.getStreamTagsByIds(this._data.tag_ids ?? []);
 	}
 }

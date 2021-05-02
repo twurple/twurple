@@ -38,7 +38,7 @@ export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	 * Removes the topic from the PubSub client.
 	 */
 	async remove(): Promise<void> {
-		return this._client.removeListener(this);
+		await this._client.removeListener(this);
 	}
 
 	/** @private */

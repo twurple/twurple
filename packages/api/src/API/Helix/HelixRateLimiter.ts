@@ -11,7 +11,7 @@ export class HelixRateLimiter extends ResponseBasedRateLimiter<TwitchApiCallOpti
 		accessToken,
 		fetchOptions
 	}: TwitchApiCallOptionsInternal): Promise<Response> {
-		return callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
+		return await callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
 	}
 
 	protected needsToRetryAfter(res: Response): number | null {

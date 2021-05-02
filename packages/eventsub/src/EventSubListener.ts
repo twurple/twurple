@@ -209,7 +209,7 @@ Listening on port ${adapterListenerPort} instead.`);
 		);
 
 		await Promise.all(
-			[...this._subscriptions].map(async ([subId, sub]) => sub.start(this._twitchSubscriptions.get(subId)))
+			[...this._subscriptions].map(async ([subId, sub]) => await sub.start(this._twitchSubscriptions.get(subId)))
 		);
 	}
 
@@ -221,7 +221,7 @@ Listening on port ${adapterListenerPort} instead.`);
 			throw new Error('Trying to unlisten while not listening');
 		}
 
-		await Promise.all([...this._subscriptions.values()].map(async sub => sub.suspend()));
+		await Promise.all([...this._subscriptions.values()].map(async sub => await sub.suspend()));
 
 		await this._server.close();
 		this._server = undefined;
@@ -278,7 +278,7 @@ Listening on port ${adapterListenerPort} instead.`);
 			);
 		}
 
-		return this._genericSubscribe(EventSubStreamOnlineSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubStreamOnlineSubscription, handler, this, userId);
 	}
 
 	/**
@@ -299,7 +299,7 @@ Listening on port ${adapterListenerPort} instead.`);
 			);
 		}
 
-		return this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
 	}
 
 	/**
@@ -319,7 +319,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -339,7 +339,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelFollowEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
 	}
 
 	/**
@@ -359,7 +359,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelSubscribeEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
 	}
 
 	/**
@@ -379,7 +379,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelCheerEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
 	}
 
 	/**
@@ -399,7 +399,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelBanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
 	}
 
 	/**
@@ -419,7 +419,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelUnbanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
 	}
 
 	/**
@@ -439,7 +439,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelRaidEventsFrom: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
+		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
 	}
 
 	/**
@@ -459,7 +459,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelRaidEventsTo: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
+		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
 	}
 
 	/**
@@ -479,7 +479,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelRewardAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
 	}
 
 	/**
@@ -499,7 +499,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -521,7 +521,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
+		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -541,7 +541,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToRewardRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
 	}
 
 	/**
@@ -563,7 +563,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToRewardRemoveEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
+		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -583,7 +583,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelRedemptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
 	}
 
 	/**
@@ -605,7 +605,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToRedemptionAddEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
+		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -625,7 +625,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelRedemptionUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -647,7 +647,13 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelRedemptionUpdateEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId, rewardId);
+		return await this._genericSubscribe(
+			EventSubChannelRedemptionUpdateSubscription,
+			handler,
+			this,
+			userId,
+			rewardId
+		);
 	}
 
 	/**
@@ -667,7 +673,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelHypeTrainBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
 	}
 
 	/**
@@ -687,7 +693,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelHypeTrainProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
 	}
 
 	/**
@@ -707,7 +713,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToChannelHypeTrainEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
 	}
 
 	/**
@@ -720,7 +726,7 @@ Listening on port ${adapterListenerPort} instead.`);
 		clientId: string,
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void
 	): Promise<EventSubSubscription> {
-		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
+		return await this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
 	/**
 	 * Subscribes to events that represent a user updating their account details.
@@ -739,7 +745,7 @@ Listening on port ${adapterListenerPort} instead.`);
 				'EventSubListener#subscribeToUserUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
 	}
 
 	/** @private */

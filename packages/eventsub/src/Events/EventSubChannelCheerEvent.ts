@@ -53,7 +53,7 @@ export class EventSubChannelCheerEvent {
 	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._data.user_id ? this._client.helix.users.getUserById(this._data.user_id) : null;
+		return this._data.user_id ? await this._client.helix.users.getUserById(this._data.user_id) : null;
 	}
 
 	/**

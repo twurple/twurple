@@ -95,7 +95,7 @@ export class HelixVideoApi extends BaseApi {
 		filter: HelixPaginatedVideoFilter = {}
 	): Promise<HelixPaginatedResult<HelixVideo>> {
 		const userId = extractUserId(user);
-		return this._getVideos('user_id', userId, filter);
+		return await this._getVideos('user_id', userId, filter);
 	}
 
 	/**
@@ -119,7 +119,7 @@ export class HelixVideoApi extends BaseApi {
 	 * @param filter Additional filters for the result set.
 	 */
 	async getVideosByGame(gameId: string, filter: HelixVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
-		return this._getVideos('game_id', gameId, filter);
+		return await this._getVideos('game_id', gameId, filter);
 	}
 
 	/**

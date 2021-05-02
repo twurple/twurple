@@ -760,7 +760,7 @@ export class ChatClient extends IrcClient {
 		};
 
 		const executeJoinRequest = async (channel: string) =>
-			new Promise<void>((resolve, reject) => {
+			await new Promise<void>((resolve, reject) => {
 				// eslint-disable-next-line @typescript-eslint/init-declarations
 				let timer: NodeJS.Timer;
 				const e = this._onJoinResult((chan, state, error) => {
@@ -1557,7 +1557,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async host(channel: string | undefined, target: string): Promise<void> {
 		const channelName = toUserName(channel ?? this._credentials.nick);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onHostResult((chan, error) => {
 				if (toUserName(chan) === channelName) {
 					if (error) {
@@ -1583,7 +1583,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async unhost(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onUnhostResult((chan, error) => {
 				if (toUserName(chan) === channel) {
 					if (error) {
@@ -1608,7 +1608,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
 	async unhostOutside(channel: string = this._credentials.nick): Promise<void> {
-		return this.say(channel, '/unhost');
+		await this.say(channel, '/unhost');
 	}
 
 	/**
@@ -1621,7 +1621,7 @@ export class ChatClient extends IrcClient {
 	async ban(channel: string | undefined, user: string, reason: string = ''): Promise<void> {
 		const channelName = toUserName(channel ?? this._credentials.nick);
 		user = toUserName(user);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onBanResult((_channel, _user, error) => {
 				if (toUserName(_channel) === channelName && toUserName(_user) === user) {
 					if (error) {
@@ -1643,7 +1643,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async clear(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>(resolve => {
+		await new Promise<void>(resolve => {
 			const e = this.addInternalListener(this.onChatClear, _channel => {
 				if (toUserName(_channel) === channel) {
 					resolve();
@@ -1666,7 +1666,7 @@ export class ChatClient extends IrcClient {
 	 * Blue, BlueViolet, CadetBlue, Chocolate, Coral, DodgerBlue, Firebrick, GoldenRod, Green, HotPink, OrangeRed, Red, SeaGreen, SpringGreen, YellowGreen
 	 */
 	async changeColor(color: string): Promise<void> {
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onColorResult(error => {
 				if (error) {
 					reject(error);
@@ -1687,7 +1687,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async runCommercial(channel: string, duration: CommercialLength): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onCommercialResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1711,7 +1711,7 @@ export class ChatClient extends IrcClient {
 	async deleteMessage(channel: string, message: string | TwitchPrivateMessage): Promise<void> {
 		channel = toUserName(channel);
 		const messageId = extractMessageId(message);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onDeleteMessageResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1733,7 +1733,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async enableEmoteOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onEmoteOnlyResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1755,7 +1755,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async disableEmoteOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onEmoteOnlyOffResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1783,7 +1783,7 @@ export class ChatClient extends IrcClient {
 			);
 		}
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onFollowersOnlyResult((_channel, _minFollowTime, error) => {
 				if (toUserName(_channel) === channel && _minFollowTime === minFollowTime) {
 					if (error) {
@@ -1805,7 +1805,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async disableFollowersOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onFollowersOnlyOffResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1829,7 +1829,7 @@ export class ChatClient extends IrcClient {
 	async mod(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onModResult((_channel, _user, error) => {
 				if (toUserName(_channel) === channel && toUserName(_user) === user) {
 					if (error) {
@@ -1853,7 +1853,7 @@ export class ChatClient extends IrcClient {
 	async unmod(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onUnmodResult((_channel, _user, error) => {
 				if (toUserName(_channel) === channel && toUserName(_user) === user) {
 					if (error) {
@@ -1875,7 +1875,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async getMods(channel: string): Promise<string[]> {
 		channel = toUserName(channel);
-		return new Promise<string[]>(resolve => {
+		return await new Promise<string[]>(resolve => {
 			const e = this._onModsResult((_channel, mods) => {
 				if (toUserName(_channel) === channel) {
 					resolve(mods!);
@@ -1893,7 +1893,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async enableR9k(channel: string): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onR9kResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1915,7 +1915,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async disableR9k(channel: string): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onR9kOffResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1943,7 +1943,7 @@ export class ChatClient extends IrcClient {
 			);
 		}
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onSlowResult((_channel, _delay, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1965,7 +1965,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async disableSlow(channel: string): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onSlowOffResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -1987,7 +1987,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async enableSubsOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onSubsOnlyResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -2009,7 +2009,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async disableSubsOnly(channel: string): Promise<void> {
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onSubsOnlyOffResult((_channel, error) => {
 				if (toUserName(_channel) === channel) {
 					if (error) {
@@ -2037,7 +2037,7 @@ export class ChatClient extends IrcClient {
 			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
 		}
 		channel = toUserName(channel);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onTimeoutResult((_channel, _user, _duration, error) => {
 				if (toUserName(_channel) === channel && toUserName(_user) === user) {
 					if (error) {
@@ -2060,7 +2060,7 @@ export class ChatClient extends IrcClient {
 	 * @param reason The reason for the purge.
 	 */
 	async purge(channel: string, user: string, reason: string = ''): Promise<void> {
-		return this.timeout(channel, user, 1, reason);
+		await this.timeout(channel, user, 1, reason);
 	}
 
 	/**
@@ -2072,7 +2072,7 @@ export class ChatClient extends IrcClient {
 	async addVip(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onVipResult((_channel, _user, error) => {
 				if (toUserName(_channel) === channel && toUserName(_user) === user) {
 					if (error) {
@@ -2096,7 +2096,7 @@ export class ChatClient extends IrcClient {
 	async removeVip(channel: string, user: string): Promise<void> {
 		channel = toUserName(channel);
 		user = toUserName(user);
-		return new Promise<void>((resolve, reject) => {
+		await new Promise<void>((resolve, reject) => {
 			const e = this._onUnvipResult((_channel, _user, error) => {
 				if (toUserName(_channel) === channel && toUserName(_user) === user) {
 					if (error) {
@@ -2118,7 +2118,7 @@ export class ChatClient extends IrcClient {
 	 */
 	async getVips(channel: string): Promise<string[]> {
 		channel = toUserName(channel);
-		return new Promise<string[]>(resolve => {
+		return await new Promise<string[]>(resolve => {
 			const e = this._onVipsResult((_channel, vips) => {
 				if (toUserName(_channel) === channel) {
 					resolve(vips!);
@@ -2141,7 +2141,7 @@ export class ChatClient extends IrcClient {
 		if (attributes.replyTo) {
 			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
 		}
-		return this._messageRateLimiter.request({
+		await this._messageRateLimiter.request({
 			type: 'say',
 			channel: toChannelName(channel),
 			message,
@@ -2156,7 +2156,7 @@ export class ChatClient extends IrcClient {
 	 * @param message The message to send.
 	 */
 	async action(channel: string, message: string): Promise<void> {
-		return this._messageRateLimiter.request({
+		await this._messageRateLimiter.request({
 			type: 'action',
 			channel: toChannelName(channel),
 			message
@@ -2177,7 +2177,7 @@ export class ChatClient extends IrcClient {
 Please note that your whispers might not arrive reliably if your bot is not a known or verified bot.`
 			);
 		}
-		return this._whisperRateLimiter.request({
+		await this._whisperRateLimiter.request({
 			target: toUserName(user),
 			message
 		});
@@ -2189,7 +2189,7 @@ Please note that your whispers might not arrive reliably if your bot is not a kn
 	 * @param channel The channel to join.
 	 */
 	async join(channel: string): Promise<void> {
-		return this._joinRateLimiter.request(toChannelName(channel));
+		await this._joinRateLimiter.request(toChannelName(channel));
 	}
 
 	/**

@@ -127,7 +127,7 @@ export class WebHookListener {
 		await this._server.listen(listenerPort);
 		this._logger.info(`Listening on port ${listenerPort}`);
 
-		await Promise.all([...this._subscriptions.values()].map(async sub => sub.start()));
+		await Promise.all([...this._subscriptions.values()].map(async sub => await sub.start()));
 	}
 
 	/**
@@ -138,7 +138,7 @@ export class WebHookListener {
 			throw new Error('Trying to unlisten while not listening');
 		}
 
-		await Promise.all([...this._subscriptions.values()].map(async sub => sub.suspend()));
+		await Promise.all([...this._subscriptions.values()].map(async sub => await sub.suspend()));
 
 		await this._server.close();
 		this._server = undefined;
@@ -197,7 +197,14 @@ export class WebHookListener {
 			);
 		}
 
-		return this._genericSubscribe(UserChangeSubscription, handler, this, validityInSeconds, userId, withEmail);
+		return await this._genericSubscribe(
+			UserChangeSubscription,
+			handler,
+			this,
+			validityInSeconds,
+			userId,
+			withEmail
+		);
 	}
 
 	/**
@@ -224,7 +231,7 @@ export class WebHookListener {
 			);
 		}
 
-		return this._genericSubscribe(FollowsToUserSubscription, handler, this, validityInSeconds, userId);
+		return await this._genericSubscribe(FollowsToUserSubscription, handler, this, validityInSeconds, userId);
 	}
 
 	/**
@@ -251,7 +258,7 @@ export class WebHookListener {
 			);
 		}
 
-		return this._genericSubscribe(FollowsFromUserSubscription, handler, this, validityInSeconds, userId);
+		return await this._genericSubscribe(FollowsFromUserSubscription, handler, this, validityInSeconds, userId);
 	}
 
 	/**
@@ -278,7 +285,13 @@ export class WebHookListener {
 			);
 		}
 
-		return this._genericSubscribe(HypeTrainEventSubscription, handler, this, validityInSeconds, broadcasterId);
+		return await this._genericSubscribe(
+			HypeTrainEventSubscription,
+			handler,
+			this,
+			validityInSeconds,
+			broadcasterId
+		);
 	}
 
 	/**
@@ -305,7 +318,7 @@ export class WebHookListener {
 			);
 		}
 
-		return this._genericSubscribe(StreamChangeSubscription, handler, this, validityInSeconds, userId);
+		return await this._genericSubscribe(StreamChangeSubscription, handler, this, validityInSeconds, userId);
 	}
 
 	/**
@@ -332,7 +345,13 @@ export class WebHookListener {
 			);
 		}
 
-		return this._genericSubscribe(SubscriptionEventSubscription, handler, this, validityInSeconds, broadcasterId);
+		return await this._genericSubscribe(
+			SubscriptionEventSubscription,
+			handler,
+			this,
+			validityInSeconds,
+			broadcasterId
+		);
 	}
 
 	/**
@@ -368,7 +387,14 @@ export class WebHookListener {
 			);
 		}
 
-		return this._genericSubscribe(BanEventSubscription, handler, this, validityInSeconds, broadcasterId, userId);
+		return await this._genericSubscribe(
+			BanEventSubscription,
+			handler,
+			this,
+			validityInSeconds,
+			broadcasterId,
+			userId
+		);
 	}
 
 	/**
@@ -404,7 +430,7 @@ export class WebHookListener {
 			);
 		}
 
-		return this._genericSubscribe(
+		return await this._genericSubscribe(
 			ModeratorEventSubscription,
 			handler,
 			this,
@@ -430,7 +456,13 @@ export class WebHookListener {
 		handler: (transaction: HelixExtensionTransaction) => void,
 		validityInSeconds = this._defaultHookValidity
 	): Promise<Subscription> {
-		return this._genericSubscribe(ExtensionTransactionSubscription, handler, this, validityInSeconds, extensionId);
+		return await this._genericSubscribe(
+			ExtensionTransactionSubscription,
+			handler,
+			this,
+			validityInSeconds,
+			extensionId
+		);
 	}
 
 	/** @private */

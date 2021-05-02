@@ -95,6 +95,6 @@ export class Team {
 
 	async getUsers(): Promise<User[]> {
 		const team = await this._client.kraken.teams.getTeamByName(this.name);
-		return team.getUsers();
+		return await team.getUsers();
 	}
 }

@@ -35,7 +35,7 @@ export class PrivilegedChannel extends Channel {
 	 * Retrieves the list of editors of the channel.
 	 */
 	async getEditors(): Promise<User[]> {
-		return this._client.kraken.channels.getChannelEditors(this);
+		return await this._client.kraken.channels.getChannelEditors(this);
 	}
 
 	/**
@@ -44,7 +44,7 @@ export class PrivilegedChannel extends Channel {
 	 * @param length The length of the commercial.
 	 */
 	async startCommercial(length: CommercialLength): Promise<void> {
-		return this._client.kraken.channels.startChannelCommercial(this, length);
+		await this._client.kraken.channels.startChannelCommercial(this, length);
 	}
 
 	/**

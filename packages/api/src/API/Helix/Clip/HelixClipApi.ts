@@ -82,7 +82,7 @@ export class HelixClipApi extends BaseApi {
 		user: UserIdResolvable,
 		filter: HelixClipFilter = {}
 	): Promise<HelixPaginatedResult<HelixClip>> {
-		return this._getClips({
+		return await this._getClips({
 			...filter,
 			filterType: 'broadcaster_id',
 			ids: extractUserId(user)
@@ -117,7 +117,7 @@ export class HelixClipApi extends BaseApi {
 	 * @expandParams
 	 */
 	async getClipsForGame(gameId: string, filter: HelixClipFilter = {}): Promise<HelixPaginatedResult<HelixClip>> {
-		return this._getClips({
+		return await this._getClips({
 			...filter,
 			filterType: 'game_id',
 			ids: gameId

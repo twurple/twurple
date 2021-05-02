@@ -113,7 +113,7 @@ export class ApiClient {
 			? await authProvider.getAccessToken(options.scope ? [options.scope] : undefined)
 			: null;
 		if (!accessToken) {
-			return callTwitchApi<T>(options, authProvider.clientId, undefined, this._config.fetchOptions);
+			return await callTwitchApi<T>(options, authProvider.clientId, undefined, this._config.fetchOptions);
 		}
 
 		if (accessTokenIsExpired(accessToken) && authProvider.refresh) {
@@ -132,7 +132,7 @@ export class ApiClient {
 			}
 		}
 
-		return transformTwitchApiResponse<T>(response);
+		return await transformTwitchApiResponse<T>(response);
 	}
 
 	/**
@@ -177,9 +177,9 @@ export class ApiClient {
 	private async _callApiInternal(options: TwitchApiCallOptions, clientId?: string, accessToken?: string) {
 		const { fetchOptions } = this._config;
 		if (options.type === TwitchApiCallType.Helix) {
-			return this._helixRateLimiter.request({ options, clientId, accessToken, fetchOptions });
+			return await this._helixRateLimiter.request({ options, clientId, accessToken, fetchOptions });
 		}
 
-		return callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
+		return await callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
 	}
 }

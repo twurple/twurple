@@ -32,13 +32,14 @@ export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent
 
 	protected async _subscribe(): Promise<void> {
 		if (this._userId) {
-			return this._client._apiClient.helix.webHooks.subscribeToModeratorEventsForUser(
+			await this._client._apiClient.helix.webHooks.subscribeToModeratorEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
+			return;
 		}
-		return this._client._apiClient.helix.webHooks.subscribeToModeratorEvents(
+		await this._client._apiClient.helix.webHooks.subscribeToModeratorEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
@@ -46,13 +47,14 @@ export class ModeratorEventSubscription extends Subscription<HelixModeratorEvent
 
 	protected async _unsubscribe(): Promise<void> {
 		if (this._userId) {
-			return this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEventsForUser(
+			await this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
+			return;
 		}
-		return this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEvents(
+		await this._client._apiClient.helix.webHooks.unsubscribeFromModeratorEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);

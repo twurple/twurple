@@ -32,7 +32,7 @@ export class HelixGameApi extends BaseApi {
 	 * @param ids The game IDs you want to look up.
 	 */
 	async getGamesByIds(ids: string[]): Promise<HelixGame[]> {
-		return this._getGames('id', ids);
+		return await this._getGames('id', ids);
 	}
 
 	/**
@@ -41,7 +41,7 @@ export class HelixGameApi extends BaseApi {
 	 * @param names The game names you want to look up.
 	 */
 	async getGamesByNames(names: string[]): Promise<HelixGame[]> {
-		return this._getGames('name', names);
+		return await this._getGames('name', names);
 	}
 
 	/**

@@ -49,7 +49,7 @@ export async function callTwitchApiRaw(
 		body
 	};
 
-	return fetch(params ? `${url}?${params}` : url, requestOptions);
+	return await fetch(params ? `${url}?${params}` : url, requestOptions);
 }
 
 /**
@@ -71,5 +71,5 @@ export async function callTwitchApi<T = unknown>(
 ): Promise<T> {
 	const response = await callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
 
-	return transformTwitchApiResponse<T>(response);
+	return await transformTwitchApiResponse<T>(response);
 }

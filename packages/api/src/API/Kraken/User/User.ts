@@ -101,7 +101,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	 * Retrieves the channel data of the user.
 	 */
 	async getChannel(): Promise<Channel> {
-		return this._client.kraken.channels.getChannel(this);
+		return await this._client.kraken.channels.getChannel(this);
 	}
 
 	/**
@@ -115,7 +115,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	 * Retrieves the currently running stream of the user.
 	 */
 	async getStream(): Promise<Stream | null> {
-		return this.getChannelPlaceholder().getStream();
+		return await this.getChannelPlaceholder().getStream();
 	}
 
 	/**
@@ -129,7 +129,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	 * @param channel The channel you want to get the subscription data for.
 	 */
 	async getSubscriptionTo(channel: UserIdResolvable): Promise<UserSubscription | null> {
-		return this._client.kraken.users.getSubscriptionData(this, channel);
+		return await this._client.kraken.users.getSubscriptionData(this, channel);
 	}
 
 	/**
@@ -163,7 +163,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 		orderBy?: 'created_at' | 'last_broadcast' | 'login',
 		orderDirection?: 'asc' | 'desc'
 	): Promise<UserFollow[]> {
-		return this._client.kraken.users.getFollowedChannels(this, page, limit, orderBy, orderDirection);
+		return await this._client.kraken.users.getFollowedChannels(this, page, limit, orderBy, orderDirection);
 	}
 
 	/**
@@ -172,7 +172,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	 * @param channel The channel to retrieve the follow data for.
 	 */
 	async getFollowTo(channel: UserIdResolvable): Promise<UserFollow | null> {
-		return this._client.kraken.users.getFollowedChannel(this, channel);
+		return await this._client.kraken.users.getFollowedChannel(this, channel);
 	}
 
 	/**
@@ -193,7 +193,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	 */
 	async follow(): Promise<UserFollow> {
 		const currentUser = await this._client.kraken.users.getMe();
-		return currentUser.followChannel(this);
+		return await currentUser.followChannel(this);
 	}
 
 	/**
@@ -201,13 +201,13 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	 */
 	async unfollow(): Promise<void> {
 		const currentUser = await this._client.kraken.users.getMe();
-		return currentUser.unfollowChannel(this);
+		await currentUser.unfollowChannel(this);
 	}
 
 	/**
 	 * Retrieves the emotes the user can use.
 	 */
 	async getEmotes(): Promise<EmoteSetList> {
-		return this._client.kraken.users.getUserEmotes(this);
+		return await this._client.kraken.users.getUserEmotes(this);
 	}
 }

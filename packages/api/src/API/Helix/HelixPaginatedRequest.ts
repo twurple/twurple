@@ -131,7 +131,7 @@ export class HelixPaginatedRequest<D, T> {
 	protected async _fetchData(
 		additionalOptions: Partial<TwitchApiCallOptions> = {}
 	): Promise<HelixPaginatedResponse<D>> {
-		return this._client.callApi<HelixPaginatedResponse<D>>({
+		return await this._client.callApi<HelixPaginatedResponse<D>>({
 			type: TwitchApiCallType.Helix,
 			...this._callOptions,
 			...additionalOptions,

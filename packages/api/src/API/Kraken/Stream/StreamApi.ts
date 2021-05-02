@@ -68,7 +68,7 @@ export class StreamApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	async getAllStreams(page?: number, limit?: number): Promise<Stream[]> {
-		return this.getStreams(undefined, undefined, undefined, StreamType.All, page, limit);
+		return await this.getStreams(undefined, undefined, undefined, StreamType.All, page, limit);
 	}
 
 	/**
@@ -78,7 +78,7 @@ export class StreamApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	async getAllLiveStreams(page?: number, limit?: number): Promise<Stream[]> {
-		return this.getStreams(undefined, undefined, undefined, StreamType.Live, page, limit);
+		return await this.getStreams(undefined, undefined, undefined, StreamType.Live, page, limit);
 	}
 
 	/**

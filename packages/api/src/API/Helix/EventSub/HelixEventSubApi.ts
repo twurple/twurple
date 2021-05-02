@@ -123,14 +123,14 @@ export class HelixEventSubApi extends BaseApi {
 	 * Deletes *all* subscriptions.
 	 */
 	async deleteAllSubscriptions(): Promise<void> {
-		return this._deleteSubscriptionsWithCondition();
+		await this._deleteSubscriptionsWithCondition();
 	}
 
 	/**
 	 * Deletes all broken subscriptions, i.e. all that are not enabled or pending verification.
 	 */
 	async deleteBrokenSubscriptions(): Promise<void> {
-		return this._deleteSubscriptionsWithCondition(
+		await this._deleteSubscriptionsWithCondition(
 			sub => sub.status !== 'enabled' && sub.status !== 'webhook_callback_verification_pending'
 		);
 	}
@@ -145,7 +145,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'stream.online',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -163,7 +163,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'stream.offline',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -181,7 +181,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.update',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -199,7 +199,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.follow',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -217,7 +217,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.subscribe',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -235,7 +235,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.cheer',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -253,7 +253,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.ban',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -271,7 +271,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.unban',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -289,7 +289,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.raid',
 			'1',
 			{ from_broadcaster_user_id: extractUserId(broadcaster) },
@@ -307,7 +307,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.raid',
 			'1',
 			{ to_broadcaster_user_id: extractUserId(broadcaster) },
@@ -325,7 +325,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward.add',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -343,7 +343,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward.update',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -363,7 +363,7 @@ export class HelixEventSubApi extends BaseApi {
 		rewardId: string,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward.update',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
@@ -381,7 +381,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward.remove',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -401,7 +401,7 @@ export class HelixEventSubApi extends BaseApi {
 		rewardId: string,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward.remove',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
@@ -419,7 +419,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.add',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -439,7 +439,7 @@ export class HelixEventSubApi extends BaseApi {
 		rewardId: string,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.add',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
@@ -457,7 +457,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.update',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -477,7 +477,7 @@ export class HelixEventSubApi extends BaseApi {
 		rewardId: string,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.update',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
@@ -495,7 +495,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.hype_train.begin',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -513,7 +513,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.hype_train.progress',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -531,7 +531,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
+		return await this.createSubscription(
 			'channel.hype_train.end',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
@@ -549,7 +549,7 @@ export class HelixEventSubApi extends BaseApi {
 		clientId: string,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription('user.authorization.revoke', '1', { client_id: clientId }, transport);
+		return await this.createSubscription('user.authorization.revoke', '1', { client_id: clientId }, transport);
 	}
 
 	/**
@@ -562,7 +562,7 @@ export class HelixEventSubApi extends BaseApi {
 		user: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription('user.update', '1', { user_id: extractUserId(user) }, transport);
+		return await this.createSubscription('user.update', '1', { user_id: extractUserId(user) }, transport);
 	}
 
 	private async _deleteSubscriptionsWithCondition(cond?: (sub: HelixEventSubSubscription) => boolean): Promise<void> {

@@ -65,7 +65,7 @@ export class HelixChannelSearchResult {
 	 * Retrieves additional information about the owner of the channel.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.id);
+		return await this._client.helix.users.getUserById(this._data.id);
 	}
 
 	/**
@@ -79,7 +79,7 @@ export class HelixChannelSearchResult {
 	 * Retrieves information about the game that is being played on the stream.
 	 */
 	async getGame(): Promise<HelixGame | null> {
-		return this._client.helix.games.getGameById(this._data.game_id);
+		return await this._client.helix.games.getGameById(this._data.game_id);
 	}
 
 	/**
@@ -100,7 +100,7 @@ export class HelixChannelSearchResult {
 	 * Retrieves the tags of the channel.
 	 */
 	async getTags(): Promise<HelixTag[]> {
-		return this._client.helix.tags.getStreamTagsByIds(this._data.tag_ids);
+		return await this._client.helix.tags.getStreamTagsByIds(this._data.tag_ids);
 	}
 
 	/**

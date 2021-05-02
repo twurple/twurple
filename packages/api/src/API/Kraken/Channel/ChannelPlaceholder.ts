@@ -47,35 +47,35 @@ export class ChannelPlaceholder implements UserIdResolvableType {
 	 * Retrieves the list of cheermotes you can use in the channel.
 	 */
 	async getCheermotes(): Promise<CheermoteList> {
-		return this._client.kraken.bits.getCheermotes(this);
+		return await this._client.kraken.bits.getCheermotes(this);
 	}
 
 	/**
 	 * Retrieves the channel data.
 	 */
 	async getChannel(): Promise<Channel> {
-		return this._client.kraken.channels.getChannel(this);
+		return await this._client.kraken.channels.getChannel(this);
 	}
 
 	/**
 	 * Retrieves the channel's stream data.
 	 */
 	async getStream(): Promise<Stream | null> {
-		return this._client.kraken.streams.getStreamByChannel(this);
+		return await this._client.kraken.streams.getStreamByChannel(this);
 	}
 
 	/**
 	 * Retrieves the channel's followers.
 	 */
 	async getFollowers(): Promise<ChannelFollow[]> {
-		return this._client.kraken.channels.getChannelFollowers(this);
+		return await this._client.kraken.channels.getChannelFollowers(this);
 	}
 
 	/**
 	 * Retrieves the channel's subscribers.
 	 */
 	async getSubscriptions(): Promise<ChannelSubscription[]> {
-		return this._client.kraken.channels.getChannelSubscriptions(this);
+		return await this._client.kraken.channels.getChannelSubscriptions(this);
 	}
 
 	/**
@@ -89,7 +89,7 @@ export class ChannelPlaceholder implements UserIdResolvableType {
 	 * @param user The user you want to get the subscription data for.
 	 */
 	async getSubscriptionBy(user: UserIdResolvable): Promise<ChannelSubscription | null> {
-		return this._client.kraken.channels.getChannelSubscriptionByUser(this, user);
+		return await this._client.kraken.channels.getChannelSubscriptionByUser(this, user);
 	}
 
 	/**

@@ -49,7 +49,7 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 		}
 
 		if (!this._token || accessTokenIsExpired(this._token)) {
-			return this.refresh();
+			return await this.refresh();
 		}
 
 		return this._token;

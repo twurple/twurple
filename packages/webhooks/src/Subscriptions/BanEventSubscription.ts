@@ -32,13 +32,14 @@ export class BanEventSubscription extends Subscription<HelixBanEvent> {
 
 	protected async _subscribe(): Promise<void> {
 		if (this._userId) {
-			return this._client._apiClient.helix.webHooks.subscribeToBanEventsForUser(
+			await this._client._apiClient.helix.webHooks.subscribeToBanEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
+			return;
 		}
-		return this._client._apiClient.helix.webHooks.subscribeToBanEvents(
+		await this._client._apiClient.helix.webHooks.subscribeToBanEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
@@ -46,13 +47,14 @@ export class BanEventSubscription extends Subscription<HelixBanEvent> {
 
 	protected async _unsubscribe(): Promise<void> {
 		if (this._userId) {
-			return this._client._apiClient.helix.webHooks.unsubscribeFromBanEventsForUser(
+			await this._client._apiClient.helix.webHooks.unsubscribeFromBanEventsForUser(
 				this._broadcasterId,
 				this._userId,
 				await this._getOptions()
 			);
+			return;
 		}
-		return this._client._apiClient.helix.webHooks.unsubscribeFromBanEvents(
+		await this._client._apiClient.helix.webHooks.unsubscribeFromBanEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);

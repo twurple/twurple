@@ -42,7 +42,7 @@ export class SimpleAdapter extends ConnectionAdapter {
 
 	/** @protected */
 	async getExternalPort(): Promise<number> {
-		return this.getListenerPort();
+		return await this.getListenerPort();
 	}
 
 	/** @protected */

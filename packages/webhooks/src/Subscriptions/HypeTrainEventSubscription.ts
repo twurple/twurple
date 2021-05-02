@@ -29,14 +29,14 @@ export class HypeTrainEventSubscription extends Subscription<HelixHypeTrainEvent
 	}
 
 	protected async _subscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.subscribeToHypeTrainEvents(
+		await this._client._apiClient.helix.webHooks.subscribeToHypeTrainEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
 	}
 
 	protected async _unsubscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.unsubscribeFromHypeTrainEvents(
+		await this._client._apiClient.helix.webHooks.unsubscribeFromHypeTrainEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);

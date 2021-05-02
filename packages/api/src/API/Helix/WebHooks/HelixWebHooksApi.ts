@@ -121,7 +121,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async subscribeToUserFollowsFrom(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendUserFollowsHubRequest('subscribe', 'from', user, options);
+		await this._sendUserFollowsHubRequest('subscribe', 'from', user, options);
 	}
 
 	/**
@@ -133,7 +133,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async subscribeToUserFollowsTo(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendUserFollowsHubRequest('subscribe', 'to', user, options);
+		await this._sendUserFollowsHubRequest('subscribe', 'to', user, options);
 	}
 
 	/**
@@ -148,7 +148,7 @@ export class HelixWebHooksApi extends BaseApi {
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendUserFollowsHubRequest('unsubscribe', 'from', user, options);
+		await this._sendUserFollowsHubRequest('unsubscribe', 'from', user, options);
 	}
 
 	/**
@@ -163,7 +163,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcasterId: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendHypeTrainEventHubRequest('subscribe', broadcasterId, options);
+		await this._sendHypeTrainEventHubRequest('subscribe', broadcasterId, options);
 	}
 
 	/**
@@ -178,7 +178,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcasterId: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendHypeTrainEventHubRequest('unsubscribe', broadcasterId, options);
+		await this._sendHypeTrainEventHubRequest('unsubscribe', broadcasterId, options);
 	}
 
 	/**
@@ -190,7 +190,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async unsubscribeFromUserFollowsTo(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendUserFollowsHubRequest('unsubscribe', 'to', user, options);
+		await this._sendUserFollowsHubRequest('unsubscribe', 'to', user, options);
 	}
 
 	/**
@@ -202,7 +202,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async subscribeToStreamChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendStreamChangeHubRequest('subscribe', user, options);
+		await this._sendStreamChangeHubRequest('subscribe', user, options);
 	}
 
 	/**
@@ -214,7 +214,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async unsubscribeFromStreamChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendStreamChangeHubRequest('unsubscribe', user, options);
+		await this._sendStreamChangeHubRequest('unsubscribe', user, options);
 	}
 
 	/**
@@ -231,7 +231,7 @@ export class HelixWebHooksApi extends BaseApi {
 		options: HelixWebHookHubRequestOptions,
 		withEmail: boolean = false
 	): Promise<void> {
-		return this._sendUserChangeHubRequest('subscribe', user, options, withEmail);
+		await this._sendUserChangeHubRequest('subscribe', user, options, withEmail);
 	}
 
 	/**
@@ -243,7 +243,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async unsubscribeFromUserChanges(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendUserChangeHubRequest('unsubscribe', user, options);
+		await this._sendUserChangeHubRequest('unsubscribe', user, options);
 	}
 
 	/**
@@ -255,7 +255,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async subscribeToSubscriptionEvents(user: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendSubscriptionEventsHubRequest('subscribe', user, options);
+		await this._sendSubscriptionEventsHubRequest('subscribe', user, options);
 	}
 
 	/**
@@ -270,7 +270,7 @@ export class HelixWebHooksApi extends BaseApi {
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendSubscriptionEventsHubRequest('unsubscribe', user, options);
+		await this._sendSubscriptionEventsHubRequest('unsubscribe', user, options);
 	}
 
 	/**
@@ -282,7 +282,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async subscribeToExtensionTransactions(extensionId: string, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendExtensionTransactionsHubRequest('subscribe', extensionId, options);
+		await this._sendExtensionTransactionsHubRequest('subscribe', extensionId, options);
 	}
 
 	/**
@@ -297,7 +297,7 @@ export class HelixWebHooksApi extends BaseApi {
 		extensionId: string,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendExtensionTransactionsHubRequest('unsubscribe', extensionId, options);
+		await this._sendExtensionTransactionsHubRequest('unsubscribe', extensionId, options);
 	}
 
 	/**
@@ -309,7 +309,7 @@ export class HelixWebHooksApi extends BaseApi {
 	 * @param options
 	 */
 	async subscribeToBanEvents(broadcaster: UserIdResolvable, options: HelixWebHookHubRequestOptions): Promise<void> {
-		return this._sendBanEventsHubRequest('subscribe', broadcaster, options);
+		await this._sendBanEventsHubRequest('subscribe', broadcaster, options);
 	}
 
 	/**
@@ -324,7 +324,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendBanEventsHubRequest('unsubscribe', broadcaster, options);
+		await this._sendBanEventsHubRequest('unsubscribe', broadcaster, options);
 	}
 
 	/**
@@ -341,7 +341,7 @@ export class HelixWebHooksApi extends BaseApi {
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendBanEventsHubRequest('subscribe', broadcaster, options, user);
+		await this._sendBanEventsHubRequest('subscribe', broadcaster, options, user);
 	}
 
 	/**
@@ -358,7 +358,7 @@ export class HelixWebHooksApi extends BaseApi {
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendBanEventsHubRequest('unsubscribe', broadcaster, options, user);
+		await this._sendBanEventsHubRequest('unsubscribe', broadcaster, options, user);
 	}
 
 	/**
@@ -373,7 +373,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendModeratorEventsHubRequest('subscribe', broadcaster, options);
+		await this._sendModeratorEventsHubRequest('subscribe', broadcaster, options);
 	}
 
 	/**
@@ -388,7 +388,7 @@ export class HelixWebHooksApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendModeratorEventsHubRequest('unsubscribe', broadcaster, options);
+		await this._sendModeratorEventsHubRequest('unsubscribe', broadcaster, options);
 	}
 
 	/**
@@ -405,7 +405,7 @@ export class HelixWebHooksApi extends BaseApi {
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendModeratorEventsHubRequest('subscribe', broadcaster, options, user);
+		await this._sendModeratorEventsHubRequest('subscribe', broadcaster, options, user);
 	}
 
 	/**
@@ -422,7 +422,7 @@ export class HelixWebHooksApi extends BaseApi {
 		user: UserIdResolvable,
 		options: HelixWebHookHubRequestOptions
 	): Promise<void> {
-		return this._sendModeratorEventsHubRequest('unsubscribe', broadcaster, options, user);
+		await this._sendModeratorEventsHubRequest('unsubscribe', broadcaster, options, user);
 	}
 
 	private async _sendUserFollowsHubRequest(
@@ -433,7 +433,7 @@ export class HelixWebHooksApi extends BaseApi {
 	) {
 		const userId = extractUserId(user);
 
-		return this.sendHubRequest({
+		await this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/users/follows?first=1&${direction}_id=${userId}`,
 			...options
@@ -447,7 +447,7 @@ export class HelixWebHooksApi extends BaseApi {
 	) {
 		const userId = extractUserId(user);
 
-		return this.sendHubRequest({
+		await this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/hypetrain/events?broadcaster_id=${userId}&first=1`,
 			scope: 'channel:read:hype_train',
@@ -462,7 +462,7 @@ export class HelixWebHooksApi extends BaseApi {
 	) {
 		const userId = extractUserId(user);
 
-		return this.sendHubRequest({
+		await this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/streams?user_id=${userId}`,
 			...options
@@ -477,7 +477,7 @@ export class HelixWebHooksApi extends BaseApi {
 	) {
 		const userId = extractUserId(user);
 
-		return this.sendHubRequest({
+		await this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/users?id=${userId}`,
 			scope: withEmail ? 'user:read:email' : undefined,
@@ -492,7 +492,7 @@ export class HelixWebHooksApi extends BaseApi {
 	) {
 		const userId = extractUserId(user);
 
-		return this.sendHubRequest({
+		await this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/subscriptions/events?broadcaster_id=${userId}&first=1`,
 			scope: 'channel:read:subscriptions',
@@ -505,7 +505,7 @@ export class HelixWebHooksApi extends BaseApi {
 		extensionId: string,
 		options: HelixWebHookHubRequestOptions
 	) {
-		return this.sendHubRequest({
+		await this.sendHubRequest({
 			mode,
 			topicUrl: `https://api.twitch.tv/helix/extensions/transactions?extension_id=${extensionId}&first=1`,
 			...options
@@ -525,7 +525,7 @@ export class HelixWebHooksApi extends BaseApi {
 			topicUrl += `&user_id=${extractUserId(user)}`;
 		}
 
-		return this.sendHubRequest({
+		await this.sendHubRequest({
 			mode,
 			topicUrl,
 			scope: 'moderation:read',
@@ -546,7 +546,7 @@ export class HelixWebHooksApi extends BaseApi {
 			topicUrl += `&user_id=${extractUserId(user)}`;
 		}
 
-		return this.sendHubRequest({
+		await this.sendHubRequest({
 			mode,
 			topicUrl,
 			scope: 'moderation:read',

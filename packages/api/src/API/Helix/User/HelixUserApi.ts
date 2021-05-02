@@ -85,7 +85,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param userIds The user IDs you want to look up.
 	 */
 	async getUsersByIds(userIds: UserIdResolvable[]): Promise<HelixUser[]> {
-		return this._getUsers(UserLookupType.Id, userIds.map(extractUserId));
+		return await this._getUsers(UserLookupType.Id, userIds.map(extractUserId));
 	}
 
 	/**
@@ -94,7 +94,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param userNames The user names you want to look up.
 	 */
 	async getUsersByNames(userNames: UserNameResolvable[]): Promise<HelixUser[]> {
-		return this._getUsers(UserLookupType.Login, userNames.map(extractUserName));
+		return await this._getUsers(UserLookupType.Login, userNames.map(extractUserName));
 	}
 
 	/**

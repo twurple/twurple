@@ -52,14 +52,14 @@ export class Channel extends ChannelPlaceholder implements UserNameResolveableTy
 	 * Retrieves a list of the teams of the channel.
 	 */
 	async getTeams(): Promise<Team[]> {
-		return this._client.kraken.channels.getChannelTeams(this._data._id);
+		return await this._client.kraken.channels.getChannelTeams(this._data._id);
 	}
 
 	/**
 	 * Updates the game, title or delay of a channel or toggles the channel feed.
 	 */
 	async update(data: ChannelUpdateData): Promise<void> {
-		return this._client.kraken.channels.updateChannel(this, data);
+		await this._client.kraken.channels.updateChannel(this, data);
 	}
 
 	/**

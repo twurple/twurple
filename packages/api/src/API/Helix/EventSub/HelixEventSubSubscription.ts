@@ -90,7 +90,7 @@ export class HelixEventSubSubscription {
 	 * End the EventSub subscription.
 	 */
 	async unsubscribe(): Promise<void> {
-		return this._client.helix.eventSub.deleteSubscription(this._data.id);
+		await this._client.helix.eventSub.deleteSubscription(this._data.id);
 	}
 
 	/** @private */

@@ -27,11 +27,11 @@ export class FollowsToUserSubscription extends Subscription<HelixFollow> {
 	}
 
 	protected async _subscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.subscribeToUserFollowsTo(this._userId, await this._getOptions());
+		await this._client._apiClient.helix.webHooks.subscribeToUserFollowsTo(this._userId, await this._getOptions());
 	}
 
 	protected async _unsubscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.unsubscribeFromUserFollowsTo(
+		await this._client._apiClient.helix.webHooks.unsubscribeFromUserFollowsTo(
 			this._userId,
 			await this._getOptions()
 		);

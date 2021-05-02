@@ -27,14 +27,14 @@ export class SubscriptionEventSubscription extends Subscription<HelixSubscriptio
 	}
 
 	protected async _subscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.subscribeToSubscriptionEvents(
+		await this._client._apiClient.helix.webHooks.subscribeToSubscriptionEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);
 	}
 
 	protected async _unsubscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.unsubscribeFromSubscriptionEvents(
+		await this._client._apiClient.helix.webHooks.unsubscribeFromSubscriptionEvents(
 			this._broadcasterId,
 			await this._getOptions()
 		);

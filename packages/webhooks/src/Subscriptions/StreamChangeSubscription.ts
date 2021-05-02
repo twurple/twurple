@@ -30,11 +30,11 @@ export class StreamChangeSubscription extends Subscription<HelixStream | undefin
 	}
 
 	protected async _subscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.subscribeToStreamChanges(this._userId, await this._getOptions());
+		await this._client._apiClient.helix.webHooks.subscribeToStreamChanges(this._userId, await this._getOptions());
 	}
 
 	protected async _unsubscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.unsubscribeFromStreamChanges(
+		await this._client._apiClient.helix.webHooks.unsubscribeFromStreamChanges(
 			this._userId,
 			await this._getOptions()
 		);

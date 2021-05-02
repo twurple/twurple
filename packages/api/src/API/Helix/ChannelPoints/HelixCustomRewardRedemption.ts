@@ -83,7 +83,7 @@ export class HelixCustomRewardRedemption {
 	 * Retrieves more information about the broadcaster where the reward was redeemed.
 	 */
 	async getBroadcaster(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.broadcaster_id);
+		return await this._client.helix.users.getUserById(this._data.broadcaster_id);
 	}
 
 	/**
@@ -111,7 +111,7 @@ export class HelixCustomRewardRedemption {
 	 * Retrieves more information about the user that redeemed the reward.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.user_id);
+		return await this._client.helix.users.getUserById(this._data.user_id);
 	}
 
 	/**

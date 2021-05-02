@@ -75,7 +75,7 @@ Register one using:
 		user: UserIdResolvable,
 		callback: (message: PubSubBitsMessage) => void
 	): Promise<PubSubListener<never>> {
-		return this.getUserListener(user).onBits(callback);
+		return await this.getUserListener(user).onBits(callback);
 	}
 
 	/**
@@ -90,7 +90,7 @@ Register one using:
 		user: UserIdResolvable,
 		callback: (message: PubSubBitsBadgeUnlockMessage) => void
 	): Promise<PubSubListener<never>> {
-		return this.getUserListener(user).onBitsBadgeUnlock(callback);
+		return await this.getUserListener(user).onBitsBadgeUnlock(callback);
 	}
 
 	/**
@@ -105,7 +105,7 @@ Register one using:
 		user: UserIdResolvable,
 		callback: (message: PubSubRedemptionMessage) => void
 	): Promise<PubSubListener<never>> {
-		return this.getUserListener(user).onRedemption(callback);
+		return await this.getUserListener(user).onRedemption(callback);
 	}
 
 	/**
@@ -120,7 +120,7 @@ Register one using:
 		user: UserIdResolvable,
 		callback: (message: PubSubSubscriptionMessage) => void
 	): Promise<PubSubListener<never>> {
-		return this.getUserListener(user).onSubscription(callback);
+		return await this.getUserListener(user).onSubscription(callback);
 	}
 
 	/**
@@ -135,7 +135,7 @@ Register one using:
 		user: UserIdResolvable,
 		callback: (message: PubSubWhisperMessage) => void
 	): Promise<PubSubListener<never>> {
-		return this.getUserListener(user).onWhisper(callback);
+		return await this.getUserListener(user).onWhisper(callback);
 	}
 
 	/**
@@ -152,7 +152,7 @@ Register one using:
 		channel: UserIdResolvable,
 		callback: (message: PubSubChatModActionMessage) => void
 	): Promise<PubSubListener<never>> {
-		return this.getUserListener(user).onModAction(channel, callback);
+		return await this.getUserListener(user).onModAction(channel, callback);
 	}
 
 	/**
@@ -173,7 +173,7 @@ Register one using:
 		scope?: string,
 		channel?: UserIdResolvable
 	): Promise<PubSubListener<never>> {
-		return this.getUserListener(user).onCustomTopic(topic, callback, scope, channel);
+		return await this.getUserListener(user).onCustomTopic(topic, callback, scope, channel);
 	}
 
 	private static async _getCorrectUserId(authProvider: AuthProvider, user?: UserIdResolvable): Promise<string> {

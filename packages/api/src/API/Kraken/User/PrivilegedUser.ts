@@ -78,7 +78,7 @@ export class PrivilegedUser extends User {
 	 * @param notifications Whether the user will receive notifications.
 	 */
 	async followChannel(channel: UserIdResolvable, notifications?: boolean): Promise<UserFollow> {
-		return this._client.kraken.users.followChannel(this, channel, notifications);
+		return await this._client.kraken.users.followChannel(this, channel, notifications);
 	}
 
 	/**
@@ -87,7 +87,7 @@ export class PrivilegedUser extends User {
 	 * @param channel The channel to unfollow.
 	 */
 	async unfollowChannel(channel: UserIdResolvable): Promise<void> {
-		return this._client.kraken.users.unfollowChannel(this, channel);
+		await this._client.kraken.users.unfollowChannel(this, channel);
 	}
 
 	/**
@@ -96,7 +96,7 @@ export class PrivilegedUser extends User {
 	 * @param userToBlock The user to block.
 	 */
 	async blockUser(userToBlock: UserIdResolvable): Promise<UserBlock> {
-		return this._client.kraken.users.blockUser(this, userToBlock);
+		return await this._client.kraken.users.blockUser(this, userToBlock);
 	}
 
 	/**
@@ -105,6 +105,6 @@ export class PrivilegedUser extends User {
 	 * @param userToUnblock The user to unblock.
 	 */
 	async unblockUser(userToUnblock: UserIdResolvable): Promise<void> {
-		return this._client.kraken.users.unblockUser(this, userToUnblock);
+		await this._client.kraken.users.unblockUser(this, userToUnblock);
 	}
 }

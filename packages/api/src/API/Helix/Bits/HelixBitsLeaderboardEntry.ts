@@ -65,6 +65,6 @@ export class HelixBitsLeaderboardEntry {
 	 * Retrieves the user of entry on the leaderboard.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.user_id);
+		return await this._client.helix.users.getUserById(this._data.user_id);
 	}
 }

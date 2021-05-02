@@ -28,7 +28,7 @@ export class UserChangeSubscription extends Subscription<HelixUser> {
 	}
 
 	protected async _subscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.subscribeToUserChanges(
+		await this._client._apiClient.helix.webHooks.subscribeToUserChanges(
 			this._userId,
 			await this._getOptions(),
 			this._withEmail
@@ -36,9 +36,6 @@ export class UserChangeSubscription extends Subscription<HelixUser> {
 	}
 
 	protected async _unsubscribe(): Promise<void> {
-		return this._client._apiClient.helix.webHooks.unsubscribeFromUserChanges(
-			this._userId,
-			await this._getOptions()
-		);
+		await this._client._apiClient.helix.webHooks.unsubscribeFromUserChanges(this._userId, await this._getOptions());
 	}
 }

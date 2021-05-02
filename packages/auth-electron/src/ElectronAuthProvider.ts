@@ -69,7 +69,7 @@ export class ElectronAuthProvider implements AuthProvider {
 	}
 
 	async getAccessToken(scopes?: string | string[]): Promise<AccessToken> {
-		return new Promise<AccessToken>((resolve, reject) => {
+		return await new Promise<AccessToken>((resolve, reject) => {
 			if (typeof scopes === 'string') {
 				scopes = [scopes];
 			} else if (!scopes) {

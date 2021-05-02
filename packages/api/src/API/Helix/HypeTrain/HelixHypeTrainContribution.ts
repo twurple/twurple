@@ -40,7 +40,7 @@ export class HelixHypeTrainContribution {
 	 * Retrieves additional information about the user contributing to the Hype Train.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.user);
+		return await this._client.helix.users.getUserById(this._data.user);
 	}
 
 	/**

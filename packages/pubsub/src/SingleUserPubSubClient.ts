@@ -83,7 +83,7 @@ export class SingleUserPubSubClient {
 	 * It receives a {@PubSubBitsMessage} object.
 	 */
 	async onBits(callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener<never>> {
-		return this._addListener('channel-bits-events-v2', callback, 'bits:read');
+		return await this._addListener('channel-bits-events-v2', callback, 'bits:read');
 	}
 
 	/**
@@ -94,7 +94,7 @@ export class SingleUserPubSubClient {
 	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
 	 */
 	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void): Promise<PubSubListener<never>> {
-		return this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
+		return await this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
 	}
 
 	/**
@@ -105,7 +105,7 @@ export class SingleUserPubSubClient {
 	 * It receives a {@PubSubRedemptionMessage} object.
 	 */
 	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener<never>> {
-		return this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');
+		return await this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');
 	}
 
 	/**
@@ -116,7 +116,7 @@ export class SingleUserPubSubClient {
 	 * It receives a {@PubSubSubscriptionMessage} object.
 	 */
 	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void): Promise<PubSubListener<never>> {
-		return this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
+		return await this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
 	}
 
 	/**
@@ -127,7 +127,7 @@ export class SingleUserPubSubClient {
 	 * It receives a {@PubSubWhisperMessage} object.
 	 */
 	async onWhisper(callback: (message: PubSubWhisperMessage) => void): Promise<PubSubListener<never>> {
-		return this._addListener('whispers', callback, 'whispers:read');
+		return await this._addListener('whispers', callback, 'whispers:read');
 	}
 
 	/**
@@ -142,7 +142,12 @@ export class SingleUserPubSubClient {
 		channelId: UserIdResolvable,
 		callback: (message: PubSubChatModActionMessage) => void
 	): Promise<PubSubListener<never>> {
-		return this._addListener('chat_moderator_actions', callback, 'channel:moderate', extractUserId(channelId));
+		return await this._addListener(
+			'chat_moderator_actions',
+			callback,
+			'channel:moderate',
+			extractUserId(channelId)
+		);
 	}
 
 	/**
@@ -162,9 +167,9 @@ export class SingleUserPubSubClient {
 		channelId?: UserIdResolvable
 	): Promise<PubSubListener<never>> {
 		if (channelId) {
-			return this._addListener(topic, callback, scope, extractUserId(channelId));
+			return await this._addListener(topic, callback, scope, extractUserId(channelId));
 		} else {
-			return this._addListener(topic, callback, scope);
+			return await this._addListener(topic, callback, scope);
 		}
 	}
 

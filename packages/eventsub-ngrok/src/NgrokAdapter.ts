@@ -22,7 +22,7 @@ export class NgrokAdapter extends ConnectionAdapter {
 			this._listenerPortPromise = getPortPromise();
 		}
 
-		return this._listenerPortPromise;
+		return await this._listenerPortPromise;
 	}
 
 	/** @protected */
