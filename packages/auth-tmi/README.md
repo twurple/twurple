@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch-auth-tmi` package](https://www.npmjs.com/package/twitch-auth-tmi).
+
 # Twurple - Authentication for TMI.js
 
 Use tmi.js with the added benefits of `@twurple/auth`'s automatic token handling.

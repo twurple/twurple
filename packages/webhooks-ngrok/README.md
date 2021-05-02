@@ -1,3 +1,10 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch-webhooks-ngrok` package](https://www.npmjs.com/package/twitch-webhooks-ngrok).
+
+Also note that this is mostly superseded by [the `@twurple/eventsub-ngrok` package](https://www.npmjs.com/package/@twurple/eventsub-ngrok)
+(or [the more stable `twitch-eventsub-ngrok` package](https://www.npmjs.com/package/twitch-eventsub-ngrok) if you don't like bleeding edge)
+
 # Twurple - WebHooks ` ngrok` adapter
 
 Test your WebHooks locally using ngrok.

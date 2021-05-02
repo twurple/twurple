@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `versions/4.5` branch](https://github.com/twurple/twurple/tree/versions/4.5).
+
 # Twurple
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-25-orange.svg?style=flat-square)](#contributors-)

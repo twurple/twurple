@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch-api-call` package](https://www.npmjs.com/package/twitch-api-call).
+
 # Twurple - API call
 
 A basic Twitch API call wrapper.

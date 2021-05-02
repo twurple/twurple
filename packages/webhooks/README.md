@@ -1,3 +1,10 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch-webhooks` package](https://www.npmjs.com/package/twitch-webhooks).
+
+Also note that this is mostly superseded by [the `@twurple/eventsub` package](https://www.npmjs.com/package/@twurple/eventsub)
+(or [the more stable `twitch-eventsub` package](https://www.npmjs.com/package/twitch-eventsub) if you don't like bleeding edge)
+
 # Twurple - WebHooks listener
 
 Listen to events on Twitch via their WebHooks API.

@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch-common` package](https://www.npmjs.com/package/twitch-common).
+
 # Twurple - Authentication
 
 Authenticate with Twitch and stop caring about refreshing tokens.

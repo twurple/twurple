@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `easy-twitch-bot` package](https://www.npmjs.com/package/easy-twitch-bot).
+
 # Twurple - Bot framework
 
 A simplified framework to get a chat bot running easily.

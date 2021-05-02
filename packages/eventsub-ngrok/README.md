@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch-eventsub-ngrok` package](https://www.npmjs.com/package/twitch-eventsub-ngrok).
+
 # Twurple - EventSub ` ngrok` adapter
 
 Test your EventSub listener locally using ngrok.

@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch` package](https://www.npmjs.com/package/twitch).
+
 # Twurple - API
 
 Interact with Twitch's API.

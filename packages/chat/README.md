@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch-chat-client` package](https://www.npmjs.com/package/twitch-chat-client).
+
 # Twurple - Chat Client
 
 Interact with the Twitch Messaging Interface (aka Twitch chat).

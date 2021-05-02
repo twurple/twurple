@@ -1,3 +1,7 @@
+# ⚠ WARNING
+
+This is a future version still in development. For a stable version, check out [the `twitch-electron-auth-provider` package](https://www.npmjs.com/package/twitch-electron-auth-provider).
+
 # Twurple - Electron auth provider
 
 This is an {@AuthProvider} implementation for [the `twurple` package family](https://github.com/twurple/twurple)
