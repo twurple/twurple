@@ -84,8 +84,8 @@ export class HelixHypeTrainEvent {
 	/**
 	 * Retrieves more information about the broadcaster where the Hype Train event was triggered.
 	 */
-	async getBroadcaster(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this._data.event_data.broadcaster_id);
+	async getBroadcaster(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.event_data.broadcaster_id))!;
 	}
 
 	/**

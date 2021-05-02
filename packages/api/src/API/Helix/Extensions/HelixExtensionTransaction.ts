@@ -73,8 +73,8 @@ export class HelixExtensionTransaction {
 	/**
 	 * Retrieves information about the broadcaster that runs the extension on their channel.
 	 */
-	async getBroadcaster(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this._data.broadcaster_id);
+	async getBroadcaster(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.broadcaster_id))!;
 	}
 
 	/**
@@ -101,8 +101,8 @@ export class HelixExtensionTransaction {
 	/**
 	 * Retrieves information about the user that made the transaction.
 	 */
-	async getUser(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this._data.user_id);
+	async getUser(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.user_id))!;
 	}
 
 	/**

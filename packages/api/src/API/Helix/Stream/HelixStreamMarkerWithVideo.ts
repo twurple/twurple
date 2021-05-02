@@ -38,7 +38,7 @@ export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
 	/**
 	 * Retrieves the video data of the video the marker was set in.
 	 */
-	async getVideo(): Promise<HelixVideo | null> {
-		return await this._client.helix.videos.getVideoById(this._videoId);
+	async getVideo(): Promise<HelixVideo> {
+		return (await this._client.helix.videos.getVideoById(this._videoId))!;
 	}
 }

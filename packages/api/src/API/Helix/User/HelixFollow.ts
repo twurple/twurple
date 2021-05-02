@@ -52,8 +52,8 @@ export class HelixFollow {
 	/**
 	 * Retrieves the data of the following user.
 	 */
-	async getUser(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this._data.from_id);
+	async getUser(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.from_id))!;
 	}
 
 	/**
@@ -80,8 +80,8 @@ export class HelixFollow {
 	/**
 	 * Retrieves the data of the followed broadcaster.
 	 */
-	async getFollowedUser(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this._data.to_id);
+	async getFollowedUser(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.to_id))!;
 	}
 
 	/**

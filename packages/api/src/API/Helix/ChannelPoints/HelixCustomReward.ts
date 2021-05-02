@@ -100,8 +100,8 @@ export class HelixCustomReward {
 	/**
 	 * Retrieves more information about the reward's broadcaster.
 	 */
-	async getBroadcaster(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this._data.broadcaster_id);
+	async getBroadcaster(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._data.broadcaster_id))!;
 	}
 
 	/**

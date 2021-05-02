@@ -98,7 +98,7 @@ export class HelixBanEvent extends HelixBan {
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
-	async getBroadcaster(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id);
+	async getBroadcaster(): Promise<HelixUser> {
+		return (await this._client.helix.users.getUserById(this._eventData.event_data.broadcaster_id))!;
 	}
 }
