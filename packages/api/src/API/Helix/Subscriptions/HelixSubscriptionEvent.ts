@@ -7,22 +7,10 @@ import { HelixSubscription } from './HelixSubscription';
 /**
  * The different types a subscription event can have.
  */
-export enum HelixSubscriptionEventType {
-	/**
-	 * Sent when a new user subscribes.
-	 */
-	Subscribe = 'subscriptions.subscribe',
-
-	/**
-	 * Sent when a previous subscriber stops subscribing.
-	 */
-	Unsubscribe = 'subscriptions.unsubscribe',
-
-	/**
-	 * Sent when a new or recurring subscriber sends their monthly notification.
-	 */
-	Notification = 'subscriptions.notification'
-}
+export type HelixSubscriptionEventType =
+	| 'subscriptions.subscribe'
+	| 'subscriptions.unsubscribe'
+	| 'subscriptions.notification';
 
 /** @private */
 export type HelixSubscriptionEventData = HelixEventData<HelixSubscriptionData, HelixSubscriptionEventType>;

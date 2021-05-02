@@ -12,22 +12,7 @@ import type { HelixFollow } from './HelixFollow';
 /**
  * The type of a broadcaster.
  */
-export enum HelixBroadcasterType {
-	/**
-	 * A Twitch Partner.
-	 */
-	Partner = 'partner',
-
-	/**
-	 * A Twitch Affiliate.
-	 */
-	Affiliate = 'affiliate',
-
-	/**
-	 * A user that's neither a partner nor an affiliate.
-	 */
-	None = ''
-}
+export type HelixBroadcasterType = 'partner' | 'affiliate' | '';
 
 /** @private */
 export interface HelixUserData {

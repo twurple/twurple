@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserNameResolvable } from '@twurple/common';
 import { extractUserName, rtfm } from '@twurple/common';
 import { BaseApi } from '../BaseApi';
@@ -30,7 +29,7 @@ export class UnsupportedApi extends BaseApi {
 
 		const data: ChattersListData = await this._client.callApi({
 			url: `https://tmi.twitch.tv/group/user/${channelName}/chatters`,
-			type: TwitchApiCallType.Custom
+			type: 'custom'
 		});
 		return new ChattersList(data);
 	}

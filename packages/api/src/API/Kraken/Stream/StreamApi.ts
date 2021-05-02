@@ -1,8 +1,8 @@
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
-import type { StreamData, StreamDataWrapper } from './Stream';
-import { Stream, StreamType } from './Stream';
+import type { StreamData, StreamDataWrapper, StreamType } from './Stream';
+import { Stream } from './Stream';
 
 /**
  * The API methods that deal with streams.
@@ -68,7 +68,7 @@ export class StreamApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	async getAllStreams(page?: number, limit?: number): Promise<Stream[]> {
-		return await this.getStreams(undefined, undefined, undefined, StreamType.All, page, limit);
+		return await this.getStreams(undefined, undefined, undefined, 'all', page, limit);
 	}
 
 	/**
@@ -78,7 +78,7 @@ export class StreamApi extends BaseApi {
 	 * @param limit The number of results you want to retrieve.
 	 */
 	async getAllLiveStreams(page?: number, limit?: number): Promise<Stream[]> {
-		return await this.getStreams(undefined, undefined, undefined, StreamType.Live, page, limit);
+		return await this.getStreams(undefined, undefined, undefined, 'live', page, limit);
 	}
 
 	/**

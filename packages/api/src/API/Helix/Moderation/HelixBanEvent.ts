@@ -9,17 +9,7 @@ import { HelixBan } from './HelixBan';
 /**
  * The different types a ban event can have.
  */
-export enum HelixBanEventType {
-	/**
-	 * Sent when a user gets banned.
-	 */
-	Ban = 'moderation.user.ban',
-
-	/**
-	 * Sent when a user gets unbanned.
-	 */
-	Unban = 'moderation.user.unban'
-}
+export type HelixBanEventType = 'moderation.user.ban' | 'moderation.user.unban';
 
 /** @private */
 export interface HelixBanEventDetail extends HelixBanData {

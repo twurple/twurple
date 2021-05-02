@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -113,7 +112,7 @@ export class HelixChannelPointsApi extends BaseApi {
 	 */
 	async getCustomRewards(broadcaster: UserIdResolvable, onlyManageable?: boolean): Promise<HelixCustomReward[]> {
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			scope: 'channel:read:redemptions',
 			query: {
@@ -136,7 +135,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			return [];
 		}
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			scope: 'channel:read:redemptions',
 			query: {
@@ -172,7 +171,7 @@ export class HelixChannelPointsApi extends BaseApi {
 		data: HelixCreateCustomRewardData
 	): Promise<HelixCustomReward> {
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			method: 'POST',
 			scope: 'channel:manage:redemptions',
@@ -198,7 +197,7 @@ export class HelixChannelPointsApi extends BaseApi {
 		data: HelixUpdateCustomRewardData
 	): Promise<HelixCustomReward> {
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			method: 'PATCH',
 			scope: 'channel:manage:redemptions',
@@ -220,7 +219,7 @@ export class HelixChannelPointsApi extends BaseApi {
 	 */
 	async deleteCustomReward(broadcaster: UserIdResolvable, rewardId: string): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			method: 'DELETE',
 			scope: 'channel:manage:redemptions',
@@ -247,7 +246,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			return [];
 		}
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardRedemptionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channel_points/custom_rewards/redemptions',
 			scope: 'channel:read:redemptions',
 			query: {
@@ -293,7 +292,7 @@ export class HelixChannelPointsApi extends BaseApi {
 		filter: HelixPaginatedCustomRewardRedemptionFilter
 	): Promise<HelixPaginatedResult<HelixCustomRewardRedemption>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixCustomRewardRedemptionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channel_points/custom_rewards/redemptions',
 			scope: 'channel:read:redemptions',
 			query: {
@@ -359,7 +358,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			return [];
 		}
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardRedemptionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channel_points/custom_rewards/redemptions',
 			method: 'PATCH',
 			scope: 'channel:manage:redemptions',

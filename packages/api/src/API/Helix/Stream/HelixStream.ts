@@ -8,24 +8,7 @@ import type { HelixUser } from '../User/HelixUser';
 /**
  * The type of a stream.
  */
-export enum HelixStreamType {
-	/**
-	 * Returned by Twitch in case of an error.
-	 */
-	None = '',
-
-	/**
-	 * A live stream.
-	 */
-	Live = 'live',
-
-	/**
-	 * A vodcast.
-	 *
-	 * Currently not supported by Twitch - but one can only hope and leave it in here.
-	 */
-	Vodcast = 'vodcast'
-}
+export type HelixStreamType = 'live' | 'vodcast' | '';
 
 /** @private */
 export interface HelixStreamData {

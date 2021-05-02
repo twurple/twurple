@@ -1,13 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { LoggerOptions } from '@d-fischer/logger';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from '@twurple/api-call';
-import {
-	callTwitchApi,
-	callTwitchApiRaw,
-	HttpStatusCodeError,
-	transformTwitchApiResponse,
-	TwitchApiCallType
-} from '@twurple/api-call';
+import { callTwitchApi, callTwitchApiRaw, HttpStatusCodeError, transformTwitchApiResponse } from '@twurple/api-call';
 
 import type { AuthProvider, TokenInfoData } from '@twurple/auth';
 import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
@@ -90,7 +84,7 @@ export class ApiClient {
 	 */
 	async getTokenInfo(): Promise<TokenInfo> {
 		try {
-			const data = await this.callApi<TokenInfoData>({ type: TwitchApiCallType.Auth, url: 'validate' });
+			const data = await this.callApi<TokenInfoData>({ type: 'auth', url: 'validate' });
 			return new TokenInfo(data);
 		} catch (e) {
 			if (e instanceof HttpStatusCodeError && e.statusCode === 401) {
@@ -176,7 +170,7 @@ export class ApiClient {
 
 	private async _callApiInternal(options: TwitchApiCallOptions, clientId?: string, accessToken?: string) {
 		const { fetchOptions } = this._config;
-		if (options.type === TwitchApiCallType.Helix) {
+		if (options.type === 'helix') {
 			return await this._helixRateLimiter.request({ options, clientId, accessToken, fetchOptions });
 		}
 

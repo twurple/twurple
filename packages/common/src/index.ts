@@ -2,8 +2,15 @@ export { rtfm } from './rtfm';
 
 export type { CommercialLength, HelixUserType } from './types';
 
-export { BaseCheermoteList, CheermoteBackground, CheermoteScale, CheermoteState } from './emotes/BaseCheermoteList';
-export type { CheermoteDisplayInfo, CheermoteFormat, MessageCheermote } from './emotes/BaseCheermoteList';
+export { BaseCheermoteList } from './emotes/BaseCheermoteList';
+export type {
+	CheermoteScale,
+	CheermoteState,
+	CheermoteBackground,
+	CheermoteDisplayInfo,
+	CheermoteFormat,
+	MessageCheermote
+} from './emotes/BaseCheermoteList';
 export { ChatEmote } from './emotes/ChatEmote';
 export type { ChatEmoteData, EmoteSize } from './emotes/ChatEmote';
 

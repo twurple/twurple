@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -47,7 +46,7 @@ export class HelixEventSubApi extends BaseApi {
 	 */
 	async getSubscriptions(): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'eventsub/subscriptions'
 		});
 
@@ -89,7 +88,7 @@ export class HelixEventSubApi extends BaseApi {
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'eventsub/subscriptions',
 			method: 'POST',
 			jsonBody: {
@@ -110,7 +109,7 @@ export class HelixEventSubApi extends BaseApi {
 	 */
 	async deleteSubscription(id: string): Promise<void> {
 		await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'eventsub/subscriptions',
 			method: 'DELETE',
 			query: {

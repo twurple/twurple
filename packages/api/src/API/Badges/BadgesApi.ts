@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../BaseApi';
@@ -29,7 +28,7 @@ export class BadgesApi extends BaseApi {
 			query: {
 				language
 			},
-			type: TwitchApiCallType.Custom
+			type: 'custom'
 		});
 
 		return new ChatBadgeList(data.badge_sets);
@@ -52,7 +51,7 @@ export class BadgesApi extends BaseApi {
 			query: {
 				language
 			},
-			type: TwitchApiCallType.Custom
+			type: 'custom'
 		});
 
 		const channelBadges = new ChatBadgeList(data.badge_sets);

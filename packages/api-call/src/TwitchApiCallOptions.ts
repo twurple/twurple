@@ -5,27 +5,7 @@ import type { RequestInit as NodeRequestInit } from 'node-fetch';
 /**
  * The endpoint to call, i.e. /kraken, /helix or a custom (potentially unsupported) endpoint.
  */
-export enum TwitchApiCallType {
-	/**
-	 * Call a Kraken API endpoint.
-	 */
-	Kraken,
-
-	/**
-	 * Call a Helix API endpoint.
-	 */
-	Helix,
-
-	/**
-	 * Call an authentication endpoint.
-	 */
-	Auth,
-
-	/**
-	 * Call a custom (potentially unsupported) endpoint.
-	 */
-	Custom
-}
+export type TwitchApiCallType = 'kraken' | 'helix' | 'auth' | 'custom';
 
 /**
  * Configuration for a single API call.

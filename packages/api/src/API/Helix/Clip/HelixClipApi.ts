@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -177,7 +176,7 @@ export class HelixClipApi extends BaseApi {
 	async createClip(params: HelixClipCreateParams): Promise<string> {
 		const { channelId, createAfterDelay = false } = params;
 		const result = await this._client.callApi<{ data: [HelixClipCreateResponse] }>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'clips',
 			method: 'POST',
 			scope: 'clips:edit',
@@ -198,7 +197,7 @@ export class HelixClipApi extends BaseApi {
 		}
 
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixClipData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'clips',
 			query: {
 				[filterType]: ids,

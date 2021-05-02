@@ -1,5 +1,5 @@
 import type { Logger } from '@d-fischer/logger';
-import { callTwitchApi, HttpStatusCodeError, TwitchApiCallType } from '@twurple/api-call';
+import { callTwitchApi, HttpStatusCodeError } from '@twurple/api-call';
 import type { AccessToken } from './AccessToken';
 import type { AuthProvider } from './AuthProvider/AuthProvider';
 import { InvalidTokenError } from './Errors/InvalidTokenError';
@@ -41,7 +41,7 @@ export async function exchangeCode(
 ): Promise<AccessToken> {
 	return createAccessTokenFromData(
 		await callTwitchApi<AccessTokenData>({
-			type: TwitchApiCallType.Auth,
+			type: 'auth',
 			url: 'token',
 			method: 'POST',
 			query: {
@@ -65,7 +65,7 @@ export async function exchangeCode(
 export async function getAppToken(clientId: string, clientSecret: string): Promise<AccessToken> {
 	return createAccessTokenFromData(
 		await callTwitchApi<AccessTokenData>({
-			type: TwitchApiCallType.Auth,
+			type: 'auth',
 			url: 'token',
 			method: 'POST',
 			query: {
@@ -91,7 +91,7 @@ export async function refreshUserToken(
 ): Promise<AccessToken> {
 	return createAccessTokenFromData(
 		await callTwitchApi<AccessTokenData>({
-			type: TwitchApiCallType.Auth,
+			type: 'auth',
 			url: 'token',
 			method: 'POST',
 			query: {
@@ -112,7 +112,7 @@ export async function refreshUserToken(
  */
 export async function revokeToken(clientId: string, accessToken: string): Promise<void> {
 	await callTwitchApi({
-		type: TwitchApiCallType.Auth,
+		type: 'auth',
 		url: 'revoke',
 		method: 'POST',
 		query: {
@@ -132,11 +132,7 @@ export async function revokeToken(clientId: string, accessToken: string): Promis
  */
 export async function getTokenInfo(accessToken: string, clientId?: string): Promise<TokenInfo> {
 	try {
-		const data = await callTwitchApi<TokenInfoData>(
-			{ type: TwitchApiCallType.Auth, url: 'validate' },
-			clientId,
-			accessToken
-		);
+		const data = await callTwitchApi<TokenInfoData>({ type: 'auth', url: 'validate' }, clientId, accessToken);
 		return new TokenInfo(data);
 	} catch (e) {
 		if (e instanceof HttpStatusCodeError && e.statusCode === 401) {

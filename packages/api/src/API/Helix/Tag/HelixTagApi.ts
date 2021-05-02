@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
@@ -32,7 +31,7 @@ export class HelixTagApi extends BaseApi {
 	 */
 	async getAllStreamTags(pagination: HelixForwardPagination = {}): Promise<HelixPaginatedResult<HelixTag>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixTagData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'tags/streams',
 			query: makePaginationQuery(pagination)
 		});
@@ -63,7 +62,7 @@ export class HelixTagApi extends BaseApi {
 			return [];
 		}
 		const result = await this._client.callApi<HelixResponse<HelixTagData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'tags/streams',
 			query: {
 				tag_id: ids

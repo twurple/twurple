@@ -37,27 +37,7 @@ export interface StreamData {
 /**
  * The type of a stream.
  */
-export enum StreamType {
-	/**
-	 * A live stream.
-	 */
-	Live = 'live',
-
-	/**
-	 * An upload to the channel (VoD) that is streamed live for the first time.
-	 */
-	Premiere = 'premiere',
-
-	/**
-	 * A rerun of a past live stream.
-	 */
-	ReRun = 'rerun',
-
-	/**
-	 * All types of streams. Used for filtering.
-	 */
-	All = 'all'
-}
+export type StreamType = 'live' | 'premiere' | 'rerun' | 'all';
 
 /**
  * A Twitch stream.

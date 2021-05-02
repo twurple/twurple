@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
@@ -49,7 +48,7 @@ export class HelixExtensionsApi extends BaseApi {
 		filter: HelixExtensionTransactionsPaginatedFilter = {}
 	): Promise<HelixPaginatedResult<HelixExtensionTransaction>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixExtensionTransactionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'extensions/transactions',
 			query: {
 				extension_id: extensionId,

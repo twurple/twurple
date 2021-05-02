@@ -1,5 +1,5 @@
 import { flatten } from '@d-fischer/shared-utils';
-import { HttpStatusCodeError, TwitchApiCallType } from '@twurple/api-call';
+import { HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
@@ -95,7 +95,7 @@ export class HelixStreamApi extends BaseApi {
 	async getStreams(filter: HelixPaginatedStreamFilter = {}): Promise<HelixPaginatedResult<HelixStream>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamData>>({
 			url: 'streams',
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			query: {
 				...makePaginationQuery(filter),
 				community_id: filter.community,
@@ -208,7 +208,7 @@ export class HelixStreamApi extends BaseApi {
 			const result = await this._client.callApi<HelixResponse<HelixStreamMarkerData>>({
 				url: 'streams/markers',
 				method: 'POST',
-				type: TwitchApiCallType.Helix,
+				type: 'helix',
 				scope: 'user:edit:broadcast',
 				query: {
 					user_id: extractUserId(broadcaster),
@@ -233,7 +233,7 @@ export class HelixStreamApi extends BaseApi {
 	 */
 	async getStreamTags(broadcaster: UserIdResolvable): Promise<HelixTag[]> {
 		const result = await this._client.callApi<HelixResponse<HelixTagData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'streams/tags',
 			query: {
 				broadcaster_id: extractUserId(broadcaster)
@@ -251,7 +251,7 @@ export class HelixStreamApi extends BaseApi {
 	 */
 	async replaceStreamTags(broadcaster: UserIdResolvable, tagIds?: string[]): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'streams/tags',
 			scope: 'user:edit:broadcast',
 			method: 'PUT',
@@ -271,7 +271,7 @@ export class HelixStreamApi extends BaseApi {
 	 */
 	async getStreamKey(broadcaster: UserIdResolvable): Promise<string> {
 		const result = await this._client.callApi<HelixResponse<{ stream_key: string }>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'streams/key',
 			scope: 'channel:read:stream_key',
 			query: {
@@ -288,7 +288,7 @@ export class HelixStreamApi extends BaseApi {
 	): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamGetMarkersResult>>({
 			url: 'streams/markers',
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			query: {
 				[queryType]: id
 			},

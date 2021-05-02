@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -58,7 +57,7 @@ export class HelixModerationApi extends BaseApi {
 	 */
 	async getBannedUsers(channel: UserIdResolvable, filter?: HelixBanFilter): Promise<HelixPaginatedResult<HelixBan>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBanData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'moderation/banned',
 			scope: 'moderation:read',
 			query: {
@@ -115,7 +114,7 @@ export class HelixModerationApi extends BaseApi {
 		filter?: HelixBanFilter
 	): Promise<HelixPaginatedResult<HelixBanEvent>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBanEventData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'moderation/banned/events',
 			scope: 'moderation:read',
 			query: {
@@ -158,7 +157,7 @@ export class HelixModerationApi extends BaseApi {
 		filter?: HelixModeratorFilter
 	): Promise<HelixPaginatedResult<HelixModerator>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixModeratorData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'moderation/moderators',
 			scope: 'moderation:read',
 			query: {
@@ -214,7 +213,7 @@ export class HelixModerationApi extends BaseApi {
 		filter?: HelixModeratorFilter
 	): Promise<HelixPaginatedResult<HelixModeratorEvent>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixModeratorEventData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'moderation/moderators/events',
 			scope: 'moderation:read',
 			query: {

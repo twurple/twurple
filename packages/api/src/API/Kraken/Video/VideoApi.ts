@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -195,7 +194,7 @@ export class VideoApi extends BaseApi {
 	async completeVideoUpload(id: string, token: string): Promise<void> {
 		await this._client.callApi({
 			url: `https://uploads.twitch.tv/upload/${id}/complete`,
-			type: TwitchApiCallType.Custom,
+			type: 'custom',
 			method: 'POST',
 			auth: false,
 			query: {

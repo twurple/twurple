@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -142,7 +141,7 @@ export class HelixVideoApi extends BaseApi {
 	 */
 	async deleteVideosByIds(ids: string[]): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'videos',
 			method: 'DELETE',
 			scope: 'channel:manage:videos',
@@ -162,7 +161,7 @@ export class HelixVideoApi extends BaseApi {
 		}
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixVideoData>>({
 			url: 'videos',
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			query: {
 				...HelixVideoApi._makeVideosQuery(filterType, filterValues, filter),
 				...makePaginationQuery(filter)

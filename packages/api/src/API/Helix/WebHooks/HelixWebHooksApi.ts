@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -99,7 +98,7 @@ export class HelixWebHooksApi extends BaseApi {
 		const { mode, callbackUrl, topicUrl, validityInSeconds = 3600, secret, scope } = options;
 		await this._client.callApi({
 			url: 'webhooks/hub',
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			method: 'POST',
 			scope,
 			jsonBody: {

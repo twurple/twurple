@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -33,7 +32,7 @@ export class HelixSubscriptionApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			query: {
 				broadcaster_id: extractUserId(broadcaster)
 			}
@@ -76,7 +75,7 @@ export class HelixSubscriptionApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
 				user_id: users.map(extractUserId)
@@ -144,7 +143,7 @@ export class HelixSubscriptionApi extends BaseApi {
 
 	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string) {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionEventData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'subscriptions/events',
 			scope: 'channel:read:subscriptions',
 			query: {

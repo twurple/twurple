@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
@@ -73,7 +72,7 @@ export class HelixGameApi extends BaseApi {
 	 */
 	async getTopGames(pagination?: HelixPagination): Promise<HelixPaginatedResult<HelixGame>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixGameData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'games/top',
 			query: makePaginationQuery(pagination)
 		});
@@ -99,7 +98,7 @@ export class HelixGameApi extends BaseApi {
 			return [];
 		}
 		const result = await this._client.callApi<HelixResponse<HelixGameData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'games',
 			query: {
 				[filterType]: filterValues

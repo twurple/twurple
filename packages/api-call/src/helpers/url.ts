@@ -1,15 +1,15 @@
-import { TwitchApiCallType } from '../TwitchApiCallOptions';
+import type { TwitchApiCallType } from '../TwitchApiCallOptions';
 
 /** @private */
 export function getTwitchApiUrl(url: string, type: TwitchApiCallType): string {
 	switch (type) {
-		case TwitchApiCallType.Kraken:
-		case TwitchApiCallType.Helix:
-			const typeName = type === TwitchApiCallType.Kraken ? 'kraken' : 'helix';
+		case 'kraken':
+		case 'helix':
+			const typeName = type === 'kraken' ? 'kraken' : 'helix';
 			return `https://api.twitch.tv/${typeName}/${url.replace(/^\//, '')}`;
-		case TwitchApiCallType.Auth:
+		case 'auth':
 			return `https://id.twitch.tv/oauth2/${url.replace(/^\//, '')}`;
-		case TwitchApiCallType.Custom:
+		case 'custom':
 			return url;
 		default:
 			return url; // wat

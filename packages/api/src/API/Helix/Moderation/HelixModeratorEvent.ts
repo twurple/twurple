@@ -8,17 +8,7 @@ import { HelixModerator } from './HelixModerator';
 /**
  * The different types a moderator event can have.
  */
-export enum HelixModeratorEventType {
-	/**
-	 * Sent when a user gains moderation privileges.
-	 */
-	Add = 'moderation.moderator.add',
-
-	/**
-	 * Sent when a user loses moderation privileges.
-	 */
-	Remove = 'moderation.moderator.remove'
-}
+export type HelixModeratorEventType = 'moderation.moderator.add' | 'moderation.moderator.remove';
 
 /** @private */
 export interface HelixModeratorEventDetail extends HelixModeratorData {

@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { CommercialLength, UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -49,7 +48,7 @@ export class HelixChannelApi extends BaseApi {
 	async getChannelInfo(user: UserIdResolvable): Promise<HelixChannel | null> {
 		const userId = extractUserId(user);
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixChannelData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channels',
 			query: {
 				broadcaster_id: userId
@@ -68,7 +67,7 @@ export class HelixChannelApi extends BaseApi {
 	async updateChannelInfo(user: UserIdResolvable, data: HelixChannelUpdate): Promise<void> {
 		const userId = extractUserId(user);
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channels',
 			method: 'PATCH',
 			scope: 'user:edit:broadcast',
@@ -91,7 +90,7 @@ export class HelixChannelApi extends BaseApi {
 	 */
 	async startChannelCommercial(broadcaster: UserIdResolvable, length: CommercialLength): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channels/commercial',
 			method: 'POST',
 			scope: 'channel:edit:commercial',
@@ -107,7 +106,7 @@ export class HelixChannelApi extends BaseApi {
 	 */
 	async getChannelEditors(broadcaster: UserIdResolvable): Promise<HelixChannelEditor[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChannelEditorData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'channels/editors',
 			scope: 'channel:read:editors',
 			query: {

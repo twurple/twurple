@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { HelixGameData } from '../Game/HelixGame';
@@ -51,7 +50,7 @@ export class HelixSearchApi extends BaseApi {
 		pagination: HelixForwardPagination = {}
 	): Promise<HelixPaginatedResult<HelixGame>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixGameData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'search/categories',
 			query: {
 				query,
@@ -93,7 +92,7 @@ export class HelixSearchApi extends BaseApi {
 		filter: HelixPaginatedChannelSearchFilter = {}
 	): Promise<HelixPaginatedResult<HelixChannelSearchResult>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixChannelSearchResultData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'search/channels',
 			query: {
 				query,

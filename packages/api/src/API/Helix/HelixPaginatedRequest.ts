@@ -1,6 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { TwitchApiCallOptions } from '@twurple/api-call';
-import { TwitchApiCallType } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../ApiClient';
 import type { HelixPaginatedResponse } from './HelixResponse';
@@ -132,7 +131,7 @@ export class HelixPaginatedRequest<D, T> {
 		additionalOptions: Partial<TwitchApiCallOptions> = {}
 	): Promise<HelixPaginatedResponse<D>> {
 		return await this._client.callApi<HelixPaginatedResponse<D>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			...this._callOptions,
 			...additionalOptions,
 			query: {

@@ -5,7 +5,6 @@ import { stringify } from '@d-fischer/qs';
 import { transformTwitchApiResponse } from './helpers/transform';
 import { getTwitchApiUrl } from './helpers/url';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchApiCallOptions';
-import { TwitchApiCallType } from './TwitchApiCallOptions';
 
 /**
  * Makes a call to the Twitch API using the given credentials, returning the raw Response object.
@@ -21,11 +20,11 @@ export async function callTwitchApiRaw(
 	accessToken?: string,
 	fetchOptions: TwitchApiCallFetchOptions = {}
 ): Promise<Response> {
-	const type = options.type === undefined ? TwitchApiCallType.Kraken : options.type;
+	const type = options.type === undefined ? 'kraken' : options.type;
 	const url = getTwitchApiUrl(options.url, type);
 	const params = stringify(options.query, { arrayFormat: 'repeat' });
 	const headers = new Headers({
-		Accept: type === TwitchApiCallType.Kraken ? 'application/vnd.twitchtv.v5+json' : 'application/json'
+		Accept: type === 'kraken' ? 'application/vnd.twitchtv.v5+json' : 'application/json'
 	});
 
 	let body: string | undefined = undefined;
@@ -34,12 +33,12 @@ export async function callTwitchApiRaw(
 		headers.append('Content-Type', 'application/json');
 	}
 
-	if (clientId && type !== TwitchApiCallType.Auth) {
+	if (clientId && type !== 'auth') {
 		headers.append('Client-ID', clientId);
 	}
 
 	if (accessToken) {
-		headers.append('Authorization', `${type === TwitchApiCallType.Helix ? 'Bearer' : 'OAuth'} ${accessToken}`);
+		headers.append('Authorization', `${type === 'helix' ? 'Bearer' : 'OAuth'} ${accessToken}`);
 	}
 
 	const requestOptions: RequestInit = {

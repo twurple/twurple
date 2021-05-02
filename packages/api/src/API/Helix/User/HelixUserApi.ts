@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -24,10 +23,7 @@ import type { HelixUserBlockData } from './HelixUserBlock';
 import { HelixUserBlock } from './HelixUserBlock';
 
 /** @private */
-export enum UserLookupType {
-	Id = 'id',
-	Login = 'login'
-}
+export type UserLookupType = 'id' | 'login';
 
 /**
  * User data to update using {@HelixUserApi#updateUser}.
@@ -85,7 +81,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param userIds The user IDs you want to look up.
 	 */
 	async getUsersByIds(userIds: UserIdResolvable[]): Promise<HelixUser[]> {
-		return await this._getUsers(UserLookupType.Id, userIds.map(extractUserId));
+		return await this._getUsers('id', userIds.map(extractUserId));
 	}
 
 	/**
@@ -94,7 +90,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param userNames The user names you want to look up.
 	 */
 	async getUsersByNames(userNames: UserNameResolvable[]): Promise<HelixUser[]> {
-		return await this._getUsers(UserLookupType.Login, userNames.map(extractUserName));
+		return await this._getUsers('login', userNames.map(extractUserName));
 	}
 
 	/**
@@ -103,7 +99,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param userId The user ID you want to look up.
 	 */
 	async getUserById(userId: UserIdResolvable): Promise<HelixUser | null> {
-		const users = await this._getUsers(UserLookupType.Id, [extractUserId(userId)]);
+		const users = await this._getUsers('id', [extractUserId(userId)]);
 		return users.length ? users[0] : null;
 	}
 
@@ -113,7 +109,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param userName The user name you want to look up.
 	 */
 	async getUserByName(userName: UserNameResolvable): Promise<HelixUser | null> {
-		const users = await this._getUsers(UserLookupType.Login, [extractUserName(userName)]);
+		const users = await this._getUsers('login', [extractUserName(userName)]);
 		return users.length ? users[0] : null;
 	}
 
@@ -124,7 +120,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async getMe(withEmail: boolean = false): Promise<HelixPrivilegedUser> {
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedUserData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users',
 			scope: withEmail ? 'user:read:email' : ''
 		});
@@ -144,7 +140,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async updateUser(data: HelixUserUpdate): Promise<HelixPrivilegedUser> {
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedUserData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users',
 			method: 'PUT',
 			scope: 'user:edit',
@@ -166,7 +162,7 @@ export class HelixUserApi extends BaseApi {
 
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowData>>({
 			url: 'users/follows',
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			query
 		});
 
@@ -231,7 +227,7 @@ export class HelixUserApi extends BaseApi {
 		allowNotifications?: boolean
 	): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users/follows',
 			method: 'POST',
 			scope: 'user:edit:follows',
@@ -251,7 +247,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async deleteFollow(fromUser: UserIdResolvable, toUser: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users/follows',
 			method: 'DELETE',
 			scope: 'user:edit:follows',
@@ -275,7 +271,7 @@ export class HelixUserApi extends BaseApi {
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixUserBlock>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserBlockData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users/blocks',
 			scope: 'user:read:blocked_users',
 			query: {
@@ -316,7 +312,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async createBlock(target: UserIdResolvable, additionalInfo: HelixUserBlockAdditionalInfo = {}): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users/blocks',
 			method: 'PUT',
 			scope: 'user:manage:blocked_users',
@@ -335,7 +331,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async deleteBlock(target: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users/blocks',
 			method: 'DELETE',
 			scope: 'user:manage:blocked_users',
@@ -350,7 +346,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async getMyExtensions(): Promise<HelixUserExtension[]> {
 		const result = await this._client.callApi<HelixResponse<HelixUserExtensionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users/extensions/list'
 		});
 
@@ -367,7 +363,7 @@ export class HelixUserApi extends BaseApi {
 	async getActiveExtensions(user?: UserIdResolvable): Promise<HelixInstalledExtensionList> {
 		const userId = user ? extractUserId(user) : undefined;
 		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users/extensions',
 			query: {
 				user_id: userId
@@ -387,7 +383,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async updateMyActiveExtensions(data: HelixUserExtensionUpdatePayload): Promise<HelixInstalledExtensionList> {
 		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users/extensions',
 			jsonBody: { data }
 		});
@@ -420,7 +416,7 @@ export class HelixUserApi extends BaseApi {
 		}
 		const query: Record<string, string | string[] | undefined> = { [lookupType]: param };
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'users',
 			query
 		});

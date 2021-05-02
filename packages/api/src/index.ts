@@ -79,11 +79,11 @@ export type { HelixHypeTrainEventData, HelixHypeTrainEventType } from './API/Hel
 export { HelixModerationApi } from './API/Helix/Moderation/HelixModerationApi';
 export type { HelixBanFilter, HelixModeratorFilter } from './API/Helix/Moderation/HelixModerationApi';
 export { HelixBan } from './API/Helix/Moderation/HelixBan';
-export { HelixBanEvent, HelixBanEventType } from './API/Helix/Moderation/HelixBanEvent';
-export type { HelixBanEventData } from './API/Helix/Moderation/HelixBanEvent';
+export { HelixBanEvent } from './API/Helix/Moderation/HelixBanEvent';
+export type { HelixBanEventData, HelixBanEventType } from './API/Helix/Moderation/HelixBanEvent';
 export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
-export { HelixModeratorEvent, HelixModeratorEventType } from './API/Helix/Moderation/HelixModeratorEvent';
-export type { HelixModeratorEventData } from './API/Helix/Moderation/HelixModeratorEvent';
+export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
+export type { HelixModeratorEventData, HelixModeratorEventType } from './API/Helix/Moderation/HelixModeratorEvent';
 
 export { HelixUserRelation } from './API/Helix/Relations/HelixUserRelation';
 
@@ -93,15 +93,18 @@ export { HelixChannelSearchResult } from './API/Helix/Search/HelixChannelSearchR
 
 export { HelixStreamApi } from './API/Helix/Stream/HelixStreamApi';
 export type { HelixPaginatedStreamFilter, HelixStreamFilter } from './API/Helix/Stream/HelixStreamApi';
-export { HelixStream, HelixStreamType } from './API/Helix/Stream/HelixStream';
-export type { HelixStreamData } from './API/Helix/Stream/HelixStream';
+export { HelixStream } from './API/Helix/Stream/HelixStream';
+export type { HelixStreamData, HelixStreamType } from './API/Helix/Stream/HelixStream';
 export { HelixStreamMarker } from './API/Helix/Stream/HelixStreamMarker';
 export { HelixStreamMarkerWithVideo } from './API/Helix/Stream/HelixStreamMarkerWithVideo';
 
 export { HelixSubscriptionApi } from './API/Helix/Subscriptions/HelixSubscriptionApi';
 export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
-export { HelixSubscriptionEvent, HelixSubscriptionEventType } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
-export type { HelixSubscriptionEventData } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+export type {
+	HelixSubscriptionEventData,
+	HelixSubscriptionEventType
+} from './API/Helix/Subscriptions/HelixSubscriptionEvent';
 
 export { HelixTagApi } from './API/Helix/Tag/HelixTagApi';
 export { HelixTag } from './API/Helix/Tag/HelixTag';
@@ -116,8 +119,8 @@ export { HelixUserBlock } from './API/Helix/User/HelixUserBlock';
 export { HelixFollow } from './API/Helix/User/HelixFollow';
 export type { HelixFollowData } from './API/Helix/User/HelixFollow';
 export { HelixPrivilegedUser } from './API/Helix/User/HelixPrivilegedUser';
-export { HelixBroadcasterType, HelixUser } from './API/Helix/User/HelixUser';
-export type { HelixUserData } from './API/Helix/User/HelixUser';
+export { HelixUser } from './API/Helix/User/HelixUser';
+export type { HelixBroadcasterType, HelixUserData } from './API/Helix/User/HelixUser';
 
 export { HelixExtension } from './API/Helix/User/Extensions/HelixExtension';
 export { HelixInstalledExtension } from './API/Helix/User/Extensions/HelixInstalledExtension';
@@ -166,8 +169,8 @@ export { ChatEmoteList } from './API/Kraken/Chat/ChatEmoteList';
 export { SearchApi } from './API/Kraken/Search/SearchApi';
 
 export { StreamApi } from './API/Kraken/Stream/StreamApi';
-export { Stream, StreamType } from './API/Kraken/Stream/Stream';
-export type { StreamPreviewSize } from './API/Kraken/Stream/Stream';
+export { Stream } from './API/Kraken/Stream/Stream';
+export type { StreamPreviewSize, StreamType } from './API/Kraken/Stream/Stream';
 
 export { TeamApi } from './API/Kraken/Team/TeamApi';
 export { Team } from './API/Kraken/Team/Team';
@@ -199,18 +202,13 @@ export { ConfigError } from './Errors/ConfigError';
 export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
 export { StreamNotLiveError } from './Errors/StreamNotLiveError';
 
-export {
-	ChatEmote,
-	CheermoteBackground,
-	CheermoteScale,
-	CheermoteState,
-	extractUserId,
-	extractUserName,
-	HellFreezesOverError
-} from '@twurple/common';
+export { ChatEmote, extractUserId, extractUserName, HellFreezesOverError } from '@twurple/common';
 export type {
+	CheermoteBackground,
 	CheermoteDisplayInfo,
 	CommercialLength,
+	CheermoteScale,
+	CheermoteState,
 	HelixUserType,
 	UserIdResolvable,
 	UserNameResolvable

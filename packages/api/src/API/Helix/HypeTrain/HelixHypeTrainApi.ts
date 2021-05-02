@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -40,7 +39,7 @@ export class HelixHypeTrainApi extends BaseApi {
 		const result = await this._client.callApi<
 			HelixPaginatedResponse<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>>
 		>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'hypetrain/events',
 			scope: 'channel:read:hype_train',
 			query: {
@@ -84,7 +83,7 @@ export class HelixHypeTrainApi extends BaseApi {
 		const result = await this._client.callApi<
 			HelixPaginatedResponse<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>>
 		>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'hypetrain/events',
 			scope: 'channel:read:hype_train',
 			query: {

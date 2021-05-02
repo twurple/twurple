@@ -53,66 +53,17 @@ export interface MessageCheermote {
  * We will supply a fitting graphic that does not show any artifacts
  * on the given type of background.
  */
-export enum CheermoteBackground {
-	/**
-	 * A dark background.
-	 *
-	 * Cheermotes might show artifacts on bright backgrounds.
-	 */
-	dark = 'dark',
-
-	/**
-	 * A bright background.
-	 *
-	 * Cheermotes might show artifacts on dark backgrounds.
-	 */
-	light = 'light'
-}
+export type CheermoteBackground = 'dark' | 'light';
 
 /**
  * The state of a cheermote, i.e. whether it's animated or not.
  */
-export enum CheermoteState {
-	/**
-	 * The cheermote should be animated.
-	 */
-	animated = 'animated',
-
-	/**
-	 * The cheermote should not be animated.
-	 */
-	static = 'static'
-}
+export type CheermoteState = 'animated' | 'static';
 
 /**
  * The scale of the cheermote, which usually relates to the pixel density of the device in use.
  */
-export enum CheermoteScale {
-	/**
-	 * The cheermote should not be scaled.
-	 */
-	x1 = '1',
-
-	/**
-	 * The cheermote should be scaled 1.5x.
-	 */
-	x1_5 = '1.5',
-
-	/**
-	 * The cheermote should be scaled 2x.
-	 */
-	x2 = '2',
-
-	/**
-	 * The cheermote should be scaled 3x.
-	 */
-	x3 = '3',
-
-	/**
-	 * The cheermote should be scaled 4x.
-	 */
-	x4 = '4'
-}
+export type CheermoteScale = '1' | '1.5' | '2' | '3' | '4';
 
 /**
  * The format of the cheermote you want to request.

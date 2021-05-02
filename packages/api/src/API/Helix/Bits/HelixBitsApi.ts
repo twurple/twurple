@@ -1,4 +1,3 @@
-import { TwitchApiCallType } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -63,7 +62,7 @@ export class HelixBitsApi extends BaseApi {
 	async getLeaderboard(params: HelixBitsLeaderboardQuery = {}): Promise<HelixBitsLeaderboard> {
 		const { count = 10, period = 'all', startDate, contextUserId } = params;
 		const result = await this._client.callApi<HelixBitsLeaderboardResponse>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'bits/leaderboard',
 			scope: 'bits:read',
 			query: {
@@ -87,7 +86,7 @@ export class HelixBitsApi extends BaseApi {
 	async getCheermotes(broadcaster?: UserIdResolvable): Promise<HelixCheermoteList> {
 		const broadcasterId = broadcaster ? extractUserId(broadcaster) : undefined;
 		const result = await this._client.callApi<HelixResponse<HelixCheermoteData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'bits/cheermotes',
 			query: {
 				broadcaster_id: broadcasterId

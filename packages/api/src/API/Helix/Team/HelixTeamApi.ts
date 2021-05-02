@@ -1,4 +1,4 @@
-import { HttpStatusCodeError, TwitchApiCallType } from '@twurple/api-call';
+import { HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -28,7 +28,7 @@ export class HelixTeamApi extends BaseApi {
 	 */
 	async getTeamsForBroadcaster(broadcaster: UserIdResolvable): Promise<HelixTeam[]> {
 		const result = await this._client.callApi<Partial<HelixResponse<HelixTeamData>>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'teams/channel',
 			query: {
 				broadcaster_id: extractUserId(broadcaster)
@@ -48,7 +48,7 @@ export class HelixTeamApi extends BaseApi {
 	async getTeamById(id: string): Promise<HelixTeamWithUsers | null> {
 		try {
 			const result = await this._client.callApi<HelixResponse<HelixTeamWithUsersData>>({
-				type: TwitchApiCallType.Helix,
+				type: 'helix',
 				url: 'teams',
 				query: {
 					id
@@ -75,7 +75,7 @@ export class HelixTeamApi extends BaseApi {
 	async getTeamByName(name: string): Promise<HelixTeamWithUsers | null> {
 		try {
 			const result = await this._client.callApi<HelixResponse<HelixTeamWithUsersData>>({
-				type: TwitchApiCallType.Helix,
+				type: 'helix',
 				url: 'teams',
 				query: {
 					name
