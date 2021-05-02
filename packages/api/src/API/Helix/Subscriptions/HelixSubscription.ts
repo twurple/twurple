@@ -79,8 +79,8 @@ export class HelixSubscription {
 	/**
 	 * The display name of the gifter.
 	 */
-	get giftName(): string {
-		return this._data.user_name;
+	get gifterDisplayName(): string {
+		return this._data.gifter_name;
 	}
 
 	/**
