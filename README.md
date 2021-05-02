@@ -29,7 +29,7 @@ which also includes a complete reference of all classes and interfaces, as well 
 
 The mentioned `@twurple/auth` package only provides authentication functionality. All the other things are located in separate packages:
 
-- [@twurple/api](https://twurple.github.io/chat) - make calls to the Kraken and Helix APIs
+- [@twurple/api](https://twurple.github.io/api) - make calls to the Kraken and Helix APIs
 - [@twurple/chat](https://twurple.github.io/chat) - connect to and interact with Twitch Chat
 - [@twurple/pubsub](https://twurple.github.io/pubsub) - listen to events using the Twitch PubSub interface
 - [@twurple/webhooks](https://twurple.github.io/webhooks) - listen to events using WebHooks
