@@ -1,7 +1,7 @@
 import type { LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { AuthProvider } from '@twurple/auth';
-import { getValidTokenFromProvider } from '@twurple/auth';
+import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BasicPubSubClient } from './BasicPubSubClient';
@@ -227,6 +227,12 @@ export class SingleUserPubSubClient {
 		}
 
 		const { tokenInfo } = await getValidTokenFromProvider(this._authProvider);
+
+		if (!tokenInfo.userId) {
+			throw new InvalidTokenTypeError(
+				'Could not determine a user ID for your token; you might be trying to disguise an app token as a user token.'
+			);
+		}
 
 		return (this._userId = tokenInfo.userId);
 	}

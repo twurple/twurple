@@ -2232,6 +2232,11 @@ Please note that your whispers might not arrive reliably if your bot is not a kn
 			this._authToken = await this._authProvider.getAccessToken(scopes);
 			if (this._authToken) {
 				const token = await getTokenInfo(this._authToken.accessToken);
+				if (!token.userName) {
+					throw new InvalidTokenTypeError(
+						'Could not determine a user name for your token; you might be trying to disguise an app token as a user token.'
+					);
+				}
 				this._updateCredentials({
 					nick: token.userName
 				});
@@ -2252,6 +2257,11 @@ Please note that your whispers might not arrive reliably if your bot is not a kn
 
 			if (this._authToken) {
 				const token = await getTokenInfo(this._authToken.accessToken);
+				if (!token.userName) {
+					throw new InvalidTokenTypeError(
+						'Could not determine a user name for your token; you might be trying to disguise an app token as a user token.'
+					);
+				}
 				this._updateCredentials({
 					nick: token.userName
 				});

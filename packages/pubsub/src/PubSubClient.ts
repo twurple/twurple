@@ -186,6 +186,11 @@ Register one using:
 				);
 			}
 			const { tokenInfo } = await getValidTokenFromProvider(authProvider);
+			if (!tokenInfo.userId) {
+				throw new InvalidTokenTypeError(
+					'Could not determine a user ID for your token; you might be trying to disguise an app token as a user token.'
+				);
+			}
 			return tokenInfo.userId;
 		}
 	}
