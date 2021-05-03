@@ -5,7 +5,7 @@ export interface HelixForwardPagination {
 	/**
 	 * The number of results per page.
 	 */
-	limit?: string;
+	limit?: number;
 
 	/**
 	 * A cursor to get the following page of.
@@ -33,6 +33,6 @@ export function makePaginationQuery({ after, before, limit }: HelixPagination = 
 	return {
 		after,
 		before,
-		first: limit
+		first: limit?.toString()
 	};
 }
