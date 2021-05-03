@@ -4,9 +4,9 @@ import { rtfm } from '@twurple/common';
 
 export interface TokenInfoData {
 	client_id: string;
-	login: string;
+	login?: string;
 	scopes: string[];
-	user_id: string;
+	user_id?: string;
 	expires_in?: number;
 }
 
@@ -34,15 +34,15 @@ export class TokenInfo {
 	/**
 	 * The ID of the authenticated user.
 	 */
-	get userId(): string {
-		return this._data.user_id;
+	get userId(): string | null {
+		return this._data.user_id ?? null;
 	}
 
 	/**
 	 * The name of the authenticated user.
 	 */
-	get userName(): string {
-		return this._data.login;
+	get userName(): string | null {
+		return this._data.login ?? null;
 	}
 
 	/**
