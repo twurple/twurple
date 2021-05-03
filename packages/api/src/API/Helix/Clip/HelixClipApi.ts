@@ -4,6 +4,7 @@ import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
+import type { HelixPagination } from '../HelixPagination';
 import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixClipData } from './HelixClip';
 import { HelixClip } from './HelixClip';
@@ -23,17 +24,24 @@ export interface HelixClipFilter {
 	 * The latest date to find clips for.
 	 */
 	endDate?: string;
-	/**
-	 * The maximum number of results to retrieve. Defaults to 20.
-	 */
-	limit?: number;
 }
 
+/**
+ * @inheritDoc
+ */
+export interface HelixPaginatedClipFilter extends HelixClipFilter, HelixPagination {}
+
 /** @private */
-export interface HelixClipIdFilter extends HelixClipFilter {
+export interface HelixClipIdFilterPart {
 	filterType: HelixClipFilterType;
 	ids: string | string[];
 }
+
+/** @private */
+export interface HelixClipIdFilter extends HelixClipFilter, HelixClipIdFilterPart {}
+
+/** @private */
+export interface HelixPaginatedClipIdFilter extends HelixPaginatedClipFilter, HelixClipIdFilterPart {}
 
 /**
  * Parameters for creating a clip.
@@ -79,7 +87,7 @@ export class HelixClipApi extends BaseApi {
 	 */
 	async getClipsForBroadcaster(
 		user: UserIdResolvable,
-		filter: HelixClipFilter = {}
+		filter: HelixPaginatedClipFilter = {}
 	): Promise<HelixPaginatedResult<HelixClip>> {
 		return await this._getClips({
 			...filter,
@@ -115,7 +123,10 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async getClipsForGame(gameId: string, filter: HelixClipFilter = {}): Promise<HelixPaginatedResult<HelixClip>> {
+	async getClipsForGame(
+		gameId: string,
+		filter: HelixPaginatedClipFilter = {}
+	): Promise<HelixPaginatedResult<HelixClip>> {
 		return await this._getClips({
 			...filter,
 			filterType: 'game_id',
@@ -189,7 +200,7 @@ export class HelixClipApi extends BaseApi {
 		return result.data[0].id;
 	}
 
-	private async _getClips(params: HelixClipIdFilter): Promise<HelixPaginatedResult<HelixClip>> {
+	private async _getClips(params: HelixPaginatedClipIdFilter): Promise<HelixPaginatedResult<HelixClip>> {
 		const { filterType, ids, startDate, endDate, limit = 20 } = params;
 
 		if (!ids.length) {

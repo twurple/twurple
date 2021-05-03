@@ -87,7 +87,9 @@ export class HelixVideoApi extends BaseApi {
 	 * Retrieves the videos of the given user.
 	 *
 	 * @param user The user you want to retrieve videos from.
-	 * @param filter Additional filters for the result set.
+	 * @param filter
+	 *
+	 * @expandParams
 	 */
 	async getVideosByUser(
 		user: UserIdResolvable,
@@ -101,7 +103,9 @@ export class HelixVideoApi extends BaseApi {
 	 * Creates a paginator for videos of the given user.
 	 *
 	 * @param user The user you want to retrieve videos from.
-	 * @param filter Additional filters for the result set.
+	 * @param filter
+	 *
+	 * @expandParams
 	 */
 	getVideosByUserPaginated(
 		user: UserIdResolvable,
@@ -115,9 +119,14 @@ export class HelixVideoApi extends BaseApi {
 	 * Retrieves the videos of the given game.
 	 *
 	 * @param gameId The game you want to retrieve videos from.
-	 * @param filter Additional filters for the result set.
+	 * @param filter
+	 *
+	 * @expandParams
 	 */
-	async getVideosByGame(gameId: string, filter: HelixVideoFilter = {}): Promise<HelixPaginatedResult<HelixVideo>> {
+	async getVideosByGame(
+		gameId: string,
+		filter: HelixPaginatedVideoFilter = {}
+	): Promise<HelixPaginatedResult<HelixVideo>> {
 		return await this._getVideos('game_id', gameId, filter);
 	}
 
@@ -125,7 +134,9 @@ export class HelixVideoApi extends BaseApi {
 	 * Creates a paginator for videos of the given game.
 	 *
 	 * @param gameId The game you want to retrieve videos from.
-	 * @param filter Additional filters for the result set.
+	 * @param filter
+	 *
+	 * @expandParams
 	 */
 	getVideosByGamePaginated(
 		gameId: string,

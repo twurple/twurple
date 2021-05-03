@@ -4,6 +4,8 @@ import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
+import type { HelixForwardPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
 import type { HelixSubscriptionData } from './HelixSubscription';
 import { HelixSubscription } from './HelixSubscription';
@@ -27,14 +29,21 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * Retrieves a list of all subscriptions to a given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
+	 * @param pagination
+	 *
+	 * @expandParams
 	 */
-	async getSubscriptions(broadcaster: UserIdResolvable): Promise<HelixPaginatedResult<HelixSubscription>> {
+	async getSubscriptions(
+		broadcaster: UserIdResolvable,
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResult<HelixSubscription>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
 			type: 'helix',
 			query: {
-				broadcaster_id: extractUserId(broadcaster)
+				broadcaster_id: extractUserId(broadcaster),
+				...makePaginationQuery(pagination)
 			}
 		});
 
@@ -103,11 +112,15 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * Retrieves the most recent subscription events for a given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to retrieve subscription events for.
+	 * @param pagination
+	 *
+	 * @expandParams
 	 */
 	async getSubscriptionEventsForBroadcaster(
-		broadcaster: UserIdResolvable
+		broadcaster: UserIdResolvable,
+		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixSubscriptionEvent>> {
-		return await this._getSubscriptionEvents('broadcaster_id', extractUserId(broadcaster));
+		return await this._getSubscriptionEvents('broadcaster_id', extractUserId(broadcaster), pagination);
 	}
 
 	/**
@@ -141,13 +154,14 @@ export class HelixSubscriptionApi extends BaseApi {
 		return events.data[0] ?? null;
 	}
 
-	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string) {
+	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string, pagination?: HelixForwardPagination) {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionEventData>>({
 			type: 'helix',
 			url: 'subscriptions/events',
 			scope: 'channel:read:subscriptions',
 			query: {
-				[by]: id
+				[by]: id,
+				...makePaginationQuery(pagination)
 			}
 		});
 

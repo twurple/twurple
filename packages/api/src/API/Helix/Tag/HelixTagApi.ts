@@ -29,7 +29,7 @@ export class HelixTagApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async getAllStreamTags(pagination: HelixForwardPagination = {}): Promise<HelixPaginatedResult<HelixTag>> {
+	async getAllStreamTags(pagination?: HelixForwardPagination): Promise<HelixPaginatedResult<HelixTag>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixTagData>>({
 			type: 'helix',
 			url: 'tags/streams',
@@ -79,6 +79,6 @@ export class HelixTagApi extends BaseApi {
 	 */
 	async getStreamTagById(id: string): Promise<HelixTag | null> {
 		const tags = await this.getStreamTagsByIds([id]);
-		return tags.length ? tags[0] : null;
+		return tags[0] ?? null;
 	}
 }

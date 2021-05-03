@@ -47,7 +47,7 @@ export class HelixSearchApi extends BaseApi {
 	 */
 	async searchCategories(
 		query: string,
-		pagination: HelixForwardPagination = {}
+		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixGame>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixGameData>>({
 			type: 'helix',

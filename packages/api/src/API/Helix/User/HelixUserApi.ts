@@ -63,6 +63,11 @@ export interface HelixFollowFilter {
 }
 
 /**
+ * @inheritDoc
+ */
+export interface HelixPaginatedFollowFilter extends HelixFollowFilter, HelixForwardPagination {}
+
+/**
  * The Helix API methods that deal with users.
  *
  * Can be accessed using `client.helix.users` on an {@ApiClient} instance.
@@ -155,15 +160,18 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Retrieves a list of follow relations.
 	 *
-	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
+	 * @param filter
+	 *
+	 * @expandParams
 	 */
-	async getFollows(filter: HelixFollowFilter): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
-		const query = HelixUserApi._makeFollowsQuery(filter);
-
+	async getFollows(filter: HelixPaginatedFollowFilter): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowData>>({
 			url: 'users/follows',
 			type: 'helix',
-			query
+			query: {
+				...HelixUserApi._makeFollowsQuery(filter),
+				...makePaginationQuery(filter)
+			}
 		});
 
 		return createPaginatedResultWithTotal(result, HelixFollow, this._client);
@@ -172,7 +180,9 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Creates a paginator for follow relations.
 	 *
-	 * @param filter Several filtering and pagination parameters. See the {@HelixFollowFilter} documentation.
+	 * @param filter
+	 *
+	 * @expandParams
 	 */
 	getFollowsPaginated(filter: HelixFollowFilter): HelixPaginatedRequestWithTotal<HelixFollowData, HelixFollow> {
 		const query = HelixUserApi._makeFollowsQuery(filter);

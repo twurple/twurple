@@ -159,9 +159,15 @@ export class HelixStreamApi extends BaseApi {
 	 * Retrieves a list of all stream markers for an user.
 	 *
 	 * @param user The user to list the stream markers for.
+	 * @param pagination
+	 *
+	 * @expandParams
 	 */
-	async getStreamMarkersForUser(user: UserIdResolvable): Promise<HelixPaginatedResult<HelixStreamMarker>> {
-		return await this._getStreamMarkers('user_id', extractUserId(user));
+	async getStreamMarkersForUser(
+		user: UserIdResolvable,
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResult<HelixStreamMarker>> {
+		return await this._getStreamMarkers('user_id', extractUserId(user), pagination);
 	}
 
 	/**
@@ -179,9 +185,15 @@ export class HelixStreamApi extends BaseApi {
 	 * Retrieves a list of all stream markers for a video.
 	 *
 	 * @param videoId The video to list the stream markers for.
+	 * @param pagination
+	 *
+	 * @expandParams
 	 */
-	async getStreamMarkersForVideo(videoId: string): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
-		return await this._getStreamMarkers('video_id', videoId);
+	async getStreamMarkersForVideo(
+		videoId: string,
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
+		return await this._getStreamMarkers('video_id', videoId, pagination);
 	}
 
 	/**
@@ -284,13 +296,15 @@ export class HelixStreamApi extends BaseApi {
 
 	private async _getStreamMarkers(
 		queryType: string,
-		id: string
+		id: string,
+		pagination?: HelixPagination
 	): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamGetMarkersResult>>({
 			url: 'streams/markers',
 			type: 'helix',
 			query: {
-				[queryType]: id
+				[queryType]: id,
+				...makePaginationQuery(pagination)
 			},
 			scope: 'user:read:broadcast'
 		});
