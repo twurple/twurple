@@ -2,6 +2,11 @@ import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
+import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import type { HelixForwardPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
+import type { HelixPaginatedResponseWithTotal } from '../HelixResponse';
 import type { HelixWebHookSubscriptionData } from './HelixWebHookSubscription';
 import { HelixWebHookSubscription } from './HelixWebHookSubscription';
 
@@ -71,14 +76,31 @@ export type HubMode = 'subscribe' | 'unsubscribe';
  */
 @rtfm('api', 'HelixWebHooksApi')
 export class HelixWebHooksApi extends BaseApi {
-	// TODO rename to getSubscriptionsPaginated and make sync
 	/**
 	 * Retrieves the current WebHook subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 */
-	async getSubscriptions(): Promise<
-		HelixPaginatedRequestWithTotal<HelixWebHookSubscriptionData, HelixWebHookSubscription>
+	async getSubscriptions(
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixWebHookSubscription>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixWebHookSubscriptionData>>({
+			type: 'helix',
+			url: 'webhooks/subscriptions',
+			query: makePaginationQuery(pagination)
+		});
+
+		return createPaginatedResultWithTotal(result, HelixWebHookSubscription, this._client);
+	}
+
+	/**
+	 * Creates a paginator for the current WebHook subscriptions for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 */
+	getSubscriptionsPaginated(): HelixPaginatedRequestWithTotal<
+		HelixWebHookSubscriptionData,
+		HelixWebHookSubscription
 	> {
 		return new HelixPaginatedRequestWithTotal(
 			{
