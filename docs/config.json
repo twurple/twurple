@@ -11,12 +11,14 @@
 	"mainBranchName": "main",
 	"versionBranchPrefix": "versions/",
 	"versionFolder": "versions",
+	"title": "Twurple",
 	"ignoredPackages": ["auth-electron", "webhooks-ngrok", "eventsub-ngrok", "api-call"],
-	"packages": {
-		"api": {
-			"indexTitle": "Welcome to Twurple",
+	"categories": [
+		{
+			"name": "api",
+			"indexTitle": "Twurple - API Client",
 			"indexFile": "api/index.md",
-			"categories": [
+			"groups": [
 				{
 					"name": "basic-usage",
 					"title": "Basic usage",
@@ -45,10 +47,11 @@
 				}
 			]
 		},
-		"chat": {
+		{
+			"name": "chat",
 			"indexTitle": "Twurple - Chat Client",
 			"indexFile": "chat/index.md",
-			"categories": [
+			"groups": [
 				{
 					"name": "basic-usage",
 					"title": "Basic usage",
@@ -88,10 +91,11 @@
 				}
 			]
 		},
-		"pubsub": {
+		{
+			"name": "pubsub",
 			"indexTitle": "Twurple - PubSub Client",
 			"indexFile": "pubsub/index.md",
-			"categories": [
+			"groups": [
 				{
 					"name": "basic-usage",
 					"title": "Basic usage",
@@ -110,10 +114,11 @@
 				}
 			]
 		},
-		"webhooks": {
+		{
+			"name": "webhooks",
 			"indexTitle": "Twurple - WebHook Listener",
 			"indexFile": "webhooks/index.md",
-			"categories": [
+			"groups": [
 				{
 					"name": "basic-usage",
 					"title": "Basic usage",
@@ -148,10 +153,11 @@
 				}
 			]
 		},
-		"eventsub": {
+		{
+			"name": "eventsub",
 			"indexTitle": "Twurple - EventSub Listener",
 			"indexFile": "eventsub/index.md",
-			"categories": [
+			"groups": [
 				{
 					"name": "basic-usage",
 					"title": "Basic usage",
@@ -186,10 +192,11 @@
 				}
 			]
 		},
-		"auth": {
+		{
+			"name": "auth",
 			"indexTitle": "Twurple - Authentication Manager",
 			"indexFile": "auth/index.md",
-			"categories": [
+			"groups": [
 				{
 					"name": "providers",
 					"title": "Providers",
@@ -218,10 +225,11 @@
 				}
 			]
 		},
-		"auth-tmi": {
+		{
+			"name": "auth-tmi",
 			"indexTitle": "Twurple - Authentication Manager for TMI.js",
 			"indexFile": "auth-tmi/index.md",
-			"categories": [
+			"groups": [
 				{
 					"name": "basic-usage",
 					"title": "Basic usage",
@@ -235,8 +243,9 @@
 				}
 			]
 		},
-		"easy-bot": {
+		{
+			"name": "easy-bot",
 			"indexTitle": "Twurple - Bot framework"
 		}
-	}
+	]
 }
