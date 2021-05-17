@@ -419,7 +419,7 @@ export class ChatClient extends IrcClient {
 	 * Fires when a user gifts a subscription to a channel to another user.
 	 *
 	 * Community subs also fire multiple `onSubGift` events.
-	 * To prevent alert spam, check [Sub gift spam](/chat/docs/examples/sub-gift-spam).
+	 * To prevent alert spam, check [Sub gift spam](/docs/chat/examples/sub-gift-spam).
 	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
@@ -435,7 +435,7 @@ export class ChatClient extends IrcClient {
 	 * Fires when a user gifts random subscriptions to the community of a channel.
 	 *
 	 * Community subs also fire multiple `onSubGift` events.
-	 * To prevent alert spam, check [Sub gift spam](/chat/docs/examples/sub-gift-spam).
+	 * To prevent alert spam, check [Sub gift spam](/docs/chat/examples/sub-gift-spam).
 	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
@@ -736,7 +736,7 @@ export class ChatClient extends IrcClient {
 			throw new InvalidTokenTypeError(
 				'You can not connect to chat using an AuthProvider that supplies app access tokens.\n' +
 					'To get an anonymous, read-only connection, please use `ChatClient.anonymous()`.\n' +
-					'To get a read-write connection, please provide an auth provider that provides user access tokens, for example `RefreshableAuthProvider`.'
+					'To get a read-write connection, please provide an auth provider that provides user access tokens, such as `RefreshingAuthProvider`.'
 			);
 		}
 

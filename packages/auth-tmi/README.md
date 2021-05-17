@@ -23,7 +23,7 @@ It completely ignores the `identity` option, and instead takes an `authProvider`
 instance that can be used for other `@twurple` packages as well.
 
 This also offers the additional benefit of being able to refresh tokens internally using
-[a refreshable AuthProvider](https://twurple.github.io/auth/docs/providers/refreshable.html).
+[a refreshing AuthProvider](https://twurple.github.io/auth/docs/providers/refreshing.html).
 
 ### Example
 

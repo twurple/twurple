@@ -39,7 +39,7 @@ but keep in mind that the SSL certificate needs to reflect that.
 
 Please note that the port you supply needs to be **available from the outside**.
 If you are testing locally, you may need to forward the port to your development machine.  
-A very helpful tool for that is [ngrok](/eventsub/docs/special-hosting/ngrok) -
+A very helpful tool for that is [ngrok](/docs/eventsub/special-hosting/ngrok) -
 this even spares you from creating your own certificate in development!
 
 When your listener is set up, you can subscribe to all supported events using this listener:

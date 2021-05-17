@@ -1,11 +1,11 @@
 This package is generally used like `tmi.js` is normally, with just a single minor change.
 
 It completely ignores the `identity` option, and instead takes an `authProvider` option which takes an
-[`AuthProvider`](/auth/reference/interfaces/AuthProvider)
+{@AuthProvider}
 instance that can be used for other `@twurple` packages as well.
 
 This also offers the additional benefit of being able to refresh tokens internally using
-[a refreshable AuthProvider](/auth/docs/providers/refreshable).
+[a refreshing AuthProvider](/docs/auth/providers/refreshing).
 
 ### Example
 

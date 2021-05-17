@@ -207,9 +207,9 @@
 							"file": "auth/providers/static.md"
 						},
 						{
-							"name": "refreshable",
+							"name": "refreshing",
 							"title": "Auto-refreshing tokens",
-							"file": "auth/providers/refreshable.md"
+							"file": "auth/providers/refreshing.md"
 						},
 						{
 							"name": "client-credentials",
@@ -227,7 +227,7 @@
 		},
 		{
 			"name": "auth-tmi",
-			"indexTitle": "Twurple - Authentication Manager for TMI.js",
+			"indexTitle": "Twurple - Auth for TMI.js",
 			"indexFile": "auth-tmi/index.md",
 			"groups": [
 				{

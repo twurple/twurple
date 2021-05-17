@@ -35,11 +35,11 @@ The response body should look similar to the following:
 
 ```json
 {
-  "access_token": "0123456789abcdefghijABCDEFGHIJ",
-  "refresh_token": "eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj",
-  "expires_in": 3600,
-  "scope": ["chat:read", "chat:edit"],
-  "token_type": "bearer"
+	"access_token": "0123456789abcdefghijABCDEFGHIJ",
+	"refresh_token": "eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj",
+	"expires_in": 3600,
+	"scope": ["chat:read", "chat:edit"],
+	"token_type": "bearer"
 }
 ```
 
@@ -128,18 +128,21 @@ With that, you can create another type of auth provider that automatically refre
 Just replace the initialization line with this (but keep the `clientId` and `accessToken` constants):
 
 ```typescript
-// add new import to @twurple/auth import line
-import { RefreshableAuthProvider, StaticAuthProvider } from '@twurple/auth';
+// replace @twurple/auth import line
+import { RefreshingAuthProvider } from '@twurple/auth';
 
 const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
 const refreshToken = 'eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj';
 
-const auth = new RefreshableAuthProvider(
-    new StaticAuthProvider(clientId, accessToken),
-    {
-        clientSecret,
-        refreshToken
-    }
+const auth = new RefreshingAuthProvider(
+		{
+			clientId,
+			clientSecret
+		},
+		{
+			accessToken,
+			refreshToken
+		}
 );
 ```
 
@@ -155,11 +158,12 @@ To prepare for this, let's move the tokens to a JSON file named `tokens.json`:
 {
 	"accessToken": "0123456789abcdefghijABCDEFGHIJ",
 	"refreshToken": "eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj",
-	"expiryTimestamp": 0
+	"expiresIn": 0,
+	"obtainmentTimestamp": 0
 }
 ```
 
-I also added a new property called `expiryTimestamp`. It will save the expiry time of the access token so the client can determine when to refresh the token without making a failing call first. If you didn't calculate the expiry timestamp after sending the manual code request (you probably didn't - I wouldn't either), you can initialize it to zero to always make a refresh call in the beginning.
+I also added two new properties called `expiresIn` and `obtainmentTimestamp`. They will save the expiry time of the access token so the client can determine when to refresh the token without making a failing call first. If you didn't get a current timetamp when sending the manual code request (you probably didn't - I wouldn't either), you can initialize them to zero to always make a refresh call in the beginning.
 
 Now, we can parse this JSON file on startup, load the tokens from it and when the tokens refresh, save them back into the same file.
 
@@ -169,21 +173,13 @@ import { promises as fs } from 'fs';
 
 // inside the async function again
 const tokenData = JSON.parse(await fs.readFile('./tokens.json'));
-const auth = new RefreshableAuthProvider(
-    new StaticAuthProvider(clientId, tokenData.accessToken),
-    {
-        clientSecret,
-        refreshToken: tokenData.refreshToken,
-        expiry: tokenData.expiryTimestamp === null ? null : new Date(tokenData.expiryTimestamp),
-        onRefresh: async ({ accessToken, refreshToken, expiryDate }) => {
-            const newTokenData = {
-                accessToken,
-                refreshToken,
-                expiryTimestamp: expiryDate === null ? null : expiryDate.getTime()
-            };
-            await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
-        }
-    }
+const auth = new RefreshingAuthProvider(
+	{
+		clientId,
+		clientSecret,
+		onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+	},
+	tokenData
 );
 ```
 
@@ -198,52 +194,44 @@ Now you can implement a more elaborated command system, add more events to react
 For reference, here's the full code that _should_ be the result of everything we just did:
 
 ```typescript
-import { RefreshableAuthProvider, StaticAuthProvider } from '@twurple/auth';
+import { RefreshingAuthProvider } from '@twurple/auth';
 import { ChatClient } from '@twurple/chat';
 import { promises as fs } from 'fs';
 
 async function main() {
-    const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
-    const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
-    const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
-    const auth = new RefreshableAuthProvider(
-        new StaticAuthProvider(clientId, tokenData.accessToken),
-        {
-            clientSecret,
-            refreshToken: tokenData.refreshToken,
-            expiry: tokenData.expiryTimestamp === null ? null : new Date(tokenData.expiryTimestamp),
-            onRefresh: async ({ accessToken, refreshToken, expiryDate }) => {
-                const newTokenData = {
-                    accessToken,
-                    refreshToken,
-                    expiryTimestamp: expiryDate === null ? null : expiryDate.getTime()
-                };
-                await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
-            }
-        }
-    );
+	const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
+	const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
+	const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
+	const auth = new RefreshingAuthProvider(
+			{
+				clientId,
+				clientSecret,
+				onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+			},
+			tokenData
+	);
 
-    const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
-    await chatClient.connect();
+	const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
+	await chatClient.connect();
 
-    chatClient.onMessage((channel, user, message) => {
-        if (message === '!ping') {
-            chatClient.say(channel, 'Pong!');
-        } else if (message === '!dice') {
-            const diceRoll = Math.floor(Math.random() * 6) + 1;
-            chatClient.say(channel, `@${user} rolled a ${diceRoll}`)
-        }
-    });
+	chatClient.onMessage((channel, user, message) => {
+		if (message === '!ping') {
+			chatClient.say(channel, 'Pong!');
+		} else if (message === '!dice') {
+			const diceRoll = Math.floor(Math.random() * 6) + 1;
+			chatClient.say(channel, `@${user} rolled a ${diceRoll}`)
+		}
+	});
 
-    chatClient.onSub((channel, user) => {
-        chatClient.say(channel, `Thanks to @${user} for subscribing to the channel!`);
-    });
-    chatClient.onResub((channel, user, subInfo) => {
-        chatClient.say(channel, `Thanks to @${user} for subscribing to the channel for a total of ${subInfo.months} months!`);
-    });
-    chatClient.onSubGift((channel, user, subInfo) => {
-        chatClient.say(channel, `Thanks to ${subInfo.gifter} for gifting a subscription to ${user}!`);
-    });
+	chatClient.onSub((channel, user) => {
+		chatClient.say(channel, `Thanks to @${user} for subscribing to the channel!`);
+	});
+	chatClient.onResub((channel, user, subInfo) => {
+		chatClient.say(channel, `Thanks to @${user} for subscribing to the channel for a total of ${subInfo.months} months!`);
+	});
+	chatClient.onSubGift((channel, user, subInfo) => {
+		chatClient.say(channel, `Thanks to ${subInfo.gifter} for gifting a subscription to ${user}!`);
+	});
 }
 
 main();

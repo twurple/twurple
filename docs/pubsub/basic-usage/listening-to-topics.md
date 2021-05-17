@@ -1,4 +1,4 @@
-First, you have to create an instance of the Twitch API client, as outlined in [its own documentation](/api/docs/basic-usage/creating-instance).
+First, you have to create an instance of the Twitch API client, as outlined in [its own documentation](/docs/api/basic-usage/creating-instance).
 
 Then, you register that instance with a new {@PubSubClient} instance:
 

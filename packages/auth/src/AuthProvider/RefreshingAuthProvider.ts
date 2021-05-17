@@ -8,7 +8,7 @@ import { compareScopes, loadAndCompareScopes, refreshUserToken } from '../helper
 import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 
 /**
- * Configuration for the {@RefreshableAuthProvider}.
+ * Configuration for the {@RefreshingAuthProvider}.
  */
 export interface RefreshConfig {
 	/**
@@ -30,10 +30,10 @@ export interface RefreshConfig {
 }
 
 /**
- * Enhances another auth provider with the ability to make use of refresh
- * tokens, automatically refreshing the access token whenever necessary.
+ * An auth provider with the ability to make use of refresh tokens,
+ * automatically refreshing the access token whenever necessary.
  */
-@rtfm<RefreshingAuthProvider>('auth', 'RefreshableAuthProvider', 'clientId')
+@rtfm<RefreshingAuthProvider>('auth', 'RefreshingAuthProvider', 'clientId')
 export class RefreshingAuthProvider implements AuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;

@@ -30,4 +30,4 @@ A full list of configuration options is available on the {@ReverseProxyAdapter} 
 
 ## Listening to events
 
-Now you can continue to follow the [basic listening help](/eventsub/docs/basic-usage/listening-to-events).
+Now you can continue to follow the [basic listening help](/docs/eventsub/basic-usage/listening-to-events).

@@ -37,7 +37,7 @@ export class DecoratedClient extends BaseClient {
 					if (authProvider.tokenType === 'app') {
 						throw new InvalidTokenTypeError(
 							`You can not connect to chat using an AuthProvider that supplies app access tokens.
-Please provide an auth provider that provides user access tokens, for example \`RefreshableAuthProvider\`.`
+Please provide an auth provider that provides user access tokens, such as \`RefreshingAuthProvider\`.`
 						);
 					}
 					const { accessToken } = await getValidTokenFromProvider(authProvider, ['chat:read', 'chat:edit']);

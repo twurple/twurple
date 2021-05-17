@@ -23,4 +23,4 @@ const listener = new EventSubListener(client, new NgrokAdapter(), 'thisShouldBeA
 
 ## 3. Listening to events
 
-Now you can continue to follow the [basic listening help](/eventsub/docs/basic-usage/listening-to-events).
+Now you can continue to follow the [basic listening help](/docs/eventsub/basic-usage/listening-to-events).

@@ -1,5 +1,5 @@
 First, you have to create an instance of any authentication provider. This example uses app credentials,
-but if you need other types of authentication, check out the [@twurple/auth documentation](/auth).
+but if you need other types of authentication, check out the [@twurple/auth documentation](/docs/auth).
 
 Then, you create a new {@ApiClient}, and using that, a {@WebHookListener} instance:
 
@@ -25,7 +25,7 @@ await listener.listen();
 
 Please note that the port you supply needs to be **available from the outside**.
 If you are testing locally, you may need to forward the port to your development machine.
-A very helpful tool for that is [ngrok](/@twurple/webhooks/docs/special-hosting/ngrok).
+A very helpful tool for that is [ngrok](/docs/webhooks/special-hosting/ngrok).
 
 When your listener is set up, you can subscribe to all supported events using this listener:
 

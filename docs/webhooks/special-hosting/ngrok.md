@@ -23,4 +23,4 @@ const listener = new WebHookListener(client, new NgrokAdapter(), { hookValidity:
 
 ## 3. Listening to events
 
-Now you can continue to follow the [basic listening help](/webhooks/docs/basic-usage/listening-to-events).
+Now you can continue to follow the [basic listening help](/docs/webhooks/basic-usage/listening-to-events).

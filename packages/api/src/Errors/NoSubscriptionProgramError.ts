@@ -2,7 +2,7 @@ import { CustomError } from '@twurple/common';
 
 /**
  * Thrown whenever you try accessing a subscription-related resource
- * (for example {@ChannelApi#getChannelSubscriptions})
+ * such as {@ChannelApi#getChannelSubscriptions}
  * and the given channel does not have a subscription program.
  */
 export class NoSubscriptionProgramError extends CustomError {

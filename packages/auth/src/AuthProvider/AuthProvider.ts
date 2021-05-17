@@ -12,9 +12,8 @@ export type AuthProviderTokenType = 'user' | 'app';
  * when previously unauthorized scopes are requested.
  *
  * As a starting point, {@StaticAuthProvider} takes an access token,
- * but can't do anything to upgrade it by itself. {@RefreshableAuthProvider}
- * is used as a wrapper around another `AuthProvider` and can make use of
- * refresh tokens.
+ * but can't do anything to upgrade it by itself. {@RefreshingAuthProvider}
+ * can make use of refresh tokens to refresh your tokens on expiry or failure.
  *
  * @neverExpand
  */

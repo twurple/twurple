@@ -2,7 +2,7 @@
 
 Persist the access token together with the refresh token and expiry time somewhere, and load this when your app starts.
 
-You can find a basic example showing how this works in the [@twurple/chat documentation](/chat/docs/examples/basic-bot).
+You can find a basic example showing how this works in the [@twurple/chat documentation](/docs/chat/examples/basic-bot).
 
 ## I have more questions! Where do I get help?
 
