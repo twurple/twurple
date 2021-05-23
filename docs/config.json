@@ -13,6 +13,7 @@
 	"versionFolder": "versions",
 	"title": "Twurple",
 	"ignoredPackages": ["auth-electron", "webhooks-ngrok", "eventsub-ngrok", "api-call"],
+	"persistentFiles": ["CNAME"],
 	"categories": [
 		{
 			"name": "api",
