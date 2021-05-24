@@ -55,7 +55,7 @@ export class Bot {
 	}
 
 	private findMatch(msg: PrivateMessage): BotCommandMatch | null {
-		const line = msg.params.message.trim().replace(/  +/g, ' ');
+		const line = msg.params.content.trim().replace(/  +/g, ' ');
 		for (const command of this._commands.values()) {
 			const params = command.match(line, this._prefix);
 			if (params !== null) {
