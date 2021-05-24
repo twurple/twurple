@@ -14,11 +14,6 @@ import type { PubSubMessageData } from './Messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
 /** @private */
-interface NullTokenResolvable {
-	type: 'null';
-}
-
-/** @private */
 interface StaticTokenResolvable {
 	type: 'static';
 	token: string;
@@ -38,7 +33,7 @@ interface ProviderTokenResolvable {
 }
 
 /** @private */
-type TokenResolvable = NullTokenResolvable | StaticTokenResolvable | FunctionTokenResolvable | ProviderTokenResolvable;
+type TokenResolvable = StaticTokenResolvable | FunctionTokenResolvable | ProviderTokenResolvable;
 
 /**
  * Options for the basic PubSub client.
@@ -180,7 +175,7 @@ export class BasicPubSubClient extends EventEmitter {
 	 */
 	async listen(
 		topics: string | string[],
-		tokenResolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
+		tokenResolvable: ResolvableValue<string> | AuthProvider | TokenResolvable,
 		scope?: string
 	): Promise<void> {
 		if (typeof topics === 'string') {
@@ -281,16 +276,11 @@ export class BasicPubSubClient extends EventEmitter {
 	}
 
 	private static _wrapResolvable(
-		resolvable?: ResolvableValue<string> | AuthProvider | TokenResolvable | null,
+		resolvable: ResolvableValue<string> | AuthProvider | TokenResolvable,
 		scope?: string
 	): TokenResolvable {
 		switch (typeof resolvable) {
 			case 'object': {
-				if (resolvable === null) {
-					return {
-						type: 'null'
-					};
-				}
 				if ('type' in resolvable) {
 					return resolvable;
 				}
@@ -312,11 +302,6 @@ export class BasicPubSubClient extends EventEmitter {
 					function: resolvable
 				};
 			}
-			case 'undefined': {
-				return {
-					type: 'null'
-				};
-			}
 			default: {
 				throw new HellFreezesOverError(`Passed unknown type to wrapResolvable: ${typeof resolvable}`);
 			}
@@ -335,9 +320,6 @@ export class BasicPubSubClient extends EventEmitter {
 			}
 			case 'static': {
 				return resolvable.token;
-			}
-			case 'null': {
-				return undefined;
 			}
 			default: {
 				throw new HellFreezesOverError(
