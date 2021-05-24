@@ -31,7 +31,9 @@ function createAccessTokenFromData(data: AccessTokenData): AccessToken {
  * @param clientId The client ID of your application.
  * @param clientSecret The client secret of your application.
  * @param code The authorization code.
- * @param redirectUri The redirect URI. This serves no real purpose here, but must still match one of the redirect URIs you configured in the Twitch Developer dashboard.
+ * @param redirectUri The redirect URI.
+ *
+ * This serves no real purpose here, but must still match one of the redirect URIs you configured in the Twitch Developer dashboard.
  */
 export async function exchangeCode(
 	clientId: string,
@@ -148,7 +150,7 @@ export async function getValidTokenFromProvider(
 	scopes?: string[],
 	logger?: Logger
 ): Promise<{ accessToken: AccessToken; tokenInfo: TokenInfo }> {
-	let lastTokenError: InvalidTokenError | undefined = undefined;
+	let lastTokenError: InvalidTokenError | null = null;
 
 	try {
 		const accessToken = await provider.getAccessToken(scopes);

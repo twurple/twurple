@@ -20,7 +20,7 @@ export async function callTwitchApiRaw(
 	accessToken?: string,
 	fetchOptions: TwitchApiCallFetchOptions = {}
 ): Promise<Response> {
-	const type = options.type === undefined ? 'kraken' : options.type;
+	const type = options.type ?? 'kraken';
 	const url = getTwitchApiUrl(options.url, type);
 	const params = stringify(options.query, { arrayFormat: 'repeat' });
 	const headers = new Headers({
