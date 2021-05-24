@@ -71,8 +71,8 @@ export class ChatUser {
 	/**
 	 * The ID of the user.
 	 */
-	get userId(): string | undefined {
-		return this._userData.get('user-id');
+	get userId(): string {
+		return this._userData.get('user-id')!;
 	}
 
 	/**
