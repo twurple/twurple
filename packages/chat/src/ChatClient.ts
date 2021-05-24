@@ -254,9 +254,8 @@ export class ChatClient extends IrcClient {
 	 * @param auto Whether the host was triggered automatically (by Twitch's auto-host functionality).
 	 * @param viewers The number of viewers in the hosting channel.
 	 */
-	readonly onHosted: EventBinder<
-		[channel: string, byChannel: string, auto: boolean, viewers?: number]
-	> = this.registerEvent();
+	readonly onHosted: EventBinder<[channel: string, byChannel: string, auto: boolean, viewers?: number]> =
+		this.registerEvent();
 
 	/**
 	 * Fires when Twitch tells you the number of hosts you have remaining in the next half hour for the channel
@@ -332,9 +331,8 @@ export class ChatClient extends IrcClient {
 	 * @param raidInfo Additional information about the raid.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onRaid: EventBinder<
-		[channel: string, user: string, raidInfo: ChatRaidInfo, msg: UserNotice]
-	> = this.registerEvent();
+	readonly onRaid: EventBinder<[channel: string, user: string, raidInfo: ChatRaidInfo, msg: UserNotice]> =
+		this.registerEvent();
 
 	/**
 	 * Fires when a user cancels a raid.
@@ -354,9 +352,8 @@ export class ChatClient extends IrcClient {
 	 * @param ritualInfo Additional information about the ritual.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onRitual: EventBinder<
-		[channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice]
-	> = this.registerEvent();
+	readonly onRitual: EventBinder<[channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice]> =
+		this.registerEvent();
 
 	/**
 	 * Fires when slow mode is toggled in a channel.
@@ -386,9 +383,8 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onSub: EventBinder<
-		[channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice]
-	> = this.registerEvent();
+	readonly onSub: EventBinder<[channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice]> =
+		this.registerEvent();
 
 	/**
 	 * Fires when a user resubscribes to a channel.
@@ -399,9 +395,8 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the resubscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onResub: EventBinder<
-		[channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice]
-	> = this.registerEvent();
+	readonly onResub: EventBinder<[channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice]> =
+		this.registerEvent();
 
 	/**
 	 * Fires when a user gifts a subscription to a channel to another user.
@@ -415,9 +410,8 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onSubGift: EventBinder<
-		[channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice]
-	> = this.registerEvent();
+	readonly onSubGift: EventBinder<[channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice]> =
+		this.registerEvent();
 
 	/**
 	 * Fires when a user gifts random subscriptions to the community of a channel.
@@ -444,9 +438,8 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription extension.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onSubExtend: EventBinder<
-		[channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice]
-	> = this.registerEvent();
+	readonly onSubExtend: EventBinder<[channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice]> =
+		this.registerEvent();
 
 	/**
 	 * Fires when a user gifts rewards during a special event.
@@ -583,9 +576,8 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onMessage: EventBinder<
-		[channel: string, user: string, message: string, msg: TwitchPrivateMessage]
-	> = this.registerEvent();
+	readonly onMessage: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]> =
+		this.registerEvent();
 
 	// override for specific class
 	/** @private */
@@ -605,63 +597,47 @@ export class ChatClient extends IrcClient {
 	declare readonly onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	// internal events to resolve promises and stuff
-	private readonly _onBanResult: EventBinder<
-		[channel: string, user: string, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onTimeoutResult: EventBinder<
-		[channel: string, user: string, duration?: number, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onUnbanResult: EventBinder<
-		[channel: string, user: string, error?: string]
-	> = this.registerInternalEvent();
+	private readonly _onBanResult: EventBinder<[channel: string, user: string, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onTimeoutResult: EventBinder<[channel: string, user: string, duration?: number, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onUnbanResult: EventBinder<[channel: string, user: string, error?: string]> =
+		this.registerInternalEvent();
 	private readonly _onColorResult: EventBinder<[error?: string]> = this.registerInternalEvent();
 	private readonly _onCommercialResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onDeleteMessageResult: EventBinder<
-		[channel: string, error?: string]
-	> = this.registerInternalEvent();
+	private readonly _onDeleteMessageResult: EventBinder<[channel: string, error?: string]> =
+		this.registerInternalEvent();
 	private readonly _onEmoteOnlyResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onEmoteOnlyOffResult: EventBinder<
-		[channel: string, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onFollowersOnlyResult: EventBinder<
-		[channel: string, minFollowTime?: number, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onFollowersOnlyOffResult: EventBinder<
-		[channel: string, error?: string]
-	> = this.registerInternalEvent();
+	private readonly _onEmoteOnlyOffResult: EventBinder<[channel: string, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onFollowersOnlyResult: EventBinder<[channel: string, minFollowTime?: number, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onFollowersOnlyOffResult: EventBinder<[channel: string, error?: string]> =
+		this.registerInternalEvent();
 	private readonly _onHostResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
 	private readonly _onUnhostResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onModResult: EventBinder<
-		[channel: string, user: string, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onUnmodResult: EventBinder<
-		[channel: string, user: string, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onModsResult: EventBinder<
-		[channel: string, mods?: string[], error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onJoinResult: EventBinder<
-		[channel: string, state?: Map<string, string>, error?: string]
-	> = this.registerInternalEvent();
+	private readonly _onModResult: EventBinder<[channel: string, user: string, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onUnmodResult: EventBinder<[channel: string, user: string, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onModsResult: EventBinder<[channel: string, mods?: string[], error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onJoinResult: EventBinder<[channel: string, state?: Map<string, string>, error?: string]> =
+		this.registerInternalEvent();
 	private readonly _onR9kResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
 	private readonly _onR9kOffResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onSlowResult: EventBinder<
-		[channel: string, delay?: number, error?: string]
-	> = this.registerInternalEvent();
+	private readonly _onSlowResult: EventBinder<[channel: string, delay?: number, error?: string]> =
+		this.registerInternalEvent();
 	private readonly _onSlowOffResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
 	private readonly _onSubsOnlyResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onSubsOnlyOffResult: EventBinder<
-		[channel: string, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onVipResult: EventBinder<
-		[channel: string, user: string, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onUnvipResult: EventBinder<
-		[channel: string, user: string, error?: string]
-	> = this.registerInternalEvent();
-	private readonly _onVipsResult: EventBinder<
-		[channel: string, vips?: string[], error?: string]
-	> = this.registerInternalEvent();
+	private readonly _onSubsOnlyOffResult: EventBinder<[channel: string, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onVipResult: EventBinder<[channel: string, user: string, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onUnvipResult: EventBinder<[channel: string, user: string, error?: string]> =
+		this.registerInternalEvent();
+	private readonly _onVipsResult: EventBinder<[channel: string, vips?: string[], error?: string]> =
+		this.registerInternalEvent();
 
 	/**
 	 * Creates a new anonymous Twitch chat client.

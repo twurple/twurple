@@ -52,9 +52,11 @@ export class HelixInstalledExtensionList {
 	}
 
 	getAllExtensions(): HelixInstalledExtension[] {
-		return ([...Object.entries(this._data)] as Array<
-			[HelixExtensionSlotType, Record<'1' | '2' | '3', HelixExtensionSlotData>]
-		>).flatMap(([type, typeEntries]) =>
+		return (
+			[...Object.entries(this._data)] as Array<
+				[HelixExtensionSlotType, Record<'1' | '2' | '3', HelixExtensionSlotData>]
+			>
+		).flatMap(([type, typeEntries]) =>
 			[...Object.entries(typeEntries)]
 				.filter((entry): entry is [HelixExtensionSlotType, HelixInstalledExtensionData] => entry[1].active)
 				.map(([slotId, slotData]) => new HelixInstalledExtension(type, slotId, slotData))

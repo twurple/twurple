@@ -53,27 +53,25 @@ export function parseEmoteOffsets(emotes?: string): Map<string, string[]> {
 export function parseEmotePositions(message: string, emoteOffsets: Map<string, string[]>): ParsedMessageEmotePart[] {
 	return [...emoteOffsets.entries()]
 		.flatMap(([emote, placements]) =>
-			placements.map(
-				(placement): ParsedMessageEmotePart => {
-					const [startStr, endStr] = placement.split('-');
-					const start = +startStr;
-					const end = +endStr;
-					const name = utf8Substring(message, start, end + 1);
+			placements.map((placement): ParsedMessageEmotePart => {
+				const [startStr, endStr] = placement.split('-');
+				const start = +startStr;
+				const end = +endStr;
+				const name = utf8Substring(message, start, end + 1);
 
-					return {
-						type: 'emote',
-						position: start,
-						length: end - start + 1,
-						id: emote,
-						name,
-						displayInfo: new ChatEmote({
-							code: name,
-							id: parseInt(emote, 10),
-							emoticon_set: -1
-						})
-					};
-				}
-			)
+				return {
+					type: 'emote',
+					position: start,
+					length: end - start + 1,
+					id: emote,
+					name,
+					displayInfo: new ChatEmote({
+						code: name,
+						id: parseInt(emote, 10),
+						emoticon_set: -1
+					})
+				};
+			})
 		)
 		.sort((a, b) => a.position - b.position);
 }

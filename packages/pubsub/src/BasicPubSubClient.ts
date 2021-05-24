@@ -68,9 +68,8 @@ export class BasicPubSubClient extends EventEmitter {
 	private _pingTimeoutTimer?: NodeJS.Timer;
 
 	private readonly _onPong: (handler: () => void) => Listener = this.registerInternalEvent();
-	private readonly _onResponse: (
-		handler: (nonce: string, error: string) => void
-	) => Listener = this.registerInternalEvent();
+	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener =
+		this.registerInternalEvent();
 
 	/**
 	 * Fires when a message that matches your listening topics is received.
@@ -79,9 +78,8 @@ export class BasicPubSubClient extends EventEmitter {
 	 * @param topic The name of the topic.
 	 * @param message The message data.
 	 */
-	readonly onMessage: (
-		handler: (topic: string, message: PubSubMessageData) => void
-	) => Listener = this.registerEvent();
+	readonly onMessage: (handler: (topic: string, message: PubSubMessageData) => void) => Listener =
+		this.registerEvent();
 
 	/**
 	 * Fires when the client finishes establishing a connection to the PubSub server.

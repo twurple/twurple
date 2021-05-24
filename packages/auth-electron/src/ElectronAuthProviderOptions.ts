@@ -39,6 +39,5 @@ export interface WindowOptions {
 	closeOnLogin?: boolean;
 }
 
-export type ElectronAuthProviderOptions<
-	T extends WindowOptions | WindowStyleOptions = WindowStyleOptions
-> = BaseOptions & T;
+export type ElectronAuthProviderOptions<T extends WindowOptions | WindowStyleOptions = WindowStyleOptions> =
+	BaseOptions & T;
