@@ -42,7 +42,8 @@ export class ChatUser {
 	/**
 	 * The color the user chose to display in chat.
 	 *
-	 * Returns null if the user didn't choose a color. In this case, you should generate your own color.
+	 * Returns undefined if the user didn't choose a color.
+	 * In this case, you should generate your own color for this user and stick to it at least for one runtime.
 	 */
 	get color(): string | undefined {
 		return this._userData.get('color');
