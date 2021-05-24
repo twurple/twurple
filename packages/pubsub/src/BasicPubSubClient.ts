@@ -1,7 +1,7 @@
 import type { Connection } from '@d-fischer/connection';
 import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
 import type { ClientOptions } from '@d-fischer/isomorphic-ws';
-import type { LoggerOptions, LogLevel } from '@d-fischer/logger';
+import type { LoggerOptions } from '@d-fischer/logger';
 import { Logger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
@@ -121,24 +121,17 @@ export class BasicPubSubClient extends EventEmitter {
 	 */
 	constructor(options?: BasicPubSubClientOptions) {
 		super();
-		if (options === undefined || typeof options === 'number') {
-			options = {
-				logger: {
-					minLevel: (options as unknown) as LogLevel | undefined
-				}
-			};
-		}
 		this._logger = new Logger({
 			name: '@twurple/pubsub',
 			emoji: true,
-			...(options.logger ?? {})
+			...options?.logger
 		});
 
 		this._connection = new PersistentConnection(
 			WebSocketConnection,
 			{ hostName: 'pubsub-edge.twitch.tv', port: 443, secure: true },
 			{ logger: this._logger },
-			{ wsOptions: options.wsOptions }
+			{ wsOptions: options?.wsOptions }
 		);
 
 		this._connection.onConnect(async () => {
