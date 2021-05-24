@@ -56,7 +56,7 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 * Parses the message, separating text from emote usages.
 	 */
 	parseEmotes(): ParsedMessagePart[] {
-		const messageText = this.params.message;
+		const messageText = this.params.content;
 		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
 
 		return fillTextPositions(messageText, foundEmotes);
@@ -68,7 +68,7 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 * @param cheermotes A list of cheermotes
 	 */
 	parseEmotesAndBits(cheermotes: BaseCheermoteList): ParsedMessagePart[] {
-		const messageText = this.params.message;
+		const messageText = this.params.content;
 		const foundCheermotes = cheermotes.parseMessage(messageText);
 		const foundEmotesAndCheermotes: ParsedMessagePart[] = [
 			...parseEmotePositions(messageText, this.emoteOffsets),

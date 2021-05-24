@@ -8,7 +8,7 @@ import {
 } from '@d-fischer/rate-limiter';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { delay, Enumerable } from '@d-fischer/shared-utils';
-import type { Listener } from '@d-fischer/typed-event-emitter';
+import type { EventBinder } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
 import { accessTokenIsExpired, getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from '@twurple/auth';
 import type { CommercialLength } from '@twurple/common';
@@ -182,9 +182,7 @@ export class ChatClient extends IrcClient {
 	 * @param user The timed out user.
 	 * @param duration The duration of the timeout, in seconds.
 	 */
-	readonly onTimeout: (
-		handler: (channel: string, user: string, duration: number) => void
-	) => Listener = this.registerEvent();
+	readonly onTimeout: EventBinder<[channel: string, user: string, duration: number]> = this.registerEvent();
 
 	/**
 	 * Fires when a user is permanently banned from a channel.
@@ -193,7 +191,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel the user is banned from.
 	 * @param user The banned user.
 	 */
-	readonly onBan: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+	readonly onBan: EventBinder<[channel: string, user: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a user upgrades their bits badge in a channel.
@@ -204,9 +202,9 @@ export class ChatClient extends IrcClient {
 	 * @param ritualInfo Additional information about the upgrade.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onBitsBadgeUpgrade: (
-		handler: (channel: string, user: string, upgradeInfo: ChatBitsBadgeUpgradeInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onBitsBadgeUpgrade: EventBinder<
+		[channel: string, user: string, upgradeInfo: ChatBitsBadgeUpgradeInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when the chat of a channel is cleared.
@@ -214,7 +212,7 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param channel The channel whose chat is cleared.
 	 */
-	readonly onChatClear: (handler: (channel: string) => void) => Listener = this.registerEvent();
+	readonly onChatClear: EventBinder<[channel: string]> = this.registerEvent();
 
 	/**
 	 * Fires when emote-only mode is toggled in a channel.
@@ -223,7 +221,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where emote-only mode is being toggled.
 	 * @param enabled Whether emote-only mode is being enabled. If false, it's being disabled.
 	 */
-	readonly onEmoteOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	readonly onEmoteOnly: EventBinder<[channel: string, enabled: boolean]> = this.registerEvent();
 
 	/**
 	 * Fires when followers-only mode is toggled in a channel.
@@ -233,9 +231,7 @@ export class ChatClient extends IrcClient {
 	 * @param enabled Whether followers-only mode is being enabled. If false, it's being disabled.
 	 * @param delay The time (in minutes) a user needs to follow the channel to be able to talk. Only available when `enabled === true`.
 	 */
-	readonly onFollowersOnly: (
-		handler: (channel: string, enabled: boolean, delay?: number) => void
-	) => Listener = this.registerEvent();
+	readonly onFollowersOnly: EventBinder<[channel: string, enabled: boolean, delay?: number]> = this.registerEvent();
 
 	/**
 	 * Fires when a channel hosts another channel.
@@ -247,9 +243,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * If you're not logged in as the owner of the channel, this is undefined.
 	 */
-	readonly onHost: (
-		handler: (channel: string, target: string, viewers?: number) => void
-	) => Listener = this.registerEvent();
+	readonly onHost: EventBinder<[channel: string, target: string, viewers?: number]> = this.registerEvent();
 
 	/**
 	 * Fires when a channel you're logged in as its owner is being hosted by another channel.
@@ -260,9 +254,9 @@ export class ChatClient extends IrcClient {
 	 * @param auto Whether the host was triggered automatically (by Twitch's auto-host functionality).
 	 * @param viewers The number of viewers in the hosting channel.
 	 */
-	readonly onHosted: (
-		handler: (channel: string, byChannel: string, auto: boolean, viewers?: number) => void
-	) => Listener = this.registerEvent();
+	readonly onHosted: EventBinder<
+		[channel: string, byChannel: string, auto: boolean, viewers?: number]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when Twitch tells you the number of hosts you have remaining in the next half hour for the channel
@@ -272,9 +266,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The hosting channel.
 	 * @param numberOfHosts The number of hosts remaining in the next half hour.
 	 */
-	readonly onHostsRemaining: (
-		handler: (channel: string, numberOfHosts: number) => void
-	) => Listener = this.registerEvent();
+	readonly onHostsRemaining: EventBinder<[channel: string, numberOfHosts: number]> = this.registerEvent();
 
 	/**
 	 * Fires when a user joins a channel.
@@ -287,7 +279,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that is being joined.
 	 * @param user The user that joined.
 	 */
-	readonly onJoin: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+	readonly onJoin: EventBinder<[channel: string, user: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a user leaves ("parts") a channel.
@@ -300,7 +292,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that is being left.
 	 * @param user The user that left.
 	 */
-	readonly onPart: (handler: (channel: string, user: string) => void) => Listener = this.registerEvent();
+	readonly onPart: EventBinder<[channel: string, user: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a single message is removed from a channel.
@@ -312,9 +304,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * This is *not* the message that was removed. The text of the message is available using `msg.params.message` though.
 	 */
-	readonly onMessageRemove: (
-		handler: (channel: string, messageId: string, msg: ClearMsg) => void
-	) => Listener = this.registerEvent();
+	readonly onMessageRemove: EventBinder<[channel: string, messageId: string, msg: ClearMsg]> = this.registerEvent();
 
 	/**
 	 * Fires when R9K mode is toggled in a channel.
@@ -323,7 +313,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where R9K mode is being toggled.
 	 * @param enabled Whether R9K mode is being enabled. If false, it's being disabled.
 	 */
-	readonly onR9k: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	readonly onR9k: EventBinder<[channel: string, enabled: boolean]> = this.registerEvent();
 
 	/**
 	 * Fires when host mode is disabled in a channel.
@@ -331,7 +321,7 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param channel The channel where host mode is being disabled.
 	 */
-	readonly onUnhost: (handler: (channel: string) => void) => Listener = this.registerEvent();
+	readonly onUnhost: EventBinder<[channel: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a user raids a channel.
@@ -342,9 +332,9 @@ export class ChatClient extends IrcClient {
 	 * @param raidInfo Additional information about the raid.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onRaid: (
-		handler: (channel: string, user: string, raidInfo: ChatRaidInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onRaid: EventBinder<
+		[channel: string, user: string, raidInfo: ChatRaidInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user cancels a raid.
@@ -353,7 +343,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where the raid was cancelled.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onRaidCancel: (handler: (channel: string, msg: UserNotice) => void) => Listener = this.registerEvent();
+	readonly onRaidCancel: EventBinder<[channel: string, msg: UserNotice]> = this.registerEvent();
 
 	/**
 	 * Fires when a user performs a "ritual" in a channel.
@@ -364,9 +354,9 @@ export class ChatClient extends IrcClient {
 	 * @param ritualInfo Additional information about the ritual.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onRitual: (
-		handler: (channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onRitual: EventBinder<
+		[channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when slow mode is toggled in a channel.
@@ -376,9 +366,7 @@ export class ChatClient extends IrcClient {
 	 * @param enabled Whether slow mode is being enabled. If false, it's being disabled.
 	 * @param delay The time (in seconds) a user has to wait between sending messages. Only set when enabling slow mode.
 	 */
-	readonly onSlow: (
-		handler: (channel: string, enabled: boolean, delay?: number) => void
-	) => Listener = this.registerEvent();
+	readonly onSlow: EventBinder<[channel: string, enabled: boolean, delay?: number]> = this.registerEvent();
 
 	/**
 	 * Fires when sub only mode is toggled in a channel.
@@ -387,7 +375,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel where sub only mode is being toggled.
 	 * @param enabled Whether sub only mode is being enabled. If false, it's being disabled.
 	 */
-	readonly onSubsOnly: (handler: (channel: string, enabled: boolean) => void) => Listener = this.registerEvent();
+	readonly onSubsOnly: EventBinder<[channel: string, enabled: boolean]> = this.registerEvent();
 
 	/**
 	 * Fires when a user subscribes to a channel.
@@ -398,9 +386,9 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onSub: (
-		handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onSub: EventBinder<
+		[channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user resubscribes to a channel.
@@ -411,9 +399,9 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the resubscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onResub: (
-		handler: (channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onResub: EventBinder<
+		[channel: string, user: string, subInfo: ChatSubInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user gifts a subscription to a channel to another user.
@@ -427,9 +415,9 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onSubGift: (
-		handler: (channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onSubGift: EventBinder<
+		[channel: string, user: string, subInfo: ChatSubGiftInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user gifts random subscriptions to the community of a channel.
@@ -443,9 +431,9 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the community subscription.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onCommunitySub: (
-		handler: (channel: string, user: string, subInfo: ChatCommunitySubInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onCommunitySub: EventBinder<
+		[channel: string, user: string, subInfo: ChatCommunitySubInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user extends their subscription using a Sub Token.
@@ -456,9 +444,9 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription extension.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onSubExtend: (
-		handler: (channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onSubExtend: EventBinder<
+		[channel: string, user: string, subInfo: ChatSubExtendInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user gifts rewards during a special event.
@@ -469,9 +457,9 @@ export class ChatClient extends IrcClient {
 	 * @param rewardGiftInfo Additional information about the reward gift.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onRewardGift: (
-		handler: (channel: string, user: string, rewardGiftInfo: ChatRewardGiftInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onRewardGift: EventBinder<
+		[channel: string, user: string, rewardGiftInfo: ChatRewardGiftInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user upgrades their Prime subscription to a paid subscription in a channel.
@@ -482,9 +470,9 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription upgrade.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onPrimePaidUpgrade: (
-		handler: (channel: string, user: string, subInfo: ChatSubUpgradeInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onPrimePaidUpgrade: EventBinder<
+		[channel: string, user: string, subInfo: ChatSubUpgradeInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user upgrades their gift subscription to a paid subscription in a channel.
@@ -495,9 +483,9 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the subscription upgrade.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onGiftPaidUpgrade: (
-		handler: (channel: string, user: string, subInfo: ChatSubGiftUpgradeInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onGiftPaidUpgrade: EventBinder<
+		[channel: string, user: string, subInfo: ChatSubGiftUpgradeInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user gifts a Twitch Prime benefit to the channel.
@@ -510,9 +498,9 @@ export class ChatClient extends IrcClient {
 	 * @param subInfo Additional information about the gift.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onPrimeCommunityGift: (
-		handler: (channel: string, user: string, subInfo: ChatPrimeCommunityGiftInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onPrimeCommunityGift: EventBinder<
+		[channel: string, user: string, subInfo: ChatPrimeCommunityGiftInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user pays forward a subscription that was gifted to them to a specific user.
@@ -523,9 +511,9 @@ export class ChatClient extends IrcClient {
 	 * @param forwardInfo Additional information about the gift.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onStandardPayForward: (
-		handler: (channel: string, user: string, forwardInfo: ChatStandardPayForwardInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onStandardPayForward: EventBinder<
+		[channel: string, user: string, forwardInfo: ChatStandardPayForwardInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when a user pays forward a subscription that was gifted to them to the community.
@@ -536,9 +524,9 @@ export class ChatClient extends IrcClient {
 	 * @param forwardInfo Additional information about the gift.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onCommunityPayForward: (
-		handler: (channel: string, user: string, forwardInfo: ChatCommunityPayForwardInfo, msg: UserNotice) => void
-	) => Listener = this.registerEvent();
+	readonly onCommunityPayForward: EventBinder<
+		[channel: string, user: string, forwardInfo: ChatCommunityPayForwardInfo, msg: UserNotice]
+	> = this.registerEvent();
 
 	/**
 	 * Fires when receiving a whisper from another user.
@@ -548,9 +536,7 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onWhisper: (
-		handler: (user: string, message: string, msg: Whisper) => void
-	) => Listener = this.registerEvent();
+	readonly onWhisper: EventBinder<[user: string, message: string, msg: Whisper]> = this.registerEvent();
 
 	/**
 	 * Fires when you tried to execute a command you don't have sufficient permission for.
@@ -559,7 +545,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that a command without sufficient permissions was executed on.
 	 * @param message The message text.
 	 */
-	readonly onNoPermission: (handler: (channel: string, message: string) => void) => Listener = this.registerEvent();
+	readonly onNoPermission: EventBinder<[channel: string, message: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a message you tried to send gets rejected by the ratelimiter.
@@ -568,9 +554,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that was attempted to send to.
 	 * @param message The message text.
 	 */
-	readonly onMessageRatelimit: (
-		handler: (channel: string, message: string) => void
-	) => Listener = this.registerEvent();
+	readonly onMessageRatelimit: EventBinder<[channel: string, message: string]> = this.registerEvent();
 
 	/**
 	 * Fires when authentication fails.
@@ -579,7 +563,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that a command without sufficient permissions was executed on.
 	 * @param message The message text.
 	 */
-	readonly onAuthenticationFailure: (handler: (message: string) => void) => Listener = this.registerEvent();
+	readonly onAuthenticationFailure: EventBinder<[message: string]> = this.registerEvent();
 
 	/**
 	 * Fires when sending a message fails.
@@ -588,7 +572,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that rejected the message.
 	 * @param reason The reason for the failure, e.g. you're banned (msg_banned)
 	 */
-	readonly onMessageFailed: (handler: (channel: string, reason: string) => void) => Listener = this.registerEvent();
+	readonly onMessageFailed: EventBinder<[channel: string, reason: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a user sends a message to a channel.
@@ -599,15 +583,15 @@ export class ChatClient extends IrcClient {
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onMessage: (
-		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener = this.registerEvent();
+	readonly onMessage: EventBinder<
+		[channel: string, user: string, message: string, msg: TwitchPrivateMessage]
+	> = this.registerEvent();
 
 	// override for specific class
 	/** @private */
-	declare readonly onPrivmsg: (
-		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	declare readonly onPrivmsg: EventBinder<
+		[channel: string, user: string, message: string, msg: TwitchPrivateMessage]
+	>;
 
 	/**
 	 * Fires when a user sends an action (/me) to a channel.
@@ -618,84 +602,66 @@ export class ChatClient extends IrcClient {
 	 * @param message The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare readonly onAction: (
-		handler: (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => void
-	) => Listener;
+	declare readonly onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
 
 	// internal events to resolve promises and stuff
-	private readonly _onBanResult: (
-		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onTimeoutResult: (
-		handler: (channel: string, user: string, duration?: number, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onUnbanResult: (
-		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onColorResult: (handler: (error?: string) => void) => Listener = this.registerInternalEvent();
-	private readonly _onCommercialResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onDeleteMessageResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onEmoteOnlyResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onEmoteOnlyOffResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onFollowersOnlyResult: (
-		handler: (channel: string, minFollowTime?: number, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onFollowersOnlyOffResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onHostResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onUnhostResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onModResult: (
-		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onUnmodResult: (
-		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onModsResult: (
-		handler: (channel: string, mods?: string[], error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onJoinResult: (
-		handler: (channel: string, state?: Map<string, string>, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onR9kResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onR9kOffResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onSlowResult: (
-		handler: (channel: string, delay?: number, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onSlowOffResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onSubsOnlyResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onSubsOnlyOffResult: (
-		handler: (channel: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onVipResult: (
-		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onUnvipResult: (
-		handler: (channel: string, user: string, error?: string) => void
-	) => Listener = this.registerInternalEvent();
-	private readonly _onVipsResult: (
-		handler: (channel: string, vips?: string[], error?: string) => void
-	) => Listener = this.registerInternalEvent();
+	private readonly _onBanResult: EventBinder<
+		[channel: string, user: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onTimeoutResult: EventBinder<
+		[channel: string, user: string, duration?: number, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onUnbanResult: EventBinder<
+		[channel: string, user: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onColorResult: EventBinder<[error?: string]> = this.registerInternalEvent();
+	private readonly _onCommercialResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
+	private readonly _onDeleteMessageResult: EventBinder<
+		[channel: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onEmoteOnlyResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
+	private readonly _onEmoteOnlyOffResult: EventBinder<
+		[channel: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onFollowersOnlyResult: EventBinder<
+		[channel: string, minFollowTime?: number, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onFollowersOnlyOffResult: EventBinder<
+		[channel: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onHostResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
+	private readonly _onUnhostResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
+	private readonly _onModResult: EventBinder<
+		[channel: string, user: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onUnmodResult: EventBinder<
+		[channel: string, user: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onModsResult: EventBinder<
+		[channel: string, mods?: string[], error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onJoinResult: EventBinder<
+		[channel: string, state?: Map<string, string>, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onR9kResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
+	private readonly _onR9kOffResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
+	private readonly _onSlowResult: EventBinder<
+		[channel: string, delay?: number, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onSlowOffResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
+	private readonly _onSubsOnlyResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
+	private readonly _onSubsOnlyOffResult: EventBinder<
+		[channel: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onVipResult: EventBinder<
+		[channel: string, user: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onUnvipResult: EventBinder<
+		[channel: string, user: string, error?: string]
+	> = this.registerInternalEvent();
+	private readonly _onVipsResult: EventBinder<
+		[channel: string, vips?: string[], error?: string]
+	> = this.registerInternalEvent();
 
 	/**
 	 * Creates a new anonymous Twitch chat client.
@@ -1132,7 +1098,7 @@ export class ChatClient extends IrcClient {
 			this.emit(this.onWhisper, whisper.prefix!.nick, whisper.params.message, whisper);
 		});
 
-		this.onTypedMessage(MessageTypes.Commands.Notice, async ({ params: { target: channel, message }, tags }) => {
+		this.onTypedMessage(MessageTypes.Commands.Notice, async ({ params: { target: channel, content }, tags }) => {
 			const messageType = tags.get('msg-id');
 
 			// this event handler involves a lot of parsing strings you shouldn't parse...
@@ -1141,7 +1107,7 @@ export class ChatClient extends IrcClient {
 			switch (messageType) {
 				// ban
 				case 'already_banned': {
-					const match = message.split(' ');
+					const match = content.split(' ');
 					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onBanResult, channel, user, messageType);
@@ -1162,7 +1128,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_ban_admin':
 				case 'bad_ban_global_mod':
 				case 'bad_ban_staff': {
-					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(message);
+					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(content);
 					if (match) {
 						this.emit(this._onBanResult, channel, match[1].toLowerCase(), messageType);
 					}
@@ -1170,7 +1136,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'ban_success': {
-					const match = message.split(' ');
+					const match = content.split(' ');
 					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onBanResult, channel, user);
@@ -1180,7 +1146,7 @@ export class ChatClient extends IrcClient {
 
 				// unban
 				case 'bad_unban_no_ban': {
-					const match = message.split(' ');
+					const match = content.split(' ');
 					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnbanResult, channel, user, messageType);
@@ -1189,7 +1155,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'unban_success': {
-					const match = message.split(' ');
+					const match = content.split(' ');
 					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnbanResult, channel, user);
@@ -1265,7 +1231,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'hosts_remaining': {
-					const remainingHostsFromChar = +message[0];
+					const remainingHostsFromChar = +content[0];
 					const remainingHosts = isNaN(remainingHostsFromChar) ? 0 : Number(remainingHostsFromChar);
 					this.emit(this._onHostResult, channel);
 					this.emit(this.onHostsRemaining, channel, remainingHosts);
@@ -1287,7 +1253,7 @@ export class ChatClient extends IrcClient {
 				// mod
 				case 'bad_mod_banned':
 				case 'bad_mod_mod': {
-					const match = message.split(' ');
+					const match = content.split(' ');
 					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onModResult, channel, user, messageType);
@@ -1296,7 +1262,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'mod_success': {
-					const match = /^You have added (\w+) /.exec(message);
+					const match = /^You have added (\w+) /.exec(content);
 					if (match) {
 						this.emit(this._onModResult, channel, match[1]);
 					}
@@ -1305,7 +1271,7 @@ export class ChatClient extends IrcClient {
 
 				// unmod
 				case 'bad_unmod_mod': {
-					const match = message.split(' ');
+					const match = content.split(' ');
 					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnmodResult, channel, user, messageType);
@@ -1314,7 +1280,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'unmod_success': {
-					const match = /^You have removed (\w+) /.exec(message);
+					const match = /^You have removed (\w+) /.exec(content);
 					if (match) {
 						this.emit(this._onUnmodResult, channel, match[1]);
 					}
@@ -1328,7 +1294,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'room_mods': {
-					const [, modList] = message.split(': ');
+					const [, modList] = content.split(': ');
 					const mods = modList.split(', ');
 					this.emit(this._onModsResult, channel, mods);
 					break;
@@ -1394,7 +1360,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'bad_timeout_mod': {
-					const match = /^You cannot timeout moderator (\w+) unless/.exec(message);
+					const match = /^You cannot timeout moderator (\w+) unless/.exec(content);
 					if (match) {
 						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
 					}
@@ -1404,7 +1370,7 @@ export class ChatClient extends IrcClient {
 				case 'bad_timeout_admin':
 				case 'bad_timeout_global_mod':
 				case 'bad_timeout_staff': {
-					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(message);
+					const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(content);
 					if (match) {
 						this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
 					}
@@ -1414,7 +1380,7 @@ export class ChatClient extends IrcClient {
 				// vip
 				case 'bad_vip_grantee_banned':
 				case 'bad_vip_grantee_already_vip': {
-					const match = message.split(' ');
+					const match = content.split(' ');
 					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onVipResult, channel, user, messageType);
@@ -1423,7 +1389,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'vip_success': {
-					const match = /^You have added (\w+) /.exec(message);
+					const match = /^You have added (\w+) /.exec(content);
 					if (match) {
 						this.emit(this._onVipResult, channel, match[1]);
 					}
@@ -1432,7 +1398,7 @@ export class ChatClient extends IrcClient {
 
 				// unvip
 				case 'bad_unvip_grantee_not_vip': {
-					const match = message.split(' ');
+					const match = content.split(' ');
 					const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
 					if (user) {
 						this.emit(this._onUnvipResult, channel, user, messageType);
@@ -1441,7 +1407,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'unvip_success': {
-					const match = /^You have removed (\w+) /.exec(message);
+					const match = /^You have removed (\w+) /.exec(content);
 					if (match) {
 						this.emit(this._onUnvipResult, channel, match[1]);
 					}
@@ -1455,7 +1421,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'vips_success': {
-					const [, vipList] = message.split(': ');
+					const [, vipList] = content.split(': ');
 					const vips = vipList.split(', ');
 					this.emit(this._onVipsResult, channel, vips);
 					break;
@@ -1493,12 +1459,12 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'no_permission': {
-					this.emit(this.onNoPermission, channel, message);
+					this.emit(this.onNoPermission, channel, content);
 					break;
 				}
 
 				case 'msg_ratelimit': {
-					this.emit(this.onMessageRatelimit, channel, message);
+					this.emit(this.onMessageRatelimit, channel, content);
 					break;
 				}
 
@@ -1510,12 +1476,12 @@ export class ChatClient extends IrcClient {
 				case undefined: {
 					// this might be one of these weird authentication error notices that don't have a msg-id...
 					if (
-						message === 'Login authentication failed' ||
-						message === 'Improperly formatted AUTH' ||
-						message === 'Invalid NICK'
+						content === 'Login authentication failed' ||
+						content === 'Improperly formatted AUTH' ||
+						content === 'Invalid NICK'
 					) {
 						this._authVerified = false;
-						this.emit(this.onAuthenticationFailure, message);
+						this.emit(this.onAuthenticationFailure, content);
 						if (!this._authRetryTimer) {
 							this._authRetryTimer = ChatClient._getReauthenticateWaitTime();
 						}
