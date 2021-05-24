@@ -67,7 +67,7 @@ export class HelixSubscriptionApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixSubscriptionData) => new HelixSubscription(data, this._client)
+			data => new HelixSubscription(data, this._client)
 		);
 	}
 
@@ -140,7 +140,7 @@ export class HelixSubscriptionApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixSubscriptionEventData) => new HelixSubscriptionEvent(data, this._client)
+			data => new HelixSubscriptionEvent(data, this._client)
 		);
 	}
 

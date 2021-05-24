@@ -107,7 +107,7 @@ export class HelixWebHooksApi extends BaseApi {
 				url: 'webhooks/subscriptions'
 			},
 			this._client,
-			(data: HelixWebHookSubscriptionData) => new HelixWebHookSubscription(data, this._client)
+			data => new HelixWebHookSubscription(data, this._client)
 		);
 	}
 

@@ -85,7 +85,7 @@ export class HelixModerationApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixBanData) => new HelixBan(data, this._client),
+			data => new HelixBan(data, this._client),
 			50 // possibly a relatively consistent workaround for twitchdev/issues#18
 		);
 	}
@@ -142,7 +142,7 @@ export class HelixModerationApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixBanEventData) => new HelixBanEvent(data, this._client)
+			data => new HelixBanEvent(data, this._client)
 		);
 	}
 
@@ -185,7 +185,7 @@ export class HelixModerationApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixModeratorData) => new HelixModerator(data, this._client)
+			data => new HelixModerator(data, this._client)
 		);
 	}
 
@@ -243,7 +243,7 @@ export class HelixModerationApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixModeratorEventData) => new HelixModeratorEvent(data, this._client)
+			data => new HelixModeratorEvent(data, this._client)
 		);
 	}
 }

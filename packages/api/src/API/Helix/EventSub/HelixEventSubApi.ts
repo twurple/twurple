@@ -67,7 +67,7 @@ export class HelixEventSubApi extends BaseApi {
 				url: 'eventsub/subscriptions'
 			},
 			this._client,
-			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
+			data => new HelixEventSubSubscription(data, this._client)
 		);
 	}
 

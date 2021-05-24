@@ -186,14 +186,14 @@ export class HelixVideoApi extends BaseApi {
 		filterType: HelixVideoFilterType,
 		filterValues: string | string[],
 		filter: HelixVideoFilter = {}
-	) {
+	): HelixPaginatedRequest<HelixVideoData, HelixVideo> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'videos',
 				query: HelixVideoApi._makeVideosQuery(filterType, filterValues, filter)
 			},
 			this._client,
-			(data: HelixVideoData) => new HelixVideo(data, this._client)
+			data => new HelixVideo(data, this._client)
 		);
 	}
 

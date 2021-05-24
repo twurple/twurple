@@ -323,7 +323,7 @@ export class HelixChannelPointsApi extends BaseApi {
 		status: HelixCustomRewardRedemptionStatus,
 		filter: HelixCustomRewardRedemptionFilter
 	): HelixPaginatedRequest<HelixCustomRewardRedemptionData, HelixCustomRewardRedemption> {
-		return new HelixPaginatedRequest<HelixCustomRewardRedemptionData, HelixCustomRewardRedemption>(
+		return new HelixPaginatedRequest(
 			{
 				url: 'channel_points/custom_rewards/redemptions',
 				scope: 'channel:read:redemptions',

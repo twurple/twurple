@@ -129,7 +129,7 @@ export class HelixStreamApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixStreamData) => new HelixStream(data, this._client)
+			data => new HelixStream(data, this._client)
 		);
 	}
 

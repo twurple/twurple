@@ -193,7 +193,7 @@ export class HelixUserApi extends BaseApi {
 				query
 			},
 			this._client,
-			(data: HelixFollowData) => new HelixFollow(data, this._client)
+			data => new HelixFollow(data, this._client)
 		);
 	}
 
@@ -299,7 +299,7 @@ export class HelixUserApi extends BaseApi {
 	 * @param user The user to retrieve blocks for.
 	 */
 	getBlocksPaginated(user: UserIdResolvable): HelixPaginatedRequest<HelixUserBlockData, HelixUserBlock> {
-		return new HelixPaginatedRequest<HelixUserBlockData, HelixUserBlock>(
+		return new HelixPaginatedRequest(
 			{
 				url: 'users/blocks',
 				scope: 'user:read:blocked_users',

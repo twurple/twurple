@@ -79,7 +79,7 @@ export class HelixExtensionsApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixExtensionTransactionData) => new HelixExtensionTransaction(data, this._client)
+			data => new HelixExtensionTransaction(data, this._client)
 		);
 	}
 }

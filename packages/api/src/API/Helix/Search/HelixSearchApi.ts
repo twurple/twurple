@@ -67,7 +67,7 @@ export class HelixSearchApi extends BaseApi {
 	 * @param query The search term.
 	 */
 	searchCategoriesPaginated(query: string): HelixPaginatedRequest<HelixGameData, HelixGame> {
-		return new HelixPaginatedRequest<HelixGameData, HelixGame>(
+		return new HelixPaginatedRequest(
 			{
 				url: 'search/categories',
 				query: {
@@ -116,7 +116,7 @@ export class HelixSearchApi extends BaseApi {
 		query: string,
 		filter: HelixChannelSearchFilter = {}
 	): HelixPaginatedRequest<HelixChannelSearchResultData, HelixChannelSearchResult> {
-		return new HelixPaginatedRequest<HelixChannelSearchResultData, HelixChannelSearchResult>(
+		return new HelixPaginatedRequest(
 			{
 				url: 'search/channels',
 				query: {

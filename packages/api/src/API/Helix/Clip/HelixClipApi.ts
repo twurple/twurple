@@ -234,7 +234,7 @@ export class HelixClipApi extends BaseApi {
 				}
 			},
 			this._client,
-			(data: HelixClipData) => new HelixClip(data, this._client)
+			data => new HelixClip(data, this._client)
 		);
 	}
 }

@@ -89,7 +89,7 @@ export class HelixGameApi extends BaseApi {
 				url: 'games/top'
 			},
 			this._client,
-			(data: HelixGameData) => new HelixGame(data, this._client)
+			data => new HelixGame(data, this._client)
 		);
 	}
 

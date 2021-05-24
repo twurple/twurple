@@ -43,7 +43,7 @@ export class HelixTagApi extends BaseApi {
 	 * Creates a paginator for all stream tags.
 	 */
 	getAllStreamTagsPaginated(): HelixPaginatedRequest<HelixTagData, HelixTag> {
-		return new HelixPaginatedRequest<HelixTagData, HelixTag>(
+		return new HelixPaginatedRequest(
 			{
 				url: 'tags/streams'
 			},
