@@ -11,13 +11,6 @@ export interface MiddlewareAdapterConfig {
 	hostName: string;
 
 	/**
-	 * The port on which the root application is available.
-	 *
-	 * @default 443
-	 */
-	port?: number;
-
-	/**
 	 * The path your listener is mounted under.
 	 */
 	pathPrefix?: string;
@@ -32,7 +25,6 @@ export interface MiddlewareAdapterConfig {
 @rtfm('eventsub', 'MiddlewareAdapter')
 export class MiddlewareAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
-	private readonly _port: number;
 	private readonly _pathPrefix?: string;
 
 	/**
@@ -45,13 +37,7 @@ export class MiddlewareAdapter extends ConnectionAdapter {
 	constructor(options: MiddlewareAdapterConfig) {
 		super();
 		this._hostName = options.hostName;
-		this._port = options.port ?? 443;
 		this._pathPrefix = options.pathPrefix;
-	}
-
-	/** @protected */
-	async getExternalPort(): Promise<number> {
-		return this._port;
 	}
 
 	/** @protected */

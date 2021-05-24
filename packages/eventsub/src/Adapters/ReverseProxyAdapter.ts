@@ -18,13 +18,6 @@ export interface ReverseProxyAdapterConfig {
 	hostName: string;
 
 	/**
-	 * The port on which the reverse proxy is available.
-	 *
-	 * @default 443
-	 */
-	externalPort?: number;
-
-	/**
 	 * The path prefix your reverse proxy redirects to the listener.
 	 */
 	pathPrefix?: string;
@@ -39,7 +32,6 @@ export interface ReverseProxyAdapterConfig {
 export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _port: number;
-	private readonly _externalPort: number;
 	private readonly _pathPrefix?: string;
 
 	/**
@@ -53,18 +45,12 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 		super();
 		this._hostName = options.hostName;
 		this._port = options.port ?? 8080;
-		this._externalPort = options.externalPort ?? 443;
 		this._pathPrefix = options.pathPrefix;
 	}
 
 	/** @protected */
 	async getListenerPort(): Promise<number> {
 		return this._port;
-	}
-
-	/** @protected */
-	async getExternalPort(): Promise<number> {
-		return this._externalPort;
 	}
 
 	/** @protected */

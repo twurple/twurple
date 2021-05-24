@@ -26,11 +26,6 @@ export class NgrokAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
-	async getExternalPort(): Promise<number> {
-		return 443;
-	}
-
-	/** @protected */
 	async getHostName(): Promise<string> {
 		const listenerPort = await this.getListenerPort();
 

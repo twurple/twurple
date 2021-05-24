@@ -20,11 +20,10 @@ If you don't use an environment variable, you need to set up the listener port m
 ```typescript
 const listener = new EventSubListener(client, new ReverseProxyAdapter({
     hostName: 'example.com', // The host name the server is available from
-    externalPort: 443 // The external port (optional, defaults to 443)
 }), 'thisShouldBeARandomlyGeneratedFixedString');
 ```
 
-By default, this assumes that the reverse proxy is running with SSL on the default port 443.
+Twitch requires that the reverse proxy is running with SSL on the default port 443.
 
 A full list of configuration options is available on the {@ReverseProxyAdapter} reference page.
 

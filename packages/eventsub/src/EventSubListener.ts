@@ -751,16 +751,11 @@ Listening on port ${adapterListenerPort} instead.`);
 	/** @private */
 	async _buildHookUrl(id: string): Promise<string> {
 		const hostName = await this._adapter.getHostName();
-		const externalPort = (await this._adapter.getExternalPort()) ?? this._currentListenerPort;
-		if (!externalPort) {
-			throw new Error('Can not build hook URL with implicit external port while not listening');
-		}
-		const hostPortion = externalPort === 443 ? hostName : `${hostName}:${externalPort}`;
 
 		// trim slashes on both ends
 		const pathPrefix = this._adapter.pathPrefix?.replace(/^\/|\/$/, '');
 
-		return `https://${hostPortion}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/${id}`;
+		return `https://${hostName}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/${id}`;
 	}
 
 	/** @private */
