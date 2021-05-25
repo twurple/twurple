@@ -1,4 +1,4 @@
-import { TwitchPrivateMessage } from './StandardCommands/TwitchPrivateMessage';
+import { TwitchPrivateMessage } from './commands/TwitchPrivateMessage';
 
 /**
  * Additional attributes for a channel message.

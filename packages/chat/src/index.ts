@@ -8,34 +8,34 @@ export type {
 } from './ChatClient';
 export type { WebSocketConnectionOptions } from '@d-fischer/connection';
 
-export { TwitchPrivateMessage as PrivateMessage } from './StandardCommands/TwitchPrivateMessage';
+export { TwitchPrivateMessage as PrivateMessage } from './commands/TwitchPrivateMessage';
 
-export { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
-export { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
-export { Reconnect } from './Capabilities/TwitchCommandsCapability/MessageTypes/Reconnect';
-export { RoomState } from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
-export { UserNotice } from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
-export { UserState } from './Capabilities/TwitchCommandsCapability/MessageTypes/UserState';
-export { Whisper } from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
+export { ClearChat } from './caps/twitchCommands/messageTypes/ClearChat';
+export { HostTarget } from './caps/twitchCommands/messageTypes/HostTarget';
+export { Reconnect } from './caps/twitchCommands/messageTypes/Reconnect';
+export { RoomState } from './caps/twitchCommands/messageTypes/RoomState';
+export { UserNotice } from './caps/twitchCommands/messageTypes/UserNotice';
+export { UserState } from './caps/twitchCommands/messageTypes/UserState';
+export { Whisper } from './caps/twitchCommands/messageTypes/Whisper';
 
-export { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
-export { GlobalUserState } from './Capabilities/TwitchTagsCapability/MessageTypes/GlobalUserState';
+export { ClearMsg } from './caps/twitchTags/messageTypes/ClearMsg';
+export { GlobalUserState } from './caps/twitchTags/messageTypes/GlobalUserState';
 
-export type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
-export type { ChatCommunityPayForwardInfo } from './UserNotices/ChatCommunityPayForwardInfo';
-export type { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
-export type { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
-export type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
-export type { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
-export type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
-export type { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
+export type { ChatBitsBadgeUpgradeInfo } from './userNotices/ChatBitsBadgeUpgradeInfo';
+export type { ChatCommunityPayForwardInfo } from './userNotices/ChatCommunityPayForwardInfo';
+export type { ChatCommunitySubInfo } from './userNotices/ChatCommunitySubInfo';
+export type { ChatPrimeCommunityGiftInfo } from './userNotices/ChatPrimeCommunityGiftInfo';
+export type { ChatRaidInfo } from './userNotices/ChatRaidInfo';
+export type { ChatRewardGiftInfo } from './userNotices/ChatRewardGiftInfo';
+export type { ChatRitualInfo } from './userNotices/ChatRitualInfo';
+export type { ChatStandardPayForwardInfo } from './userNotices/ChatStandardPayForwardInfo';
 export type {
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
 	ChatSubUpgradeInfo,
 	ChatSubExtendInfo,
 	ChatSubInfo
-} from './UserNotices/ChatSubInfo';
+} from './userNotices/ChatSubInfo';
 
 export type { ChatSayMessageAttributes } from './ChatMessageAttributes';
 
@@ -43,11 +43,11 @@ export { ChatUser } from './ChatUser';
 
 export { LogLevel } from '@d-fischer/logger';
 
-export { toChannelName, toUserName } from './Toolkit/UserTools';
+export { toChannelName, toUserName } from './utils/userUtil';
 export type {
 	ParsedMessagePart,
 	ParsedMessageEmotePart,
 	ParsedMessageCheerPart,
 	ParsedMessageTextPart
-} from './Toolkit/EmoteTools';
-export { parseTwitchMessage } from './Toolkit/MessageTools';
+} from './utils/emoteUtil';
+export { parseTwitchMessage } from './utils/messageUtil';

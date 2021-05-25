@@ -4,13 +4,13 @@ import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth'
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BasicPubSubClient } from './BasicPubSubClient';
-import type { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
-import type { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
-import type { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
-import type { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
-import type { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
-import type { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
-import type { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+import type { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
+import type { PubSubBitsMessage } from './messages/PubSubBitsMessage';
+import type { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
+import type { PubSubCustomMessage } from './messages/PubSubCustomMessage';
+import type { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
+import type { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
+import type { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
 import type { PubSubListener } from './PubSubListener';
 import { SingleUserPubSubClient } from './SingleUserPubSubClient';
 

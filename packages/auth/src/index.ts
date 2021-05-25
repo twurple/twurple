@@ -13,11 +13,11 @@ export {
 export { TokenInfo } from './TokenInfo';
 export type { TokenInfoData } from './TokenInfo';
 
-export type { AuthProvider, AuthProviderTokenType } from './AuthProvider/AuthProvider';
-export { ClientCredentialsAuthProvider } from './AuthProvider/ClientCredentialsAuthProvider';
-export { RefreshingAuthProvider } from './AuthProvider/RefreshingAuthProvider';
-export type { RefreshConfig } from './AuthProvider/RefreshingAuthProvider';
-export { StaticAuthProvider } from './AuthProvider/StaticAuthProvider';
+export type { AuthProvider, AuthProviderTokenType } from './providers/AuthProvider';
+export { ClientCredentialsAuthProvider } from './providers/ClientCredentialsAuthProvider';
+export { RefreshingAuthProvider } from './providers/RefreshingAuthProvider';
+export type { RefreshConfig } from './providers/RefreshingAuthProvider';
+export { StaticAuthProvider } from './providers/StaticAuthProvider';
 
-export { InvalidTokenError } from './Errors/InvalidTokenError';
-export { InvalidTokenTypeError } from './Errors/InvalidTokenTypeError';
+export { InvalidTokenError } from './errors/InvalidTokenError';
+export { InvalidTokenTypeError } from './errors/InvalidTokenTypeError';

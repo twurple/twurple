@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
-import type { PubSubMessage } from './Messages/PubSubMessage';
+import type { PubSubMessage } from './messages/PubSubMessage';
 import type { SingleUserPubSubClient } from './SingleUserPubSubClient';
 
 /**

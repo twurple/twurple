@@ -5,20 +5,20 @@ import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth'
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BasicPubSubClient } from './BasicPubSubClient';
-import type { PubSubBitsBadgeUnlockMessageData } from './Messages/PubSubBitsBadgeUnlockMessage';
-import { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
-import type { PubSubBitsMessageData } from './Messages/PubSubBitsMessage';
-import { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
-import type { PubSubChatModActionMessageData } from './Messages/PubSubChatModActionMessage';
-import { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
-import { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
-import type { PubSubMessage, PubSubMessageData } from './Messages/PubSubMessage';
-import type { PubSubRedemptionMessageData } from './Messages/PubSubRedemptionMessage';
-import { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
-import type { PubSubSubscriptionMessageData } from './Messages/PubSubSubscriptionMessage';
-import { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
-import type { PubSubWhisperMessageData } from './Messages/PubSubWhisperMessage';
-import { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+import type { PubSubBitsBadgeUnlockMessageData } from './messages/PubSubBitsBadgeUnlockMessage';
+import { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
+import type { PubSubBitsMessageData } from './messages/PubSubBitsMessage';
+import { PubSubBitsMessage } from './messages/PubSubBitsMessage';
+import type { PubSubChatModActionMessageData } from './messages/PubSubChatModActionMessage';
+import { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
+import { PubSubCustomMessage } from './messages/PubSubCustomMessage';
+import type { PubSubMessage, PubSubMessageData } from './messages/PubSubMessage';
+import type { PubSubRedemptionMessageData } from './messages/PubSubRedemptionMessage';
+import { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
+import type { PubSubSubscriptionMessageData } from './messages/PubSubSubscriptionMessage';
+import { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
+import type { PubSubWhisperMessageData } from './messages/PubSubWhisperMessage';
+import { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
 import { PubSubListener } from './PubSubListener';
 
 /**

@@ -15,34 +15,34 @@ import type { CommercialLength } from '@twurple/common';
 import { rtfm } from '@twurple/common';
 import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
-import { TwitchCommandsCapability } from './Capabilities/TwitchCommandsCapability';
-import { ClearChat } from './Capabilities/TwitchCommandsCapability/MessageTypes/ClearChat';
-import { HostTarget } from './Capabilities/TwitchCommandsCapability/MessageTypes/HostTarget';
-import { RoomState } from './Capabilities/TwitchCommandsCapability/MessageTypes/RoomState';
-import { UserNotice } from './Capabilities/TwitchCommandsCapability/MessageTypes/UserNotice';
-import { Whisper } from './Capabilities/TwitchCommandsCapability/MessageTypes/Whisper';
-import { TwitchMembershipCapability } from './Capabilities/TwitchMembershipCapability';
-import { TwitchTagsCapability } from './Capabilities/TwitchTagsCapability';
-import { ClearMsg } from './Capabilities/TwitchTagsCapability/MessageTypes/ClearMsg';
+import { TwitchCommandsCapability } from './caps/twitchCommands';
+import { ClearChat } from './caps/twitchCommands/messageTypes/ClearChat';
+import { HostTarget } from './caps/twitchCommands/messageTypes/HostTarget';
+import { RoomState } from './caps/twitchCommands/messageTypes/RoomState';
+import { UserNotice } from './caps/twitchCommands/messageTypes/UserNotice';
+import { Whisper } from './caps/twitchCommands/messageTypes/Whisper';
+import { TwitchMembershipCapability } from './caps/TwitchMembershipCapability';
+import { TwitchTagsCapability } from './caps/twitchTags';
+import { ClearMsg } from './caps/twitchTags/messageTypes/ClearMsg';
 import type { ChatSayMessageAttributes } from './ChatMessageAttributes';
 import { extractMessageId } from './ChatMessageAttributes';
-import { TwitchPrivateMessage } from './StandardCommands/TwitchPrivateMessage';
-import { toChannelName, toUserName } from './Toolkit/UserTools';
-import type { ChatBitsBadgeUpgradeInfo } from './UserNotices/ChatBitsBadgeUpgradeInfo';
-import type { ChatCommunityPayForwardInfo } from './UserNotices/ChatCommunityPayForwardInfo';
-import type { ChatCommunitySubInfo } from './UserNotices/ChatCommunitySubInfo';
-import type { ChatPrimeCommunityGiftInfo } from './UserNotices/ChatPrimeCommunityGiftInfo';
-import type { ChatRaidInfo } from './UserNotices/ChatRaidInfo';
-import type { ChatRewardGiftInfo } from './UserNotices/ChatRewardGiftInfo';
-import type { ChatRitualInfo } from './UserNotices/ChatRitualInfo';
-import type { ChatStandardPayForwardInfo } from './UserNotices/ChatStandardPayForwardInfo';
+import { TwitchPrivateMessage } from './commands/TwitchPrivateMessage';
+import type { ChatBitsBadgeUpgradeInfo } from './userNotices/ChatBitsBadgeUpgradeInfo';
+import type { ChatCommunityPayForwardInfo } from './userNotices/ChatCommunityPayForwardInfo';
+import type { ChatCommunitySubInfo } from './userNotices/ChatCommunitySubInfo';
+import type { ChatPrimeCommunityGiftInfo } from './userNotices/ChatPrimeCommunityGiftInfo';
+import type { ChatRaidInfo } from './userNotices/ChatRaidInfo';
+import type { ChatRewardGiftInfo } from './userNotices/ChatRewardGiftInfo';
+import type { ChatRitualInfo } from './userNotices/ChatRitualInfo';
+import type { ChatStandardPayForwardInfo } from './userNotices/ChatStandardPayForwardInfo';
 import type {
 	ChatSubExtendInfo,
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
 	ChatSubInfo,
 	ChatSubUpgradeInfo
-} from './UserNotices/ChatSubInfo';
+} from './userNotices/ChatSubInfo';
+import { toChannelName, toUserName } from './utils/userUtil';
 
 const GENERIC_CHANNEL = 'twjs';
 

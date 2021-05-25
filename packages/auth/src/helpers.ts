@@ -1,8 +1,8 @@
 import type { Logger } from '@d-fischer/logger';
 import { callTwitchApi, HttpStatusCodeError } from '@twurple/api-call';
 import type { AccessToken } from './AccessToken';
-import type { AuthProvider } from './AuthProvider/AuthProvider';
-import { InvalidTokenError } from './Errors/InvalidTokenError';
+import { InvalidTokenError } from './errors/InvalidTokenError';
+import type { AuthProvider } from './providers/AuthProvider';
 import type { TokenInfoData } from './TokenInfo';
 import { TokenInfo } from './TokenInfo';
 

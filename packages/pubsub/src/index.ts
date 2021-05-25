@@ -22,13 +22,13 @@ export type {
 	PubSubUnlistenPacket
 } from './PubSubPacket';
 
-export type { PubSubMessage } from './Messages/PubSubMessage';
-export { PubSubBitsMessage } from './Messages/PubSubBitsMessage';
-export { PubSubBitsBadgeUnlockMessage } from './Messages/PubSubBitsBadgeUnlockMessage';
-export { PubSubChatModActionMessage } from './Messages/PubSubChatModActionMessage';
-export { PubSubCustomMessage } from './Messages/PubSubCustomMessage';
-export { PubSubRedemptionMessage } from './Messages/PubSubRedemptionMessage';
-export { PubSubSubscriptionMessage } from './Messages/PubSubSubscriptionMessage';
-export { PubSubWhisperMessage } from './Messages/PubSubWhisperMessage';
+export type { PubSubMessage } from './messages/PubSubMessage';
+export { PubSubBitsMessage } from './messages/PubSubBitsMessage';
+export { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
+export { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
+export { PubSubCustomMessage } from './messages/PubSubCustomMessage';
+export { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
+export { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
+export { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
 
 export { LogLevel } from '@d-fischer/logger';

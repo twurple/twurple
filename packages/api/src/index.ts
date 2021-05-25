@@ -1,202 +1,202 @@
 export { ApiClient } from './ApiClient';
 export type { ApiConfig } from './ApiClient';
 
-export type { BaseApi } from './API/BaseApi';
+export type { BaseApi } from './api/BaseApi';
 
-export { BadgesApi } from './API/Badges/BadgesApi';
-export { ChatBadgeList } from './API/Badges/ChatBadgeList';
-export { ChatBadgeSet } from './API/Badges/ChatBadgeSet';
-export { ChatBadgeVersion } from './API/Badges/ChatBadgeVersion';
-export type { ChatBadgeScale } from './API/Badges/ChatBadgeVersion';
+export { BadgesApi } from './api/badges/BadgesApi';
+export { ChatBadgeList } from './api/badges/ChatBadgeList';
+export { ChatBadgeSet } from './api/badges/ChatBadgeSet';
+export { ChatBadgeVersion } from './api/badges/ChatBadgeVersion';
+export type { ChatBadgeScale } from './api/badges/ChatBadgeVersion';
 
-export { HelixApiGroup } from './API/Helix/HelixApiGroup';
-export type { HelixEventData } from './API/Helix/HelixEvent';
-export { HelixPaginatedRequest } from './API/Helix/HelixPaginatedRequest';
-export { HelixPaginatedRequestWithTotal } from './API/Helix/HelixPaginatedRequestWithTotal';
-export type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './API/Helix/HelixPaginatedResult';
-export type { HelixForwardPagination, HelixPagination } from './API/Helix/HelixPagination';
-export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './API/Helix/HelixResponse';
+export { HelixApiGroup } from './api/helix/HelixApiGroup';
+export type { HelixEventData } from './api/helix/HelixEvent';
+export { HelixPaginatedRequest } from './api/helix/HelixPaginatedRequest';
+export { HelixPaginatedRequestWithTotal } from './api/helix/HelixPaginatedRequestWithTotal';
+export type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './api/helix/HelixPaginatedResult';
+export type { HelixForwardPagination, HelixPagination } from './api/helix/HelixPagination';
+export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './api/helix/HelixResponse';
 
-export { HelixBitsApi } from './API/Helix/Bits/HelixBitsApi';
-export type { HelixBitsLeaderboardPeriod, HelixBitsLeaderboardQuery } from './API/Helix/Bits/HelixBitsApi';
-export { HelixBitsLeaderboard } from './API/Helix/Bits/HelixBitsLeaderboard';
-export { HelixBitsLeaderboardEntry } from './API/Helix/Bits/HelixBitsLeaderboardEntry';
-export { HelixCheermoteList } from './API/Helix/Bits/HelixCheermoteList';
+export { HelixBitsApi } from './api/helix/bits/HelixBitsApi';
+export type { HelixBitsLeaderboardPeriod, HelixBitsLeaderboardQuery } from './api/helix/bits/HelixBitsApi';
+export { HelixBitsLeaderboard } from './api/helix/bits/HelixBitsLeaderboard';
+export { HelixBitsLeaderboardEntry } from './api/helix/bits/HelixBitsLeaderboardEntry';
+export { HelixCheermoteList } from './api/helix/bits/HelixCheermoteList';
 
-export { HelixChannelApi } from './API/Helix/Channel/HelixChannelApi';
-export type { HelixChannelUpdate } from './API/Helix/Channel/HelixChannelApi';
-export { HelixChannel } from './API/Helix/Channel/HelixChannel';
-export { HelixChannelEditor } from './API/Helix/Channel/HelixChannelEditor';
+export { HelixChannelApi } from './api/helix/channel/HelixChannelApi';
+export type { HelixChannelUpdate } from './api/helix/channel/HelixChannelApi';
+export { HelixChannel } from './api/helix/channel/HelixChannel';
+export { HelixChannelEditor } from './api/helix/channel/HelixChannelEditor';
 
-export { HelixChannelPointsApi } from './API/Helix/ChannelPoints/HelixChannelPointsApi';
+export { HelixChannelPointsApi } from './api/helix/channelPoints/HelixChannelPointsApi';
 export type {
 	HelixCreateCustomRewardData,
 	HelixUpdateCustomRewardData,
 	HelixCustomRewardRedemptionFilter,
 	HelixPaginatedCustomRewardRedemptionFilter
-} from './API/Helix/ChannelPoints/HelixChannelPointsApi';
-export { HelixCustomReward } from './API/Helix/ChannelPoints/HelixCustomReward';
-export { HelixCustomRewardRedemption } from './API/Helix/ChannelPoints/HelixCustomRewardRedemption';
+} from './api/helix/channelPoints/HelixChannelPointsApi';
+export { HelixCustomReward } from './api/helix/channelPoints/HelixCustomReward';
+export { HelixCustomRewardRedemption } from './api/helix/channelPoints/HelixCustomRewardRedemption';
 export type {
 	HelixCustomRewardRedemptionStatus,
 	HelixCustomRewardRedemptionTargetStatus
-} from './API/Helix/ChannelPoints/HelixCustomRewardRedemption';
+} from './api/helix/channelPoints/HelixCustomRewardRedemption';
 
-export { HelixClipApi } from './API/Helix/Clip/HelixClipApi';
-export type { HelixClipCreateParams, HelixClipFilter } from './API/Helix/Clip/HelixClipApi';
-export { HelixClip } from './API/Helix/Clip/HelixClip';
+export { HelixClipApi } from './api/helix/clip/HelixClipApi';
+export type { HelixClipCreateParams, HelixClipFilter } from './api/helix/clip/HelixClipApi';
+export { HelixClip } from './api/helix/clip/HelixClip';
 
-export { HelixEventSubApi } from './API/Helix/EventSub/HelixEventSubApi';
+export { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
 export type {
 	HelixEventSubTransportOptions,
 	HelixEventSubWebHookTransportOptions
-} from './API/Helix/EventSub/HelixEventSubApi';
+} from './api/helix/eventSub/HelixEventSubApi';
 
-export { HelixEventSubSubscription } from './API/Helix/EventSub/HelixEventSubSubscription';
+export { HelixEventSubSubscription } from './api/helix/eventSub/HelixEventSubSubscription';
 export type {
 	HelixEventSubSubscriptionData,
 	HelixEventSubSubscriptionStatus,
 	HelixEventSubTransportData
-} from './API/Helix/EventSub/HelixEventSubSubscription';
+} from './api/helix/eventSub/HelixEventSubSubscription';
 
-export { HelixExtensionsApi } from './API/Helix/Extensions/HelixExtensionsApi';
+export { HelixExtensionsApi } from './api/helix/extensions/HelixExtensionsApi';
 export type {
 	HelixExtensionTransactionsFilter,
 	HelixExtensionTransactionsPaginatedFilter
-} from './API/Helix/Extensions/HelixExtensionsApi';
-export { HelixExtensionTransaction } from './API/Helix/Extensions/HelixExtensionTransaction';
-export type { HelixExtensionTransactionData } from './API/Helix/Extensions/HelixExtensionTransaction';
+} from './api/helix/extensions/HelixExtensionsApi';
+export { HelixExtensionTransaction } from './api/helix/extensions/HelixExtensionTransaction';
+export type { HelixExtensionTransactionData } from './api/helix/extensions/HelixExtensionTransaction';
 
-export { HelixGameApi } from './API/Helix/Game/HelixGameApi';
-export { HelixGame } from './API/Helix/Game/HelixGame';
+export { HelixGameApi } from './api/helix/game/HelixGameApi';
+export { HelixGame } from './api/helix/game/HelixGame';
 
-export { HelixHypeTrainApi } from './API/Helix/HypeTrain/HelixHypeTrainApi';
-export { HelixHypeTrainContribution } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
-export type { HelixHypeTrainContributionType } from './API/Helix/HypeTrain/HelixHypeTrainContribution';
-export { HelixHypeTrainEvent } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
-export type { HelixHypeTrainEventData, HelixHypeTrainEventType } from './API/Helix/HypeTrain/HelixHypeTrainEvent';
+export { HelixHypeTrainApi } from './api/helix/hypeTrain/HelixHypeTrainApi';
+export { HelixHypeTrainContribution } from './api/helix/hypeTrain/HelixHypeTrainContribution';
+export type { HelixHypeTrainContributionType } from './api/helix/hypeTrain/HelixHypeTrainContribution';
+export { HelixHypeTrainEvent } from './api/helix/hypeTrain/HelixHypeTrainEvent';
+export type { HelixHypeTrainEventData, HelixHypeTrainEventType } from './api/helix/hypeTrain/HelixHypeTrainEvent';
 
-export { HelixModerationApi } from './API/Helix/Moderation/HelixModerationApi';
-export type { HelixBanFilter, HelixModeratorFilter } from './API/Helix/Moderation/HelixModerationApi';
-export { HelixBan } from './API/Helix/Moderation/HelixBan';
-export { HelixBanEvent } from './API/Helix/Moderation/HelixBanEvent';
-export type { HelixBanEventData, HelixBanEventType } from './API/Helix/Moderation/HelixBanEvent';
-export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
-export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
-export type { HelixModeratorEventData, HelixModeratorEventType } from './API/Helix/Moderation/HelixModeratorEvent';
+export { HelixModerationApi } from './api/helix/moderation/HelixModerationApi';
+export type { HelixBanFilter, HelixModeratorFilter } from './api/helix/moderation/HelixModerationApi';
+export { HelixBan } from './api/helix/moderation/HelixBan';
+export { HelixBanEvent } from './api/helix/moderation/HelixBanEvent';
+export type { HelixBanEventData, HelixBanEventType } from './api/helix/moderation/HelixBanEvent';
+export { HelixModerator } from './api/helix/moderation/HelixModerator';
+export { HelixModeratorEvent } from './api/helix/moderation/HelixModeratorEvent';
+export type { HelixModeratorEventData, HelixModeratorEventType } from './api/helix/moderation/HelixModeratorEvent';
 
-export { HelixUserRelation } from './API/Helix/Relations/HelixUserRelation';
+export { HelixUserRelation } from './api/helix/relations/HelixUserRelation';
 
-export { HelixSearchApi } from './API/Helix/Search/HelixSearchApi';
-export type { HelixChannelSearchFilter, HelixPaginatedChannelSearchFilter } from './API/Helix/Search/HelixSearchApi';
-export { HelixChannelSearchResult } from './API/Helix/Search/HelixChannelSearchResult';
+export { HelixSearchApi } from './api/helix/search/HelixSearchApi';
+export type { HelixChannelSearchFilter, HelixPaginatedChannelSearchFilter } from './api/helix/search/HelixSearchApi';
+export { HelixChannelSearchResult } from './api/helix/search/HelixChannelSearchResult';
 
-export { HelixStreamApi } from './API/Helix/Stream/HelixStreamApi';
-export type { HelixPaginatedStreamFilter, HelixStreamFilter } from './API/Helix/Stream/HelixStreamApi';
-export { HelixStream } from './API/Helix/Stream/HelixStream';
-export type { HelixStreamData, HelixStreamType } from './API/Helix/Stream/HelixStream';
-export { HelixStreamMarker } from './API/Helix/Stream/HelixStreamMarker';
-export { HelixStreamMarkerWithVideo } from './API/Helix/Stream/HelixStreamMarkerWithVideo';
+export { HelixStreamApi } from './api/helix/stream/HelixStreamApi';
+export type { HelixPaginatedStreamFilter, HelixStreamFilter } from './api/helix/stream/HelixStreamApi';
+export { HelixStream } from './api/helix/stream/HelixStream';
+export type { HelixStreamData, HelixStreamType } from './api/helix/stream/HelixStream';
+export { HelixStreamMarker } from './api/helix/stream/HelixStreamMarker';
+export { HelixStreamMarkerWithVideo } from './api/helix/stream/HelixStreamMarkerWithVideo';
 
-export { HelixSubscriptionApi } from './API/Helix/Subscriptions/HelixSubscriptionApi';
-export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
-export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+export { HelixSubscriptionApi } from './api/helix/subscriptions/HelixSubscriptionApi';
+export { HelixSubscription } from './api/helix/subscriptions/HelixSubscription';
+export { HelixSubscriptionEvent } from './api/helix/subscriptions/HelixSubscriptionEvent';
 export type {
 	HelixSubscriptionEventData,
 	HelixSubscriptionEventType
-} from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+} from './api/helix/subscriptions/HelixSubscriptionEvent';
 
-export { HelixTagApi } from './API/Helix/Tag/HelixTagApi';
-export { HelixTag } from './API/Helix/Tag/HelixTag';
+export { HelixTagApi } from './api/helix/tag/HelixTagApi';
+export { HelixTag } from './api/helix/tag/HelixTag';
 
-export { HelixTeamApi } from './API/Helix/Team/HelixTeamApi';
-export { HelixTeam } from './API/Helix/Team/HelixTeam';
-export { HelixTeamWithUsers } from './API/Helix/Team/HelixTeamWithUsers';
+export { HelixTeamApi } from './api/helix/team/HelixTeamApi';
+export { HelixTeam } from './api/helix/team/HelixTeam';
+export { HelixTeamWithUsers } from './api/helix/team/HelixTeamWithUsers';
 
-export { HelixUserApi } from './API/Helix/User/HelixUserApi';
-export type { HelixFollowFilter, HelixUserBlockAdditionalInfo, HelixUserUpdate } from './API/Helix/User/HelixUserApi';
-export { HelixUserBlock } from './API/Helix/User/HelixUserBlock';
-export { HelixFollow } from './API/Helix/User/HelixFollow';
-export type { HelixFollowData } from './API/Helix/User/HelixFollow';
-export { HelixPrivilegedUser } from './API/Helix/User/HelixPrivilegedUser';
-export { HelixUser } from './API/Helix/User/HelixUser';
-export type { HelixBroadcasterType, HelixUserData } from './API/Helix/User/HelixUser';
+export { HelixUserApi } from './api/helix/user/HelixUserApi';
+export type { HelixFollowFilter, HelixUserBlockAdditionalInfo, HelixUserUpdate } from './api/helix/user/HelixUserApi';
+export { HelixUserBlock } from './api/helix/user/HelixUserBlock';
+export { HelixFollow } from './api/helix/user/HelixFollow';
+export type { HelixFollowData } from './api/helix/user/HelixFollow';
+export { HelixPrivilegedUser } from './api/helix/user/HelixPrivilegedUser';
+export { HelixUser } from './api/helix/user/HelixUser';
+export type { HelixBroadcasterType, HelixUserData } from './api/helix/user/HelixUser';
 
-export { HelixExtension } from './API/Helix/User/Extensions/HelixExtension';
-export { HelixInstalledExtension } from './API/Helix/User/Extensions/HelixInstalledExtension';
-export type { HelixExtensionSlotType } from './API/Helix/User/Extensions/HelixInstalledExtension';
-export { HelixInstalledExtensionList } from './API/Helix/User/Extensions/HelixInstalledExtensionList';
-export { HelixUserExtension } from './API/Helix/User/Extensions/HelixUserExtension';
+export { HelixExtension } from './api/helix/user/Extensions/HelixExtension';
+export { HelixInstalledExtension } from './api/helix/user/Extensions/HelixInstalledExtension';
+export type { HelixExtensionSlotType } from './api/helix/user/Extensions/HelixInstalledExtension';
+export { HelixInstalledExtensionList } from './api/helix/user/Extensions/HelixInstalledExtensionList';
+export { HelixUserExtension } from './api/helix/user/Extensions/HelixUserExtension';
 export type {
 	HelixUserExtensionUpdatePayload,
 	HelixUserExtensionUpdatePayloadSlot,
 	HelixUserExtensionUpdatePayloadActiveSlot,
 	HelixUserExtensionUpdatePayloadInactiveSlot
-} from './API/Helix/User/Extensions/HelixUserExtensionUpdatePayload';
+} from './api/helix/user/Extensions/HelixUserExtensionUpdatePayload';
 
-export { HelixVideoApi } from './API/Helix/Video/HelixVideoApi';
-export type { HelixPaginatedVideoFilter, HelixVideoFilter } from './API/Helix/Video/HelixVideoApi';
-export { HelixVideo } from './API/Helix/Video/HelixVideo';
-export type { HelixVideoType } from './API/Helix/Video/HelixVideo';
+export { HelixVideoApi } from './api/helix/video/HelixVideoApi';
+export type { HelixPaginatedVideoFilter, HelixVideoFilter } from './api/helix/video/HelixVideoApi';
+export { HelixVideo } from './api/helix/video/HelixVideo';
+export type { HelixVideoType } from './api/helix/video/HelixVideo';
 
-export { HelixWebHooksApi } from './API/Helix/WebHooks/HelixWebHooksApi';
+export { HelixWebHooksApi } from './api/helix/webHooks/HelixWebHooksApi';
 export type {
 	HelixWebHookHubRequest,
 	HelixWebHookHubRequestOptions,
 	HubMode
-} from './API/Helix/WebHooks/HelixWebHooksApi';
-export { HelixWebHookSubscription } from './API/Helix/WebHooks/HelixWebHookSubscription';
+} from './api/helix/webHooks/HelixWebHooksApi';
+export { HelixWebHookSubscription } from './api/helix/webHooks/HelixWebHookSubscription';
 
-export { KrakenApiGroup } from './API/Kraken/KrakenApiGroup';
+export { KrakenApiGroup } from './api/kraken/KrakenApiGroup';
 
-export { Subscription } from './API/Kraken/Subscription';
+export { Subscription } from './api/kraken/Subscription';
 
-export { BitsApi } from './API/Kraken/Bits/BitsApi';
-export { CheermoteList } from './API/Kraken/Bits/CheermoteList';
+export { BitsApi } from './api/kraken/bits/BitsApi';
+export { CheermoteList } from './api/kraken/bits/CheermoteList';
 
-export { ChannelApi } from './API/Kraken/Channel/ChannelApi';
-export type { ChannelUpdateData } from './API/Kraken/Channel/ChannelApi';
-export { Channel } from './API/Kraken/Channel/Channel';
-export { ChannelFollow } from './API/Kraken/Channel/ChannelFollow';
-export { ChannelPlaceholder } from './API/Kraken/Channel/ChannelPlaceholder';
-export { ChannelSubscription } from './API/Kraken/Channel/ChannelSubscription';
-export { EmoteSetList } from './API/Kraken/Channel/EmoteSetList';
-export { PrivilegedChannel } from './API/Kraken/Channel/PrivilegedChannel';
+export { ChannelApi } from './api/kraken/channel/ChannelApi';
+export type { ChannelUpdateData } from './api/kraken/channel/ChannelApi';
+export { Channel } from './api/kraken/channel/Channel';
+export { ChannelFollow } from './api/kraken/channel/ChannelFollow';
+export { ChannelPlaceholder } from './api/kraken/channel/ChannelPlaceholder';
+export { ChannelSubscription } from './api/kraken/channel/ChannelSubscription';
+export { EmoteSetList } from './api/kraken/channel/EmoteSetList';
+export { PrivilegedChannel } from './api/kraken/channel/PrivilegedChannel';
 
-export { ChatApi } from './API/Kraken/Chat/ChatApi';
-export { ChatEmoteList } from './API/Kraken/Chat/ChatEmoteList';
+export { ChatApi } from './api/kraken/chat/ChatApi';
+export { ChatEmoteList } from './api/kraken/chat/ChatEmoteList';
 
-export { SearchApi } from './API/Kraken/Search/SearchApi';
+export { SearchApi } from './api/kraken/search/SearchApi';
 
-export { StreamApi } from './API/Kraken/Stream/StreamApi';
-export { Stream } from './API/Kraken/Stream/Stream';
-export type { StreamPreviewSize, StreamType } from './API/Kraken/Stream/Stream';
+export { StreamApi } from './api/kraken/stream/StreamApi';
+export { Stream } from './api/kraken/stream/Stream';
+export type { StreamPreviewSize, StreamType } from './api/kraken/stream/Stream';
 
-export { TeamApi } from './API/Kraken/Team/TeamApi';
-export { Team } from './API/Kraken/Team/Team';
-export { TeamWithUsers } from './API/Kraken/Team/TeamWithUsers';
+export { TeamApi } from './api/kraken/team/TeamApi';
+export { Team } from './api/kraken/team/Team';
+export { TeamWithUsers } from './api/kraken/team/TeamWithUsers';
 
-export { UserApi } from './API/Kraken/User/UserApi';
-export { PrivilegedUser } from './API/Kraken/User/PrivilegedUser';
-export { User } from './API/Kraken/User/User';
-export { UserBlock } from './API/Kraken/User/UserBlock';
-export { UserChatInfo } from './API/Kraken/User/UserChatInfo';
-export { UserFollow } from './API/Kraken/User/UserFollow';
-export { UserSubscription } from './API/Kraken/User/UserSubscription';
+export { UserApi } from './api/kraken/user/UserApi';
+export { PrivilegedUser } from './api/kraken/user/PrivilegedUser';
+export { User } from './api/kraken/user/User';
+export { UserBlock } from './api/kraken/user/UserBlock';
+export { UserChatInfo } from './api/kraken/user/UserChatInfo';
+export { UserFollow } from './api/kraken/user/UserFollow';
+export { UserSubscription } from './api/kraken/user/UserSubscription';
 
-export { VideoApi } from './API/Kraken/Video/VideoApi';
+export { VideoApi } from './api/kraken/video/VideoApi';
 export type {
 	VideoCreateData,
 	VideoSearchPeriod,
 	VideoSort,
 	VideoType,
 	VideoUpdateData
-} from './API/Kraken/Video/VideoApi';
-export { CreatedVideo } from './API/Kraken/Video/CreatedVideo';
-export { Video } from './API/Kraken/Video/Video';
+} from './api/kraken/video/VideoApi';
+export { CreatedVideo } from './api/kraken/video/CreatedVideo';
+export { Video } from './api/kraken/video/Video';
 
-export { UnsupportedApi } from './API/Unsupported/UnsupportedApi';
-export { ChattersList } from './API/Unsupported/ChattersList';
+export { UnsupportedApi } from './api/unsupported/UnsupportedApi';
+export { ChattersList } from './api/unsupported/ChattersList';
 
 export { ConfigError } from './Errors/ConfigError';
 export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';

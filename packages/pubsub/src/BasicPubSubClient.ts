@@ -10,7 +10,7 @@ import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from '@twurple/auth';
 import { getValidTokenFromProvider } from '@twurple/auth';
 import { HellFreezesOverError, rtfm } from '@twurple/common';
-import type { PubSubMessageData } from './Messages/PubSubMessage';
+import type { PubSubMessageData } from './messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
 
 /** @private */

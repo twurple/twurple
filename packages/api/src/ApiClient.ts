@@ -7,11 +7,11 @@ import type { AuthProvider, TokenInfoData } from '@twurple/auth';
 import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
 
-import { BadgesApi } from './API/Badges/BadgesApi';
-import { HelixApiGroup } from './API/Helix/HelixApiGroup';
-import { HelixRateLimiter } from './API/Helix/HelixRateLimiter';
-import { KrakenApiGroup } from './API/Kraken/KrakenApiGroup';
-import { UnsupportedApi } from './API/Unsupported/UnsupportedApi';
+import { BadgesApi } from './api/badges/BadgesApi';
+import { HelixApiGroup } from './api/helix/HelixApiGroup';
+import { HelixRateLimiter } from './api/helix/HelixRateLimiter';
+import { KrakenApiGroup } from './api/kraken/KrakenApiGroup';
+import { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 
 import { ConfigError } from './Errors/ConfigError';
 

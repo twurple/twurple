@@ -16,18 +16,18 @@ import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import type { Request, RequestHandler, Response } from 'httpanda';
 import { Server } from 'httpanda';
-import type { ConnectionAdapter } from './Adapters/ConnectionAdapter';
+import type { ConnectionAdapter } from './adapters/ConnectionAdapter';
 import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
-import { BanEventSubscription } from './Subscriptions/BanEventSubscription';
-import { ExtensionTransactionSubscription } from './Subscriptions/ExtensionTransactionSubscription';
-import { FollowsFromUserSubscription } from './Subscriptions/FollowsFromUserSubscription';
-import { FollowsToUserSubscription } from './Subscriptions/FollowsToUserSubscription';
-import { HypeTrainEventSubscription } from './Subscriptions/HypeTrainEventSubscription';
-import { ModeratorEventSubscription } from './Subscriptions/ModeratorEventSubscription';
-import { StreamChangeSubscription } from './Subscriptions/StreamChangeSubscription';
-import type { Subscription, SubscriptionResultType } from './Subscriptions/Subscription';
-import { SubscriptionEventSubscription } from './Subscriptions/SubscriptionEventSubscription';
-import { UserChangeSubscription } from './Subscriptions/UserChangeSubscription';
+import { BanEventSubscription } from './subscriptions/BanEventSubscription';
+import { ExtensionTransactionSubscription } from './subscriptions/ExtensionTransactionSubscription';
+import { FollowsFromUserSubscription } from './subscriptions/FollowsFromUserSubscription';
+import { FollowsToUserSubscription } from './subscriptions/FollowsToUserSubscription';
+import { HypeTrainEventSubscription } from './subscriptions/HypeTrainEventSubscription';
+import { ModeratorEventSubscription } from './subscriptions/ModeratorEventSubscription';
+import { StreamChangeSubscription } from './subscriptions/StreamChangeSubscription';
+import type { Subscription, SubscriptionResultType } from './subscriptions/Subscription';
+import { SubscriptionEventSubscription } from './subscriptions/SubscriptionEventSubscription';
+import { UserChangeSubscription } from './subscriptions/UserChangeSubscription';
 
 /**
  * Certificate data used to make the listener server SSL capable.
