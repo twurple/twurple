@@ -92,6 +92,9 @@ export class HelixSubscriptionApi extends BaseApi {
 	/**
 	 * Retrieves the subscription data for a given user to a given broadcaster.
 	 *
+	 * This checks with the authorization of a broadcaster.
+	 * If you only have the authorization of a user, check {@HelixSubscriptionApi#checkUserSubscription}.
+	 *
 	 * @param broadcaster The broadcaster to check.
 	 * @param user The user to check.
 	 */
@@ -147,6 +150,9 @@ export class HelixSubscriptionApi extends BaseApi {
 
 	/**
 	 * Checks if a given user is subscribed to a given broadcaster. Returns null if not subscribed.
+	 *
+	 * This checks with the authorization of a user.
+	 * If you only have the authorization of a broadcaster, check {@HelixSubscriptionApi#getSubscriptionForUser}.
 	 *
 	 * @param user The broadcaster to check the user's subscription for.
 	 * @param broadcaster The user to check.
