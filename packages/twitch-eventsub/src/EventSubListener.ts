@@ -21,6 +21,7 @@ import type { EventSubChannelFollowEvent } from './Events/EventSubChannelFollowE
 import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChannelHypeTrainBeginEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './Events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './Events/EventSubChannelHypeTrainProgressEvent';
+import type { EventSubChannelModeratorEvent } from './Events/EventSubChannelModeratorEvent';
 import type { EventSubChannelRaidEvent } from './Events/EventSubChannelRaidEvent';
 import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
@@ -38,6 +39,8 @@ import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChann
 import { EventSubChannelHypeTrainBeginSubscription } from './Subscriptions/EventSubChannelHypeTrainBeginSubscription';
 import { EventSubChannelHypeTrainEndSubscription } from './Subscriptions/EventSubChannelHypeTrainEndSubscription';
 import { EventSubChannelHypeTrainProgressSubscription } from './Subscriptions/EventSubChannelHypeTrainProgressSubscription';
+import { EventSubChannelModeratorAddSubscription } from './Subscriptions/EventSubChannelModeratorAddSubscription';
+import { EventSubChannelModeratorRemoveSubscription } from './Subscriptions/EventSubChannelModeratorRemoveSubscription';
 import { EventSubChannelRaidSubscription } from './Subscriptions/EventSubChannelRaidSubscription';
 import { EventSubChannelRedemptionAddSubscription } from './Subscriptions/EventSubChannelRedemptionAddSubscription';
 import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/EventSubChannelRedemptionUpdateSubscription';
@@ -420,6 +423,46 @@ Listening on port ${adapterListenerPort} instead.`);
 			);
 		}
 		return this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user getting moderator permissions in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users get moderator permissions in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelModeratorAddEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelModeratorEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelModeratorAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelModeratorAddSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user losing moderator permissions in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users lose moderator permissions in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelModeratorRemoveEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelModeratorEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelModeratorRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelModeratorRemoveSubscription, handler, this, userId);
 	}
 
 	/**

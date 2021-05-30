@@ -280,6 +280,42 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a moderator being added to a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen for moderator add events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelModeratorAddEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.moderator.add',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a moderator being removed from a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen for moderator remove events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelModeratorRemoveEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.moderator.remove',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a broadcaster raiding another broadcaster.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to outgoing raid events for.
