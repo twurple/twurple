@@ -1,6 +1,7 @@
 import { TwitchApiCallType } from 'twitch-api-call';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
+import { HttpStatusCodeError } from '../../../../../twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -10,6 +11,8 @@ import type { HelixSubscriptionData } from './HelixSubscription';
 import { HelixSubscription } from './HelixSubscription';
 import type { HelixSubscriptionEventData } from './HelixSubscriptionEvent';
 import { HelixSubscriptionEvent } from './HelixSubscriptionEvent';
+import type { HelixUserSubscriptionData } from './HelixUserSubscription';
+import { HelixUserSubscription } from './HelixUserSubscription';
 
 /**
  * The Helix API methods that deal with subscriptions.
@@ -140,6 +143,37 @@ export class HelixSubscriptionApi extends BaseApi {
 	async getSubscriptionEventById(id: string): Promise<HelixSubscriptionEvent | null> {
 		const events = await this._getSubscriptionEvents('id', id);
 		return events.data[0] ?? null;
+	}
+
+	/**
+	 * Checks if a given user is subscribed to a given broadcaster. Returns null if not subscribed.
+	 *
+	 * @param user The broadcaster to check the user's subscription for.
+	 * @param broadcaster The user to check.
+	 */
+	async checkUserSubscription(
+		user: UserIdResolvable,
+		broadcaster: UserIdResolvable
+	): Promise<HelixUserSubscription | null> {
+		try {
+			const result = await this._client.callApi<HelixResponse<HelixUserSubscriptionData>>({
+				type: TwitchApiCallType.Helix,
+				url: 'subscriptions/user',
+				scope: 'user:read:subscriptions',
+				query: {
+					broadcaster_id: extractUserId(broadcaster),
+					user_id: extractUserId(user)
+				}
+			});
+
+			return new HelixUserSubscription(result.data[0], this._client);
+		} catch (e) {
+			if (e instanceof HttpStatusCodeError && e.statusCode === 404) {
+				return null;
+			}
+
+			throw e;
+		}
 	}
 
 	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string) {

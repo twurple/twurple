@@ -1,19 +1,14 @@
-import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
-import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
+import type { HelixUserSubscriptionData } from './HelixUserSubscription';
+import { HelixUserSubscription } from './HelixUserSubscription';
 
 /** @private */
-export interface HelixSubscriptionData {
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
+export interface HelixSubscriptionData extends HelixUserSubscriptionData {
 	gifter_id: string;
 	gifter_login: string;
 	gifter_name: string;
-	is_gift: boolean;
 	plan_name: string;
-	tier: string;
 	user_id: string;
 	user_login: string;
 	user_name: string;
@@ -22,45 +17,12 @@ export interface HelixSubscriptionData {
 
 /**
  * A (paid) subscription of a user to a broadcaster.
+ *
+ * @inheritDoc
  */
 @rtfm<HelixSubscription>('twitch', 'HelixSubscription', 'userId')
-export class HelixSubscription {
-	@Enumerable(false) private readonly _data: HelixSubscriptionData;
-	@Enumerable(false) private readonly _client: ApiClient;
-
-	/** @private */
-	constructor(data: HelixSubscriptionData, client: ApiClient) {
-		this._data = data;
-		this._client = client;
-	}
-
-	/**
-	 * The user ID of the broadcaster.
-	 */
-	get broadcasterId(): string {
-		return this._data.broadcaster_id;
-	}
-
-	/**
-	 * The name of the broadcaster.
-	 */
-	get broadcasterName(): string {
-		return this._data.broadcaster_login;
-	}
-
-	/**
-	 * The display name of the broadcaster.
-	 */
-	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_name;
-	}
-
-	/**
-	 * Retrieves more information about the broadcaster.
-	 */
-	async getBroadcaster(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.broadcaster_id);
-	}
+export class HelixSubscription extends HelixUserSubscription {
+	/** @private */ protected declare readonly _data: HelixSubscriptionData;
 
 	/**
 	 * The user ID of the gifter.
@@ -88,20 +50,6 @@ export class HelixSubscription {
 	 */
 	async getGifter(): Promise<HelixUser | null> {
 		return this._client.helix.users.getUserById(this._data.gifter_id);
-	}
-
-	/**
-	 * Whether the subscription has been gifted by another user.
-	 */
-	get isGift(): boolean {
-		return this._data.is_gift;
-	}
-
-	/**
-	 * The tier of the subscription.
-	 */
-	get tier(): string {
-		return this._data.tier;
 	}
 
 	/**
