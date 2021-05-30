@@ -33,11 +33,11 @@ which also includes a complete reference of all classes and interfaces, as well 
 
 The mentioned `@twurple/auth` package only provides authentication functionality. All the other things are located in separate packages:
 
-- [@twurple/api](https://twurple.github.io/api) - make calls to the Kraken and Helix APIs
-- [@twurple/chat](https://twurple.github.io/chat) - connect to and interact with Twitch Chat
-- [@twurple/pubsub](https://twurple.github.io/pubsub) - listen to events using the Twitch PubSub interface
-- [@twurple/webhooks](https://twurple.github.io/webhooks) - listen to events using WebHooks
-- [@twurple/eventsub](https://twurple.github.io/eventsub) - listen to events using EventSub
+- [@twurple/api](https://npmjs.com/package/@twurple/api) - make calls to the Kraken and Helix APIs
+- [@twurple/chat](https://npmjs.com/package/@twurple/chat) - connect to and interact with Twitch Chat
+- [@twurple/pubsub](https://npmjs.com/package/@twurple/pubsub) - listen to events using the Twitch PubSub interface
+- [@twurple/webhooks](https://npmjs.com/package/@twurple/webhooks) - listen to events using WebHooks
+- [@twurple/eventsub](https://npmjs.com/package/@twurple/eventsub) - listen to events using EventSub
 
 ## If you're getting stuck...
 

@@ -27,7 +27,7 @@
     "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/eventsub-ngrok"
   },
-  "homepage": "https://twurple.github.io/eventsub",
+  "homepage": "https://twurple.github.io",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",

@@ -30,7 +30,7 @@
     "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/auth-tmi"
   },
-  "homepage": "https://twurple.github.io/auth-tmi",
+  "homepage": "https://twurple.github.io",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",

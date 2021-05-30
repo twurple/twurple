@@ -26,7 +26,7 @@
     "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/webhooks"
   },
-  "homepage": "https://twurple.github.io/webhooks",
+  "homepage": "https://twurple.github.io",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",

@@ -19,7 +19,7 @@ or using npm:
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://twurple.github.io/webhooks/docs/special-hosting/ngrok.html)
+A good place to start with this library is the [documentation](https://twurple.github.io/docs/webhooks/special-hosting/ngrok.html)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## If you're getting stuck...
