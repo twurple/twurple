@@ -7,6 +7,21 @@ import type { HelixUser } from '../User/HelixUser';
 export type HelixVideoViewableStatus = 'public' | 'private';
 export type HelixVideoType = 'upload' | 'archive' | 'highlight';
 
+/**
+ * Data about a muted segment in a video.
+ */
+export interface HelixVideoMutedSegmentData {
+	/**
+	 * The start of the muted segment, in seconds from the start.
+	 */
+	offset: number;
+
+	/**
+	 * The duration of the muted segment, in seconds.
+	 */
+	duration: number;
+}
+
 /** @private */
 export interface HelixVideoData {
 	id: string;
@@ -24,6 +39,8 @@ export interface HelixVideoData {
 	language: string;
 	type: HelixVideoType;
 	duration: string;
+	stream_id: string | null;
+	muted_segments: HelixVideoMutedSegmentData[];
 }
 
 /**
@@ -173,5 +190,53 @@ export class HelixVideo {
 				return parseInt(num, 10) * { h: 3600, m: 60, s: 1 }[unit as 'h' | 'm' | 's'];
 			})
 			.reduce((a, b) => a + b);
+	}
+
+	/**
+	 * The ID of the stream this video belongs to.
+	 *
+	 * Returns null if the video is not an archived stream.
+	 */
+	get streamId(): string | null {
+		return this._data.stream_id;
+	}
+
+	/**
+	 * The raw data of muted segments of the video.
+	 */
+	get mutedSegmentData(): HelixVideoMutedSegmentData[] {
+		return this._data.muted_segments.slice();
+	}
+
+	/**
+	 * Checks whether the video is muted at a given offset or range.
+	 *
+	 * @param offset The start of your range, in seconds from the start of the video,
+	 * or if no duration is given, the exact offset that is checked.
+	 * @param duration The duration of your range, in seconds.
+	 * @param partial Whether the range check is only partial.
+	 *
+	 * By default, this function returns true only if the passed range is entirely contained in a muted segment.
+	 */
+	isMutedAt(offset: number, duration?: number, partial = false): boolean {
+		if (duration == null) {
+			return this._data.muted_segments.some(seg => seg.offset <= offset && offset <= seg.offset + seg.duration);
+		}
+
+		const end = offset + duration;
+
+		if (partial) {
+			return this._data.muted_segments.some(seg => {
+				const segEnd = seg.offset + seg.duration;
+
+				return offset < segEnd && seg.offset < end;
+			});
+		}
+
+		return this._data.muted_segments.some(seg => {
+			const segEnd = seg.offset + seg.duration;
+
+			return seg.offset <= offset && end <= segEnd;
+		});
 	}
 }

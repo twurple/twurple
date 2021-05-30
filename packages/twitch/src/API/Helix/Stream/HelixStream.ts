@@ -43,6 +43,7 @@ export interface HelixStreamData {
 	language: string;
 	thumbnail_url: string;
 	tag_ids: string[] | null;
+	is_mature: boolean;
 }
 
 /**
@@ -179,5 +180,12 @@ export class HelixStream {
 	 */
 	async getTags(): Promise<HelixTag[]> {
 		return this._client.helix.tags.getStreamTagsByIds(this._data.tag_ids ?? []);
+	}
+
+	/**
+	 * Whether the stream is set to be targeted to mature audiences only.
+	 */
+	get isMature(): boolean {
+		return this._data.is_mature;
 	}
 }

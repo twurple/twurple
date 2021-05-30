@@ -12,6 +12,7 @@ export interface HelixChannelSearchResultData {
 	broadcaster_login: string;
 	display_name: string;
 	game_id: string;
+	game_name: string;
 	is_live: boolean;
 	tag_ids: string[];
 	thumbnail_url: string;
@@ -73,6 +74,13 @@ export class HelixChannelSearchResult {
 	 */
 	get gameId(): string {
 		return this._data.game_id;
+	}
+
+	/**
+	 * The name of the game currently played on the channel.
+	 */
+	get gameName(): string {
+		return this._data.game_name;
 	}
 
 	/**
