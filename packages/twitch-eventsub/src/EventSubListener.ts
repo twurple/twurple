@@ -66,7 +66,7 @@ export interface EventSubListenerCertificateConfig {
 	key: string;
 
 	/**
-	 * Your SSL certificate.
+	 * Your full SSL certificate chain, including all intermediate certificates.
 	 */
 	cert: string;
 }
