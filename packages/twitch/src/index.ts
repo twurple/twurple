@@ -76,6 +76,17 @@ export { HelixModerator } from './API/Helix/Moderation/HelixModerator';
 export { HelixModeratorEvent } from './API/Helix/Moderation/HelixModeratorEvent';
 export type { HelixModeratorEventData } from './API/Helix/Moderation/HelixModeratorEvent';
 
+export type { HelixCreatePollData } from './API/Helix/Poll/HelixPollApi';
+export { HelixPoll } from './API/Helix/Poll/HelixPoll';
+export { HelixPollChoice } from './API/Helix/Poll/HelixPollChoice';
+
+export type { HelixCreatePredictionData } from './API/Helix/Prediction/HelixPredictionApi';
+export { HelixPrediction } from './API/Helix/Prediction/HelixPrediction';
+export type { HelixPredictionStatus } from './API/Helix/Prediction/HelixPrediction';
+export { HelixPredictionOutcome } from './API/Helix/Prediction/HelixPredictionOutcome';
+export type { HelixPredictionOutcomeColor } from './API/Helix/Prediction/HelixPredictionOutcome';
+export { HelixPredictor } from './API/Helix/Prediction/HelixPredictor';
+
 export { HelixUserRelation } from './API/Helix/Relations/HelixUserRelation';
 
 export { HelixChannelSearchResult } from './API/Helix/Search/HelixChannelSearchResult';

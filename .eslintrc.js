@@ -75,6 +75,10 @@ const memberNames = [
 	'^global_cooldown$',
 	'^can_activate$',
 	'^source_context$',
+	'^(?:channel_points|bits)_(?:votes|voting_enabled|per_vote)$',
+	'^prediction_window$',
+	'^channel_points(?:_used|_won)?$',
+	'^top_predictors$',
 	// HTTP
 	'^Accept$'
 ];
