@@ -1,6 +1,6 @@
 import { TwitchApiCallType } from 'twitch-api-call';
 import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId } from 'twitch-common';
+import { extractUserId, rtfm } from 'twitch-common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -44,6 +44,7 @@ export interface HelixCreatePollData {
 /**
  * The Helix API methods that deal with polls.
  */
+@rtfm('twitch', 'HelixPollApi')
 export class HelixPollApi extends BaseApi {
 	/**
 	 * Retrieves a list of polls for the given broadcaster.

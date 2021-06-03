@@ -1,6 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../User/HelixUser';
+import { rtfm } from 'twitch-common';
 
 /** @private */
 export interface HelixPredictorData {
@@ -14,6 +15,7 @@ export interface HelixPredictorData {
 /**
  * A user that took part in a prediction.
  */
+@rtfm<HelixPredictor>('twitch', 'HelixPredictor', 'userId')
 export class HelixPredictor {
 	@Enumerable(false) private readonly _data: HelixPredictorData;
 	@Enumerable(false) private readonly _client: ApiClient;
