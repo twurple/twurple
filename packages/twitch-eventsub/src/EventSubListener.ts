@@ -55,6 +55,12 @@ import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStream
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './Subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './Subscriptions/EventSubUserUpdateSubscription';
+import type { EventSubChannelPollBeginEvent } from './Events/EventSubChannelPollBeginEvent';
+import { EventSubChannelPollBeginSubscription } from './Subscriptions/EventSubChannelPollBeginSubscription';
+import type { EventSubChannelPollProgressEvent } from './Events/EventSubChannelPollProgressEvent';
+import { EventSubChannelPollProgressSubscription } from './Subscriptions/EventSubChannelPollProgressSubscription';
+import type { EventSubChannelPollEndEvent } from './Events/EventSubChannelPollEndEvent';
+import { EventSubChannelPollEndSubscription } from './Subscriptions/EventSubChannelPollEndSubscription';
 
 /**
  * Certificate data used to make the listener server SSL capable.
@@ -691,6 +697,66 @@ Listening on port ${adapterListenerPort} instead.`);
 			);
 		}
 		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId, rewardId);
+	}
+
+	/**
+	 * Subscribes to events that represent a poll starting in a channel.
+	 *
+	 * @param user The broadcaster for which to receive poll begin events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelPollBeginEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelPollBeginEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = extractUserId(user);
+
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelPollBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelPollBeginSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that represent a poll being voted on in a channel.
+	 *
+	 * @param user The broadcaster for which to receive poll progress events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelPollProgressEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelPollProgressEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = extractUserId(user);
+
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelPollProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelPollProgressSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that represent a poll ending in a channel.
+	 *
+	 * @param user The broadcaster for which to receive poll end events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelPollEndEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelPollEndEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = extractUserId(user);
+
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelPollEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelPollEndSubscription, handler, this, broadcasterId);
 	}
 
 	/**

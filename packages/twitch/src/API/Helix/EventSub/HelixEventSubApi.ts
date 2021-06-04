@@ -373,7 +373,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a Channel Points reward being updated in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to reward update events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelRewardUpdateEvents(
 		broadcaster: UserIdResolvable,
@@ -430,7 +430,7 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster you want to listen to reward remove events for.
 	 * @param rewardId The ID of the reward you want to listen to remove events for.
-	 * @param transport The transport events.
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelRewardRemoveEventsForReward(
 		broadcaster: UserIdResolvable,
@@ -517,6 +517,132 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward_redemption.update',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a poll starting in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to poll begin events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPollBeginEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.poll.begin',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a poll being voted on in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to poll progress events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPollProgressEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.poll.progress',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a poll ending in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to poll end events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPollEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.poll.end',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a prediction being voted on in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction preogress events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionProgressEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.progress',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a prediction being locked in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction lock events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionLockEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.lock',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a prediction ending in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction end events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.end',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a prediction starting in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction begin events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionBeginEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.begin',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
 			transport
 		);
 	}
