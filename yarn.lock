@@ -37,10 +37,10 @@
   dependencies:
     regenerator-runtime "^0.13.4"
 
-"@d-fischer/cache-decorators@^2.1.1":
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/@d-fischer/cache-decorators/-/cache-decorators-2.1.3.tgz#989c5efd89eb9581b9e7638b71deec4e62174903"
-  integrity sha512-MlM8ipg5Exkc0Ok//sG83smBW4mLRL+/ZngfxYQ8IgxBjfpM3m2M+Y2X+a9St3EyJfYoVKHR8RWdICsU+W3gSA==
+"@d-fischer/cache-decorators@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/cache-decorators/-/cache-decorators-3.0.0.tgz#6456c3f8c74c4dd22d80faa7985d4efff6d2ff77"
+  integrity sha512-mYUCjrp5hJgimceC5bof3zzmElyxzW4ty+73IjY12wvxLAqsq0CbgLGspnJm6KgwEfGoeRnISZD4EXJidG3FvA==
   dependencies:
     "@d-fischer/shared-utils" "^3.0.1"
     "@types/node" "^14.14.22"

@@ -32,7 +32,7 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/cache-decorators": "^2.1.1",
+    "@d-fischer/cache-decorators": "^3.0.0",
     "@d-fischer/deprecate": "^2.0.2",
     "@d-fischer/logger": "^3.1.0",
     "@d-fischer/rate-limiter": "^0.4.2",
