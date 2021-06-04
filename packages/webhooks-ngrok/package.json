@@ -1,6 +1,6 @@
 {
   "name": "@twurple/webhooks-ngrok",
-  "version": "5.0.0-pre.7",
+  "version": "5.0.0-pre.8",
   "publishConfig": {
     "access": "public"
   },
@@ -38,8 +38,8 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/api": "^5.0.0-pre.7",
-    "@twurple/webhooks": "^5.0.0-pre.7"
+    "@twurple/api": "^5.0.0-pre.8",
+    "@twurple/webhooks": "^5.0.0-pre.8"
   },
   "peerDependencies": {
     "@twurple/api": "^5.0.0",
