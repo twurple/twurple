@@ -22,6 +22,13 @@ import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChanne
 import type { EventSubChannelHypeTrainEndEvent } from './Events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './Events/EventSubChannelHypeTrainProgressEvent';
 import type { EventSubChannelModeratorEvent } from './Events/EventSubChannelModeratorEvent';
+import type { EventSubChannelPollBeginEvent } from './Events/EventSubChannelPollBeginEvent';
+import type { EventSubChannelPollEndEvent } from './Events/EventSubChannelPollEndEvent';
+import type { EventSubChannelPollProgressEvent } from './Events/EventSubChannelPollProgressEvent';
+import type { EventSubChannelPredictionBeginEvent } from './Events/EventSubChannelPredictionBeginEvent';
+import type { EventSubChannelPredictionEndEvent } from './Events/EventSubChannelPredictionEndEvent';
+import type { EventSubChannelPredictionLockEvent } from './Events/EventSubChannelPredictionLockEvent';
+import type { EventSubChannelPredictionProgressEvent } from './Events/EventSubChannelPredictionProgressEvent';
 import type { EventSubChannelRaidEvent } from './Events/EventSubChannelRaidEvent';
 import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
@@ -41,6 +48,13 @@ import { EventSubChannelHypeTrainEndSubscription } from './Subscriptions/EventSu
 import { EventSubChannelHypeTrainProgressSubscription } from './Subscriptions/EventSubChannelHypeTrainProgressSubscription';
 import { EventSubChannelModeratorAddSubscription } from './Subscriptions/EventSubChannelModeratorAddSubscription';
 import { EventSubChannelModeratorRemoveSubscription } from './Subscriptions/EventSubChannelModeratorRemoveSubscription';
+import { EventSubChannelPollBeginSubscription } from './Subscriptions/EventSubChannelPollBeginSubscription';
+import { EventSubChannelPollEndSubscription } from './Subscriptions/EventSubChannelPollEndSubscription';
+import { EventSubChannelPollProgressSubscription } from './Subscriptions/EventSubChannelPollProgressSubscription';
+import { EventSubChannelPredictionBeginSubscription } from './Subscriptions/EventSubChannelPredictionBeginSubscription';
+import { EventSubChannelPredictionEndSubscription } from './Subscriptions/EventSubChannelPredictionEndSubscription';
+import { EventSubChannelPredictionLockSubscription } from './Subscriptions/EventSubChannelPredictionLockSubscription';
+import { EventSubChannelPredictionProgressSubscription } from './Subscriptions/EventSubChannelPredictionProgressSubscription';
 import { EventSubChannelRaidSubscription } from './Subscriptions/EventSubChannelRaidSubscription';
 import { EventSubChannelRedemptionAddSubscription } from './Subscriptions/EventSubChannelRedemptionAddSubscription';
 import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/EventSubChannelRedemptionUpdateSubscription';
@@ -55,12 +69,6 @@ import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStream
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './Subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './Subscriptions/EventSubUserUpdateSubscription';
-import type { EventSubChannelPollBeginEvent } from './Events/EventSubChannelPollBeginEvent';
-import { EventSubChannelPollBeginSubscription } from './Subscriptions/EventSubChannelPollBeginSubscription';
-import type { EventSubChannelPollProgressEvent } from './Events/EventSubChannelPollProgressEvent';
-import { EventSubChannelPollProgressSubscription } from './Subscriptions/EventSubChannelPollProgressSubscription';
-import type { EventSubChannelPollEndEvent } from './Events/EventSubChannelPollEndEvent';
-import { EventSubChannelPollEndSubscription } from './Subscriptions/EventSubChannelPollEndSubscription';
 
 /**
  * Certificate data used to make the listener server SSL capable.
@@ -757,6 +765,86 @@ Listening on port ${adapterListenerPort} instead.`);
 			);
 		}
 		return this._genericSubscribe(EventSubChannelPollEndSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that represent a prediction starting in a channel.
+	 *
+	 * @param user The broadcaster for which to receive prediction begin events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelPredictionBeginEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelPredictionBeginEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = extractUserId(user);
+
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelPredictionBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelPredictionBeginSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that represent a prediction being voted on in a channel.
+	 *
+	 * @param user The broadcaster for which to receive prediction progress events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelPredictionProgressEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelPredictionProgressEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = extractUserId(user);
+
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelPredictionProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelPredictionProgressSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that represent a prediction being locked in a channel.
+	 *
+	 * @param user The broadcaster for which to receive prediction lock events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelPredictionLockEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelPredictionLockEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = extractUserId(user);
+
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelPredictionLockEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelPredictionLockSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that represent a prediction ending in a channel.
+	 *
+	 * @param user The broadcaster for which to receive prediction end events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelPredictionEndEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelPredictionEndEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = extractUserId(user);
+
+		if (!numberRegex.test(broadcasterId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelPredictionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelPredictionEndSubscription, handler, this, broadcasterId);
 	}
 
 	/**
