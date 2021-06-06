@@ -576,6 +576,24 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a prediction starting in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction begin events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionBeginEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.begin',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a prediction being voted on in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to prediction preogress events for.
@@ -623,24 +641,6 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return this.createSubscription(
 			'channel.prediction.end',
-			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
-		);
-	}
-
-	/**
-	 * Subscribe to events that represent a prediction starting in a channel.
-	 *
-	 * @param broadcaster The broadcaster you want to listen to prediction begin events for.
-	 * @param transport The transport options.
-	 */
-	async subscribeToChannelPredictionBeginEvents(
-		broadcaster: UserIdResolvable,
-		transport: HelixEventSubTransportOptions
-	): Promise<HelixEventSubSubscription> {
-		return this.createSubscription(
-			'channel.prediction.begin',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
 			transport
