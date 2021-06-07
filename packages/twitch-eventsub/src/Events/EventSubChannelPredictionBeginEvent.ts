@@ -2,6 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { EventSubChannelPredictionBeginOutcomeData } from './Common/EventSubChannelPredictionBeginOutcome';
+import { EventSubChannelPredictionBeginOutcome } from './Common/EventSubChannelPredictionBeginOutcome';
 
 /** @private */
 export interface EventSubChannelPredictionBeginEventData {
@@ -73,8 +74,8 @@ export class EventSubChannelPredictionBeginEvent {
 	/**
 	 * The possible outcomes of the prediction.
 	 */
-	get outcomes(): EventSubChannelPredictionBeginOutcomeData[] {
-		return this._data.outcomes;
+	get outcomes(): EventSubChannelPredictionBeginOutcome[] {
+		return this._data.outcomes.map(data => new EventSubChannelPredictionBeginOutcome(data));
 	}
 
 	/**

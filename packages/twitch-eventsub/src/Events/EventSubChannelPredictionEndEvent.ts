@@ -1,7 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
+import { HellFreezesOverError, rtfm } from 'twitch-common';
 import type { EventSubChannelPredictionOutcomeData } from './Common/EventSubChannelPredictionOutcome';
+import { EventSubChannelPredictionOutcome } from './Common/EventSubChannelPredictionOutcome';
 
 /** @private */
 export type EventSubChannelPredictionEndStatus = 'resolved' | 'canceled';
@@ -78,8 +79,8 @@ export class EventSubChannelPredictionEndEvent {
 	/**
 	 * The possible outcomes of the prediction.
 	 */
-	get outcomes(): EventSubChannelPredictionOutcomeData[] {
-		return this._data.outcomes;
+	get outcomes(): EventSubChannelPredictionOutcome[] {
+		return this._data.outcomes.map(data => new EventSubChannelPredictionOutcome(data, this._client));
 	}
 
 	/**
@@ -113,11 +114,15 @@ export class EventSubChannelPredictionEndEvent {
 	/**
 	 * The winning outcome, or null if the prediction was canceled.
 	 */
-	get winningOutcome(): EventSubChannelPredictionOutcomeData | null {
+	get winningOutcome(): EventSubChannelPredictionOutcome | null {
 		if (this._data.winning_outcome_id === null) {
 			return null;
 		}
 
-		return this._data.outcomes.find(o => o.id === this._data.winning_outcome_id) ?? null;
+		const found = this._data.outcomes.find(o => o.id === this._data.winning_outcome_id);
+		if (!found) {
+			throw new HellFreezesOverError('Winning outcome not found in outcomes array');
+		}
+		return new EventSubChannelPredictionOutcome(found, this._client);
 	}
 }

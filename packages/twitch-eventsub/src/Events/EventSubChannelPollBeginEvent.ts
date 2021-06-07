@@ -1,8 +1,9 @@
-import { rtfm } from 'twitch-common';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
-import type { EventSubChannelPollVoteTypeSettingsData } from './Common/EventSubChannelPollVoteTypeSettingsData';
+import { rtfm } from 'twitch-common';
 import type { EventSubChannelPollBeginChoiceData } from './Common/EventSubChannelPollBeginChoice';
+import { EventSubChannelPollBeginChoice } from './Common/EventSubChannelPollBeginChoice';
+import type { EventSubChannelPollVoteTypeSettingsData } from './Common/EventSubChannelPollVoteTypeSettingsData';
 
 /** @private */
 export interface EventSubChannelPollBeginEventData {
@@ -76,8 +77,8 @@ export class EventSubChannelPollBeginEvent {
 	/**
 	 * The choices of the poll.
 	 */
-	get choices(): EventSubChannelPollBeginChoiceData[] {
-		return this._data.choices;
+	get choices(): EventSubChannelPollBeginChoice[] {
+		return this._data.choices.map(data => new EventSubChannelPollBeginChoice(data));
 	}
 
 	/**
