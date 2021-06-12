@@ -4,9 +4,10 @@ import { extractUserId, rtfm } from 'twitch-common';
 import { HttpStatusCodeError } from '../../../../../twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
-import type { HelixPaginatedResult } from '../HelixPaginatedResult';
-import { createPaginatedResult } from '../HelixPaginatedResult';
-import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
+import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
+import type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import { createPaginatedResult, createPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
 import type { HelixSubscriptionData } from './HelixSubscription';
 import { HelixSubscription } from './HelixSubscription';
 import type { HelixSubscriptionEventData } from './HelixSubscriptionEvent';
@@ -32,8 +33,8 @@ export class HelixSubscriptionApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 */
-	async getSubscriptions(broadcaster: UserIdResolvable): Promise<HelixPaginatedResult<HelixSubscription>> {
-		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionData>>({
+	async getSubscriptions(broadcaster: UserIdResolvable): Promise<HelixPaginatedResultWithTotal<HelixSubscription>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
 			type: TwitchApiCallType.Helix,
@@ -42,7 +43,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResult(result, HelixSubscription, this._client);
+		return createPaginatedResultWithTotal(result, HelixSubscription, this._client);
 	}
 
 	/**
@@ -52,8 +53,8 @@ export class HelixSubscriptionApi extends BaseApi {
 	 */
 	getSubscriptionsPaginated(
 		broadcaster: UserIdResolvable
-	): HelixPaginatedRequest<HelixSubscriptionData, HelixSubscription> {
-		return new HelixPaginatedRequest(
+	): HelixPaginatedRequestWithTotal<HelixSubscriptionData, HelixSubscription> {
+		return new HelixPaginatedRequestWithTotal(
 			{
 				url: 'subscriptions',
 				scope: 'channel:read:subscriptions',
