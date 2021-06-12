@@ -5,6 +5,7 @@ import { BaseApi } from '../BaseApi';
 import { HelixBitsApi } from './Bits/HelixBitsApi';
 import { HelixChannelApi } from './Channel/HelixChannelApi';
 import { HelixChannelPointsApi } from './ChannelPoints/HelixChannelPointsApi';
+import { HelixChatApi } from './Chat/HelixChatApi';
 import { HelixClipApi } from './Clip/HelixClipApi';
 import { HelixEventSubApi } from './EventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from './Extensions/HelixExtensionsApi';
@@ -50,6 +51,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get channelPoints(): HelixChannelPointsApi {
 		return new HelixChannelPointsApi(this._client);
+	}
+
+	/**
+	 * The Helix chat API methods.
+	 */
+	@CachedGetter()
+	get chat(): HelixChatApi {
+		return new HelixChatApi(this._client);
 	}
 
 	/**
