@@ -5,8 +5,14 @@ import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import type { HelixPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponseWithTotal } from '../HelixResponse';
-import type { HelixEventSubSubscriptionData, HelixEventSubWebHookTransportData } from './HelixEventSubSubscription';
+import type {
+	HelixEventSubSubscriptionData,
+	HelixEventSubSubscriptionStatus,
+	HelixEventSubWebHookTransportData
+} from './HelixEventSubSubscription';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 
 /**
@@ -44,18 +50,25 @@ export class HelixEventSubApi extends BaseApi {
 	 * Retrieves the current WebHook subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param pagination
+	 *
+	 * @expandParams
 	 */
-	async getSubscriptions(): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
+	async getSubscriptions(
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
 			type: TwitchApiCallType.Helix,
-			url: 'eventsub/subscriptions'
+			url: 'eventsub/subscriptions',
+			query: makePaginationQuery(pagination)
 		});
 
 		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
 	}
 
 	/**
-	 * Retrieves the current WebHook subscriptions for the current client.
+	 * Creates a paginator for the current WebHook subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 */
@@ -66,6 +79,98 @@ export class HelixEventSubApi extends BaseApi {
 		return new HelixPaginatedRequestWithTotal(
 			{
 				url: 'eventsub/subscriptions'
+			},
+			this._client,
+			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
+		);
+	}
+
+	/**
+	 * Retrieves the current WebHook subscriptions with the given status for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param status The status of the subscriptions to retrieve.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getSubscriptionsForStatus(
+		status: HelixEventSubSubscriptionStatus,
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'eventsub/subscriptions',
+			query: {
+				...makePaginationQuery(pagination),
+				status
+			}
+		});
+
+		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+	}
+
+	/**
+	 * Creates a paginator for the current WebHook subscriptions with the given status for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param status The status of the subscriptions to retrieve.
+	 */
+	getSubscriptionsForStatusPaginated(
+		status: HelixEventSubSubscriptionStatus
+	): HelixPaginatedRequestWithTotal<HelixEventSubSubscriptionData, HelixEventSubSubscription> {
+		return new HelixPaginatedRequestWithTotal(
+			{
+				url: 'eventsub/subscriptions',
+				query: { status }
+			},
+			this._client,
+			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
+		);
+	}
+
+	/**
+	 * Retrieves the current WebHook subscriptions with the given type for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param type The type of the subscriptions to retrieve.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getSubscriptionsForType(
+		type: string,
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'eventsub/subscriptions',
+			query: {
+				...makePaginationQuery(pagination),
+				type
+			}
+		});
+
+		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+	}
+
+	/**
+	 * Creates a paginator for the current WebHook subscriptions with the given type for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param type The type of the subscriptions to retrieve.
+	 */
+	getSubscriptionsForTypePaginated(
+		type: string
+	): HelixPaginatedRequestWithTotal<HelixEventSubSubscriptionData, HelixEventSubSubscription> {
+		return new HelixPaginatedRequestWithTotal(
+			{
+				url: 'eventsub/subscriptions',
+				query: { type }
 			},
 			this._client,
 			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
