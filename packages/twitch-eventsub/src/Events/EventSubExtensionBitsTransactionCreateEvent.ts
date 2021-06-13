@@ -2,30 +2,56 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
-type EventSubChannelSubscriptionEventTier = '1000' | '2000' | '3000';
 /** @private */
-export interface EventSubChannelSubscriptionEventData {
+export interface EventSubExtensionBitsTransactionCreateEventProductData {
+	name: string;
+	sku: string;
+	bits: number;
+	in_development: boolean;
+}
+
+/** @private */
+export interface EventSubExtensionBitsTransactionCreateEventData {
+	id: string;
+	extension_client_id: string;
 	user_id: string;
 	user_login: string;
 	user_name: string;
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
-	tier: EventSubChannelSubscriptionEventTier;
-	is_gift: boolean;
+	product: EventSubExtensionBitsTransactionCreateEventProductData;
 }
 
 /**
  * An EventSub event representing a channel subscription.
  */
-@rtfm<EventSubChannelSubscriptionEvent>('twitch-eventsub', 'EventSubChannelSubscriptionEvent', 'userId')
-export class EventSubChannelSubscriptionEvent {
+@rtfm<EventSubExtensionBitsTransactionCreateEvent>(
+	'twitch-eventsub',
+	'EventSubExtensionBitsTransactionCreateEvent',
+	'id'
+)
+export class EventSubExtensionBitsTransactionCreateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubChannelSubscriptionEventData, client: ApiClient) {
+	constructor(private readonly _data: EventSubExtensionBitsTransactionCreateEventData, client: ApiClient) {
 		this._client = client;
+	}
+
+	/**
+	 * The ID of the transaction.
+	 */
+	get id(): string {
+		return this._data.id;
+	}
+
+	/**
+	 * The client ID of the extension.
+	 */
+	get clientId(): string {
+		return this._data.extension_client_id;
 	}
 
 	/**
@@ -85,16 +111,30 @@ export class EventSubChannelSubscriptionEvent {
 	}
 
 	/**
-	 * The tier of the subscription, either 1000, 2000 or 3000.
+	 * The name of the product the transaction is referring to.
 	 */
-	get tier(): EventSubChannelSubscriptionEventTier {
-		return this._data.tier;
+	get productName(): string {
+		return this._data.product.name;
 	}
 
 	/**
-	 * Whether the subscription has been gifted.
+	 * The SKU of the product the transaction is referring to.
 	 */
-	get isGift(): boolean {
-		return this._data.is_gift;
+	get productSku(): string {
+		return this._data.product.sku;
+	}
+
+	/**
+	 * The cost of the product the transaction is referring to, in Bits.
+	 */
+	get productCost(): number {
+		return this._data.product.bits;
+	}
+
+	/**
+	 * Whether the product the transaction is referring to is in development.
+	 */
+	get productInDevelopment(): boolean {
+		return this._data.product.in_development;
 	}
 }

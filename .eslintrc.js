@@ -82,6 +82,8 @@ const memberNames = [
 	'^content_classification$',
 	'^reason_code$',
 	'^resolver_login$',
+	'^cumulative_total$',
+	'^in_development$',
 	// HTTP
 	'^Accept$'
 ];

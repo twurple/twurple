@@ -33,9 +33,12 @@ import type { EventSubChannelRaidEvent } from './Events/EventSubChannelRaidEvent
 import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './Events/EventSubChannelRewardEvent';
+import type { EventSubChannelSubscriptionEndEvent } from './Events/EventSubChannelSubscriptionEndEvent';
 import type { EventSubChannelSubscriptionEvent } from './Events/EventSubChannelSubscriptionEvent';
+import type { EventSubChannelSubscriptionGiftEvent } from './Events/EventSubChannelSubscriptionGiftEvent';
 import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
 import type { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
+import type { EventSubExtensionBitsTransactionCreateEvent } from './Events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
 import type { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './Events/EventSubUserAuthorizationRevokeEvent';
@@ -61,9 +64,12 @@ import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/Eve
 import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
 import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSubChannelRewardRemoveSubscription';
 import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
+import { EventSubChannelSubscriptionEndSubscription } from './Subscriptions/EventSubChannelSubscriptionEndSubscription';
+import { EventSubChannelSubscriptionGiftSubscription } from './Subscriptions/EventSubChannelSubscriptionGiftSubscription';
 import { EventSubChannelSubscriptionSubscription } from './Subscriptions/EventSubChannelSubscriptionSubscription';
 import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
+import { EventSubExtensionBitsTransactionCreateSubscription } from './Subscriptions/EventSubExtensionBitsTransactionCreateSubscription';
 import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
 import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
@@ -373,10 +379,50 @@ Listening on port ${adapterListenerPort} instead.`);
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelSubscribeEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'EventSubListener#subscribeToChannelSubscriptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user gifting a subscription to a channel to someone else.
+	 *
+	 * @param user The user for which to get notifications for about subscriptions people gift in their channel.
+	 * @param handler  The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelSubscriptionGiftEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelSubscriptionGiftEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelSubscriptionGiftEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelSubscriptionGiftSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user's subscription to a channel ending.
+	 *
+	 * @param user The user for which to get notifications for about ending subscriptions.
+	 * @param handler  The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelSubscriptionEndEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelSubscriptionEndEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelSubscriptionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelSubscriptionEndSubscription, handler, this, userId);
 	}
 
 	/**
@@ -905,6 +951,19 @@ Listening on port ${adapterListenerPort} instead.`);
 			);
 		}
 		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a Bits transaction in an extension.
+	 *
+	 * @param clientId The Client ID of the extension for which to get notifications for about Bits transactions.
+	 * @param handler  The function that will be called for any new notifications.
+	 */
+	async subscribeToExtensionBitsTransactionCreateEvents(
+		clientId: string,
+		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void
+	): Promise<EventSubSubscription> {
+		return this._genericSubscribe(EventSubExtensionBitsTransactionCreateSubscription, handler, this, clientId);
 	}
 
 	/**

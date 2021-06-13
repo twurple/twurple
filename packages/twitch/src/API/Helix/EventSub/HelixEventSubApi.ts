@@ -331,6 +331,42 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a user gifting another user a subscription to a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to subscription gift events for.
+	 * @param transport The transport options
+	 */
+	async subscribeToChannelSubscriptionGiftEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.subscription.gift',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a user's subscription to a channel ending.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to subscription end events for.
+	 * @param transport The transport options
+	 */
+	async subscribeToChannelSubscriptionEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.subscription.end',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a user cheering bits to a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to cheer events for.
@@ -802,6 +838,24 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.hype_train.end',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a extension Bits transaction.
+	 *
+	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToExtensionBitsTransactionCreateEvents(
+		clientId: string,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'extension.bits_transaction.create',
+			'1',
+			{ extension_client_id: this._client.clientId },
 			transport
 		);
 	}
