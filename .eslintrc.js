@@ -35,7 +35,7 @@ const memberNames = [
 	'^community_ids$',
 	'^position_seconds$',
 	'^(default|profile)_image$',
-	'^background_color$',
+	'^(?:background|chat)_color$',
 	'^max_per_(user_per_)?stream(_setting)?$',
 	'^should_redemptions_skip_request_queue$',
 	'^global_cooldown_(seconds|setting)$',
@@ -79,6 +79,9 @@ const memberNames = [
 	'^prediction_window$',
 	'^channel_points(?:_used|_won)?$',
 	'^top_predictors$',
+	'^content_classification$',
+	'^reason_code$',
+	'^resolver_login$',
 	// HTTP
 	'^Accept$'
 ];

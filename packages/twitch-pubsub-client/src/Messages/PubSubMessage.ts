@@ -1,8 +1,13 @@
+import type { PubSubAutoModQueueMessage, PubSubAutoModQueueMessageData } from './PubSubAutoModQueueMessage';
 import type { PubSubBitsBadgeUnlockMessage, PubSubBitsBadgeUnlockMessageData } from './PubSubBitsBadgeUnlockMessage';
 import type { PubSubBitsMessage, PubSubBitsMessageData } from './PubSubBitsMessage';
 import type { PubSubChatModActionMessage, PubSubChatModActionMessageData } from './PubSubChatModActionMessage';
 import type { PubSubRedemptionMessage, PubSubRedemptionMessageData } from './PubSubRedemptionMessage';
 import type { PubSubSubscriptionMessage, PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage';
+import type {
+	PubSubUserModerationNotificationMessage,
+	PubSubUserModerationNotificationMessageData
+} from './PubSubUserModerationNotificationMessage';
 import type { PubSubWhisperMessage, PubSubWhisperMessageData } from './PubSubWhisperMessage';
 
 /** @private */
@@ -35,18 +40,22 @@ export interface PubSubChatMessage {
 
 /** @private */
 export type PubSubMessageData =
+	| PubSubAutoModQueueMessageData
 	| PubSubBitsMessageData
 	| PubSubBitsBadgeUnlockMessageData
 	| PubSubChatModActionMessageData
 	| PubSubRedemptionMessageData
 	| PubSubSubscriptionMessageData
+	| PubSubUserModerationNotificationMessageData
 	| PubSubWhisperMessageData;
 
 /** @private */
 export type PubSubMessage =
+	| PubSubAutoModQueueMessage
 	| PubSubBitsMessage
 	| PubSubBitsBadgeUnlockMessage
 	| PubSubChatModActionMessage
 	| PubSubRedemptionMessage
 	| PubSubSubscriptionMessage
+	| PubSubUserModerationNotificationMessage
 	| PubSubWhisperMessage;
