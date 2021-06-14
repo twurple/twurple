@@ -46,6 +46,15 @@ export type {
 	HelixCustomRewardRedemptionTargetStatus
 } from './API/Helix/ChannelPoints/HelixCustomRewardRedemption';
 
+export { HelixChatBadgeSet } from './API/Helix/Chat/HelixChatBadgeSet';
+export { HelixChatBadgeVersion } from './API/Helix/Chat/HelixChatBadgeVersion';
+export type { HelixChatBadgeScale } from './API/Helix/Chat/HelixChatBadgeVersion';
+export { HelixEmote } from './API/Helix/Chat/HelixEmote';
+export type { HelixEmoteImageScale } from './API/Helix/Chat/HelixEmote';
+export { HelixChannelEmote } from './API/Helix/Chat/HelixChannelEmote';
+export type { HelixChannelEmoteSubscriptionTier } from './API/Helix/Chat/HelixChannelEmote';
+export { HelixEmoteFromSet } from './API/Helix/Chat/HelixEmoteFromSet';
+
 export { HelixClip } from './API/Helix/Clip/HelixClip';
 
 export type {
@@ -99,6 +108,7 @@ export { HelixStreamMarkerWithVideo } from './API/Helix/Stream/HelixStreamMarker
 export { HelixSubscription } from './API/Helix/Subscriptions/HelixSubscription';
 export { HelixSubscriptionEvent } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
 export type { HelixSubscriptionEventData } from './API/Helix/Subscriptions/HelixSubscriptionEvent';
+export type { HelixUserSubscription } from './API/Helix/Subscriptions/HelixUserSubscription';
 
 export { HelixTag } from './API/Helix/Tag/HelixTag';
 
