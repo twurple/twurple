@@ -2,7 +2,11 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
-type EventSubChannelSubscriptionGiftEventTier = '1000' | '2000' | '3000';
+/**
+ * The tier of a gifted subscription. 1000 means tier 1, and so on.
+ */
+export type EventSubChannelSubscriptionGiftEventTier = '1000' | '2000' | '3000';
+
 /** @private */
 export interface EventSubChannelSubscriptionGiftEventData {
 	user_id: string;
