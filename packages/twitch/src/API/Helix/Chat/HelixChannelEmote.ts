@@ -42,9 +42,7 @@ export class HelixChannelEmote extends HelixEmote {
 	/**
 	 * The type of the emote.
 	 *
-	 * Known values are: `subscriptions`, `bitstier`, `follower`, `rewards`, `globals`, `smilies`, `prime`, `limitedtime`.
-	 *
-	 * This list may be non-exhaustive.
+	 * There are many types of emotes that Twitch seems to arbitrarily assign. Do not rely on this value.
 	 */
 	get type(): string {
 		return this._data.emote_type;
