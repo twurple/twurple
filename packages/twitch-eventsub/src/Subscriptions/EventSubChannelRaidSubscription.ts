@@ -2,7 +2,7 @@ import type { HelixEventSubSubscription } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { EventSubChannelRaidEventData } from '../Events/EventSubChannelRaidEvent';
 import { EventSubChannelRaidEvent } from '../Events/EventSubChannelRaidEvent';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
@@ -12,7 +12,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 export class EventSubChannelRaidSubscription extends EventSubSubscription<EventSubChannelRaidEvent> {
 	constructor(
 		handler: (data: EventSubChannelRaidEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _userId: string,
 		private readonly _direction: 'from' | 'to'
 	) {

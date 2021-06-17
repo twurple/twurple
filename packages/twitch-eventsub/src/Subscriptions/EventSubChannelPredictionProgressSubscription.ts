@@ -2,7 +2,7 @@ import type { HelixEventSubSubscription } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { EventSubChannelPredictionProgressEventData } from '../Events/EventSubChannelPredictionProgressEvent';
 import { EventSubChannelPredictionProgressEvent } from '../Events/EventSubChannelPredictionProgressEvent';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
@@ -12,7 +12,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 export class EventSubChannelPredictionProgressSubscription extends EventSubSubscription<EventSubChannelPredictionProgressEvent> {
 	constructor(
 		handler: (data: EventSubChannelPredictionProgressEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _userId: string
 	) {
 		super(handler, client);

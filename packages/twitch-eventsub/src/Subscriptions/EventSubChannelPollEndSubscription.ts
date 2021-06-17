@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from 'twitch';
 import { rtfm } from 'twitch-common';
-import type { EventSubListener } from '../EventSubListener';
-import { EventSubSubscription } from './EventSubSubscription';
 import type { EventSubChannelPollEndEventData } from '../Events/EventSubChannelPollEndEvent';
 import { EventSubChannelPollEndEvent } from '../Events/EventSubChannelPollEndEvent';
+import type { EventSubBase } from '../EventSubBase';
+import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
@@ -12,7 +12,7 @@ import { EventSubChannelPollEndEvent } from '../Events/EventSubChannelPollEndEve
 export class EventSubChannelPollEndSubscription extends EventSubSubscription<EventSubChannelPollEndEvent> {
 	constructor(
 		handler: (data: EventSubChannelPollEndEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _userId: string
 	) {
 		super(handler, client);

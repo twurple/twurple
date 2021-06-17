@@ -2,7 +2,7 @@ import type { HelixEventSubSubscription } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { EventSubExtensionBitsTransactionCreateEventData } from '../Events/EventSubExtensionBitsTransactionCreateEvent';
 import { EventSubExtensionBitsTransactionCreateEvent } from '../Events/EventSubExtensionBitsTransactionCreateEvent';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
@@ -12,7 +12,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 export class EventSubExtensionBitsTransactionCreateSubscription extends EventSubSubscription<EventSubExtensionBitsTransactionCreateEvent> {
 	constructor(
 		handler: (data: EventSubExtensionBitsTransactionCreateEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _clientId: string
 	) {
 		super(handler, client);

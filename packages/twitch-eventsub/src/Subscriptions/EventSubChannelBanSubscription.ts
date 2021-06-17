@@ -2,7 +2,7 @@ import type { HelixEventSubSubscription } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { EventSubChannelBanEventData } from '../Events/EventSubChannelBanEvent';
 import { EventSubChannelBanEvent } from '../Events/EventSubChannelBanEvent';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
@@ -12,7 +12,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 export class EventSubChannelBanSubscription extends EventSubSubscription<EventSubChannelBanEvent> {
 	constructor(
 		handler: (data: EventSubChannelBanEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _userId: string
 	) {
 		super(handler, client);

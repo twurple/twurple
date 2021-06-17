@@ -2,7 +2,7 @@ import type { HelixEventSubSubscription } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { EventSubChannelRedemptionAddEventData } from '../Events/EventSubChannelRedemptionAddEvent';
 import { EventSubChannelRedemptionAddEvent } from '../Events/EventSubChannelRedemptionAddEvent';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
@@ -12,7 +12,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 export class EventSubChannelRedemptionAddSubscription extends EventSubSubscription<EventSubChannelRedemptionAddEvent> {
 	constructor(
 		handler: (data: EventSubChannelRedemptionAddEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _userId: string,
 		private readonly _rewardId?: string
 	) {

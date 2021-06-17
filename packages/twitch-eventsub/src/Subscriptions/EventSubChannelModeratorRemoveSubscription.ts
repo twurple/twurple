@@ -2,7 +2,7 @@ import type { HelixEventSubSubscription } from 'twitch';
 import { rtfm } from 'twitch-common';
 import type { EventSubChannelModeratorEventData } from '../Events/EventSubChannelModeratorEvent';
 import { EventSubChannelModeratorEvent } from '../Events/EventSubChannelModeratorEvent';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
@@ -12,7 +12,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 export class EventSubChannelModeratorRemoveSubscription extends EventSubSubscription<EventSubChannelModeratorEvent> {
 	constructor(
 		handler: (data: EventSubChannelModeratorEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _userId: string
 	) {
 		super(handler, client);

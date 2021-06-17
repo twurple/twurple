@@ -1,7 +1,7 @@
 import * as crypto from 'crypto';
 import type { HelixEventSubSubscription, HelixEventSubTransportOptions } from 'twitch';
 import { rtfm } from 'twitch-common';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 
 /** @private */
 export type SubscriptionResultType<T extends EventSubSubscription> = T extends EventSubSubscription<infer O>
@@ -18,7 +18,7 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 	private _twitchSubscriptionData?: HelixEventSubSubscription;
 
 	/** @private */
-	protected constructor(protected _handler: (obj: T) => void, protected _client: EventSubListener) {}
+	protected constructor(protected _handler: (obj: T) => void, protected _client: EventSubBase) {}
 
 	/**
 	 * Whether the subscription has been verified by Twitch.
