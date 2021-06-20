@@ -2,6 +2,11 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
+/**
+ * The tier of a subscription. 1000 means tier 1, and so on.
+ */
+export type EventSubChannelSubscriptionEndEventTier = '1000' | '2000' | '3000';
+
 /** @private */
 export interface EventSubChannelSubscriptionEndEventData {
 	user_id: string;
@@ -10,6 +15,8 @@ export interface EventSubChannelSubscriptionEndEventData {
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
+	tier: EventSubChannelSubscriptionEndEventTier;
+	is_gift: boolean;
 }
 
 /**
@@ -79,5 +86,19 @@ export class EventSubChannelSubscriptionEndEvent {
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+	}
+
+	/**
+	 * The tier of the subscription, either 1000, 2000 or 3000.
+	 */
+	get tier(): EventSubChannelSubscriptionEndEventTier {
+		return this._data.tier;
+	}
+
+	/**
+	 * Whether the subscription has been gifted.
+	 */
+	get isGift(): boolean {
+		return this._data.is_gift;
 	}
 }
