@@ -63,7 +63,7 @@ const memberNames = [
 	'^tag_(ids|list)$',
 	'^cooldown_end_time$',
 	'^(last|top)_contributions?$',
-	'^(streak|cumulative)_months',
+	'^(streak|cumulative|duration)_months',
 	'^live_only$',
 	'^localization_(names|descriptions)',
 	'^allow_notifications$',

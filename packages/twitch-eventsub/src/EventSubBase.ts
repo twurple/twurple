@@ -32,6 +32,7 @@ import type { EventSubChannelRewardEvent } from './Events/EventSubChannelRewardE
 import type { EventSubChannelSubscriptionEndEvent } from './Events/EventSubChannelSubscriptionEndEvent';
 import type { EventSubChannelSubscriptionEvent } from './Events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelSubscriptionGiftEvent } from './Events/EventSubChannelSubscriptionGiftEvent';
+import type { EventSubChannelSubscriptionMessageEvent } from './Events/EventSubChannelSubscriptionMessageEvent';
 import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
 import type { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './Events/EventSubExtensionBitsTransactionCreateEvent';
@@ -63,6 +64,7 @@ import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSu
 import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
 import { EventSubChannelSubscriptionEndSubscription } from './Subscriptions/EventSubChannelSubscriptionEndSubscription';
 import { EventSubChannelSubscriptionGiftSubscription } from './Subscriptions/EventSubChannelSubscriptionGiftSubscription';
+import { EventSubChannelSubscriptionMessageSubscription } from './Subscriptions/EventSubChannelSubscriptionMessageSubscription';
 import { EventSubChannelSubscriptionSubscription } from './Subscriptions/EventSubChannelSubscriptionSubscription';
 import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
@@ -251,6 +253,26 @@ export abstract class EventSubBase {
 			);
 		}
 		return this._genericSubscribe(EventSubChannelSubscriptionGiftSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user's subscription to a channel being announced.
+	 *
+	 * @param user The user for which to get notifications for about announced subscriptions.
+	 * @param handler  The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelSubscriptionMessageEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelSubscriptionMessageEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelSubscriptionMessageEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return this._genericSubscribe(EventSubChannelSubscriptionMessageSubscription, handler, this, userId);
 	}
 
 	/**

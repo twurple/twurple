@@ -349,6 +349,24 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a user's subscription to a channel being announced.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to subscription message events for.
+	 * @param transport The transport options
+	 */
+	async subscribeToChannelSubscriptionMessageEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.subscription.message',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a user's subscription to a channel ending.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to subscription end events for.
