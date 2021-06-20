@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
+import type { ApiClient, HelixStream, HelixUser } from 'twitch';
 import { rtfm } from 'twitch-common';
 
 type EventSubStreamOnlineEventStreamType = 'live' | 'playlist' | 'watch_party' | 'premiere' | 'rerun';
@@ -54,6 +54,13 @@ export class EventSubStreamOnlineEvent {
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+	}
+
+	/**
+	 * Retrieves more information about the stream.
+	 */
+	async getStream(): Promise<HelixStream> {
+		return (await this._client.helix.streams.getStreamByUserId(this._data.broadcaster_user_id))!;
 	}
 
 	/**
