@@ -64,7 +64,7 @@ export class EventSubMiddleware extends EventSubBase {
 	 *
 	 * @param app The app the middleware should be applied to.
 	 */
-	async applyToApp(app: ConnectCompatibleApp): Promise<void> {
+	async apply(app: ConnectCompatibleApp): Promise<void> {
 		let pathPrefix = this._pathPrefix;
 		if (pathPrefix) {
 			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/, '')}`;
@@ -86,7 +86,7 @@ export class EventSubMiddleware extends EventSubBase {
 		}
 	}
 
-	async markAppAsReady(): Promise<void> {
+	async markAsReady(): Promise<void> {
 		this._readyToSubscribe = true;
 		await this._resumeExistingSubscriptions();
 	}
