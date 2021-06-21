@@ -84,7 +84,7 @@ export interface HelixPaginatedResultWithTotal<T> {
 ): HelixPaginatedResultWithTotal<ConstructedType<O>> {
 	return {
 		data: response.data.map(data => new type(data, client)),
-		cursor: response.pagination!.cursor,
+		cursor: response.pagination!.cursor!,
 		total: response.total
 	};
 }
