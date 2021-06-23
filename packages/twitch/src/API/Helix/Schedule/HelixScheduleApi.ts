@@ -45,6 +45,38 @@ export interface HelixPaginatedScheduleResult {
 }
 
 /**
+ * Vacation mode settings to update using {@HelixScheduleApi#updateScheduleSettings}.
+ */
+interface HelixScheduleSettingsUpdateVacation {
+	/**
+	 * The date when the vacation will start.
+	 */
+	startDate: string;
+
+	/**
+	 * The date when the vacation will end.
+	 */
+	endDate: string;
+
+	/**
+	 * The timezone for the given dates.
+	 */
+	timezone: string;
+}
+
+/**
+ * Schedule settings to update using {@HelixScheduleApi#updateScheduleSettings}.
+ */
+export interface HelixScheduleSettingsUpdate {
+	/**
+	 * Vacation mode settings.
+	 *
+	 * Note that not setting this (or setting it to undefined) does not change the vacation settings, but setting it to null disables vacation mode.
+	 */
+	vacation?: HelixScheduleSettingsUpdateVacation | null;
+}
+
+/**
  * The Helix API methods that deal with schedules.
  */
 export class HelixScheduleApi extends BaseApi {
@@ -121,5 +153,51 @@ export class HelixScheduleApi extends BaseApi {
 		const segments = await this.getScheduleSegmentsByIds(broadcaster, [id]);
 
 		return segments.length ? segments[0] : null;
+	}
+
+	/**
+	 * Retrieves the schedule for a given broadcaster in iCal format.
+	 *
+	 * @param broadcaster The broadcaster to get the schedule for.
+	 */
+	async getScheduleAsIcal(broadcaster: UserIdResolvable): Promise<string> {
+		return this._client.callApi<string>({
+			type: TwitchApiCallType.Helix,
+			url: 'schedule/icalendar',
+			query: {
+				broadcaster_id: extractUserId(broadcaster)
+			}
+		});
+	}
+
+	/**
+	 * Updates the schedule settings of a given broadcaster.
+	 *
+	 * @param broadcaster The broadcaster to update the schedule settings for.
+	 * @param settings
+	 *
+	 * @expandParams
+	 */
+	async updateScheduleSettings(broadcaster: UserIdResolvable, settings: HelixScheduleSettingsUpdate): Promise<void> {
+		const vacationUpdateQuery: Record<string, string> = settings.vacation
+			? {
+					is_vacation_enabled: 'true',
+					vacation_start_time: settings.vacation.startDate,
+					vacation_end_time: settings.vacation.endDate,
+					timezone: settings.vacation.timezone
+			  }
+			: {
+					is_vacation_enabled: 'false'
+			  };
+		await this._client.callApi({
+			type: TwitchApiCallType.Helix,
+			url: 'schedule/settings',
+			method: 'PATCH',
+			scope: 'channel:manage:schedule',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				...vacationUpdateQuery
+			}
+		});
 	}
 }
