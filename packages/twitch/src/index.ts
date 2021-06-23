@@ -98,6 +98,11 @@ export { HelixPredictor } from './API/Helix/Prediction/HelixPredictor';
 
 export { HelixUserRelation } from './API/Helix/Relations/HelixUserRelation';
 
+export type { HelixScheduleFilter, HelixPaginatedScheduleFilter } from './API/Helix/Schedule/HelixScheduleApi';
+export { HelixSchedule } from './API/Helix/Schedule/HelixSchedule';
+export { HelixScheduleSegment } from './API/Helix/Schedule/HelixScheduleSegment';
+export { HelixPaginatedScheduleSegmentRequest } from './API/Helix/Schedule/HelixPaginatedScheduleSegmentRequest';
+
 export { HelixChannelSearchResult } from './API/Helix/Search/HelixChannelSearchResult';
 
 export { HelixStream, HelixStreamType } from './API/Helix/Stream/HelixStream';
