@@ -43,7 +43,7 @@ export type {
 } from './api/helix/channelPoints/HelixCustomRewardRedemption';
 
 export { HelixClipApi } from './api/helix/clip/HelixClipApi';
-export type { HelixClipCreateParams, HelixClipFilter } from './api/helix/clip/HelixClipApi';
+export type { HelixClipCreateParams, HelixClipFilter, HelixPaginatedClipFilter } from './api/helix/clip/HelixClipApi';
 export { HelixClip } from './api/helix/clip/HelixClip';
 
 export { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
