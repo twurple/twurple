@@ -1,6 +1,8 @@
 /* eslint-disable filenames/match-exported */
 export { EventSubListener } from './EventSubListener';
 export type { EventSubListenerCertificateConfig } from './EventSubListener';
+export { EventSubMiddleware } from './EventSubMiddleware';
+export type { EventSubMiddlewareConfig } from './EventSubMiddleware';
 export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 export { ConnectionAdapter } from './Adapters/ConnectionAdapter';
 export { DirectConnectionAdapter } from './Adapters/DirectConnectionAdapter';
