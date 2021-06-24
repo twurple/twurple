@@ -81,12 +81,12 @@ export interface HelixScheduleSettingsUpdate {
  */
 export interface HelixCreateScheduleSegmentData {
 	/**
-	 * The date when the segment starts.
+	 * The date when the segment starts. Must be in UTC.
 	 */
 	startDate: string;
 
 	/**
-	 * The timezone the `startDate` is in.
+	 * The timezone the segment is created from.
 	 */
 	timezone: string;
 
@@ -116,14 +116,14 @@ export interface HelixCreateScheduleSegmentData {
  */
 export interface HelixUpdateScheduleSegmentData {
 	/**
-	 * The date when the segment starts.
+	 * The date when the segment starts. Must be in UTC.
 	 */
-	startDate: string;
+	startDate?: string;
 
 	/**
-	 * The timezone the `startDate` is in.
+	 * The timezone the segment is created from.
 	 */
-	timezone: string;
+	timezone?: string;
 
 	/**
 	 * The planned duration of the segment, in minutes. Defaults to 240 (4 hours).
