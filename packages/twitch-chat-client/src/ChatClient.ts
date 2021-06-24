@@ -1648,6 +1648,27 @@ export class ChatClient extends IrcClient {
 	}
 
 	/**
+	 * Starts a raid on a channel.
+	 *
+	 * @param channel The channel to start the raid in. Defaults to the channel of the connected user.
+	 * @param target The channel to raid.
+	 */
+	async raid(channel: string | undefined, target: string): Promise<void> {
+		target = toUserName(target);
+
+		return this.say(channel ?? this._credentials.nick, `/raid ${target}`);
+	}
+
+	/**
+	 * Ends a raid on a channel.
+	 *
+	 * @param channel The channel to end the raid in. Defaults to the channel of the connected user.
+	 */
+	async unraid(channel: string | undefined): Promise<void> {
+		return this.say(channel ?? this._credentials.nick, '/unraid');
+	}
+
+	/**
 	 * Bans a user from a channel.
 	 *
 	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
