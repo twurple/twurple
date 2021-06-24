@@ -77,6 +77,76 @@ export interface HelixScheduleSettingsUpdate {
 }
 
 /**
+ * The data required to create a schedule segment.
+ */
+export interface HelixCreateScheduleSegmentData {
+	/**
+	 * The date when the segment starts.
+	 */
+	startDate: string;
+
+	/**
+	 * The timezone the `startDate` is in.
+	 */
+	timezone: string;
+
+	/**
+	 * Whether the segment is recurring every week.
+	 */
+	isRecurring: boolean;
+
+	/**
+	 * The planned duration of the segment, in minutes. Defaults to 240 (4 hours).
+	 */
+	duration?: number;
+
+	/**
+	 * The ID of the category of the segment.
+	 */
+	categoryId?: string;
+
+	/**
+	 * The title of the segment.
+	 */
+	title?: string;
+}
+
+/**
+ * The data required to update a schedule segment.
+ */
+export interface HelixUpdateScheduleSegmentData {
+	/**
+	 * The date when the segment starts.
+	 */
+	startDate: string;
+
+	/**
+	 * The timezone the `startDate` is in.
+	 */
+	timezone: string;
+
+	/**
+	 * The planned duration of the segment, in minutes. Defaults to 240 (4 hours).
+	 */
+	duration?: number;
+
+	/**
+	 * The ID of the category of the segment.
+	 */
+	categoryId?: string;
+
+	/**
+	 * The title of the segment.
+	 */
+	title?: string;
+
+	/**
+	 * Whether the schedule broadcast is canceled.
+	 */
+	isCanceled?: boolean;
+}
+
+/**
  * The Helix API methods that deal with schedules.
  */
 export class HelixScheduleApi extends BaseApi {
@@ -197,6 +267,94 @@ export class HelixScheduleApi extends BaseApi {
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
 				...vacationUpdateQuery
+			}
+		});
+	}
+
+	/**
+	 * Creates a new segment in a given broadcaster's schedule.
+	 *
+	 * @param broadcaster The broadcaster to create a new schedule segment for.
+	 * @param data
+	 *
+	 * @expandParams
+	 */
+	async createScheduleSegment(
+		broadcaster: UserIdResolvable,
+		data: HelixCreateScheduleSegmentData
+	): Promise<HelixScheduleSegment> {
+		const result = await this._client.callApi<HelixScheduleResponse>({
+			type: TwitchApiCallType.Helix,
+			url: 'schedule/segment',
+			method: 'POST',
+			scope: 'channel:manage:schedule',
+			query: {
+				broadcaster_id: extractUserId(broadcaster)
+			},
+			jsonBody: {
+				start_time: data.startDate,
+				timezone: data.timezone,
+				is_recurring: data.isRecurring,
+				duration: data.duration,
+				category_id: data.categoryId,
+				title: data.title
+			}
+		});
+
+		return new HelixScheduleSegment(result.data.segments[0], this._client);
+	}
+
+	/**
+	 * Updates a segment in a given broadcaster's schedule.
+	 *
+	 * @param broadcaster The broadcaster to create a new schedule segment for.
+	 * @param segmentId The ID of the segment to update.
+	 * @param data
+	 *
+	 * @expandParams
+	 */
+	async updateScheduleSegment(
+		broadcaster: UserIdResolvable,
+		segmentId: string,
+		data: HelixUpdateScheduleSegmentData
+	): Promise<HelixScheduleSegment> {
+		const result = await this._client.callApi<HelixScheduleResponse>({
+			type: TwitchApiCallType.Helix,
+			url: 'schedule/segment',
+			method: 'PATCH',
+			scope: 'channel:manage:schedule',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				id: segmentId
+			},
+			jsonBody: {
+				start_time: data.startDate,
+				timezone: data.timezone,
+				is_canceled: data.isCanceled,
+				duration: data.duration,
+				category_id: data.categoryId,
+				title: data.title
+			}
+		});
+
+		return new HelixScheduleSegment(result.data.segments[0], this._client);
+	}
+
+	/**
+	 * Deletes a segment in a given broadcaster's schedule.
+	 *
+	 * @param broadcaster The broadcaster to create a new schedule segment for.
+	 * @param segmentId The ID of the segment to update.
+	 */
+	async deleteScheduleSegment(broadcaster: UserIdResolvable, segmentId: string): Promise<void> {
+		await this._client.callApi<HelixScheduleResponse>({
+			type: TwitchApiCallType.Helix,
+			url: 'schedule/segment',
+			method: 'DELETE',
+			scope: 'channel:manage:schedule',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				id: segmentId
 			}
 		});
 	}

@@ -25,7 +25,7 @@ const memberNames = [
 	'^click_action$',
 	'^(image_)?url_\\dx$',
 	'^emoticon_sets?$',
-	'^is_(anonymous|gift|user_input_required|sub_only|mature|enabled|paused|in_stock|previewable|playlist|(verified|known)_bot|live|auto|permanent|recurring|vacation_enabled)$',
+	'^is_(anonymous|gift|user_input_required|sub_only|mature|enabled|paused|in_stock|previewable|playlist|(verified|known)_bot|live|auto|permanent|recurring|vacation_enabled|canceled)$',
 	'^minimum_allowed_role$',
 	'^(chatter|view(er)?)_count$',
 	'^min_bits$',
