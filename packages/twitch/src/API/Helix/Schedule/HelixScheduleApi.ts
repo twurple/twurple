@@ -87,6 +87,8 @@ export interface HelixCreateScheduleSegmentData {
 
 	/**
 	 * The timezone the segment is created from.
+	 *
+	 * This is used for managing DST shifts only. The `startDate` must always be given in UTC.
 	 */
 	timezone: string;
 
@@ -122,6 +124,8 @@ export interface HelixUpdateScheduleSegmentData {
 
 	/**
 	 * The timezone the segment is created from.
+	 *
+	 * This is used for managing DST shifts only. The `startDate` must always be given in UTC.
 	 */
 	timezone?: string;
 
