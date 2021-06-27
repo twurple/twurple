@@ -27,7 +27,7 @@ export interface HelixEventSubWebHookTransportOptions extends HelixEventSubWebHo
 export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions;
 
 /**
- * The API methods that deal with WebHooks.
+ * The API methods that deal with EventSub.
  *
  * Can be accessed using `client.helix.eventSub` on an {@ApiClient} instance.
  *

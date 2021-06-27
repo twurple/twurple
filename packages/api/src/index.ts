@@ -171,14 +171,6 @@ export type { HelixPaginatedVideoFilter, HelixVideoFilter } from './api/helix/vi
 export { HelixVideo } from './api/helix/video/HelixVideo';
 export type { HelixVideoType } from './api/helix/video/HelixVideo';
 
-export { HelixWebHooksApi } from './api/helix/webHooks/HelixWebHooksApi';
-export type {
-	HelixWebHookHubRequest,
-	HelixWebHookHubRequestOptions,
-	HubMode
-} from './api/helix/webHooks/HelixWebHooksApi';
-export { HelixWebHookSubscription } from './api/helix/webHooks/HelixWebHookSubscription';
-
 export { KrakenApiGroup } from './api/kraken/KrakenApiGroup';
 
 export { Subscription } from './api/kraken/Subscription';

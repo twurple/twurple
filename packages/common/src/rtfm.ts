@@ -1,6 +1,6 @@
 import type { NoInfer } from '@d-fischer/shared-utils';
 
-type PackageName = 'api' | 'auth' | 'chat' | 'common' | 'eventsub' | 'pubsub' | 'webhooks';
+type PackageName = 'api' | 'auth' | 'chat' | 'common' | 'eventsub' | 'pubsub';
 
 // Read The Fine Manual
 export function rtfm(pkg: PackageName, name: string): ClassDecorator;

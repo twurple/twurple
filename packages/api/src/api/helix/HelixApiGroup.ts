@@ -19,7 +19,6 @@ import { HelixTagApi } from './tag/HelixTagApi';
 import { HelixTeamApi } from './team/HelixTeamApi';
 import { HelixUserApi } from './user/HelixUserApi';
 import { HelixVideoApi } from './video/HelixVideoApi';
-import { HelixWebHooksApi } from './webHooks/HelixWebHooksApi';
 
 /**
  * Groups all API calls available in Helix a.k.a. the "New Twitch API".
@@ -155,14 +154,6 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get users(): HelixUserApi {
 		return new HelixUserApi(this._client);
-	}
-
-	/**
-	 * The Helix WebHook API methods.
-	 */
-	@CachedGetter()
-	get webHooks(): HelixWebHooksApi {
-		return new HelixWebHooksApi(this._client);
 	}
 
 	/**

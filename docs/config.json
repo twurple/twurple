@@ -12,7 +12,7 @@
 	"versionBranchPrefix": "versions/",
 	"versionFolder": "versions",
 	"title": "Twurple",
-	"ignoredPackages": ["auth-electron", "webhooks-ngrok", "eventsub-ngrok", "api-call"],
+	"ignoredPackages": ["auth-electron", "eventsub-ngrok", "api-call"],
 	"persistentFiles": ["CNAME"],
 	"categories": [
 		{
@@ -110,45 +110,6 @@
 							"name": "listening-to-topics",
 							"title": "Listening to topics",
 							"file": "pubsub/basic-usage/listening-to-topics.md"
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "webhooks",
-			"indexTitle": "Twurple - WebHook Listener",
-			"indexFile": "webhooks/index.md",
-			"groups": [
-				{
-					"name": "basic-usage",
-					"title": "Basic usage",
-					"articles": [
-						{
-							"name": "getting-started",
-							"title": "Getting started",
-							"file": "webhooks/basic-usage/getting-started.md"
-						},
-						{
-							"name": "listening-to-events",
-							"title": "Listening to events",
-							"file": "webhooks/basic-usage/listening-to-events.md"
-						}
-					]
-				},
-				{
-					"name": "special-hosting",
-					"title": "Special hosting",
-					"articles": [
-						{
-							"name": "reverse-proxy",
-							"title": "Serving through a reverse proxy",
-							"file": "webhooks/special-hosting/reverse-proxy.md"
-						},
-						{
-							"name": "ngrok",
-							"title": "Testing locally using ngrok",
-							"file": "webhooks/special-hosting/ngrok.md"
 						}
 					]
 				}

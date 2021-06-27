@@ -11,7 +11,7 @@ A set of libraries that aims to cover all of the existing Twitch APIs.
 
 - Query the Kraken v5 & Helix APIs
 - Build a chat bot
-- React to custom redemptions, subscriptions, follows and much more using PubSub and WebHooks
+- React to custom redemptions, subscriptions, follows and much more using PubSub and EventSub
 - Do all this without caring about the expiry of your access tokens - **we can refresh them automatically**
 
 ## Installation
@@ -36,7 +36,6 @@ The mentioned `@twurple/auth` package only provides authentication functionality
 - [@twurple/api](https://npmjs.com/package/@twurple/api) - make calls to the Kraken and Helix APIs
 - [@twurple/chat](https://npmjs.com/package/@twurple/chat) - connect to and interact with Twitch Chat
 - [@twurple/pubsub](https://npmjs.com/package/@twurple/pubsub) - listen to events using the Twitch PubSub interface
-- [@twurple/webhooks](https://npmjs.com/package/@twurple/webhooks) - listen to events using WebHooks
 - [@twurple/eventsub](https://npmjs.com/package/@twurple/eventsub) - listen to events using EventSub
 
 ## If you're getting stuck...
