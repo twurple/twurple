@@ -28,7 +28,7 @@
     "url": "https://github.com/twurple/twurple.git",
     "directory": "packages/api"
   },
-  "homepage": "https://twurple.github.io",
+  "homepage": "https://twurple.js.org",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",

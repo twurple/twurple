@@ -6,7 +6,7 @@ labels: bug
 
 <!--
 Before you report a bug, please check the FAQ to see whether the behavior is actually desired or already known:
-https://twurple.github.io/docs/api/basic-usage/faq.html
+https://twurple.js.org/docs/api/basic-usage/faq.html
 
 Please make sure that all your packages from the package family are on the exact same version.
 

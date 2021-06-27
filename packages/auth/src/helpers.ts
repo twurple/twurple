@@ -202,7 +202,7 @@ export function compareScopes(scopesToCompare: string[], requestedScopes?: strin
 			`This token does not have the requested scopes (${requestedScopes.join(', ')}) and can not be upgraded.
 If you need dynamically upgrading scopes, please implement the AuthProvider interface accordingly:
 
-\thttps://twurple.github.io/reference/auth/interfaces/AuthProvider.html`
+\thttps://twurple.js.org/reference/auth/interfaces/AuthProvider.html`
 		);
 	}
 }
