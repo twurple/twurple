@@ -1,16 +1,20 @@
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import { HttpStatusCodeError } from '../../../../../twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
-import type { HelixPaginatedResult } from '../HelixPaginatedResult';
-import { createPaginatedResult } from '../HelixPaginatedResult';
+import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
+import type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import { createPaginatedResult, createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
-import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
+import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
 import type { HelixSubscriptionData } from './HelixSubscription';
 import { HelixSubscription } from './HelixSubscription';
 import type { HelixSubscriptionEventData } from './HelixSubscriptionEvent';
 import { HelixSubscriptionEvent } from './HelixSubscriptionEvent';
+import type { HelixUserSubscriptionData } from './HelixUserSubscription';
+import { HelixUserSubscription } from './HelixUserSubscription';
 
 /**
  * The Helix API methods that deal with subscriptions.
@@ -36,8 +40,8 @@ export class HelixSubscriptionApi extends BaseApi {
 	async getSubscriptions(
 		broadcaster: UserIdResolvable,
 		pagination?: HelixForwardPagination
-	): Promise<HelixPaginatedResult<HelixSubscription>> {
-		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionData>>({
+	): Promise<HelixPaginatedResultWithTotal<HelixSubscription>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixSubscriptionData>>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
 			type: 'helix',
@@ -47,7 +51,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResult(result, HelixSubscription, this._client);
+		return createPaginatedResultWithTotal(result, HelixSubscription, this._client);
 	}
 
 	/**
@@ -57,8 +61,8 @@ export class HelixSubscriptionApi extends BaseApi {
 	 */
 	getSubscriptionsPaginated(
 		broadcaster: UserIdResolvable
-	): HelixPaginatedRequest<HelixSubscriptionData, HelixSubscription> {
-		return new HelixPaginatedRequest(
+	): HelixPaginatedRequestWithTotal<HelixSubscriptionData, HelixSubscription> {
+		return new HelixPaginatedRequestWithTotal(
 			{
 				url: 'subscriptions',
 				scope: 'channel:read:subscriptions',
@@ -96,6 +100,9 @@ export class HelixSubscriptionApi extends BaseApi {
 
 	/**
 	 * Retrieves the subscription data for a given user to a given broadcaster.
+	 *
+	 * This checks with the authorization of a broadcaster.
+	 * If you only have the authorization of a user, check {@HelixSubscriptionApi#checkUserSubscription}.
 	 *
 	 * @param broadcaster The broadcaster to check.
 	 * @param user The user to check.
@@ -152,6 +159,40 @@ export class HelixSubscriptionApi extends BaseApi {
 	async getSubscriptionEventById(id: string): Promise<HelixSubscriptionEvent | null> {
 		const events = await this._getSubscriptionEvents('id', id);
 		return events.data[0] ?? null;
+	}
+
+	/**
+	 * Checks if a given user is subscribed to a given broadcaster. Returns null if not subscribed.
+	 *
+	 * This checks with the authorization of a user.
+	 * If you only have the authorization of a broadcaster, check {@HelixSubscriptionApi#getSubscriptionForUser}.
+	 *
+	 * @param user The broadcaster to check the user's subscription for.
+	 * @param broadcaster The user to check.
+	 */
+	async checkUserSubscription(
+		user: UserIdResolvable,
+		broadcaster: UserIdResolvable
+	): Promise<HelixUserSubscription | null> {
+		try {
+			const result = await this._client.callApi<HelixResponse<HelixUserSubscriptionData>>({
+				type: TwitchApiCallType.Helix,
+				url: 'subscriptions/user',
+				scope: 'user:read:subscriptions',
+				query: {
+					broadcaster_id: extractUserId(broadcaster),
+					user_id: extractUserId(user)
+				}
+			});
+
+			return new HelixUserSubscription(result.data[0], this._client);
+		} catch (e) {
+			if (e instanceof HttpStatusCodeError && e.statusCode === 404) {
+				return null;
+			}
+
+			throw e;
+		}
 	}
 
 	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string, pagination?: HelixForwardPagination) {

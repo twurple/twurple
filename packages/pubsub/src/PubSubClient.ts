@@ -4,6 +4,7 @@ import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth'
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BasicPubSubClient } from './BasicPubSubClient';
+import type { PubSubAutoModQueueMessage } from './messages/PubSubAutoModQueueMessage';
 import type { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
 import type { PubSubBitsMessage } from './messages/PubSubBitsMessage';
 import type { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
@@ -64,6 +65,23 @@ Register one using:
 	}
 
 	/**
+	 * Adds a listener to AutoMod queue events to the client.
+	 *
+	 * @param user The user the event will be subscribed for.
+	 * @param channel The channel to listen to.
+	 * @param callback A function to be called when an AutoMod queue event is sent to the user.
+	 *
+	 * It receives a {@PubSubAutoModQueueMessage} object.
+	 */
+	async onAutoModQueue(
+		user: UserIdResolvable,
+		channel: UserIdResolvable,
+		callback: (message: PubSubAutoModQueueMessage) => void
+	): Promise<PubSubListener<never>> {
+		return await this.getUserListener(user).onAutoModQueue(channel, callback);
+	}
+
+	/**
 	 * Adds a listener to bits events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
@@ -91,6 +109,23 @@ Register one using:
 		callback: (message: PubSubBitsBadgeUnlockMessage) => void
 	): Promise<PubSubListener<never>> {
 		return await this.getUserListener(user).onBitsBadgeUnlock(callback);
+	}
+
+	/**
+	 * Adds a listener to mod action events to the client.
+	 *
+	 * @param user The user the event will be subscribed for.
+	 * @param channel The channel the event will be subscribed for.
+	 * @param callback A function to be called when a mod action event is sent to the user.
+	 *
+	 * It receives a {@PubSubChatModActionMessage} object.
+	 */
+	async onModAction(
+		user: UserIdResolvable,
+		channel: UserIdResolvable,
+		callback: (message: PubSubChatModActionMessage) => void
+	): Promise<PubSubListener<never>> {
+		return await this.getUserListener(user).onModAction(channel, callback);
 	}
 
 	/**
@@ -124,6 +159,23 @@ Register one using:
 	}
 
 	/**
+	 * Adds a listener to user moderation events to the client.
+	 *
+	 * @param user The user the event will be subscribed for.
+	 * @param channel The channel to listen to.
+	 * @param callback A function to be called when a user moderation event is sent to the user.
+	 *
+	 * It receives a {@PubSubUserModerationNotificationMessage} object.
+	 */
+	async onUserModeration(
+		user: UserIdResolvable,
+		channel: UserIdResolvable,
+		callback: (message: PubSubSubscriptionMessage) => void
+	): Promise<PubSubListener<never>> {
+		return await this.getUserListener(user).onUserModeration(channel, callback);
+	}
+
+	/**
 	 * Adds a listener to whisper events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
@@ -136,23 +188,6 @@ Register one using:
 		callback: (message: PubSubWhisperMessage) => void
 	): Promise<PubSubListener<never>> {
 		return await this.getUserListener(user).onWhisper(callback);
-	}
-
-	/**
-	 * Adds a listener to mod action events to the client.
-	 *
-	 * @param user The user the event will be subscribed for.
-	 * @param channel The channel the event will be subscribed for.
-	 * @param callback A function to be called when a mod action event is sent to the user.
-	 *
-	 * It receives a {@PubSubChatModActionMessage} object.
-	 */
-	async onModAction(
-		user: UserIdResolvable,
-		channel: UserIdResolvable,
-		callback: (message: PubSubChatModActionMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this.getUserListener(user).onModAction(channel, callback);
 	}
 
 	/**

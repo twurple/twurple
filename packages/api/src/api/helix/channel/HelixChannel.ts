@@ -12,6 +12,7 @@ export interface HelixChannelData {
 	game_id: string;
 	game_name: string;
 	title: string;
+	delay: number;
 }
 
 /**
@@ -82,5 +83,12 @@ export class HelixChannel {
 	 */
 	get title(): string {
 		return this._data.title;
+	}
+
+	/**
+	 * The stream delay of the channel, in seconds.
+	 */
+	get delay(): number {
+		return this._data.delay;
 	}
 }

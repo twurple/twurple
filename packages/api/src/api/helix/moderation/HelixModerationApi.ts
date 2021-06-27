@@ -246,4 +246,25 @@ export class HelixModerationApi extends BaseApi {
 			data => new HelixModeratorEvent(data, this._client)
 		);
 	}
+
+	/**
+	 * Processes a message held by AutoMod.
+	 *
+	 * @param user The user who is processing the message.
+	 * @param msgId The ID of the message.
+	 * @param allow Whether to allow the message - `true` allows, and `false` denies.
+	 */
+	async processHeldAutoModMessage(user: UserIdResolvable, msgId: string, allow: boolean): Promise<void> {
+		await this._client.callApi({
+			type: TwitchApiCallType.Helix,
+			url: 'moderation/automod/message',
+			method: 'POST',
+			scope: 'moderator:manage:automod',
+			jsonBody: {
+				user_id: extractUserId(user),
+				msg_id: msgId,
+				action: allow ? 'ALLOW' : 'DENY'
+			}
+		});
+	}
 }

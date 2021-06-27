@@ -149,6 +149,8 @@ export class ApiClient {
 
 	/**
 	 * The API methods that deal with badges.
+	 *
+	 * @deprecated Use {@HelixChatApi}'s badge methods instead.
 	 */
 	@CachedGetter()
 	get badges(): BadgesApi {

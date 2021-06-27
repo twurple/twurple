@@ -3,7 +3,7 @@ import type { ApiClient, HelixUser } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 
 /**
- * The tier of the subscription.
+ * The tier of a subscription. 1000 means tier 1, and so on.
  */
 export type EventSubChannelSubscriptionEventTier = '1000' | '2000' | '3000';
 
@@ -54,7 +54,7 @@ export class EventSubChannelSubscriptionEvent {
 	}
 
 	/**
-	 * Retrieves more information about the subscription.
+	 * Retrieves more information about the subscribing user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.user_id))!;

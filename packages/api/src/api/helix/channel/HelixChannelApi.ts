@@ -25,6 +25,13 @@ export interface HelixChannelUpdate {
 	 * The title of the stream.
 	 */
 	title?: string;
+
+	/**
+	 * The delay of the stream, in seconds.
+	 *
+	 * Only works if you're a Twitch partner.
+	 */
+	delay?: number;
 }
 
 /**
@@ -77,7 +84,8 @@ export class HelixChannelApi extends BaseApi {
 			jsonBody: {
 				game_id: data.gameId,
 				broadcaster_language: data.language,
-				title: data.title
+				title: data.title,
+				delay: data.delay?.toString()
 			}
 		});
 	}

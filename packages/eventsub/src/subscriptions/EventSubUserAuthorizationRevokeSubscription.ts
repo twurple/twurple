@@ -2,7 +2,7 @@ import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import type { EventSubUserAuthorizationRevokeEventData } from '../events/EventSubUserAuthorizationRevokeEvent';
 import { EventSubUserAuthorizationRevokeEvent } from '../events/EventSubUserAuthorizationRevokeEvent';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
@@ -12,7 +12,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 export class EventSubUserAuthorizationRevokeSubscription extends EventSubSubscription<EventSubUserAuthorizationRevokeEvent> {
 	constructor(
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _userId: string
 	) {
 		super(handler, client);

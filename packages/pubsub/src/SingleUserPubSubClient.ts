@@ -5,6 +5,8 @@ import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth'
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BasicPubSubClient } from './BasicPubSubClient';
+import type { PubSubAutoModQueueMessageData } from './messages/PubSubAutoModQueueMessage';
+import { PubSubAutoModQueueMessage } from './messages/PubSubAutoModQueueMessage';
 import type { PubSubBitsBadgeUnlockMessageData } from './messages/PubSubBitsBadgeUnlockMessage';
 import { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
 import type { PubSubBitsMessageData } from './messages/PubSubBitsMessage';
@@ -17,6 +19,8 @@ import type { PubSubRedemptionMessageData } from './messages/PubSubRedemptionMes
 import { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
 import type { PubSubSubscriptionMessageData } from './messages/PubSubSubscriptionMessage';
 import { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
+import type { PubSubUserModerationNotificationMessageData } from './messages/PubSubUserModerationNotificationMessage';
+import { PubSubUserModerationNotificationMessage } from './messages/PubSubUserModerationNotificationMessage';
 import type { PubSubWhisperMessageData } from './messages/PubSubWhisperMessage';
 import { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
 import { PubSubListener } from './PubSubListener';
@@ -76,6 +80,21 @@ export class SingleUserPubSubClient {
 	}
 
 	/**
+	 * Adds a listener to AutoMod queue events to the client.
+	 *
+	 * @param channel The channel to listen to.
+	 * @param callback A function to be called when an AutoMod queue event is sent to the user.
+	 *
+	 * It receives a {@PubSubAutoModQueueMessage} object.
+	 */
+	async onAutoModQueue(
+		channel: UserIdResolvable,
+		callback: (message: PubSubAutoModQueueMessage) => void
+	): Promise<PubSubListener<never>> {
+		return await this._addListener('automod-queue', callback, 'channel:moderate', extractUserId(channel));
+	}
+
+	/**
 	 * Adds a listener to bits events to the client.
 	 *
 	 * @param callback A function to be called when a bits event happens in the user's channel.
@@ -98,6 +117,21 @@ export class SingleUserPubSubClient {
 	}
 
 	/**
+	 * Adds a listener to mod action events to the client.
+	 *
+	 * @param channel The channel to listen to.
+	 * @param callback A function to be called when a mod action event is sent to the user.
+	 *
+	 * It receives a {@PubSubChatModActionMessage} object.
+	 */
+	async onModAction(
+		channel: UserIdResolvable,
+		callback: (message: PubSubChatModActionMessage) => void
+	): Promise<PubSubListener<never>> {
+		return await this._addListener('chat_moderator_actions', callback, 'channel:moderate', extractUserId(channel));
+	}
+
+	/**
 	 * Adds a listener to redemption events to the client.
 	 *
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
@@ -106,6 +140,21 @@ export class SingleUserPubSubClient {
 	 */
 	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener<never>> {
 		return await this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');
+	}
+
+	/**
+	 * Adds a listener to user moderation events to the client.
+	 *
+	 * @param channel The channel to listen to.
+	 * @param callback A function to be called when a user moderation event is sent to the user.
+	 *
+	 * It receives a {@PubSubUserModerationNotificationMessage} object.
+	 */
+	async onUserModeration(
+		channel: UserIdResolvable,
+		callback: (message: PubSubSubscriptionMessage) => void
+	): Promise<PubSubListener<never>> {
+		return await this._addListener('user-moderation-notifications', callback, 'chat:read', extractUserId(channel));
 	}
 
 	/**
@@ -128,26 +177,6 @@ export class SingleUserPubSubClient {
 	 */
 	async onWhisper(callback: (message: PubSubWhisperMessage) => void): Promise<PubSubListener<never>> {
 		return await this._addListener('whispers', callback, 'whispers:read');
-	}
-
-	/**
-	 * Adds a listener to mod action events to the client.
-	 *
-	 * @param channelId The ID of the channel to listen to.
-	 * @param callback A function to be called when a mod action event is sent to the user.
-	 *
-	 * It receives a {@PubSubChatModActionMessage} object.
-	 */
-	async onModAction(
-		channelId: UserIdResolvable,
-		callback: (message: PubSubChatModActionMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener(
-			'chat_moderator_actions',
-			callback,
-			'channel:moderate',
-			extractUserId(channelId)
-		);
 	}
 
 	/**
@@ -198,6 +227,9 @@ export class SingleUserPubSubClient {
 
 	private static _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage {
 		switch (type) {
+			case 'automod-queue': {
+				return new PubSubAutoModQueueMessage(messageData as PubSubAutoModQueueMessageData, args[0]);
+			}
 			case 'channel-bits-events-v2': {
 				return new PubSubBitsMessage(messageData as PubSubBitsMessageData);
 			}
@@ -212,6 +244,12 @@ export class SingleUserPubSubClient {
 			}
 			case 'chat_moderator_actions': {
 				return new PubSubChatModActionMessage(messageData as PubSubChatModActionMessageData, args[0]);
+			}
+			case 'user-moderation-notifications': {
+				return new PubSubUserModerationNotificationMessage(
+					messageData as PubSubUserModerationNotificationMessageData,
+					args[0]
+				);
 			}
 			case 'whispers': {
 				return new PubSubWhisperMessage(messageData as PubSubWhisperMessageData);

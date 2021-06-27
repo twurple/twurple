@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from '@twurple/api';
+import type { ApiClient, HelixStream, HelixUser } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 
 /**
@@ -57,6 +57,13 @@ export class EventSubStreamOnlineEvent {
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+	}
+
+	/**
+	 * Retrieves more information about the stream.
+	 */
+	async getStream(): Promise<HelixStream> {
+		return (await this._client.helix.streams.getStreamByUserId(this._data.broadcaster_user_id))!;
 	}
 
 	/**

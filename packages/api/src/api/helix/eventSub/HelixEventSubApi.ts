@@ -4,8 +4,14 @@ import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import type { HelixPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponseWithTotal } from '../HelixResponse';
-import type { HelixEventSubSubscriptionData, HelixEventSubWebHookTransportData } from './HelixEventSubSubscription';
+import type {
+	HelixEventSubSubscriptionData,
+	HelixEventSubSubscriptionStatus,
+	HelixEventSubWebHookTransportData
+} from './HelixEventSubSubscription';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 
 /**
@@ -43,18 +49,25 @@ export class HelixEventSubApi extends BaseApi {
 	 * Retrieves the current WebHook subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param pagination
+	 *
+	 * @expandParams
 	 */
-	async getSubscriptions(): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
+	async getSubscriptions(
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
 			type: 'helix',
-			url: 'eventsub/subscriptions'
+			url: 'eventsub/subscriptions',
+			query: makePaginationQuery(pagination)
 		});
 
 		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
 	}
 
 	/**
-	 * Retrieves the current WebHook subscriptions for the current client.
+	 * Creates a paginator for the current WebHook subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 */
@@ -68,6 +81,98 @@ export class HelixEventSubApi extends BaseApi {
 			},
 			this._client,
 			data => new HelixEventSubSubscription(data, this._client)
+		);
+	}
+
+	/**
+	 * Retrieves the current WebHook subscriptions with the given status for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param status The status of the subscriptions to retrieve.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getSubscriptionsForStatus(
+		status: HelixEventSubSubscriptionStatus,
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'eventsub/subscriptions',
+			query: {
+				...makePaginationQuery(pagination),
+				status
+			}
+		});
+
+		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+	}
+
+	/**
+	 * Creates a paginator for the current WebHook subscriptions with the given status for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param status The status of the subscriptions to retrieve.
+	 */
+	getSubscriptionsForStatusPaginated(
+		status: HelixEventSubSubscriptionStatus
+	): HelixPaginatedRequestWithTotal<HelixEventSubSubscriptionData, HelixEventSubSubscription> {
+		return new HelixPaginatedRequestWithTotal(
+			{
+				url: 'eventsub/subscriptions',
+				query: { status }
+			},
+			this._client,
+			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
+		);
+	}
+
+	/**
+	 * Retrieves the current WebHook subscriptions with the given type for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param type The type of the subscriptions to retrieve.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getSubscriptionsForType(
+		type: string,
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'eventsub/subscriptions',
+			query: {
+				...makePaginationQuery(pagination),
+				type
+			}
+		});
+
+		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+	}
+
+	/**
+	 * Creates a paginator for the current WebHook subscriptions with the given type for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param type The type of the subscriptions to retrieve.
+	 */
+	getSubscriptionsForTypePaginated(
+		type: string
+	): HelixPaginatedRequestWithTotal<HelixEventSubSubscriptionData, HelixEventSubSubscription> {
+		return new HelixPaginatedRequestWithTotal(
+			{
+				url: 'eventsub/subscriptions',
+				query: { type }
+			},
+			this._client,
+			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
 		);
 	}
 
@@ -225,6 +330,60 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a user gifting another user a subscription to a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to subscription gift events for.
+	 * @param transport The transport options
+	 */
+	async subscribeToChannelSubscriptionGiftEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.subscription.gift',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a user's subscription to a channel being announced.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to subscription message events for.
+	 * @param transport The transport options
+	 */
+	async subscribeToChannelSubscriptionMessageEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.subscription.message',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a user's subscription to a channel ending.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to subscription end events for.
+	 * @param transport The transport options
+	 */
+	async subscribeToChannelSubscriptionEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.subscription.end',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a user cheering bits to a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to cheer events for.
@@ -272,6 +431,42 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.unban',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a moderator being added to a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen for moderator add events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelModeratorAddEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.moderator.add',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a moderator being removed from a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen for moderator remove events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelModeratorRemoveEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.moderator.remove',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
 			transport
@@ -336,7 +531,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a Channel Points reward being updated in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to reward update events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelRewardUpdateEvents(
 		broadcaster: UserIdResolvable,
@@ -393,7 +588,7 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster you want to listen to reward remove events for.
 	 * @param rewardId The ID of the reward you want to listen to remove events for.
-	 * @param transport The transport events.
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelRewardRemoveEventsForReward(
 		broadcaster: UserIdResolvable,
@@ -485,6 +680,132 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a poll starting in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to poll begin events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPollBeginEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.poll.begin',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a poll being voted on in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to poll progress events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPollProgressEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.poll.progress',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a poll ending in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to poll end events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPollEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.poll.end',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a prediction starting in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction begin events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionBeginEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.begin',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a prediction being voted on in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction preogress events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionProgressEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.progress',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a prediction being locked in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction lock events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionLockEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.lock',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a prediction ending in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to prediction end events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPredictionEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'channel.prediction.end',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent the beginning of a Hype Train event in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to Hype train begin events for.
@@ -534,6 +855,24 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.hype_train.end',
 			'1',
 			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a extension Bits transaction.
+	 *
+	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToExtensionBitsTransactionCreateEvents(
+		clientId: string,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return this.createSubscription(
+			'extension.bits_transaction.create',
+			'1',
+			{ extension_client_id: this._client.clientId },
 			transport
 		);
 	}

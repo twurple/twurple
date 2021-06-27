@@ -8,7 +8,7 @@ import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import type { HelixPagination } from '../HelixPagination';
+import type { HelixForwardPagination, HelixPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
 import type { HelixTagData } from '../tag/HelixTag';
@@ -292,6 +292,50 @@ export class HelixStreamApi extends BaseApi {
 		});
 
 		return result.data[0].stream_key;
+	}
+
+	/**
+	 * Retrieves the streams that are currently live and are followed by the given user.
+	 *
+	 * @param user The user to check followed streams for.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getFollowedStreams(
+		user: UserIdResolvable,
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResult<HelixStream>> {
+		const result = await this._client.callApi<HelixPaginatedResult<HelixStreamData>>({
+			type: TwitchApiCallType.Helix,
+			url: 'streams/followed',
+			scope: 'user:read:follows',
+			query: {
+				user_id: extractUserId(user),
+				...makePaginationQuery(pagination)
+			}
+		});
+
+		return createPaginatedResult(result, HelixStream, this._client);
+	}
+
+	/**
+	 * Creates a paginator for the streams that are currently live and are followed by the given user.
+	 *
+	 * @param user The user to check followed streams for.
+	 */
+	getFollowedStreamsPaginated(user: UserIdResolvable): HelixPaginatedRequest<HelixStreamData, HelixStream> {
+		return new HelixPaginatedRequest(
+			{
+				url: 'stream/followed',
+				scope: 'user:read:follows',
+				query: {
+					user_id: extractUserId(user)
+				}
+			},
+			this._client,
+			data => new HelixStream(data, this._client)
+		);
 	}
 
 	private async _getStreamMarkers(

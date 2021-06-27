@@ -2,7 +2,7 @@ import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import type { EventSubChannelBanEventData } from '../events/EventSubChannelBanEvent';
 import { EventSubChannelBanEvent } from '../events/EventSubChannelBanEvent';
-import type { EventSubListener } from '../EventSubListener';
+import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
@@ -12,7 +12,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 export class EventSubChannelBanSubscription extends EventSubSubscription<EventSubChannelBanEvent> {
 	constructor(
 		handler: (data: EventSubChannelBanEvent) => void,
-		client: EventSubListener,
+		client: EventSubBase,
 		private readonly _userId: string
 	) {
 		super(handler, client);

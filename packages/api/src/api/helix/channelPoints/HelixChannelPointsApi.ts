@@ -102,6 +102,17 @@ export interface HelixPaginatedCustomRewardRedemptionFilter
 	extends HelixCustomRewardRedemptionFilter,
 		HelixForwardPagination {}
 
+/**
+ * The Helix API methods that deal with channel points.
+ *
+ * Can be accessed using `client.helix.channelPoints` on an {@ApiClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const rewards = await api.helix.channelPoints.getCustomRewards('125328655');
+ * ```
+ */
 @rtfm('api', 'HelixChannelPointsApi')
 export class HelixChannelPointsApi extends BaseApi {
 	/**

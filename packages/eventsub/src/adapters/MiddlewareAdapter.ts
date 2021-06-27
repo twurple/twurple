@@ -21,6 +21,7 @@ export interface MiddlewareAdapterConfig {
  * connect compatible application rather than the built-in server.
  *
  * @hideProtected
+ * @deprecated Use {@EventSubMiddleware} instead.
  */
 @rtfm('eventsub', 'MiddlewareAdapter')
 export class MiddlewareAdapter extends ConnectionAdapter {
