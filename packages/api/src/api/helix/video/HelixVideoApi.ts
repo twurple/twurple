@@ -67,7 +67,7 @@ export class HelixVideoApi extends BaseApi {
 	 *
 	 * @param ids The video IDs you want to look up.
 	 */
-	async getVideosByIds(ids: string | string[]): Promise<HelixVideo[]> {
+	async getVideosByIds(ids: string[]): Promise<HelixVideo[]> {
 		const result = await this._getVideos('id', ids);
 
 		return result.data;
@@ -79,7 +79,7 @@ export class HelixVideoApi extends BaseApi {
 	 * @param id The video ID you want to look up.
 	 */
 	async getVideoById(id: string): Promise<HelixVideo | null> {
-		const videos = await this.getVideosByIds(id);
+		const videos = await this.getVideosByIds([id]);
 		return videos.length ? videos[0] : null;
 	}
 
@@ -96,7 +96,7 @@ export class HelixVideoApi extends BaseApi {
 		filter: HelixPaginatedVideoFilter = {}
 	): Promise<HelixPaginatedResult<HelixVideo>> {
 		const userId = extractUserId(user);
-		return await this._getVideos('user_id', userId, filter);
+		return await this._getVideos('user_id', [userId], filter);
 	}
 
 	/**
@@ -112,7 +112,7 @@ export class HelixVideoApi extends BaseApi {
 		filter: HelixVideoFilter = {}
 	): HelixPaginatedRequest<HelixVideoData, HelixVideo> {
 		const userId = extractUserId(user);
-		return this._getVideosPaginated('user_id', userId, filter);
+		return this._getVideosPaginated('user_id', [userId], filter);
 	}
 
 	/**
@@ -127,7 +127,7 @@ export class HelixVideoApi extends BaseApi {
 		gameId: string,
 		filter: HelixPaginatedVideoFilter = {}
 	): Promise<HelixPaginatedResult<HelixVideo>> {
-		return await this._getVideos('game_id', gameId, filter);
+		return await this._getVideos('game_id', [gameId], filter);
 	}
 
 	/**
@@ -142,7 +142,7 @@ export class HelixVideoApi extends BaseApi {
 		gameId: string,
 		filter: HelixVideoFilter = {}
 	): HelixPaginatedRequest<HelixVideoData, HelixVideo> {
-		return this._getVideosPaginated('game_id', gameId, filter);
+		return this._getVideosPaginated('game_id', [gameId], filter);
 	}
 
 	/**
@@ -164,10 +164,10 @@ export class HelixVideoApi extends BaseApi {
 
 	private async _getVideos(
 		filterType: HelixVideoFilterType,
-		filterValues: string | string[],
+		filterValues: string[],
 		filter: HelixPaginatedVideoFilter = {}
 	): Promise<HelixPaginatedResult<HelixVideo>> {
-		if (Array.isArray(filterValues) && !filterValues.length) {
+		if (!filterValues.length) {
 			return { data: [] };
 		}
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixVideoData>>({
@@ -184,7 +184,7 @@ export class HelixVideoApi extends BaseApi {
 
 	private _getVideosPaginated(
 		filterType: HelixVideoFilterType,
-		filterValues: string | string[],
+		filterValues: string[],
 		filter: HelixVideoFilter = {}
 	): HelixPaginatedRequest<HelixVideoData, HelixVideo> {
 		return new HelixPaginatedRequest(
@@ -199,7 +199,7 @@ export class HelixVideoApi extends BaseApi {
 
 	private static _makeVideosQuery(
 		filterType: HelixVideoFilterType,
-		filterValues: string | string[],
+		filterValues: string[],
 		filter: HelixVideoFilter = {}
 	) {
 		const { language, period, orderBy, type } = filter;

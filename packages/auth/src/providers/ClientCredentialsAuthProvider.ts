@@ -39,12 +39,10 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 	 *
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessToken(scopes?: string | string[]): Promise<AccessToken> {
+	async getAccessToken(scopes?: string[]): Promise<AccessToken> {
 		if (scopes && scopes.length > 0) {
 			throw new Error(
-				`Scope ${
-					typeof scopes === 'string' ? scopes : scopes.join(', ')
-				} requested but the client credentials flow does not support scopes`
+				`Scope ${scopes.join(', ')} requested but the client credentials flow does not support scopes`
 			);
 		}
 

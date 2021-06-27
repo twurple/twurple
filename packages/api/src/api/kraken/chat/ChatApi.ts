@@ -19,17 +19,13 @@ export class ChatApi extends BaseApi {
 	/**
 	 * Retrieves a list of emotes for a given list of enote set IDs.
 	 *
-	 * @param emotesets The list of emote set IDs, either as array of strings or as a comma separated string.
+	 * @param setIds The list of emote set IDs.
 	 */
-	async getEmotesBySets(emotesets: string[] | string): Promise<ChatEmoteList> {
-		if (typeof emotesets !== 'string') {
-			emotesets = emotesets.join(',');
-		}
-
+	async getEmotesBySets(setIds: string[]): Promise<ChatEmoteList> {
 		const data = await this._client.callApi<{ emoticons: ChatEmoteWithSetData[] }>({
 			url: 'chat/emoticon_images',
 			query: {
-				emotesets
+				emotesets: setIds.join(',')
 			}
 		});
 

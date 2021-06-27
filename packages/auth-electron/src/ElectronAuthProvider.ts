@@ -68,14 +68,8 @@ export class ElectronAuthProvider implements AuthProvider {
 		return Array.from(this._currentScopes);
 	}
 
-	async getAccessToken(scopes?: string | string[]): Promise<AccessToken> {
+	async getAccessToken(scopes: string[] = []): Promise<AccessToken> {
 		return await new Promise<AccessToken>((resolve, reject) => {
-			if (typeof scopes === 'string') {
-				scopes = [scopes];
-			} else if (!scopes) {
-				scopes = [];
-			}
-
 			if (this._accessToken && scopes.every(scope => this._currentScopes.has(scope))) {
 				resolve(this._accessToken);
 				return;
@@ -156,7 +150,7 @@ export class ElectronAuthProvider implements AuthProvider {
 						reject(new Error(`Error received from Twitch: ${params.error}`));
 					} else if (params.access_token) {
 						const accessToken = params.access_token;
-						for (const scope of scopes!) {
+						for (const scope of scopes) {
 							this._currentScopes.add(scope);
 						}
 						this._accessToken = {
