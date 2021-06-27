@@ -1,7 +1,7 @@
 import { Cacheable, Cached, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ChatEmoteData } from '@twurple/common';
-import { ChatEmote, rtfm } from '@twurple/common';
+import type { ChatEmoteWithSetData } from '@twurple/common';
+import { ChatEmoteWithSet, rtfm } from '@twurple/common';
 
 /**
  * A list of emotes.
@@ -9,10 +9,10 @@ import { ChatEmote, rtfm } from '@twurple/common';
 @Cacheable
 @rtfm('api', 'ChatEmoteList')
 export class ChatEmoteList {
-	@Enumerable(false) private readonly _data: ChatEmoteData[];
+	@Enumerable(false) private readonly _data: ChatEmoteWithSetData[];
 
 	/** @private */
-	constructor(data: ChatEmoteData[]) {
+	constructor(data: ChatEmoteWithSetData[]) {
 		this._data = data;
 	}
 
@@ -20,8 +20,8 @@ export class ChatEmoteList {
 	 * A list of all emotes in the list.
 	 */
 	@CachedGetter()
-	get emotes(): ChatEmote[] {
-		return this._data.map(emote => new ChatEmote(emote));
+	get emotes(): ChatEmoteWithSet[] {
+		return this._data.map(emote => new ChatEmoteWithSet(emote));
 	}
 
 	/**
@@ -30,8 +30,8 @@ export class ChatEmoteList {
 	 * @param setId
 	 */
 	@Cached()
-	getAllFromSet(setId: number): ChatEmote[] {
-		return this._data.filter(emote => emote.emoticon_set === setId).map(emote => new ChatEmote(emote));
+	getAllFromSet(setId: number): ChatEmoteWithSet[] {
+		return this._data.filter(emote => emote.emoticon_set === setId).map(emote => new ChatEmoteWithSet(emote));
 	}
 
 	/**
@@ -40,9 +40,9 @@ export class ChatEmoteList {
 	 * @param id
 	 */
 	@Cached()
-	getById(id: number): ChatEmote | null {
+	getById(id: number): ChatEmoteWithSet | null {
 		const data = this._data.find(emote => emote.id === id);
 
-		return data ? new ChatEmote(data) : null;
+		return data ? new ChatEmoteWithSet(data) : null;
 	}
 }

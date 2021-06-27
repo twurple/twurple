@@ -1,4 +1,4 @@
-import type { ChatEmoteData } from '@twurple/common';
+import type { ChatEmoteWithSetData } from '@twurple/common';
 import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { ChatEmoteList } from './ChatEmoteList';
@@ -26,7 +26,7 @@ export class ChatApi extends BaseApi {
 			emotesets = emotesets.join(',');
 		}
 
-		const data = await this._client.callApi<{ emoticons: ChatEmoteData[] }>({
+		const data = await this._client.callApi<{ emoticons: ChatEmoteWithSetData[] }>({
 			url: 'chat/emoticon_images',
 			query: {
 				emotesets

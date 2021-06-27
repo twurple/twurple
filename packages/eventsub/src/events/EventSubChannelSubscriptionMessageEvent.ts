@@ -1,6 +1,7 @@
-import { Enumerable } from '@d-fischer/shared-utils';
+import { Enumerable, utf8Substring } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import type { ParsedMessageEmotePart, ParsedMessagePart } from '@twurple/common';
+import { ChatEmote, fillTextPositions, rtfm } from '@twurple/common';
 
 /**
  * The tier of a subscription. 1000 means tier 1, and so on.
@@ -137,5 +138,31 @@ export class EventSubChannelSubscriptionMessageEvent {
 	 */
 	get messageText(): string {
 		return this._data.message.text;
+	}
+
+	/**
+	 * Parses the message to split emotes from text.
+	 */
+	parseEmotes(): ParsedMessagePart[] {
+		const messageText = this._data.message.text;
+		const emoteParts: ParsedMessageEmotePart[] = this._data.message.emotes.map(
+			({ begin, end, id }: EventSubChannelSubscriptionMessageEmoteData) => {
+				const name = utf8Substring(messageText, begin, end + 1);
+
+				return {
+					type: 'emote',
+					position: begin,
+					length: end - begin + 1,
+					id,
+					name,
+					displayInfo: new ChatEmote({
+						code: name,
+						id: parseInt(id, 10)
+					})
+				};
+			}
+		);
+
+		return fillTextPositions(messageText, emoteParts);
 	}
 }
