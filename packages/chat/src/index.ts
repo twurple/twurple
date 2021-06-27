@@ -44,10 +44,4 @@ export { ChatUser } from './ChatUser';
 export { LogLevel } from '@d-fischer/logger';
 
 export { toChannelName, toUserName } from './utils/userUtil';
-export type {
-	ParsedMessagePart,
-	ParsedMessageEmotePart,
-	ParsedMessageCheerPart,
-	ParsedMessageTextPart
-} from './utils/emoteUtil';
 export { parseTwitchMessage } from './utils/messageUtil';

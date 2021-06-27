@@ -1,9 +1,8 @@
-import type { BaseCheermoteList } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import type { BaseCheermoteList, ParsedMessageCheerPart, ParsedMessagePart } from '@twurple/common';
+import { fillTextPositions, rtfm } from '@twurple/common';
 import { MessageTypes } from 'ircv3';
 import { ChatUser } from '../ChatUser';
-import type { ParsedMessageCheerPart, ParsedMessagePart } from '../utils/emoteUtil';
-import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../utils/emoteUtil';
+import { parseEmoteOffsets, parseEmotePositions } from '../utils/emoteUtil';
 
 /**
  * An IRC PRIVMSG, with easy accessors for commonly used data from its tags.

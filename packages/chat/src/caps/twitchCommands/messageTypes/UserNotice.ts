@@ -1,8 +1,9 @@
+import type { ParsedMessagePart } from '@twurple/common';
+import { fillTextPositions } from '@twurple/common';
 import type { MessageParam } from 'ircv3';
 import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 import { ChatUser } from '../../../ChatUser';
-import type { ParsedMessagePart } from '../../../utils/emoteUtil';
-import { fillTextPositions, parseEmoteOffsets, parseEmotePositions } from '../../../utils/emoteUtil';
+import { parseEmoteOffsets, parseEmotePositions } from '../../../utils/emoteUtil';
 
 @MessageType('USERNOTICE')
 export class UserNotice extends Message<UserNotice> {
