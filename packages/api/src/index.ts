@@ -42,6 +42,15 @@ export type {
 	HelixCustomRewardRedemptionTargetStatus
 } from './api/helix/channelPoints/HelixCustomRewardRedemption';
 
+export { HelixChatBadgeSet } from './api/helix/chat/HelixChatBadgeSet';
+export { HelixChatBadgeVersion } from './api/helix/chat/HelixChatBadgeVersion';
+export type { HelixChatBadgeScale } from './api/helix/chat/HelixChatBadgeVersion';
+export { HelixEmote } from './api/helix/chat/HelixEmote';
+export type { HelixEmoteImageScale } from './api/helix/chat/HelixEmote';
+export { HelixChannelEmote } from './api/helix/chat/HelixChannelEmote';
+export type { HelixChannelEmoteSubscriptionTier } from './api/helix/chat/HelixChannelEmote';
+export { HelixEmoteFromSet } from './api/helix/chat/HelixEmoteFromSet';
+
 export { HelixClipApi } from './api/helix/clip/HelixClipApi';
 export type { HelixClipCreateParams, HelixClipFilter, HelixPaginatedClipFilter } from './api/helix/clip/HelixClipApi';
 export { HelixClip } from './api/helix/clip/HelixClip';
@@ -85,7 +94,29 @@ export { HelixModerator } from './api/helix/moderation/HelixModerator';
 export { HelixModeratorEvent } from './api/helix/moderation/HelixModeratorEvent';
 export type { HelixModeratorEventData, HelixModeratorEventType } from './api/helix/moderation/HelixModeratorEvent';
 
+export type { HelixCreatePollData } from './api/helix/poll/HelixPollApi';
+export { HelixPoll } from './api/helix/poll/HelixPoll';
+export { HelixPollChoice } from './api/helix/poll/HelixPollChoice';
+
+export type { HelixCreatePredictionData } from './api/helix/prediction/HelixPredictionApi';
+export { HelixPrediction } from './api/helix/prediction/HelixPrediction';
+export type { HelixPredictionStatus } from './api/helix/prediction/HelixPrediction';
+export { HelixPredictionOutcome } from './api/helix/prediction/HelixPredictionOutcome';
+export type { HelixPredictionOutcomeColor } from './api/helix/prediction/HelixPredictionOutcome';
+export { HelixPredictor } from './api/helix/prediction/HelixPredictor';
+
 export { HelixUserRelation } from './api/helix/relations/HelixUserRelation';
+
+export type {
+	HelixScheduleFilter,
+	HelixPaginatedScheduleFilter,
+	HelixScheduleSettingsUpdate,
+	HelixCreateScheduleSegmentData,
+	HelixUpdateScheduleSegmentData
+} from './api/helix/schedule/HelixScheduleApi';
+export { HelixSchedule } from './api/helix/schedule/HelixSchedule';
+export { HelixScheduleSegment } from './api/helix/schedule/HelixScheduleSegment';
+export { HelixPaginatedScheduleSegmentRequest } from './api/helix/schedule/HelixPaginatedScheduleSegmentRequest';
 
 export { HelixSearchApi } from './api/helix/search/HelixSearchApi';
 export type { HelixChannelSearchFilter, HelixPaginatedChannelSearchFilter } from './api/helix/search/HelixSearchApi';
@@ -105,6 +136,7 @@ export type {
 	HelixSubscriptionEventData,
 	HelixSubscriptionEventType
 } from './api/helix/subscriptions/HelixSubscriptionEvent';
+export type { HelixUserSubscription } from './api/helix/subscriptions/HelixUserSubscription';
 
 export { HelixTagApi } from './api/helix/tag/HelixTagApi';
 export { HelixTag } from './api/helix/tag/HelixTag';

@@ -23,12 +23,14 @@ export type {
 } from './PubSubPacket';
 
 export type { PubSubMessage } from './messages/PubSubMessage';
+export { PubSubAutoModQueueMessage } from './messages/PubSubAutoModQueueMessage';
 export { PubSubBitsMessage } from './messages/PubSubBitsMessage';
 export { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
 export { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
 export { PubSubCustomMessage } from './messages/PubSubCustomMessage';
 export { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
 export { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
+export { PubSubUserModerationNotificationMessage } from './messages/PubSubUserModerationNotificationMessage';
 export { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
 
 export { LogLevel } from '@d-fischer/logger';
