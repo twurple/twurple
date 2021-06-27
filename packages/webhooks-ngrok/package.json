@@ -33,7 +33,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/portfinder": "^1.0.28",
-    "@d-fischer/shared-utils": "^3.0.1",
+    "@d-fischer/shared-utils": "^3.2.0",
     "ngrok": "^3.4.0",
     "tslib": "^2.0.3"
   },

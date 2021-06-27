@@ -36,7 +36,7 @@
     "@d-fischer/deprecate": "^2.0.2",
     "@d-fischer/logger": "^3.1.0",
     "@d-fischer/rate-limiter": "^0.4.2",
-    "@d-fischer/shared-utils": "^3.0.1",
+    "@d-fischer/shared-utils": "^3.2.0",
     "@d-fischer/typed-event-emitter": "^3.2.2",
     "@twurple/common": "^5.0.0-pre.8",
     "ircv3": "^0.27.2",

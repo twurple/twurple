@@ -34,7 +34,7 @@
   "dependencies": {
     "@d-fischer/logger": "^3.1.0",
     "@d-fischer/raw-body": "^2.4.3",
-    "@d-fischer/shared-utils": "^3.0.1",
+    "@d-fischer/shared-utils": "^3.2.0",
     "@twurple/auth": "^5.0.0-pre.8",
     "@twurple/common": "^5.0.0-pre.8",
     "httpanda": "^0.4.4",
