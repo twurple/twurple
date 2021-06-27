@@ -307,7 +307,7 @@ export class HelixStreamApi extends BaseApi {
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixStream>> {
 		const result = await this._client.callApi<HelixPaginatedResult<HelixStreamData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'streams/followed',
 			scope: 'user:read:follows',
 			query: {

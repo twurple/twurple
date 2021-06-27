@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { ApiClient, HelixUser } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 
 /**
  * The tier of a subscription. 1000 means tier 1, and so on.
@@ -38,7 +38,7 @@ export interface EventSubChannelSubscriptionMessageEventData {
 /**
  * An EventSub event representing the public announcement of a channel subscription by the subscriber.
  */
-@rtfm<EventSubChannelSubscriptionMessageEvent>('twitch-eventsub', 'EventSubChannelSubscriptionMessageEvent', 'userId')
+@rtfm<EventSubChannelSubscriptionMessageEvent>('eventsub', 'EventSubChannelSubscriptionMessageEvent', 'userId')
 export class EventSubChannelSubscriptionMessageEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

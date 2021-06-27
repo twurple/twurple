@@ -1,14 +1,14 @@
-import type { HelixEventSubSubscription } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelPredictionLockEventData } from '../Events/EventSubChannelPredictionLockEvent';
-import { EventSubChannelPredictionLockEvent } from '../Events/EventSubChannelPredictionLockEvent';
+import type { HelixEventSubSubscription } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelPredictionLockEventData } from '../events/EventSubChannelPredictionLockEvent';
+import { EventSubChannelPredictionLockEvent } from '../events/EventSubChannelPredictionLockEvent';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
  */
-@rtfm('twitch-eventsub', 'EventSubSubscription')
+@rtfm('eventsub', 'EventSubSubscription')
 export class EventSubChannelPredictionLockSubscription extends EventSubSubscription<EventSubChannelPredictionLockEvent> {
 	constructor(
 		handler: (data: EventSubChannelPredictionLockEvent) => void,
@@ -27,7 +27,7 @@ export class EventSubChannelPredictionLockSubscription extends EventSubSubscript
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToChannelPredictionLockEvents(
+		return await this._client._apiClient.helix.eventSub.subscribeToChannelPredictionLockEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

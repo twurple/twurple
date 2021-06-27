@@ -1,14 +1,14 @@
-import type { HelixEventSubSubscription } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubExtensionBitsTransactionCreateEventData } from '../Events/EventSubExtensionBitsTransactionCreateEvent';
-import { EventSubExtensionBitsTransactionCreateEvent } from '../Events/EventSubExtensionBitsTransactionCreateEvent';
+import type { HelixEventSubSubscription } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubExtensionBitsTransactionCreateEventData } from '../events/EventSubExtensionBitsTransactionCreateEvent';
+import { EventSubExtensionBitsTransactionCreateEvent } from '../events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
  */
-@rtfm('twitch-eventsub', 'EventSubSubscription')
+@rtfm('eventsub', 'EventSubSubscription')
 export class EventSubExtensionBitsTransactionCreateSubscription extends EventSubSubscription<EventSubExtensionBitsTransactionCreateEvent> {
 	constructor(
 		handler: (data: EventSubExtensionBitsTransactionCreateEvent) => void,
@@ -29,7 +29,7 @@ export class EventSubExtensionBitsTransactionCreateSubscription extends EventSub
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToExtensionBitsTransactionCreateEvents(
+		return await this._client._apiClient.helix.eventSub.subscribeToExtensionBitsTransactionCreateEvents(
 			this._clientId,
 			await this._getTransportOptions()
 		);

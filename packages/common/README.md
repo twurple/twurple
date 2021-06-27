@@ -1,6 +1,6 @@
 # ⚠ WARNING
 
-This is a future version still in development. For a stable version, check out [the `twitch-common` package](https://www.npmjs.com/package/twitch-common).
+This is a future version still in development. For a stable version, check out [the `@twurple/common` package](https://www.npmjs.com/package/@twurple/common).
 
 # Twurple - Authentication
 

@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelPredictionOutcomeData } from './Common/EventSubChannelPredictionOutcome';
-import { EventSubChannelPredictionOutcome } from './Common/EventSubChannelPredictionOutcome';
+import type { ApiClient, HelixUser } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelPredictionOutcomeData } from './common/EventSubChannelPredictionOutcome';
+import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
 
 /** @private */
 export interface EventSubChannelPredictionLockEventData {
@@ -19,7 +19,7 @@ export interface EventSubChannelPredictionLockEventData {
 /**
  * An EventSub event representing a prediction being locked in a channel.
  */
-@rtfm<EventSubChannelPredictionLockEvent>('twitch-eventsub', 'EventSubChannelPredictionLockEvent', 'broadcasterId')
+@rtfm<EventSubChannelPredictionLockEvent>('eventsub', 'EventSubChannelPredictionLockEvent', 'broadcasterId')
 export class EventSubChannelPredictionLockEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

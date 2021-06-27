@@ -1,6 +1,6 @@
+import { HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
-import { HttpStatusCodeError } from '../../../../../twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
@@ -176,7 +176,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	): Promise<HelixUserSubscription | null> {
 		try {
 			const result = await this._client.callApi<HelixResponse<HelixUserSubscriptionData>>({
-				type: TwitchApiCallType.Helix,
+				type: 'helix',
 				url: 'subscriptions/user',
 				scope: 'user:read:subscriptions',
 				query: {

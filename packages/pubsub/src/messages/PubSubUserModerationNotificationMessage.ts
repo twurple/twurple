@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 
 export type PubSubUserModerationNotificationMessageStatus = 'PENDING' | 'ALLOWED' | 'DENIED' | 'EXPIRED';
 
@@ -18,11 +18,7 @@ export interface PubSubUserModerationNotificationMessageData {
 /**
  * A message that informs about a moderation action on your message..
  */
-@rtfm<PubSubUserModerationNotificationMessage>(
-	'twitch-pubsub-client',
-	'PubSubUserModerationNotificationMessage',
-	'messageId'
-)
+@rtfm<PubSubUserModerationNotificationMessage>('pubsub', 'PubSubUserModerationNotificationMessage', 'messageId')
 export class PubSubUserModerationNotificationMessage {
 	@Enumerable(false) private readonly _data: PubSubUserModerationNotificationMessageData;
 

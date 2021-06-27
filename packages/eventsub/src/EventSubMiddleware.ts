@@ -1,6 +1,6 @@
+import type { ApiClient } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import type { RequestHandler } from 'httpanda';
-import type { ApiClient } from 'twitch';
-import { rtfm } from 'twitch-common';
 import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import { EventSubBase } from './EventSubBase';
 import type { EventSubConfig } from './EventSubListener';
@@ -37,7 +37,7 @@ export interface EventSubMiddlewareConfig extends EventSubConfig {
  * @hideProtected
  * @inheritDoc
  */
-@rtfm('twitch-eventsub', 'EventSubMiddleware')
+@rtfm('eventsub', 'EventSubMiddleware')
 export class EventSubMiddleware extends EventSubBase {
 	private readonly _hostName: string;
 	private readonly _pathPrefix?: string;

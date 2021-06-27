@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelPollChoiceData } from './Common/EventSubChannelPollChoice';
-import { EventSubChannelPollChoice } from './Common/EventSubChannelPollChoice';
-import type { EventSubChannelPollVoteTypeSettingsData } from './Common/EventSubChannelPollVoteTypeSettingsData';
+import type { ApiClient, HelixUser } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelPollChoiceData } from './common/EventSubChannelPollChoice';
+import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice';
+import type { EventSubChannelPollVoteTypeSettingsData } from './common/EventSubChannelPollVoteTypeSettingsData';
 
 export type EventSubChannelPollEndStatus = 'completed' | 'archived' | 'terminated';
 
@@ -25,7 +25,7 @@ export interface EventSubChannelPollProgressEventData {
 /**
  * An EventSub event representing a poll starting in a channel.
  */
-@rtfm<EventSubChannelPollProgressEvent>('twitch-eventsub', 'EventSubChannelPollProgressEvent', 'broadcasterId')
+@rtfm<EventSubChannelPollProgressEvent>('eventsub', 'EventSubChannelPollProgressEvent', 'broadcasterId')
 export class EventSubChannelPollProgressEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 
 export type HelixChatBadgeScale = 1 | 2 | 4;
 
@@ -14,7 +14,7 @@ export interface HelixChatBadgeVersionData {
 /**
  * A version of a chat badge.
  */
-@rtfm<HelixChatBadgeVersion>('twitch', 'HelixChatBadgeVersion', 'id')
+@rtfm<HelixChatBadgeVersion>('api', 'HelixChatBadgeVersion', 'id')
 export class HelixChatBadgeVersion {
 	@Enumerable(false) private readonly _data: HelixChatBadgeVersionData;
 

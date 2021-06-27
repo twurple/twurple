@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixUser } from '../User/HelixUser';
+import type { HelixUser } from '../user/HelixUser';
 
 /** @private */
 export interface HelixUserSubscriptionData {
@@ -15,7 +15,7 @@ export interface HelixUserSubscriptionData {
 /**
  * The user info about a (paid) subscription to a broadcaster.
  */
-@rtfm<HelixUserSubscription>('twitch', 'HelixUserSubscription', 'broadcasterId')
+@rtfm<HelixUserSubscription>('api', 'HelixUserSubscription', 'broadcasterId')
 export class HelixUserSubscription {
 	/** @private */ @Enumerable(false) protected readonly _data: HelixUserSubscriptionData;
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
@@ -51,7 +51,7 @@ export class HelixUserSubscription {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.broadcaster_id);
+		return await this._client.helix.users.getUserById(this._data.broadcaster_id);
 	}
 
 	/**

@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 
 /** @private */
 export interface HelixPollChoiceData {
@@ -13,7 +13,7 @@ export interface HelixPollChoiceData {
 /**
  * A choice in a channel poll.
  */
-@rtfm<HelixPollChoice>('twitch', 'HelixPollChoice', 'id')
+@rtfm<HelixPollChoice>('api', 'HelixPollChoice', 'id')
 export class HelixPollChoice {
 	@Enumerable(false) private readonly _data: HelixPollChoiceData;
 

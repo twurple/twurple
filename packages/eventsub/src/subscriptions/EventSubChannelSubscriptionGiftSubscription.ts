@@ -1,14 +1,14 @@
-import type { HelixEventSubSubscription } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelSubscriptionGiftEventData } from '../Events/EventSubChannelSubscriptionGiftEvent';
-import { EventSubChannelSubscriptionGiftEvent } from '../Events/EventSubChannelSubscriptionGiftEvent';
+import type { HelixEventSubSubscription } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelSubscriptionGiftEventData } from '../events/EventSubChannelSubscriptionGiftEvent';
+import { EventSubChannelSubscriptionGiftEvent } from '../events/EventSubChannelSubscriptionGiftEvent';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
  */
-@rtfm('twitch-eventsub', 'EventSubSubscription')
+@rtfm('eventsub', 'EventSubSubscription')
 export class EventSubChannelSubscriptionGiftSubscription extends EventSubSubscription<EventSubChannelSubscriptionGiftEvent> {
 	constructor(
 		handler: (data: EventSubChannelSubscriptionGiftEvent) => void,
@@ -27,7 +27,7 @@ export class EventSubChannelSubscriptionGiftSubscription extends EventSubSubscri
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToChannelSubscriptionGiftEvents(
+		return await this._client._apiClient.helix.eventSub.subscribeToChannelSubscriptionGiftEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelPollBeginChoiceData } from './Common/EventSubChannelPollBeginChoice';
-import { EventSubChannelPollBeginChoice } from './Common/EventSubChannelPollBeginChoice';
-import type { EventSubChannelPollVoteTypeSettingsData } from './Common/EventSubChannelPollVoteTypeSettingsData';
+import type { ApiClient, HelixUser } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelPollBeginChoiceData } from './common/EventSubChannelPollBeginChoice';
+import { EventSubChannelPollBeginChoice } from './common/EventSubChannelPollBeginChoice';
+import type { EventSubChannelPollVoteTypeSettingsData } from './common/EventSubChannelPollVoteTypeSettingsData';
 
 /** @private */
 export interface EventSubChannelPollBeginEventData {
@@ -22,7 +22,7 @@ export interface EventSubChannelPollBeginEventData {
 /**
  * An EventSub event representing a poll starting in a channel.
  */
-@rtfm<EventSubChannelPollBeginEvent>('twitch-eventsub', 'EventSubChannelPollBeginEvent', 'broadcasterId')
+@rtfm<EventSubChannelPollBeginEvent>('eventsub', 'EventSubChannelPollBeginEvent', 'broadcasterId')
 export class EventSubChannelPollBeginEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

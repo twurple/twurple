@@ -1,6 +1,6 @@
 import { CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { HelixChatBadgeVersionData } from './HelixChatBadgeVersion';
 import { HelixChatBadgeVersion } from './HelixChatBadgeVersion';
 
@@ -13,7 +13,7 @@ export interface HelixChatBadgeSetData {
 /**
  * A version of a chat badge.
  */
-@rtfm<HelixChatBadgeSet>('twitch', 'HelixChatBadgeSet', 'id')
+@rtfm<HelixChatBadgeSet>('api', 'HelixChatBadgeSet', 'id')
 export class HelixChatBadgeSet {
 	@Enumerable(false) private readonly _data: HelixChatBadgeSetData;
 

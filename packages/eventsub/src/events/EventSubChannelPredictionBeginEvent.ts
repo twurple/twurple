@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelPredictionBeginOutcomeData } from './Common/EventSubChannelPredictionBeginOutcome';
-import { EventSubChannelPredictionBeginOutcome } from './Common/EventSubChannelPredictionBeginOutcome';
+import type { ApiClient, HelixUser } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelPredictionBeginOutcomeData } from './common/EventSubChannelPredictionBeginOutcome';
+import { EventSubChannelPredictionBeginOutcome } from './common/EventSubChannelPredictionBeginOutcome';
 
 /** @private */
 export interface EventSubChannelPredictionBeginEventData {
@@ -19,7 +19,7 @@ export interface EventSubChannelPredictionBeginEventData {
 /**
  * An EventSub event representing a prediction starting in a channel.
  */
-@rtfm<EventSubChannelPredictionBeginEvent>('twitch-eventsub', 'EventSubChannelPredictionBeginEvent', 'broadcasterId')
+@rtfm<EventSubChannelPredictionBeginEvent>('eventsub', 'EventSubChannelPredictionBeginEvent', 'broadcasterId')
 export class EventSubChannelPredictionBeginEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

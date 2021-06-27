@@ -1,79 +1,79 @@
 import { Logger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { RequestHandler } from 'httpanda';
 import type {
 	ApiClient,
 	HelixEventSubSubscription,
 	HelixEventSubSubscriptionStatus,
 	HelixEventSubTransportData
-} from 'twitch';
-import { InvalidTokenTypeError } from 'twitch-auth';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId } from 'twitch-common';
-import type { EventSubChannelBanEvent } from './Events/EventSubChannelBanEvent';
-import type { EventSubChannelCheerEvent } from './Events/EventSubChannelCheerEvent';
-import type { EventSubChannelFollowEvent } from './Events/EventSubChannelFollowEvent';
-import type { EventSubChannelHypeTrainBeginEvent } from './Events/EventSubChannelHypeTrainBeginEvent';
-import type { EventSubChannelHypeTrainEndEvent } from './Events/EventSubChannelHypeTrainEndEvent';
-import type { EventSubChannelHypeTrainProgressEvent } from './Events/EventSubChannelHypeTrainProgressEvent';
-import type { EventSubChannelModeratorEvent } from './Events/EventSubChannelModeratorEvent';
-import type { EventSubChannelPollBeginEvent } from './Events/EventSubChannelPollBeginEvent';
-import type { EventSubChannelPollEndEvent } from './Events/EventSubChannelPollEndEvent';
-import type { EventSubChannelPollProgressEvent } from './Events/EventSubChannelPollProgressEvent';
-import type { EventSubChannelPredictionBeginEvent } from './Events/EventSubChannelPredictionBeginEvent';
-import type { EventSubChannelPredictionEndEvent } from './Events/EventSubChannelPredictionEndEvent';
-import type { EventSubChannelPredictionLockEvent } from './Events/EventSubChannelPredictionLockEvent';
-import type { EventSubChannelPredictionProgressEvent } from './Events/EventSubChannelPredictionProgressEvent';
-import type { EventSubChannelRaidEvent } from './Events/EventSubChannelRaidEvent';
-import type { EventSubChannelRedemptionAddEvent } from './Events/EventSubChannelRedemptionAddEvent';
-import type { EventSubChannelRedemptionUpdateEvent } from './Events/EventSubChannelRedemptionUpdateEvent';
-import type { EventSubChannelRewardEvent } from './Events/EventSubChannelRewardEvent';
-import type { EventSubChannelSubscriptionEndEvent } from './Events/EventSubChannelSubscriptionEndEvent';
-import type { EventSubChannelSubscriptionEvent } from './Events/EventSubChannelSubscriptionEvent';
-import type { EventSubChannelSubscriptionGiftEvent } from './Events/EventSubChannelSubscriptionGiftEvent';
-import type { EventSubChannelSubscriptionMessageEvent } from './Events/EventSubChannelSubscriptionMessageEvent';
-import type { EventSubChannelUnbanEvent } from './Events/EventSubChannelUnbanEvent';
-import type { EventSubChannelUpdateEvent } from './Events/EventSubChannelUpdateEvent';
-import type { EventSubExtensionBitsTransactionCreateEvent } from './Events/EventSubExtensionBitsTransactionCreateEvent';
-import type { EventSubStreamOfflineEvent } from './Events/EventSubStreamOfflineEvent';
-import type { EventSubStreamOnlineEvent } from './Events/EventSubStreamOnlineEvent';
-import type { EventSubUserAuthorizationRevokeEvent } from './Events/EventSubUserAuthorizationRevokeEvent';
-import type { EventSubUserUpdateEvent } from './Events/EventSubUserUpdateEvent';
+} from '@twurple/api';
+import { InvalidTokenTypeError } from '@twurple/auth';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId } from '@twurple/common';
+import type { RequestHandler } from 'httpanda';
+import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
+import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
+import type { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
+import type { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
+import type { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
+import type { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
+import type { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
+import type { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEvent';
+import type { EventSubChannelPollProgressEvent } from './events/EventSubChannelPollProgressEvent';
+import type { EventSubChannelPredictionBeginEvent } from './events/EventSubChannelPredictionBeginEvent';
+import type { EventSubChannelPredictionEndEvent } from './events/EventSubChannelPredictionEndEvent';
+import type { EventSubChannelPredictionLockEvent } from './events/EventSubChannelPredictionLockEvent';
+import type { EventSubChannelPredictionProgressEvent } from './events/EventSubChannelPredictionProgressEvent';
+import type { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent';
+import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent';
+import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
+import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
+import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChannelSubscriptionEndEvent';
+import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';
+import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
+import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent';
+import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
+import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
+import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
+import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';
+import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
+import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 import type { EventSubConfig } from './EventSubListener';
-import { EventSubChannelBanSubscription } from './Subscriptions/EventSubChannelBanSubscription';
-import { EventSubChannelCheerSubscription } from './Subscriptions/EventSubChannelCheerSubscription';
-import { EventSubChannelFollowSubscription } from './Subscriptions/EventSubChannelFollowSubscription';
-import { EventSubChannelHypeTrainBeginSubscription } from './Subscriptions/EventSubChannelHypeTrainBeginSubscription';
-import { EventSubChannelHypeTrainEndSubscription } from './Subscriptions/EventSubChannelHypeTrainEndSubscription';
-import { EventSubChannelHypeTrainProgressSubscription } from './Subscriptions/EventSubChannelHypeTrainProgressSubscription';
-import { EventSubChannelModeratorAddSubscription } from './Subscriptions/EventSubChannelModeratorAddSubscription';
-import { EventSubChannelModeratorRemoveSubscription } from './Subscriptions/EventSubChannelModeratorRemoveSubscription';
-import { EventSubChannelPollBeginSubscription } from './Subscriptions/EventSubChannelPollBeginSubscription';
-import { EventSubChannelPollEndSubscription } from './Subscriptions/EventSubChannelPollEndSubscription';
-import { EventSubChannelPollProgressSubscription } from './Subscriptions/EventSubChannelPollProgressSubscription';
-import { EventSubChannelPredictionBeginSubscription } from './Subscriptions/EventSubChannelPredictionBeginSubscription';
-import { EventSubChannelPredictionEndSubscription } from './Subscriptions/EventSubChannelPredictionEndSubscription';
-import { EventSubChannelPredictionLockSubscription } from './Subscriptions/EventSubChannelPredictionLockSubscription';
-import { EventSubChannelPredictionProgressSubscription } from './Subscriptions/EventSubChannelPredictionProgressSubscription';
-import { EventSubChannelRaidSubscription } from './Subscriptions/EventSubChannelRaidSubscription';
-import { EventSubChannelRedemptionAddSubscription } from './Subscriptions/EventSubChannelRedemptionAddSubscription';
-import { EventSubChannelRedemptionUpdateSubscription } from './Subscriptions/EventSubChannelRedemptionUpdateSubscription';
-import { EventSubChannelRewardAddSubscription } from './Subscriptions/EventSubChannelRewardAddSubscription';
-import { EventSubChannelRewardRemoveSubscription } from './Subscriptions/EventSubChannelRewardRemoveSubscription';
-import { EventSubChannelRewardUpdateSubscription } from './Subscriptions/EventSubChannelRewardUpdateSubscription';
-import { EventSubChannelSubscriptionEndSubscription } from './Subscriptions/EventSubChannelSubscriptionEndSubscription';
-import { EventSubChannelSubscriptionGiftSubscription } from './Subscriptions/EventSubChannelSubscriptionGiftSubscription';
-import { EventSubChannelSubscriptionMessageSubscription } from './Subscriptions/EventSubChannelSubscriptionMessageSubscription';
-import { EventSubChannelSubscriptionSubscription } from './Subscriptions/EventSubChannelSubscriptionSubscription';
-import { EventSubChannelUnbanSubscription } from './Subscriptions/EventSubChannelUnbanSubscription';
-import { EventSubChannelUpdateSubscription } from './Subscriptions/EventSubChannelUpdateSubscription';
-import { EventSubExtensionBitsTransactionCreateSubscription } from './Subscriptions/EventSubExtensionBitsTransactionCreateSubscription';
-import { EventSubStreamOfflineSubscription } from './Subscriptions/EventSubStreamOfflineSubscription';
-import { EventSubStreamOnlineSubscription } from './Subscriptions/EventSubStreamOnlineSubscription';
-import type { EventSubSubscription, SubscriptionResultType } from './Subscriptions/EventSubSubscription';
-import { EventSubUserAuthorizationRevokeSubscription } from './Subscriptions/EventSubUserAuthorizationRevokeSubscription';
-import { EventSubUserUpdateSubscription } from './Subscriptions/EventSubUserUpdateSubscription';
+import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
+import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription';
+import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription';
+import { EventSubChannelHypeTrainBeginSubscription } from './subscriptions/EventSubChannelHypeTrainBeginSubscription';
+import { EventSubChannelHypeTrainEndSubscription } from './subscriptions/EventSubChannelHypeTrainEndSubscription';
+import { EventSubChannelHypeTrainProgressSubscription } from './subscriptions/EventSubChannelHypeTrainProgressSubscription';
+import { EventSubChannelModeratorAddSubscription } from './subscriptions/EventSubChannelModeratorAddSubscription';
+import { EventSubChannelModeratorRemoveSubscription } from './subscriptions/EventSubChannelModeratorRemoveSubscription';
+import { EventSubChannelPollBeginSubscription } from './subscriptions/EventSubChannelPollBeginSubscription';
+import { EventSubChannelPollEndSubscription } from './subscriptions/EventSubChannelPollEndSubscription';
+import { EventSubChannelPollProgressSubscription } from './subscriptions/EventSubChannelPollProgressSubscription';
+import { EventSubChannelPredictionBeginSubscription } from './subscriptions/EventSubChannelPredictionBeginSubscription';
+import { EventSubChannelPredictionEndSubscription } from './subscriptions/EventSubChannelPredictionEndSubscription';
+import { EventSubChannelPredictionLockSubscription } from './subscriptions/EventSubChannelPredictionLockSubscription';
+import { EventSubChannelPredictionProgressSubscription } from './subscriptions/EventSubChannelPredictionProgressSubscription';
+import { EventSubChannelRaidSubscription } from './subscriptions/EventSubChannelRaidSubscription';
+import { EventSubChannelRedemptionAddSubscription } from './subscriptions/EventSubChannelRedemptionAddSubscription';
+import { EventSubChannelRedemptionUpdateSubscription } from './subscriptions/EventSubChannelRedemptionUpdateSubscription';
+import { EventSubChannelRewardAddSubscription } from './subscriptions/EventSubChannelRewardAddSubscription';
+import { EventSubChannelRewardRemoveSubscription } from './subscriptions/EventSubChannelRewardRemoveSubscription';
+import { EventSubChannelRewardUpdateSubscription } from './subscriptions/EventSubChannelRewardUpdateSubscription';
+import { EventSubChannelSubscriptionEndSubscription } from './subscriptions/EventSubChannelSubscriptionEndSubscription';
+import { EventSubChannelSubscriptionGiftSubscription } from './subscriptions/EventSubChannelSubscriptionGiftSubscription';
+import { EventSubChannelSubscriptionMessageSubscription } from './subscriptions/EventSubChannelSubscriptionMessageSubscription';
+import { EventSubChannelSubscriptionSubscription } from './subscriptions/EventSubChannelSubscriptionSubscription';
+import { EventSubChannelUnbanSubscription } from './subscriptions/EventSubChannelUnbanSubscription';
+import { EventSubChannelUpdateSubscription } from './subscriptions/EventSubChannelUpdateSubscription';
+import { EventSubExtensionBitsTransactionCreateSubscription } from './subscriptions/EventSubExtensionBitsTransactionCreateSubscription';
+import { EventSubStreamOfflineSubscription } from './subscriptions/EventSubStreamOfflineSubscription';
+import { EventSubStreamOnlineSubscription } from './subscriptions/EventSubStreamOnlineSubscription';
+import type { EventSubSubscription, SubscriptionResultType } from './subscriptions/EventSubSubscription';
+import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription';
+import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription';
 
 /** @private */
 interface EventSubSubscriptionBody {
@@ -119,7 +119,7 @@ export abstract class EventSubBase {
 	protected _readyToSubscribe = false;
 
 	constructor(apiClient: ApiClient, secret: string, config?: EventSubConfig) {
-		if (apiClient.tokenType !== 'app') {
+		if (apiClient._authProvider.tokenType !== 'app') {
 			throw new InvalidTokenTypeError(
 				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
 			);
@@ -151,7 +151,7 @@ export abstract class EventSubBase {
 			);
 		}
 
-		return this._genericSubscribe(EventSubStreamOnlineSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubStreamOnlineSubscription, handler, this, userId);
 	}
 
 	/**
@@ -172,7 +172,7 @@ export abstract class EventSubBase {
 			);
 		}
 
-		return this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
 	}
 
 	/**
@@ -192,7 +192,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -212,7 +212,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelFollowEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
 	}
 
 	/**
@@ -232,7 +232,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelSubscriptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
 	}
 
 	/**
@@ -252,7 +252,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelSubscriptionGiftEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelSubscriptionGiftSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelSubscriptionGiftSubscription, handler, this, userId);
 	}
 
 	/**
@@ -272,7 +272,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelSubscriptionMessageEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelSubscriptionMessageSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelSubscriptionMessageSubscription, handler, this, userId);
 	}
 
 	/**
@@ -292,7 +292,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelSubscriptionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelSubscriptionEndSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelSubscriptionEndSubscription, handler, this, userId);
 	}
 
 	/**
@@ -312,7 +312,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelCheerEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
 	}
 
 	/**
@@ -332,7 +332,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelBanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
 	}
 
 	/**
@@ -352,7 +352,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelUnbanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
 	}
 
 	/**
@@ -372,7 +372,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelModeratorAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelModeratorAddSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelModeratorAddSubscription, handler, this, userId);
 	}
 
 	/**
@@ -392,7 +392,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelModeratorRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelModeratorRemoveSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelModeratorRemoveSubscription, handler, this, userId);
 	}
 
 	/**
@@ -412,7 +412,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelRaidEventsFrom: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
+		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
 	}
 
 	/**
@@ -432,7 +432,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelRaidEventsTo: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
+		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
 	}
 
 	/**
@@ -452,7 +452,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelRewardAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
 	}
 
 	/**
@@ -472,7 +472,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -494,7 +494,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
+		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -514,7 +514,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToRewardRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
 	}
 
 	/**
@@ -536,7 +536,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToRewardRemoveEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
+		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -556,7 +556,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelRedemptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
 	}
 
 	/**
@@ -578,7 +578,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToRedemptionAddEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
+		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -598,7 +598,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelRedemptionUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -620,7 +620,13 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelRedemptionUpdateEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId, rewardId);
+		return await this._genericSubscribe(
+			EventSubChannelRedemptionUpdateSubscription,
+			handler,
+			this,
+			userId,
+			rewardId
+		);
 	}
 
 	/**
@@ -640,7 +646,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelPollBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelPollBeginSubscription, handler, this, broadcasterId);
+		return await this._genericSubscribe(EventSubChannelPollBeginSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -660,7 +666,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelPollProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelPollProgressSubscription, handler, this, broadcasterId);
+		return await this._genericSubscribe(EventSubChannelPollProgressSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -680,7 +686,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelPollEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelPollEndSubscription, handler, this, broadcasterId);
+		return await this._genericSubscribe(EventSubChannelPollEndSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -700,7 +706,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelPredictionBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelPredictionBeginSubscription, handler, this, broadcasterId);
+		return await this._genericSubscribe(EventSubChannelPredictionBeginSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -720,7 +726,12 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelPredictionProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelPredictionProgressSubscription, handler, this, broadcasterId);
+		return await this._genericSubscribe(
+			EventSubChannelPredictionProgressSubscription,
+			handler,
+			this,
+			broadcasterId
+		);
 	}
 
 	/**
@@ -740,7 +751,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelPredictionLockEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelPredictionLockSubscription, handler, this, broadcasterId);
+		return await this._genericSubscribe(EventSubChannelPredictionLockSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -760,7 +771,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelPredictionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelPredictionEndSubscription, handler, this, broadcasterId);
+		return await this._genericSubscribe(EventSubChannelPredictionEndSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -780,7 +791,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelHypeTrainBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
 	}
 
 	/**
@@ -800,7 +811,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelHypeTrainProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
 	}
 
 	/**
@@ -820,7 +831,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToChannelHypeTrainEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
 	}
 
 	/**
@@ -833,7 +844,12 @@ export abstract class EventSubBase {
 		clientId: string,
 		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void
 	): Promise<EventSubSubscription> {
-		return this._genericSubscribe(EventSubExtensionBitsTransactionCreateSubscription, handler, this, clientId);
+		return await this._genericSubscribe(
+			EventSubExtensionBitsTransactionCreateSubscription,
+			handler,
+			this,
+			clientId
+		);
 	}
 
 	/**
@@ -846,7 +862,7 @@ export abstract class EventSubBase {
 		clientId: string,
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void
 	): Promise<EventSubSubscription> {
-		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
+		return await this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
 	/**
 	 * Subscribes to events that represent a user updating their account details.
@@ -865,7 +881,7 @@ export abstract class EventSubBase {
 				'EventSubListener#subscribeToUserUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
-		return this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
+		return await this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
 	}
 
 	/** @private */
@@ -917,7 +933,7 @@ export abstract class EventSubBase {
 		);
 
 		await Promise.all(
-			[...this._subscriptions].map(async ([subId, sub]) => sub.start(this._twitchSubscriptions.get(subId)))
+			[...this._subscriptions].map(async ([subId, sub]) => await sub.start(this._twitchSubscriptions.get(subId)))
 		);
 	}
 

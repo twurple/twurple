@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 
 /** @private */
 export interface HelixEmoteImageData {
@@ -21,7 +21,7 @@ export interface HelixEmoteData {
 /**
  * A Twitch emote.
  */
-@rtfm<HelixEmote>('twitch', 'HelixEmote', 'id')
+@rtfm<HelixEmote>('api', 'HelixEmote', 'id')
 export class HelixEmote {
 	/** @private */ @Enumerable(false) protected readonly _data: HelixEmoteData;
 

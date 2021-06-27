@@ -1,5 +1,5 @@
 import { rtfm } from '@twurple/common';
-import type { HelixUser } from '../User/HelixUser';
+import type { HelixUser } from '../user/HelixUser';
 import type { HelixUserSubscriptionData } from './HelixUserSubscription';
 import { HelixUserSubscription } from './HelixUserSubscription';
 

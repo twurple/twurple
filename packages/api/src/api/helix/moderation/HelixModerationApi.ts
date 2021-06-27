@@ -256,7 +256,7 @@ export class HelixModerationApi extends BaseApi {
 	 */
 	async processHeldAutoModMessage(user: UserIdResolvable, msgId: string, allow: boolean): Promise<void> {
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'moderation/automod/message',
 			method: 'POST',
 			scope: 'moderator:manage:automod',

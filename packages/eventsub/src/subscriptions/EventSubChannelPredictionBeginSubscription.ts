@@ -1,14 +1,14 @@
-import type { HelixEventSubSubscription } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelPredictionBeginEventData } from '../Events/EventSubChannelPredictionBeginEvent';
-import { EventSubChannelPredictionBeginEvent } from '../Events/EventSubChannelPredictionBeginEvent';
+import type { HelixEventSubSubscription } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelPredictionBeginEventData } from '../events/EventSubChannelPredictionBeginEvent';
+import { EventSubChannelPredictionBeginEvent } from '../events/EventSubChannelPredictionBeginEvent';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
  */
-@rtfm('twitch-eventsub', 'EventSubSubscription')
+@rtfm('eventsub', 'EventSubSubscription')
 export class EventSubChannelPredictionBeginSubscription extends EventSubSubscription<EventSubChannelPredictionBeginEvent> {
 	constructor(
 		handler: (data: EventSubChannelPredictionBeginEvent) => void,
@@ -27,7 +27,7 @@ export class EventSubChannelPredictionBeginSubscription extends EventSubSubscrip
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToChannelPredictionBeginEvents(
+		return await this._client._apiClient.helix.eventSub.subscribeToChannelPredictionBeginEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

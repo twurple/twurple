@@ -5,7 +5,7 @@ import { BaseApi } from '../BaseApi';
 import { HelixBitsApi } from './bits/HelixBitsApi';
 import { HelixChannelApi } from './channel/HelixChannelApi';
 import { HelixChannelPointsApi } from './channelPoints/HelixChannelPointsApi';
-import { HelixChatApi } from './Chat/HelixChatApi';
+import { HelixChatApi } from './chat/HelixChatApi';
 import { HelixClipApi } from './clip/HelixClipApi';
 import { HelixEventSubApi } from './eventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from './extensions/HelixExtensionsApi';

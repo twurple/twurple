@@ -1,6 +1,5 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -44,7 +43,7 @@ export interface HelixCreatePollData {
 /**
  * The Helix API methods that deal with polls.
  */
-@rtfm('twitch', 'HelixPollApi')
+@rtfm('api', 'HelixPollApi')
 export class HelixPollApi extends BaseApi {
 	/**
 	 * Retrieves a list of polls for the given broadcaster.
@@ -59,7 +58,7 @@ export class HelixPollApi extends BaseApi {
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixPoll>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixPollData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'polls',
 			scope: 'channel:read:polls',
 			query: {
@@ -103,7 +102,7 @@ export class HelixPollApi extends BaseApi {
 		}
 
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixPollData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'polls',
 			scope: 'channel:read:polls',
 			query: {
@@ -136,7 +135,7 @@ export class HelixPollApi extends BaseApi {
 	 */
 	async createPoll(broadcaster: UserIdResolvable, data: HelixCreatePollData): Promise<HelixPoll> {
 		const result = await this._client.callApi<HelixResponse<HelixPollData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'polls',
 			method: 'POST',
 			scope: 'channel:manage:polls',
@@ -164,7 +163,7 @@ export class HelixPollApi extends BaseApi {
 	 */
 	async endPoll(broadcaster: UserIdResolvable, id: string, showResult = true): Promise<HelixPoll> {
 		const result = await this._client.callApi<HelixResponse<HelixPollData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'polls',
 			method: 'PATCH',
 			scope: 'channel:manage:polls',

@@ -1,6 +1,5 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { HelixResponse } from '../HelixResponse';
 import type { HelixChannelEmoteData } from './HelixChannelEmote';
@@ -23,14 +22,14 @@ import { HelixEmoteFromSet } from './HelixEmoteFromSet';
  * const rewards = await api.helix.chat.getChannelBadges('125328655');
  * ```
  */
-@rtfm('twitch', 'HelixChatApi')
+@rtfm('api', 'HelixChatApi')
 export class HelixChatApi extends BaseApi {
 	/**
 	 * Retrieves all global badges.
 	 */
 	async getGlobalBadges(): Promise<HelixChatBadgeSet[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChatBadgeSetData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'chat/badges/global'
 		});
 
@@ -44,7 +43,7 @@ export class HelixChatApi extends BaseApi {
 	 */
 	async getChannelBadges(broadcaster: UserIdResolvable): Promise<HelixChatBadgeSet[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChatBadgeSetData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'chat/badges',
 			query: {
 				broadcaster_id: extractUserId(broadcaster)
@@ -59,7 +58,7 @@ export class HelixChatApi extends BaseApi {
 	 */
 	async getGlobalEmotes(): Promise<HelixEmote[]> {
 		const result = await this._client.callApi<HelixResponse<HelixEmoteData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'chat/emotes/global'
 		});
 
@@ -73,7 +72,7 @@ export class HelixChatApi extends BaseApi {
 	 */
 	async getChannelEmotes(channel: UserIdResolvable): Promise<HelixChannelEmote[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChannelEmoteData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'chat/emotes',
 			query: {
 				broadcaster_id: extractUserId(channel)
@@ -90,7 +89,7 @@ export class HelixChatApi extends BaseApi {
 	 */
 	async getEmotesFromSets(setIds: string[]): Promise<HelixEmoteFromSet[]> {
 		const result = await this._client.callApi<HelixResponse<HelixEmoteFromSetData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'chat/emotes/set',
 			query: {
 				emote_set_id: setIds

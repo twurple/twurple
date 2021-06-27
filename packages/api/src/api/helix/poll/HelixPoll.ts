@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixUser } from '../User/HelixUser';
+import type { HelixUser } from '../user/HelixUser';
 import type { HelixPollChoiceData } from './HelixPollChoice';
 import { HelixPollChoice } from './HelixPollChoice';
-import { rtfm } from 'twitch-common';
 
 /**
  * The different statuses a poll can have.
@@ -30,7 +30,7 @@ export interface HelixPollData {
 /**
  * A channel poll.
  */
-@rtfm<HelixPoll>('twitch', 'HelixPoll', 'id')
+@rtfm<HelixPoll>('api', 'HelixPoll', 'id')
 export class HelixPoll {
 	@Enumerable(false) private readonly _data: HelixPollData;
 	@Enumerable(false) private readonly _client: ApiClient;

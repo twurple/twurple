@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { ApiClient, HelixUser } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 
 /** @private */
 export interface EventSubExtensionBitsTransactionCreateEventProductData {
@@ -26,11 +26,7 @@ export interface EventSubExtensionBitsTransactionCreateEventData {
 /**
  * An EventSub event representing a channel subscription.
  */
-@rtfm<EventSubExtensionBitsTransactionCreateEvent>(
-	'twitch-eventsub',
-	'EventSubExtensionBitsTransactionCreateEvent',
-	'id'
-)
+@rtfm<EventSubExtensionBitsTransactionCreateEvent>('eventsub', 'EventSubExtensionBitsTransactionCreateEvent', 'id')
 export class EventSubExtensionBitsTransactionCreateEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

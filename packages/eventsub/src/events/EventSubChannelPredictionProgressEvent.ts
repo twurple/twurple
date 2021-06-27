@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelPredictionOutcomeData } from './Common/EventSubChannelPredictionOutcome';
-import { EventSubChannelPredictionOutcome } from './Common/EventSubChannelPredictionOutcome';
+import type { ApiClient, HelixUser } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelPredictionOutcomeData } from './common/EventSubChannelPredictionOutcome';
+import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
 
 /** @private */
 export interface EventSubChannelPredictionProgressEventData {
@@ -19,11 +19,7 @@ export interface EventSubChannelPredictionProgressEventData {
 /**
  * An EventSub event representing a prediction being voted on in a channel.
  */
-@rtfm<EventSubChannelPredictionProgressEvent>(
-	'twitch-eventsub',
-	'EventSubChannelPredictionProgressEvent',
-	'broadcasterId'
-)
+@rtfm<EventSubChannelPredictionProgressEvent>('eventsub', 'EventSubChannelPredictionProgressEvent', 'broadcasterId')
 export class EventSubChannelPredictionProgressEvent {
 	/** @private */
 	@Enumerable(false) protected readonly _client: ApiClient;

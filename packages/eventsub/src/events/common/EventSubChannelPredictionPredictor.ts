@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { ApiClient, HelixUser } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 
 /** @private */
 export interface EventSubChannelPredictionPredictorData {
@@ -14,7 +14,7 @@ export interface EventSubChannelPredictionPredictorData {
 /**
  * A user that voted on a prediction.
  */
-@rtfm<EventSubChannelPredictionPredictor>('twitch-eventsub', 'EventSubChannelPredictionPredictor', 'userId')
+@rtfm<EventSubChannelPredictionPredictor>('eventsub', 'EventSubChannelPredictionPredictor', 'userId')
 export class EventSubChannelPredictionPredictor {
 	@Enumerable(false) private readonly _data: EventSubChannelPredictionPredictorData;
 	@Enumerable(false) private readonly _client: ApiClient;

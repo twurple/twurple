@@ -1,14 +1,14 @@
-import type { HelixEventSubSubscription } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelPollProgressEventData } from '../Events/EventSubChannelPollProgressEvent';
-import { EventSubChannelPollProgressEvent } from '../Events/EventSubChannelPollProgressEvent';
+import type { HelixEventSubSubscription } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelPollProgressEventData } from '../events/EventSubChannelPollProgressEvent';
+import { EventSubChannelPollProgressEvent } from '../events/EventSubChannelPollProgressEvent';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
  */
-@rtfm('twitch-eventsub', 'EventSubSubscription')
+@rtfm('eventsub', 'EventSubSubscription')
 export class EventSubChannelPollProgressSubscription extends EventSubSubscription<EventSubChannelPollProgressEvent> {
 	constructor(
 		handler: (data: EventSubChannelPollProgressEvent) => void,
@@ -27,7 +27,7 @@ export class EventSubChannelPollProgressSubscription extends EventSubSubscriptio
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToChannelPollProgressEvents(
+		return await this._client._apiClient.helix.eventSub.subscribeToChannelPollProgressEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

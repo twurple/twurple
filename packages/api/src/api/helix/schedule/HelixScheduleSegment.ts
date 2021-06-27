@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixGame } from '../Game/HelixGame';
+import type { HelixGame } from '../game/HelixGame';
 
 /** @private */
 export interface HelixScheduleSegmentCategoryData {
@@ -87,7 +87,7 @@ export class HelixScheduleSegment {
 	async getCategory(): Promise<HelixGame | null> {
 		const categoryId = this._data.category?.id;
 
-		return categoryId ? this._client.helix.games.getGameById(categoryId) : null;
+		return categoryId ? await this._client.helix.games.getGameById(categoryId) : null;
 	}
 
 	/**

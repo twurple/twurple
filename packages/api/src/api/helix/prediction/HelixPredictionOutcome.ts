@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixPredictorData } from './HelixPredictor';
 import { HelixPredictor } from './HelixPredictor';
-import { rtfm } from 'twitch-common';
 
 export type HelixPredictionOutcomeColor = 'BLUE' | 'PINK';
 
@@ -19,7 +19,7 @@ export interface HelixPredictionOutcomeData {
 /**
  * A possible outcome in a channel prediction.
  */
-@rtfm<HelixPredictionOutcome>('twitch', 'HelixPredictionOutcome', 'id')
+@rtfm<HelixPredictionOutcome>('api', 'HelixPredictionOutcome', 'id')
 export class HelixPredictionOutcome {
 	@Enumerable(false) private readonly _data: HelixPredictionOutcomeData;
 	@Enumerable(false) private readonly _client: ApiClient;

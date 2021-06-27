@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 
 /** @private */
 export type EventSubChannelPredictionColor = 'blue' | 'pink';
@@ -14,7 +14,7 @@ export interface EventSubChannelPredictionBeginOutcomeData {
 /**
  * A possible outcome of a prediction, as defined when beginning that prediction.
  */
-@rtfm<EventSubChannelPredictionBeginOutcome>('twitch-eventsub', 'EventSubChannelPredictionBeginOutcome', 'id')
+@rtfm<EventSubChannelPredictionBeginOutcome>('eventsub', 'EventSubChannelPredictionBeginOutcome', 'id')
 export class EventSubChannelPredictionBeginOutcome {
 	/** @private */
 	@Enumerable(false) protected readonly _data: EventSubChannelPredictionBeginOutcomeData;

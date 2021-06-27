@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixUser } from '../User/HelixUser';
+import type { HelixUser } from '../user/HelixUser';
 import type { HelixPredictionOutcomeData } from './HelixPredictionOutcome';
 import { HelixPredictionOutcome } from './HelixPredictionOutcome';
-import { rtfm } from 'twitch-common';
 
 /**
  * The different statuses a prediction can have.
@@ -29,7 +29,7 @@ export interface HelixPredictionData {
 /**
  * A channel prediction.
  */
-@rtfm<HelixPrediction>('twitch', 'HelixPrediction', 'id')
+@rtfm<HelixPrediction>('api', 'HelixPrediction', 'id')
 export class HelixPrediction {
 	@Enumerable(false) private readonly _data: HelixPredictionData;
 	@Enumerable(false) private readonly _client: ApiClient;

@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 
 /** @private */
 export interface EventSubChannelPollBeginChoiceData {
@@ -10,7 +10,7 @@ export interface EventSubChannelPollBeginChoiceData {
 /**
  * A choice in a poll, as defined when beginning that poll.
  */
-@rtfm<EventSubChannelPollBeginChoice>('twitch-eventsub', 'EventSubChannelPollBeginChoice', 'id')
+@rtfm<EventSubChannelPollBeginChoice>('eventsub', 'EventSubChannelPollBeginChoice', 'id')
 export class EventSubChannelPollBeginChoice {
 	/** @private */
 	@Enumerable(false) protected readonly _data: EventSubChannelPollBeginChoiceData;

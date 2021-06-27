@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 
 /** @private */
 export interface PubSubAutoModQueueMessageAutoModInternals {
@@ -61,7 +61,7 @@ export interface PubSubAutoModQueueMessageData {
 /**
  * A message that informs about a message being processed in the AutoMod queue.
  */
-@rtfm<PubSubAutoModQueueMessage>('twitch-pubsub-client', 'PubSubAutoModQueueMessage', 'messageId')
+@rtfm<PubSubAutoModQueueMessage>('pubsub', 'PubSubAutoModQueueMessage', 'messageId')
 export class PubSubAutoModQueueMessage {
 	@Enumerable(false) private readonly _data: PubSubAutoModQueueMessageData;
 

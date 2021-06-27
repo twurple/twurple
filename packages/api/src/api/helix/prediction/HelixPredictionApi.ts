@@ -1,6 +1,5 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId, rtfm } from 'twitch-common';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -34,7 +33,7 @@ export interface HelixCreatePredictionData {
 /**
  * The Helix API methods that deal with predictions.
  */
-@rtfm('twitch', 'HelixPredictionApi')
+@rtfm('api', 'HelixPredictionApi')
 export class HelixPredictionApi extends BaseApi {
 	/**
 	 * Retrieves a list of predictions for the given broadcaster.
@@ -49,7 +48,7 @@ export class HelixPredictionApi extends BaseApi {
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixPrediction>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixPredictionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'predictions',
 			scope: 'channel:read:predictions',
 			query: {
@@ -95,7 +94,7 @@ export class HelixPredictionApi extends BaseApi {
 		}
 
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixPredictionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'predictions',
 			scope: 'channel:read:predictions',
 			query: {
@@ -128,7 +127,7 @@ export class HelixPredictionApi extends BaseApi {
 	 */
 	async createPrediction(broadcaster: UserIdResolvable, data: HelixCreatePredictionData): Promise<HelixPrediction> {
 		const result = await this._client.callApi<HelixResponse<HelixPredictionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'predictions',
 			method: 'POST',
 			scope: 'channel:manage:predictions',
@@ -150,7 +149,7 @@ export class HelixPredictionApi extends BaseApi {
 	 * @param id The ID of the prediction to lock.
 	 */
 	async lockPrediction(broadcaster: UserIdResolvable, id: string): Promise<HelixPrediction> {
-		return this._endPrediction(broadcaster, id, 'LOCKED');
+		return await this._endPrediction(broadcaster, id, 'LOCKED');
 	}
 
 	/**
@@ -161,7 +160,7 @@ export class HelixPredictionApi extends BaseApi {
 	 * @param outcomeId The ID of the winning outcome.
 	 */
 	async resolvePrediction(broadcaster: UserIdResolvable, id: string, outcomeId: string): Promise<HelixPrediction> {
-		return this._endPrediction(broadcaster, id, 'RESOLVED', outcomeId);
+		return await this._endPrediction(broadcaster, id, 'RESOLVED', outcomeId);
 	}
 
 	/**
@@ -171,7 +170,7 @@ export class HelixPredictionApi extends BaseApi {
 	 * @param id The ID of the prediction to cancel.
 	 */
 	async cancelPrediction(broadcaster: UserIdResolvable, id: string): Promise<HelixPrediction> {
-		return this._endPrediction(broadcaster, id, 'LOCKED');
+		return await this._endPrediction(broadcaster, id, 'LOCKED');
 	}
 
 	private async _endPrediction(
@@ -181,7 +180,7 @@ export class HelixPredictionApi extends BaseApi {
 		outcomeId?: string
 	): Promise<HelixPrediction> {
 		const result = await this._client.callApi<HelixResponse<HelixPredictionData>>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'predictions',
 			method: 'PATCH',
 			scope: 'channel:manage:predictions',

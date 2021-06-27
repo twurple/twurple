@@ -1,14 +1,14 @@
-import type { HelixEventSubSubscription } from 'twitch';
-import { rtfm } from 'twitch-common';
-import type { EventSubChannelModeratorEventData } from '../Events/EventSubChannelModeratorEvent';
-import { EventSubChannelModeratorEvent } from '../Events/EventSubChannelModeratorEvent';
+import type { HelixEventSubSubscription } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import type { EventSubChannelModeratorEventData } from '../events/EventSubChannelModeratorEvent';
+import { EventSubChannelModeratorEvent } from '../events/EventSubChannelModeratorEvent';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
  */
-@rtfm('twitch-eventsub', 'EventSubSubscription')
+@rtfm('eventsub', 'EventSubSubscription')
 export class EventSubChannelModeratorRemoveSubscription extends EventSubSubscription<EventSubChannelModeratorEvent> {
 	constructor(
 		handler: (data: EventSubChannelModeratorEvent) => void,
@@ -27,7 +27,7 @@ export class EventSubChannelModeratorRemoveSubscription extends EventSubSubscrip
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return this._client._apiClient.helix.eventSub.subscribeToChannelModeratorRemoveEvents(
+		return await this._client._apiClient.helix.eventSub.subscribeToChannelModeratorRemoveEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

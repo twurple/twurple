@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixUser } from '../User/HelixUser';
+import type { HelixUser } from '../user/HelixUser';
 import type { HelixEmoteData } from './HelixEmote';
 import { HelixEmote } from './HelixEmote';
 
@@ -17,7 +17,7 @@ export interface HelixEmoteFromSetData extends HelixEmoteData {
  *
  * @inheritDoc
  */
-@rtfm<HelixEmoteFromSet>('twitch', 'HelixEmoteFromSet', 'id')
+@rtfm<HelixEmoteFromSet>('api', 'HelixEmoteFromSet', 'id')
 export class HelixEmoteFromSet extends HelixEmote {
 	/** @private */ protected declare readonly _data: HelixEmoteFromSetData;
 	@Enumerable(false) private readonly _client: ApiClient;
@@ -72,7 +72,7 @@ export class HelixEmoteFromSet extends HelixEmote {
 			}
 
 			default: {
-				return this._client.helix.users.getUserById(this._data.owner_id);
+				return await this._client.helix.users.getUserById(this._data.owner_id);
 			}
 		}
 	}

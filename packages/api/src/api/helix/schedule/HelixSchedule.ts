@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixUser } from '../User/HelixUser';
+import type { HelixUser } from '../user/HelixUser';
 import type { HelixScheduleSegmentData } from './HelixScheduleSegment';
 import { HelixScheduleSegment } from './HelixScheduleSegment';
 

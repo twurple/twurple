@@ -1,4 +1,4 @@
-import { rtfm } from 'twitch-common';
+import { rtfm } from '@twurple/common';
 import type { EventSubChannelPollBeginChoiceData } from './EventSubChannelPollBeginChoice';
 import { EventSubChannelPollBeginChoice } from './EventSubChannelPollBeginChoice';
 
@@ -14,7 +14,7 @@ export interface EventSubChannelPollChoiceData extends EventSubChannelPollBeginC
  *
  * @inheritDoc
  */
-@rtfm<EventSubChannelPollChoice>('twitch-eventsub', 'EventSubChannelPollChoice', 'id')
+@rtfm<EventSubChannelPollChoice>('eventsub', 'EventSubChannelPollChoice', 'id')
 export class EventSubChannelPollChoice extends EventSubChannelPollBeginChoice {
 	/** @private */ protected declare readonly _data: EventSubChannelPollChoiceData;
 

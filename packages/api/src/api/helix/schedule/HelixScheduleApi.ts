@@ -1,6 +1,5 @@
-import { TwitchApiCallType } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId } from 'twitch-common';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
@@ -167,7 +166,7 @@ export class HelixScheduleApi extends BaseApi {
 		filter?: HelixPaginatedScheduleFilter
 	): Promise<HelixPaginatedScheduleResult> {
 		const result = await this._client.callApi<HelixScheduleResponse>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'schedule',
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
@@ -206,7 +205,7 @@ export class HelixScheduleApi extends BaseApi {
 	 */
 	async getScheduleSegmentsByIds(broadcaster: UserIdResolvable, ids: string[]): Promise<HelixScheduleSegment[]> {
 		const result = await this._client.callApi<HelixScheduleResponse>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'schedule',
 			query: {
 				broadcaster_id: extractUserId(broadcaster),
@@ -235,8 +234,8 @@ export class HelixScheduleApi extends BaseApi {
 	 * @param broadcaster The broadcaster to get the schedule for.
 	 */
 	async getScheduleAsIcal(broadcaster: UserIdResolvable): Promise<string> {
-		return this._client.callApi<string>({
-			type: TwitchApiCallType.Helix,
+		return await this._client.callApi<string>({
+			type: 'helix',
 			url: 'schedule/icalendar',
 			query: {
 				broadcaster_id: extractUserId(broadcaster)
@@ -264,7 +263,7 @@ export class HelixScheduleApi extends BaseApi {
 					is_vacation_enabled: 'false'
 			  };
 		await this._client.callApi({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'schedule/settings',
 			method: 'PATCH',
 			scope: 'channel:manage:schedule',
@@ -288,7 +287,7 @@ export class HelixScheduleApi extends BaseApi {
 		data: HelixCreateScheduleSegmentData
 	): Promise<HelixScheduleSegment> {
 		const result = await this._client.callApi<HelixScheduleResponse>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'schedule/segment',
 			method: 'POST',
 			scope: 'channel:manage:schedule',
@@ -323,7 +322,7 @@ export class HelixScheduleApi extends BaseApi {
 		data: HelixUpdateScheduleSegmentData
 	): Promise<HelixScheduleSegment> {
 		const result = await this._client.callApi<HelixScheduleResponse>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'schedule/segment',
 			method: 'PATCH',
 			scope: 'channel:manage:schedule',
@@ -352,7 +351,7 @@ export class HelixScheduleApi extends BaseApi {
 	 */
 	async deleteScheduleSegment(broadcaster: UserIdResolvable, segmentId: string): Promise<void> {
 		await this._client.callApi<HelixScheduleResponse>({
-			type: TwitchApiCallType.Helix,
+			type: 'helix',
 			url: 'schedule/segment',
 			method: 'DELETE',
 			scope: 'channel:manage:schedule',

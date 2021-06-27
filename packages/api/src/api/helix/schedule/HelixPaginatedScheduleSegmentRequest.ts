@@ -1,6 +1,6 @@
-import type { TwitchApiCallOptions } from 'twitch-api-call';
-import type { UserIdResolvable } from 'twitch-common';
-import { extractUserId } from 'twitch-common';
+import type { TwitchApiCallOptions } from '@twurple/api-call';
+import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResponse } from '../HelixResponse';

@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixUser } from '../User/HelixUser';
-import { rtfm } from 'twitch-common';
+import type { HelixUser } from '../user/HelixUser';
 
 /** @private */
 export interface HelixPredictorData {
@@ -15,7 +15,7 @@ export interface HelixPredictorData {
 /**
  * A user that took part in a prediction.
  */
-@rtfm<HelixPredictor>('twitch', 'HelixPredictor', 'userId')
+@rtfm<HelixPredictor>('api', 'HelixPredictor', 'userId')
 export class HelixPredictor {
 	@Enumerable(false) private readonly _data: HelixPredictorData;
 	@Enumerable(false) private readonly _client: ApiClient;
@@ -51,7 +51,7 @@ export class HelixPredictor {
 	 * Retrieves more information about the predictor.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return this._client.helix.users.getUserById(this._data.id);
+		return await this._client.helix.users.getUserById(this._data.id);
 	}
 
 	/**

@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from 'twitch';
-import { rtfm } from 'twitch-common';
+import type { ApiClient } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import type { EventSubChannelPredictionBeginOutcomeData } from './EventSubChannelPredictionBeginOutcome';
 import { EventSubChannelPredictionBeginOutcome } from './EventSubChannelPredictionBeginOutcome';
 import type { EventSubChannelPredictionPredictorData } from './EventSubChannelPredictionPredictor';
@@ -16,7 +16,7 @@ export interface EventSubChannelPredictionOutcomeData extends EventSubChannelPre
 /**
  * A possible outcome of a prediction.
  */
-@rtfm<EventSubChannelPredictionOutcome>('twitch-eventsub', 'EventSubChannelPredictionOutcome', 'id')
+@rtfm<EventSubChannelPredictionOutcome>('eventsub', 'EventSubChannelPredictionOutcome', 'id')
 export class EventSubChannelPredictionOutcome extends EventSubChannelPredictionBeginOutcome {
 	/** @private */ protected declare readonly _data: EventSubChannelPredictionOutcomeData;
 	@Enumerable(false) private readonly _client: ApiClient;
