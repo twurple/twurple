@@ -1,10 +1,14 @@
 import type { NoInfer } from '@d-fischer/shared-utils';
 
+/** @private */
 type PackageName = 'api' | 'auth' | 'chat' | 'common' | 'eventsub' | 'pubsub';
 
 // Read The Fine Manual
+/** @private */
 export function rtfm(pkg: PackageName, name: string): ClassDecorator;
+/** @private */
 export function rtfm<T>(pkg: PackageName, name: string, idKey: keyof NoInfer<T>): ClassDecorator;
+/** @private */
 export function rtfm<T>(pkg: PackageName, name: string, idKey?: keyof NoInfer<T>): ClassDecorator {
 	return clazz => {
 		const fn = idKey
