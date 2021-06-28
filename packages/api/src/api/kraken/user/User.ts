@@ -189,22 +189,6 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	}
 
 	/**
-	 * Follows the channel with the authenticated user.
-	 */
-	async follow(): Promise<UserFollow> {
-		const currentUser = await this._client.kraken.users.getMe();
-		return await currentUser.followChannel(this);
-	}
-
-	/**
-	 * Unfollows the channel with the authenticated user.
-	 */
-	async unfollow(): Promise<void> {
-		const currentUser = await this._client.kraken.users.getMe();
-		await currentUser.unfollowChannel(this);
-	}
-
-	/**
 	 * Retrieves the emotes the user can use.
 	 */
 	async getEmotes(): Promise<EmoteSetList> {

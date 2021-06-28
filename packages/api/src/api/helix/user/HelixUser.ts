@@ -3,7 +3,6 @@ import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameRes
 import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
-import type { UserFollow } from '../../kraken/user/UserFollow';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixStream } from '../stream/HelixStream';
 import type { HelixSubscription } from '../subscriptions/HelixSubscription';
@@ -165,22 +164,6 @@ export class HelixUser implements UserIdResolvableType, UserNameResolveableType 
 	 */
 	async isFollowedBy(user: UserIdResolvable): Promise<boolean> {
 		return await this._client.helix.users.userFollowsBroadcaster(user, this);
-	}
-
-	/**
-	 * Follows the broadcaster.
-	 */
-	async follow(): Promise<UserFollow> {
-		const currentUser = await this._client.kraken.users.getMe();
-		return await currentUser.followChannel(this);
-	}
-
-	/**
-	 * Unfollows the broadcaster.
-	 */
-	async unfollow(): Promise<void> {
-		const currentUser = await this._client.kraken.users.getMe();
-		await currentUser.unfollowChannel(this);
 	}
 
 	/**
