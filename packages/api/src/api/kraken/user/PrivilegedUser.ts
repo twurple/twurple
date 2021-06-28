@@ -3,7 +3,6 @@ import { rtfm } from '@twurple/common';
 import type { UserData } from './User';
 import { User } from './User';
 import type { UserBlock } from './UserBlock';
-import type { UserFollow } from './UserFollow';
 
 /** @private */
 export interface UserNotificationFlags {
@@ -69,25 +68,6 @@ export class PrivilegedUser extends User {
 	 */
 	get hasTwitter(): boolean {
 		return this._data.twitter_connected;
-	}
-
-	/**
-	 * Follows a channel.
-	 *
-	 * @param channel The channel to follow.
-	 * @param notifications Whether the user will receive notifications.
-	 */
-	async followChannel(channel: UserIdResolvable, notifications?: boolean): Promise<UserFollow> {
-		return await this._client.kraken.users.followChannel(this, channel, notifications);
-	}
-
-	/**
-	 * Unfollows a channel.
-	 *
-	 * @param channel The channel to unfollow.
-	 */
-	async unfollowChannel(channel: UserIdResolvable): Promise<void> {
-		await this._client.kraken.users.unfollowChannel(this, channel);
 	}
 
 	/**

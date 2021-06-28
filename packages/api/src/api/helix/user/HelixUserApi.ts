@@ -223,52 +223,6 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a new follow from a user to another user.
-	 *
-	 * @param fromUser The user to create the follow for.
-	 * @param toUser The user to follow.
-	 * @param allowNotifications Whether email or push notifications are allowed to be created.
-	 *
-	 * The user `fromUser` still needs to have this enabled in their settings as well.
-	 */
-	async createFollow(
-		fromUser: UserIdResolvable,
-		toUser: UserIdResolvable,
-		allowNotifications?: boolean
-	): Promise<void> {
-		await this._client.callApi({
-			type: 'helix',
-			url: 'users/follows',
-			method: 'POST',
-			scope: 'user:edit:follows',
-			jsonBody: {
-				from_id: extractUserId(fromUser),
-				to_id: extractUserId(toUser),
-				allow_notifications: allowNotifications
-			}
-		});
-	}
-
-	/**
-	 * Removes a follow from a user to another user.
-	 *
-	 * @param fromUser The user to remove the follow for.
-	 * @param toUser The user to unfollow.
-	 */
-	async deleteFollow(fromUser: UserIdResolvable, toUser: UserIdResolvable): Promise<void> {
-		await this._client.callApi({
-			type: 'helix',
-			url: 'users/follows',
-			method: 'DELETE',
-			scope: 'user:edit:follows',
-			jsonBody: {
-				from_id: extractUserId(fromUser),
-				to_id: extractUserId(toUser)
-			}
-		});
-	}
-
-	/**
 	 * Retrieves a list of users blocked by the given user.
 	 *
 	 * @param user The user to retrieve blocks for.

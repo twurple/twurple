@@ -209,45 +209,6 @@ export class UserApi extends BaseApi {
 	}
 
 	/**
-	 * Follows a given channel with a given user.
-	 *
-	 * @param user The user you want to follow with.
-	 * @param channel The channel to follow.
-	 * @param notifications Whether the user will receive notifications.
-	 */
-	async followChannel(
-		user: UserIdResolvable,
-		channel: UserIdResolvable,
-		notifications?: boolean
-	): Promise<UserFollow> {
-		const userId = extractUserId(user);
-		const channelId = extractUserId(channel);
-		const data = await this._client.callApi<UserFollowData>({
-			url: `users/${userId}/follows/channels/${channelId}`,
-			method: 'PUT',
-			scope: 'user_follows_edit',
-			jsonBody: { notifications }
-		});
-		return new UserFollow(data, this._client);
-	}
-
-	/**
-	 * Unfollows a given channel with a given user.
-	 *
-	 * @param user The user you want to unfollow with.
-	 * @param channel The channel to unfollow.
-	 */
-	async unfollowChannel(user: UserIdResolvable, channel: UserIdResolvable): Promise<void> {
-		const userId = extractUserId(user);
-		const channelId = extractUserId(channel);
-		await this._client.callApi({
-			url: `users/${userId}/follows/channels/${channelId}`,
-			scope: 'user_follows_edit',
-			method: 'DELETE'
-		});
-	}
-
-	/**
 	 * Retrieves a list of users a given user has blocked.
 	 *
 	 * @param user The user you want to retrieve the block list of.
