@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -19,13 +19,12 @@ export interface HelixHypeTrainContributionData {
  * A Hype Train contributor.
  */
 @rtfm<HelixHypeTrainContribution>('api', 'HelixHypeTrainContribution', 'userId')
-export class HelixHypeTrainContribution {
-	@Enumerable(false) private readonly _data: HelixHypeTrainContributionData;
+export class HelixHypeTrainContribution extends DataObject<HelixHypeTrainContributionData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixHypeTrainContributionData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -33,27 +32,27 @@ export class HelixHypeTrainContribution {
 	 * The ID of the user contributing to the Hype Train.
 	 */
 	get userId(): string {
-		return this._data.user;
+		return this[rawDataSymbol].user;
 	}
 
 	/**
 	 * Retrieves additional information about the user contributing to the Hype Train.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user))!;
 	}
 
 	/**
 	 * The Hype Train event type.
 	 */
 	get type(): HelixHypeTrainContributionType {
-		return this._data.type;
+		return this[rawDataSymbol].type;
 	}
 
 	/**
 	 * The total contribution amount in subs or bits.
 	 */
 	get total(): number {
-		return this._data.total;
+		return this[rawDataSymbol].total;
 	}
 }

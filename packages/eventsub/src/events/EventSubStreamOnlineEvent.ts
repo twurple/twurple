@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixStream, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /**
  * The type of the stream going live.
@@ -21,13 +21,12 @@ export interface EventSubStreamOnlineEventData {
  * An EventSub event representing a stream going live.
  */
 @rtfm<EventSubStreamOnlineEvent>('eventsub', 'EventSubStreamOnlineEvent', 'broadcasterId')
-export class EventSubStreamOnlineEvent {
-	@Enumerable(false) private readonly _data: EventSubStreamOnlineEventData;
+export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEventData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: EventSubStreamOnlineEventData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -35,48 +34,48 @@ export class EventSubStreamOnlineEvent {
 	 * The ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_user_id;
+		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_user_login;
+		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_user_name;
+		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**
 	 * Retrieves more information about the stream.
 	 */
 	async getStream(): Promise<HelixStream> {
-		return (await this._client.helix.streams.getStreamByUserId(this._data.broadcaster_user_id))!;
+		return (await this._client.helix.streams.getStreamByUserId(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**
 	 * The type of the stream going live.
 	 */
 	get streamType(): EventSubStreamOnlineEventStreamType {
-		return this._data.type;
+		return this[rawDataSymbol].type;
 	}
 
 	/**
 	 * The date and time when the stream was started.
 	 */
 	get startDate(): Date {
-		return new Date(this._data.started_at);
+		return new Date(this[rawDataSymbol].started_at);
 	}
 }

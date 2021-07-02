@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { EventSubChannelRedemptionReward } from './common/EventSubChannelRedemptionReward';
 
 /** @private */
@@ -22,12 +22,12 @@ export interface EventSubChannelRedemptionAddEventData {
  * An EventSub event representing a Channel Points redemption.
  */
 @rtfm<EventSubChannelRedemptionAddEvent>('eventsub', 'EventSubChannelRedemptionAddEvent', 'id')
-export class EventSubChannelRedemptionAddEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChannelRedemptionAddEventData> {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubChannelRedemptionAddEventData, client: ApiClient) {
+	constructor(data: EventSubChannelRedemptionAddEventData, client: ApiClient) {
+		super(data);
 		this._client = client;
 	}
 
@@ -35,63 +35,63 @@ export class EventSubChannelRedemptionAddEvent {
 	 * The ID of the redemption.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_user_id;
+		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_user_login;
+		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_user_name;
+		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**
 	 * The ID of the user.
 	 */
 	get userId(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the user.
 	 */
 	get userName(): string {
-		return this._data.user_login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the user.
 	 */
 	get userDisplayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
@@ -100,48 +100,48 @@ export class EventSubChannelRedemptionAddEvent {
 	 * If there is no input to be given, this is an empty string.
 	 */
 	get input(): string {
-		return this._data.user_input;
+		return this[rawDataSymbol].user_input;
 	}
 
 	/**
 	 * The status of the redemption.
 	 */
 	get status(): string {
-		return this._data.status;
+		return this[rawDataSymbol].status;
 	}
 
 	/**
 	 * The ID of the reward that was redeemed.
 	 */
 	get rewardId(): string {
-		return this._data.reward.id;
+		return this[rawDataSymbol].reward.id;
 	}
 
 	/**
 	 * The title of the reward that was redeemed.
 	 */
 	get rewardTitle(): string {
-		return this._data.reward.title;
+		return this[rawDataSymbol].reward.title;
 	}
 
 	/**
 	 * The cost of the reward that was redeemed.
 	 */
 	get rewardCost(): number {
-		return this._data.reward.cost;
+		return this[rawDataSymbol].reward.cost;
 	}
 
 	/**
 	 * The description of the reward that was redeemed.
 	 */
 	get rewardPrompt(): string {
-		return this._data.reward.prompt;
+		return this[rawDataSymbol].reward.prompt;
 	}
 
 	/**
 	 * The time when the user redeemed the reward.
 	 */
 	get redeemedAt(): Date {
-		return new Date(this._data.redeemed_at);
+		return new Date(this[rawDataSymbol].redeemed_at);
 	}
 }

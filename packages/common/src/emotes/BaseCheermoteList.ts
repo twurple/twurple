@@ -1,4 +1,5 @@
 import { utf8Length } from '@d-fischer/shared-utils';
+import { DataObject } from '../DataObject';
 
 /**
  * The details on how a cheermote should be displayed.
@@ -86,7 +87,7 @@ export interface CheermoteFormat {
 }
 
 /** @private */
-export abstract class BaseCheermoteList {
+export abstract class BaseCheermoteList<DataType> extends DataObject<DataType> {
 	/**
 	 * Gets the URL and color needed to properly represent a cheer of the given amount of bits with the given prefix.
 	 *

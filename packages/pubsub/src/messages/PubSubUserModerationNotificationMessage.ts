@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 export type PubSubUserModerationNotificationMessageStatus = 'PENDING' | 'ALLOWED' | 'DENIED' | 'EXPIRED';
 
@@ -19,12 +18,10 @@ export interface PubSubUserModerationNotificationMessageData {
  * A message that informs about a moderation action on your message..
  */
 @rtfm<PubSubUserModerationNotificationMessage>('pubsub', 'PubSubUserModerationNotificationMessage', 'messageId')
-export class PubSubUserModerationNotificationMessage {
-	@Enumerable(false) private readonly _data: PubSubUserModerationNotificationMessageData;
-
+export class PubSubUserModerationNotificationMessage extends DataObject<PubSubUserModerationNotificationMessageData> {
 	/** @private */
 	constructor(data: PubSubUserModerationNotificationMessageData, private readonly _channelId: string) {
-		this._data = data;
+		super(data);
 	}
 
 	/**
@@ -38,13 +35,13 @@ export class PubSubUserModerationNotificationMessage {
 	 * The ID of the message.
 	 */
 	get messageId(): string {
-		return this._data.data.message_id;
+		return this[rawDataSymbol].data.message_id;
 	}
 
 	/**
 	 * The status of the queue entry.
 	 */
 	get status(): PubSubUserModerationNotificationMessageStatus {
-		return this._data.data.status;
+		return this[rawDataSymbol].data.status;
 	}
 }

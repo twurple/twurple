@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface EventSubChannelPollBeginChoiceData {
@@ -11,26 +10,18 @@ export interface EventSubChannelPollBeginChoiceData {
  * A choice in a poll, as defined when beginning that poll.
  */
 @rtfm<EventSubChannelPollBeginChoice>('eventsub', 'EventSubChannelPollBeginChoice', 'id')
-export class EventSubChannelPollBeginChoice {
-	/** @private */
-	@Enumerable(false) protected readonly _data: EventSubChannelPollBeginChoiceData;
-
-	/** @private */
-	constructor(data: EventSubChannelPollBeginChoiceData) {
-		this._data = data;
-	}
-
+export class EventSubChannelPollBeginChoice extends DataObject<EventSubChannelPollBeginChoiceData> {
 	/**
 	 * The ID of the choice.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The title of the choice.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 }

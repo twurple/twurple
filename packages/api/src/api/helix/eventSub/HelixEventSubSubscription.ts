@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 
 export type HelixEventSubSubscriptionStatus =
@@ -41,13 +41,12 @@ export interface HelixEventSubSubscriptionData {
  * An EventSub subscription.
  */
 @rtfm<HelixEventSubSubscription>('api', 'HelixEventSubSubscription', 'id')
-export class HelixEventSubSubscription {
-	@Enumerable(false) private readonly _data: HelixEventSubSubscriptionData;
+export class HelixEventSubSubscription extends DataObject<HelixEventSubSubscriptionData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixEventSubSubscriptionData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -55,51 +54,51 @@ export class HelixEventSubSubscription {
 	 * The ID of the subscription.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The status of the subscription.
 	 */
 	get status(): HelixEventSubSubscriptionStatus {
-		return this._data.status;
+		return this[rawDataSymbol].status;
 	}
 
 	/**
 	 * The event type that the subscription is listening to.
 	 */
 	get type(): string {
-		return this._data.type;
+		return this[rawDataSymbol].type;
 	}
 
 	/**
 	 * The condition of the subscription.
 	 */
 	get condition(): Record<string, unknown> {
-		return this._data.condition;
+		return this[rawDataSymbol].condition;
 	}
 
 	/**
 	 * The date and time of creation of the subscription.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
 	 * End the EventSub subscription.
 	 */
 	async unsubscribe(): Promise<void> {
-		await this._client.helix.eventSub.deleteSubscription(this._data.id);
+		await this._client.helix.eventSub.deleteSubscription(this[rawDataSymbol].id);
 	}
 
 	/** @private */
 	get _transport(): HelixEventSubTransportData {
-		return this._data.transport;
+		return this[rawDataSymbol].transport;
 	}
 
 	/** @private */
 	set _status(status: HelixEventSubSubscriptionStatus) {
-		this._data.status = status;
+		this[rawDataSymbol].status = status;
 	}
 }

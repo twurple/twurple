@@ -1,4 +1,4 @@
-import { Enumerable, indexBy } from '@d-fischer/shared-utils';
+import { indexBy } from '@d-fischer/shared-utils';
 import type {
 	CheermoteBackground,
 	CheermoteDisplayInfo,
@@ -6,7 +6,7 @@ import type {
 	CheermoteScale,
 	CheermoteState
 } from '@twurple/common';
-import { BaseCheermoteList, HellFreezesOverError, rtfm } from '@twurple/common';
+import { BaseCheermoteList, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export type HelixCheermoteActionImageUrlsByScale = Record<CheermoteScale, string>;
@@ -48,13 +48,10 @@ export interface HelixCheermoteData {
  * @inheritDoc
  */
 @rtfm('api', 'HelixCheermoteList')
-export class HelixCheermoteList extends BaseCheermoteList {
-	@Enumerable(false) private readonly _data: Record<string, HelixCheermoteData>;
-
+export class HelixCheermoteList extends BaseCheermoteList<Record<string, HelixCheermoteData>> {
 	/** @private */
 	constructor(data: HelixCheermoteData[]) {
-		super();
-		this._data = indexBy(data, action => action.prefix.toLowerCase());
+		super(indexBy(data, action => action.prefix.toLowerCase()));
 	}
 
 	/**
@@ -68,7 +65,7 @@ export class HelixCheermoteList extends BaseCheermoteList {
 		name = name.toLowerCase();
 		const { background, state, scale } = format;
 
-		const tiers = this._data[name].tiers;
+		const tiers = this[rawDataSymbol][name].tiers;
 		const correctTier = tiers.sort((a, b) => b.min_bits - a.min_bits).find(tier => tier.min_bits <= bits);
 
 		if (!correctTier) {
@@ -87,6 +84,6 @@ export class HelixCheermoteList extends BaseCheermoteList {
 	 * Gets all possible cheermote names.
 	 */
 	getPossibleNames(): string[] {
-		return Object.keys(this._data);
+		return Object.keys(this[rawDataSymbol]);
 	}
 }

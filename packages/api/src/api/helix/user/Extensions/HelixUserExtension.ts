@@ -1,4 +1,4 @@
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { HelixExtensionData } from './HelixExtension';
 import { HelixExtension } from './HelixExtension';
 import type { HelixExtensionSlotType } from './HelixInstalledExtension';
@@ -19,19 +19,19 @@ export interface HelixUserExtensionData extends HelixExtensionData {
  */
 @rtfm<HelixUserExtension>('api', 'HelixUserExtension', 'id')
 export class HelixUserExtension extends HelixExtension {
-	/** @private */ protected declare readonly _data: HelixUserExtensionData;
+	/** @private */ declare readonly [rawDataSymbol]: HelixUserExtensionData;
 
 	/**
 	 * Whether the user has configured the extension to be able to activate it.
 	 */
 	get canActivate(): boolean {
-		return this._data.can_activate;
+		return this[rawDataSymbol].can_activate;
 	}
 
 	/**
 	 * The available types of the extension.
 	 */
 	get types(): HelixExtensionType[] {
-		return this._data.type;
+		return this[rawDataSymbol].type;
 	}
 }

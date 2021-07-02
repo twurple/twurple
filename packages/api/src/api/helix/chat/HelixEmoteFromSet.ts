@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixEmoteData } from './HelixEmote';
@@ -19,7 +19,7 @@ export interface HelixEmoteFromSetData extends HelixEmoteData {
  */
 @rtfm<HelixEmoteFromSet>('api', 'HelixEmoteFromSet', 'id')
 export class HelixEmoteFromSet extends HelixEmote {
-	/** @private */ protected declare readonly _data: HelixEmoteFromSetData;
+	/** @private */ declare readonly [rawDataSymbol]: HelixEmoteFromSetData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	constructor(data: HelixEmoteFromSetData, client: ApiClient) {
@@ -35,28 +35,28 @@ export class HelixEmoteFromSet extends HelixEmote {
 	 * This list may be non-exhaustive.
 	 */
 	get type(): string {
-		return this._data.emote_type;
+		return this[rawDataSymbol].emote_type;
 	}
 
 	/**
 	 * The ID of the emote set the emote is part of.
 	 */
 	get emoteSetId(): string {
-		return this._data.emote_set_id;
+		return this[rawDataSymbol].emote_set_id;
 	}
 
 	/**
 	 * The ID of the user that owns the emote, or null if the emote is not owned by a user.
 	 */
 	get ownerId(): string | null {
-		switch (this._data.owner_id) {
+		switch (this[rawDataSymbol].owner_id) {
 			case '0':
 			case 'twitch': {
 				return null;
 			}
 
 			default: {
-				return this._data.owner_id;
+				return this[rawDataSymbol].owner_id;
 			}
 		}
 	}
@@ -65,14 +65,14 @@ export class HelixEmoteFromSet extends HelixEmote {
 	 * Retrieves more info about the user that owns the emote, or null if the emote is not owned by a user.
 	 */
 	async getOwner(): Promise<HelixUser | null> {
-		switch (this._data.owner_id) {
+		switch (this[rawDataSymbol].owner_id) {
 			case '0':
 			case 'twitch': {
 				return null;
 			}
 
 			default: {
-				return await this._client.helix.users.getUserById(this._data.owner_id);
+				return await this._client.helix.users.getUserById(this[rawDataSymbol].owner_id);
 			}
 		}
 	}

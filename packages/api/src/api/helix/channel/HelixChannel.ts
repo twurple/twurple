@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixGame } from '../game/HelixGame';
 
@@ -19,13 +19,12 @@ export interface HelixChannelData {
  * A Twitch channel.
  */
 @rtfm<HelixChannel>('api', 'HelixChannel', 'id')
-export class HelixChannel {
-	@Enumerable(false) private readonly _data: HelixChannelData;
+export class HelixChannel extends DataObject<HelixChannelData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixChannelData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -33,62 +32,62 @@ export class HelixChannel {
 	 * The ID of the channel.
 	 */
 	get id(): string {
-		return this._data.broadcaster_id;
+		return this[rawDataSymbol].broadcaster_id;
 	}
 
 	/**
 	 * The name of the channel.
 	 */
 	get name(): string {
-		return this._data.broadcaster_login;
+		return this[rawDataSymbol].broadcaster_login;
 	}
 
 	/**
 	 * The display name of the channel.
 	 */
 	get displayName(): string {
-		return this._data.broadcaster_name;
+		return this[rawDataSymbol].broadcaster_name;
 	}
 
 	/**
 	 * The language of the channel.
 	 */
 	get language(): string {
-		return this._data.broadcaster_language;
+		return this[rawDataSymbol].broadcaster_language;
 	}
 
 	/**
 	 * The ID of the game currently played on the channel.
 	 */
 	get gameId(): string {
-		return this._data.game_id;
+		return this[rawDataSymbol].game_id;
 	}
 
 	/**
 	 * The name of the game currently played on the channel.
 	 */
 	get gameName(): string {
-		return this._data.game_name;
+		return this[rawDataSymbol].game_name;
 	}
 
 	/**
 	 * Retrieves information about the game that is being played on the stream.
 	 */
 	async getGame(): Promise<HelixGame> {
-		return (await this._client.helix.games.getGameById(this._data.game_id))!;
+		return (await this._client.helix.games.getGameById(this[rawDataSymbol].game_id))!;
 	}
 
 	/**
 	 * The title of the channel.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * The stream delay of the channel, in seconds.
 	 */
 	get delay(): number {
-		return this._data.delay;
+		return this[rawDataSymbol].delay;
 	}
 }

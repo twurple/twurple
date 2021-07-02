@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -15,13 +15,12 @@ export interface HelixBanData {
  * Information about the ban of a user.
  */
 @rtfm<HelixBan>('api', 'HelixBan', 'userId')
-export class HelixBan {
-	@Enumerable(false) private readonly _data: HelixBanData;
-	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
+export class HelixBan extends DataObject<HelixBanData> {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixBanData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -29,34 +28,34 @@ export class HelixBan {
 	 * The ID of the banned user.
 	 */
 	get userId(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the banned user.
 	 */
 	get userName(): string {
-		return this._data.user_login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the banned user.
 	 */
 	get userDisplayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
 	 * The date when the ban will expire; null for permanent bans.
 	 */
 	get expiryDate(): Date | null {
-		return this._data.expires_at ? new Date(this._data.expires_at) : null;
+		return this[rawDataSymbol].expires_at ? new Date(this[rawDataSymbol].expires_at) : null;
 	}
 }

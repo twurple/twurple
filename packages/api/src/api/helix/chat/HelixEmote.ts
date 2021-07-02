@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface HelixEmoteImageData {
@@ -22,26 +21,19 @@ export interface HelixEmoteData {
  * A Twitch emote.
  */
 @rtfm<HelixEmote>('api', 'HelixEmote', 'id')
-export class HelixEmote {
-	/** @private */ @Enumerable(false) protected readonly _data: HelixEmoteData;
-
-	/** @private */
-	constructor(data: HelixEmoteData) {
-		this._data = data;
-	}
-
+export class HelixEmote extends DataObject<HelixEmoteData> {
 	/**
 	 * The ID of the emote.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The name of the emote.
 	 */
 	get name(): string {
-		return this._data.name;
+		return this[rawDataSymbol].name;
 	}
 
 	/**
@@ -51,6 +43,6 @@ export class HelixEmote {
 	 */
 	getImageUrl(scale: HelixEmoteImageScale): string {
 		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-		return this._data.images[`url_${scale}x` as const];
+		return this[rawDataSymbol].images[`url_${scale}x` as const];
 	}
 }

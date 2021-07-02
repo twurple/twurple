@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface PubSubChatModActionMessageContent {
@@ -19,12 +18,10 @@ export interface PubSubChatModActionMessageData {
  * A message that informs about a moderation action being performed in a channel.
  */
 @rtfm<PubSubChatModActionMessage>('pubsub', 'PubSubChatModActionMessage', 'userId')
-export class PubSubChatModActionMessage {
-	@Enumerable(false) private readonly _data: PubSubChatModActionMessageData;
-
+export class PubSubChatModActionMessage extends DataObject<PubSubChatModActionMessageData> {
 	/** @private */
 	constructor(data: PubSubChatModActionMessageData, private readonly _channelId: string) {
-		this._data = data;
+		super(data);
 	}
 
 	/**
@@ -38,34 +35,34 @@ export class PubSubChatModActionMessage {
 	 * The type of the message.
 	 */
 	get type(): string {
-		return this._data.data.type;
+		return this[rawDataSymbol].data.type;
 	}
 
 	/**
 	 * The action that was performed.
 	 */
 	get action(): string {
-		return this._data.data.moderation_action;
+		return this[rawDataSymbol].data.moderation_action;
 	}
 
 	/**
 	 * The arguments given to the action.
 	 */
 	get args(): string[] {
-		return this._data.data.args;
+		return this[rawDataSymbol].data.args;
 	}
 
 	/**
 	 * The user ID of the moderator that performed the action.
 	 */
 	get userId(): string {
-		return this._data.data.created_by_user_id;
+		return this[rawDataSymbol].data.created_by_user_id;
 	}
 
 	/**
 	 * The name of the moderator that performed the action.
 	 */
 	get userName(): string {
-		return this._data.data.created_by;
+		return this[rawDataSymbol].data.created_by;
 	}
 }

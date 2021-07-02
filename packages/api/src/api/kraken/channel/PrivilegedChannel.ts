@@ -1,5 +1,5 @@
 import type { CommercialLength } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { User } from '../user/User';
 import type { ChannelData } from './Channel';
 import { Channel } from './Channel';
@@ -15,20 +15,20 @@ export interface PrivilegedChannelData extends ChannelData {
  */
 @rtfm<PrivilegedChannel>('api', 'PrivilegedChannel', 'id')
 export class PrivilegedChannel extends Channel {
-	/** @private */ protected declare readonly _data: PrivilegedChannelData;
+	/** @private */ declare readonly [rawDataSymbol]: PrivilegedChannelData;
 
 	/**
 	 * The channel's stream key.
 	 */
 	get streamKey(): string {
-		return this._data.stream_key;
+		return this[rawDataSymbol].stream_key;
 	}
 
 	/**
 	 * The channel's email address.
 	 */
 	get email(): string {
-		return this._data.email;
+		return this[rawDataSymbol].email;
 	}
 
 	/**
@@ -53,7 +53,7 @@ export class PrivilegedChannel extends Channel {
 	async resetStreamKey(): Promise<string> {
 		const channelData = await this._client.kraken.channels.resetChannelStreamKey(this);
 		const streamKey = channelData.streamKey;
-		this._data.stream_key = streamKey;
+		this[rawDataSymbol].stream_key = streamKey;
 
 		return streamKey;
 	}

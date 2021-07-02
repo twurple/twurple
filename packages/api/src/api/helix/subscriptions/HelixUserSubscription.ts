@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -16,13 +16,12 @@ export interface HelixUserSubscriptionData {
  * The user info about a (paid) subscription to a broadcaster.
  */
 @rtfm<HelixUserSubscription>('api', 'HelixUserSubscription', 'broadcasterId')
-export class HelixUserSubscription {
-	/** @private */ @Enumerable(false) protected readonly _data: HelixUserSubscriptionData;
+export class HelixUserSubscription extends DataObject<HelixUserSubscriptionData> {
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixUserSubscriptionData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -30,41 +29,41 @@ export class HelixUserSubscription {
 	 * The user ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_id;
+		return this[rawDataSymbol].broadcaster_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_login;
+		return this[rawDataSymbol].broadcaster_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_name;
+		return this[rawDataSymbol].broadcaster_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this._data.broadcaster_id);
+		return await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_id);
 	}
 
 	/**
 	 * Whether the subscription has been gifted by another user.
 	 */
 	get isGift(): boolean {
-		return this._data.is_gift;
+		return this[rawDataSymbol].is_gift;
 	}
 
 	/**
 	 * The tier of the subscription.
 	 */
 	get tier(): string {
-		return this._data.tier;
+		return this[rawDataSymbol].tier;
 	}
 }

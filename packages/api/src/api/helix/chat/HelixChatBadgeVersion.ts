@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 export type HelixChatBadgeScale = 1 | 2 | 4;
 
@@ -15,19 +14,12 @@ export interface HelixChatBadgeVersionData {
  * A version of a chat badge.
  */
 @rtfm<HelixChatBadgeVersion>('api', 'HelixChatBadgeVersion', 'id')
-export class HelixChatBadgeVersion {
-	@Enumerable(false) private readonly _data: HelixChatBadgeVersionData;
-
-	/** @private */
-	constructor(data: HelixChatBadgeVersionData) {
-		this._data = data;
-	}
-
+export class HelixChatBadgeVersion extends DataObject<HelixChatBadgeVersionData> {
 	/**
 	 * The badge version ID.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
@@ -37,6 +29,6 @@ export class HelixChatBadgeVersion {
 	 */
 	getImageUrl(scale: HelixChatBadgeScale): string {
 		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-		return this._data[`image_url_${scale}x` as const];
+		return this[rawDataSymbol][`image_url_${scale}x` as const];
 	}
 }

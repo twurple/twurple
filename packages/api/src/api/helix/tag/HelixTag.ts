@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface HelixTagData {
@@ -13,39 +12,32 @@ export interface HelixTagData {
  * A stream tag.
  */
 @rtfm<HelixTag>('api', 'HelixTag', 'id')
-export class HelixTag {
-	@Enumerable(false) private readonly _data: HelixTagData;
-
-	/** @private */
-	constructor(data: HelixTagData) {
-		this._data = data;
-	}
-
+export class HelixTag extends DataObject<HelixTagData> {
 	/**
 	 * The ID of the tag.
 	 */
 	get id(): string {
-		return this._data.tag_id;
+		return this[rawDataSymbol].tag_id;
 	}
 
 	/**
 	 * Whether the tag is automatically assigned by Twitch.
 	 */
 	get isAuto(): boolean {
-		return this._data.is_auto;
+		return this[rawDataSymbol].is_auto;
 	}
 
 	/**
 	 * Gets the name of the tag in the specified language.
 	 */
 	getName(language: string): string | undefined {
-		return this._data.localization_names[language];
+		return this[rawDataSymbol].localization_names[language];
 	}
 
 	/**
 	 * Gets the description of the tag in the specified language.
 	 */
 	getDescription(language: string): string | undefined {
-		return this._data.localization_descriptions[language];
+		return this[rawDataSymbol].localization_descriptions[language];
 	}
 }

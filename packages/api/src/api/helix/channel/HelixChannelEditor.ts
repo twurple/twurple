@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -14,13 +14,12 @@ export interface HelixChannelEditorData {
  * An editor of a previously given channel.
  */
 @rtfm<HelixChannelEditor>('api', 'HelixChannelEditor', 'userId')
-export class HelixChannelEditor {
-	@Enumerable(false) private readonly _data: HelixChannelEditorData;
+export class HelixChannelEditor extends DataObject<HelixChannelEditorData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixChannelEditorData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -28,27 +27,27 @@ export class HelixChannelEditor {
 	 * The ID of the user.
 	 */
 	get userId(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The display name of the user.
 	 */
 	get userDisplayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves additional information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
 	 * The date when the user was given editor status.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 }

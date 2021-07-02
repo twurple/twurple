@@ -1,6 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { HellFreezesOverError, rtfm } from '@twurple/common';
+import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -48,13 +48,12 @@ export interface HelixVideoData {
  */
 @Cacheable
 @rtfm<HelixVideo>('api', 'HelixVideo', 'id')
-export class HelixVideo {
-	@Enumerable(false) private readonly _data: HelixVideoData;
+export class HelixVideo extends DataObject<HelixVideoData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixVideoData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -62,112 +61,112 @@ export class HelixVideo {
 	 * The ID of the video.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The ID of the user who created the video.
 	 */
 	get userId(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the user who created the video.
 	 */
 	get userName(): string {
-		return this._data.user_login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the user who created the video.
 	 */
 	get userDisplayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves information about the user who created the video.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
 	 * The title of the video.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * The description of the video.
 	 */
 	get description(): string {
-		return this._data.description;
+		return this[rawDataSymbol].description;
 	}
 
 	/**
 	 * The date when the video was created.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
 	 * The date when the video was published.
 	 */
 	get publishDate(): Date {
-		return new Date(this._data.published_at);
+		return new Date(this[rawDataSymbol].published_at);
 	}
 
 	/**
 	 * The URL of the video.
 	 */
 	get url(): string {
-		return this._data.url;
+		return this[rawDataSymbol].url;
 	}
 
 	/**
 	 * The URL of the thumbnail of the video.
 	 */
 	get thumbnailUrl(): string {
-		return this._data.thumbnail_url;
+		return this[rawDataSymbol].thumbnail_url;
 	}
 
 	/**
 	 * Whether the video is public or not.
 	 */
 	get isPublic(): boolean {
-		return this._data.viewable === 'public';
+		return this[rawDataSymbol].viewable === 'public';
 	}
 
 	/**
 	 * The number of views of the video.
 	 */
 	get views(): number {
-		return this._data.view_count;
+		return this[rawDataSymbol].view_count;
 	}
 
 	/**
 	 * The language of the video.
 	 */
 	get language(): string {
-		return this._data.language;
+		return this[rawDataSymbol].language;
 	}
 
 	/**
 	 * The type of the video.
 	 */
 	get type(): HelixVideoType {
-		return this._data.type;
+		return this[rawDataSymbol].type;
 	}
 
 	/**
 	 * The duration of the video, as formatted by Twitch.
 	 */
 	get duration(): string {
-		return this._data.duration;
+		return this[rawDataSymbol].duration;
 	}
 
 	/**
@@ -175,9 +174,9 @@ export class HelixVideo {
 	 */
 	@CachedGetter()
 	get durationInSeconds(): number {
-		const parts = this._data.duration.match(/\d+[hms]/g);
+		const parts = this[rawDataSymbol].duration.match(/\d+[hms]/g);
 		if (!parts) {
-			throw new HellFreezesOverError(`Could not parse duration string: ${this._data.duration}`);
+			throw new HellFreezesOverError(`Could not parse duration string: ${this[rawDataSymbol].duration}`);
 		}
 		return parts
 			.map(part => {
@@ -198,14 +197,14 @@ export class HelixVideo {
 	 * Returns null if the video is not an archived stream.
 	 */
 	get streamId(): string | null {
-		return this._data.stream_id;
+		return this[rawDataSymbol].stream_id;
 	}
 
 	/**
 	 * The raw data of muted segments of the video.
 	 */
 	get mutedSegmentData(): HelixVideoMutedSegmentData[] {
-		return this._data.muted_segments.slice();
+		return this[rawDataSymbol].muted_segments.slice();
 	}
 
 	/**
@@ -220,20 +219,22 @@ export class HelixVideo {
 	 */
 	isMutedAt(offset: number, duration?: number, partial = false): boolean {
 		if (duration == null) {
-			return this._data.muted_segments.some(seg => seg.offset <= offset && offset <= seg.offset + seg.duration);
+			return this[rawDataSymbol].muted_segments.some(
+				seg => seg.offset <= offset && offset <= seg.offset + seg.duration
+			);
 		}
 
 		const end = offset + duration;
 
 		if (partial) {
-			return this._data.muted_segments.some(seg => {
+			return this[rawDataSymbol].muted_segments.some(seg => {
 				const segEnd = seg.offset + seg.duration;
 
 				return offset < segEnd && seg.offset < end;
 			});
 		}
 
-		return this._data.muted_segments.some(seg => {
+		return this[rawDataSymbol].muted_segments.some(seg => {
 			const segEnd = seg.offset + seg.duration;
 
 			return seg.offset <= offset && end <= segEnd;

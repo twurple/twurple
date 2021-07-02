@@ -1,4 +1,4 @@
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { HelixUserData } from './HelixUser';
 import { HelixUser } from './HelixUser';
 
@@ -14,13 +14,13 @@ export interface HelixPrivilegedUserData extends HelixUserData {
  */
 @rtfm<HelixPrivilegedUser>('api', 'HelixPrivilegedUser', 'id')
 export class HelixPrivilegedUser extends HelixUser {
-	/** @private */ protected declare readonly _data: HelixPrivilegedUserData;
+	/** @private */ declare readonly [rawDataSymbol]: HelixPrivilegedUserData;
 
 	/**
 	 * The email address of the user.
 	 */
 	get email(): string | undefined {
-		return this._data.email;
+		return this[rawDataSymbol].email;
 	}
 
 	/**

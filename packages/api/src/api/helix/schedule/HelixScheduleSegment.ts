@@ -1,4 +1,5 @@
-import { Enumerable } from '@d-fischer/shared-utils';
+import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixGame } from '../game/HelixGame';
 
@@ -22,13 +23,13 @@ export interface HelixScheduleSegmentData {
 /**
  * A segment of a schedule.
  */
-export class HelixScheduleSegment {
-	@Enumerable(false) private readonly _data: HelixScheduleSegmentData;
+@rtfm<HelixScheduleSegment>('api', 'HelixScheduleSegment', 'id')
+export class HelixScheduleSegment extends DataObject<HelixScheduleSegmentData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixScheduleSegmentData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -36,56 +37,56 @@ export class HelixScheduleSegment {
 	 * The ID of the segment.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The date when the segment starts.
 	 */
 	get startDate(): Date {
-		return new Date(this._data.start_time);
+		return new Date(this[rawDataSymbol].start_time);
 	}
 
 	/**
 	 * The date when the segment ends.
 	 */
 	get endDate(): Date {
-		return new Date(this._data.end_time);
+		return new Date(this[rawDataSymbol].end_time);
 	}
 
 	/**
 	 * The title of the segment.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * The date up to which the segment is canceled.
 	 */
 	get cancelEndDate(): Date | null {
-		return this._data.canceled_until ? new Date(this._data.canceled_until) : null;
+		return mapNullable(this[rawDataSymbol].canceled_until, v => new Date(v));
 	}
 
 	/**
 	 * The ID of the category the segment is scheduled for, or null if no category is specified.
 	 */
 	get categoryId(): string | null {
-		return this._data.category?.id ?? null;
+		return this[rawDataSymbol].category?.id ?? null;
 	}
 
 	/**
 	 * The name of the category the segment is scheduled for, or null if no category is specified.
 	 */
 	get categoryName(): string | null {
-		return this._data.category?.name ?? null;
+		return this[rawDataSymbol].category?.name ?? null;
 	}
 
 	/**
 	 * Retrieves more information about the category the segment is scheduled for, or null if no category is specified.
 	 */
 	async getCategory(): Promise<HelixGame | null> {
-		const categoryId = this._data.category?.id;
+		const categoryId = this[rawDataSymbol].category?.id;
 
 		return categoryId ? await this._client.helix.games.getGameById(categoryId) : null;
 	}
@@ -94,6 +95,6 @@ export class HelixScheduleSegment {
 	 * Whether the segment is recurring every week.
 	 */
 	get isRecurring(): boolean {
-		return this._data.is_recurring;
+		return this[rawDataSymbol].is_recurring;
 	}
 }

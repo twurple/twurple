@@ -1,5 +1,5 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { Channel } from '../channel/Channel';
 
@@ -59,14 +59,12 @@ export interface VideoData {
  * A Twitch video.
  */
 @rtfm<Video>('api', 'Video', 'id')
-export class Video {
-	/** @private */
-	@Enumerable(false) private readonly _data: VideoData;
+export class Video extends DataObject<VideoData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: VideoData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -74,63 +72,63 @@ export class Video {
 	 * The ID of the video.
 	 */
 	get id(): string {
-		return this._data._id;
+		return this[rawDataSymbol]._id;
 	}
 
 	/**
 	 * The ID of the channel the video was uploaded to.
 	 */
 	get channelId(): string {
-		return this._data.channel._id;
+		return this[rawDataSymbol].channel._id;
 	}
 
 	/**
 	 * The name of the channel the video was uploaded to.
 	 */
 	get channelName(): string {
-		return this._data.channel.name;
+		return this[rawDataSymbol].channel.name;
 	}
 
 	/**
 	 * The display name of the channel the video was uploaded to.
 	 */
 	get channelDisplayName(): string {
-		return this._data.channel.display_name;
+		return this[rawDataSymbol].channel.display_name;
 	}
 
 	/**
 	 * Retrieves more information about the channel the video was uploaded to.
 	 */
 	async getChannel(): Promise<Channel> {
-		return await this._client.kraken.channels.getChannel(this._data.channel._id);
+		return await this._client.kraken.channels.getChannel(this[rawDataSymbol].channel._id);
 	}
 
 	/**
 	 * The date when the video was created.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
 	 * The description of the video.
 	 */
 	get description(): string {
-		return this._data.description;
+		return this[rawDataSymbol].description;
 	}
 
 	/**
 	 * The description of the video in HTML.
 	 */
 	get htmlDescription(): string {
-		return this._data.description_html;
+		return this[rawDataSymbol].description_html;
 	}
 
 	/**
 	 * The resolutions the video is available in.
 	 */
 	get resolutions(): Record<string, string> {
-		return this._data.resolutions;
+		return this[rawDataSymbol].resolutions;
 	}
 
 	/**
@@ -139,35 +137,35 @@ export class Video {
 	 * @param resolution The resolution to get FPS for. This is the *key* of the resolutions object.
 	 */
 	getFps(resolution: string): number | undefined {
-		return this._data.fps[resolution];
+		return this[rawDataSymbol].fps[resolution];
 	}
 
 	/**
 	 * The name of the game shown in the video.
 	 */
 	get gameName(): string {
-		return this._data.game;
+		return this[rawDataSymbol].game;
 	}
 
 	/**
 	 * The language of the video.
 	 */
 	get language(): string {
-		return this._data.language;
+		return this[rawDataSymbol].language;
 	}
 
 	/**
 	 * The length of the video, in seconds.
 	 */
 	get length(): number {
-		return this._data.length;
+		return this[rawDataSymbol].length;
 	}
 
 	/**
 	 * The muted segments of the video.
 	 */
 	get mutedSegments(): VideoMutedSegment[] {
-		return this._data.muted_segments;
+		return this[rawDataSymbol].muted_segments;
 	}
 
 	/**
@@ -176,28 +174,28 @@ export class Video {
 	 * @param size The size of the preview.
 	 */
 	getPreview(size: VideoThumbSize): string {
-		return this._data.preview[size];
+		return this[rawDataSymbol].preview[size];
 	}
 
 	/**
 	 * The date when the video was published.
 	 */
 	get publishDate(): Date {
-		return new Date(this._data.published_at);
+		return new Date(this[rawDataSymbol].published_at);
 	}
 
 	/**
 	 * The status of the video.
 	 */
 	get status(): string {
-		return this._data.status;
+		return this[rawDataSymbol].status;
 	}
 
 	/**
 	 * A list of tags of the video.
 	 */
 	get tags(): string[] {
-		return this._data.tag_list.split(',');
+		return this[rawDataSymbol].tag_list.split(',');
 	}
 
 	/**
@@ -206,41 +204,41 @@ export class Video {
 	 * @param size
 	 */
 	getThumbnails(size: VideoThumbSize): VideoThumbnail[] {
-		return this._data.thumbnails[size];
+		return this[rawDataSymbol].thumbnails[size];
 	}
 
 	/**
 	 * The title of the video.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * The URL of the video.
 	 */
 	get url(): string {
-		return this._data.url;
+		return this[rawDataSymbol].url;
 	}
 
 	/**
 	 * Whether the video is public.
 	 */
 	get isPublic(): boolean {
-		return this._data.viewable === 'public';
+		return this[rawDataSymbol].viewable === 'public';
 	}
 
 	/**
 	 * The time when the video will be viewable publicly.
 	 */
 	get viewabilityDate(): Date | null {
-		return this._data.viewable_at ? new Date(this._data.viewable_at) : null;
+		return mapNullable(this[rawDataSymbol].viewable_at, v => new Date(v));
 	}
 
 	/**
 	 * The number of views of the video.
 	 */
 	get views(): number {
-		return this._data.views;
+		return this[rawDataSymbol].views;
 	}
 }

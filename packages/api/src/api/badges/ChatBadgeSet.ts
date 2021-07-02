@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ChatBadgeVersionData } from './ChatBadgeVersion';
 import { ChatBadgeVersion } from './ChatBadgeVersion';
 
@@ -12,19 +11,12 @@ export interface ChatBadgeSetData {
  * A set of badges.
  */
 @rtfm('api', 'ChatBadgeSet')
-export class ChatBadgeSet {
-	@Enumerable(false) private readonly _data: ChatBadgeSetData;
-
-	/** @private */
-	constructor(data: ChatBadgeSetData) {
-		this._data = data;
-	}
-
+export class ChatBadgeSet extends DataObject<ChatBadgeSetData> {
 	/**
 	 * Names of all versions of the badge set.
 	 */
 	get versionNames(): string[] {
-		return Object.keys(this._data.versions);
+		return Object.keys(this[rawDataSymbol].versions);
 	}
 
 	/**
@@ -33,6 +25,6 @@ export class ChatBadgeSet {
 	 * @param name The name of the version.
 	 */
 	getVersion(name: string): ChatBadgeVersion {
-		return new ChatBadgeVersion(this._data.versions[name]);
+		return new ChatBadgeVersion(this[rawDataSymbol].versions[name]);
 	}
 }

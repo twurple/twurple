@@ -1,3 +1,4 @@
+import { rawDataSymbol } from '../DataObject';
 import { rtfm } from '../rtfm';
 import type { ChatEmoteData } from './ChatEmote';
 import { ChatEmote } from './ChatEmote';
@@ -14,12 +15,12 @@ export interface ChatEmoteWithSetData extends ChatEmoteData {
  */
 @rtfm<ChatEmoteWithSet>('common', 'ChatEmoteWithSet', 'id')
 export class ChatEmoteWithSet extends ChatEmote {
-	/** @private */ protected declare readonly _data: ChatEmoteWithSetData;
+	/** @private */ declare readonly [rawDataSymbol]: ChatEmoteWithSetData;
 
 	/**
 	 * The ID of the emote set.
 	 */
 	get setId(): number {
-		return this._data.emoticon_set;
+		return this[rawDataSymbol].emoticon_set;
 	}
 }

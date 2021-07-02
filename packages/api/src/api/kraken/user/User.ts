@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { Channel } from '../channel/Channel';
@@ -26,75 +26,74 @@ export interface UserData {
  * A Twitch user.
  */
 @rtfm<User>('api', 'User', 'id')
-export class User implements UserIdResolvableType, UserNameResolveableType {
-	/** @private */ @Enumerable(false) protected readonly _data: UserData;
+export class User extends DataObject<UserData> implements UserIdResolvableType, UserNameResolveableType {
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: UserData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
 	/** @private */
 	get cacheKey(): string {
-		return this._data._id;
+		return this[rawDataSymbol]._id;
 	}
 
 	/**
 	 * The ID of the user.
 	 */
 	get id(): string {
-		return this._data._id;
+		return this[rawDataSymbol]._id;
 	}
 
 	/**
 	 * The bio of the user.
 	 */
 	get bio(): string {
-		return this._data.bio;
+		return this[rawDataSymbol].bio;
 	}
 
 	/**
 	 * The date when the user was created, i.e. when they registered on Twitch.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
 	 * The last date when the user changed anything in their profile, e.g. their description or their profile picture.
 	 */
 	get updateDate(): Date {
-		return new Date(this._data.updated_at);
+		return new Date(this[rawDataSymbol].updated_at);
 	}
 
 	/**
 	 * The name of the user.
 	 */
 	get name(): string {
-		return this._data.name;
+		return this[rawDataSymbol].name;
 	}
 
 	/**
 	 * The display name of the user.
 	 */
 	get displayName(): string {
-		return this._data.display_name;
+		return this[rawDataSymbol].display_name;
 	}
 
 	/**
 	 * The URL to the profile picture of the user.
 	 */
 	get logoUrl(): string {
-		return this._data.logo;
+		return this[rawDataSymbol].logo;
 	}
 
 	/**
 	 * The type of the user.
 	 */
 	get type(): string {
-		return this._data.type;
+		return this[rawDataSymbol].type;
 	}
 
 	/**
@@ -108,7 +107,7 @@ export class User implements UserIdResolvableType, UserNameResolveableType {
 	 * Gets a channel placeholder object for the user, which can do anything you can do to a channel with just the ID.
 	 */
 	getChannelPlaceholder(): ChannelPlaceholder {
-		return new ChannelPlaceholder(this._data._id, this._client);
+		return new ChannelPlaceholder({ _id: this[rawDataSymbol]._id }, this._client);
 	}
 
 	/**

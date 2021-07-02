@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 
 /** @private */
@@ -15,13 +15,12 @@ export interface HelixStreamMarkerData {
  * A stream marker.
  */
 @rtfm<HelixStreamMarker>('api', 'HelixStreamMarker', 'id')
-export class HelixStreamMarker {
-	/** @private */ @Enumerable(false) protected readonly _data: HelixStreamMarkerData;
+export class HelixStreamMarker extends DataObject<HelixStreamMarkerData> {
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixStreamMarkerData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -29,27 +28,27 @@ export class HelixStreamMarker {
 	 * The ID of the marker.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The date and time when the marker was created.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
 	 * The description of the marker.
 	 */
 	get description(): string {
-		return this._data.description;
+		return this[rawDataSymbol].description;
 	}
 
 	/**
 	 * The position in the stream when the marker was created, in seconds.
 	 */
 	get positionInSeconds(): number {
-		return this._data.position_seconds;
+		return this[rawDataSymbol].position_seconds;
 	}
 }

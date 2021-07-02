@@ -1,7 +1,7 @@
 import { Enumerable, utf8Substring } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import type { ParsedMessageEmotePart, ParsedMessagePart } from '@twurple/common';
-import { ChatEmote, fillTextPositions, rtfm } from '@twurple/common';
+import { ChatEmote, DataObject, fillTextPositions, rawDataSymbol, rtfm } from '@twurple/common';
 
 /**
  * The tier of a subscription. 1000 means tier 1, and so on.
@@ -40,12 +40,12 @@ export interface EventSubChannelSubscriptionMessageEventData {
  * An EventSub event representing the public announcement of a channel subscription by the subscriber.
  */
 @rtfm<EventSubChannelSubscriptionMessageEvent>('eventsub', 'EventSubChannelSubscriptionMessageEvent', 'userId')
-export class EventSubChannelSubscriptionMessageEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSubChannelSubscriptionMessageEventData> {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubChannelSubscriptionMessageEventData, client: ApiClient) {
+	constructor(data: EventSubChannelSubscriptionMessageEventData, client: ApiClient) {
+		super(data);
 		this._client = client;
 	}
 
@@ -53,99 +53,99 @@ export class EventSubChannelSubscriptionMessageEvent {
 	 * The ID of the user whose subscription is being announced.
 	 */
 	get userId(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the user whose subscription is being announced.
 	 */
 	get userName(): string {
-		return this._data.user_login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the user whose subscription is being announced.
 	 */
 	get userDisplayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves more information about the user whose subscription is being announced.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
 	 * The ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_user_id;
+		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_user_login;
+		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_user_name;
+		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**
 	 * The tier of the subscription, either 1000, 2000 or 3000.
 	 */
 	get tier(): EventSubChannelSubscriptionMessageEventTier {
-		return this._data.tier;
+		return this[rawDataSymbol].tier;
 	}
 
 	/**
 	 * The total number of months the user has been subscribed.
 	 */
 	get cumulativeMonths(): number {
-		return this._data.cumulative_months;
+		return this[rawDataSymbol].cumulative_months;
 	}
 
 	/**
 	 * The number of months the user has been subscribed in a row, or null if they don't want to share it.
 	 */
 	get streakMonths(): number | null {
-		return this._data.streak_months;
+		return this[rawDataSymbol].streak_months;
 	}
 
 	/**
 	 * The number of months the user has now subscribed.
 	 */
 	get durationMonths(): number {
-		return this._data.duration_months;
+		return this[rawDataSymbol].duration_months;
 	}
 
 	/**
 	 * The text of the message.
 	 */
 	get messageText(): string {
-		return this._data.message.text;
+		return this[rawDataSymbol].message.text;
 	}
 
 	/**
 	 * Parses the message to split emotes from text.
 	 */
 	parseEmotes(): ParsedMessagePart[] {
-		const messageText = this._data.message.text;
-		const emoteParts: ParsedMessageEmotePart[] = this._data.message.emotes.map(
+		const messageText = this[rawDataSymbol].message.text;
+		const emoteParts: ParsedMessageEmotePart[] = this[rawDataSymbol].message.emotes.map(
 			({ begin, end, id }: EventSubChannelSubscriptionMessageEmoteData) => {
 				const name = utf8Substring(messageText, begin, end + 1);
 

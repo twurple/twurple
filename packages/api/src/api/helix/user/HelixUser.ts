@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
@@ -31,89 +31,88 @@ export interface HelixUserData {
  * A Twitch user.
  */
 @rtfm<HelixUser>('api', 'HelixUser', 'id')
-export class HelixUser implements UserIdResolvableType, UserNameResolveableType {
-	/** @private */ @Enumerable(false) protected readonly _data: HelixUserData;
+export class HelixUser extends DataObject<HelixUserData> implements UserIdResolvableType, UserNameResolveableType {
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixUserData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
 	/** @private */
 	get cacheKey(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The ID of the user.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The name of the user.
 	 */
 	get name(): string {
-		return this._data.login;
+		return this[rawDataSymbol].login;
 	}
 
 	/**
 	 * The display name of the user.
 	 */
 	get displayName(): string {
-		return this._data.display_name;
+		return this[rawDataSymbol].display_name;
 	}
 
 	/**
 	 * The description of the user.
 	 */
 	get description(): string {
-		return this._data.description;
+		return this[rawDataSymbol].description;
 	}
 
 	/**
 	 * The type of the user.
 	 */
 	get type(): HelixUserType {
-		return this._data.type;
+		return this[rawDataSymbol].type;
 	}
 
 	/**
 	 * The type of the user.
 	 */
 	get broadcasterType(): string {
-		return this._data.broadcaster_type;
+		return this[rawDataSymbol].broadcaster_type;
 	}
 
 	/**
 	 * The URL to the profile picture of the user.
 	 */
 	get profilePictureUrl(): string {
-		return this._data.profile_image_url;
+		return this[rawDataSymbol].profile_image_url;
 	}
 
 	/**
 	 * The URL to the offline video placeholder of the user.
 	 */
 	get offlinePlaceholderUrl(): string {
-		return this._data.offline_image_url;
+		return this[rawDataSymbol].offline_image_url;
 	}
 
 	/**
 	 * The total number of views of the user's channel.
 	 */
 	get views(): number {
-		return this._data.view_count;
+		return this[rawDataSymbol].view_count;
 	}
 
 	/**
 	 * The date when the user was created, i.e. when they registered on Twitch.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**

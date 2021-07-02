@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface EventSubChannelRaidEventData {
@@ -17,12 +17,12 @@ export interface EventSubChannelRaidEventData {
  * An EventSub event representing a broadcaster raiding another broadcaster.
  */
 @rtfm<EventSubChannelRaidEvent>('eventsub', 'EventSubChannelRaidEvent', 'raidedBroadcasterId')
-export class EventSubChannelRaidEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEventData> {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubChannelRaidEventData, client: ApiClient) {
+	constructor(data: EventSubChannelRaidEventData, client: ApiClient) {
+		super(data);
 		this._client = client;
 	}
 
@@ -30,62 +30,62 @@ export class EventSubChannelRaidEvent {
 	 * The ID of the raiding broadcaster.
 	 */
 	get raidingBroadcasterId(): string {
-		return this._data.from_broadcaster_user_id;
+		return this[rawDataSymbol].from_broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the raiding broadcaster.
 	 */
 	get raidingBroadcasterName(): string {
-		return this._data.from_broadcaster_user_login;
+		return this[rawDataSymbol].from_broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the raiding broadcaster.
 	 */
 	get raidingBroadcasterDisplayName(): string {
-		return this._data.from_broadcaster_user_name;
+		return this[rawDataSymbol].from_broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the raiding broadcaster.
 	 */
 	async getRaidingBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.from_broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id))!;
 	}
 
 	/**
 	 * The ID of the raided broadcaster.
 	 */
 	get raidedBroadcasterId(): string {
-		return this._data.to_broadcaster_user_id;
+		return this[rawDataSymbol].to_broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the raided broadcaster.
 	 */
 	get raidedBroadcasterName(): string {
-		return this._data.to_broadcaster_user_login;
+		return this[rawDataSymbol].to_broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the raided broadcaster.
 	 */
 	get raidedBroadcasterDisplayName(): string {
-		return this._data.to_broadcaster_user_name;
+		return this[rawDataSymbol].to_broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the raided broadcaster.
 	 */
 	async getRaidedBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.to_broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].to_broadcaster_user_id))!;
 	}
 
 	/**
 	 * The amount of viewers in the raid.
 	 */
 	get viewers(): number {
-		return this._data.viewers;
+		return this[rawDataSymbol].viewers;
 	}
 }

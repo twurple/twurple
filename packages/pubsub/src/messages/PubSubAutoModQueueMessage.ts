@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface PubSubAutoModQueueMessageAutoModInternals {
@@ -62,12 +61,10 @@ export interface PubSubAutoModQueueMessageData {
  * A message that informs about a message being processed in the AutoMod queue.
  */
 @rtfm<PubSubAutoModQueueMessage>('pubsub', 'PubSubAutoModQueueMessage', 'messageId')
-export class PubSubAutoModQueueMessage {
-	@Enumerable(false) private readonly _data: PubSubAutoModQueueMessageData;
-
+export class PubSubAutoModQueueMessage extends DataObject<PubSubAutoModQueueMessageData> {
 	/** @private */
 	constructor(data: PubSubAutoModQueueMessageData, private readonly _channelId: string) {
-		this._data = data;
+		super(data);
 	}
 
 	/**
@@ -81,83 +78,83 @@ export class PubSubAutoModQueueMessage {
 	 * The ID of the message.
 	 */
 	get messageId(): string {
-		return this._data.data.message.id;
+		return this[rawDataSymbol].data.message.id;
 	}
 
 	/**
 	 * The content of the message.
 	 */
 	get messageContent(): string {
-		return this._data.data.message.content.text;
+		return this[rawDataSymbol].data.message.content.text;
 	}
 
 	/**
 	 * The fragments of the message that were found to be against the moderation level of the channel.
 	 */
 	get foundMessageFragments(): PubSubAutoModQueueMessageFragment[] {
-		return this._data.data.message.content.fragments;
+		return this[rawDataSymbol].data.message.content.fragments;
 	}
 
 	/**
 	 * The ID of the user that sent the message.
 	 */
 	get senderId(): string {
-		return this._data.data.message.sender.user_id;
+		return this[rawDataSymbol].data.message.sender.user_id;
 	}
 
 	/**
 	 * The name of the user that sent the message.
 	 */
 	get senderName(): string {
-		return this._data.data.message.sender.login;
+		return this[rawDataSymbol].data.message.sender.login;
 	}
 
 	/**
 	 * The display name of the user that sent the message.
 	 */
 	get senderDisplayName(): string {
-		return this._data.data.message.sender.display_name;
+		return this[rawDataSymbol].data.message.sender.display_name;
 	}
 
 	/**
 	 * The chat color of the user that sent the message.
 	 */
 	get senderColor(): string {
-		return this._data.data.message.sender.chat_color;
+		return this[rawDataSymbol].data.message.sender.chat_color;
 	}
 
 	/**
 	 * The date when the message was sent.
 	 */
 	get sendDate(): Date {
-		return new Date(this._data.data.message.sent_at);
+		return new Date(this[rawDataSymbol].data.message.sent_at);
 	}
 
 	/**
 	 * The classification of the message content.
 	 */
 	get contentClassification(): PubSubAutoModQueueMessageContentClassification {
-		return this._data.data.content_classification;
+		return this[rawDataSymbol].data.content_classification;
 	}
 
 	/**
 	 * The status of the queue entry.
 	 */
 	get status(): PubSubAutoModQueueStatus {
-		return this._data.data.status;
+		return this[rawDataSymbol].data.status;
 	}
 
 	/**
 	 * The ID of the user that resolved the queue entry, or null if it was not resolved or timed out.
 	 */
 	get resolverId(): string | null {
-		return this._data.data.resolver_id || null;
+		return this[rawDataSymbol].data.resolver_id || null;
 	}
 
 	/**
 	 * The name of the user that resolved the queue entry, or null if it was not resolved or timed out.
 	 */
 	get resolverName(): string | null {
-		return this._data.data.resolver_login || null;
+		return this[rawDataSymbol].data.resolver_login || null;
 	}
 }

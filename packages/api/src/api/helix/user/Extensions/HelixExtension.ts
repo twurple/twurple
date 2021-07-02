@@ -1,4 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
+import { DataObject, rawDataSymbol } from '@twurple/common';
 
 /** @private */
 export interface HelixExtensionData {
@@ -8,33 +8,25 @@ export interface HelixExtensionData {
 }
 
 /** @protected */
-export abstract class HelixExtension {
-	/** @private */
-	@Enumerable(false) protected readonly _data: HelixExtensionData;
-
-	/** @private */
-	constructor(data: HelixExtensionData) {
-		this._data = data;
-	}
-
+export abstract class HelixExtension extends DataObject<HelixExtensionData> {
 	/**
 	 * The ID of the extension.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The version of the extension.
 	 */
 	get version(): string {
-		return this._data.version;
+		return this[rawDataSymbol].version;
 	}
 
 	/**
 	 * The name of the extension.
 	 */
 	get name(): string {
-		return this._data.name;
+		return this[rawDataSymbol].name;
 	}
 }

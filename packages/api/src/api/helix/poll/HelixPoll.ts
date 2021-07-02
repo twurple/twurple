@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixPollChoiceData } from './HelixPollChoice';
@@ -31,13 +31,12 @@ export interface HelixPollData {
  * A channel poll.
  */
 @rtfm<HelixPoll>('api', 'HelixPoll', 'id')
-export class HelixPoll {
-	@Enumerable(false) private readonly _data: HelixPollData;
+export class HelixPoll extends DataObject<HelixPollData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixPollData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -45,104 +44,104 @@ export class HelixPoll {
 	 * The ID of the poll.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_id;
+		return this[rawDataSymbol].broadcaster_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_login;
+		return this[rawDataSymbol].broadcaster_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_name;
+		return this[rawDataSymbol].broadcaster_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
 	}
 
 	/**
 	 * The title of the poll.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * Whether voting with bits is enabled for the poll.
 	 */
 	get isBitsVotingEnabled(): boolean {
-		return this._data.bits_voting_enabled;
+		return this[rawDataSymbol].bits_voting_enabled;
 	}
 
 	/**
 	 * The amount of bits that a vote costs.
 	 */
 	get bitsPerVote(): number {
-		return this._data.bits_per_vote;
+		return this[rawDataSymbol].bits_per_vote;
 	}
 
 	/**
 	 * Whether voting with channel points is enabled for the poll.
 	 */
 	get isChannelPointsVotingEnabled(): boolean {
-		return this._data.channel_points_voting_enabled;
+		return this[rawDataSymbol].channel_points_voting_enabled;
 	}
 
 	/**
 	 * The amount of channel points that a vote costs.
 	 */
 	get channelPointsPerVote(): number {
-		return this._data.channel_points_per_vote;
+		return this[rawDataSymbol].channel_points_per_vote;
 	}
 
 	/**
 	 * The status of the poll.
 	 */
 	get status(): HelixPollStatus {
-		return this._data.status;
+		return this[rawDataSymbol].status;
 	}
 
 	/**
 	 * The duration of the poll, in seconds.
 	 */
 	get durationInSeconds(): number {
-		return this._data.duration;
+		return this[rawDataSymbol].duration;
 	}
 
 	/**
 	 * The date when the poll started.
 	 */
 	get startDate(): Date {
-		return new Date(this._data.started_at);
+		return new Date(this[rawDataSymbol].started_at);
 	}
 
 	/**
 	 * The date when the poll ended or will end.
 	 */
 	get endDate(): Date {
-		return new Date(this.startDate.getTime() + this._data.duration * 1000);
+		return new Date(this.startDate.getTime() + this[rawDataSymbol].duration * 1000);
 	}
 
 	/**
 	 * The choices of the poll.
 	 */
 	get choices(): HelixPollChoice[] {
-		return this._data.choices.map(data => new HelixPollChoice(data));
+		return this[rawDataSymbol].choices.map(data => new HelixPollChoice(data));
 	}
 }

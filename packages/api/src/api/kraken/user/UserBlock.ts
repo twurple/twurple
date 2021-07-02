@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { UserData } from './User';
 import { User } from './User';
@@ -15,13 +15,12 @@ export interface UserBlockData {
  * A relation of a previously givn user blocking another user.
  */
 @rtfm<UserBlock>('api', 'UserBlock', 'blockedUserId')
-export class UserBlock {
-	@Enumerable(false) private readonly _data: UserBlockData;
+export class UserBlock extends DataObject<UserBlockData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: UserBlockData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -29,13 +28,13 @@ export class UserBlock {
 	 * The blocked user.
 	 */
 	get blockedUser(): User {
-		return new User(this._data.user, this._client);
+		return new User(this[rawDataSymbol].user, this._client);
 	}
 
 	/**
 	 * The ID of the blocked user.
 	 */
 	get blockedUserId(): string {
-		return this._data.user._id;
+		return this[rawDataSymbol].user._id;
 	}
 }

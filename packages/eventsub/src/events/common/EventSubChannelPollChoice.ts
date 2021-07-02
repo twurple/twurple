@@ -1,4 +1,4 @@
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { EventSubChannelPollBeginChoiceData } from './EventSubChannelPollBeginChoice';
 import { EventSubChannelPollBeginChoice } from './EventSubChannelPollBeginChoice';
 
@@ -16,26 +16,26 @@ export interface EventSubChannelPollChoiceData extends EventSubChannelPollBeginC
  */
 @rtfm<EventSubChannelPollChoice>('eventsub', 'EventSubChannelPollChoice', 'id')
 export class EventSubChannelPollChoice extends EventSubChannelPollBeginChoice {
-	/** @private */ protected declare readonly _data: EventSubChannelPollChoiceData;
+	/** @private */ declare readonly [rawDataSymbol]: EventSubChannelPollChoiceData;
 
 	/**
 	 * The number of votes for the choice added by using bits.
 	 */
 	get bitsVotes(): number {
-		return this._data.bits_votes;
+		return this[rawDataSymbol].bits_votes;
 	}
 
 	/**
 	 * The number of votes for the choice added by using channel points.
 	 */
 	get channelPointsVotes(): number {
-		return this._data.channel_points_votes;
+		return this[rawDataSymbol].channel_points_votes;
 	}
 
 	/**
 	 * The total number of votes for the choice, including bits and channel points.
 	 */
 	get totalVotes(): number {
-		return this._data.votes;
+		return this[rawDataSymbol].votes;
 	}
 }

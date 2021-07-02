@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from './HelixUser';
 
@@ -18,13 +18,12 @@ export interface HelixFollowData {
  * A relation of a user following a broadcaster.
  */
 @rtfm('api', 'HelixFollow')
-export class HelixFollow {
-	@Enumerable(false) private readonly _data: HelixFollowData;
+export class HelixFollow extends DataObject<HelixFollowData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixFollowData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -32,62 +31,62 @@ export class HelixFollow {
 	 * The user ID of the following user.
 	 */
 	get userId(): string {
-		return this._data.from_id;
+		return this[rawDataSymbol].from_id;
 	}
 
 	/**
 	 * The name of the following user.
 	 */
 	get userName(): string {
-		return this._data.from_login;
+		return this[rawDataSymbol].from_login;
 	}
 
 	/**
 	 * The display name of the following user.
 	 */
 	get userDisplayName(): string {
-		return this._data.from_name;
+		return this[rawDataSymbol].from_name;
 	}
 
 	/**
 	 * Retrieves the data of the following user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.from_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].from_id))!;
 	}
 
 	/**
 	 * The user ID of the followed broadcaster.
 	 */
 	get followedUserId(): string {
-		return this._data.to_id;
+		return this[rawDataSymbol].to_id;
 	}
 
 	/**
 	 * The name of the followed user.
 	 */
 	get followedUserName(): string {
-		return this._data.to_login;
+		return this[rawDataSymbol].to_login;
 	}
 
 	/**
 	 * The display name of the followed user.
 	 */
 	get followedUserDisplayName(): string {
-		return this._data.to_name;
+		return this[rawDataSymbol].to_name;
 	}
 
 	/**
 	 * Retrieves the data of the followed broadcaster.
 	 */
 	async getFollowedUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.to_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].to_id))!;
 	}
 
 	/**
 	 * The date when the user followed the broadcaster.
 	 */
 	get followDate(): Date {
-		return new Date(this._data.followed_at);
+		return new Date(this[rawDataSymbol].followed_at);
 	}
 }

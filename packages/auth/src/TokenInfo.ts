@@ -1,6 +1,6 @@
 /** @private */
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { mapNullable } from '@d-fischer/shared-utils';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 export interface TokenInfoData {
 	client_id: string;
@@ -14,13 +14,12 @@ export interface TokenInfoData {
  * Information about an access token.
  */
 @rtfm<TokenInfo>('auth', 'TokenInfo', 'clientId')
-export class TokenInfo {
+export class TokenInfo extends DataObject<TokenInfoData> {
 	private readonly _obtainmentDate: Date;
-	@Enumerable(false) private readonly _data: TokenInfoData;
 
 	/** @private */
 	constructor(data: TokenInfoData) {
-		this._data = data;
+		super(data);
 		this._obtainmentDate = new Date();
 	}
 
@@ -28,28 +27,28 @@ export class TokenInfo {
 	 * The client ID.
 	 */
 	get clientId(): string {
-		return this._data.client_id;
+		return this[rawDataSymbol].client_id;
 	}
 
 	/**
 	 * The ID of the authenticated user.
 	 */
 	get userId(): string | null {
-		return this._data.user_id ?? null;
+		return this[rawDataSymbol].user_id ?? null;
 	}
 
 	/**
 	 * The name of the authenticated user.
 	 */
 	get userName(): string | null {
-		return this._data.login ?? null;
+		return this[rawDataSymbol].login ?? null;
 	}
 
 	/**
 	 * The scopes for which the token is valid.
 	 */
 	get scopes(): string[] {
-		return this._data.scopes;
+		return this[rawDataSymbol].scopes;
 	}
 
 	/**
@@ -58,10 +57,6 @@ export class TokenInfo {
 	 * If this returns null, it means that the token never expires (happens with some old client IDs).
 	 */
 	get expiryDate(): Date | null {
-		if (!this._data.expires_in) {
-			return null;
-		}
-
-		return new Date(this._obtainmentDate.getTime() + this._data.expires_in * 1000);
+		return mapNullable(this[rawDataSymbol].expires_in, v => new Date(this._obtainmentDate.getTime() + v * 1000));
 	}
 }

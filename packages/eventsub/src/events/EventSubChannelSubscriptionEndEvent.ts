@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /**
  * The tier of a subscription. 1000 means tier 1, and so on.
@@ -23,12 +23,12 @@ export interface EventSubChannelSubscriptionEndEventData {
  * An EventSub event representing the end of a channel subscription.
  */
 @rtfm<EventSubChannelSubscriptionEndEvent>('eventsub', 'EventSubChannelSubscriptionEndEvent', 'userId')
-export class EventSubChannelSubscriptionEndEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+export class EventSubChannelSubscriptionEndEvent extends DataObject<EventSubChannelSubscriptionEndEventData> {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubChannelSubscriptionEndEventData, client: ApiClient) {
+	constructor(data: EventSubChannelSubscriptionEndEventData, client: ApiClient) {
+		super(data);
 		this._client = client;
 	}
 
@@ -36,69 +36,69 @@ export class EventSubChannelSubscriptionEndEvent {
 	 * The ID of the user whose subscription is ending.
 	 */
 	get userId(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the user whose subscription is ending.
 	 */
 	get userName(): string {
-		return this._data.user_login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the user whose subscription is ending.
 	 */
 	get userDisplayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves more information about the user whose subscription is ending.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
 	 * The ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_user_id;
+		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_user_login;
+		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_user_name;
+		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**
 	 * The tier of the subscription, either 1000, 2000 or 3000.
 	 */
 	get tier(): EventSubChannelSubscriptionEndEventTier {
-		return this._data.tier;
+		return this[rawDataSymbol].tier;
 	}
 
 	/**
 	 * Whether the subscription has been gifted.
 	 */
 	get isGift(): boolean {
-		return this._data.is_gift;
+		return this[rawDataSymbol].is_gift;
 	}
 }

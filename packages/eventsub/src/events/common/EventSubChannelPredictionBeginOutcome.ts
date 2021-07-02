@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export type EventSubChannelPredictionColor = 'blue' | 'pink';
@@ -15,33 +14,25 @@ export interface EventSubChannelPredictionBeginOutcomeData {
  * A possible outcome of a prediction, as defined when beginning that prediction.
  */
 @rtfm<EventSubChannelPredictionBeginOutcome>('eventsub', 'EventSubChannelPredictionBeginOutcome', 'id')
-export class EventSubChannelPredictionBeginOutcome {
-	/** @private */
-	@Enumerable(false) protected readonly _data: EventSubChannelPredictionBeginOutcomeData;
-
-	/** @private */
-	constructor(data: EventSubChannelPredictionBeginOutcomeData) {
-		this._data = data;
-	}
-
+export class EventSubChannelPredictionBeginOutcome extends DataObject<EventSubChannelPredictionBeginOutcomeData> {
 	/**
 	 * The ID of the outcome.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The title of the outcome.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * The color of the outcome.
 	 */
 	get color(): EventSubChannelPredictionColor {
-		return this._data.color;
+		return this[rawDataSymbol].color;
 	}
 }

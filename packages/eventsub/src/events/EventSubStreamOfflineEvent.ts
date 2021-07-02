@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface EventSubStreamOfflineEventData {
@@ -13,13 +13,12 @@ export interface EventSubStreamOfflineEventData {
  * An EventSub event representing a stream going offline.
  */
 @rtfm<EventSubStreamOfflineEvent>('eventsub', 'EventSubStreamOfflineEvent', 'broadcasterId')
-export class EventSubStreamOfflineEvent {
-	@Enumerable(false) private readonly _data: EventSubStreamOfflineEventData;
+export class EventSubStreamOfflineEvent extends DataObject<EventSubStreamOfflineEventData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: EventSubStreamOfflineEventData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -27,27 +26,27 @@ export class EventSubStreamOfflineEvent {
 	 * The ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_user_id;
+		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_user_login;
+		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_user_name;
+		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 }

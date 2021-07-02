@@ -1,4 +1,4 @@
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { ChannelData } from '../channel/Channel';
 import { Channel } from '../channel/Channel';
 import type { SubscriptionData } from '../Subscription';
@@ -14,19 +14,19 @@ export interface UserSubscriptionData extends SubscriptionData {
  */
 @rtfm<UserSubscription>('api', 'UserSubscription', 'channelId')
 export class UserSubscription extends Subscription {
-	/** @private */ protected declare readonly _data: UserSubscriptionData;
+	/** @private */ declare readonly [rawDataSymbol]: UserSubscriptionData;
 
 	/**
 	 * The subscribed channel.
 	 */
 	get channel(): Channel {
-		return new Channel(this._data.channel, this._client);
+		return new Channel(this[rawDataSymbol].channel, this._client);
 	}
 
 	/**
 	 * The ID of the subscribed channel.
 	 */
 	get channelId(): string {
-		return this._data.channel._id;
+		return this[rawDataSymbol].channel._id;
 	}
 }

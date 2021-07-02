@@ -1,4 +1,4 @@
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixUserSubscriptionData } from './HelixUserSubscription';
 import { HelixUserSubscription } from './HelixUserSubscription';
@@ -22,89 +22,89 @@ export interface HelixSubscriptionData extends HelixUserSubscriptionData {
  */
 @rtfm<HelixSubscription>('api', 'HelixSubscription', 'userId')
 export class HelixSubscription extends HelixUserSubscription {
-	/** @private */ protected declare readonly _data: HelixSubscriptionData;
+	/** @private */ declare readonly [rawDataSymbol]: HelixSubscriptionData;
 
 	/**
 	 * The user ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_id;
+		return this[rawDataSymbol].broadcaster_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_login;
+		return this[rawDataSymbol].broadcaster_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_name;
+		return this[rawDataSymbol].broadcaster_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
 	}
 
 	/**
 	 * The user ID of the gifter.
 	 */
 	get gifterId(): string {
-		return this._data.gifter_id;
+		return this[rawDataSymbol].gifter_id;
 	}
 
 	/**
 	 * The name of the gifter.
 	 */
 	get gifterName(): string {
-		return this._data.gifter_login;
+		return this[rawDataSymbol].gifter_login;
 	}
 
 	/**
 	 * The display name of the gifter.
 	 */
 	get gifterDisplayName(): string {
-		return this._data.gifter_name;
+		return this[rawDataSymbol].gifter_name;
 	}
 
 	/**
 	 * Retrieves more information about the gifter.
 	 */
 	async getGifter(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.gifter_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].gifter_id))!;
 	}
 
 	/**
 	 * The user ID of the subscribed user.
 	 */
 	get userId(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the subscribed user.
 	 */
 	get userName(): string {
-		return this._data.user_login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the subscribed user.
 	 */
 	get userDisplayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves more information about the subscribed user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 }

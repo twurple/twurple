@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixEmoteData } from './HelixEmote';
 import { HelixEmote } from './HelixEmote';
@@ -24,7 +24,7 @@ export interface HelixChannelEmoteData extends HelixEmoteData {
  */
 @rtfm<HelixChannelEmote>('api', 'HelixChannelEmote', 'id')
 export class HelixChannelEmote extends HelixEmote {
-	/** @private */ protected declare readonly _data: HelixChannelEmoteData;
+	/** @private */ declare readonly [rawDataSymbol]: HelixChannelEmoteData;
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	constructor(data: HelixChannelEmoteData, client: ApiClient) {
@@ -36,7 +36,7 @@ export class HelixChannelEmote extends HelixEmote {
 	 * The subscription tier necessary to unlock the emote, or null if the emote is not a subscription emote.
 	 */
 	get tier(): HelixChannelEmoteSubscriptionTier | null {
-		return this._data.tier || null;
+		return this[rawDataSymbol].tier || null;
 	}
 
 	/**
@@ -45,20 +45,20 @@ export class HelixChannelEmote extends HelixEmote {
 	 * There are many types of emotes that Twitch seems to arbitrarily assign. Do not rely on this value.
 	 */
 	get type(): string {
-		return this._data.emote_type;
+		return this[rawDataSymbol].emote_type;
 	}
 
 	/**
 	 * The ID of the emote set the emote is part of.
 	 */
 	get emoteSetId(): string {
-		return this._data.emote_set_id;
+		return this[rawDataSymbol].emote_set_id;
 	}
 
 	/**
 	 * Retrieves all emotes from the emote's set.
 	 */
 	async getAllEmotesFromSet(): Promise<HelixEmoteFromSet[]> {
-		return await this._client.helix.chat.getEmotesFromSets([this._data.emote_set_id]);
+		return await this._client.helix.chat.getEmotesFromSets([this[rawDataSymbol].emote_set_id]);
 	}
 }

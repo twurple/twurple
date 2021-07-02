@@ -1,4 +1,4 @@
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixVideo } from '../video/HelixVideo';
 import type { HelixStreamMarkerData } from './HelixStreamMarker';
@@ -14,7 +14,7 @@ export interface HelixStreamMarkerVideoData extends HelixStreamMarkerData {
  */
 @rtfm<HelixStreamMarkerWithVideo>('api', 'HelixStreamMarkerWithVideo', 'id')
 export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
-	/** @private */ protected declare readonly _data: HelixStreamMarkerVideoData;
+	/** @private */ declare readonly [rawDataSymbol]: HelixStreamMarkerVideoData;
 
 	/** @private */
 	constructor(data: HelixStreamMarkerVideoData, private readonly _videoId: string, client: ApiClient) {
@@ -25,7 +25,7 @@ export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
 	 * The URL of the video, which will start playing at the position of the stream marker.
 	 */
 	get url(): string {
-		return this._data.URL;
+		return this[rawDataSymbol].URL;
 	}
 
 	/**

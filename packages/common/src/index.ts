@@ -1,3 +1,5 @@
+export { DataObject, getRawData, rawDataSymbol } from './DataObject';
+
 export { rtfm } from './rtfm';
 
 export type { CommercialLength, HelixUserType } from './types';

@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { UserData } from '../user/User';
 import { User } from '../user/User';
@@ -15,13 +15,12 @@ export interface ChannelFollowData {
  * A relation of a user following a previously given channel.
  */
 @rtfm<ChannelFollow>('api', 'ChannelFollow', 'userId')
-export class ChannelFollow {
-	@Enumerable(false) private readonly _data: ChannelFollowData;
+export class ChannelFollow extends DataObject<ChannelFollowData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: ChannelFollowData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -29,27 +28,27 @@ export class ChannelFollow {
 	 * The user following the given channel.
 	 */
 	get user(): User {
-		return new User(this._data.user, this._client);
+		return new User(this[rawDataSymbol].user, this._client);
 	}
 
 	/**
 	 * The ID of the user following the given channel.
 	 */
 	get userId(): string {
-		return this._data.user._id;
+		return this[rawDataSymbol].user._id;
 	}
 
 	/**
 	 * Whether the user has notifications enabled for the channel.
 	 */
 	get hasNotifications(): boolean {
-		return this._data.notifications;
+		return this[rawDataSymbol].notifications;
 	}
 
 	/**
 	 * The date when the user followed.
 	 */
 	get followDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 }

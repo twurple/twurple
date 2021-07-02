@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface EventSubChannelPredictionPredictorData {
@@ -15,13 +15,12 @@ export interface EventSubChannelPredictionPredictorData {
  * A user that voted on a prediction.
  */
 @rtfm<EventSubChannelPredictionPredictor>('eventsub', 'EventSubChannelPredictionPredictor', 'userId')
-export class EventSubChannelPredictionPredictor {
-	@Enumerable(false) private readonly _data: EventSubChannelPredictionPredictorData;
+export class EventSubChannelPredictionPredictor extends DataObject<EventSubChannelPredictionPredictorData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: EventSubChannelPredictionPredictorData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -29,41 +28,41 @@ export class EventSubChannelPredictionPredictor {
 	 * The ID of the predictor.
 	 */
 	get userId(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the predictor.
 	 */
 	get userName(): string {
-		return this._data.user_login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the predictor.
 	 */
 	get userDisplayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves more information about the predictor.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
 	 * The number of channel points the predictor used.
 	 */
 	get channelPointsUsed(): number {
-		return this._data.channel_points_used;
+		return this[rawDataSymbol].channel_points_used;
 	}
 
 	/**
 	 * The number of channel points the predictor won, or null if they didn't win (yet).
 	 */
 	get channelPointsWon(): number | null {
-		return this._data.channel_points_won;
+		return this[rawDataSymbol].channel_points_won;
 	}
 }

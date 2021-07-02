@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { EventSubChannelPredictionOutcomeData } from './common/EventSubChannelPredictionOutcome';
 import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
 
@@ -20,12 +20,12 @@ export interface EventSubChannelPredictionLockEventData {
  * An EventSub event representing a prediction being locked in a channel.
  */
 @rtfm<EventSubChannelPredictionLockEvent>('eventsub', 'EventSubChannelPredictionLockEvent', 'broadcasterId')
-export class EventSubChannelPredictionLockEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+export class EventSubChannelPredictionLockEvent extends DataObject<EventSubChannelPredictionLockEventData> {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubChannelPredictionLockEventData, client: ApiClient) {
+	constructor(data: EventSubChannelPredictionLockEventData, client: ApiClient) {
+		super(data);
 		this._client = client;
 	}
 
@@ -33,62 +33,62 @@ export class EventSubChannelPredictionLockEvent {
 	 * The ID of the prediction.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_user_id;
+		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_user_login;
+		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_user_name;
+		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**
 	 * The title of the prediction.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * The possible of the prediction.
 	 */
 	get outcomes(): EventSubChannelPredictionOutcome[] {
-		return this._data.outcomes.map(data => new EventSubChannelPredictionOutcome(data, this._client));
+		return this[rawDataSymbol].outcomes.map(data => new EventSubChannelPredictionOutcome(data, this._client));
 	}
 
 	/**
 	 * The time when the prediction started.
 	 */
 	get startDate(): Date {
-		return new Date(this._data.started_at);
+		return new Date(this[rawDataSymbol].started_at);
 	}
 
 	/**
 	 * The time when the prediction was locked.
 	 */
 	get lockDate(): Date {
-		return new Date(this._data.locked_at);
+		return new Date(this[rawDataSymbol].locked_at);
 	}
 }

@@ -1,4 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
+import { DataObject, rawDataSymbol } from '../DataObject';
 import { rtfm } from '../rtfm';
 
 /** @private */
@@ -16,27 +16,19 @@ export type EmoteSize = '1.0' | '2.0' | '3.0';
  * A chat emote.
  */
 @rtfm<ChatEmote>('common', 'ChatEmote', 'id')
-export class ChatEmote {
-	/** @private */
-	@Enumerable(false) protected readonly _data: ChatEmoteData;
-
-	/** @private */
-	constructor(data: ChatEmoteData) {
-		this._data = data;
-	}
-
+export class ChatEmote extends DataObject<ChatEmoteData> {
 	/**
 	 * The emote ID.
 	 */
 	get id(): number {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The emote code, i.e. how you write it in chat.
 	 */
 	get code(): string {
-		return this._data.code;
+		return this[rawDataSymbol].code;
 	}
 
 	/**

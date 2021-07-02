@@ -1,6 +1,5 @@
 import { Cacheable, Cached } from '@d-fischer/cache-decorators';
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface Emote {
@@ -16,14 +15,7 @@ export type EmoteSetListData = Record<string, Emote[]>;
  */
 @Cacheable
 @rtfm('api', 'EmoteSetList')
-export class EmoteSetList {
-	@Enumerable(false) private readonly _data: EmoteSetListData;
-
-	/** @private */
-	constructor(data: EmoteSetListData) {
-		this._data = data;
-	}
-
+export class EmoteSetList extends DataObject<EmoteSetListData> {
 	/**
 	 * Finds the emote ID for the given emote code.
 	 *
@@ -31,7 +23,7 @@ export class EmoteSetList {
 	 */
 	@Cached(Infinity, true)
 	findEmoteId(emoteCode: string): number | undefined {
-		for (const emoteSet of Object.values(this._data)) {
+		for (const emoteSet of Object.values(this[rawDataSymbol])) {
 			for (const emote of emoteSet) {
 				if (EmoteSetList._testEmoteCode(emote.code, emoteCode)) {
 					return emote.id;

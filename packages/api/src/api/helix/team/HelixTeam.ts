@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUserRelation } from '../relations/HelixUserRelation';
 
@@ -20,15 +20,12 @@ export interface HelixTeamData {
  * A Stream Team.
  */
 @rtfm<HelixTeam>('api', 'HelixTeam', 'id')
-export class HelixTeam {
-	/** @private */
-	@Enumerable(false) protected readonly _data: HelixTeamData;
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+export class HelixTeam extends DataObject<HelixTeamData> {
+	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixTeamData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -36,49 +33,49 @@ export class HelixTeam {
 	 * The ID of the team.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The name of the team.
 	 */
 	get name(): string {
-		return this._data.team_name;
+		return this[rawDataSymbol].team_name;
 	}
 
 	/**
 	 * The display name of the team.
 	 */
 	get displayName(): string {
-		return this._data.team_display_name;
+		return this[rawDataSymbol].team_display_name;
 	}
 
 	/**
 	 * The URL of the background image of the team.
 	 */
 	get backgroundImageUrl(): string | null {
-		return this._data.background_image_url;
+		return this[rawDataSymbol].background_image_url;
 	}
 
 	/**
 	 * The URL of the banner of the team.
 	 */
 	get bannerUrl(): string | null {
-		return this._data.banner;
+		return this[rawDataSymbol].banner;
 	}
 
 	/**
 	 * The date when the team was created.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
 	 * The date when the team was last updated.
 	 */
 	get updateDate(): Date {
-		return new Date(this._data.updated_at);
+		return new Date(this[rawDataSymbol].updated_at);
 	}
 
 	/**
@@ -87,14 +84,14 @@ export class HelixTeam {
 	 * May contain HTML tags.
 	 */
 	get info(): string {
-		return this._data.info;
+		return this[rawDataSymbol].info;
 	}
 
 	/**
 	 * The URL of the thumbnail of the team's logo.
 	 */
 	get logoThumbnailUrl(): string {
-		return this._data.thumbnail_url;
+		return this[rawDataSymbol].thumbnail_url;
 	}
 
 	/**

@@ -1,6 +1,6 @@
-import { Enumerable } from '@d-fischer/shared-utils';
+import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface EventSubChannelRewardMaxPerStreamData {
@@ -52,12 +52,12 @@ export interface EventSubChannelRewardEventData {
  * An EventSub event representing a broadcaster adding, updating or removing a Channel Points reward for their channel.
  */
 @rtfm<EventSubChannelRewardEvent>('eventsub', 'EventSubChannelRewardEvent', 'id')
-export class EventSubChannelRewardEvent {
-	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+export class EventSubChannelRewardEvent extends DataObject<EventSubChannelRewardEventData> {
+	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(private readonly _data: EventSubChannelRewardEventData, client: ApiClient) {
+	constructor(data: EventSubChannelRewardEventData, client: ApiClient) {
+		super(data);
 		this._client = client;
 	}
 
@@ -65,98 +65,98 @@ export class EventSubChannelRewardEvent {
 	 * The ID of the reward.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The ID of the broadcaster the reward belongs to.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_user_id;
+		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
 	 * The name of the broadcaster the reward belongs to.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_user_login;
+		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
 	 * The display name of the broadcaster the reward belongs to.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_user_name;
+		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
 	 * Retrieves more information about the reward's broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**
 	 * Whether the reward is enabled (shown to users).
 	 */
 	get isEnabled(): boolean {
-		return this._data.is_enabled;
+		return this[rawDataSymbol].is_enabled;
 	}
 
 	/**
 	 * Whether the reward is paused. If true, users can't redeem it.
 	 */
 	get isPaused(): boolean {
-		return this._data.is_paused;
+		return this[rawDataSymbol].is_paused;
 	}
 
 	/**
 	 * Whether the reward is currently in stock.
 	 */
 	get isInStock(): boolean {
-		return this._data.is_in_stock;
+		return this[rawDataSymbol].is_in_stock;
 	}
 
 	/**
 	 * The title of the reward.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * The channel points cost of the reward.
 	 */
 	get cost(): number {
-		return this._data.cost;
+		return this[rawDataSymbol].cost;
 	}
 
 	/**
 	 * The prompt shown to users when redeeming the reward.
 	 */
 	get prompt(): string {
-		return this._data.prompt;
+		return this[rawDataSymbol].prompt;
 	}
 
 	/**
 	 * Whether users need to enter information when redeeming the reward.
 	 */
 	get userInputRequired(): boolean {
-		return this._data.is_user_input_required;
+		return this[rawDataSymbol].is_user_input_required;
 	}
 
 	/**
 	 * Whether redemptions should be automatically approved.
 	 */
 	get autoApproved(): boolean {
-		return this._data.should_redemptions_skip_request_queue;
+		return this[rawDataSymbol].should_redemptions_skip_request_queue;
 	}
 
 	/**
 	 * The time when the cooldown expires.
 	 */
 	get cooldownExpiryDate(): Date | null {
-		return this._data.cooldown_expires_at ? new Date(this._data.cooldown_expires_at) : null;
+		return mapNullable(this[rawDataSymbol].cooldown_expires_at, v => new Date(v));
 	}
 
 	/**
@@ -165,35 +165,37 @@ export class EventSubChannelRewardEvent {
 	 * Only available when the stream is live and `maxRedemptionsPerStream` is set. Otherwise, this is `null`.
 	 */
 	get redemptionsThisStream(): number | null {
-		return this._data.redemptions_redeemed_current_stream;
+		return this[rawDataSymbol].redemptions_redeemed_current_stream;
 	}
 
 	/**
 	 * The maximum number of redemptions of the reward per stream. `null` means no limit.
 	 */
 	get maxRedemptionsPerStream(): number | null {
-		return this._data.max_per_stream.is_enabled ? this._data.max_per_stream.value : null;
+		return this[rawDataSymbol].max_per_stream.is_enabled ? this[rawDataSymbol].max_per_stream.value : null;
 	}
 
 	/**
 	 * The maximum number of redemptions of the reward per stream for each user. `null` means no limit.
 	 */
 	get maxRedemptionsPerUserPerStream(): number | null {
-		return this._data.max_per_user_per_stream.is_enabled ? this._data.max_per_user_per_stream.value : null;
+		return this[rawDataSymbol].max_per_user_per_stream.is_enabled
+			? this[rawDataSymbol].max_per_user_per_stream.value
+			: null;
 	}
 
 	/**
 	 * The cooldown between two redemptions of the reward, in seconds. `null` means no cooldown.
 	 */
 	get globalCooldown(): number | null {
-		return this._data.global_cooldown.is_enabled ? this._data.global_cooldown.seconds : null;
+		return this[rawDataSymbol].global_cooldown.is_enabled ? this[rawDataSymbol].global_cooldown.seconds : null;
 	}
 
 	/**
 	 * The background color of the reward.
 	 */
 	get backgroundColor(): string {
-		return this._data.background_color;
+		return this[rawDataSymbol].background_color;
 	}
 
 	/**
@@ -204,6 +206,6 @@ export class EventSubChannelRewardEvent {
 	getImageUrl(scale: EventSubChannelRewardImageScale): string {
 		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 		const urlProp = `url_${scale}x` as const;
-		return this._data.image?.[urlProp] ?? this._data.default_image[urlProp];
+		return this[rawDataSymbol].image?.[urlProp] ?? this[rawDataSymbol].default_image[urlProp];
 	}
 }

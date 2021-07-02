@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { UserIdResolvable, UserIdResolvableType } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
 import type { CheermoteList } from '../bits/CheermoteList';
@@ -21,26 +21,25 @@ export interface ChannelPlaceholderData {
  * This can do anything you can do with only a channel ID, as it's equivalent to the user ID.
  */
 @rtfm<ChannelPlaceholder>('api', 'ChannelPlaceholder', 'id')
-export class ChannelPlaceholder implements UserIdResolvableType {
-	/** @private */ @Enumerable(false) protected readonly _data: ChannelPlaceholderData;
+export class ChannelPlaceholder extends DataObject<ChannelPlaceholderData> implements UserIdResolvableType {
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
-	constructor(id: string, client: ApiClient) {
-		this._data = { _id: id };
+	constructor(data: ChannelPlaceholderData, client: ApiClient) {
+		super(data);
 		this._client = client;
 	}
 
 	/** @private */
 	get cacheKey(): string {
-		return this._data._id;
+		return this[rawDataSymbol]._id;
 	}
 
 	/**
 	 * The ID of the channel.
 	 */
 	get id(): string {
-		return this._data._id;
+		return this[rawDataSymbol]._id;
 	}
 
 	/**

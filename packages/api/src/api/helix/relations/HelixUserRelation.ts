@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -14,13 +14,12 @@ export interface HelixUserRelationData {
  * A relation of anything with a user.
  */
 @rtfm<HelixUserRelation>('api', 'HelixUserRelation', 'id')
-export class HelixUserRelation {
-	@Enumerable(false) private readonly _data: HelixUserRelationData;
+export class HelixUserRelation extends DataObject<HelixUserRelationData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixUserRelationData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -28,27 +27,27 @@ export class HelixUserRelation {
 	 * The ID of the user.
 	 */
 	get id(): string {
-		return this._data.user_id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the user.
 	 */
 	get name(): string {
-		return this._data.user_login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the user.
 	 */
 	get displayName(): string {
-		return this._data.user_name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Retrieves additional information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.user_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 }

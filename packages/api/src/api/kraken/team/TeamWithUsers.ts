@@ -1,4 +1,4 @@
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { UserData } from '../user/User';
 import { User } from '../user/User';
 import type { TeamData } from './Team';
@@ -16,12 +16,12 @@ export interface TeamWithUsersData extends TeamData {
  */
 @rtfm<TeamWithUsers>('api', 'TeamWithUsers', 'id')
 export class TeamWithUsers extends Team {
-	/** @private */ protected declare readonly _data: TeamWithUsersData;
+	/** @private */ declare readonly [rawDataSymbol]: TeamWithUsersData;
 
 	/**
 	 * The list of users in the team.
 	 */
 	get users(): User[] {
-		return this._data.users.map(data => new User(data, this._client));
+		return this[rawDataSymbol].users.map(data => new User(data, this._client));
 	}
 }

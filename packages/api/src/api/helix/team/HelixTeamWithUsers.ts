@@ -1,4 +1,4 @@
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { HelixUserRelationData } from '../relations/HelixUserRelation';
 import { HelixUserRelation } from '../relations/HelixUserRelation';
 import type { HelixTeamData } from './HelixTeam';
@@ -16,12 +16,12 @@ export interface HelixTeamWithUsersData extends HelixTeamData {
  */
 @rtfm<HelixTeamWithUsers>('api', 'HelixTeamWithUsers', 'id')
 export class HelixTeamWithUsers extends HelixTeam {
-	/** @private */ protected declare readonly _data: HelixTeamWithUsersData;
+	/** @private */ declare readonly [rawDataSymbol]: HelixTeamWithUsersData;
 
 	/**
 	 * The relations to the members of the team.
 	 */
 	get userRelations(): HelixUserRelation[] {
-		return this._data.users.map(data => new HelixUserRelation(data, this._client));
+		return this[rawDataSymbol].users.map(data => new HelixUserRelation(data, this._client));
 	}
 }

@@ -1,6 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixDateRangeData } from '../HelixDateRangeData';
 import type { HelixResponse } from '../HelixResponse';
@@ -18,13 +18,12 @@ export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLea
  */
 @Cacheable
 @rtfm('api', 'HelixBitsLeaderboard')
-export class HelixBitsLeaderboard {
-	@Enumerable(false) private readonly _data: HelixBitsLeaderboardResponse;
+export class HelixBitsLeaderboard extends DataObject<HelixBitsLeaderboardResponse> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixBitsLeaderboardResponse, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -33,13 +32,13 @@ export class HelixBitsLeaderboard {
 	 */
 	@CachedGetter()
 	get entries(): HelixBitsLeaderboardEntry[] {
-		return this._data.data.map(entry => new HelixBitsLeaderboardEntry(entry, this._client));
+		return this[rawDataSymbol].data.map(entry => new HelixBitsLeaderboardEntry(entry, this._client));
 	}
 
 	/**
 	 * The total amount of people on the requested leaderboard.
 	 */
 	get totalCount(): number {
-		return this._data.total;
+		return this[rawDataSymbol].total;
 	}
 }

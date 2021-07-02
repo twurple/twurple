@@ -1,6 +1,5 @@
-import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixUserType } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
 
 /** @private */
@@ -47,39 +46,32 @@ export interface PubSubWhisperMessageData {
  * A message informing about a whisper being received from another user.
  */
 @rtfm<PubSubWhisperMessage>('pubsub', 'PubSubWhisperMessage', 'senderId')
-export class PubSubWhisperMessage {
-	@Enumerable(false) private readonly _data: PubSubWhisperMessageData;
-
-	/** @private */
-	constructor(data: PubSubWhisperMessageData) {
-		this._data = data;
-	}
-
+export class PubSubWhisperMessage extends DataObject<PubSubWhisperMessageData> {
 	/**
 	 * The message text.
 	 */
 	get text(): string {
-		return this._data.data_object.body;
+		return this[rawDataSymbol].data_object.body;
 	}
 
 	/**
 	 * The ID of the user who sent the whisper.
 	 */
 	get senderId(): string {
-		return this._data.data_object.from_id.toString();
+		return this[rawDataSymbol].data_object.from_id.toString();
 	}
 
 	/**
 	 * The name of the user who sent the whisper.
 	 */
 	get senderName(): string {
-		return this._data.data_object.tags.login;
+		return this[rawDataSymbol].data_object.tags.login;
 	}
 
 	/**
 	 * The display name of the user who sent the whisper.
 	 */
 	get senderDisplayName(): string {
-		return this._data.data_object.tags.display_name;
+		return this[rawDataSymbol].data_object.tags.display_name;
 	}
 }

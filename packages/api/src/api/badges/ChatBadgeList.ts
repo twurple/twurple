@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ChatBadgeSetData } from './ChatBadgeSet';
 import { ChatBadgeSet } from './ChatBadgeSet';
 
@@ -10,19 +9,12 @@ export type ChatBadgeListData = Record<string, ChatBadgeSetData>;
  * A list of badge sets.
  */
 @rtfm('api', 'ChatBadgeList')
-export class ChatBadgeList {
-	@Enumerable(false) private readonly _data: ChatBadgeListData;
-
-	/** @private */
-	constructor(data: ChatBadgeListData) {
-		this._data = data;
-	}
-
+export class ChatBadgeList extends DataObject<ChatBadgeListData> {
 	/**
 	 * Names of all badge sets in the list.
 	 */
 	get badgeSetNames(): string[] {
-		return Object.keys(this._data);
+		return Object.keys(this[rawDataSymbol]);
 	}
 
 	/**
@@ -31,14 +23,14 @@ export class ChatBadgeList {
 	 * @param name The name of the badge set.
 	 */
 	getBadgeSet(name: string): ChatBadgeSet {
-		return new ChatBadgeSet(this._data[name]);
+		return new ChatBadgeSet(this[rawDataSymbol][name]);
 	}
 
 	/** @private */
 	_merge(additionalData: ChatBadgeList | ChatBadgeListData): ChatBadgeList {
 		if (additionalData instanceof ChatBadgeList) {
-			additionalData = additionalData._data;
+			additionalData = additionalData[rawDataSymbol];
 		}
-		return new ChatBadgeList({ ...this._data, ...additionalData });
+		return new ChatBadgeList({ ...this[rawDataSymbol], ...additionalData });
 	}
 }

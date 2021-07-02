@@ -1,5 +1,5 @@
 import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { UserData } from './User';
 import { User } from './User';
 import type { UserBlock } from './UserBlock';
@@ -26,48 +26,48 @@ export interface PrivilegedUserData extends UserData {
  */
 @rtfm<PrivilegedUser>('api', 'PrivilegedUser', 'id')
 export class PrivilegedUser extends User {
-	/** @private */ protected declare readonly _data: PrivilegedUserData;
+	/** @private */ declare readonly [rawDataSymbol]: PrivilegedUserData;
 
 	/**
 	 * The user's email address.
 	 */
 	get email(): string {
-		return this._data.email;
+		return this[rawDataSymbol].email;
 	}
 
 	/**
 	 * Whether the user's email address is verified.
 	 */
 	get isEmailVerified(): boolean {
-		return this._data.email_verified;
+		return this[rawDataSymbol].email_verified;
 	}
 
 	/**
 	 * Whether the user has email notifications enabled.
 	 */
 	get hasEmailNotifications(): boolean {
-		return this._data.notifications.email;
+		return this[rawDataSymbol].notifications.email;
 	}
 
 	/**
 	 * Whether the user has push notifications enabled.
 	 */
 	get hasPushNotifications(): boolean {
-		return this._data.notifications.push;
+		return this[rawDataSymbol].notifications.push;
 	}
 
 	/**
 	 * Whether the user is partnered.
 	 */
 	get isPartnered(): boolean {
-		return this._data.partnered;
+		return this[rawDataSymbol].partnered;
 	}
 
 	/**
 	 * Whether the user has a Twitter account connected.
 	 */
 	get hasTwitter(): boolean {
-		return this._data.twitter_connected;
+		return this[rawDataSymbol].twitter_connected;
 	}
 
 	/**

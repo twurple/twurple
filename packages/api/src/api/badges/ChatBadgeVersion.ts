@@ -1,5 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface ChatBadgeVersionData {
@@ -19,19 +18,12 @@ export type ChatBadgeScale = 1 | 2 | 4;
  * A version of a badge.
  */
 @rtfm('api', 'ChatBadgeVersion')
-export class ChatBadgeVersion {
-	@Enumerable(false) private readonly _data: ChatBadgeVersionData;
-
-	/** @private */
-	constructor(data: ChatBadgeVersionData) {
-		this._data = data;
-	}
-
+export class ChatBadgeVersion extends DataObject<ChatBadgeVersionData> {
 	/**
 	 * The action to execute when the badge is clicked.
 	 */
 	get clickAction(): string {
-		return this._data.click_action;
+		return this[rawDataSymbol].click_action;
 	}
 
 	/**
@@ -40,14 +32,14 @@ export class ChatBadgeVersion {
 	 * Only applies if clickAction === 'visit_url'.
 	 */
 	get clickUrl(): string {
-		return this._data.click_url;
+		return this[rawDataSymbol].click_url;
 	}
 
 	/**
 	 * The description of the badge.
 	 */
 	get description(): string {
-		return this._data.description;
+		return this[rawDataSymbol].description;
 	}
 
 	/**
@@ -57,13 +49,13 @@ export class ChatBadgeVersion {
 	 */
 	getImageUrl(scale: ChatBadgeScale): string {
 		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
-		return this._data[`image_url_${scale}x` as const];
+		return this[rawDataSymbol][`image_url_${scale}x` as const];
 	}
 
 	/**
 	 * The title of the badge.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 }

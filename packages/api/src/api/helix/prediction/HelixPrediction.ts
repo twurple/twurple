@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixPredictionOutcomeData } from './HelixPredictionOutcome';
@@ -30,13 +30,12 @@ export interface HelixPredictionData {
  * A channel prediction.
  */
 @rtfm<HelixPrediction>('api', 'HelixPrediction', 'id')
-export class HelixPrediction {
-	@Enumerable(false) private readonly _data: HelixPredictionData;
+export class HelixPrediction extends DataObject<HelixPredictionData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: HelixPredictionData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -44,83 +43,83 @@ export class HelixPrediction {
 	 * The ID of the prediction.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
 	 * The ID of the broadcaster.
 	 */
 	get broadcasterId(): string {
-		return this._data.broadcaster_id;
+		return this[rawDataSymbol].broadcaster_id;
 	}
 
 	/**
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return this._data.broadcaster_login;
+		return this[rawDataSymbol].broadcaster_login;
 	}
 
 	/**
 	 * The display name of the broadcaster.
 	 */
 	get broadcasterDisplayName(): string {
-		return this._data.broadcaster_name;
+		return this[rawDataSymbol].broadcaster_name;
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this._data.broadcaster_id))!;
+		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
 	}
 
 	/**
 	 * The title of the prediction.
 	 */
 	get title(): string {
-		return this._data.title;
+		return this[rawDataSymbol].title;
 	}
 
 	/**
 	 * The status of the prediction.
 	 */
 	get status(): HelixPredictionStatus {
-		return this._data.status;
+		return this[rawDataSymbol].status;
 	}
 
 	/**
 	 * The time after which the prediction will be automatically locked, in seconds from creation.
 	 */
 	get autoLockAfter(): number {
-		return this._data.prediction_window;
+		return this[rawDataSymbol].prediction_window;
 	}
 
 	/**
 	 * The date when the prediction started.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
 	 * The date when the prediction ended, or null if it didn't end yet.
 	 */
 	get endDate(): Date | null {
-		return this._data.ended_at ? new Date(this._data.ended_at) : null;
+		return this[rawDataSymbol].ended_at ? new Date(this[rawDataSymbol].ended_at) : null;
 	}
 
 	/**
 	 * The date when the prediction was locked, or null if it wasn't locked yet.
 	 */
 	get lockDate(): Date | null {
-		return this._data.locked_at ? new Date(this._data.locked_at) : null;
+		return this[rawDataSymbol].locked_at ? new Date(this[rawDataSymbol].locked_at) : null;
 	}
 
 	/**
 	 * The possible outcomes of the prediction.
 	 */
 	get outcomes(): HelixPredictionOutcome[] {
-		return this._data.outcomes.map(data => new HelixPredictionOutcome(data, this._client));
+		return this[rawDataSymbol].outcomes.map(data => new HelixPredictionOutcome(data, this._client));
 	}
 }

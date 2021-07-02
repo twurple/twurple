@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { User } from '../user/User';
 
@@ -20,13 +20,12 @@ export interface TeamData {
  * A Twitch team.
  */
 @rtfm<Team>('api', 'Team', 'id')
-export class Team {
-	/** @private */ @Enumerable(false) protected readonly _data: TeamData;
+export class Team extends DataObject<TeamData> {
 	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
 
 	/** @private */
 	constructor(data: TeamData, client: ApiClient) {
-		this._data = data;
+		super(data);
 		this._client = client;
 	}
 
@@ -34,63 +33,63 @@ export class Team {
 	 * The ID of the team.
 	 */
 	get id(): string {
-		return this._data._id;
+		return this[rawDataSymbol]._id;
 	}
 
 	/**
 	 * The background url of the team.
 	 */
 	get background(): string {
-		return this._data.background;
+		return this[rawDataSymbol].background;
 	}
 
 	/**
 	 * The banner url of the team.
 	 */
 	get banner(): string {
-		return this._data.banner;
+		return this[rawDataSymbol].banner;
 	}
 
 	/**
 	 * The date when the team was created.
 	 */
 	get creationDate(): Date {
-		return new Date(this._data.created_at);
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
 	 * The last date when the team changed anything.
 	 */
 	get updateDate(): Date {
-		return new Date(this._data.updated_at);
+		return new Date(this[rawDataSymbol].updated_at);
 	}
 
 	/**
 	 * The name of the team.
 	 */
 	get name(): string {
-		return this._data.name;
+		return this[rawDataSymbol].name;
 	}
 
 	/**
 	 * The info of the team.
 	 */
 	get info(): string {
-		return this._data.info;
+		return this[rawDataSymbol].info;
 	}
 
 	/**
 	 * The display name of the team.
 	 */
 	get displayName(): string {
-		return this._data.display_name;
+		return this[rawDataSymbol].display_name;
 	}
 
 	/**
 	 * The URL to the profile picture of the team.
 	 */
 	get logoUrl(): string {
-		return this._data.logo;
+		return this[rawDataSymbol].logo;
 	}
 
 	async getUsers(): Promise<User[]> {

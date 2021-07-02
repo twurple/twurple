@@ -1,6 +1,5 @@
 import { CachedGetter } from '@d-fischer/cache-decorators';
-import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { HelixChatBadgeVersionData } from './HelixChatBadgeVersion';
 import { HelixChatBadgeVersion } from './HelixChatBadgeVersion';
 
@@ -14,19 +13,12 @@ export interface HelixChatBadgeSetData {
  * A version of a chat badge.
  */
 @rtfm<HelixChatBadgeSet>('api', 'HelixChatBadgeSet', 'id')
-export class HelixChatBadgeSet {
-	@Enumerable(false) private readonly _data: HelixChatBadgeSetData;
-
-	/** @private */
-	constructor(data: HelixChatBadgeSetData) {
-		this._data = data;
-	}
-
+export class HelixChatBadgeSet extends DataObject<HelixChatBadgeSetData> {
 	/**
 	 * The badge set ID.
 	 */
 	get id(): string {
-		return this._data.set_id;
+		return this[rawDataSymbol].set_id;
 	}
 
 	/**
@@ -34,7 +26,7 @@ export class HelixChatBadgeSet {
 	 */
 	@CachedGetter()
 	get versions(): HelixChatBadgeVersion[] {
-		return this._data.versions.map(data => new HelixChatBadgeVersion(data));
+		return this[rawDataSymbol].versions.map(data => new HelixChatBadgeVersion(data));
 	}
 
 	/**

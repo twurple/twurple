@@ -66,7 +66,7 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 *
 	 * @param cheermotes A list of cheermotes
 	 */
-	parseEmotesAndBits(cheermotes: BaseCheermoteList): ParsedMessagePart[] {
+	parseEmotesAndBits(cheermotes: BaseCheermoteList<unknown>): ParsedMessagePart[] {
 		const messageText = this.params.content;
 		const foundCheermotes = cheermotes.parseMessage(messageText);
 		const foundEmotesAndCheermotes: ParsedMessagePart[] = [
