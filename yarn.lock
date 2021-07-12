@@ -5069,10 +5069,10 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.27.2:
-  version "0.27.2"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.27.2.tgz#129030e312a8a9c734fb3986740871bf09a26e99"
-  integrity sha512-YxklDgv+axoFnawA55M57UpyjWvu5aX5xmImkXZWWgte983+L5ob9wSMQdgd1TGSGsHmKGbZh/NQbeshy53DHQ==
+ircv3@^0.27.3:
+  version "0.27.3"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.27.3.tgz#661413edc645a5814810564af68ba03966800286"
+  integrity sha512-22Wwx9E9pxKRNvzzJ/CTiLLFLLy8vEx5yXYFl5fvfxMyr43UXxAQR2f08EDsS0q9CWumF+wRDaGV3CIm5r8XsA==
   dependencies:
     "@d-fischer/connection" "^6.4.2"
     "@d-fischer/escape-string-regexp" "^5.0.0"
