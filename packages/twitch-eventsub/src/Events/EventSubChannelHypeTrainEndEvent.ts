@@ -5,6 +5,7 @@ import type { EventSubChannelHypeTrainContribution } from './Common/EventSubChan
 
 /** @private */
 export interface EventSubChannelHypeTrainEndEventData {
+	id: string;
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
@@ -27,6 +28,13 @@ export class EventSubChannelHypeTrainEndEvent {
 	/** @private */
 	constructor(private readonly _data: EventSubChannelHypeTrainEndEventData, client: ApiClient) {
 		this._client = client;
+	}
+
+	/**
+	 * The ID of the Hype Train.
+	 */
+	get id(): string {
+		return this._data.id;
 	}
 
 	/**
