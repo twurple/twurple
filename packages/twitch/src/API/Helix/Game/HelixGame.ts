@@ -2,8 +2,8 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
-import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixStream, HelixStreamData } from '../Stream/HelixStream';
 
 export interface HelixGameData {
@@ -50,7 +50,7 @@ export class HelixGame {
 	/**
 	 * Retrieves streams that are currently playing the game.
 	 */
-	async getStreams(pagination?: HelixPagination): Promise<HelixPaginatedResponse<HelixStream>> {
+	async getStreams(pagination?: HelixPagination): Promise<HelixPaginatedResult<HelixStream>> {
 		return this._client.helix.streams.getStreams({ ...pagination, game: this._data.id });
 	}
 
