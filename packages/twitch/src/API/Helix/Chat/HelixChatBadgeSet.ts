@@ -1,4 +1,4 @@
-import { CachedGetter } from '@d-fischer/cache-decorators';
+import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from 'twitch-common';
 import type { HelixChatBadgeVersionData } from './HelixChatBadgeVersion';
@@ -13,6 +13,7 @@ export interface HelixChatBadgeSetData {
 /**
  * A version of a chat badge.
  */
+@Cacheable
 @rtfm<HelixChatBadgeSet>('twitch', 'HelixChatBadgeSet', 'id')
 export class HelixChatBadgeSet {
 	@Enumerable(false) private readonly _data: HelixChatBadgeSetData;
