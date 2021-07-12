@@ -35,7 +35,7 @@ export class EventSubChannelHypeTrainBeginEvent extends DataObject<EventSubChann
 	 * The ID of the Hype Train.
 	 */
 	get id(): string {
-		return this._data.id;
+		return this[rawDataSymbol].id;
 	}
 
 	/**
