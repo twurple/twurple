@@ -5540,10 +5540,10 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.26.13:
-  version "0.26.13"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.13.tgz#98d1b81dd3b73e0430cad06faf236e6ca8151264"
-  integrity sha512-h2DM250qxBWvr/ZcxxuCIeYQSSJU5ScvfBhUEjGQkYslbkXzdlylo7mvkABueyQqV729Bnu/EW6FP2MpHlbY1g==
+ircv3@^0.26.14:
+  version "0.26.14"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.26.14.tgz#8d18f253f53ead664299cda987302d8a550ffea6"
+  integrity sha512-R0wiULLrl2d6Rrmw3vgyi9Cxw1KHky9/RwTkSo/Y6sXFH45EuLpVJhm9eLHFTs8EKrayq4H6FYfEN95KBC1qMQ==
   dependencies:
     "@d-fischer/connection" "^6.4.2"
     "@d-fischer/escape-string-regexp" "^5.0.0"
