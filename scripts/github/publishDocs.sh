@@ -4,7 +4,7 @@ set -e
 
 REPO_BRANCH="${GIT_REF#refs/heads/}"
 
-git clone "https://${GH_TOKEN}@github.com/d-fischer/d-fischer.github.io.git" docRepo
+git clone "https://${GH_TOKEN}@github.com/${REPO_USER}/${REPO_USER}.github.io.git" docRepo
 
 npm run docs -- --base-url / --repo-branch "${REPO_BRANCH}" --out-dir docRepo
 
