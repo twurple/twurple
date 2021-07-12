@@ -1,4 +1,4 @@
-import { CachedGetter } from '@d-fischer/cache-decorators';
+import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { HelixChatBadgeVersionData } from './HelixChatBadgeVersion';
 import { HelixChatBadgeVersion } from './HelixChatBadgeVersion';
@@ -12,6 +12,7 @@ export interface HelixChatBadgeSetData {
 /**
  * A version of a chat badge.
  */
+@Cacheable
 @rtfm<HelixChatBadgeSet>('api', 'HelixChatBadgeSet', 'id')
 export class HelixChatBadgeSet extends DataObject<HelixChatBadgeSetData> {
 	/**

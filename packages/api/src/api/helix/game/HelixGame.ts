@@ -2,8 +2,8 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
-import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixStream, HelixStreamData } from '../stream/HelixStream';
 
 /** @private */
@@ -50,7 +50,7 @@ export class HelixGame extends DataObject<HelixGameData> {
 	/**
 	 * Retrieves streams that are currently playing the game.
 	 */
-	async getStreams(pagination?: HelixPagination): Promise<HelixPaginatedResponse<HelixStream>> {
+	async getStreams(pagination?: HelixPagination): Promise<HelixPaginatedResult<HelixStream>> {
 		return await this._client.helix.streams.getStreams({ ...pagination, game: this[rawDataSymbol].id });
 	}
 

@@ -34,7 +34,10 @@ export class Bot {
 
 		this._commands = new Map<string, BotCommand>(commands?.map(cmd => [cmd.name, cmd]));
 
-		this.chat = new ChatClient(auth, { logger: { minLevel: debug ? LogLevel.DEBUG : LogLevel.ERROR }, channels });
+		this.chat = new ChatClient(auth, {
+			logger: { minLevel: debug ? LogLevel.DEBUG : LogLevel.ERROR },
+			channels: resolvableChannels
+		});
 
 		this.chat.onPrivmsg(async (currentChannel, user, message, msg) => {
 			const match = this.findMatch(msg);
