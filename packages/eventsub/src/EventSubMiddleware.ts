@@ -34,6 +34,31 @@ export interface EventSubMiddlewareConfig extends EventSubConfig {
 /**
  * A connect-compatible middleware for the Twitch EventSub event distribution mechanism.
  *
+ * ## Example
+ * ```ts twoslash
+ * // @module: esnext
+ * // @target: ES2017
+ * // @lib: es2015,dom
+ * import type { ApiClient } from '@twurple/api';
+ * import { EventSubMiddleware } from '@twurple/eventsub';
+ * declare const app: any;
+ * declare const apiClient: ApiClient;
+ * // ---cut---
+ * const middleware = new EventSubMiddleware(apiClient, {
+ *   hostName: 'example.com',
+ *   pathPrefix: '/twitch',
+ *   secret: 'secretHere'
+ * });
+ 
+ * await middleware.apply(app);
+ * app.listen(3000, async () => {
+ *   await middleware.markAsReady();
+ *   await middleware.subscribeToChannelFollowEvents('125328655', event => {
+ *     console.log(`${event.userDisplayName} just followed ${event.broadcasterDisplayName}!`);
+ *   });
+ * });
+ * ```
+ *
  * @hideProtected
  * @inheritDoc
  */
@@ -60,8 +85,6 @@ export class EventSubMiddleware extends EventSubBase {
 	/**
 	 * Applies middleware that handles EventSub notifications to a connect-compatible app (like express).
 	 *
-	 * The express app should be started before this.
-	 *
 	 * @param app The app the middleware should be applied to.
 	 */
 	async apply(app: ConnectCompatibleApp): Promise<void> {
@@ -86,6 +109,11 @@ export class EventSubMiddleware extends EventSubBase {
 		}
 	}
 
+	/**
+	 * Marks the middleware as ready to receive events.
+	 *
+	 * The express app should be started before this.
+	 */
 	async markAsReady(): Promise<void> {
 		this._readyToSubscribe = true;
 		await this._resumeExistingSubscriptions();

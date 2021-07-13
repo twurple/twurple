@@ -146,7 +146,12 @@ export { HelixTeam } from './api/helix/team/HelixTeam';
 export { HelixTeamWithUsers } from './api/helix/team/HelixTeamWithUsers';
 
 export { HelixUserApi } from './api/helix/user/HelixUserApi';
-export type { HelixFollowFilter, HelixUserBlockAdditionalInfo, HelixUserUpdate } from './api/helix/user/HelixUserApi';
+export type {
+	HelixFollowFilter,
+	HelixUserBlockAdditionalInfo,
+	HelixPaginatedFollowFilter,
+	HelixUserUpdate
+} from './api/helix/user/HelixUserApi';
 export { HelixUserBlock } from './api/helix/user/HelixUserBlock';
 export { HelixFollow } from './api/helix/user/HelixFollow';
 export type { HelixFollowData } from './api/helix/user/HelixFollow';

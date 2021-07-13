@@ -99,6 +99,8 @@ Listening on port ${adapterListenerPort} instead.`);
 	/**
 	 * Resumes subscriptions that are already registered with Twitch.
 	 *
+	 * The express app should be started before this.
+	 *
 	 * @deprecated No replacement; this should only be used with middleware.
 	 */
 	async resumeExistingSubscriptions(): Promise<void> {
@@ -122,8 +124,6 @@ Listening on port ${adapterListenerPort} instead.`);
 
 	/**
 	 * Applies middleware that handles EventSub notifications to a connect-compatible app (like express).
-	 *
-	 * The express app should be started before this.
 	 *
 	 * @param app The app the middleware should be applied to.
 	 *
