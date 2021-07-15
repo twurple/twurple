@@ -149,7 +149,10 @@ export class PubSubSubscriptionMessage {
 	 * Whether the subscription is a gift.
 	 */
 	get isGift(): boolean {
-		return this._data.context === 'subgift' || this._data.context === 'resubgift';
+		return this._data.context === 'subgift'
+			|| this._data.context === 'resubgift'
+			|| this._data.context === 'anonsubgift'
+			|| this._data.context === 'anonresubgift';
 	}
 
 	/**
