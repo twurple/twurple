@@ -1,7 +1,6 @@
-import { TwitchApiCallType } from 'twitch-api-call';
+import { HttpStatusCodeError, TwitchApiCallType } from 'twitch-api-call';
 import type { UserIdResolvable } from 'twitch-common';
 import { extractUserId, rtfm } from 'twitch-common';
-import { HttpStatusCodeError } from '../../../../../twitch-api-call';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
