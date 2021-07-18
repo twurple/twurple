@@ -1,4 +1,4 @@
-import type { LoggerOptions , Logger} from '@d-fischer/logger';
+import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger, LogLevel } from '@d-fischer/logger';
 import type { RateLimiter } from '@d-fischer/rate-limiter';
 import {
