@@ -30,8 +30,8 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/connection": "^6.4.2",
-    "@d-fischer/logger": "^3.1.0",
+    "@d-fischer/connection": "^6.5.1",
+    "@d-fischer/logger": "^4.0.0",
     "@d-fischer/shared-utils": "^3.2.0",
     "@d-fischer/typed-event-emitter": "^3.2.2",
     "@twurple/common": "^5.0.0-pre.11",

@@ -46,13 +46,13 @@
     "@types/node" "^14.14.22"
     tslib "^2.1.0"
 
-"@d-fischer/connection@^6.4.2":
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.5.0.tgz#283dba5741fc1d37be8e1d8a5984d242be262748"
-  integrity sha512-C0BQjswoiEdE9C644R7Cte3WpZ5A5f61DDdCxzjr0/UKIITTLVdcBbiCxstCWjwmM/MMvIokd4raZkJjnByUog==
+"@d-fischer/connection@^6.5.1":
+  version "6.5.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.5.1.tgz#77694ccdd9df52d7151ae11e381b0d3b654b1f3d"
+  integrity sha512-lFKdDS+C3UPNc1NZNnZwqbzSyO8+/nXTYZVGm2f+yr0pnwLXGunL+KjlRc3R+4QtKQ6grEBVqHx4FCkHYBcpfw==
   dependencies:
     "@d-fischer/isomorphic-ws" "^5.0.2"
-    "@d-fischer/logger" "^3.0.0"
+    "@d-fischer/logger" "^4.0.0"
     "@d-fischer/shared-utils" "^3.0.1"
     "@d-fischer/typed-event-emitter" "^3.2.2"
     "@types/node" "^14.14.19"
@@ -166,11 +166,12 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/isomorphic-ws/-/isomorphic-ws-5.0.4.tgz#d500735c69a9d0db7e135502eaeb30e6bc4c6532"
   integrity sha512-iNX2+kupoYtTg5snSzvqpa+rgQmnxWbngU5/uV0y4PyuJHJIoWJuTa/KPh+3ruW4UtloqhCpGe8pyb0EGjt9xQ==
 
-"@d-fischer/logger@^3.0.0", "@d-fischer/logger@^3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-3.1.0.tgz#d9e24e6f1a2f7a3ae2f93af27a0e26d73bb38138"
-  integrity sha512-kNg9PjmiyH9DMr70mAWU+i+dy3+e1hI0lR+No5RJduQtexI247NmEzNd0pethpwm+1uA0MRf3w9QnqZ1PHKvyA==
+"@d-fischer/logger@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/logger/-/logger-4.0.0.tgz#e241de7a392578cb85b23a23666a70e9bacf61dd"
+  integrity sha512-JEP6Wr8itVN2ZS4fY/qmZZRFAnMjGIPBOJVRcnlp2i+fQ7sZUb6a6Ee82E1m1UTfaUMdd9u2ibgVGiAOY1rZxg==
   dependencies:
+    "@d-fischer/shared-utils" "^3.2.0"
     detect-node "^2.0.4"
     tslib "^2.0.3"
 
@@ -200,12 +201,12 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/qs/-/qs-7.0.2.tgz#21942f51590e20954086bdc32fb3e608d3525659"
   integrity sha512-yAu3xDooiL+ef84Jo8nLjDjWBRk7RXk163Y6aTvRB7FauYd3spQD/dWvgT7R4CrN54Juhrrc3dMY7mc+jZGurQ==
 
-"@d-fischer/rate-limiter@^0.4.3":
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/@d-fischer/rate-limiter/-/rate-limiter-0.4.3.tgz#e2348793e718bcb4401ee102cf70afb568df12c7"
-  integrity sha512-KzmssPK/uKONvq1oQpmOvMoacrfTPocNlkBTf7/3VYFSvk8mbs9maeDLelbLYk0QJZjpl6o6gCEyi8s9nt/A4A==
+"@d-fischer/rate-limiter@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@d-fischer/rate-limiter/-/rate-limiter-0.4.4.tgz#f5d9cdba9c6853cffd282c0141927f5f1ad5af4f"
+  integrity sha512-4uUkW+Z7a1nKQPH87nMU6JgePiIrNWribdrJEM7WrQRGtDGdAF190TGwikhXR4LHPK2Xe7bu4FqG5QCW7FqHMQ==
   dependencies:
-    "@d-fischer/logger" "^3.1.0"
+    "@d-fischer/logger" "^4.0.0"
     "@d-fischer/promise.allsettled" "^2.0.2"
     "@types/node" "^12.12.5"
     tslib "^2.0.3"
@@ -5069,14 +5070,14 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.27.3:
-  version "0.27.3"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.27.3.tgz#661413edc645a5814810564af68ba03966800286"
-  integrity sha512-22Wwx9E9pxKRNvzzJ/CTiLLFLLy8vEx5yXYFl5fvfxMyr43UXxAQR2f08EDsS0q9CWumF+wRDaGV3CIm5r8XsA==
+ircv3@^0.27.5:
+  version "0.27.5"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.27.5.tgz#132eb1c057edf1f97862cbae6820db752f3c9dfc"
+  integrity sha512-ZfOAm7N3y0FN0vTswoApCmPIqiEoSrVuyU8RjWDsMUBfkik9U+BopBJlJ/oJM8Q4560m1kfYTfCim1E6KrufcQ==
   dependencies:
-    "@d-fischer/connection" "^6.4.2"
+    "@d-fischer/connection" "^6.5.1"
     "@d-fischer/escape-string-regexp" "^5.0.0"
-    "@d-fischer/logger" "^3.1.0"
+    "@d-fischer/logger" "^4.0.0"
     "@d-fischer/shared-utils" "^3.0.1"
     "@d-fischer/typed-event-emitter" "^3.2.2"
     "@types/node" "^14.14.19"

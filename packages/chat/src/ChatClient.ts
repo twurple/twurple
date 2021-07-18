@@ -1,5 +1,5 @@
-import type { LoggerOptions } from '@d-fischer/logger';
-import { Logger, LogLevel } from '@d-fischer/logger';
+import type { LoggerOptions , Logger} from '@d-fischer/logger';
+import { createLogger, LogLevel } from '@d-fischer/logger';
 import type { RateLimiter } from '@d-fischer/rate-limiter';
 import {
 	PartitionedTimeBasedRateLimiter,
@@ -669,7 +669,10 @@ export class ChatClient extends IrcClient {
 				nick: ''
 			},
 			webSocket: options.webSocket ?? true,
-			logger: options.logger,
+			logger: {
+				name: 'twurple:chat:irc',
+				...options.logger
+			},
 			nonConformingCommands: ['004'],
 			channels: options.channels
 		});
@@ -682,8 +685,8 @@ export class ChatClient extends IrcClient {
 			);
 		}
 
-		this._chatLogger = new Logger({
-			name: '@twurple/chat',
+		this._chatLogger = createLogger({
+			name: 'twurple:chat:twitch',
 			emoji: true,
 			...options.logger
 		});

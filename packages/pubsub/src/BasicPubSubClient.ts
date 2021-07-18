@@ -1,8 +1,8 @@
 import type { Connection } from '@d-fischer/connection';
 import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
 import type { ClientOptions } from '@d-fischer/isomorphic-ws';
-import type { LoggerOptions } from '@d-fischer/logger';
-import { Logger } from '@d-fischer/logger';
+import type { LoggerOptions , Logger } from '@d-fischer/logger';
+import { createLogger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
@@ -114,8 +114,8 @@ export class BasicPubSubClient extends EventEmitter {
 	 */
 	constructor(options?: BasicPubSubClientOptions) {
 		super();
-		this._logger = new Logger({
-			name: '@twurple/pubsub',
+		this._logger = createLogger({
+			name: 'twurple:pubsub',
 			emoji: true,
 			...options?.logger
 		});

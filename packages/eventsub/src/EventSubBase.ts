@@ -1,4 +1,5 @@
-import { Logger } from '@d-fischer/logger';
+import type { Logger } from '@d-fischer/logger';
+import { createLogger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type {
@@ -126,8 +127,8 @@ export abstract class EventSubBase {
 		}
 		this._apiClient = apiClient;
 		this._secret = secret;
-		this._logger = new Logger({
-			name: 'twitch-eventsub',
+		this._logger = createLogger({
+			name: 'twurple:eventsub',
 			emoji: true,
 			...config?.logger
 		});
