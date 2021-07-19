@@ -10,7 +10,7 @@ export interface PubSubSubscriptionDetail {
 
 /** @private */
 export interface PubSubSubscriptionGiftDetail {
-	context: 'subgift' | 'anonsubgift';
+	context: 'subgift' | 'anonsubgift' | 'resubgift' | 'anonresubgift';
 	recipient_id: string;
 	recipient_user_name: string;
 	recipient_display_name: string;
@@ -36,7 +36,12 @@ export class PubSubSubscriptionMessage extends DataObject<PubSubSubscriptionMess
 	 */
 	get userId(): string {
 		const data = this[rawDataSymbol];
-		return data.context === 'subgift' || data.context === 'anonsubgift' ? data.recipient_id : data.user_id;
+		return data.context === 'subgift' ||
+			data.context === 'anonsubgift' ||
+			data.context === 'resubgift' ||
+			data.context === 'anonresubgift'
+			? data.recipient_id
+			: data.user_id;
 	}
 
 	/**
@@ -44,7 +49,12 @@ export class PubSubSubscriptionMessage extends DataObject<PubSubSubscriptionMess
 	 */
 	get userName(): string {
 		const data = this[rawDataSymbol];
-		return data.context === 'subgift' || data.context === 'anonsubgift' ? data.recipient_user_name : data.user_name;
+		return data.context === 'subgift' ||
+			data.context === 'anonsubgift' ||
+			data.context === 'resubgift' ||
+			data.context === 'anonresubgift'
+			? data.recipient_user_name
+			: data.user_name;
 	}
 
 	/**
@@ -52,7 +62,10 @@ export class PubSubSubscriptionMessage extends DataObject<PubSubSubscriptionMess
 	 */
 	get userDisplayName(): string {
 		const data = this[rawDataSymbol];
-		return data.context === 'subgift' || data.context === 'anonsubgift'
+		return data.context === 'subgift' ||
+			data.context === 'anonsubgift' ||
+			data.context === 'resubgift' ||
+			data.context === 'anonresubgift'
 			? data.recipient_display_name
 			: data.display_name;
 	}
@@ -63,9 +76,13 @@ export class PubSubSubscriptionMessage extends DataObject<PubSubSubscriptionMess
 	 * Returns 0 if a gift sub or the streaks months.
 	 */
 	get streakMonths(): number {
-		return this[rawDataSymbol].context === 'subgift' || this[rawDataSymbol].context === 'anonsubgift'
+		const data = this[rawDataSymbol];
+		return data.context === 'subgift' ||
+			data.context === 'anonsubgift' ||
+			data.context === 'resubgift' ||
+			data.context === 'anonresubgift'
 			? 0
-			: (this[rawDataSymbol] as PubSubSubscriptionDetail).streak_months;
+			: (data as PubSubSubscriptionDetail).streak_months;
 	}
 
 	/**
@@ -75,7 +92,10 @@ export class PubSubSubscriptionMessage extends DataObject<PubSubSubscriptionMess
 	 */
 	get cumulativeMonths(): number {
 		const data = this[rawDataSymbol];
-		return data.context === 'subgift' || data.context === 'anonsubgift'
+		return data.context === 'subgift' ||
+			data.context === 'anonsubgift' ||
+			data.context === 'resubgift' ||
+			data.context === 'anonresubgift'
 			? data.months
 			: (data as PubSubSubscriptionDetail).cumulative_months;
 	}
@@ -125,14 +145,19 @@ export class PubSubSubscriptionMessage extends DataObject<PubSubSubscriptionMess
 	 * Whether the subscription is a gift.
 	 */
 	get isGift(): boolean {
-		return this[rawDataSymbol].context === 'subgift';
+		return (
+			this[rawDataSymbol].context === 'subgift' ||
+			this[rawDataSymbol].context === 'resubgift' ||
+			this[rawDataSymbol].context === 'anonsubgift' ||
+			this[rawDataSymbol].context === 'anonresubgift'
+		);
 	}
 
 	/**
 	 * Whether the subscription is from an anonymous gifter.
 	 */
 	get isAnonymous(): boolean {
-		return this[rawDataSymbol].context === 'anonsubgift';
+		return this[rawDataSymbol].context === 'anonsubgift' || this[rawDataSymbol].context === 'anonresubgift';
 	}
 
 	/**
@@ -169,6 +194,11 @@ export class PubSubSubscriptionMessage extends DataObject<PubSubSubscriptionMess
 	 */
 	get giftDuration(): number | null {
 		const data = this[rawDataSymbol];
-		return data.context === 'subgift' || data.context === 'anonsubgift' ? data.multi_month_duration : null;
+		return data.context === 'subgift' ||
+			data.context === 'resubgift' ||
+			data.context === 'anonsubgift' ||
+			data.context === 'anonresubgift'
+			? data.multi_month_duration
+			: null;
 	}
 }
