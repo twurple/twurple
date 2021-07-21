@@ -96,14 +96,14 @@ export class HelixStream {
 	}
 
 	/**
-	 * The game ID.
+	 * The game ID, or an empty string if the stream doesn't currently have a game.
 	 */
 	get gameId(): string {
 		return this._data.game_id;
 	}
 
 	/**
-	 * The game name.
+	 * The game name, or an empty string if the stream doesn't currently have a game.
 	 */
 	get gameName(): string {
 		return this._data.game_name;
@@ -111,9 +111,11 @@ export class HelixStream {
 
 	/**
 	 * Retrieves information about the game that is being played on the stream.
+	 *
+	 * Returns null if the stream doesn't currently have a game.
 	 */
 	async getGame(): Promise<HelixGame | null> {
-		return this._client.helix.games.getGameById(this._data.game_id);
+		return this._data.game_id ? this._client.helix.games.getGameById(this._data.game_id) : null;
 	}
 
 	/**
