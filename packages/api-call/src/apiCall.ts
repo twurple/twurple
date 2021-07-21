@@ -22,12 +22,10 @@ export async function callTwitchApiRaw(
 	accessToken?: string,
 	fetchOptions: TwitchApiCallFetchOptions = {}
 ): Promise<Response> {
-	const type = options.type ?? 'kraken';
+	const type = options.type ?? 'helix';
 	const url = getTwitchApiUrl(options.url, type);
 	const params = stringify(options.query, { arrayFormat: 'repeat' });
-	const headers = new Headers({
-		Accept: type === 'kraken' ? 'application/vnd.twitchtv.v5+json' : 'application/json'
-	});
+	const headers = new Headers({ Accept: 'application/json' });
 
 	let body: string | undefined = undefined;
 	if (options.jsonBody) {

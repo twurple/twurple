@@ -3,7 +3,7 @@ After you established a connection to the Twitch chat server and joined at least
 ```typescript
 const followAgeListener = chatClient.onMessage(async (channel: string, user: string, message: string, msg: TwitchPrivateMessage) => {
 	if (message === '!followage') {
-		const follow = await apiClient.kraken.users.getFollowedChannel(msg.userInfo.userId, msg.channelId);
+		const follow = await apiClient.users.getFollowFromUserToBroadcaster(msg.userInfo.userId, msg.channelId);
 
 		if (follow) {
 			const currentTimestamp = Date.now();

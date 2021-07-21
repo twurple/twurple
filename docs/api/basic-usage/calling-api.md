@@ -1,4 +1,4 @@
-The API methods are namespaced into the different API sections like Kraken and Helix, and below that, into the different subresources like `/users` and `/streams`.
+The API methods are namespaced into the different resources like `/users` and `/streams`.
 
 All API methods are `async` and thus can be `await`ed. Here's a quick example:
 
