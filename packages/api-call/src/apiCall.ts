@@ -9,10 +9,12 @@ import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchAp
 /**
  * Makes a call to the Twitch API using the given credentials, returning the raw Response object.
  *
- * @param options
- * @param clientId
- * @param accessToken
- * @param fetchOptions
+ * @param options The configuration of the call.
+ * @param clientId The client ID of your application.
+ * @param accessToken The access token to call the API with.
+ *
+ * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
+ * @param fetchOptions Additional options to be passed to the `fetch` function.
  */
 export async function callTwitchApiRaw(
 	options: TwitchApiCallOptions,

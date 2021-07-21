@@ -3,7 +3,9 @@ import { HttpStatusCodeError } from '../errors/HttpStatusCodeError';
 /** @private */
 export async function transformTwitchApiResponse<T>(response: Response): Promise<T> {
 	if (!response.ok) {
-		throw new HttpStatusCodeError(response.status, response.statusText, await response.json());
+		const isJson = response.headers.get('Content-Type') === 'application/json';
+		const text = isJson ? JSON.stringify(await response.json(), null, 2) : await response.text();
+		throw new HttpStatusCodeError(response.status, response.statusText, text, isJson);
 	}
 
 	if (response.status === 204) {
