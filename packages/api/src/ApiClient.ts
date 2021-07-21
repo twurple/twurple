@@ -10,7 +10,6 @@ import { rtfm } from '@twurple/common';
 import { BadgesApi } from './api/badges/BadgesApi';
 import { HelixApiGroup } from './api/helix/HelixApiGroup';
 import { HelixRateLimiter } from './api/helix/HelixRateLimiter';
-import { KrakenApiGroup } from './api/kraken/KrakenApiGroup';
 import { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 
 import { ConfigError } from './Errors/ConfigError';
@@ -127,16 +126,6 @@ export class ApiClient {
 		}
 
 		return await transformTwitchApiResponse<T>(response);
-	}
-
-	/**
-	 * A group of Kraken API methods.
-	 *
-	 * @deprecated Use Helix wherever possible.
-	 */
-	@CachedGetter()
-	get kraken(): KrakenApiGroup {
-		return new KrakenApiGroup(this);
 	}
 
 	/**

@@ -176,54 +176,6 @@ export type { HelixPaginatedVideoFilter, HelixVideoFilter } from './api/helix/vi
 export { HelixVideo } from './api/helix/video/HelixVideo';
 export type { HelixVideoType } from './api/helix/video/HelixVideo';
 
-export { KrakenApiGroup } from './api/kraken/KrakenApiGroup';
-
-export { Subscription } from './api/kraken/Subscription';
-
-export { BitsApi } from './api/kraken/bits/BitsApi';
-export { CheermoteList } from './api/kraken/bits/CheermoteList';
-
-export { ChannelApi } from './api/kraken/channel/ChannelApi';
-export type { ChannelUpdateData } from './api/kraken/channel/ChannelApi';
-export { Channel } from './api/kraken/channel/Channel';
-export { ChannelFollow } from './api/kraken/channel/ChannelFollow';
-export { ChannelPlaceholder } from './api/kraken/channel/ChannelPlaceholder';
-export { ChannelSubscription } from './api/kraken/channel/ChannelSubscription';
-export { EmoteSetList } from './api/kraken/channel/EmoteSetList';
-export { PrivilegedChannel } from './api/kraken/channel/PrivilegedChannel';
-
-export { ChatApi } from './api/kraken/chat/ChatApi';
-export { ChatEmoteList } from './api/kraken/chat/ChatEmoteList';
-
-export { SearchApi } from './api/kraken/search/SearchApi';
-
-export { StreamApi } from './api/kraken/stream/StreamApi';
-export { Stream } from './api/kraken/stream/Stream';
-export type { StreamPreviewSize, StreamType } from './api/kraken/stream/Stream';
-
-export { TeamApi } from './api/kraken/team/TeamApi';
-export { Team } from './api/kraken/team/Team';
-export { TeamWithUsers } from './api/kraken/team/TeamWithUsers';
-
-export { UserApi } from './api/kraken/user/UserApi';
-export { PrivilegedUser } from './api/kraken/user/PrivilegedUser';
-export { User } from './api/kraken/user/User';
-export { UserBlock } from './api/kraken/user/UserBlock';
-export { UserChatInfo } from './api/kraken/user/UserChatInfo';
-export { UserFollow } from './api/kraken/user/UserFollow';
-export { UserSubscription } from './api/kraken/user/UserSubscription';
-
-export { VideoApi } from './api/kraken/video/VideoApi';
-export type {
-	VideoCreateData,
-	VideoSearchPeriod,
-	VideoSort,
-	VideoType,
-	VideoUpdateData
-} from './api/kraken/video/VideoApi';
-export { CreatedVideo } from './api/kraken/video/CreatedVideo';
-export { Video } from './api/kraken/video/Video';
-
 export { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 export { ChattersList } from './api/unsupported/ChattersList';
 
