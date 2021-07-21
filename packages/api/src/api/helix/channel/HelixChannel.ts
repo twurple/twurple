@@ -74,7 +74,7 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 	 * Retrieves information about the game that is being played on the stream.
 	 */
 	async getGame(): Promise<HelixGame> {
-		return (await this._client.helix.games.getGameById(this[rawDataSymbol].game_id))!;
+		return (await this._client.games.getGameById(this[rawDataSymbol].game_id))!;
 	}
 
 	/**

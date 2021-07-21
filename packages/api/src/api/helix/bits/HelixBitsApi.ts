@@ -44,12 +44,12 @@ export interface HelixBitsLeaderboardQuery {
 /**
  * The Helix API methods that deal with bits.
  *
- * Can be accessed using `client.helix.bits` on an {@ApiClient} instance.
+ * Can be accessed using `client.bits` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const leaderboard = await api.helix.bits.getLeaderboard({ period: 'day' });
+ * const leaderboard = await api.bits.getLeaderboard({ period: 'day' });
  * ```
  */
 @rtfm('api', 'HelixBitsApi')

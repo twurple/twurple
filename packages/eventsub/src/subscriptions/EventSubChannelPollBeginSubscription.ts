@@ -27,7 +27,7 @@ export class EventSubChannelPollBeginSubscription extends EventSubSubscription<E
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.helix.eventSub.subscribeToChannelPollBeginEvents(
+		return await this._client._apiClient.eventSub.subscribeToChannelPollBeginEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

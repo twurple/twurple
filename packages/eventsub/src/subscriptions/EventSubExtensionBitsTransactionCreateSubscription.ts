@@ -29,7 +29,7 @@ export class EventSubExtensionBitsTransactionCreateSubscription extends EventSub
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.helix.eventSub.subscribeToExtensionBitsTransactionCreateEvents(
+		return await this._client._apiClient.eventSub.subscribeToExtensionBitsTransactionCreateEvents(
 			this._clientId,
 			await this._getTransportOptions()
 		);

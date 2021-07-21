@@ -27,7 +27,7 @@ export class EventSubUserUpdateSubscription extends EventSubSubscription<EventSu
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.helix.eventSub.subscribeToUserUpdateEvents(
+		return await this._client._apiClient.eventSub.subscribeToUserUpdateEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

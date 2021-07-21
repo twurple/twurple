@@ -14,12 +14,12 @@ import { HelixEmoteFromSet } from './HelixEmoteFromSet';
 /**
  * The Helix API methods that deal with chat.
  *
- * Can be accessed using `client.helix.chat` on an {@ApiClient} instance.
+ * Can be accessed using `client.chat` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const rewards = await api.helix.chat.getChannelBadges('125328655');
+ * const rewards = await api.chat.getChannelBadges('125328655');
  * ```
  */
 @rtfm('api', 'HelixChatApi')

@@ -103,7 +103,7 @@ export class HelixSubscriptionEvent extends DataObject<HelixSubscriptionEventDat
 	 * Retrieves more information about the gifter.
 	 */
 	async getGifter(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].event_data.gifter_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].event_data.gifter_id))!;
 	}
 
 	/**
@@ -131,6 +131,6 @@ export class HelixSubscriptionEvent extends DataObject<HelixSubscriptionEventDat
 	 * Retrieves more information about the subscribed user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].event_data.user_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].event_data.user_id))!;
 	}
 }

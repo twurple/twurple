@@ -27,12 +27,12 @@ export interface HelixPaginatedChannelSearchFilter extends HelixChannelSearchFil
 /**
  * The Helix API methods that run searches.
  *
- * Can be accessed using `client.helix.search` on an {@ApiClient} instance.
+ * Can be accessed using `client.search` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const channels = await api.helix.search.searchChannels('pear');
+ * const channels = await api.search.searchChannels('pear');
  * ```
  */
 @rtfm('api', 'HelixSearchApi')

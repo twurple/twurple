@@ -914,7 +914,7 @@ export abstract class EventSubBase {
 	protected abstract getPathPrefix(): Promise<string | undefined>;
 
 	protected async _resumeExistingSubscriptions(): Promise<void> {
-		const subscriptions = await this._apiClient.helix.eventSub.getSubscriptionsPaginated().getAll();
+		const subscriptions = await this._apiClient.eventSub.getSubscriptionsPaginated().getAll();
 
 		const urlPrefix = await this._buildHookUrl('');
 		this._twitchSubscriptions = new Map<string, HelixEventSubSubscription>(

@@ -72,7 +72,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 * Retrieves information about the broadcaster of the stream where the clip was created.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
 	}
 
 	/**
@@ -93,7 +93,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 * Retrieves information about the creator of the clip.
 	 */
 	async getCreator(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].creator_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].creator_id))!;
 	}
 
 	/**
@@ -107,7 +107,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 * Retrieves information about the video the clip is taken from.
 	 */
 	async getVideo(): Promise<HelixVideo> {
-		return (await this._client.helix.videos.getVideoById(this[rawDataSymbol].video_id))!;
+		return (await this._client.videos.getVideoById(this[rawDataSymbol].video_id))!;
 	}
 
 	/**
@@ -121,7 +121,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 * Retrieves information about the game that was being played when the clip was created.
 	 */
 	async getGame(): Promise<HelixGame> {
-		return (await this._client.helix.games.getGameById(this[rawDataSymbol].game_id))!;
+		return (await this._client.games.getGameById(this[rawDataSymbol].game_id))!;
 	}
 
 	/**

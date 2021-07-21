@@ -64,7 +64,7 @@ export class EventSubChannelHypeTrainProgressEvent extends DataObject<EventSubCh
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**

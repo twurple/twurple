@@ -37,12 +37,12 @@ export interface HelixChannelUpdate {
 /**
  * The Helix API methods that deal with channels.
  *
- * Can be accessed using `client.helix.channels` on an {@ApiClient} instance.
+ * Can be accessed using `client.channels` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const channel = await api.helix.channels.getChannelInfo('125328655');
+ * const channel = await api.channels.getChannelInfo('125328655');
  * ```
  */
 @rtfm('api', 'HelixChannelApi')

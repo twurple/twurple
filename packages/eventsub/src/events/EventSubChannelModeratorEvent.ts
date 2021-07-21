@@ -50,7 +50,7 @@ export class EventSubChannelModeratorEvent extends DataObject<EventSubChannelMod
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
 	}
 
 	/**
@@ -78,6 +78,6 @@ export class EventSubChannelModeratorEvent extends DataObject<EventSubChannelMod
 	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 }

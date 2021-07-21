@@ -119,14 +119,14 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	 * Retrieves the channel's stream data.
 	 */
 	async getStream(): Promise<HelixStream | null> {
-		return await this._client.helix.streams.getStreamByUserId(this);
+		return await this._client.streams.getStreamByUserId(this);
 	}
 
 	/**
 	 * Retrieves a list of broadcasters the user follows.
 	 */
 	async getFollows(): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
-		return await this._client.helix.users.getFollows({ user: this });
+		return await this._client.users.getFollows({ user: this });
 	}
 
 	/**
@@ -135,7 +135,7 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	 * @param user The user to check the follow from.
 	 */
 	async getFollowFrom(user: UserIdResolvable): Promise<HelixFollow | null> {
-		return await this._client.helix.users.getFollowFromUserToBroadcaster(user, this);
+		return await this._client.users.getFollowFromUserToBroadcaster(user, this);
 	}
 
 	/**
@@ -144,7 +144,7 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	 * @param broadcaster The broadcaster to check the follow to.
 	 */
 	async getFollowTo(broadcaster: UserIdResolvable): Promise<HelixFollow | null> {
-		return await this._client.helix.users.getFollowFromUserToBroadcaster(this, broadcaster);
+		return await this._client.users.getFollowFromUserToBroadcaster(this, broadcaster);
 	}
 
 	/**
@@ -153,7 +153,7 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	 * @param broadcaster The broadcaster to check the user's follow to.
 	 */
 	async follows(broadcaster: UserIdResolvable): Promise<boolean> {
-		return await this._client.helix.users.userFollowsBroadcaster(this, broadcaster);
+		return await this._client.users.userFollowsBroadcaster(this, broadcaster);
 	}
 
 	/**
@@ -162,7 +162,7 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	 * @param user The user to check the broadcaster's follow from.
 	 */
 	async isFollowedBy(user: UserIdResolvable): Promise<boolean> {
-		return await this._client.helix.users.userFollowsBroadcaster(user, this);
+		return await this._client.users.userFollowsBroadcaster(user, this);
 	}
 
 	/**
@@ -171,7 +171,7 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	 * @param broadcaster The broadcaster you want to get the subscription data for.
 	 */
 	async getSubscriptionTo(broadcaster: UserIdResolvable): Promise<HelixSubscription | null> {
-		return await this._client.helix.subscriptions.getSubscriptionForUser(broadcaster, this);
+		return await this._client.subscriptions.getSubscriptionForUser(broadcaster, this);
 	}
 
 	/**

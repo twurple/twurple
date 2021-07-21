@@ -89,7 +89,7 @@ export class HelixEventSubSubscription extends DataObject<HelixEventSubSubscript
 	 * End the EventSub subscription.
 	 */
 	async unsubscribe(): Promise<void> {
-		await this._client.helix.eventSub.deleteSubscription(this[rawDataSymbol].id);
+		await this._client.eventSub.deleteSubscription(this[rawDataSymbol].id);
 	}
 
 	/** @private */

@@ -72,7 +72,7 @@ export class HelixEmoteFromSet extends HelixEmote {
 			}
 
 			default: {
-				return await this._client.helix.users.getUserById(this[rawDataSymbol].owner_id);
+				return await this._client.users.getUserById(this[rawDataSymbol].owner_id);
 			}
 		}
 	}

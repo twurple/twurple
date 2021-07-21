@@ -88,7 +88,7 @@ export class HelixBanEvent extends DataObject<HelixBanEventData> {
 	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].event_data.user_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].event_data.user_id))!;
 	}
 
 	/**
@@ -116,7 +116,7 @@ export class HelixBanEvent extends DataObject<HelixBanEventData> {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].event_data.broadcaster_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].event_data.broadcaster_id))!;
 	}
 
 	/**

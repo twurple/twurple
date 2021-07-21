@@ -50,7 +50,7 @@ export class HelixPredictor extends DataObject<HelixPredictorData> {
 	 * Retrieves more information about the predictor.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return await this._client.helix.users.getUserById(this[rawDataSymbol].id);
+		return await this._client.users.getUserById(this[rawDataSymbol].id);
 	}
 
 	/**

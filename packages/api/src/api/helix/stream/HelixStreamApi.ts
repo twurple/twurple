@@ -77,12 +77,12 @@ interface HelixStreamGetMarkersResult {
 /**
  * The Helix API methods that deal with streams.
  *
- * Can be accessed using `client.helix.streams` on an {@ApiClient} instance.
+ * Can be accessed using `client.streams` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const stream = await api.helix.streams.getStreamByUserId('125328655');
+ * const stream = await api.streams.getStreamByUserId('125328655');
  * ```
  */
 @rtfm('api', 'HelixStreamApi')

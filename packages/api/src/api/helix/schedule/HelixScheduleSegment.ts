@@ -88,7 +88,7 @@ export class HelixScheduleSegment extends DataObject<HelixScheduleSegmentData> {
 	async getCategory(): Promise<HelixGame | null> {
 		const categoryId = this[rawDataSymbol].category?.id;
 
-		return categoryId ? await this._client.helix.games.getGameById(categoryId) : null;
+		return categoryId ? await this._client.games.getGameById(categoryId) : null;
 	}
 
 	/**

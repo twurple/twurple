@@ -72,7 +72,7 @@ export class HelixPoll extends DataObject<HelixPollData> {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
 	}
 
 	/**

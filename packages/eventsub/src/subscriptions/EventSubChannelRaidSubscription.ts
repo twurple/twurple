@@ -29,13 +29,13 @@ export class EventSubChannelRaidSubscription extends EventSubSubscription<EventS
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		if (this._direction === 'from') {
-			return await this._client._apiClient.helix.eventSub.subscribeToChannelRaidEventsFrom(
+			return await this._client._apiClient.eventSub.subscribeToChannelRaidEventsFrom(
 				this._userId,
 				await this._getTransportOptions()
 			);
 		}
 
-		return await this._client._apiClient.helix.eventSub.subscribeToChannelRaidEventsTo(
+		return await this._client._apiClient.eventSub.subscribeToChannelRaidEventsTo(
 			this._userId,
 			await this._getTransportOptions()
 		);

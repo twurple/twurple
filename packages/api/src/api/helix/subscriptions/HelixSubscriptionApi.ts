@@ -19,12 +19,12 @@ import { HelixUserSubscription } from './HelixUserSubscription';
 /**
  * The Helix API methods that deal with subscriptions.
  *
- * Can be accessed using `client.helix.subscriptions` on an {@ApiClient} instance.
+ * Can be accessed using `client.subscriptions` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const subscription = await api.helix.subscriptions.getSubscriptionForUser('61369223', '125328655');
+ * const subscription = await api.subscriptions.getSubscriptionForUser('61369223', '125328655');
  * ```
  */
 @rtfm('api', 'HelixSubscriptionApi')

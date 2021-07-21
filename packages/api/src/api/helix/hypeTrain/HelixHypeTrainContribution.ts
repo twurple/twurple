@@ -39,7 +39,7 @@ export class HelixHypeTrainContribution extends DataObject<HelixHypeTrainContrib
 	 * Retrieves additional information about the user contributing to the Hype Train.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].user))!;
 	}
 
 	/**

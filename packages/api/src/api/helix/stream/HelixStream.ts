@@ -74,7 +74,7 @@ export class HelixStream extends DataObject<HelixStreamData> {
 	 * Retrieves information about the user broadcasting the stream.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
@@ -97,9 +97,7 @@ export class HelixStream extends DataObject<HelixStreamData> {
 	 * Returns null if the stream doesn't currently have a game.
 	 */
 	async getGame(): Promise<HelixGame | null> {
-		return this[rawDataSymbol].game_id
-			? await this._client.helix.games.getGameById(this[rawDataSymbol].game_id)
-			: null;
+		return this[rawDataSymbol].game_id ? await this._client.games.getGameById(this[rawDataSymbol].game_id) : null;
 	}
 
 	/**
@@ -167,7 +165,7 @@ export class HelixStream extends DataObject<HelixStreamData> {
 	 * Retrieves the tags of the stream.
 	 */
 	async getTags(): Promise<HelixTag[]> {
-		return await this._client.helix.tags.getStreamTagsByIds(this[rawDataSymbol].tag_ids ?? []);
+		return await this._client.tags.getStreamTagsByIds(this[rawDataSymbol].tag_ids ?? []);
 	}
 
 	/**

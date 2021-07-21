@@ -98,7 +98,7 @@ export class HelixTeam extends DataObject<HelixTeamData> {
 	 * Retrieves the relations to the members of the team.
 	 */
 	async getUserRelations(): Promise<HelixUserRelation[]> {
-		const teamWithUsers = await this._client.helix.teams.getTeamById(this.id);
+		const teamWithUsers = await this._client.teams.getTeamById(this.id);
 
 		return teamWithUsers!.userRelations;
 	}

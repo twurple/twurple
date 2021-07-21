@@ -39,12 +39,12 @@ export interface HelixModeratorFilter extends HelixForwardPagination {
 /**
  * The Helix API methods that deal with moderation.
  *
- * Can be accessed using `client.helix.moderation` on an {@ApiClient} instance.
+ * Can be accessed using `client.moderation` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const { data: users } = await api.helix.moderation.getBannedUsers('61369223');
+ * const { data: users } = await api.moderation.getBannedUsers('61369223');
  * ```
  */
 @rtfm('api', 'HelixModerationApi')

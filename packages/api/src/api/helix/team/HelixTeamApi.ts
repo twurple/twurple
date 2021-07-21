@@ -11,12 +11,12 @@ import { HelixTeamWithUsers } from './HelixTeamWithUsers';
 /**
  * The Helix API methods that deal with teams.
  *
- * Can be accessed using `client.helix.teams` on an {@ApiClient} instance.
+ * Can be accessed using `client.teams` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const tags = await api.helix.teams.getChannelTeams('125328655');
+ * const tags = await api.teams.getChannelTeams('125328655');
  * ```
  */
 @rtfm('api', 'HelixTeamApi')

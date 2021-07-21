@@ -27,7 +27,7 @@ export class EventSubChannelModeratorRemoveSubscription extends EventSubSubscrip
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.helix.eventSub.subscribeToChannelModeratorRemoveEvents(
+		return await this._client._apiClient.eventSub.subscribeToChannelModeratorRemoveEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

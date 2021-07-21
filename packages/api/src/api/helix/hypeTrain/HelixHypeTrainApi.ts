@@ -14,12 +14,12 @@ import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
 /**
  * The Helix API methods that deal with Hype Trains.
  *
- * Can be accessed using `client.helix.hypeTrain` on an {@ApiClient} instance.
+ * Can be accessed using `client.hypeTrain` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const { data: events } = await api.helix.hypeTrain.getHypeTrainEventsForBroadcaster('125328655');
+ * const { data: events } = await api.hypeTrain.getHypeTrainEventsForBroadcaster('125328655');
  * ```
  */
 export class HelixHypeTrainApi extends BaseApi {

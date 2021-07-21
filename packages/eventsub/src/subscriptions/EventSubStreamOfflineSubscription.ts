@@ -27,7 +27,7 @@ export class EventSubStreamOfflineSubscription extends EventSubSubscription<Even
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.helix.eventSub.subscribeToStreamOfflineEvents(
+		return await this._client._apiClient.eventSub.subscribeToStreamOfflineEvents(
 			this._userId,
 			await this._getTransportOptions()
 		);

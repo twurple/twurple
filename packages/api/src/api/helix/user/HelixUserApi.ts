@@ -70,12 +70,12 @@ export interface HelixPaginatedFollowFilter extends HelixFollowFilter, HelixForw
 /**
  * The Helix API methods that deal with users.
  *
- * Can be accessed using `client.helix.users` on an {@ApiClient} instance.
+ * Can be accessed using `client.users` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const user = await api.helix.users.getUserById('125328655');
+ * const user = await api.users.getUserById('125328655');
  * ```
  */
 @rtfm('api', 'HelixUserApi')

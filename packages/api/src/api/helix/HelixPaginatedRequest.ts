@@ -15,7 +15,7 @@ if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
  * Aside from the methods described below, you can also utilize the async iterator using `for await .. of`:
  *
  * ```ts
- * const result = client.helix.videos.getVideosByUserPaginated('125328655');
+ * const result = client.videos.getVideosByUserPaginated('125328655');
  * for await (const video of result) {
  *     console.log(video.title);
  * }

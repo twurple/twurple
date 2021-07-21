@@ -29,7 +29,7 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
 /**
  * The API methods that deal with EventSub.
  *
- * Can be accessed using `client.helix.eventSub` on an {@ApiClient} instance.
+ * Can be accessed using `client.eventSub` on an {@ApiClient} instance.
  *
  * ## Before using these methods...
  *
@@ -40,7 +40,7 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * await api.helix.eventSub.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
+ * await api.eventSub.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  */
 @rtfm('api', 'HelixEventSubApi')

@@ -112,7 +112,7 @@ export abstract class EventSubSubscription</** @private */ T = any> {
 
 	private async _unsubscribe() {
 		if (this._twitchSubscriptionData) {
-			await this._client._apiClient.helix.eventSub.deleteSubscription(this._twitchSubscriptionData.id);
+			await this._client._apiClient.eventSub.deleteSubscription(this._twitchSubscriptionData.id);
 		}
 		this._client._dropTwitchSubscription(this.id);
 	}

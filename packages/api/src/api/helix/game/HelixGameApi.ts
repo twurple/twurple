@@ -15,12 +15,12 @@ type HelixGameFilterType = 'id' | 'name';
 /**
  * The Helix API methods that deal with games.
  *
- * Can be accessed using `client.helix.games` on an {@ApiClient} instance.
+ * Can be accessed using `client.games` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const game = await api.helix.games.getGameByName('Hearthstone');
+ * const game = await api.games.getGameByName('Hearthstone');
  * ```
  */
 @rtfm('api', 'HelixGameApi')

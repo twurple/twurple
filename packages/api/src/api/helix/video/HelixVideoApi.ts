@@ -52,12 +52,12 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
 /**
  * The Helix API methods that deal with videos.
  *
- * Can be accessed using `client.helix.videos` on an {@ApiClient} instance.
+ * Can be accessed using `client.videos` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const { data: videos } = await api.helix.videos.getVideosByUser('125328655');
+ * const { data: videos } = await api.videos.getVideosByUser('125328655');
  * ```
  */
 @rtfm('api', 'HelixVideoApi')

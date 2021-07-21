@@ -49,7 +49,7 @@ export class HelixSubscription extends HelixUserSubscription {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
 	}
 
 	/**
@@ -77,7 +77,7 @@ export class HelixSubscription extends HelixUserSubscription {
 	 * Retrieves more information about the gifter.
 	 */
 	async getGifter(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].gifter_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].gifter_id))!;
 	}
 
 	/**
@@ -105,6 +105,6 @@ export class HelixSubscription extends HelixUserSubscription {
 	 * Retrieves more information about the subscribed user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 }

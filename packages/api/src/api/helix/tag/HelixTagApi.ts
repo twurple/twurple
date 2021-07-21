@@ -12,12 +12,12 @@ import { HelixTag } from './HelixTag';
 /**
  * The Helix API methods that deal with tags.
  *
- * Can be accessed using `client.helix.tags` on an {@ApiClient} instance.
+ * Can be accessed using `client.tags` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const tags = await api.helix.tags.getAllStreamTags();
+ * const tags = await api.tags.getAllStreamTags();
  * ```
  */
 @rtfm('api', 'HelixTagApi')

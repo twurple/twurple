@@ -67,12 +67,12 @@ export interface HelixClipCreateResponse {
 /**
  * The Helix API methods that deal with clips.
  *
- * Can be accessed using `client.helix.clips` on an {@ApiClient} instance.
+ * Can be accessed using `client.clips` on an {@ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const clipId = await api.helix.clips.createClip({ channelId: '125328655' });
+ * const clipId = await api.clips.createClip({ channelId: '125328655' });
  * ```
  */
 @rtfm('api', 'HelixClipApi')

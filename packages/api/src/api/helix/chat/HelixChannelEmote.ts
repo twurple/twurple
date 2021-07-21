@@ -59,6 +59,6 @@ export class HelixChannelEmote extends HelixEmote {
 	 * Retrieves all emotes from the emote's set.
 	 */
 	async getAllEmotesFromSet(): Promise<HelixEmoteFromSet[]> {
-		return await this._client.helix.chat.getEmotesFromSets([this[rawDataSymbol].emote_set_id]);
+		return await this._client.chat.getEmotesFromSets([this[rawDataSymbol].emote_set_id]);
 	}
 }

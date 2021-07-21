@@ -41,7 +41,7 @@ export class HelixChannelEditor extends DataObject<HelixChannelEditorData> {
 	 * Retrieves additional information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.helix.users.getUserById(this[rawDataSymbol].user_id))!;
+		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
 	}
 
 	/**
