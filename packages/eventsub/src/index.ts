@@ -11,8 +11,6 @@ export { EnvPortAdapter } from './adapters/EnvPortAdapter';
 export type { EnvPortAdapterConfig } from './adapters/EnvPortAdapter';
 export { ReverseProxyAdapter } from './adapters/ReverseProxyAdapter';
 export type { ReverseProxyAdapterConfig } from './adapters/ReverseProxyAdapter';
-export { MiddlewareAdapter } from './adapters/MiddlewareAdapter';
-export type { MiddlewareAdapterConfig } from './adapters/MiddlewareAdapter';
 
 export { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 export { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';

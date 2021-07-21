@@ -2,10 +2,9 @@ import type { LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import type { Request, RequestHandler } from 'httpanda';
+import type { Request } from 'httpanda';
 import { Server } from 'httpanda';
 import type { ConnectionAdapter } from './adapters/ConnectionAdapter';
-import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 import { EventSubBase } from './EventSubBase';
 
 /**
@@ -97,17 +96,6 @@ Listening on port ${adapterListenerPort} instead.`);
 	}
 
 	/**
-	 * Resumes subscriptions that are already registered with Twitch.
-	 *
-	 * The express app should be started before this.
-	 *
-	 * @deprecated No replacement; this should only be used with middleware.
-	 */
-	async resumeExistingSubscriptions(): Promise<void> {
-		await this._resumeExistingSubscriptions();
-	}
-
-	/**
 	 * Stops the backing server, suspending all active subscriptions.
 	 */
 	async unlisten(): Promise<void> {
@@ -120,38 +108,6 @@ Listening on port ${adapterListenerPort} instead.`);
 		await this._server.close();
 		this._server = undefined;
 		this._readyToSubscribe = false;
-	}
-
-	/**
-	 * Applies middleware that handles EventSub notifications to a connect-compatible app (like express).
-	 *
-	 * @param app The app the middleware should be applied to.
-	 *
-	 * @deprecated Use {@EventSubMiddleware#applyToApp} instead.
-	 */
-	async applyMiddleware(app: ConnectCompatibleApp): Promise<void> {
-		let { pathPrefix } = this._adapter;
-		if (pathPrefix) {
-			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/, '')}`;
-		}
-		const paramParser: RequestHandler = (req, res, next) => {
-			const [, id] = req.path.split('/');
-			req.param = req.params = { id };
-			next();
-		};
-		const requestHandler = this._createHandleRequest();
-		if (pathPrefix) {
-			app.use(
-				pathPrefix,
-				paramParser as ConnectCompatibleMiddleware,
-				requestHandler as ConnectCompatibleMiddleware
-			);
-		} else {
-			app.use(paramParser as ConnectCompatibleMiddleware, requestHandler as ConnectCompatibleMiddleware);
-		}
-
-		// stub to fix subscription registration
-		this._readyToSubscribe = true;
 	}
 
 	protected async getHostName(): Promise<string> {
