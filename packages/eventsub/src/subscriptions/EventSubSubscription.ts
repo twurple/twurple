@@ -3,17 +3,11 @@ import { rtfm } from '@twurple/common';
 import * as crypto from 'crypto';
 import type { EventSubBase } from '../EventSubBase';
 
-/** @private */
-export type SubscriptionResultType<T extends EventSubSubscription> = T extends EventSubSubscription<infer O>
-	? O
-	: never;
-
 /**
  * @hideProtected
  */
 @rtfm('eventsub', 'EventSubSubscription')
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export abstract class EventSubSubscription</** @private */ T = any> {
+export abstract class EventSubSubscription</** @private */ T = unknown> {
 	private _verified: boolean = false;
 	private _twitchSubscriptionData?: HelixEventSubSubscription;
 

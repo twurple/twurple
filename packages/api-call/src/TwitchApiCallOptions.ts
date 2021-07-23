@@ -38,8 +38,7 @@ export interface TwitchApiCallOptions {
 	 *
 	 * If `body` is also given, this will be ignored.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	jsonBody?: any;
+	jsonBody?: unknown;
 
 	/**
 	 * The scope the request needs.

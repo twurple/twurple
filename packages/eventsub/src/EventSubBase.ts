@@ -71,7 +71,7 @@ import { EventSubChannelUpdateSubscription } from './subscriptions/EventSubChann
 import { EventSubExtensionBitsTransactionCreateSubscription } from './subscriptions/EventSubExtensionBitsTransactionCreateSubscription';
 import { EventSubStreamOfflineSubscription } from './subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './subscriptions/EventSubStreamOnlineSubscription';
-import type { EventSubSubscription, SubscriptionResultType } from './subscriptions/EventSubSubscription';
+import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription';
 
@@ -1018,9 +1018,9 @@ export abstract class EventSubBase {
 		};
 	}
 
-	private async _genericSubscribe<T extends EventSubSubscription, Args extends unknown[]>(
-		clazz: new (handler: (obj: SubscriptionResultType<T>) => void, client: EventSubBase, ...args: Args) => T,
-		handler: (obj: SubscriptionResultType<T>) => void,
+	private async _genericSubscribe<T, Args extends unknown[]>(
+		clazz: new (handler: (obj: T) => void, client: EventSubBase, ...args: Args) => EventSubSubscription<T>,
+		handler: (obj: T) => void,
 		client: EventSubBase,
 		...params: Args
 	): Promise<EventSubSubscription> {
@@ -1028,8 +1028,8 @@ export abstract class EventSubBase {
 		if (this._readyToSubscribe) {
 			await subscription.start(this._twitchSubscriptions.get(subscription.id));
 		}
-		this._subscriptions.set(subscription.id, subscription);
+		this._subscriptions.set(subscription.id, subscription as EventSubSubscription);
 
-		return subscription;
+		return subscription as EventSubSubscription;
 	}
 }

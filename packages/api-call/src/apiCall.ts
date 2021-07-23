@@ -61,7 +61,6 @@ export async function callTwitchApiRaw(
  * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
  * @param fetchOptions Additional options to be passed to the `fetch` function.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function callTwitchApi<T = unknown>(
 	options: TwitchApiCallOptions,
 	clientId?: string,
