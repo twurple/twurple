@@ -42,7 +42,6 @@ export class HelixEmote extends DataObject<HelixEmoteData> {
 	 * @param scale The scale of the image.
 	 */
 	getImageUrl(scale: HelixEmoteImageScale): string {
-		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 		return this[rawDataSymbol].images[`url_${scale}x` as const];
 	}
 }

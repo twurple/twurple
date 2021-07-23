@@ -109,7 +109,6 @@ export class HelixCustomReward extends DataObject<HelixCustomRewardData> {
 	 * @param scale The scale of the image.
 	 */
 	getImageUrl(scale: HelixCustomRewardImageScale): string {
-		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 		const urlProp = `url_${scale}x` as const;
 		return this[rawDataSymbol].image?.[urlProp] ?? this[rawDataSymbol].default_image[urlProp];
 	}

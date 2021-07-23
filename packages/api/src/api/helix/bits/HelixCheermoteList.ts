@@ -25,7 +25,7 @@ export interface HelixCheermoteTierData {
 	min_bits: number;
 	id: string;
 	color: string;
-	images: HelixCheermoteActionImageUrlsByBackgroundAndStateAndScale[];
+	images: HelixCheermoteActionImageUrlsByBackgroundAndStateAndScale;
 	can_cheer: boolean;
 	show_in_bits_card: boolean;
 }
@@ -73,8 +73,6 @@ export class HelixCheermoteList extends BaseCheermoteList<Record<string, HelixCh
 		}
 
 		return {
-			// @ts-expect-error TS7015 TODO will be fixed with the removal of enums
-			// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
 			url: correctTier.images[background][state][scale],
 			color: correctTier.color
 		};

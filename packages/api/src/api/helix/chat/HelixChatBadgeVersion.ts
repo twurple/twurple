@@ -28,7 +28,6 @@ export class HelixChatBadgeVersion extends DataObject<HelixChatBadgeVersionData>
 	 * @param scale The scale of the badge image.
 	 */
 	getImageUrl(scale: HelixChatBadgeScale): string {
-		// eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
 		return this[rawDataSymbol][`image_url_${scale}x` as const];
 	}
 }
