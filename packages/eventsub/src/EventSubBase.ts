@@ -1,4 +1,4 @@
-import type { Logger , LoggerOptions } from '@d-fischer/logger';
+import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
@@ -147,6 +147,10 @@ export abstract class EventSubBase {
 			throw new InvalidTokenTypeError(
 				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
 			);
+		}
+		// catch the examples copied verbatim
+		if (!config.secret || config.secret === 'thisShouldBeARandomlyGeneratedFixedString') {
+			throw new Error('Please generate a secret and pass it to the constructor!');
 		}
 		this._apiClient = config.apiClient;
 		this._secret = config.secret;
