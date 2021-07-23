@@ -1,6 +1,6 @@
 {
   "name": "@twurple/easy-bot",
-  "version": "5.0.0-pre.12",
+  "version": "5.0.0-pre.13",
   "publishConfig": {
     "access": "public"
   },
@@ -27,8 +27,8 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/shared-utils": "^3.2.0",
-    "@twurple/auth": "^5.0.0-pre.12",
-    "@twurple/chat": "^5.0.0-pre.12",
+    "@twurple/auth": "^5.0.0-pre.13",
+    "@twurple/chat": "^5.0.0-pre.13",
     "tslib": "^2.0.3"
   },
   "files": [
