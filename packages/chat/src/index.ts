@@ -1,11 +1,5 @@
 export { ChatClient } from './ChatClient';
-export type {
-	BaseChatClientOptions,
-	ChatClientOptions,
-	TcpChatClientOptions,
-	TwitchBotLevel,
-	WebSocketChatClientOptions
-} from './ChatClient';
+export type { ChatClientOptions, TwitchBotLevel } from './ChatClient';
 export type { WebSocketConnectionOptions } from '@d-fischer/connection';
 
 export { TwitchPrivateMessage as PrivateMessage } from './commands/TwitchPrivateMessage';
