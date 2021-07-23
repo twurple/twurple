@@ -24,7 +24,7 @@ export class Bot {
 		return new this(await this._createAuthProviderForConfig(config), config);
 	}
 
-	constructor(auth: AuthProvider, { channel, channels, debug, commands, prefix }: BotConfig) {
+	constructor(authProvider: AuthProvider, { channel, channels, debug, commands, prefix }: BotConfig) {
 		this._prefix = prefix ?? '!';
 		const resolvableChannels = channel ? [channel] : channels;
 
@@ -34,7 +34,8 @@ export class Bot {
 
 		this._commands = new Map<string, BotCommand>(commands?.map(cmd => [cmd.name, cmd]));
 
-		this.chat = new ChatClient(auth, {
+		this.chat = new ChatClient({
+			authProvider,
 			logger: { minLevel: debug ? LogLevel.DEBUG : LogLevel.ERROR },
 			channels: resolvableChannels
 		});
