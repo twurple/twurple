@@ -54,7 +54,14 @@ export type TwitchBotLevel = 'none' | 'known' | 'verified';
 /**
  * Options for a chat client.
  */
-export interface BaseChatClientOptions {
+export interface ChatClientOptions {
+	/**
+	 * The authentication provider to use for retrieving the chat credentials.
+	 *
+	 * If you don't pass this, the chat client will connect anonymously.
+	 */
+	authProvider?: AuthProvider;
+
 	/**
 	 * Whether to request a token with only read permission.
 	 *
@@ -92,6 +99,13 @@ export interface BaseChatClientOptions {
 	webSocket?: boolean;
 
 	/**
+	 * The connection options for a WebSocket connection.
+	 *
+	 * If not using WebSockets, this is ignored.
+	 */
+	connectionOptions?: WebSocketConnectionOptions;
+
+	/**
 	 * Whether to receive JOIN and PART messages from Twitch chat.
 	 */
 	requestMembershipEvents?: boolean;
@@ -119,18 +133,6 @@ export interface BaseChatClientOptions {
 	 */
 	botLevel?: TwitchBotLevel;
 }
-
-export interface WebSocketChatClientOptions extends BaseChatClientOptions {
-	webSocket?: true;
-	connectionOptions?: WebSocketConnectionOptions;
-}
-
-export interface TcpChatClientOptions extends BaseChatClientOptions {
-	webSocket: false;
-	connectionOptions?: never;
-}
-
-export type ChatClientOptions = WebSocketChatClientOptions | TcpChatClientOptions;
 
 /** @private */
 export interface ChatMessageRequest {
@@ -640,47 +642,36 @@ export class ChatClient extends IrcClient {
 		this.registerInternalEvent();
 
 	/**
-	 * Creates a new anonymous Twitch chat client.
-	 *
-	 * @expandParams
-	 *
-	 * @param options
-	 */
-	static anonymous(options: ChatClientOptions = {}): ChatClient {
-		return new this(undefined, options);
-	}
-
-	/**
 	 * Creates a new Twitch chat client.
 	 *
 	 * @expandParams
 	 *
-	 * @param authProvider The {@AuthProvider} instance to use for authentication.
-	 * @param options
+	 * @param config
 	 */
-	constructor(authProvider: AuthProvider | undefined, options: ChatClientOptions = {}) {
+	constructor(config: ChatClientOptions = {}) {
 		super({
 			connection: {
 				hostName:
-					options.hostName ?? (options.webSocket ?? true ? 'irc-ws.chat.twitch.tv' : 'irc.chat.twitch.tv'),
-				secure: options.ssl ?? true
+					config.hostName ?? (config.webSocket ?? true ? 'irc-ws.chat.twitch.tv' : 'irc.chat.twitch.tv'),
+				secure: config.ssl ?? true
 			},
 			credentials: {
 				nick: ''
 			},
-			webSocket: options.webSocket ?? true,
+			webSocket: config.webSocket ?? true,
+			connectionOptions: config.connectionOptions,
 			logger: {
 				name: 'twurple:chat:irc',
-				...options.logger
+				...config.logger
 			},
 			nonConformingCommands: ['004'],
-			channels: options.channels
+			channels: config.channels
 		});
 
-		if (authProvider?.tokenType === 'app') {
+		if (config.authProvider?.tokenType === 'app') {
 			throw new InvalidTokenTypeError(
 				'You can not connect to chat using an AuthProvider that supplies app access tokens.\n' +
-					'To get an anonymous, read-only connection, please use `ChatClient.anonymous()`.\n' +
+					"To get an anonymous, read-only connection, please don't pass an `AuthProvider` at all.\n" +
 					'To get a read-write connection, please provide an auth provider that provides user access tokens, such as `RefreshingAuthProvider`.'
 			);
 		}
@@ -688,13 +679,13 @@ export class ChatClient extends IrcClient {
 		this._chatLogger = createLogger({
 			name: 'twurple:chat:twitch',
 			emoji: true,
-			...options.logger
+			...config.logger
 		});
 
-		this._authProvider = authProvider;
+		this._authProvider = config.authProvider;
 
-		this._useLegacyScopes = !!options.legacyScopes;
-		this._readOnly = !!options.readOnly;
+		this._useLegacyScopes = !!config.legacyScopes;
+		this._readOnly = !!config.readOnly;
 
 		const executeChatMessageRequest = async ({ type, message, channel, tags }: ChatMessageRequest) => {
 			if (type === 'say') {
@@ -730,17 +721,17 @@ export class ChatClient extends IrcClient {
 
 		const executeWhisperRequest = async ({ target, message }: WhisperRequest) => this._doWhisper(target, message);
 
-		if (options.isAlwaysMod) {
+		if (config.isAlwaysMod) {
 			this._messageRateLimiter = new TimeBasedRateLimiter({
-				bucketSize: options.botLevel === 'verified' ? 7500 : 100,
+				bucketSize: config.botLevel === 'verified' ? 7500 : 100,
 				timeFrame: 32000,
 				doRequest: executeChatMessageRequest
 			});
 		} else {
 			let bucketSize = 20;
-			if (options.botLevel === 'verified') {
+			if (config.botLevel === 'verified') {
 				bucketSize = 7500;
-			} else if (options.botLevel === 'known') {
+			} else if (config.botLevel === 'known') {
 				bucketSize = 50;
 			}
 			this._messageRateLimiter = new TimedPassthruRateLimiter(
@@ -755,16 +746,16 @@ export class ChatClient extends IrcClient {
 			);
 		}
 		this._joinRateLimiter = new TimeBasedRateLimiter({
-			bucketSize: options.botLevel === 'verified' ? 2000 : 20,
+			bucketSize: config.botLevel === 'verified' ? 2000 : 20,
 			timeFrame: 11000,
 			doRequest: executeJoinRequest
 		});
 		let whisperLimitPerSecond = 3;
 		let whisperLimitPerMinute = 100;
-		if (options.botLevel === 'verified') {
+		if (config.botLevel === 'verified') {
 			whisperLimitPerSecond = 20;
 			whisperLimitPerMinute = 1200;
-		} else if (options.botLevel === 'known') {
+		} else if (config.botLevel === 'known') {
 			whisperLimitPerSecond = 10;
 			whisperLimitPerMinute = 200;
 		}
@@ -780,7 +771,7 @@ export class ChatClient extends IrcClient {
 
 		this.addCapability(TwitchTagsCapability);
 		this.addCapability(TwitchCommandsCapability);
-		if (options.requestMembershipEvents) {
+		if (config.requestMembershipEvents) {
 			this.addCapability(TwitchMembershipCapability);
 		}
 
@@ -2183,6 +2174,7 @@ Please note that your whispers might not arrive reliably if your bot is not a kn
 
 	protected async getPassword(): Promise<string | undefined> {
 		if (!this._authProvider) {
+			this._chatLogger.debug('No authProvider given; connecting anonymously');
 			return undefined;
 		}
 

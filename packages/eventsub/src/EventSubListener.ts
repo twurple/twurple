@@ -1,10 +1,9 @@
-import type { LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import type { Request } from 'httpanda';
 import { Server } from 'httpanda';
 import type { ConnectionAdapter } from './adapters/ConnectionAdapter';
+import type { EventSubBaseConfig } from './EventSubBase';
 import { EventSubBase } from './EventSubBase';
 
 /**
@@ -23,13 +22,13 @@ export interface EventSubListenerCertificateConfig {
 }
 
 /**
- * The configuration of a EventSub listener.
+ * Configuration for an EventSub listener.
  */
-export interface EventSubConfig {
+export interface EventSubListenerConfig extends EventSubBaseConfig {
 	/**
-	 * Options to pass to the logger.
+	 * The connection adapter responsible for the configuration of the connection method.
 	 */
-	logger?: Partial<LoggerOptions>;
+	adapter: ConnectionAdapter;
 }
 
 /**
@@ -46,16 +45,13 @@ export class EventSubListener extends EventSubBase {
 	/**
 	 * Creates a new EventSub listener.
 	 *
-	 * @param apiClient The ApiClient instance to use for user info and API requests.
-	 * @param secret The secret for Twitch to sign payloads with.
-	 * @param adapter The connection adapter.
 	 * @param config
 	 *
 	 * @expandParams
 	 */
-	constructor(apiClient: ApiClient, adapter: ConnectionAdapter, secret: string, config?: EventSubConfig) {
-		super(apiClient, secret, config);
-		this._adapter = adapter;
+	constructor(config: EventSubListenerConfig) {
+		super(config);
+		this._adapter = config.adapter;
 	}
 
 	/**

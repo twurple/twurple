@@ -1,4 +1,4 @@
-import type { Logger } from '@d-fischer/logger';
+import type { Logger , LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
@@ -41,7 +41,6 @@ import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineE
 import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
-import type { EventSubConfig } from './EventSubListener';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription';
@@ -107,6 +106,30 @@ type EventSubBody = EventSubVerificationBody | EventSubNotificationBody;
 
 const numberRegex = /^\d+$/;
 
+/**
+ * The base EventSub configuration.
+ */
+export interface EventSubBaseConfig {
+	/**
+	 * The API client that will be used to subscribe to events.
+	 */
+	apiClient: ApiClient;
+
+	/**
+	 * Your EventSub secret.
+	 *
+	 * This should be a randomly generated string, but it should be the same between restarts.
+	 *
+	 * WARNING: Please do not use your application's client secret!
+	 */
+	secret: string;
+
+	/**
+	 * Options to pass to the logger.
+	 */
+	logger?: Partial<LoggerOptions>;
+}
+
 /** @private */
 export abstract class EventSubBase {
 	@Enumerable(false) protected readonly _subscriptions = new Map<string, EventSubSubscription>();
@@ -119,18 +142,18 @@ export abstract class EventSubBase {
 
 	protected _readyToSubscribe = false;
 
-	constructor(apiClient: ApiClient, secret: string, config?: EventSubConfig) {
-		if (apiClient._authProvider.tokenType !== 'app') {
+	constructor(config: EventSubBaseConfig) {
+		if (config.apiClient._authProvider.tokenType !== 'app') {
 			throw new InvalidTokenTypeError(
 				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
 			);
 		}
-		this._apiClient = apiClient;
-		this._secret = secret;
+		this._apiClient = config.apiClient;
+		this._secret = config.secret;
 		this._logger = createLogger({
 			name: 'twurple:eventsub',
 			emoji: true,
-			...config?.logger
+			...config.logger
 		});
 	}
 

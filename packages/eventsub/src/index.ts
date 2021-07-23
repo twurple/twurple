@@ -1,5 +1,6 @@
+export type { EventSubBaseConfig } from './EventSubBase';
 export { EventSubListener } from './EventSubListener';
-export type { EventSubConfig, EventSubListenerCertificateConfig } from './EventSubListener';
+export type { EventSubListenerCertificateConfig, EventSubListenerConfig } from './EventSubListener';
 export { EventSubMiddleware } from './EventSubMiddleware';
 export type { EventSubMiddlewareConfig } from './EventSubMiddleware';
 export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';

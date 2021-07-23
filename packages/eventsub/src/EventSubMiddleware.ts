@@ -1,16 +1,15 @@
-import type { ApiClient } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import type { RequestHandler } from 'httpanda';
 import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
+import type { EventSubBaseConfig } from './EventSubBase';
 import { EventSubBase } from './EventSubBase';
-import type { EventSubConfig } from './EventSubListener';
 
 /**
  * The configuration of the EventSub middleware.
  *
  * @inheritDoc
  */
-export interface EventSubMiddlewareConfig extends EventSubConfig {
+export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
 	/**
 	 * The host name the root application is available under.
 	 */
@@ -20,15 +19,6 @@ export interface EventSubMiddlewareConfig extends EventSubConfig {
 	 * The path your listener is mounted under.
 	 */
 	pathPrefix?: string;
-
-	/**
-	 * Your EventSub secret.
-	 *
-	 * This should be a randomly generated string, but it should be the same between restarts.
-	 *
-	 * WARNING: Please do not use your application's client secret!
-	 */
-	secret: string;
 }
 
 /**
@@ -44,7 +34,8 @@ export interface EventSubMiddlewareConfig extends EventSubConfig {
  * declare const app: any;
  * declare const apiClient: ApiClient;
  * // ---cut---
- * const middleware = new EventSubMiddleware(apiClient, {
+ * const middleware = new EventSubMiddleware({
+ *   apiClient,
  *   hostName: 'example.com',
  *   pathPrefix: '/twitch',
  *   secret: 'secretHere'
@@ -70,13 +61,12 @@ export class EventSubMiddleware extends EventSubBase {
 	/**
 	 * Creates a new EventSub middleware wrapper.
 	 *
-	 * @param apiClient The ApiClient instance to use for user info and API requests.
 	 * @param config
 	 *
 	 * @expandParams
 	 */
-	constructor(apiClient: ApiClient, config: EventSubMiddlewareConfig) {
-		super(apiClient, config.secret, config);
+	constructor(config: EventSubMiddlewareConfig) {
+		super(config);
 
 		this._hostName = config.hostName;
 		this._pathPrefix = config.pathPrefix;
