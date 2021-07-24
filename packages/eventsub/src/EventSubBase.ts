@@ -2,6 +2,7 @@ import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
+import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type {
 	ApiClient,
 	HelixEventSubSubscription,
@@ -131,7 +132,7 @@ export interface EventSubBaseConfig {
 }
 
 /** @private */
-export abstract class EventSubBase {
+export abstract class EventSubBase extends EventEmitter {
 	@Enumerable(false) protected readonly _subscriptions = new Map<string, EventSubSubscription>();
 	@Enumerable(false) protected _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
 
@@ -142,7 +143,10 @@ export abstract class EventSubBase {
 
 	protected _readyToSubscribe = false;
 
+	readonly onVerify = this.registerEvent<[success: boolean, subscription: EventSubSubscription]>();
+
 	constructor(config: EventSubBaseConfig) {
+		super();
 		if (config.apiClient._authProvider.tokenType !== 'app') {
 			throw new InvalidTokenTypeError(
 				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
@@ -982,10 +986,11 @@ export abstract class EventSubBase {
 					res.end();
 				} else {
 					const verified = subscription._verifyData(messageId, timestamp, body, algoAndSignature);
+					const data = JSON.parse(body) as EventSubBody;
 					if (verified) {
-						const data = JSON.parse(body) as EventSubBody;
 						if (type === 'webhook_callback_verification') {
 							const verificationBody = data as EventSubVerificationBody;
+							this.emit(this.onVerify, true, subscription);
 							subscription._verify();
 							if (twitchSubscription) {
 								twitchSubscription._status = 'enabled';
@@ -1005,6 +1010,9 @@ export abstract class EventSubBase {
 						}
 					} else {
 						this._logger.warn(`Could not verify action ${type} of event: ${id}`);
+						if (type === 'webhook_callback_verification') {
+							this.emit(this.onVerify, false, subscription);
+						}
 						res.writeHead(410);
 						res.end();
 					}
