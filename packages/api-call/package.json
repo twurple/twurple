@@ -1,6 +1,6 @@
 {
   "name": "@twurple/api-call",
-  "version": "5.0.0-pre.13",
+  "version": "5.0.0-pre.14",
   "publishConfig": {
     "access": "public"
   },
@@ -32,7 +32,7 @@
   "dependencies": {
     "@d-fischer/cross-fetch": "^4.0.2",
     "@d-fischer/qs": "^7.0.2",
-    "@twurple/common": "^5.0.0-pre.13",
+    "@twurple/common": "^5.0.0-pre.14",
     "@types/node-fetch": "^2.5.7",
     "node-fetch": "^2.6.1",
     "tslib": "^2.0.3"
