@@ -7,7 +7,7 @@ import {
 	TimedPassthruRateLimiter
 } from '@d-fischer/rate-limiter';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import { delay, Enumerable } from '@d-fischer/shared-utils';
+import { delay, Enumerable, resolveConfigValue } from '@d-fischer/shared-utils';
 import type { EventBinder } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
 import { accessTokenIsExpired, getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from '@twurple/auth';
@@ -281,6 +281,15 @@ export class ChatClient extends IrcClient {
 	 * @param user The user that joined.
 	 */
 	readonly onJoin: EventBinder<[channel: string, user: string]> = this.registerEvent();
+
+	/**
+	 * Fires when you fail to join a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel that you tried to join.
+	 * @param reason The reason for the failure.
+	 */
+	readonly onJoinFailure: EventBinder<[channel: string, reason: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a user leaves ("parts") a channel.
@@ -664,8 +673,7 @@ export class ChatClient extends IrcClient {
 				name: 'twurple:chat:irc',
 				...config.logger
 			},
-			nonConformingCommands: ['004'],
-			channels: config.channels
+			nonConformingCommands: ['004']
 		});
 
 		if (config.authProvider?.tokenType === 'app') {
@@ -699,7 +707,7 @@ export class ChatClient extends IrcClient {
 			await new Promise<void>((resolve, reject) => {
 				// eslint-disable-next-line @typescript-eslint/init-declarations
 				let timer: NodeJS.Timer;
-				const e = this._onJoinResult((chan, state, error) => {
+				const e = this.addInternalListener(this._onJoinResult, (chan, state, error) => {
 					if (chan === channel) {
 						clearTimeout(timer);
 						if (error) {
@@ -775,8 +783,26 @@ export class ChatClient extends IrcClient {
 			this.addCapability(TwitchMembershipCapability);
 		}
 
-		this.addInternalListener(this.onRegister, () => {
+		this.addInternalListener(this.onRegister, async () => {
 			this._authVerified = true;
+
+			const resolvedChannels = await resolveConfigValue(config.channels);
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			if (resolvedChannels) {
+				await Promise.all(
+					resolvedChannels.map(async channel => {
+						try {
+							await this.join(channel);
+						} catch (e) {
+							this._chatLogger.warn(
+								`Failed to join configured channel ${channel}; original message: ${
+									(e as Error).message
+								}`
+							);
+						}
+					})
+				);
+			}
 		});
 
 		this.addInternalListener(this.onPrivmsg, (channel, user, message, msg) => {
@@ -796,6 +822,12 @@ export class ChatClient extends IrcClient {
 				}
 			} else {
 				this.emit(this.onMessage, channel, user, message, msg);
+			}
+		});
+
+		this.addInternalListener(this._onJoinResult, (channel, _, error) => {
+			if (error) {
+				this.emit(this.onJoinFailure, channel, error);
 			}
 		});
 
