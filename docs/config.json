@@ -12,151 +12,14 @@
 	"versionBranchPrefix": "versions/",
 	"versionFolder": "versions",
 	"title": "Twurple",
+	"indexFile": "index.md",
 	"ignoredPackages": ["auth-electron", "eventsub-ngrok", "api-call"],
 	"persistentFiles": ["CNAME"],
 	"categories": [
 		{
-			"name": "api",
-			"indexTitle": "Twurple - API Client",
-			"indexFile": "api/index.md",
-			"groups": [
-				{
-					"name": "basic-usage",
-					"title": "Basic usage",
-					"articles": [
-						{
-							"name": "getting-started",
-							"title": "Getting started",
-							"file": "api/basic-usage/getting-started.md"
-						},
-						{
-							"name": "creating-instance",
-							"title": "Creating a client instance",
-							"file": "api/basic-usage/creating-instance.md"
-						},
-						{
-							"name": "calling-api",
-							"title": "Calling the Twitch API",
-							"file": "api/basic-usage/calling-api.md"
-						},
-						{
-							"name": "faq",
-							"title": "FAQ",
-							"file": "api/basic-usage/faq.md"
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "chat",
-			"indexTitle": "Twurple - Chat Client",
-			"indexFile": "chat/index.md",
-			"groups": [
-				{
-					"name": "basic-usage",
-					"title": "Basic usage",
-					"articles": [
-						{
-							"name": "getting-started",
-							"title": "Getting started",
-							"file": "chat/basic-usage/getting-started.md"
-						},
-						{
-							"name": "connecting-to-chat",
-							"title": "Connecting to Chat",
-							"file": "chat/basic-usage/connecting-to-chat.md"
-						},
-						{
-							"name": "listening-to-events",
-							"title": "Listening to events",
-							"file": "chat/basic-usage/listening-to-events.md"
-						}
-					]
-				},
-				{
-					"name": "examples",
-					"title": "Examples",
-					"articles": [
-						{
-							"name": "basic-bot",
-							"title": "Basic bot",
-							"file": "chat/examples/basic-bot.md"
-						},
-						{
-							"name": "sub-gift-spam",
-							"title": "Preventing sub gift spam",
-							"file": "chat/examples/sub-gift-spam.md"
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "pubsub",
-			"indexTitle": "Twurple - PubSub Client",
-			"indexFile": "pubsub/index.md",
-			"groups": [
-				{
-					"name": "basic-usage",
-					"title": "Basic usage",
-					"articles": [
-						{
-							"name": "getting-started",
-							"title": "Getting started",
-							"file": "pubsub/basic-usage/getting-started.md"
-						},
-						{
-							"name": "listening-to-topics",
-							"title": "Listening to topics",
-							"file": "pubsub/basic-usage/listening-to-topics.md"
-						}
-					]
-				}
-			]
-		},
-		{
-			"name": "eventsub",
-			"indexTitle": "Twurple - EventSub Listener",
-			"indexFile": "eventsub/index.md",
-			"groups": [
-				{
-					"name": "basic-usage",
-					"title": "Basic usage",
-					"articles": [
-						{
-							"name": "getting-started",
-							"title": "Getting started",
-							"file": "eventsub/basic-usage/getting-started.md"
-						},
-						{
-							"name": "listening-to-events",
-							"title": "Listening to events",
-							"file": "eventsub/basic-usage/listening-to-events.md"
-						}
-					]
-				},
-				{
-					"name": "special-hosting",
-					"title": "Special hosting",
-					"articles": [
-						{
-							"name": "reverse-proxy",
-							"title": "Serving through a reverse proxy",
-							"file": "eventsub/special-hosting/reverse-proxy.md"
-						},
-						{
-							"name": "ngrok",
-							"title": "Testing locally using ngrok",
-							"file": "eventsub/special-hosting/ngrok.md"
-						}
-					]
-				}
-			]
-		},
-		{
 			"name": "auth",
-			"indexTitle": "Twurple - Authentication Manager",
+			"title": "Authentication",
+			"indexTitle": "Authentication",
 			"indexFile": "auth/index.md",
 			"groups": [
 				{
@@ -188,26 +51,95 @@
 			]
 		},
 		{
-			"name": "auth-tmi",
-			"indexTitle": "Twurple - Auth for TMI.js",
-			"indexFile": "auth-tmi/index.md",
+			"name": "getting-data",
+			"title": "Getting data",
+			"indexTitle": "Data overview",
+			"indexFile": "getting-data/index.md",
 			"groups": [
 				{
-					"name": "basic-usage",
-					"title": "Basic usage",
+					"name": "api",
+					"title": "API",
 					"articles": [
 						{
-							"name": "client-setup",
-							"title": "Setting up a tmi.js client",
-							"file": "auth-tmi/basic-usage/client-setup.md"
+							"name": "calling-api",
+							"title": "Calling the Twitch API",
+							"file": "getting-data/api/calling-api.md"
+						}
+					]
+				},
+				{
+					"name": "chat",
+					"title": "Chat",
+					"articles": [
+						{
+							"name": "connecting-to-chat",
+							"title": "Connecting to Chat",
+							"file": "getting-data/chat/connecting-to-chat.md"
+						},
+						{
+							"name": "listening-to-events",
+							"title": "Listening to chat events",
+							"file": "getting-data/chat/listening-to-events.md"
+						}
+					]
+				},
+				{
+					"name": "pubsub",
+					"title": "PubSub",
+					"articles": [
+						{
+							"name": "listening-to-topics",
+							"title": "Listening to PubSub topics",
+							"file": "getting-data/pubsub/listening-to-topics.md"
+						}
+					]
+				},
+				{
+					"name": "eventsub",
+					"title": "EventSub",
+					"articles": [
+						{
+							"name": "listener-setup",
+							"title": "Setting up an EventSub listener",
+							"file": "getting-data/eventsub/listener-setup.md"
+						},
+						{
+							"name": "reverse-proxy",
+							"title": "Serving through a reverse proxy",
+							"file": "getting-data/eventsub/reverse-proxy.md"
+						},
+						{
+							"name": "ngrok",
+							"title": "Testing locally using ngrok",
+							"file": "getting-data/eventsub/ngrok.md"
 						}
 					]
 				}
 			]
 		},
 		{
-			"name": "easy-bot",
-			"indexTitle": "Twurple - Bot framework"
+			"name": "examples",
+			"title": "Examples",
+			"indexTitle": "Examples",
+			"indexFile": "examples/index.md",
+			"groups": [
+				{
+					"name": "chat",
+					"title": "Chat",
+					"articles": [
+						{
+							"name": "basic-bot",
+							"title": "Basic bot",
+							"file": "examples/chat/basic-bot.md"
+						},
+						{
+							"name": "sub-gift-spam",
+							"title": "Preventing sub gift spam",
+							"file": "examples/chat/sub-gift-spam.md"
+						}
+					]
+				}
+			]
 		}
 	]
 }

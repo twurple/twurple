@@ -13,7 +13,7 @@ Here's a helpful snippet that can help with this:
 import { ChatClient } from '@twurple/chat';
 declare const chatClient: ChatClient;
 // ---cut---
-// adding undefined as possible key because of anonymous gifts
+// undefined is a possible key because of anonymous gifts
 const giftCounts = new Map<string | undefined, number>();
 
 chatClient.onCommunitySub((channel, user, subInfo) => {

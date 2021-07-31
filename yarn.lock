@@ -72,10 +72,10 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/deprecate/-/deprecate-2.0.2.tgz#d1f0d40acc881edd771cace7992a1070460608c8"
   integrity sha512-wlw3HwEanJFJKctwLzhfOM6LKwR70FPfGZGoKOhWBKyOPXk+3a9Cc6S9zhm6tka7xKtpmfxVIReGUwPnMbIaZg==
 
-"@d-fischer/documen.ts@^0.13.9":
-  version "0.13.9"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.13.9.tgz#4899dbffdd14b7375b32229916c73e0e3e2e0f39"
-  integrity sha512-MhOMgBUYHp/S7b5PnePYYmfPEi5JAdOwPWzMPUvh1JEPV5y+AVnNd97iynPwjuEBZqVMuIODfuqlIy2vzjHVfg==
+"@d-fischer/documen.ts@^0.13.10":
+  version "0.13.10"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.13.10.tgz#67563f53e56823293728e0d317c625b012597627"
+  integrity sha512-WaBAMVlEin8XaT6ryvFvB2a/LpCMNX1EXntQ0QwH2L4v5NBRnd4qRLnKdJJWuKkCpoQT3rZm4BQWgZZzxXJjTw==
   dependencies:
     "@d-fischer/shared-utils" "^3.0.1"
     "@fortawesome/fontawesome-svg-core" "^1.2.28"
@@ -115,7 +115,9 @@
     html-webpack-plugin "^4.5.1"
     lz-string "^1.4.4"
     mdast "^3.0.0"
+    mdast-util-gfm-table "^0.1.6"
     mdast-util-to-hast "^11.0.0"
+    micromark-extension-gfm-table "^0.4.3"
     ora "^5.4.0"
     path "^0.12.7"
     prettier "^2.2.1"
@@ -6076,6 +6078,13 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
+markdown-table@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/markdown-table/-/markdown-table-2.0.0.tgz#194a90ced26d31fe753d8b9434430214c011865b"
+  integrity sha512-Ezda85ToJUBhM6WGaG6veasyym+Tbs3cMAw/ZhOPqXiYsr0jgocBV3j3nx+4lk47plLlIqjwuTm/ywVI+zjJ/A==
+  dependencies:
+    repeat-string "^1.0.0"
+
 matched@^5.0.0:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/matched/-/matched-5.0.1.tgz#620606d9dac6b7f4e955354b82e02ef4e3a62dc3"
@@ -6129,6 +6138,14 @@ mdast-util-from-markdown@^0.8.0:
     parse-entities "^2.0.0"
     unist-util-stringify-position "^2.0.0"
 
+mdast-util-gfm-table@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/mdast-util-gfm-table/-/mdast-util-gfm-table-0.1.6.tgz#af05aeadc8e5ee004eeddfb324b2ad8c029b6ecf"
+  integrity sha512-j4yDxQ66AJSBwGkbpFEp9uG/LS1tZV3P33fN1gkyRB2LoRL+RR3f76m0HPHaby6F4Z5xr9Fv1URmATlRRUIpRQ==
+  dependencies:
+    markdown-table "^2.0.0"
+    mdast-util-to-markdown "~0.6.0"
+
 mdast-util-to-hast@^10.2.0:
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/mdast-util-to-hast/-/mdast-util-to-hast-10.2.0.tgz#61875526a017d8857b71abc9333942700b2d3604"
@@ -6159,7 +6176,7 @@ mdast-util-to-hast@^11.0.0:
     unist-util-position "^4.0.0"
     unist-util-visit "^3.0.0"
 
-mdast-util-to-markdown@^0.6.0:
+mdast-util-to-markdown@^0.6.0, mdast-util-to-markdown@~0.6.0:
   version "0.6.5"
   resolved "https://registry.yarnpkg.com/mdast-util-to-markdown/-/mdast-util-to-markdown-0.6.5.tgz#b33f67ca820d69e6cc527a93d4039249b504bebe"
   integrity sha512-XeV9sDE7ZlOQvs45C9UKMtfTcctcaj/pGwH8YLbMHoMOXNNCn2LsqVQOqrF1+/NU8lKDAqozme9SCXWyo9oAcQ==
@@ -6274,6 +6291,13 @@ micromark-extension-directive@^1.0.0:
   dependencies:
     micromark "~2.11.0"
     parse-entities "^2.0.0"
+
+micromark-extension-gfm-table@^0.4.3:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/micromark-extension-gfm-table/-/micromark-extension-gfm-table-0.4.3.tgz#4d49f1ce0ca84996c853880b9446698947f1802b"
+  integrity sha512-hVGvESPq0fk6ALWtomcwmgLvH8ZSVpcPjzi0AjPclB9FsVRgMtGZkUcpE0zgjOCFAznKepF4z3hX8z6e3HODdA==
+  dependencies:
+    micromark "~2.11.0"
 
 micromark@~2.11.0:
   version "2.11.4"

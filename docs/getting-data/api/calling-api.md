@@ -1,4 +1,24 @@
-The API methods are namespaced into the different resources like `/users` and `/streams`.
+:::warning{title="Authentication"}
+
+This section assumes that you have prepared [authentication](/docs/auth/).
+
+:::
+
+Creating an API client is fairly straightforward, you just need to pass your authentication provider:
+
+```ts twoslash
+// @module: esnext
+// @target: ES2017
+// @lib: es2015,dom
+import { ApiClient } from '@twurple/api';
+import type { AuthProvider } from '@twurple/auth';
+
+declare const authProvider: AuthProvider;
+// ---cut---
+const apiClient = new ApiClient({ authProvider });
+```
+
+On the {@ApiClient} instance, the API methods are namespaced into the different resources like `users` and `streams`.
 
 All API methods are `async` and thus can be `await`ed. Here's a quick example:
 
