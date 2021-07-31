@@ -143,7 +143,20 @@ export abstract class EventSubBase extends EventEmitter {
 
 	protected _readyToSubscribe = false;
 
+	/**
+	 * Fires when a subscription is successfully verified or fails to verify.
+	 *
+	 * @param success Whether the verification succeeded.
+	 * @param subscription The subscription that was verified.
+	 */
 	readonly onVerify = this.registerEvent<[success: boolean, subscription: EventSubSubscription]>();
+
+	/**
+	 * Fires when a subscription is revoked.
+	 *
+	 * @param subscription The subscription that was revoked.
+	 */
+	readonly onRevoke = this.registerEvent<[subscription: EventSubSubscription]>();
 
 	constructor(config: EventSubBaseConfig) {
 		super();
@@ -1003,6 +1016,11 @@ export abstract class EventSubBase extends EventEmitter {
 							subscription._handleData((data as EventSubNotificationBody).event);
 							res.writeHead(202);
 							res.end();
+						} else if (type === 'revocation') {
+							this._dropSubscription(subscription.id);
+							this._dropTwitchSubscription(subscription.id);
+							this.emit(this.onRevoke, subscription);
+							this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
 						} else {
 							this._logger.warn(`Unknown action ${type} for event: ${id}`);
 							res.writeHead(400);
