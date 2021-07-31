@@ -135,14 +135,14 @@ const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
 const refreshToken = 'eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj';
 
 const auth = new RefreshingAuthProvider(
-		{
-			clientId,
-			clientSecret
-		},
-		{
-			accessToken,
-			refreshToken
-		}
+	{
+		clientId,
+		clientSecret
+	},
+	{
+		accessToken,
+		refreshToken
+	}
 );
 ```
 
@@ -203,12 +203,12 @@ async function main() {
 	const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
 	const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
 	const auth = new RefreshingAuthProvider(
-			{
-				clientId,
-				clientSecret,
-				onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
-			},
-			tokenData
+		{
+			clientId,
+			clientSecret,
+			onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+		},
+		tokenData
 	);
 
 	const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
