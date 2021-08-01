@@ -42,6 +42,7 @@ export type {
 	HelixCustomRewardRedemptionTargetStatus
 } from './api/helix/channelPoints/HelixCustomRewardRedemption';
 
+export { HelixChatApi } from './api/helix/chat/HelixChatApi';
 export { HelixChatBadgeSet } from './api/helix/chat/HelixChatBadgeSet';
 export { HelixChatBadgeVersion } from './api/helix/chat/HelixChatBadgeVersion';
 export type { HelixChatBadgeScale } from './api/helix/chat/HelixChatBadgeVersion';
@@ -94,10 +95,12 @@ export { HelixModerator } from './api/helix/moderation/HelixModerator';
 export { HelixModeratorEvent } from './api/helix/moderation/HelixModeratorEvent';
 export type { HelixModeratorEventData, HelixModeratorEventType } from './api/helix/moderation/HelixModeratorEvent';
 
+export { HelixPollApi } from './api/helix/poll/HelixPollApi';
 export type { HelixCreatePollData } from './api/helix/poll/HelixPollApi';
 export { HelixPoll } from './api/helix/poll/HelixPoll';
 export { HelixPollChoice } from './api/helix/poll/HelixPollChoice';
 
+export { HelixPredictionApi } from './api/helix/prediction/HelixPredictionApi';
 export type { HelixCreatePredictionData } from './api/helix/prediction/HelixPredictionApi';
 export { HelixPrediction } from './api/helix/prediction/HelixPrediction';
 export type { HelixPredictionStatus } from './api/helix/prediction/HelixPrediction';
@@ -107,6 +110,7 @@ export { HelixPredictor } from './api/helix/prediction/HelixPredictor';
 
 export { HelixUserRelation } from './api/helix/relations/HelixUserRelation';
 
+export { HelixScheduleApi } from './api/helix/schedule/HelixScheduleApi';
 export type {
 	HelixScheduleFilter,
 	HelixPaginatedScheduleFilter,
