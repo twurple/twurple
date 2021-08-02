@@ -42,6 +42,14 @@ export interface HelixCreatePollData {
 
 /**
  * The Helix API methods that deal with polls.
+ *
+ * Can be accessed using `client.helix.polls` on an {@ApiClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const { data: polls } = await api.helix.polls.getPolls('61369223');
+ * ```
  */
 @rtfm('api', 'HelixPollApi')
 export class HelixPollApi extends BaseApi {

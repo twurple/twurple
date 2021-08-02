@@ -12,6 +12,9 @@ import { HelixExtensionsApi } from './extensions/HelixExtensionsApi';
 import { HelixGameApi } from './game/HelixGameApi';
 import { HelixHypeTrainApi } from './hypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './moderation/HelixModerationApi';
+import { HelixPollApi } from './poll/HelixPollApi';
+import { HelixPredictionApi } from './prediction/HelixPredictionApi';
+import { HelixScheduleApi } from './schedule/HelixScheduleApi';
 import { HelixSearchApi } from './search/HelixSearchApi';
 import { HelixStreamApi } from './stream/HelixStreamApi';
 import { HelixSubscriptionApi } from './subscriptions/HelixSubscriptionApi';
@@ -87,14 +90,6 @@ export class HelixApiGroup extends BaseApi {
 	}
 
 	/**
-	 * The Helix Hype Train API methods.
-	 */
-	@CachedGetter()
-	get hypeTrain(): HelixHypeTrainApi {
-		return new HelixHypeTrainApi(this._client);
-	}
-
-	/**
 	 * The Helix game API methods.
 	 */
 	@CachedGetter()
@@ -103,11 +98,43 @@ export class HelixApiGroup extends BaseApi {
 	}
 
 	/**
+	 * The Helix Hype Train API methods.
+	 */
+	@CachedGetter()
+	get hypeTrain(): HelixHypeTrainApi {
+		return new HelixHypeTrainApi(this._client);
+	}
+
+	/**
 	 * The Helix moderation API methods.
 	 */
 	@CachedGetter()
 	get moderation(): HelixModerationApi {
 		return new HelixModerationApi(this._client);
+	}
+
+	/**
+	 * The Helix poll API methods.
+	 */
+	@CachedGetter()
+	get polls(): HelixPollApi {
+		return new HelixPollApi(this._client);
+	}
+
+	/**
+	 * The Helix prediction API methods.
+	 */
+	@CachedGetter()
+	get predictions(): HelixPredictionApi {
+		return new HelixPredictionApi(this._client);
+	}
+
+	/**
+	 * The Helix schedule API methods.
+	 */
+	@CachedGetter()
+	get schedule(): HelixScheduleApi {
+		return new HelixScheduleApi(this._client);
 	}
 
 	/**

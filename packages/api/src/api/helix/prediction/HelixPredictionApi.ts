@@ -32,6 +32,14 @@ export interface HelixCreatePredictionData {
 
 /**
  * The Helix API methods that deal with predictions.
+ *
+ * Can be accessed using `client.helix.predictions` on an {@ApiClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const { data: predictions } = await api.helix.predictions.getPredictions('61369223');
+ * ```
  */
 @rtfm('api', 'HelixPredictionApi')
 export class HelixPredictionApi extends BaseApi {

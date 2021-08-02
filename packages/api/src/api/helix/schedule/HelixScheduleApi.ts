@@ -151,6 +151,13 @@ export interface HelixUpdateScheduleSegmentData {
 
 /**
  * The Helix API methods that deal with schedules.
+ *
+ * Can be accessed using `client.helix.schedule` on an {@ApiClient} instance.
+ *
+ * ## Example
+ * ```ts
+ * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const { data: schedule } = await api.helix.schedule.getSchedule('61369223');
  */
 export class HelixScheduleApi extends BaseApi {
 	/**
