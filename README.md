@@ -1,6 +1,6 @@
 # ⚠ WARNING
 
-This is a future version still in development. For a stable version, check out [the `versions/4.5` branch](https://github.com/twurple/twurple/tree/versions/4.5).
+This is a future version still in development. For a stable version, check out [the `versions/4.6` branch](https://github.com/twurple/twurple/tree/versions/4.6).
 
 # Twurple
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
