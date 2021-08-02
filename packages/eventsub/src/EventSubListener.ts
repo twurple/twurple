@@ -23,6 +23,8 @@ export interface EventSubListenerCertificateConfig {
 
 /**
  * Configuration for an EventSub listener.
+ *
+ * @inheritDoc
  */
 export interface EventSubListenerConfig extends EventSubBaseConfig {
 	/**

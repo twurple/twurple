@@ -131,7 +131,10 @@ export interface EventSubBaseConfig {
 	logger?: Partial<LoggerOptions>;
 }
 
-/** @private */
+/**
+ * @private
+ * @hideProtected
+ */
 export abstract class EventSubBase extends EventEmitter {
 	@Enumerable(false) protected readonly _subscriptions = new Map<string, EventSubSubscription>();
 	@Enumerable(false) protected _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
