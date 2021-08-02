@@ -12,6 +12,9 @@ import { HelixExtensionsApi } from './Extensions/HelixExtensionsApi';
 import { HelixGameApi } from './Game/HelixGameApi';
 import HelixHypeTrainApi from './HypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './Moderation/HelixModerationApi';
+import { HelixPollApi } from './Poll/HelixPollApi';
+import { HelixPredictionApi } from './Prediction/HelixPredictionApi';
+import { HelixScheduleApi } from './Schedule/HelixScheduleApi';
 import { HelixSearchApi } from './Search/HelixSearchApi';
 import { HelixStreamApi } from './Stream/HelixStreamApi';
 import { HelixSubscriptionApi } from './Subscriptions/HelixSubscriptionApi';
@@ -86,14 +89,6 @@ export class HelixApiGroup extends BaseApi {
 	}
 
 	/**
-	 * The Helix Hype Train API methods.
-	 */
-	@CachedGetter()
-	get hypeTrain(): HelixHypeTrainApi {
-		return new HelixHypeTrainApi(this._client);
-	}
-
-	/**
 	 * The Helix game API methods.
 	 */
 	@CachedGetter()
@@ -102,11 +97,43 @@ export class HelixApiGroup extends BaseApi {
 	}
 
 	/**
+	 * The Helix Hype Train API methods.
+	 */
+	@CachedGetter()
+	get hypeTrain(): HelixHypeTrainApi {
+		return new HelixHypeTrainApi(this._client);
+	}
+
+	/**
 	 * The Helix moderation API methods.
 	 */
 	@CachedGetter()
 	get moderation(): HelixModerationApi {
 		return new HelixModerationApi(this._client);
+	}
+
+	/**
+	 * The Helix poll API methods.
+	 */
+	@CachedGetter()
+	get polls(): HelixPollApi {
+		return new HelixPollApi(this._client);
+	}
+
+	/**
+	 * The Helix prediction API methods.
+	 */
+	@CachedGetter()
+	get predictions(): HelixPredictionApi {
+		return new HelixPredictionApi(this._client);
+	}
+
+	/**
+	 * The Helix schedule API methods.
+	 */
+	@CachedGetter()
+	get schedule(): HelixScheduleApi {
+		return new HelixScheduleApi(this._client);
 	}
 
 	/**
@@ -158,18 +185,18 @@ export class HelixApiGroup extends BaseApi {
 	}
 
 	/**
-	 * The Helix WebHook API methods.
-	 */
-	@CachedGetter()
-	get webHooks(): HelixWebHooksApi {
-		return new HelixWebHooksApi(this._client);
-	}
-
-	/**
 	 * The Helix video API methods.
 	 */
 	@CachedGetter()
 	get videos(): HelixVideoApi {
 		return new HelixVideoApi(this._client);
+	}
+
+	/**
+	 * The Helix WebHook API methods.
+	 */
+	@CachedGetter()
+	get webHooks(): HelixWebHooksApi {
+		return new HelixWebHooksApi(this._client);
 	}
 }
