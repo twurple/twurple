@@ -10,11 +10,12 @@ Creating an API client is fairly straightforward, you just need to pass your aut
 // @module: esnext
 // @target: ES2017
 // @lib: es2015,dom
-import { ApiClient } from '@twurple/api';
 import type { AuthProvider } from '@twurple/auth';
 
 declare const authProvider: AuthProvider;
 // ---cut---
+import { ApiClient } from '@twurple/api';
+
 const apiClient = new ApiClient({ authProvider });
 ```
 
