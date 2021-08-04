@@ -1,6 +1,6 @@
 {
   "name": "@twurple/pubsub",
-  "version": "5.0.0-pre.14",
+  "version": "5.0.0-pre.15",
   "publishConfig": {
     "access": "public"
   },
@@ -34,11 +34,11 @@
     "@d-fischer/logger": "^4.0.0",
     "@d-fischer/shared-utils": "^3.2.0",
     "@d-fischer/typed-event-emitter": "^3.2.2",
-    "@twurple/common": "^5.0.0-pre.14",
+    "@twurple/common": "^5.0.0-pre.15",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "^5.0.0-pre.14"
+    "@twurple/auth": "^5.0.0-pre.15"
   },
   "peerDependencies": {
     "@twurple/auth": "^5.0.0"
