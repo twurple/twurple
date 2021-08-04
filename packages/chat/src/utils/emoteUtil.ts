@@ -40,7 +40,7 @@ export function parseEmotePositions(message: string, emoteOffsets: Map<string, s
 					name,
 					displayInfo: new ChatEmote({
 						code: name,
-						id: parseInt(emote, 10)
+						id: emote
 					})
 				};
 			})

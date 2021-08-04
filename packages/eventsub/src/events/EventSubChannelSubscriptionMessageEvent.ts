@@ -157,7 +157,7 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 					name,
 					displayInfo: new ChatEmote({
 						code: name,
-						id: parseInt(id, 10)
+						id
 					})
 				};
 			}
