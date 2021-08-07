@@ -21,6 +21,9 @@ export abstract class DataObject<DataType> {
 		this[rawDataSymbol] = data;
 	}
 
+	/**
+	 * Serializes the raw data to a JSON.
+	 */
 	toJSON(): unknown {
 		return JSON.parse(JSON.stringify(this[rawDataSymbol]));
 	}
