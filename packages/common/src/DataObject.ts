@@ -20,4 +20,8 @@ export abstract class DataObject<DataType> {
 	constructor(data: DataType) {
 		this[rawDataSymbol] = data;
 	}
+
+	toJSON(): unknown {
+		return JSON.parse(JSON.stringify(this[rawDataSymbol]));
+	}
 }
