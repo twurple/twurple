@@ -140,6 +140,12 @@
 					]
 				}
 			]
+		},
+		{
+			"name": "migration",
+			"title": "Migration",
+			"indexTitle": "Migration from Twitch.js",
+			"indexFile": "migration/index.md"
 		}
 	]
 }

@@ -72,11 +72,12 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/deprecate/-/deprecate-2.0.2.tgz#d1f0d40acc881edd771cace7992a1070460608c8"
   integrity sha512-wlw3HwEanJFJKctwLzhfOM6LKwR70FPfGZGoKOhWBKyOPXk+3a9Cc6S9zhm6tka7xKtpmfxVIReGUwPnMbIaZg==
 
-"@d-fischer/documen.ts@^0.13.12":
-  version "0.13.12"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.13.12.tgz#97e4ae58909302974f851f0ed29e481c979b4075"
-  integrity sha512-Ncb/tITaTq0PjNOd8+tXwzQBxLY/pbbSEVKwqnDNzg4R9hfESOrgh+vF4GKPlonrd6S74glA5z6NbVktNPaVAA==
+"@d-fischer/documen.ts@^0.13.13":
+  version "0.13.13"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.13.13.tgz#712950d92fa0841fca6957034b7bdf9f2cb78666"
+  integrity sha512-UFOzlSFKs/LSluvqTvh7mGoBtB+1ybBcfqIr4SX2h5gcKWukYOnOahAXQ6/piFfJG8QKxv0iu1vMPWDbKCqcxA==
   dependencies:
+    "@d-fischer/react-syntax-highlighter" "^15.4.5"
     "@d-fischer/shared-utils" "^3.0.1"
     "@fortawesome/fontawesome-svg-core" "^1.2.28"
     "@fortawesome/free-solid-svg-icons" "^5.13.0"
@@ -128,7 +129,6 @@
     react-markdown "^6.0.1"
     react-router-dom "^6.0.0-beta.0"
     react-router-hash-link "^2.3.1"
-    react-syntax-highlighter "^15.4.3"
     remark-directive "^1.0.1"
     rollup "^2.36.1"
     rollup-plugin-dts "^2.0.1"
@@ -222,6 +222,17 @@
     http-errors "1.7.3"
     iconv-lite "0.4.24"
     unpipe "1.0.0"
+
+"@d-fischer/react-syntax-highlighter@^15.4.5":
+  version "15.4.5"
+  resolved "https://registry.yarnpkg.com/@d-fischer/react-syntax-highlighter/-/react-syntax-highlighter-15.4.5.tgz#7a86a3c42beb80e68871ef022a0f4b4b3f4597c4"
+  integrity sha512-aERmuZHPgee8ZP5el1RDVR4i0zPiThKX57ITQE/C1bGaHt85Bt28bHJaTHjIqrMuY9waaujcrgAsp9rh5C9hCg==
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    highlight.js "^10.4.1"
+    lowlight "^1.17.0"
+    prismjs "^1.22.0"
+    refractor "^3.2.0"
 
 "@d-fischer/shared-utils@^3.0.1", "@d-fischer/shared-utils@^3.2.0":
   version "3.2.0"
@@ -7622,17 +7633,6 @@ react-router@6.0.0-beta.0:
   integrity sha512-VgMdfpVcmFQki/LZuLh8E/MNACekDetz4xqft+a6fBZvvJnVqKbLqebF7hyoawGrV1HcO5tVaUang2Og4W2j1Q==
   dependencies:
     prop-types "^15.7.2"
-
-react-syntax-highlighter@^15.4.3:
-  version "15.4.4"
-  resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-15.4.4.tgz#dc9043f19e7bd063ff3ea78986d22a6eaa943b2a"
-  integrity sha512-PsOFHNTzkb3OroXdoR897eKN5EZ6grht1iM+f1lJSq7/L0YVnkJaNVwC3wEUYPOAmeyl5xyer1DjL6MrumO6Zw==
-  dependencies:
-    "@babel/runtime" "^7.3.1"
-    highlight.js "^10.4.1"
-    lowlight "^1.17.0"
-    prismjs "^1.22.0"
-    refractor "^3.2.0"
 
 react@^17.0.1:
   version "17.0.2"

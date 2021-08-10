@@ -49,14 +49,14 @@ Write down the `access_token` and `refresh_token` properties of the response bod
 
 Now you can finally start writing code! First, import all the classes you're gonna need from `@twurple/auth` and `@twurple/chat`.
 
-```typescript
+```ts
 import { StaticAuthProvider } from '@twurple/auth';
 import { ChatClient } from '@twurple/chat';
 ```
 
 Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an async function and running it.
 
-```typescript
+```ts
 async function main() {
 	// code goes here
 }
@@ -68,7 +68,7 @@ All the following code needs to be inside this function (or at least called from
 
 Now, we can construct a `StaticAuthProvider` instance using a static auth provider:
 
-```typescript
+```ts
 const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
 const accessToken = '0123456789abcdefghijABCDEFGHIJ';
 const auth = new StaticAuthProvider(clientId, accessToken);
@@ -79,7 +79,7 @@ const auth = new StaticAuthProvider(clientId, accessToken);
 Using the `AuthProvider` instance we just created, we can easily create a `ChatClient` instance and connect to the chat server.
 The given channels will automatically be joined after connecting.
 
-```typescript
+```ts
 const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
 await chatClient.connect();
 ```
@@ -90,7 +90,7 @@ Now you can run your code and see your bot sitting in your channel. But we want 
 
 Fortunately, reacting to things is easy. To listen to chat messages, just use the `onMessage` method. As an example, we implement a few basic commands here:
 
-```typescript
+```ts
 chatClient.onMessage((channel, user, message) => {
 	if (message === '!ping') {
 		chatClient.say(channel, 'Pong!');
@@ -103,7 +103,7 @@ chatClient.onMessage((channel, user, message) => {
 
 Handling subscriptions is also pretty easy.
 
-```typescript
+```ts
 chatClient.onSub((channel, user) => {
 	chatClient.say(channel, `Thanks to @${user} for subscribing to the channel!`);
 });
@@ -127,7 +127,7 @@ With that, you can create another type of auth provider that automatically refre
 
 Just replace the initialization line with this (but keep the `clientId` and `accessToken` constants):
 
-```typescript
+```ts
 // replace @twurple/auth import line
 import { RefreshingAuthProvider } from '@twurple/auth';
 
@@ -167,7 +167,7 @@ I also added two new properties called `expiresIn` and `obtainmentTimestamp`. Th
 
 Now, we can parse this JSON file on startup, load the tokens from it and when the tokens refresh, save them back into the same file.
 
-```typescript
+```ts
 // add to import block before async function
 import { promises as fs } from 'fs';
 
@@ -193,7 +193,7 @@ Now you can implement a more elaborated command system, add more events to react
 
 For reference, here's the full code that _should_ be the result of everything we just did:
 
-```typescript
+```ts
 import { RefreshingAuthProvider } from '@twurple/auth';
 import { ChatClient } from '@twurple/chat';
 import { promises as fs } from 'fs';
