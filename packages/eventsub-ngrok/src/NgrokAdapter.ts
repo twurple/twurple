@@ -33,6 +33,6 @@ export class NgrokAdapter extends ConnectionAdapter {
 			this._hostNamePromise = connect({ addr: listenerPort }).then(url => url.replace(/^https?:\/\/|\/$/, ''));
 		}
 
-		return this._hostNamePromise;
+		return await this._hostNamePromise;
 	}
 }
