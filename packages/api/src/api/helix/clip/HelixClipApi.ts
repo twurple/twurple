@@ -5,6 +5,7 @@ import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
 import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixClipData } from './HelixClip';
 import { HelixClip } from './HelixClip';
@@ -201,7 +202,7 @@ export class HelixClipApi extends BaseApi {
 	}
 
 	private async _getClips(params: HelixPaginatedClipIdFilter): Promise<HelixPaginatedResult<HelixClip>> {
-		const { filterType, ids, startDate, endDate, limit = 20 } = params;
+		const { filterType, ids, startDate, endDate, ...pagination } = params;
 
 		if (!ids.length) {
 			return { data: [] };
@@ -214,7 +215,7 @@ export class HelixClipApi extends BaseApi {
 				[filterType]: ids,
 				started_at: startDate,
 				ended_at: endDate,
-				first: limit.toString()
+				...makePaginationQuery(pagination)
 			}
 		});
 
