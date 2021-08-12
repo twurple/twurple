@@ -27,4 +27,4 @@ const listener = new EventSubListener({
 
 ## 3. Listening to events
 
-Now you can continue to follow the [basic listening help](/docs/eventsub/basic-usage/listening-to-events).
+Now you can continue to follow the [basic listening help](/docs/getting-data/eventsub/listener-setup).
