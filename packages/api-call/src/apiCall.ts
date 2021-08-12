@@ -24,7 +24,7 @@ export async function callTwitchApiRaw(
 ): Promise<Response> {
 	const type = options.type ?? 'helix';
 	const url = getTwitchApiUrl(options.url, type);
-	const params = stringify(options.query, { arrayFormat: 'repeat' });
+	const params = stringify(options.query, { arrayFormat: 'repeat', addQueryPrefix: true });
 	const headers = new Headers({ Accept: 'application/json' });
 
 	let body: string | undefined = undefined;
@@ -48,7 +48,7 @@ export async function callTwitchApiRaw(
 		body
 	};
 
-	return await fetch(params ? `${url}?${params}` : url, requestOptions);
+	return await fetch(params ? `${url}${params}` : url, requestOptions);
 }
 
 /**
