@@ -19,7 +19,7 @@ export class EventSubChannelSubscriptionMessageSubscription extends EventSubSubs
 	}
 
 	get id(): string {
-		return `channel.subscription.end.${this._userId}`;
+		return `channel.subscription.message.${this._userId}`;
 	}
 
 	protected transformData(
