@@ -1,6 +1,5 @@
 import { rtfm } from '@twurple/common';
-import type { RequestHandler } from 'httpanda';
-import type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
+import type { Express, RequestHandler } from 'express-serve-static-core';
 import type { EventSubBaseConfig } from './EventSubBase';
 import { EventSubBase } from './EventSubBase';
 
@@ -40,7 +39,7 @@ export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
  *   pathPrefix: '/twitch',
  *   secret: 'secretHere'
  * });
- 
+ *
  * await middleware.apply(app);
  * app.listen(3000, async () => {
  *   await middleware.markAsReady();
@@ -77,25 +76,22 @@ export class EventSubMiddleware extends EventSubBase {
 	 *
 	 * @param app The app the middleware should be applied to.
 	 */
-	async apply(app: ConnectCompatibleApp): Promise<void> {
+	async apply(app: Express): Promise<void> {
 		let pathPrefix = this._pathPrefix;
 		if (pathPrefix) {
-			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/, '')}`;
+			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/g, '')}`;
 		}
-		const paramParser: RequestHandler = (req, res, next) => {
-			const [, id] = req.path.split('/');
-			req.param = req.params = { id };
-			next();
-		};
-		const requestHandler = this._createHandleRequest();
+		const requestHandler = this._createHandleRequest() as unknown as RequestHandler;
+		const dropLegacyHandler = this._createDropLegacyRequest() as unknown as RequestHandler;
+		const healthHandler = this._createHandleHealthRequest() as unknown as RequestHandler;
 		if (pathPrefix) {
-			app.use(
-				pathPrefix,
-				paramParser as ConnectCompatibleMiddleware,
-				requestHandler as ConnectCompatibleMiddleware
-			);
+			app.post(`${pathPrefix}/event/:id`, requestHandler);
+			app.post(`${pathPrefix}/:id`, dropLegacyHandler);
+			app.get(`${pathPrefix}`, healthHandler);
 		} else {
-			app.use(paramParser as ConnectCompatibleMiddleware, requestHandler as ConnectCompatibleMiddleware);
+			app.post('event/:id', requestHandler);
+			app.post(':id', dropLegacyHandler);
+			app.get('/', healthHandler);
 		}
 	}
 

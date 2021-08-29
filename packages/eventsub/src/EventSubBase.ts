@@ -939,7 +939,7 @@ export abstract class EventSubBase extends EventEmitter {
 		// trim slashes on both ends
 		const pathPrefix = (await this.getPathPrefix())?.replace(/^\/|\/$/, '');
 
-		return `https://${hostName}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/${id}`;
+		return `https://${hostName}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/event/${id}`;
 	}
 
 	/** @private */
@@ -987,7 +987,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 	protected _createHandleRequest(): RequestHandler {
 		return async (req, res, next) => {
-			const { id } = req.param;
+			const { id } = req.params;
 			const subscription = this._subscriptions.get(id);
 			const twitchSubscription = this._twitchSubscriptions.get(id);
 			const type = req.headers['twitch-eventsub-message-type'] as string;
@@ -1045,6 +1045,26 @@ export abstract class EventSubBase extends EventEmitter {
 			}
 			next();
 		};
+	}
+
+	protected _createDropLegacyRequest(): RequestHandler {
+		return async (req, res, next) => {
+			const twitchSub = this._twitchSubscriptions.get(req.params.id);
+			if (twitchSub) {
+				await this._apiClient.eventSub.deleteSubscription(twitchSub.id);
+				this._logger.debug(`Dropped legacy subscription for event: ${req.params.id}`);
+				res.writeHead(410);
+				res.end();
+			} else {
+				next();
+			}
+		}
+	}
+
+	protected _createHandleHealthRequest(): RequestHandler {
+		return async (req, res) => {
+			res.end('@twurple/eventsub is listening here');
+		}
 	}
 
 	private async _genericSubscribe<T, Args extends unknown[]>(

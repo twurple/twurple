@@ -3,7 +3,6 @@ export { EventSubListener } from './EventSubListener';
 export type { EventSubListenerCertificateConfig, EventSubListenerConfig } from './EventSubListener';
 export { EventSubMiddleware } from './EventSubMiddleware';
 export type { EventSubMiddlewareConfig } from './EventSubMiddleware';
-export type { ConnectCompatibleApp, ConnectCompatibleMiddleware } from './ConnectCompatibleApp';
 
 export { ConnectionAdapter } from './adapters/ConnectionAdapter';
 export { DirectConnectionAdapter } from './adapters/DirectConnectionAdapter';

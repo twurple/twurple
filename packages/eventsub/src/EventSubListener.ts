@@ -80,7 +80,9 @@ export class EventSubListener extends EventSubBase {
 			});
 			next();
 		});
-		this._server.post('/:id', this._createHandleRequest());
+		this._server.get('/', this._createHandleHealthRequest());
+		this._server.post('/:id', this._createDropLegacyRequest());
+		this._server.post('/event/:id', this._createHandleRequest());
 		const adapterListenerPort = await this._adapter.getListenerPort();
 		if (adapterListenerPort && port) {
 			this._logger.warn(`Your passed port (${port}) is being ignored because the adapter has overridden it.
