@@ -16,7 +16,7 @@ or using npm:
 
 ## Documentation
 
-A good place to start with this library is the [documentation](https://twurple.js.org/docs/eventsub/special-hosting/ngrok.html)
+A good place to start with this library is the [documentation](https://twurple.js.org/docs/getting-data/eventsub/ngrok.html)
 which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## If you're getting stuck...
