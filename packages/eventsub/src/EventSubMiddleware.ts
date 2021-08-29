@@ -1,5 +1,6 @@
 import { rtfm } from '@twurple/common';
 import type { Express, RequestHandler } from 'express-serve-static-core';
+import { checkHostName } from './checks';
 import type { EventSubBaseConfig } from './EventSubBase';
 import { EventSubBase } from './EventSubBase';
 
@@ -66,6 +67,8 @@ export class EventSubMiddleware extends EventSubBase {
 	 */
 	constructor(config: EventSubMiddlewareConfig) {
 		super(config);
+
+		checkHostName(config.hostName);
 
 		this._hostName = config.hostName;
 		this._pathPrefix = config.pathPrefix;

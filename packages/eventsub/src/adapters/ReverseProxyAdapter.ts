@@ -1,4 +1,5 @@
 import { rtfm } from '@twurple/common';
+import { checkHostName } from '../checks';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
 /**
@@ -43,6 +44,9 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 	 */
 	constructor(options: ReverseProxyAdapterConfig) {
 		super();
+
+		checkHostName(options.hostName);
+
 		this._hostName = options.hostName;
 		this._port = options.port ?? 8080;
 		this._pathPrefix = options.pathPrefix;

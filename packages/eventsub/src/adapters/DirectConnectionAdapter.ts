@@ -2,6 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import type * as http from 'http';
 import * as https from 'https';
+import { checkHostName } from '../checks';
 import type { EventSubListenerCertificateConfig } from '../EventSubListener';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
@@ -41,6 +42,9 @@ export class DirectConnectionAdapter extends ConnectionAdapter {
 	 */
 	constructor(options: DirectConnectionAdapterConfig) {
 		super();
+
+		checkHostName(options.hostName);
+
 		this._hostName = options.hostName;
 		this._ssl = options.sslCert;
 	}
