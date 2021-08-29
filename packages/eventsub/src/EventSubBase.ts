@@ -139,6 +139,8 @@ export abstract class EventSubBase extends EventEmitter {
 	@Enumerable(false) protected readonly _subscriptions = new Map<string, EventSubSubscription>();
 	@Enumerable(false) protected _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
 
+	@Enumerable(false) private readonly _seenEventIds = new Set<string>();
+
 	/** @private */ @Enumerable(false) readonly _apiClient: ApiClient;
 	/** @private */ @Enumerable(false) readonly _secret: string;
 
@@ -1016,7 +1018,15 @@ export abstract class EventSubBase extends EventEmitter {
 							res.end(verificationBody.challenge);
 							this._logger.debug(`Successfully subscribed to event: ${id}`);
 						} else if (type === 'notification') {
-							subscription._handleData((data as EventSubNotificationBody).event);
+							if (this._seenEventIds.has(messageId)) {
+								this._logger.debug(`Duplicate notification prevented for event: ${id}`);
+							} else if ((new Date(timestamp)).getTime() > Date.now() - 10 * 60 * 1000) {
+								this._logger.debug(`Old notification prevented for event: ${id}`);
+							} else {
+								this._seenEventIds.add(messageId);
+								setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
+								subscription._handleData((data as EventSubNotificationBody).event);
+							}
 							res.writeHead(202);
 							res.end();
 						} else if (type === 'revocation') {
