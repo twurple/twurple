@@ -4,6 +4,10 @@ This is a future version still in development. For a stable version, check out [
 
 # Twurple
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/twurple/twurple/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@twurple/auth.svg?style=flat)](https://www.npmjs.com/package/@twurple/auth)
+![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 A set of libraries that aims to cover all of the existing Twitch APIs.
 
 - Query the Helix API

@@ -4,6 +4,10 @@ This is a future version still in development. For a stable version, check out [
 
 # Twurple - Electron auth provider
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/twurple/twurple/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@twurple/auth-electron.svg?style=flat)](https://www.npmjs.com/package/@twurple/auth-electron)
+![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 This is an {@AuthProvider} implementation for [the `twurple` package family](https://github.com/twurple/twurple)
 that will automatically pop up a Twitch OAuth dialog in an Electron `BrowserWindow`
 as soon as new scopes are requested.

@@ -1,23 +1,8 @@
-# ⚠ WARNING
+# Twurple - Common
 
-This is a future version still in development. For a stable version, check out [the `@twurple/common` package](https://www.npmjs.com/package/@twurple/common).
+Some utilities and shared types.
 
-# Twurple - Authentication
-
-Authenticate with Twitch and stop caring about refreshing tokens.
-
-## Installation
-
-	yarn add @twurple/auth
-
-or using npm:
-
-	npm install @twurple/auth
-
-## Documentation
-
-A good place to start with this library is the [documentation](https://twurple.js.org)
-which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
+This is mostly intended for internal use in the other packages of [Twurple](https://github.com/twurple/twurple).
 
 ## If you're getting stuck...
 

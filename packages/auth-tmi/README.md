@@ -4,6 +4,10 @@ This is a future version still in development. For a stable version, check out [
 
 # Twurple - Authentication for TMI.js
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/twurple/twurple/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@twurple/auth-tmi.svg?style=flat)](https://www.npmjs.com/package/@twurple/auth-tmi)
+![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 Use tmi.js with the added benefits of `@twurple/auth`'s automatic token handling.
 
 ## Installation

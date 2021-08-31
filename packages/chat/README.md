@@ -4,6 +4,10 @@ This is a future version still in development. For a stable version, check out [
 
 # Twurple - Chat Client
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/twurple/twurple/blob/main/LICENSE)
+[![npm version](https://img.shields.io/npm/v/@twurple/chat.svg?style=flat)](https://www.npmjs.com/package/@twurple/chat)
+![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
+
 Interact with the Twitch Messaging Interface (aka Twitch chat).
 
 ## Installation
