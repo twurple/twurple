@@ -82,7 +82,9 @@ export class ApiClient {
 			throw new ConfigError('No auth provider given. Please supply the `authProvider` option.');
 		}
 
-		this._helixRateLimiter = new HelixRateLimiter({ logger: config.logger });
+		this._helixRateLimiter = new HelixRateLimiter({
+			logger: { name: 'twurple:api:rate-limiter', ...config.logger }
+		});
 		this._config = config;
 	}
 
