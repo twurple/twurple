@@ -2,7 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import { NoSubscriptionProgramError } from '../../../Errors/NoSubscriptionProgramError';
+import { NoSubscriptionProgramError } from '../../../errors/NoSubscriptionProgramError';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixStream } from '../stream/HelixStream';
 import type { HelixSubscription } from '../subscriptions/HelixSubscription';

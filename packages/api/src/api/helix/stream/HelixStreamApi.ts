@@ -3,7 +3,7 @@ import { HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import { StreamNotLiveError } from '../../../Errors/StreamNotLiveError';
+import { StreamNotLiveError } from '../../../errors/StreamNotLiveError';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';

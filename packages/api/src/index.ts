@@ -183,9 +183,9 @@ export type { HelixVideoType } from './api/helix/video/HelixVideo';
 export { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 export { ChattersList } from './api/unsupported/ChattersList';
 
-export { ConfigError } from './Errors/ConfigError';
-export { NoSubscriptionProgramError } from './Errors/NoSubscriptionProgramError';
-export { StreamNotLiveError } from './Errors/StreamNotLiveError';
+export { ConfigError } from './errors/ConfigError';
+export { NoSubscriptionProgramError } from './errors/NoSubscriptionProgramError';
+export { StreamNotLiveError } from './errors/StreamNotLiveError';
 
 export { ChatEmote, extractUserId, extractUserName, HellFreezesOverError } from '@twurple/common';
 export type {

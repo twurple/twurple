@@ -29,7 +29,7 @@ import { HelixUserApi } from './api/helix/user/HelixUserApi';
 import { HelixVideoApi } from './api/helix/video/HelixVideoApi';
 import { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 
-import { ConfigError } from './Errors/ConfigError';
+import { ConfigError } from './errors/ConfigError';
 
 /**
  * Configuration for an {@ApiClient} instance.
