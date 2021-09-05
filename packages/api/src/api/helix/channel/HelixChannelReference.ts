@@ -3,28 +3,26 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixGame } from '../game/HelixGame';
 import type { HelixUser } from '../user/HelixUser';
+import type { HelixChannel } from './HelixChannel';
 
 /** @private */
-export interface HelixChannelData {
+export interface HelixChannelReferenceData {
 	broadcaster_id: string;
-	broadcaster_login: string;
 	broadcaster_name: string;
-	broadcaster_language: string;
 	game_id: string;
 	game_name: string;
 	title: string;
-	delay: number;
 }
 
 /**
- * A Twitch channel.
+ * A reference to a Twitch channel.
  */
-@rtfm<HelixChannel>('api', 'HelixChannel', 'id')
-export class HelixChannel extends DataObject<HelixChannelData> {
+@rtfm<HelixChannelReference>('api', 'HelixChannelReference', 'id')
+export class HelixChannelReference extends DataObject<HelixChannelReferenceData> {
 	@Enumerable(false) private readonly _client: ApiClient;
 
 	/** @private */
-	constructor(data: HelixChannelData, client: ApiClient) {
+	constructor(data: HelixChannelReferenceData, client: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -37,13 +35,6 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 	}
 
 	/**
-	 * The name of the channel.
-	 */
-	get name(): string {
-		return this[rawDataSymbol].broadcaster_login;
-	}
-
-	/**
 	 * The display name of the channel.
 	 */
 	get displayName(): string {
@@ -51,17 +42,17 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 	}
 
 	/**
+	 * Retrieves more information about the channel.
+	 */
+	async getChannel(): Promise<HelixChannel> {
+		return (await this._client.channels.getChannelInfo(this[rawDataSymbol].broadcaster_id))!;
+	}
+
+	/**
 	 * Retrieves more information about the broadcaster of the channel.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
-	}
-
-	/**
-	 * The language of the channel.
-	 */
-	get language(): string {
-		return this[rawDataSymbol].broadcaster_language;
 	}
 
 	/**
@@ -90,12 +81,5 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 	 */
 	get title(): string {
 		return this[rawDataSymbol].title;
-	}
-
-	/**
-	 * The stream delay of the channel, in seconds.
-	 */
-	get delay(): number {
-		return this[rawDataSymbol].delay;
 	}
 }

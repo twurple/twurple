@@ -163,7 +163,7 @@ export { HelixPrivilegedUser } from './api/helix/user/HelixPrivilegedUser';
 export { HelixUser } from './api/helix/user/HelixUser';
 export type { HelixBroadcasterType, HelixUserData } from './api/helix/user/HelixUser';
 
-export { HelixExtension } from './api/helix/user/Extensions/HelixExtension';
+export { HelixBaseExtension } from './api/helix/user/Extensions/HelixBaseExtension';
 export { HelixInstalledExtension } from './api/helix/user/Extensions/HelixInstalledExtension';
 export type { HelixExtensionSlotType } from './api/helix/user/Extensions/HelixInstalledExtension';
 export { HelixInstalledExtensionList } from './api/helix/user/Extensions/HelixInstalledExtensionList';

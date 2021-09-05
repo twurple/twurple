@@ -1,6 +1,6 @@
 import { rtfm } from '@twurple/common';
-import type { HelixExtensionData } from './HelixExtension';
-import { HelixExtension } from './HelixExtension';
+import type { HelixBaseExtensionData } from './HelixBaseExtension';
+import { HelixBaseExtension } from './HelixBaseExtension';
 
 /**
  * The possible extension slot types.
@@ -13,12 +13,12 @@ export type HelixExtensionSlotType = 'panel' | 'overlay' | 'component';
  * @inheritDoc
  */
 @rtfm<HelixInstalledExtension>('api', 'HelixInstalledExtension', 'id')
-export class HelixInstalledExtension extends HelixExtension {
+export class HelixInstalledExtension extends HelixBaseExtension {
 	private readonly _slotType: HelixExtensionSlotType;
 	private readonly _slotId: string;
 
 	/** @private */
-	constructor(slotType: HelixExtensionSlotType, slotId: string, data: HelixExtensionData) {
+	constructor(slotType: HelixExtensionSlotType, slotId: string, data: HelixBaseExtensionData) {
 		super(data);
 		this._slotType = slotType;
 		this._slotId = slotId;

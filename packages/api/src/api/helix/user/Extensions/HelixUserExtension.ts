@@ -1,13 +1,13 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixExtensionData } from './HelixExtension';
-import { HelixExtension } from './HelixExtension';
+import type { HelixBaseExtensionData } from './HelixBaseExtension';
+import { HelixBaseExtension } from './HelixBaseExtension';
 import type { HelixExtensionSlotType } from './HelixInstalledExtension';
 
 /** @private */
 export type HelixExtensionType = HelixExtensionSlotType | 'mobile';
 
 /** @private */
-export interface HelixUserExtensionData extends HelixExtensionData {
+export interface HelixUserExtensionData extends HelixBaseExtensionData {
 	can_activate: boolean;
 	type: HelixExtensionType[];
 }
@@ -18,7 +18,7 @@ export interface HelixUserExtensionData extends HelixExtensionData {
  * @inheritDoc
  */
 @rtfm<HelixUserExtension>('api', 'HelixUserExtension', 'id')
-export class HelixUserExtension extends HelixExtension {
+export class HelixUserExtension extends HelixBaseExtension {
 	/** @private */ declare readonly [rawDataSymbol]: HelixUserExtensionData;
 
 	/**

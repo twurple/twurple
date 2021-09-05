@@ -1,10 +1,10 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixExtensionData } from './HelixExtension';
+import type { HelixBaseExtensionData } from './HelixBaseExtension';
 import type { HelixExtensionSlotType } from './HelixInstalledExtension';
 import { HelixInstalledExtension } from './HelixInstalledExtension';
 
 /** @private */
-export interface HelixInstalledExtensionData extends HelixExtensionData {
+export interface HelixInstalledExtensionData extends HelixBaseExtensionData {
 	active: true;
 }
 

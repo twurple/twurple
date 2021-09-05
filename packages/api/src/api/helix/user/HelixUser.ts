@@ -88,14 +88,14 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	}
 
 	/**
-	 * The URL to the profile picture of the user.
+	 * The URL of the profile picture of the user.
 	 */
 	get profilePictureUrl(): string {
 		return this[rawDataSymbol].profile_image_url;
 	}
 
 	/**
-	 * The URL to the offline video placeholder of the user.
+	 * The URL of the offline video placeholder of the user.
 	 */
 	get offlinePlaceholderUrl(): string {
 		return this[rawDataSymbol].offline_image_url;
