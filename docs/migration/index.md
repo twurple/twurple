@@ -35,8 +35,8 @@ Please migrate to the respective Helix counterparts.
 The namespace `.helix` has been deprecated. All the Helix sub-namespaces now live directly on the {@ApiClient}.
 
 ```ts diff -1 +2
-const me = api.helix.users.getMe();
-const me = api.users.getMe();
+const me = await api.helix.users.getMe();
+const me = await api.users.getMe();
 ```
 
 ## Switch from WebHooks to EventSub
@@ -117,7 +117,7 @@ Examples for the most common use cases:
 ### Static token (for quick testing)
 
 ```ts diff -1 +2-3
-const api = ApiClient.withCredentials(clientId, accessToken);
+const api = await ApiClient.withCredentials(clientId, accessToken);
 const authProvider = new StaticAuthProvider(clientId, accessToken);
 const api = new ApiClient({ authProvider });
 ```
@@ -125,7 +125,7 @@ const api = new ApiClient({ authProvider });
 ### Refreshing token (for continuous access to user data)
 
 ```ts diff -1-5 +6-14
-const api = ApiClient.withCredentials(clientId, accessToken, undefined, {
+const api = await ApiClient.withCredentials(clientId, accessToken, undefined, {
 	refreshToken,
 	clientSecret,
 	onRefresh: newTokenData => { /* refresh callback */ }
@@ -164,8 +164,8 @@ Also, the different PubSub classes now take auth providers instead of API client
 
 ```ts diff -1-2 +3
 const api = new ApiClient({ authProvider });
-pubsub.registerUserListener(api);
-pubsub.registerUserListener(authProvider);
+await pubsub.registerUserListener(api);
+await pubsub.registerUserListener(authProvider);
 ```
 
 ## Pass cheermote formatting options directly to the respective methods
@@ -212,8 +212,8 @@ Please specify your return types properly in order to fix them.
 Alternatively, you may silence the errors (hopefully temporarily!) by passing `any` as type parameter explicitly.
 
 ```ts diff -1 +2
-const data = api.callApi({ url: 'users' });
-const data = api.callApi<any>({ url: 'users' });
+const data = await api.callApi({ url: 'users' });
+const data = await api.callApi<any>({ url: 'users' });
 ```
 
 ## Update your own {@AuthProvider} implementation
