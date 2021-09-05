@@ -268,7 +268,7 @@ export class HelixStreamApi extends BaseApi {
 			scope: 'user:edit:broadcast',
 			method: 'PUT',
 			query: {
-				broadcaster: extractUserId(broadcaster)
+				broadcaster_id: extractUserId(broadcaster)
 			},
 			jsonBody: {
 				tag_ids: tagIds
