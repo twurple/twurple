@@ -18,6 +18,7 @@ export { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent'
 export { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 export { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 export { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
+export type { EventSubChannelHypeTrainContributionType } from './events/common/EventSubChannelHypeTrainContribution';
 export { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 export { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
 export { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEvent';

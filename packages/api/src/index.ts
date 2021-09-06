@@ -27,6 +27,7 @@ export { HelixChannelApi } from './api/helix/channel/HelixChannelApi';
 export type { HelixChannelUpdate } from './api/helix/channel/HelixChannelApi';
 export { HelixChannel } from './api/helix/channel/HelixChannel';
 export { HelixChannelEditor } from './api/helix/channel/HelixChannelEditor';
+export { HelixChannelReference } from './api/helix/channel/HelixChannelReference';
 
 export { HelixChannelPointsApi } from './api/helix/channelPoints/HelixChannelPointsApi';
 export type {
@@ -74,6 +75,15 @@ export type {
 	HelixExtensionTransactionsFilter,
 	HelixExtensionTransactionsPaginatedFilter
 } from './api/helix/extensions/HelixExtensionsApi';
+export { HelixExtension } from './api/helix/extensions/HelixExtension';
+export type {
+	HelixExtensionSubscriptionsSupportLevel,
+	HelixExtensionState,
+	HelixExtensionIconSize,
+	HelixExtensionConfigurationLocation
+} from './api/helix/extensions/HelixExtension';
+export { HelixExtensionBitsProduct } from './api/helix/extensions/HelixExtensionBitsProduct';
+export type { HelixExtensionBitsProductUpdatePayload } from './api/helix/extensions/HelixExtensionBitsProduct';
 export { HelixExtensionTransaction } from './api/helix/extensions/HelixExtensionTransaction';
 export type { HelixExtensionTransactionData } from './api/helix/extensions/HelixExtensionTransaction';
 
