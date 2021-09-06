@@ -149,16 +149,6 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	}
 
 	/**
-	 * Retrieves more info about the reward that was redeemed.
-	 */
-	async getReward(): Promise<HelixCustomReward> {
-		return (await this._client.channelPoints.getCustomRewardById(
-			this[rawDataSymbol].broadcaster_id,
-			this[rawDataSymbol].reward.id
-		))!;
-	}
-
-	/**
 	 * The title of the reward that was redeemed.
 	 */
 	get rewardTitle(): string {
@@ -177,5 +167,31 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	 */
 	get rewardCost(): number {
 		return this[rawDataSymbol].reward.cost;
+	}
+
+	/**
+	 * Retrieves more info about the reward that was redeemed.
+	 */
+	async getReward(): Promise<HelixCustomReward> {
+		return (await this._client.channelPoints.getCustomRewardById(
+			this[rawDataSymbol].broadcaster_id,
+			this[rawDataSymbol].reward.id
+		))!;
+	}
+
+	/**
+	 * Updates the redemption's status.
+	 *
+	 * @param newStatus The status the redemption should have.
+	 */
+	async updateStatus(newStatus: HelixCustomRewardRedemptionTargetStatus): Promise<HelixCustomRewardRedemption> {
+		const result = await this._client.channelPoints.updateRedemptionStatusByIds(
+			this[rawDataSymbol].broadcaster_id,
+			this[rawDataSymbol].reward.id,
+			[this[rawDataSymbol].id],
+			newStatus
+		);
+
+		return result[0];
 	}
 }

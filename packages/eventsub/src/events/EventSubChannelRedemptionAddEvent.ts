@@ -1,5 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient, HelixUser } from '@twurple/api';
+import type {
+	ApiClient,
+	HelixCustomReward,
+	HelixCustomRewardRedemption,
+	HelixCustomRewardRedemptionTargetStatus,
+	HelixUser
+} from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { EventSubChannelRedemptionReward } from './common/EventSubChannelRedemptionReward';
 
@@ -139,9 +145,35 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	}
 
 	/**
+	 * Retrieves more info about the reward that was redeemed.
+	 */
+	async getReward(): Promise<HelixCustomReward> {
+		return (await this._client.channelPoints.getCustomRewardById(
+			this[rawDataSymbol].broadcaster_user_id,
+			this[rawDataSymbol].reward.id
+		))!;
+	}
+
+	/**
 	 * The time when the user redeemed the reward.
 	 */
 	get redeemedAt(): Date {
 		return new Date(this[rawDataSymbol].redeemed_at);
+	}
+
+	/**
+	 * Updates the redemption's status.
+	 *
+	 * @param newStatus The status the redemption should have.
+	 */
+	async updateStatus(newStatus: HelixCustomRewardRedemptionTargetStatus): Promise<HelixCustomRewardRedemption> {
+		const result = await this._client.channelPoints.updateRedemptionStatusByIds(
+			this[rawDataSymbol].broadcaster_user_id,
+			this[rawDataSymbol].reward.id,
+			[this[rawDataSymbol].id],
+			newStatus
+		);
+
+		return result[0];
 	}
 }
