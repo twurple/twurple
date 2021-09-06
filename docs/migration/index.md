@@ -5,6 +5,11 @@ It's still missing some crucial migration steps.
 
 :::
 
+## Make sure your Node version is new enough
+
+Node versions below v12.11 are not supported by Twurple.
+Please make sure you're at least on this version - anything older than the v12.x branch is out of support anyway.
+
 ## Install and import new packages
 
 The packages were moved to a new NPM scope named `@twurple`. Here's the old and new packages for comparison:
@@ -30,15 +35,6 @@ The packages were moved to a new NPM scope named `@twurple`. Here's the old and 
 The namespace `.kraken` was completely removed from the {@ApiClient}.
 Please migrate to the respective Helix counterparts.
 
-## (Deprecation) Remove usage of the `.helix` namespace
-
-The namespace `.helix` has been deprecated. All the Helix sub-namespaces now live directly on the {@ApiClient}.
-
-```ts diff -1 +2
-const me = await api.helix.users.getMe();
-const me = await api.users.getMe();
-```
-
 ## Switch from WebHooks to EventSub
 
 The legacy WebHooks product was deprecated by Twitch and is going to be removed on September 16th.
@@ -62,6 +58,47 @@ import { ApiClient } from '@twurple/api';
 import { ChatClient } from '@twurple/chat';
 import { PubSubClient } from '@twurple/pubsub';
 ```
+
+## Move all {@EventSubListener} constructor parameters into the options object
+
+To be more consistent with other classes in the package family,
+the properties `apiClient` and `secret` were added to {@EventSubListenerConfig}.
+An object of that type is now the only parameter of the {@EventSubListener} constructor.
+
+## Replace use of `MiddlewareAdapter` with the new {@EventSubMiddleware} class
+
+A separate listener and a middleware for an existing listener share a lot of common code. 
+Still, but to make better use of their *differences*, the listener class was split and the `MiddlewareAdapter` was in turn removed.
+Instead, you can use the new {@EventSubMiddleware} class to apply a middleware to your existing Express app.
+
+The "old" way and the "new" way are too different, so instead of a complicated diff,
+we prefer to just link you to the {@EventSubMiddleware} documentation for a comprehensive example.
+
+## Clean up your EventSub subscriptions before running the upgraded code for the first time
+
+To be able to add additional endpoints to the EventSub listener (other than events),
+the base path of the EventSub event callbacks has changed. 
+This means that Twitch will keep trying to access your old callbacks, wasting traffic.
+You should clean up your subscriptions in some way, for example by calling the EventSub API:
+
+```ts
+apiClient.eventSub.deleteAllSubscriptions();
+```
+
+## Use string literals rather than enums
+
+A few types were changes from enums to literal strings. Please make sure you look for these types and replace them with literals:
+
+- `CheermoteBackground`
+- `CheermoteScale`
+- `CheermoteState`
+- `HelixBanEventType`
+- `HelixBroadcasterType`
+- `HelixModeratorEventType`
+- `HelixStreamType`
+- `HelixSubscriptionEventType`
+- `HelixUserType`
+- `TwitchApiCallType`
 
 ## Fix camel case capitalization
 
@@ -100,6 +137,51 @@ You probably want to check out the new global logging configuration via environm
 In most cases, it's much easier to set up.
 
 :::
+
+## Replace `RefreshableAuthProvider` with {@RefreshingAuthProvider} & make use of the new fully serializable {@AccessToken} interface
+
+The old `RefreshableAuthProvider` was clunky to use. It was initially intended to make it easy to add refreshing
+to any existing {@AuthProvider} implementation, but that benefit never went past the basic {@StaticAuthProvider} wrapping.
+
+In turn, it is being removed and replaced by a standalone provider called {@RefreshingAuthProvider}
+which doesn't need to wrap another provider anymore. Its parameters are divided into two parts:
+
+- The static data, i.e. app credentials and refresh callback
+- The initial token data, which is just an {@AccessToken} object
+
+The mentioned {@AccessToken} was changed from a class to a fully serializable interfaces. This has two implications:
+
+- On the downside, it loses a few convenience getters like `.isExpired` - use the free-standing functions like {@accessTokenIsExpired} instead.
+- On the upside, you can now just write the data to a file/database/etc. and read it back from there without any manual conversion shenanigans.
+
+```ts diff -1,3-18 +2,19-26
+const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
+const tokenData: AccessToken = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
+const auth = new RefreshableAuthProvider(
+	new StaticAuthProvider(clientId, tokenData.accessToken),
+	{
+		clientSecret,
+		refreshToken: tokenData.refreshToken,
+		expiry: tokenData.expiryTimestamp === null ? null : new Date(tokenData.expiryTimestamp),
+		onRefresh: async ({ accessToken, refreshToken, expiryDate }) => {
+			const newTokenData = {
+				accessToken,
+				refreshToken,
+				expiryTimestamp: expiryDate === null ? null : expiryDate.getTime()
+			};
+			await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+		}
+	}
+);
+const auth = new RefreshingAuthProvider(
+	{
+		clientId,
+		clientSecret,
+		onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+	},
+	tokenData
+);
+```
 
 ## Use `AuthProvider`s directly
 
@@ -154,6 +236,9 @@ const api = new ApiClient({ authProvider });
 Similarly to the above, the helper `ChatClient.forTwitchClient` has been removed.
 Instead, pass the auth provider to the constructor directly.
 
+As you may also have noticed, the `authProvider` isn't a separate parameter anymore,
+but was integrated into the options object.
+
 ```ts diff -1-2 +3
 const api = new ApiClient({ authProvider });
 const chat = ChatClient.forTwitchClient(api);
@@ -203,6 +288,29 @@ console.log(reward.propmt);
 console.log(reward.prompt);
 ```
 
+## Update your own {@AuthProvider} implementation
+
+If you built your own auth provider, its interface now *requires* setting the `tokenType` property
+to one of the strings `user` or `app` depending on which type of OAuth token it yields.
+You probably want this to be `user`. 
+
+## Update log level passing for {@BasicPubSubClient}
+
+In the past, it was possible to directly pass a log level to the {@BasicPubSubClient} constructor.
+
+Now, only the usual logger configuration is valid.
+
+```ts diff -1 +2
+new BasicPubSubClient('error')
+new BasicPubSubClient({ logger: { minLevel: 'error' } })
+```
+
+## Check usage of `setId` in {@ChatEmote}
+
+The property `setId` was moved from the class {@ChatEmote} to its new subclass {@ChatEmoteWithSet} to better reflect
+when a `setId` is available and when it isn't. Previously, a `setId` of `-1` was the indicator for a missing set ID. 
+Now, instead, you should be aware of which methods return a set and which do not.
+
 ## [TypeScript] Check your `callApi` calls
 
 From now on, `callApi` returns `unknown` by default, rather than `any`. This may lead to a lot of compiler errors.
@@ -216,8 +324,24 @@ const data = await api.callApi({ url: 'users' });
 const data = await api.callApi<any>({ url: 'users' });
 ```
 
-## Update your own {@AuthProvider} implementation
+## [TypeScript] Remove the external port setting from EventSub adapter constructors
 
-If you built your own auth provider, its interface now *requires* setting the `tokenType` property
-to one of the strings `user` or `app` depending on which type of OAuth token it yields.
-You probably want this to be `user`. 
+The external port settings for various {@ConnectionAdapter} implementations were removed,
+since Twitch requires port 443 externally anyway.
+
+While in regular JavaScript, this will just be silently ignored, it will make the TypeScript compiler fail,
+so remove it from your code - it probably didn't work anyway.
+
+## [Deprecation] Remove usage of the `.helix` namespace
+
+The namespace `.helix` has been deprecated. All the Helix sub-namespaces now live directly on the {@ApiClient}.
+
+```ts diff -1 +2
+const me = await api.helix.users.getMe();
+const me = await api.users.getMe();
+```
+
+## [Deprecation] Use the Helix Chat namespaces instead of the Badges namespace
+
+The Badges namespace is a basically-inofficial part of the Twitch API. 
+Since the Helix Chat namespace contains the same functionality, you should use it instead. 

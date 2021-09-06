@@ -22,7 +22,7 @@ export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
 }
 
 /**
- * A connect-compatible middleware for the Twitch EventSub event distribution mechanism.
+ * An Express middleware for the Twitch EventSub event distribution mechanism.
  *
  * ## Example
  * ```ts twoslash
@@ -75,7 +75,7 @@ export class EventSubMiddleware extends EventSubBase {
 	}
 
 	/**
-	 * Applies middleware that handles EventSub notifications to a connect-compatible app (like express).
+	 * Applies middleware that handles EventSub notifications to an Express app.
 	 *
 	 * @param app The app the middleware should be applied to.
 	 */
