@@ -1,7 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution';
+import type { EventSubChannelHypeTrainContributionData } from './common/EventSubChannelHypeTrainContribution';
+import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution';
 
 /** @private */
 export interface EventSubChannelHypeTrainEndEventData {
@@ -11,7 +12,7 @@ export interface EventSubChannelHypeTrainEndEventData {
 	broadcaster_user_name: string;
 	level: number;
 	total: number;
-	top_contributions: EventSubChannelHypeTrainContribution[];
+	top_contributions: EventSubChannelHypeTrainContributionData[];
 	started_at: string;
 	ended_at: string;
 	cooldown_ends_at: string;
@@ -82,8 +83,10 @@ export class EventSubChannelHypeTrainEndEvent extends DataObject<EventSubChannel
 	/**
 	 * The contributors with the most points, for both bits and subscriptions.
 	 */
-	get topContributions(): EventSubChannelHypeTrainContribution[] {
-		return this[rawDataSymbol].top_contributions;
+	get topContributors(): EventSubChannelHypeTrainContribution[] {
+		return this[rawDataSymbol].top_contributions.map(
+			data => new EventSubChannelHypeTrainContribution(data, this._client)
+		);
 	}
 
 	/**

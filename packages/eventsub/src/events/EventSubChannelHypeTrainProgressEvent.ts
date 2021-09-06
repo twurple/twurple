@@ -1,7 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution';
+import type { EventSubChannelHypeTrainContributionData } from './common/EventSubChannelHypeTrainContribution';
+import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution';
 
 /** @private */
 export interface EventSubChannelHypeTrainProgressEventData {
@@ -13,8 +14,8 @@ export interface EventSubChannelHypeTrainProgressEventData {
 	total: number;
 	progress: number;
 	goal: number;
-	top_contributions: EventSubChannelHypeTrainContribution[];
-	last_contribution: EventSubChannelHypeTrainContribution;
+	top_contributions: EventSubChannelHypeTrainContributionData[];
+	last_contribution: EventSubChannelHypeTrainContributionData;
 	started_at: string;
 	expires_at: string;
 }
@@ -98,15 +99,17 @@ export class EventSubChannelHypeTrainProgressEvent extends DataObject<EventSubCh
 	/**
 	 * The contributors with the most points, for both bits and subscriptions.
 	 */
-	get topContributions(): EventSubChannelHypeTrainContribution[] {
-		return this[rawDataSymbol].top_contributions;
+	get topContributors(): EventSubChannelHypeTrainContribution[] {
+		return this[rawDataSymbol].top_contributions.map(
+			data => new EventSubChannelHypeTrainContribution(data, this._client)
+		);
 	}
 
 	/**
 	 * The most recent contribution.
 	 */
 	get lastContribution(): EventSubChannelHypeTrainContribution {
-		return this[rawDataSymbol].last_contribution;
+		return new EventSubChannelHypeTrainContribution(this[rawDataSymbol].last_contribution, this._client);
 	}
 
 	/**
