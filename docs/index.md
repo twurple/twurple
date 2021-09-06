@@ -1,9 +1,3 @@
-:::warning
-
-This is a future version still in development. For a stable version, check out [the `versions/4.6` branch](https://github.com/twurple/twurple/tree/versions/4.6).
-
-:::
-
 Twurple is a set of libraries that aims to cover all of the existing Twitch APIs.
 
 - Query the Helix API

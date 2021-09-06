@@ -1,7 +1,3 @@
-# ⚠ WARNING
-
-This is a future version still in development. For a stable version, check out [the `twitch-electron-auth-provider` package](https://www.npmjs.com/package/twitch-electron-auth-provider).
-
 # Twurple - Electron auth provider
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/twurple/twurple/blob/main/LICENSE)

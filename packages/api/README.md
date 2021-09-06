@@ -1,7 +1,3 @@
-# ⚠ WARNING
-
-This is a future version still in development. For a stable version, check out [the `twitch` package](https://www.npmjs.com/package/twitch).
-
 # Twurple - API
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/twurple/twurple/blob/main/LICENSE)
