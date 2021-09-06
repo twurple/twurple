@@ -90,6 +90,26 @@ export class HelixExtensionsApi extends BaseApi {
 	}
 
 	/**
+	 * Creates a paginator for channels that are currently live and have the given extension installed.
+	 *
+	 * @param extensionId The ID of the extension.
+	 */
+	getLiveChannelsWithExtensionPaginated(
+		extensionId: string
+	): HelixPaginatedRequest<HelixChannelReferenceData, HelixChannelReference> {
+		return new HelixPaginatedRequest(
+			{
+				url: 'extensions/live',
+				query: {
+					extension_id: extensionId
+				}
+			},
+			this._client,
+			data => new HelixChannelReference(data, this._client)
+		);
+	}
+
+	/**
 	 * Retrieves an extension's Bits products.
 	 *
 	 * This only works if the provided token belongs to an extension's client ID,
