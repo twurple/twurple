@@ -131,8 +131,7 @@ const chat = new ChatClient({
 
 :::warning{title="Easier logger configuration"}
 
-You probably want to check out the new global logging configuration via environment variables.
-(TODO link this to new page)
+You probably want to check out the new global [logging configuration](/docs/getting-data/logging/levels) via environment variables.
 
 In most cases, it's much easier to set up.
 

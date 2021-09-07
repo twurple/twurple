@@ -114,6 +114,22 @@
 							"file": "getting-data/eventsub/ngrok.md"
 						}
 					]
+				},
+				{
+					"name": "logging",
+					"title": "Logging",
+					"articles": [
+						{
+							"name": "configuration",
+							"title": "Log level configuration",
+							"file": "getting-data/logging/levels.md"
+						},
+						{
+							"name": "custom",
+							"title": "Custom logger",
+							"file": "getting-data/logging/custom.md"
+						}
+					]
 				}
 			]
 		},
