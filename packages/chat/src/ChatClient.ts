@@ -1380,6 +1380,8 @@ export class ChatClient extends IrcClient {
 				}
 
 				// vip
+				case 'bad_vip_achievement_incomplete':
+				case 'bad_vip_max_vips_reached':
 				case 'bad_vip_grantee_banned':
 				case 'bad_vip_grantee_already_vip': {
 					const match = content.split(' ');
@@ -1470,6 +1472,18 @@ export class ChatClient extends IrcClient {
 					break;
 				}
 
+				case 'msg_duplicate':
+				case 'msg_emoteonly':
+				case 'msg_followersonly':
+				case 'msg_followersonly_followed':
+				case 'msg_followersonly_zero':
+				case 'msg_subsonly':
+				case 'msg_slowmode':
+				case 'msg_r9k':
+				case 'msg_verified_email':
+				case 'msg_timed_out':
+				case 'msg_rejected_mandatory':
+				case 'msg_channel_blocked':
 				case 'msg_banned': {
 					this.emit(this.onMessageFailed, channel, messageType);
 					break;
