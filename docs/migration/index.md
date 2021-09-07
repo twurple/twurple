@@ -1,10 +1,3 @@
-:::warning{title="Incomplete"}
-
-This migration guide is currently a work in progress and not expected to be complete.  
-It's still missing some crucial migration steps.
-
-:::
-
 ## Make sure your Node version is new enough
 
 Node versions below v12.11 are not supported by Twurple.
