@@ -46,16 +46,16 @@
     "@types/node" "^14.14.22"
     tslib "^2.1.0"
 
-"@d-fischer/connection@^6.5.1":
-  version "6.5.3"
-  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.5.3.tgz#9a029e7b2545525ae4f37ef32788763b41da20c8"
-  integrity sha512-gioroiIS5hcy4wcf9upuTefrVTXMY9pD+CWmufjpsKxuTo/9YVZp2Rzz5pz305M60bLjKP/vAQvsiC4sUuDEFA==
+"@d-fischer/connection@^6.6.0":
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.6.0.tgz#ce0701eb4de045d88429d0ca667c70f2e35b45c7"
+  integrity sha512-pm+BF3ZGoOu0Mq/l5rkaK0CE9WKwcEVednguuWVNrYggBMEmV5SBLn8k66vMUf+tmym6SP+n3NkpXT2uXbwKqQ==
   dependencies:
     "@d-fischer/isomorphic-ws" "^6.0.0"
     "@d-fischer/logger" "^4.0.0"
     "@d-fischer/shared-utils" "^3.0.1"
     "@d-fischer/typed-event-emitter" "^3.2.2"
-    "@types/node" "^14.14.19"
+    "@types/node" "^16.7.10"
     "@types/ws" "^7.4.6"
     tslib "^2.0.3"
     ws "^7.4.2"
@@ -1568,6 +1568,11 @@
   version "14.17.14"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.14.tgz#6fda9785b41570eb628bac27be4b602769a3f938"
   integrity sha512-rsAj2u8Xkqfc332iXV12SqIsjVi07H479bOP4q94NAcjzmAvapumEhuVIt53koEf7JFrpjgNKjBga5Pnn/GL8A==
+
+"@types/node@^16.7.10":
+  version "16.7.13"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-16.7.13.tgz#86fae356b03b5a12f2506c6cf6cd9287b205973f"
+  integrity sha512-pLUPDn+YG3FYEt/pHI74HmnJOWzeR+tOIQzUx93pi9M7D8OE7PSLr97HboXwk5F+JS+TLtWuzCOW97AHjmOXXA==
 
 "@types/node@^8.10.50":
   version "8.10.66"
@@ -5115,12 +5120,12 @@ ipaddr.js@1.9.1:
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"
   integrity sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==
 
-ircv3@^0.27.7:
-  version "0.27.8"
-  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.27.8.tgz#ba7bf7fc635a44fc44ecd8caeeafed2292ca3638"
-  integrity sha512-KW2+RWWohBTVE+byAEGP5R6McK6xQgyHdLU3mlOMzOuDYirEfj+WKddEtVQhuKpaQZ1Gp+MKJCVZ0a/l/dZXng==
+ircv3@^0.28.0:
+  version "0.28.0"
+  resolved "https://registry.yarnpkg.com/ircv3/-/ircv3-0.28.0.tgz#60bdd26e3db399a100f6fdd7f1d2292956db8fe3"
+  integrity sha512-NLBHUx86187E+mEDazBk4F7+zItzE4kybFiUFhhQeTIFOcROl3vjjUI7AQ16u0qgLLxuuRSPtLvA6Owv1FoQQA==
   dependencies:
-    "@d-fischer/connection" "^6.5.1"
+    "@d-fischer/connection" "^6.6.0"
     "@d-fischer/escape-string-regexp" "^5.0.0"
     "@d-fischer/logger" "^4.0.0"
     "@d-fischer/shared-utils" "^3.0.1"
