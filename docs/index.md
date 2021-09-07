@@ -28,4 +28,4 @@ npm install @twurple/auth @twurple/chat @twurple/eventsub
 
 ## I got stuck/have more questions! Where do I get help?
 
-You can join the [Twitch API Libraries Discord Server](https://discord.gg/b9ZqMfz) and ask in `#twitch-js-twurple` for support.
+You can join the [Twitch API Libraries Discord Server](https://discord.gg/b9ZqMfz) and ask in `#twurple` for support.

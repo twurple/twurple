@@ -2,5 +2,5 @@ blank_issues_enabled: false
 contact_links:
     -
         name: ❓ Support Question
-        about: "If you have a question 💬, please ask it on the Twitch API Discord in the #twitch-js channel!"
+        about: "If you have a question 💬, please ask it on the Twitch API Libraries Discord in the #twurple channel!"
         url: "https://discord.gg/b9ZqMfz"

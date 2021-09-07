@@ -49,4 +49,4 @@ authProvider.allowUserChange();
 
 ## If you're getting stuck...
 
-You can join the [Discord server](https://discord.gg/b9ZqMfz) for support.
+You can join the [Twitch API Libraries Discord Server](https://discord.gg/b9ZqMfz) and ask in `#twurple` for support.

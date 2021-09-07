@@ -6,4 +6,4 @@ This is mostly intended for internal use in the other packages of [Twurple](http
 
 ## If you're getting stuck...
 
-You can join the [Discord server](https://discord.gg/b9ZqMfz) for support.
+You can join the [Twitch API Libraries Discord Server](https://discord.gg/b9ZqMfz) and ask in `#twurple` for support.
