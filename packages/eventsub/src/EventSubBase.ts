@@ -1020,7 +1020,7 @@ export abstract class EventSubBase extends EventEmitter {
 						} else if (type === 'notification') {
 							if (this._seenEventIds.has(messageId)) {
 								this._logger.debug(`Duplicate notification prevented for event: ${id}`);
-							} else if (new Date(timestamp).getTime() > Date.now() - 10 * 60 * 1000) {
+							} else if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
 								this._logger.debug(`Old notification prevented for event: ${id}`);
 							} else {
 								this._seenEventIds.add(messageId);
