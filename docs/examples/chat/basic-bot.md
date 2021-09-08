@@ -71,7 +71,7 @@ Now, we can construct a `StaticAuthProvider` instance using a static auth provid
 ```ts
 const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
 const accessToken = '0123456789abcdefghijABCDEFGHIJ';
-const auth = new StaticAuthProvider(clientId, accessToken);
+const authProvider = new StaticAuthProvider(clientId, accessToken);
 ```
 
 ## 4. Connect to chat
@@ -80,7 +80,7 @@ Using the `AuthProvider` instance we just created, we can easily create a `ChatC
 The given channels will automatically be joined after connecting.
 
 ```ts
-const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
+const chatClient = new ChatClient({ authProvider, channels: ['satisfiedpear'] });
 await chatClient.connect();
 ```
 
@@ -134,7 +134,7 @@ import { RefreshingAuthProvider } from '@twurple/auth';
 const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
 const refreshToken = 'eyJfaWQmNzMtNGCJ9%6VFV5LNrZFUj8oU231/3Aj';
 
-const auth = new RefreshingAuthProvider(
+const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
 		clientSecret
@@ -173,7 +173,7 @@ import { promises as fs } from 'fs';
 
 // inside the async function again
 const tokenData = JSON.parse(await fs.readFile('./tokens.json'));
-const auth = new RefreshingAuthProvider(
+const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
 		clientSecret,
@@ -202,7 +202,7 @@ async function main() {
 	const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
 	const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
 	const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
-	const auth = new RefreshingAuthProvider(
+	const authProvider = new RefreshingAuthProvider(
 		{
 			clientId,
 			clientSecret,
@@ -211,7 +211,7 @@ async function main() {
 		tokenData
 	);
 
-	const chatClient = new ChatClient(auth, { channels: ['satisfiedpear'] });
+	const chatClient = new ChatClient({ authProvider, channels: ['satisfiedpear'] });
 	await chatClient.connect();
 
 	chatClient.onMessage((channel, user, message) => {
