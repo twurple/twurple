@@ -141,7 +141,7 @@ which doesn't need to wrap another provider anymore. Its parameters are divided 
 - The static data, i.e. app credentials and refresh callback
 - The initial token data, which is just an {@AccessToken} object
 
-The mentioned {@AccessToken} was changed from a class to a fully serializable interfaces. This has two implications:
+The mentioned {@AccessToken} was changed from a class to a fully serializable interface. This has two implications:
 
 - On the downside, it loses a few convenience getters like `.isExpired` - use the free-standing functions like {@accessTokenIsExpired} instead.
 - On the upside, you can now just write the data to a file/database/etc. and read it back from there without any manual conversion shenanigans.
@@ -179,7 +179,7 @@ const auth = new RefreshingAuthProvider(
 
 Previously, {@ApiClient} exposed a few helper methods to instantiate it with an {@AuthProvider} created internally.
 
-In order to decouble these components from each other, these helpers were removed. 
+In order to decouple these components from each other, these helpers were removed. 
 Instead, you should now instantiate the providers by yourself.
 
 Additionally, some token related helpers on the {@ApiClient} have been removed. 
@@ -265,7 +265,7 @@ Electron versions below 9 are way past their support time by now. Please update 
 ## Check your bot type in the {@ChatClient} instantiation
 
 {@ChatClient} now applies rate limiting by default.
-If your bot is a know or verified bot, it may now use way lower rate limits than it could theoretically use.
+If your bot is a known or verified bot, it may now use way lower rate limits than it could theoretically use.
 
 Please investigate the properties {@ChatClientOptions#botLevel} and {@ChatClientOptions#isAlwaysMod}
 to raise them appropriately to your bot status.
@@ -335,5 +335,5 @@ const me = await api.users.getMe();
 
 ## [Deprecation] Use the Helix Chat namespaces instead of the Badges namespace
 
-The Badges namespace is a basically-inofficial part of the Twitch API. 
+The Badges namespace is a basically-unofficial part of the Twitch API. 
 Since the Helix Chat namespace contains the same functionality, you should use it instead. 
