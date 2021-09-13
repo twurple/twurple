@@ -15,6 +15,7 @@ export interface EventSubChannelPollEndEventData {
 	choices: EventSubChannelPollChoiceData[];
 	bits_voting: EventSubChannelPollVoteTypeSettingsData;
 	channel_points_voting: EventSubChannelPollVoteTypeSettingsData;
+	status: 'completed' | 'archived' | 'terminated';
 	started_at: string;
 	ends_at: string;
 }
@@ -107,6 +108,13 @@ export class EventSubChannelPollEndEvent extends DataObject<EventSubChannelPollE
 	 */
 	get channelPointsPerVote(): number {
 		return this[rawDataSymbol].channel_points_voting.amount_per_vote;
+	}
+
+	/**
+	 * The status of the poll.
+	 */
+	get status(): string {
+		return this[rawDataSymbol].status;
 	}
 
 	/**
