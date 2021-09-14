@@ -123,7 +123,7 @@
 						{
 							"name": "configuration",
 							"title": "Log level configuration",
-							"file": "getting-data/logging/levels.md"
+							"file": "getting-data/logging/configuration.md"
 						},
 						{
 							"name": "custom",
