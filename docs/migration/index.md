@@ -248,7 +248,9 @@ await pubsub.registerUserListener(authProvider);
 ## Pass cheermote formatting options directly to the respective methods
 
 It was previously possible to add defaults for displaying cheermotes to the {@ApiClient}. 
-These defaults were removed - now you have to pass all display options to {@HelixCheermoteList#getCheermoteDisplayInfo}.
+These defaults were removed - now you have to pass all display options
+to {@HelixCheermoteList#getCheermoteDisplayInfo} and {@HelixCheermoteList#parseMessage}
+as well as {@TwitchPrivateMessage#parseEmotesAndBits}.
 
 ## Remove use of the `preAuth` and `initialScopes` properties in {@ApiConfig}
 

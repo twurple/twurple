@@ -1,4 +1,4 @@
-import type { BaseCheermoteList, ParsedMessageCheerPart, ParsedMessagePart } from '@twurple/common';
+import type { BaseCheermoteList, CheermoteFormat, ParsedMessageCheerPart, ParsedMessagePart } from '@twurple/common';
 import { fillTextPositions, rtfm } from '@twurple/common';
 import { MessageTypes } from 'ircv3';
 import { ChatUser } from '../ChatUser';
@@ -64,11 +64,12 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	/**
 	 * Parses the message, separating text from emote usages and cheers.
 	 *
-	 * @param cheermotes A list of cheermotes
+	 * @param cheermotes A list of cheermotes.
+	 * @param cheermoteFormat The format to show the cheermotes in.
 	 */
-	parseEmotesAndBits(cheermotes: BaseCheermoteList<unknown>): ParsedMessagePart[] {
+	parseEmotesAndBits(cheermotes: BaseCheermoteList<unknown>, cheermoteFormat: CheermoteFormat): ParsedMessagePart[] {
 		const messageText = this.params.content;
-		const foundCheermotes = cheermotes.parseMessage(messageText);
+		const foundCheermotes = cheermotes.parseMessage(messageText, cheermoteFormat);
 		const foundEmotesAndCheermotes: ParsedMessagePart[] = [
 			...parseEmotePositions(messageText, this.emoteOffsets),
 			...foundCheermotes.map(

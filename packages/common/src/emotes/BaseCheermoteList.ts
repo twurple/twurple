@@ -95,11 +95,7 @@ export abstract class BaseCheermoteList<DataType> extends DataObject<DataType> {
 	 * @param bits The amount of bits cheered.
 	 * @param format The format of the cheermote you want to request.
 	 */
-	abstract getCheermoteDisplayInfo(
-		name: string,
-		bits: number,
-		format?: Partial<CheermoteFormat>
-	): CheermoteDisplayInfo;
+	abstract getCheermoteDisplayInfo(name: string, bits: number, format: CheermoteFormat): CheermoteDisplayInfo;
 
 	/**
 	 * Gets all possible cheermote names.
@@ -110,8 +106,9 @@ export abstract class BaseCheermoteList<DataType> extends DataObject<DataType> {
 	 * Parses all the cheermotes out of a message.
 	 *
 	 * @param message The message.
+	 * @param format The format to show the cheermotes in.
 	 */
-	parseMessage(message: string): MessageCheermote[] {
+	parseMessage(message: string, format: CheermoteFormat): MessageCheermote[] {
 		const result: MessageCheermote[] = [];
 
 		const names = this.getPossibleNames();
@@ -126,7 +123,7 @@ export abstract class BaseCheermoteList<DataType> extends DataObject<DataType> {
 					amount,
 					position: utf8Length(message.substr(0, match.index)),
 					length: match[0].length,
-					displayInfo: this.getCheermoteDisplayInfo(name, amount)
+					displayInfo: this.getCheermoteDisplayInfo(name, amount, format)
 				});
 			}
 		}
@@ -138,16 +135,18 @@ export abstract class BaseCheermoteList<DataType> extends DataObject<DataType> {
 	 * Transforms all the cheermotes in a message and returns an array of all the message parts.
 	 *
 	 * @param message The message.
+	 * @param format The format to show the cheermotes in.
 	 * @param transformer A function that transforms a message part into an arbitrary structure.
 	 */
 	transformCheerMessage<T>(
 		message: string,
+		format: CheermoteFormat,
 		transformer: (displayInfo: MessageCheermote) => string | T
 	): Array<string | T> {
 		const result: Array<string | T> = [];
 
 		let currentPosition = 0;
-		for (const foundCheermote of this.parseMessage(message)) {
+		for (const foundCheermote of this.parseMessage(message, format)) {
 			if (currentPosition < foundCheermote.position) {
 				result.push(message.substring(currentPosition, foundCheermote.position));
 			}
