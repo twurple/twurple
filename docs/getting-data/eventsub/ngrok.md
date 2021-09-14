@@ -25,6 +25,14 @@ const listener = new EventSubListener({
 });
 ```
 
+:::warning{title="Don't run ngrok on your own"}
+
+The library will run ngrok for you, so you don't need to do that.
+
+Running ngrok on your own will lead to conflicts and hard-to-understand errors.
+
+:::
+
 ## 3. Listening to events
 
 Now you can continue to follow the [basic listening help](/docs/getting-data/eventsub/listener-setup).
