@@ -270,6 +270,12 @@ If your bot is a known or verified bot, it may now use way lower rate limits tha
 Please investigate the properties {@ChatClientOptions#botLevel} and {@ChatClientOptions#isAlwaysMod}
 to raise them appropriately to your bot status.
 
+## Rename {@PubSubRedemptionMessage}'s `rewardName` property
+
+The property `rewardName` was renamed to `rewardTitle`
+to be consistent with the API and EventSub versions of the same data.
+Please update your code accordingly.
+
 ## Remove our typos
 
 See, we all make mistakes sometimes. But we fixed them and we ask you to fix them too (otherwise your code will break).
