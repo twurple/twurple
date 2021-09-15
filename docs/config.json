@@ -113,6 +113,11 @@
 							"name": "ngrok",
 							"title": "Testing locally using ngrok",
 							"file": "getting-data/eventsub/ngrok.md"
+						},
+						{
+							"name": "express",
+							"title": "Using with an Express app",
+							"file": "getting-data/eventsub/express.md"
 						}
 					]
 				},

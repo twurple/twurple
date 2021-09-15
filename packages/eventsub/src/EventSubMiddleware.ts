@@ -24,31 +24,7 @@ export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
 /**
  * An Express middleware for the Twitch EventSub event distribution mechanism.
  *
- * ## Example
- * ```ts twoslash
- * // @module: esnext
- * // @target: ES2017
- * // @lib: es2015,dom
- * import type { ApiClient } from '@twurple/api';
- * import { EventSubMiddleware } from '@twurple/eventsub';
- * declare const app: any;
- * declare const apiClient: ApiClient;
- * // ---cut---
- * const middleware = new EventSubMiddleware({
- *   apiClient,
- *   hostName: 'example.com',
- *   pathPrefix: '/twitch',
- *   secret: 'secretHere'
- * });
- *
- * await middleware.apply(app);
- * app.listen(3000, async () => {
- *   await middleware.markAsReady();
- *   await middleware.subscribeToChannelFollowEvents('125328655', event => {
- *     console.log(`${event.userDisplayName} just followed ${event.broadcasterDisplayName}!`);
- *   });
- * });
- * ```
+ * You can find an extensive example on how to use this class in the [documentation](/docs/getting-data/eventsub/express).
  *
  * @hideProtected
  * @inheritDoc
