@@ -34,7 +34,6 @@
     "@d-fischer/qs": "^7.0.2",
     "@twurple/common": "^5.0.3",
     "@types/node-fetch": "^2.5.7",
-    "node-fetch": "^2.6.1",
     "tslib": "^2.0.3"
   },
   "files": [
