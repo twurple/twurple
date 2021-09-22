@@ -178,7 +178,7 @@ export class HelixPredictionApi extends BaseApi {
 	 * @param id The ID of the prediction to cancel.
 	 */
 	async cancelPrediction(broadcaster: UserIdResolvable, id: string): Promise<HelixPrediction> {
-		return await this._endPrediction(broadcaster, id, 'LOCKED');
+		return await this._endPrediction(broadcaster, id, 'CANCELED');
 	}
 
 	private async _endPrediction(
