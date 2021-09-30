@@ -31,7 +31,7 @@ export interface HelixEventSubSubscriptionData {
 	id: string;
 	status: HelixEventSubSubscriptionStatus;
 	type: string;
-	cost: string;
+	cost: number;
 	version: string;
 	condition: Record<string, unknown>;
 	created_at: string;
@@ -75,7 +75,7 @@ export class HelixEventSubSubscription extends DataObject<HelixEventSubSubscript
 	/**
 	 * The cost of the subscription.
 	 */
-	get cost(): string {
+	get cost(): number {
 		return this[rawDataSymbol].cost;
 	}
 
