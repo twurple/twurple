@@ -139,7 +139,7 @@ export class BasicPubSubClient extends EventEmitter {
 		});
 
 		this._connection.onReceive((line: string) => {
-			this._receiveMessage(line);
+			this._receiveMessage(line.trim());
 			this._startPingCheckTimer();
 		});
 
