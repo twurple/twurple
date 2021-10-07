@@ -12,7 +12,7 @@ import type {
 import { InvalidTokenTypeError } from '@twurple/auth';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId } from '@twurple/common';
-import type { RequestHandler } from 'httpanda';
+import type { Request, RequestHandler } from 'httpanda';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
@@ -129,6 +129,11 @@ export interface EventSubBaseConfig {
 	 * Options to pass to the logger.
 	 */
 	logger?: Partial<LoggerOptions>;
+
+	/**
+	 * Whether to ignore packets that are not sent with a Host header matching the configured host name.
+	 */
+	strictHostCheck?: boolean;
 }
 
 /**
@@ -145,6 +150,7 @@ export abstract class EventSubBase extends EventEmitter {
 	/** @private */ @Enumerable(false) readonly _secret: string;
 
 	/** @private */ readonly _logger: Logger;
+	/** @private */ readonly _strictHostCheck: boolean;
 
 	protected _readyToSubscribe = false;
 
@@ -181,6 +187,15 @@ export abstract class EventSubBase extends EventEmitter {
 			emoji: true,
 			...config.logger
 		});
+
+		if (config.strictHostCheck === undefined) {
+			this._logger
+				.warn(`A new option named \`strictHostCheck\` was introduced in order to ignore access to your handler by wide-range vulnerability scanners (and thus dropping all the log messages caused by them).
+Its default value is \`false\` for now, but will change to \`true\` in the next major release.
+To enable this check and silence this warning, please add \`strictHostCheck: true\` to your EventSub configuration.
+To silence this warning without enabling this check (and thus to keep it off even after a major release), please add \`strictHostCheck: false\` to your EventSub configuration.`);
+		}
+		this._strictHostCheck = config.strictHostCheck ?? false;
 	}
 
 	/**
@@ -989,68 +1004,77 @@ export abstract class EventSubBase extends EventEmitter {
 
 	protected _createHandleRequest(): RequestHandler {
 		return async (req, res, next) => {
+			if (await this._isHostDenied(req)) {
+				res.writeHead(404);
+				res.end();
+				return;
+			}
+
 			const { id } = req.params;
 			const subscription = this._subscriptions.get(id);
 			const twitchSubscription = this._twitchSubscriptions.get(id);
 			const type = req.headers['twitch-eventsub-message-type'] as string;
-			if (subscription) {
-				const messageId = req.headers['twitch-eventsub-message-id'] as string;
-				const timestamp = req.headers['twitch-eventsub-message-timestamp'] as string;
-				const body = await getRawBody(req, true);
-				const algoAndSignature = req.headers['twitch-eventsub-message-signature'] as string | undefined;
-				if (algoAndSignature === undefined) {
-					this._logger.warn(`Dropping unsigned message for action ${type} of event: ${id}`);
-					res.writeHead(410);
-					res.end();
-				} else {
-					const verified = subscription._verifyData(messageId, timestamp, body, algoAndSignature);
-					const data = JSON.parse(body) as EventSubBody;
-					if (verified) {
-						if (type === 'webhook_callback_verification') {
-							const verificationBody = data as EventSubVerificationBody;
-							this.emit(this.onVerify, true, subscription);
-							subscription._verify();
-							if (twitchSubscription) {
-								twitchSubscription._status = 'enabled';
-							}
-							res.setHeader('Content-Length', verificationBody.challenge.length);
-							res.writeHead(200, undefined);
-							res.end(verificationBody.challenge);
-							this._logger.debug(`Successfully subscribed to event: ${id}`);
-						} else if (type === 'notification') {
-							if (this._seenEventIds.has(messageId)) {
-								this._logger.debug(`Duplicate notification prevented for event: ${id}`);
-							} else if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
-								this._logger.debug(`Old notification prevented for event: ${id}`);
-							} else {
-								this._seenEventIds.add(messageId);
-								setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
-								subscription._handleData((data as EventSubNotificationBody).event);
-							}
-							res.writeHead(202);
-							res.end();
-						} else if (type === 'revocation') {
-							this._dropSubscription(subscription.id);
-							this._dropTwitchSubscription(subscription.id);
-							this.emit(this.onRevoke, subscription);
-							this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
-						} else {
-							this._logger.warn(`Unknown action ${type} for event: ${id}`);
-							res.writeHead(400);
-							res.end();
-						}
-					} else {
-						this._logger.warn(`Could not verify action ${type} of event: ${id}`);
-						if (type === 'webhook_callback_verification') {
-							this.emit(this.onVerify, false, subscription);
-						}
-						res.writeHead(410);
-						res.end();
-					}
-				}
-			} else {
+			if (!subscription) {
 				this._logger.warn(`Action ${type} of unknown event attempted: ${id}`);
 				res.writeHead(410);
+				res.end();
+				return;
+			}
+
+			const messageId = req.headers['twitch-eventsub-message-id'] as string;
+			const timestamp = req.headers['twitch-eventsub-message-timestamp'] as string;
+			const body = await getRawBody(req, true);
+			const algoAndSignature = req.headers['twitch-eventsub-message-signature'] as string | undefined;
+			if (algoAndSignature === undefined) {
+				this._logger.warn(`Dropping unsigned message for action ${type} of event: ${id}`);
+				res.writeHead(410);
+				res.end();
+				return;
+			}
+
+			const verified = subscription._verifyData(messageId, timestamp, body, algoAndSignature);
+			const data = JSON.parse(body) as EventSubBody;
+			if (!verified) {
+				this._logger.warn(`Could not verify action ${type} of event: ${id}`);
+				if (type === 'webhook_callback_verification') {
+					this.emit(this.onVerify, false, subscription);
+				}
+				res.writeHead(410);
+				res.end();
+				return;
+			}
+
+			if (type === 'webhook_callback_verification') {
+				const verificationBody = data as EventSubVerificationBody;
+				this.emit(this.onVerify, true, subscription);
+				subscription._verify();
+				if (twitchSubscription) {
+					twitchSubscription._status = 'enabled';
+				}
+				res.setHeader('Content-Length', verificationBody.challenge.length);
+				res.writeHead(200, undefined);
+				res.end(verificationBody.challenge);
+				this._logger.debug(`Successfully subscribed to event: ${id}`);
+			} else if (type === 'notification') {
+				if (this._seenEventIds.has(messageId)) {
+					this._logger.debug(`Duplicate notification prevented for event: ${id}`);
+				} else if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
+					this._logger.debug(`Old notification prevented for event: ${id}`);
+				} else {
+					this._seenEventIds.add(messageId);
+					setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
+					subscription._handleData((data as EventSubNotificationBody).event);
+				}
+				res.writeHead(202);
+				res.end();
+			} else if (type === 'revocation') {
+				this._dropSubscription(subscription.id);
+				this._dropTwitchSubscription(subscription.id);
+				this.emit(this.onRevoke, subscription);
+				this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
+			} else {
+				this._logger.warn(`Unknown action ${type} for event: ${id}`);
+				res.writeHead(400);
 				res.end();
 			}
 			next();
@@ -1059,6 +1083,12 @@ export abstract class EventSubBase extends EventEmitter {
 
 	protected _createDropLegacyRequest(): RequestHandler {
 		return async (req, res, next) => {
+			if (await this._isHostDenied(req)) {
+				res.writeHead(404);
+				res.end();
+				return;
+			}
+
 			const twitchSub = this._twitchSubscriptions.get(req.params.id);
 			if (twitchSub) {
 				await this._apiClient.eventSub.deleteSubscription(twitchSub.id);
@@ -1073,8 +1103,44 @@ export abstract class EventSubBase extends EventEmitter {
 
 	protected _createHandleHealthRequest(): RequestHandler {
 		return async (req, res) => {
+			if (await this._isHostDenied(req)) {
+				res.writeHead(404);
+				res.end();
+				return;
+			}
+
 			res.end('@twurple/eventsub is listening here');
 		};
+	}
+
+	private async _isHostDenied(req: Request) {
+		if (this._strictHostCheck) {
+			const ip = req.socket.remoteAddress;
+			if (ip === undefined) {
+				// client disconnected already
+				return true;
+			}
+
+			if (ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1') {
+				// localhost is always fine
+				return false;
+			}
+
+			const host = req.headers.host;
+			if (host === undefined) {
+				this._logger.debug(`Denied request from ${ip} because its host header is empty`);
+				return true;
+			}
+
+			const expectedHost = await this.getHostName();
+			if (host !== expectedHost) {
+				this._logger.debug(
+					`Denied request from ${ip} because its host header (${host}) doesn't match the expected value (${expectedHost})`
+				);
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private async _genericSubscribe<T, Args extends unknown[]>(
