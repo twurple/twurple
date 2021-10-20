@@ -206,7 +206,16 @@ export class HelixCustomReward extends DataObject<HelixCustomRewardData> {
 	}
 
 	/**
-	 * Whether redemptions should be automatically approved.
+	 * Whether redemptions should automatically be marked as fulfilled.
+	 */
+	get autoFulfill(): boolean {
+		return this[rawDataSymbol].should_redemptions_skip_request_queue;
+	}
+
+	/**
+	 * Whether redemptions should automatically be marked as fulfilled.
+	 *
+	 * @deprecated Use `autoFulfill` instead.
 	 */
 	get autoApproved(): boolean {
 		return this[rawDataSymbol].should_redemptions_skip_request_queue;
