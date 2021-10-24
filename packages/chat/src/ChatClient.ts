@@ -120,9 +120,9 @@ export interface ChatClientOptions {
 	/**
 	 * Whether you're guaranteed to be a mod in all joined channels.
 	 *
-	 * This raises the rate limit and lifts the one-second-between-messages rule, but subjects you to messages
-	 * possibly silently not being delivered and your bot possibly getting banned
-	 * if your bot is not a mod in one of the channels.
+	 * This raises the rate limit and lifts the one-second-between-messages rule,
+	 * but if your bot is not a mod in one of the channels, it subjects you to messages
+	 * possibly silently not being delivered and your bot possibly getting banned.
 	 */
 	isAlwaysMod?: boolean;
 
