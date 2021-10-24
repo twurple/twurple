@@ -19,7 +19,7 @@ export interface EventSubChannelPollProgressEventData {
 	channel_points_voting: EventSubChannelPollVoteTypeSettingsData;
 	status: EventSubChannelPollEndStatus;
 	started_at: string;
-	ended_at: string;
+	ends_at: string;
 }
 
 /**
@@ -123,6 +123,6 @@ export class EventSubChannelPollProgressEvent extends DataObject<EventSubChannel
 	 * The time when the poll ended.
 	 */
 	get endDate(): Date {
-		return new Date(this[rawDataSymbol].ended_at);
+		return new Date(this[rawDataSymbol].ends_at);
 	}
 }
