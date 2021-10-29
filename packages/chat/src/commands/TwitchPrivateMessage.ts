@@ -38,6 +38,20 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	}
 
 	/**
+	 * Whether the message is a redemption.
+	 */
+	get isRedemption(): boolean {
+		return this._tags.has('custom-reward-id');
+	}
+
+	/**
+	 * Whether the message is a highlighted message.
+	 */
+	get isHighlight(): boolean {
+		return this._tags.has('highlighted-message');
+	}
+
+	/**
 	 * The number of bits cheered with the message.
 	 */
 	get bits(): number {
