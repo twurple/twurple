@@ -18,7 +18,7 @@ export interface EventSubChannelPredictionEndEventData {
 	outcomes: EventSubChannelPredictionOutcomeData[];
 	status: EventSubChannelPredictionEndStatus;
 	started_at: string;
-	locked_at: string;
+	ended_at: string;
 }
 
 /**
@@ -91,10 +91,10 @@ export class EventSubChannelPredictionEndEvent extends DataObject<EventSubChanne
 	}
 
 	/**
-	 * The time when the prediction was locked.
+	 * The time when the prediction ended.
 	 */
-	get lockDate(): Date {
-		return new Date(this[rawDataSymbol].locked_at);
+	get endDate(): Date {
+		return new Date(this[rawDataSymbol].ended_at);
 	}
 
 	/**
