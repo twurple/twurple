@@ -14,4 +14,12 @@ export class ClearChat extends Message<ClearChat> {
 		optional: true
 	})
 	user!: MessageParam;
+
+	get channelId(): string {
+		return this._tags.get('room-id')!;
+	}
+
+	get targetUserId(): string {
+		return this._tags.get('target-user-id')!;
+	}
 }
