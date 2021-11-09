@@ -183,8 +183,10 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel the user is timed out from.
 	 * @param user The timed out user.
 	 * @param duration The duration of the timeout, in seconds.
+	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onTimeout: EventBinder<[channel: string, user: string, duration: number]> = this.registerEvent();
+	readonly onTimeout: EventBinder<[channel: string, user: string, duration: number, msg: ClearChat]> =
+		this.registerEvent();
 
 	/**
 	 * Fires when a user is permanently banned from a channel.
@@ -192,8 +194,9 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param channel The channel the user is banned from.
 	 * @param user The banned user.
+	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onBan: EventBinder<[channel: string, user: string]> = this.registerEvent();
+	readonly onBan: EventBinder<[channel: string, user: string, msg: ClearChat]> = this.registerEvent();
 
 	/**
 	 * Fires when a user upgrades their bits badge in a channel.
@@ -213,8 +216,9 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @eventListener
 	 * @param channel The channel whose chat is cleared.
+	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onChatClear: EventBinder<[channel: string]> = this.registerEvent();
+	readonly onChatClear: EventBinder<[channel: string, msg: ClearChat]> = this.registerEvent();
 
 	/**
 	 * Fires when emote-only mode is toggled in a channel.
@@ -831,20 +835,24 @@ export class ChatClient extends IrcClient {
 			}
 		});
 
-		this.onTypedMessage(ClearChat, ({ params: { channel, user }, tags }) => {
+		this.onTypedMessage(ClearChat, msg => {
+			const {
+				params: { channel, user },
+				tags
+			} = msg;
 			if (user) {
 				const duration = tags.get('ban-duration');
 				if (duration === undefined) {
 					// ban
-					this.emit(this.onBan, channel, user);
+					this.emit(this.onBan, channel, user, msg);
 				} else {
 					// timeout
-					this.emit(this.onTimeout, channel, user, Number(duration));
+					this.emit(this.onTimeout, channel, user, Number(duration), msg);
 					this.emit(this._onTimeoutResult, channel, user, Number(duration));
 				}
 			} else {
 				// full chat clear
-				this.emit(this.onChatClear, channel);
+				this.emit(this.onChatClear, channel, msg);
 			}
 		});
 

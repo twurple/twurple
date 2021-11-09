@@ -18,6 +18,10 @@ export class UserNotice extends Message<UserNotice> {
 	})
 	message!: MessageParam;
 
+	get id(): string {
+		return this._tags.get('id')!;
+	}
+
 	get userInfo(): ChatUser {
 		return new ChatUser(this._tags.get('login')!, this._tags);
 	}
