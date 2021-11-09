@@ -20,7 +20,10 @@ export class EventSubChannelRedemptionUpdateSubscription extends EventSubSubscri
 	}
 
 	get id(): string {
-		return `channel.channel_points_custom_reward_redemption.update.${this._userId}`;
+		if (this._rewardId == null) {
+			return `channel.channel_points_custom_reward_redemption.update.${this._userId}`;
+		}
+		return `channel.channel_points_custom_reward_redemption.update.${this._userId}.${this._rewardId}`;
 	}
 
 	protected transformData(data: EventSubChannelRedemptionUpdateEventData): EventSubChannelRedemptionUpdateEvent {

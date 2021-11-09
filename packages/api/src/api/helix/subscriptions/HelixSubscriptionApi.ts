@@ -16,6 +16,21 @@ import { HelixSubscriptionEvent } from './HelixSubscriptionEvent';
 import type { HelixUserSubscriptionData } from './HelixUserSubscription';
 import { HelixUserSubscription } from './HelixUserSubscription';
 
+/** @private */
+export interface HelixPaginatedSubscriptionsResponse extends HelixPaginatedResponseWithTotal<HelixSubscriptionData> {
+	points: number;
+}
+
+/**
+ * The result of a subscription query, including the subscription data, cursor, total count and sub points.
+ */
+export interface HelixPaginatedSubscriptionsResult extends HelixPaginatedResultWithTotal<HelixSubscription> {
+	/**
+	 * The number of sub points the broadcaster currently has.
+	 */
+	points: number;
+}
+
 /**
  * The Helix API methods that deal with subscriptions.
  *
@@ -40,8 +55,8 @@ export class HelixSubscriptionApi extends BaseApi {
 	async getSubscriptions(
 		broadcaster: UserIdResolvable,
 		pagination?: HelixForwardPagination
-	): Promise<HelixPaginatedResultWithTotal<HelixSubscription>> {
-		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixSubscriptionData>>({
+	): Promise<HelixPaginatedSubscriptionsResult> {
+		const result = await this._client.callApi<HelixPaginatedSubscriptionsResponse>({
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
 			type: 'helix',
@@ -51,7 +66,10 @@ export class HelixSubscriptionApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResultWithTotal(result, HelixSubscription, this._client);
+		return {
+			...createPaginatedResultWithTotal(result, HelixSubscription, this._client),
+			points: result.points
+		};
 	}
 
 	/**

@@ -20,7 +20,7 @@ export class EventSubChannelRaidSubscription extends EventSubSubscription<EventS
 	}
 
 	get id(): string {
-		return `channel.raid.${this._userId}`;
+		return `channel.raid.${this._direction}.${this._userId}`;
 	}
 
 	protected transformData(data: EventSubChannelRaidEventData): EventSubChannelRaidEvent {
