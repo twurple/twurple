@@ -216,9 +216,9 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @eventListener
 	 * @param channel The channel whose chat is cleared.
-	 * @param channelId The channel ID whose chat is cleared.
+	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onChatClear: EventBinder<[channel: string, channelId: string]> = this.registerEvent();
+	readonly onChatClear: EventBinder<[channel: string, msg: ClearChat]> = this.registerEvent();
 
 	/**
 	 * Fires when emote-only mode is toggled in a channel.
@@ -835,25 +835,24 @@ export class ChatClient extends IrcClient {
 			}
 		});
 
-		this.onTypedMessage(ClearChat, clearChat => {
+		this.onTypedMessage(ClearChat, msg => {
 			const {
 				params: { channel, user },
-				channelId,
 				tags
-			} = clearChat;
+			} = msg;
 			if (user) {
 				const duration = tags.get('ban-duration');
 				if (duration === undefined) {
 					// ban
-					this.emit(this.onBan, channel, user, clearChat);
+					this.emit(this.onBan, channel, user, msg);
 				} else {
 					// timeout
-					this.emit(this.onTimeout, channel, user, Number(duration), clearChat);
+					this.emit(this.onTimeout, channel, user, Number(duration), msg);
 					this.emit(this._onTimeoutResult, channel, user, Number(duration));
 				}
 			} else {
 				// full chat clear
-				this.emit(this.onChatClear, channel, channelId);
+				this.emit(this.onChatClear, channel, msg);
 			}
 		});
 

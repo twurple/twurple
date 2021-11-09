@@ -19,7 +19,7 @@ export class ClearChat extends Message<ClearChat> {
 		return this._tags.get('room-id')!;
 	}
 
-	get targetUserId(): string {
-		return this._tags.get('target-user-id')!;
+	get targetUserId(): string | null {
+		return this._tags.get('target-user-id') ?? null;
 	}
 }
