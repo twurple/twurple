@@ -185,8 +185,8 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * This checks with the authorization of a user.
 	 * If you only have the authorization of a broadcaster, check {@HelixSubscriptionApi#getSubscriptionForUser}.
 	 *
-	 * @param user The broadcaster to check the user's subscription for.
-	 * @param broadcaster The user to check.
+	 * @param user The user to check.
+	 * @param broadcaster The broadcaster to check the user's subscription for.
 	 */
 	async checkUserSubscription(
 		user: UserIdResolvable,
