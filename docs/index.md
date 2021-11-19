@@ -21,9 +21,9 @@ All peer dependencies between the different packages are shown here:
 
 For example, to use EventSub, execute one of:
 ```bash
-yarn add @twurple/auth @twurple/chat @twurple/eventsub
+yarn add @twurple/auth @twurple/api @twurple/eventsub
 # or
-npm install @twurple/auth @twurple/chat @twurple/eventsub
+npm install @twurple/auth @twurple/api @twurple/eventsub
 ```
 
 ## I got stuck/have more questions! Where do I get help?
