@@ -327,7 +327,7 @@ export class HelixStreamApi extends BaseApi {
 	getFollowedStreamsPaginated(user: UserIdResolvable): HelixPaginatedRequest<HelixStreamData, HelixStream> {
 		return new HelixPaginatedRequest(
 			{
-				url: 'stream/followed',
+				url: 'streams/followed',
 				scope: 'user:read:follows',
 				query: {
 					user_id: extractUserId(user)
