@@ -10,6 +10,7 @@ import { HelixClipApi } from './clip/HelixClipApi';
 import { HelixEventSubApi } from './eventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from './extensions/HelixExtensionsApi';
 import { HelixGameApi } from './game/HelixGameApi';
+import { HelixGoalApi } from './goals/HelixGoalApi';
 import { HelixHypeTrainApi } from './hypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './moderation/HelixModerationApi';
 import { HelixPollApi } from './poll/HelixPollApi';
@@ -95,6 +96,14 @@ export class HelixApiGroup extends BaseApi {
 	@CachedGetter()
 	get games(): HelixGameApi {
 		return new HelixGameApi(this._client);
+	}
+
+	/**
+	 * The Helix goals API methods.
+	 */
+	@CachedGetter()
+	get goals(): HelixGoalApi {
+		return new HelixGoalApi(this._client);
 	}
 
 	/**
