@@ -1,1 +1,1 @@
-export type EventSubChannelGoalType = 'followers' | 'subscriptions';
+export type EventSubChannelGoalType = 'follower' | 'subscription';
