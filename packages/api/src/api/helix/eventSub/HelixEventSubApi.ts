@@ -806,9 +806,9 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Subscribe to events that represent the beginning of a Goal event in a channel.
+	 * Subscribe to events that represent the beginning of a creator goal event in a channel.
 	 *
-	 * @param broadcaster The broadcaster you want to listen to Goal begin events for.
+	 * @param broadcaster The broadcaster you want to listen to goal begin events for.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelGoalBeginEvents(
@@ -826,7 +826,7 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent progress towards a creator goal.
 	 *
-	 * @param broadcaster The broadcaster for which you want to listen to Goal progress events for.
+	 * @param broadcaster The broadcaster for which you want to listen to goal progress events for.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelGoalProgressEvents(
@@ -842,9 +842,9 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Subscribe to events that represent the end of a Goal event.
+	 * Subscribe to events that represent the end of a creator goal event.
 	 *
-	 * @param broadcaster The broadcaster for which you want to listen to Goal end events for.
+	 * @param broadcaster The broadcaster for which you want to listen to goal end events for.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelGoalEndEvents(

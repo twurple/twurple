@@ -99,7 +99,7 @@ export class HelixApiGroup extends BaseApi {
 	}
 
 	/**
-	 * The Helix goals API methods.
+	 * The Helix goal API methods.
 	 */
 	@CachedGetter()
 	get goals(): HelixGoalApi {

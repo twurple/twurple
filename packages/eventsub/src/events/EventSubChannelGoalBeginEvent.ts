@@ -65,7 +65,7 @@ export class EventSubChannelGoalBeginEvent extends DataObject<EventSubChannelGoa
 	}
 
 	/**
-	 * The type of the goal.
+	 * The type of the goal. Can be either "follower" or "subscription".
 	 */
 	get type(): EventSubChannelGoalType {
 		return this[rawDataSymbol].type;

@@ -233,7 +233,7 @@ export class ApiClient {
 	}
 
 	/**
-	 * The Helix game API methods.
+	 * The Helix goal API methods.
 	 */
 	@CachedGetter()
 	get goals(): HelixGoalApi {
