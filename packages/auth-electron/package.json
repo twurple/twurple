@@ -39,7 +39,7 @@
   },
   "peerDependencies": {
     "@twurple/auth": "^5.0.0",
-    "electron": ">=9.0.0 <12.0.0"
+    "electron": ">=9.0.0 <18.0.0"
   },
   "files": [
     "LICENSE",
