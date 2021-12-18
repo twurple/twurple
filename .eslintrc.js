@@ -25,7 +25,7 @@ const memberNames = [
 	'^click_action$',
 	'^(image_)?url_\\dx$',
 	'^emoticon_sets?$',
-	'^is_(?:anonymous|broadcast|gift|user_input_required|sub_only|mature|enabled|paused|in_stock|previewable|playlist|(?:verified|known)_bot|live|auto|permanent|recurring|vacation_enabled|canceled)$',
+	'^is_(?:anonymous|broadcast|gift|user_input_required|sub_only|mature|enabled|paused|in_stock|previewable|playlist|(?:verified|known)_bot|live|auto|permanent|recurring|vacation_enabled|canceled|achieved)$',
 	'^minimum_allowed_role$',
 	'^(chatter|view(er)?)_count$',
 	'^min_bits$',
@@ -91,6 +91,7 @@ const memberNames = [
 	'^viewer_summary$',
 	'^aspect_(?:width|height|ratio_[xy])',
 	'^(?:scale|zoom)_pixels',
+	'^(?:current|target)_amount$',
 	// HTTP
 	'^Accept$'
 ];

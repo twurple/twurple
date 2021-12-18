@@ -90,6 +90,10 @@ export type { HelixExtensionTransactionData } from './api/helix/extensions/Helix
 export { HelixGameApi } from './api/helix/game/HelixGameApi';
 export { HelixGame } from './api/helix/game/HelixGame';
 
+export { HelixGoalApi } from './api/helix/goals/HelixGoalApi';
+export { HelixGoal } from './api/helix/goals/HelixGoal';
+export type { HelixGoalData, HelixGoalType } from './api/helix/goals/HelixGoal';
+
 export { HelixHypeTrainApi } from './api/helix/hypeTrain/HelixHypeTrainApi';
 export { HelixHypeTrainContribution } from './api/helix/hypeTrain/HelixHypeTrainContribution';
 export type { HelixHypeTrainContributionType } from './api/helix/hypeTrain/HelixHypeTrainContribution';

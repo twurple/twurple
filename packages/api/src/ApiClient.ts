@@ -16,6 +16,7 @@ import { HelixClipApi } from './api/helix/clip/HelixClipApi';
 import { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from './api/helix/extensions/HelixExtensionsApi';
 import { HelixGameApi } from './api/helix/game/HelixGameApi';
+import { HelixGoalApi } from './api/helix/goals/HelixGoalApi';
 import { HelixApiGroup } from './api/helix/HelixApiGroup';
 import { HelixRateLimiter } from './api/helix/HelixRateLimiter';
 import { HelixHypeTrainApi } from './api/helix/hypeTrain/HelixHypeTrainApi';
@@ -229,6 +230,14 @@ export class ApiClient {
 	@CachedGetter()
 	get hypeTrain(): HelixHypeTrainApi {
 		return new HelixHypeTrainApi(this);
+	}
+
+	/**
+	 * The Helix goal API methods.
+	 */
+	@CachedGetter()
+	get goals(): HelixGoalApi {
+		return new HelixGoalApi(this);
 	}
 
 	/**

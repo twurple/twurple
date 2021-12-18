@@ -16,6 +16,9 @@ import type { Request, RequestHandler } from 'httpanda';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
+import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
+import type { EventSubChannelGoalEndEvent } from './events/EventSubChannelGoalEndEvent';
+import type { EventSubChannelGoalProgressEvent } from './events/EventSubChannelGoalProgressEvent';
 import type { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
@@ -45,6 +48,9 @@ import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription';
+import { EventSubChannelGoalBeginSubscription } from './subscriptions/EventSubChannelGoalBeginSubscription';
+import { EventSubChannelGoalEndSubscription } from './subscriptions/EventSubChannelGoalEndSubscription';
+import { EventSubChannelGoalProgressSubscription } from './subscriptions/EventSubChannelGoalProgressSubscription';
 import { EventSubChannelHypeTrainBeginSubscription } from './subscriptions/EventSubChannelHypeTrainBeginSubscription';
 import { EventSubChannelHypeTrainEndSubscription } from './subscriptions/EventSubChannelHypeTrainEndSubscription';
 import { EventSubChannelHypeTrainProgressSubscription } from './subscriptions/EventSubChannelHypeTrainProgressSubscription';
@@ -837,6 +843,66 @@ To silence this warning without enabling this check (and thus to keep it off eve
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelPredictionEndSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that represent a Goal beginning.
+	 *
+	 * @param user The user for which to get notifications about Goals in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelGoalBeginEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelGoalBeginEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelGoalBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return await this._genericSubscribe(EventSubChannelGoalBeginSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent progress in a Goal in a channel.
+	 *
+	 * @param user The user for which to get notifications about Goals in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelGoalProgressEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelGoalProgressEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelGoalProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return await this._genericSubscribe(EventSubChannelGoalProgressSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent the end of a Goal in a channel.
+	 *
+	 * @param user The user for which to get notifications about Goals in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelGoalEndEvents(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelGoalEndEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'EventSubListener#subscribeToChannelGoalEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return await this._genericSubscribe(EventSubChannelGoalEndSubscription, handler, this, userId);
 	}
 
 	/**

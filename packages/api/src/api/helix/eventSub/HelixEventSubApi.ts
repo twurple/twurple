@@ -806,6 +806,60 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent the beginning of a creator goal event in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to goal begin events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelGoalBeginEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.goal.begin',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent progress towards a creator goal.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to goal progress events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelGoalProgressEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.goal.progress',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent the end of a creator goal event.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to goal end events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelGoalEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.goal.end',
+			'1',
+			{ broadcaster_user_id: extractUserId(broadcaster) },
+			transport
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent the beginning of a Hype Train event in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to Hype train begin events for.
