@@ -172,7 +172,7 @@ Now, we can parse this JSON file on startup, load the tokens from it and when th
 import { promises as fs } from 'fs';
 
 // inside the async function again
-const tokenData = JSON.parse(await fs.readFile('./tokens.json'));
+const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
 const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
