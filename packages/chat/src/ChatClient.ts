@@ -1296,7 +1296,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'room_mods': {
-					const [, modList] = content.split(': ');
+					const [, modList] = content.replace(/\.$/, '').split(': ');
 					const mods = modList.split(', ');
 					this.emit(this._onModsResult, channel, mods);
 					break;
@@ -1425,7 +1425,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				case 'vips_success': {
-					const [, vipList] = content.split(': ');
+					const [, vipList] = content.replace(/\.$/, '').split(': ');
 					const vips = vipList.split(', ');
 					this.emit(this._onVipsResult, channel, vips);
 					break;
