@@ -167,6 +167,7 @@ export class ChatClient extends IrcClient {
 	private _authToken?: AccessToken | null;
 	private _authVerified = false;
 	private _authRetryTimer?: Iterator<number, never>;
+	private _authRetryCount = 0;
 
 	private readonly _chatLogger: Logger;
 
@@ -571,7 +572,7 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel that a command without sufficient permissions was executed on.
 	 * @param message The message text.
 	 */
-	readonly onAuthenticationFailure: EventBinder<[message: string]> = this.registerEvent();
+	readonly onAuthenticationFailure: EventBinder<[message: string, retryCount: number]> = this.registerEvent();
 
 	/**
 	 * Fires when sending a message fails.
@@ -789,6 +790,8 @@ export class ChatClient extends IrcClient {
 
 		this.addInternalListener(this.onRegister, async () => {
 			this._authVerified = true;
+			this._authRetryTimer = undefined;
+			this._authRetryCount = 0;
 
 			const resolvedChannels = await resolveConfigValue(config.channels);
 			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -1505,11 +1508,13 @@ export class ChatClient extends IrcClient {
 						content === 'Invalid NICK'
 					) {
 						this._authVerified = false;
-						this.emit(this.onAuthenticationFailure, content);
 						if (!this._authRetryTimer) {
 							this._authRetryTimer = ChatClient._getReauthenticateWaitTime();
+							this._authRetryCount = 0;
 						}
 						const secs = this._authRetryTimer.next().value;
+						const authRetries = ++this._authRetryCount;
+						this.emit(this.onAuthenticationFailure, content, authRetries);
 						if (secs !== 0) {
 							this._chatLogger.info(`Retrying authentication in ${secs} seconds`);
 						}
