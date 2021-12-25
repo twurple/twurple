@@ -346,6 +346,27 @@ export class ApiClient {
 		return new UnsupportedApi(this);
 	}
 
+	/**
+	 * The last known rate limit for the Helix API.
+	 */
+	get lastKnownLimit(): number | null {
+		return this._helixRateLimiter.lastKnownLimit;
+	}
+
+	/**
+	 * The last known remaining requests for the Helix API.
+	 */
+	get lastKnownRemainingRequests(): number | null {
+		return this._helixRateLimiter.lastKnownRemainingRequests;
+	}
+
+	/**
+	 * The last known rate limit reset date for the Helix API.
+	 */
+	get lastKnownResetDate(): Date | null {
+		return this._helixRateLimiter.lastKnownResetDate;
+	}
+
 	/** @private */
 	get _authProvider(): AuthProvider {
 		return this._config.authProvider;
