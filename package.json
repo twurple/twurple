@@ -24,12 +24,13 @@
   },
   "scripts": {
     "lint": "eslint --ext js,ts packages",
-    "prettier:check": "prettier --check 'packages/**'",
-    "prettier:fix": "prettier --write 'packages/**'",
+    "prettier:check": "prettier --check \"packages/**\"",
+    "prettier:fix": "prettier --write \"packages/**\"",
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "docs": "documen.ts",
-    "lerna": "lerna"
+    "lerna": "lerna",
+    "publish-all": "node publish.mjs"
   },
   "husky": {
     "hooks": {
