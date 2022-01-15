@@ -79,7 +79,7 @@ export class ElectronAuthProvider implements AuthProvider {
 				response_type: 'token',
 				client_id: this.clientId,
 				redirect_uri: this._redirectUri,
-				scope: scopes.join(' ')
+				scope: Array.from(new Set([...this.currentScopes, ...scopes])).join(' ')
 			};
 			if (this._allowUserChange) {
 				queryParams.force_verify = true;
