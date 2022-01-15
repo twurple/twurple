@@ -3,13 +3,14 @@ import { rtfm } from '@twurple/common';
 import type { AccessToken } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
 import { getAppToken } from '../helpers';
-import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
+import type { AuthProviderTokenType } from './AuthProvider';
+import { BaseAuthProvider } from './BaseAuthProvider';
 
 /**
  * An auth provider that retrieve tokens using client credentials.
  */
 @rtfm<ClientCredentialsAuthProvider>('auth', 'ClientCredentialsAuthProvider', 'clientId')
-export class ClientCredentialsAuthProvider implements AuthProvider {
+export class ClientCredentialsAuthProvider extends BaseAuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;
 	@Enumerable(false) private _token?: AccessToken;
@@ -28,29 +29,9 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 	 * @param clientSecret The client secret of your application.
 	 */
 	constructor(clientId: string, clientSecret: string) {
+		super();
 		this._clientId = clientId;
 		this._clientSecret = clientSecret;
-	}
-
-	/**
-	 * Retrieves an access token.
-	 *
-	 * If any scopes are provided, this throws. The client credentials flow does not support scopes.
-	 *
-	 * @param scopes The requested scopes.
-	 */
-	async getAccessToken(scopes?: string[]): Promise<AccessToken> {
-		if (scopes && scopes.length > 0) {
-			throw new Error(
-				`Scope ${scopes.join(', ')} requested but the client credentials flow does not support scopes`
-			);
-		}
-
-		if (!this._token || accessTokenIsExpired(this._token)) {
-			return await this.refresh();
-		}
-
-		return this._token;
 	}
 
 	/**
@@ -72,5 +53,26 @@ export class ClientCredentialsAuthProvider implements AuthProvider {
 	 */
 	get currentScopes(): string[] {
 		return [];
+	}
+
+	/**
+	 * Retrieves an access token.
+	 *
+	 * If any scopes are provided, this throws. The client credentials flow does not support scopes.
+	 *
+	 * @param scopes The requested scopes.
+	 */
+	protected async _doGetAccessToken(scopes?: string[]): Promise<AccessToken> {
+		if (scopes && scopes.length > 0) {
+			throw new Error(
+				`Scope ${scopes.join(', ')} requested but the client credentials flow does not support scopes`
+			);
+		}
+
+		if (!this._token || accessTokenIsExpired(this._token)) {
+			return await this.refresh();
+		}
+
+		return this._token;
 	}
 }

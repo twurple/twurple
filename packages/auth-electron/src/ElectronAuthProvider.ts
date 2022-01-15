@@ -1,7 +1,8 @@
 /// <reference lib="dom" />
 
 import { parse, stringify } from '@d-fischer/qs';
-import type { AccessToken, AuthProvider, AuthProviderTokenType } from '@twurple/auth';
+import type { AccessToken, AuthProviderTokenType } from '@twurple/auth';
+import { BaseAuthProvider } from '@twurple/auth';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { BrowserWindow } from 'electron';
 import type {
@@ -37,7 +38,7 @@ const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> 
 	closeOnLogin: true
 };
 
-export class ElectronAuthProvider implements AuthProvider {
+export class ElectronAuthProvider extends BaseAuthProvider {
 	private _accessToken?: AccessToken;
 	private readonly _currentScopes = new Set<string>();
 	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
@@ -51,6 +52,7 @@ export class ElectronAuthProvider implements AuthProvider {
 		clientCredentials: TwitchClientCredentials,
 		options?: ElectronAuthProviderOptions | ElectronAuthProviderOptions<WindowOptions>
 	) {
+		super();
 		this._clientId = clientCredentials.clientId;
 		this._redirectUri = clientCredentials.redirectUri;
 		this._options = { ...defaultOptions, ...options };
@@ -68,7 +70,7 @@ export class ElectronAuthProvider implements AuthProvider {
 		return Array.from(this._currentScopes);
 	}
 
-	async getAccessToken(scopes: string[] = []): Promise<AccessToken> {
+	async _doGetAccessToken(scopes: string[] = []): Promise<AccessToken> {
 		return await new Promise<AccessToken>((resolve, reject) => {
 			if (this._accessToken && scopes.every(scope => this._currentScopes.has(scope))) {
 				resolve(this._accessToken);
@@ -79,7 +81,7 @@ export class ElectronAuthProvider implements AuthProvider {
 				response_type: 'token',
 				client_id: this.clientId,
 				redirect_uri: this._redirectUri,
-				scope: scopes.join(' ')
+				scope: Array.from(new Set([...this.currentScopes, ...scopes])).join(' ')
 			};
 			if (this._allowUserChange) {
 				queryParams.force_verify = true;
