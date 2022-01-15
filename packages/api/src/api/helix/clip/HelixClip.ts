@@ -161,7 +161,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	}
 
 	/**
-	 * Duration of the clip in seconds (up to 0.1 precision).
+	 * The duration of the clip in seconds (up to 0.1 precision).
 	 */
 	get duration(): number {
 		return this[rawDataSymbol].duration;
