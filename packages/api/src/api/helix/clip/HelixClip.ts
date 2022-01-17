@@ -21,6 +21,7 @@ export interface HelixClipData {
 	view_count: number;
 	created_at: string;
 	thumbnail_url: string;
+	duration: number;
 }
 
 @rtfm<HelixClip>('api', 'HelixClip', 'id')
@@ -157,5 +158,12 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 */
 	get thumbnailUrl(): string {
 		return this[rawDataSymbol].thumbnail_url;
+	}
+
+	/**
+	 * The duration of the clip in seconds (up to 0.1 precision).
+	 */
+	get duration(): number {
+		return this[rawDataSymbol].duration;
 	}
 }
