@@ -48,6 +48,18 @@ export class HelixGame extends DataObject<HelixGameData> {
 	}
 
 	/**
+	 * Builds the URL of the box art of the game using the given dimensions.
+	 *
+	 * @param width The width of the box art.
+	 * @param height The height of the box art.
+	 */
+	getBoxArtUrl(width: number, height: number): string {
+		return this[rawDataSymbol].box_art_url
+			.replace('{width}', width.toString())
+			.replace('{height}', height.toString());
+	}
+
+	/**
 	 * Retrieves streams that are currently playing the game.
 	 */
 	async getStreams(pagination?: HelixPagination): Promise<HelixPaginatedResult<HelixStream>> {
