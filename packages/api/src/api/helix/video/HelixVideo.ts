@@ -142,8 +142,8 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 	 */
 	getThumbnailUrl(width: number, height: number): string {
 		return this[rawDataSymbol].thumbnail_url
-			.replace('{width}', width.toString())
-			.replace('{height}', height.toString());
+			.replace('%{width}', width.toString())
+			.replace('%{height}', height.toString());
 	}
 
 	/**
