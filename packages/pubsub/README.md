@@ -8,11 +8,11 @@ Listen to events using the Twitch PubSub interface.
 
 ## Installation
 
-	yarn add @twurple/auth @twurple/pubsub-client
+	yarn add @twurple/auth @twurple/pubsub
 
 or using npm:
 
-	npm install @twurple/auth @twurple/pubsub-client
+	npm install @twurple/auth @twurple/pubsub
 
 ## Documentation
 
