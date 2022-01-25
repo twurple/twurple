@@ -135,6 +135,18 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 	}
 
 	/**
+	 * Builds the thumbnail URL of the video using the given dimensions.
+	 *
+	 * @param width The width of the thumbnail.
+	 * @param height The height of the thumbnail.
+	 */
+	getThumbnailUrl(width: number, height: number): string {
+		return this[rawDataSymbol].thumbnail_url
+			.replace('%{width}', width.toString())
+			.replace('%{height}', height.toString());
+	}
+
+	/**
 	 * Whether the video is public or not.
 	 */
 	get isPublic(): boolean {

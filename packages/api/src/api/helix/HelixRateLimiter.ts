@@ -15,7 +15,10 @@ export class HelixRateLimiter extends ResponseBasedRateLimiter<TwitchApiCallOpti
 	}
 
 	protected needsToRetryAfter(res: Response): number | null {
-		if (res.status === 429) {
+		if (
+			res.status === 429 &&
+			(!res.headers.has('ratelimit-remaining') || Number(res.headers.get('ratelimit-remaining')!) === 0)
+		) {
 			return +res.headers.get('ratelimit-reset')! * 1000 - Date.now();
 		}
 		return null;
