@@ -5,7 +5,8 @@ import type { AccessToken } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
 import { InvalidTokenError } from '../errors/InvalidTokenError';
 import { compareScopes, loadAndCompareScopes, refreshUserToken } from '../helpers';
-import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
+import type { AuthProviderTokenType } from './AuthProvider';
+import { BaseAuthProvider } from './BaseAuthProvider';
 
 /**
  * Configuration for the {@RefreshingAuthProvider}.
@@ -34,7 +35,7 @@ export interface RefreshConfig {
  * automatically refreshing the access token whenever necessary.
  */
 @rtfm<RefreshingAuthProvider>('auth', 'RefreshingAuthProvider', 'clientId')
-export class RefreshingAuthProvider implements AuthProvider {
+export class RefreshingAuthProvider extends BaseAuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;
 	@Enumerable(false) private _accessToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>;
@@ -56,10 +57,37 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 * @param initialToken The initial access token.
 	 */
 	constructor(refreshConfig: RefreshConfig, initialToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>) {
+		super();
 		this._clientId = refreshConfig.clientId;
 		this._clientSecret = refreshConfig.clientSecret;
 		this._onRefresh = refreshConfig.onRefresh;
 		this._accessToken = initialToken;
+	}
+
+	/**
+	 * Force a refresh of the access token.
+	 */
+	async refresh(): Promise<AccessToken> {
+		const tokenData = await refreshUserToken(this.clientId, this._clientSecret, this._accessToken.refreshToken!);
+		this._accessToken = tokenData;
+
+		this._onRefresh?.(tokenData);
+
+		return tokenData;
+	}
+
+	/**
+	 * The client ID.
+	 */
+	get clientId(): string {
+		return this._clientId;
+	}
+
+	/**
+	 * The scopes that are currently available using the access token.
+	 */
+	get currentScopes(): string[] {
+		return this._accessToken.scope ?? [];
 	}
 
 	/**
@@ -72,7 +100,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 *
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessToken(scopes?: string[]): Promise<AccessToken | null> {
+	protected async _doGetAccessToken(scopes?: string[]): Promise<AccessToken | null> {
 		// if we don't have a current token, we just pass this and refresh right away
 		if (this._accessToken.accessToken && !accessTokenIsExpired(this._accessToken)) {
 			try {
@@ -102,31 +130,5 @@ export class RefreshingAuthProvider implements AuthProvider {
 		const refreshedToken = await this.refresh();
 		compareScopes(refreshedToken.scope, scopes);
 		return refreshedToken;
-	}
-
-	/**
-	 * Force a refresh of the access token.
-	 */
-	async refresh(): Promise<AccessToken> {
-		const tokenData = await refreshUserToken(this.clientId, this._clientSecret, this._accessToken.refreshToken!);
-		this._accessToken = tokenData;
-
-		this._onRefresh?.(tokenData);
-
-		return tokenData;
-	}
-
-	/**
-	 * The client ID.
-	 */
-	get clientId(): string {
-		return this._clientId;
-	}
-
-	/**
-	 * The scopes that are currently available using the access token.
-	 */
-	get currentScopes(): string[] {
-		return this._accessToken.scope ?? [];
 	}
 }
