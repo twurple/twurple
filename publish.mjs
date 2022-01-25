@@ -41,7 +41,7 @@ await runYarn(['rebuild']);
 await runYarn(['lint']);
 await runYarn(['prettier:check']);
 
-const versionType = process.argv[1] ?? 'patch';
+const versionType = process.argv[2] ?? 'patch';
 
 await runYarn([
 	'lerna',

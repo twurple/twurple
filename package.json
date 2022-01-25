@@ -29,8 +29,7 @@
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "docs": "documen.ts",
-    "lerna": "lerna",
-    "publish-all": "node publish.mjs"
+    "lerna": "lerna"
   },
   "husky": {
     "hooks": {
