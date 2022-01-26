@@ -643,7 +643,7 @@ export class ChatClient extends IrcClient {
 	private readonly _onSubsOnlyResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
 	private readonly _onSubsOnlyOffResult: EventBinder<[channel: string, error?: string]> =
 		this.registerInternalEvent();
-	private readonly _onVipResult: EventBinder<[channel: string, user: string, error?: string]> =
+	private readonly _onVipResult: EventBinder<[channel: string, user?: string, error?: string]> =
 		this.registerInternalEvent();
 	private readonly _onUnvipResult: EventBinder<[channel: string, user: string, error?: string]> =
 		this.registerInternalEvent();
@@ -2081,7 +2081,7 @@ export class ChatClient extends IrcClient {
 		user = toUserName(user);
 		await new Promise<void>((resolve, reject) => {
 			const e = this._onVipResult((_channel, _user, error) => {
-				if (toUserName(_channel) === channel) {
+				if (toUserName(_channel) === channel && (_user === undefined || toUserName(_user) === user)) {
 					if (error) {
 						reject(error);
 					} else {
