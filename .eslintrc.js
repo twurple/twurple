@@ -25,7 +25,7 @@ const memberNames = [
 	'^click_action$',
 	'^(image_)?url_\\dx$',
 	'^emoticon_sets?$',
-	'^is_(?:anonymous|broadcast|gift|user_input_required|sub_only|mature|enabled|paused|in_stock|previewable|playlist|(?:verified|known)_bot|live|auto|permanent|recurring|vacation_enabled|canceled|achieved)$',
+	'^is_(?:anonymous|broadcast|gift|user_input_required|sub_only|mature|enabled|paused|in_stock|previewable|playlist|(?:verified|known)_bot|live|auto|permanent|recurring|vacation_enabled|canceled|achieved|permitted)$',
 	'^minimum_allowed_role$',
 	'^(chatter|view(er)?)_count$',
 	'^min_bits$',
@@ -86,12 +86,17 @@ const memberNames = [
 	'^bits_enabled$',
 	'^configuration_location$',
 	'^request_identity_link$',
-	'^subscriptions_support_level$',
+	'^(?:subscriptions_support|overall)_level$',
 	'^support_email$',
 	'^viewer_summary$',
 	'^aspect_(?:width|height|ratio_[xy])',
 	'^(?:scale|zoom)_pixels',
 	'^(?:current|target)_amount$',
+	'^msg_text$',
+	'^sexuality_sex_or_gender$',
+	'^race_ethnicity_or_religion$',
+	'^sex_based_terms$',
+
 	// HTTP
 	'^Accept$'
 ];
