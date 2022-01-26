@@ -1380,8 +1380,6 @@ export class ChatClient extends IrcClient {
 				}
 
 				// vip
-				case 'bad_vip_achievement_incomplete':
-				case 'bad_vip_max_vips_reached':
 				case 'bad_vip_grantee_banned':
 				case 'bad_vip_grantee_already_vip': {
 					const match = content.split(' ');
@@ -1389,6 +1387,12 @@ export class ChatClient extends IrcClient {
 					if (user) {
 						this.emit(this._onVipResult, channel, user, messageType);
 					}
+					break;
+				}
+
+				case 'bad_vip_achievement_incomplete':
+				case 'bad_vip_max_vips_reached': {
+					this.emit(this._onVipResult, channel, undefined, messageType);
 					break;
 				}
 
@@ -2077,7 +2081,7 @@ export class ChatClient extends IrcClient {
 		user = toUserName(user);
 		await new Promise<void>((resolve, reject) => {
 			const e = this._onVipResult((_channel, _user, error) => {
-				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+				if (toUserName(_channel) === channel) {
 					if (error) {
 						reject(error);
 					} else {
