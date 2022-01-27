@@ -42,14 +42,14 @@ export class HelixAutoModSettings extends DataObject<HelixAutoModSettingsData> {
 	}
 
 	/**
-	 * The Automod level for discrimination against disability.
+	 * The AutoMod level for discrimination against disability.
 	 */
 	get disability(): number {
 		return this[rawDataSymbol].disability;
 	}
 
 	/**
-	 * The Automod level for hostility involving aggression.
+	 * The AutoMod level for hostility involving aggression.
 	 */
 	get aggression(): number {
 		return this[rawDataSymbol].aggression;
@@ -63,35 +63,35 @@ export class HelixAutoModSettings extends DataObject<HelixAutoModSettingsData> {
 	}
 
 	/**
-	 * The Automod level for discrimination against women.
+	 * The AutoMod level for discrimination against women.
 	 */
 	get misogyny(): number {
 		return this[rawDataSymbol].misogyny;
 	}
 
 	/**
-	 * The Automod level for hostility involving name calling or insults.
+	 * The AutoMod level for hostility involving name calling or insults.
 	 */
 	get bullying(): number {
 		return this[rawDataSymbol].bullying;
 	}
 
 	/**
-	 * The Automod level for profanity.
+	 * The AutoMod level for profanity.
 	 */
 	get swearing(): number {
 		return this[rawDataSymbol].swearing;
 	}
 
 	/**
-	 * The Automod level for racial discrimination.
+	 * The AutoMod level for racial discrimination.
 	 */
 	get raceEthnicityOrReligion(): number {
 		return this[rawDataSymbol].race_ethnicity_or_religion;
 	}
 
 	/**
-	 * The Automod level for sexual content.
+	 * The AutoMod level for sexual content.
 	 */
 	get sexBasedTerms(): number {
 		return this[rawDataSymbol].sex_based_terms;

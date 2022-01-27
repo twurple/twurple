@@ -90,7 +90,7 @@ export class HelixModeratorEvent extends DataObject<HelixModeratorEventData> {
 	}
 
 	/**
-	 * The id of the broadcaster where the user gained/lost moderation privileges.
+	 * The ID of the broadcaster where the user gained/lost moderation privileges.
 	 */
 	get broadcasterId(): string {
 		return this[rawDataSymbol].event_data.broadcaster_id;

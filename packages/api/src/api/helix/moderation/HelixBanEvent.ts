@@ -92,7 +92,7 @@ export class HelixBanEvent extends DataObject<HelixBanEventData> {
 	}
 
 	/**
-	 * The id of the broadcaster from whose chat the user was banned/unbanned.
+	 * The ID of the broadcaster from whose chat the user was banned/unbanned.
 	 */
 	get broadcasterId(): string {
 		return this[rawDataSymbol].event_data.broadcaster_id;
