@@ -22,6 +22,10 @@ export class UserNotice extends Message<UserNotice> {
 		return this._tags.get('id')!;
 	}
 
+	get date(): Date {
+		return new Date(this._tags.get('tmi-sent-ts')!);
+	}
+
 	get userInfo(): ChatUser {
 		return new ChatUser(this._tags.get('login')!, this._tags);
 	}

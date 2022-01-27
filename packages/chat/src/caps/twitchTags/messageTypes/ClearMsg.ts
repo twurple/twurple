@@ -17,6 +17,10 @@ export class ClearMsg extends Message<ClearMsg> {
 	})
 	message!: MessageParam;
 
+	get date(): Date {
+		return new Date(this._tags.get('tmi-sent-ts')!);
+	}
+
 	get userName(): string {
 		return this._tags.get('login')!;
 	}

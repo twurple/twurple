@@ -15,6 +15,10 @@ export class ClearChat extends Message<ClearChat> {
 	})
 	user!: MessageParam;
 
+	get date(): Date {
+		return new Date(this._tags.get('tmi-sent-ts')!);
+	}
+
 	get channelId(): string {
 		return this._tags.get('room-id')!;
 	}
