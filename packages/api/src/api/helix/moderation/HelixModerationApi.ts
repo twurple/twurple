@@ -108,6 +108,10 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve the ban events from.
 	 * @param filter Additional filters for the result set.
+	 *
+	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
+	 * Use {@HelixModerationApi#getBannedUsers} and {@HelixEventSubApi} instead.
+	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
 	 */
 	async getBanEvents(
 		channel: UserIdResolvable,
@@ -131,6 +135,10 @@ export class HelixModerationApi extends BaseApi {
 	 * Creates a paginator for ban events for a given channel.
 	 *
 	 * @param channel The channel to retrieve the ban events from.
+	 *
+	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
+	 * Use {@HelixModerationApi#getBannedUsers} and {@HelixEventSubApi} instead.
+	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
 	 */
 	getBanEventsPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixBanEventData, HelixBanEvent> {
 		return new HelixPaginatedRequest(
@@ -207,6 +215,10 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve the moderator events from.
 	 * @param filter Additional filters for the result set.
+	 *
+	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
+	 * Use {@HelixModerationApi#getModerators} and {@HelixEventSubApi} instead.
+	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
 	 */
 	async getModeratorEvents(
 		channel: UserIdResolvable,
@@ -230,6 +242,10 @@ export class HelixModerationApi extends BaseApi {
 	 * Creates a paginator for moderator events for a given channel.
 	 *
 	 * @param channel The channel to retrieve the moderator events from.
+	 *
+	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
+	 * Use {@HelixModerationApi#getModerators} and {@HelixEventSubApi} instead.
+	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
 	 */
 	getModeratorEventsPaginated(
 		channel: UserIdResolvable
