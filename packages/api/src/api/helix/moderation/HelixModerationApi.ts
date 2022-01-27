@@ -6,7 +6,7 @@ import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
-import type { HelixPaginatedResponse } from '../HelixResponse';
+import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
 import type { HelixBanData } from './HelixBan';
 import { HelixBan } from './HelixBan';
 import type { HelixBanEventData } from './HelixBanEvent';
@@ -15,6 +15,10 @@ import type { HelixModeratorData } from './HelixModerator';
 import { HelixModerator } from './HelixModerator';
 import type { HelixModeratorEventData } from './HelixModeratorEvent';
 import { HelixModeratorEvent } from './HelixModeratorEvent';
+import type { HelixAutoModStatusData } from './HelixAutoModStatus';
+import { HelixAutoModStatus } from './HelixAutoModStatus';
+import type { HelixAutoModSettingsData } from './HelixAutoModSettings';
+import { HelixAutoModSettings } from './HelixAutoModSettings';
 
 /**
  * Filters for the banned users request.
@@ -35,6 +39,25 @@ export interface HelixModeratorFilter extends HelixForwardPagination {
 	 */
 	userId: string | string[];
 }
+
+export interface HelixCheckAutoModStatusData {
+	/**
+	 * The developer-generated ID for mapping messages to their status results.
+	 */
+	messageId: string;
+
+	/**
+	 * The text of the message the AutoMod status needs to be checked for.
+	 */
+	messageText: string;
+
+	/**
+	 * The ID of the sender of the message the AutoMod status needs to be checked for.
+	 */
+	userId: string;
+}
+
+export type HelixAutoModSettingsUpdate = Exclude<HelixAutoModSettings, 'broadcasterId' | 'moderatorId'>;
 
 /**
  * The Helix API methods that deal with moderation.
@@ -248,6 +271,32 @@ export class HelixModerationApi extends BaseApi {
 	}
 
 	/**
+	 * Determines whether a string message meets the channel's AutoMod requirements.
+	 *
+	 * @param channel The channel in which the messages to check are posted.
+	 * @param data An array of message data objects.
+	 */
+	async checkAutoModStatus(
+		channel: UserIdResolvable,
+		data: HelixCheckAutoModStatusData[]
+	): Promise<HelixAutoModStatus[]> {
+		const result = await this._client.callApi<HelixResponse<HelixAutoModStatusData>>({
+			type: 'helix',
+			url: 'moderation/enforcements/status',
+			method: 'POST',
+			scope: 'moderation:read',
+			query: {
+				broadcaster_id: extractUserId(channel)
+			},
+			jsonBody: {
+				data: data
+			}
+		});
+
+		return result.data.map(statusData => new HelixAutoModStatus(statusData));
+	}
+
+	/**
 	 * Processes a message held by AutoMod.
 	 *
 	 * @param user The user who is processing the message.
@@ -266,5 +315,67 @@ export class HelixModerationApi extends BaseApi {
 				action: allow ? 'ALLOW' : 'DENY'
 			}
 		});
+	}
+
+	/**
+	 * Retrieves the AutoMod settings for a broadcaster.
+	 *
+	 * @param broadcasterId The ID of the broadcaster for which the AutoMod settings are retrieved.
+	 * @param moderatorId The ID of a user that has permission to moderate the broadcaster's chat room.
+	 * This must match the user ID associated with the user OAuth token.
+	 */
+	async getAutoModSettings(
+		broadcasterId: UserIdResolvable,
+		moderatorId: UserIdResolvable
+	): Promise<HelixAutoModSettings[]> {
+		const result = await this._client.callApi<HelixResponse<HelixAutoModSettingsData>>({
+			type: 'helix',
+			url: 'moderation/automod/settings',
+			scope: 'moderator:read:automod_settings',
+			query: {
+				broadcaster_id: extractUserId(broadcasterId),
+				moderator_id: extractUserId(moderatorId)
+			}
+		});
+
+		return result.data.map(data => new HelixAutoModSettings(data));
+	}
+
+	/**
+	 * Updates the AutoMod settings for a broadcaster.
+	 *
+	 * @param broadcasterId The ID of the broadcaster for which the AutoMod settings are updated.
+	 * @param moderatorId The ID of a user that has permission to moderate the broadcaster's chat room.
+	 * This must match the user ID associated with the user OAuth token.
+	 * @param data The updated AutoMod settings that replace the current AutoMod settings.
+	 */
+	async updateAutoModSettings(
+		broadcasterId: UserIdResolvable,
+		moderatorId: UserIdResolvable,
+		data: HelixAutoModSettingsUpdate
+	): Promise<HelixAutoModSettings[]> {
+		const result = await this._client.callApi<HelixResponse<HelixAutoModSettingsData>>({
+			type: 'helix',
+			url: 'moderation/automod/settings',
+			method: 'PUT',
+			scope: 'moderator:manage:automod_settings',
+			query: {
+				broadcaster_id: extractUserId(broadcasterId),
+				moderator_id: extractUserId(moderatorId)
+			},
+			jsonBody: {
+				overall_level: data.overallLevel,
+				aggression: data.aggression,
+				bullying: data.bullying,
+				disability: data.disability,
+				misogyny: data.misogyny,
+				race_ethnicity_or_religion: data.raceEthnicityOrReligion,
+				sex_based_terms: data.sexBasedTerms,
+				sexuality_sex_or_gender: data.sexualitySexOrGender,
+				swearing: data.swearing
+			}
+		});
+
+		return result.data.map(settingsData => new HelixAutoModSettings(settingsData));
 	}
 }
