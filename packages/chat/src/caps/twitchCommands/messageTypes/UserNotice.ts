@@ -23,7 +23,8 @@ export class UserNotice extends Message<UserNotice> {
 	}
 
 	get date(): Date {
-		return new Date(this._tags.get('tmi-sent-ts')!);
+		const timestamp = this._tags.get('tmi-sent-ts')!;
+		return new Date(Number(timestamp));
 	}
 
 	get userInfo(): ChatUser {

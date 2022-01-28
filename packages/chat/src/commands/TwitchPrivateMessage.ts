@@ -20,7 +20,8 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 * The date the message was sent at.
 	 */
 	get date(): Date {
-		return new Date(this._tags.get('tmi-sent-ts')!);
+		const timestamp = this._tags.get('tmi-sent-ts')!;
+		return new Date(Number(timestamp));
 	}
 
 	/**
