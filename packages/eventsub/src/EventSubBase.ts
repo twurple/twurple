@@ -1014,6 +1014,7 @@ export abstract class EventSubBase extends EventEmitter {
 								twitchSubscription._status = 'enabled';
 							}
 							res.setHeader('Content-Length', verificationBody.challenge.length);
+							res.setHeader('Content-Type', 'text/plain');
 							res.writeHead(200, undefined);
 							res.end(verificationBody.challenge);
 							this._logger.debug(`Successfully subscribed to event: ${id}`);
@@ -1073,6 +1074,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 	protected _createHandleHealthRequest(): RequestHandler {
 		return async (req, res) => {
+			res.setHeader('Content-Type', 'text/plain');
 			res.end('@twurple/eventsub is listening here');
 		};
 	}
