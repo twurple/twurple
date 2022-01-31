@@ -26,7 +26,7 @@ export class PubSubClient {
 	/**
 	 * Creates a new PubSub client.
 	 *
-	 * @param rootClient A previously existing PubSubClient instance.
+	 * @param rootClient A previously existing BasicPubSubClient instance.
 	 *
 	 * If not given, one will be created with the default options.
 	 */
