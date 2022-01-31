@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
-import type { Request } from 'httpanda';
-import { Server } from 'httpanda';
+import type { NextFunction, Request, Response } from 'httpanda';
+import { defaultOnError, Server } from 'httpanda';
 import type { ConnectionAdapter } from './adapters/ConnectionAdapter';
 import type { EventSubBaseConfig } from './EventSubBase';
 import { EventSubBase } from './EventSubBase';
@@ -66,11 +66,12 @@ export class EventSubListener extends EventSubBase {
 		const server = this._adapter.createHttpServer();
 		this._server = new Server({
 			server,
-			onError: (e, req: Request) => {
+			onError: (e, req: Request, res: Response, next: NextFunction) => {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
 				if (e.code === 404) {
 					this._logger.warn(`Access to unknown URL/method attempted: ${req.method!} ${req.url!}`);
 				}
+				defaultOnError(e, req, res, next);
 			}
 		});
 		// needs to be first in chain but run last, for proper logging of status

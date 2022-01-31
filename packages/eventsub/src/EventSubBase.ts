@@ -1028,31 +1028,38 @@ export abstract class EventSubBase extends EventEmitter {
 								setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
 								subscription._handleData((data as EventSubNotificationBody).event);
 							}
+							res.setHeader('Content-Type', 'text/plain');
 							res.writeHead(202);
-							res.end();
+							res.end('OK');
 						} else if (type === 'revocation') {
 							this._dropSubscription(subscription.id);
 							this._dropTwitchSubscription(subscription.id);
 							this.emit(this.onRevoke, subscription);
 							this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
+							res.setHeader('Content-Type', 'text/plain');
+							res.writeHead(202);
+							res.end('OK');
 						} else {
 							this._logger.warn(`Unknown action ${type} for event: ${id}`);
+							res.setHeader('Content-Type', 'text/plain');
 							res.writeHead(400);
-							res.end();
+							res.end('Not OK');
 						}
 					} else {
 						this._logger.warn(`Could not verify action ${type} of event: ${id}`);
 						if (type === 'webhook_callback_verification') {
 							this.emit(this.onVerify, false, subscription);
 						}
+						res.setHeader('Content-Type', 'text/plain');
 						res.writeHead(410);
-						res.end();
+						res.end('Not OK');
 					}
 				}
 			} else {
 				this._logger.warn(`Action ${type} of unknown event attempted: ${id}`);
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(410);
-				res.end();
+				res.end('Not OK');
 			}
 			next();
 		};
@@ -1064,8 +1071,9 @@ export abstract class EventSubBase extends EventEmitter {
 			if (twitchSub) {
 				await this._apiClient.eventSub.deleteSubscription(twitchSub.id);
 				this._logger.debug(`Dropped legacy subscription for event: ${req.params.id}`);
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(410);
-				res.end();
+				res.end('Not OK');
 			} else {
 				next();
 			}
@@ -1075,6 +1083,7 @@ export abstract class EventSubBase extends EventEmitter {
 	protected _createHandleHealthRequest(): RequestHandler {
 		return async (req, res) => {
 			res.setHeader('Content-Type', 'text/plain');
+			res.writeHead(200);
 			res.end('@twurple/eventsub is listening here');
 		};
 	}

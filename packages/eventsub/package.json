@@ -39,7 +39,7 @@
     "@twurple/auth": "^5.0.16",
     "@twurple/common": "^5.0.16",
     "@types/express-serve-static-core": "^4.17.24",
-    "httpanda": "^0.4.4",
+    "httpanda": "^0.4.6",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
