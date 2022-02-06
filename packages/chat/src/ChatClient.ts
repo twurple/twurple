@@ -648,7 +648,7 @@ export class ChatClient extends IrcClient {
 	private readonly _onSubsOnlyResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
 	private readonly _onSubsOnlyOffResult: EventBinder<[channel: string, error?: string]> =
 		this.registerInternalEvent();
-	private readonly _onVipResult: EventBinder<[channel: string, user: string, error?: string]> =
+	private readonly _onVipResult: EventBinder<[channel: string, user?: string, error?: string]> =
 		this.registerInternalEvent();
 	private readonly _onUnvipResult: EventBinder<[channel: string, user: string, error?: string]> =
 		this.registerInternalEvent();
@@ -725,6 +725,7 @@ export class ChatClient extends IrcClient {
 				});
 				timer = setTimeout(() => {
 					this.removeListener(e);
+					this.emit(this._onJoinResult, channel, undefined, 'twurple_timeout');
 					reject(
 						new Error(`Did not receive a reply to join ${channel} in time; assuming that the join failed`)
 					);
@@ -802,8 +803,10 @@ export class ChatClient extends IrcClient {
 							await this.join(channel);
 						} catch (e) {
 							this._chatLogger.warn(
+								// TODO this error should always throw an Error instance,
+								//  currently it sometimes rejects with a string
 								`Failed to join configured channel ${channel}; original message: ${
-									(e as Error).message
+									(e as Error | null)?.message ?? (e as string)
 								}`
 							);
 						}
@@ -1258,7 +1261,8 @@ export class ChatClient extends IrcClient {
 				}
 
 				// join (success is handled when ROOMSTATE comes in)
-				case 'msg_channel_suspended': {
+				case 'msg_channel_suspended':
+				case 'msg_banned': {
 					this.emit(this._onJoinResult, channel, undefined, messageType);
 					break;
 				}
@@ -1391,8 +1395,6 @@ export class ChatClient extends IrcClient {
 				}
 
 				// vip
-				case 'bad_vip_achievement_incomplete':
-				case 'bad_vip_max_vips_reached':
 				case 'bad_vip_grantee_banned':
 				case 'bad_vip_grantee_already_vip': {
 					const match = content.split(' ');
@@ -1400,6 +1402,12 @@ export class ChatClient extends IrcClient {
 					if (user) {
 						this.emit(this._onVipResult, channel, user, messageType);
 					}
+					break;
+				}
+
+				case 'bad_vip_achievement_incomplete':
+				case 'bad_vip_max_vips_reached': {
+					this.emit(this._onVipResult, channel, undefined, messageType);
 					break;
 				}
 
@@ -1494,8 +1502,7 @@ export class ChatClient extends IrcClient {
 				case 'msg_verified_email':
 				case 'msg_timed_out':
 				case 'msg_rejected_mandatory':
-				case 'msg_channel_blocked':
-				case 'msg_banned': {
+				case 'msg_channel_blocked': {
 					this.emit(this.onMessageFailed, channel, messageType);
 					break;
 				}
@@ -2090,7 +2097,7 @@ export class ChatClient extends IrcClient {
 		user = toUserName(user);
 		await new Promise<void>((resolve, reject) => {
 			const e = this._onVipResult((_channel, _user, error) => {
-				if (toUserName(_channel) === channel && toUserName(_user) === user) {
+				if (toUserName(_channel) === channel && (_user === undefined || toUserName(_user) === user)) {
 					if (error) {
 						reject(error);
 					} else {

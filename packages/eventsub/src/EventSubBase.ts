@@ -1071,8 +1071,9 @@ To silence this warning without enabling this check (and thus to keep it off eve
 	protected _createHandleRequest(): RequestHandler {
 		return async (req, res, next) => {
 			if (await this._isHostDenied(req)) {
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(404);
-				res.end();
+				res.end('Not OK');
 				return;
 			}
 
@@ -1082,8 +1083,9 @@ To silence this warning without enabling this check (and thus to keep it off eve
 			const type = req.headers['twitch-eventsub-message-type'] as string;
 			if (!subscription) {
 				this._logger.warn(`Action ${type} of unknown event attempted: ${id}`);
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(410);
-				res.end();
+				res.end('Not OK');
 				return;
 			}
 
@@ -1093,8 +1095,9 @@ To silence this warning without enabling this check (and thus to keep it off eve
 			const algoAndSignature = req.headers['twitch-eventsub-message-signature'] as string | undefined;
 			if (algoAndSignature === undefined) {
 				this._logger.warn(`Dropping unsigned message for action ${type} of event: ${id}`);
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(410);
-				res.end();
+				res.end('Not OK');
 				return;
 			}
 
@@ -1105,8 +1108,9 @@ To silence this warning without enabling this check (and thus to keep it off eve
 				if (type === 'webhook_callback_verification') {
 					this.emit(this.onVerify, false, subscription);
 				}
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(410);
-				res.end();
+				res.end('Not OK');
 				return;
 			}
 
@@ -1118,6 +1122,7 @@ To silence this warning without enabling this check (and thus to keep it off eve
 					twitchSubscription._status = 'enabled';
 				}
 				res.setHeader('Content-Length', verificationBody.challenge.length);
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(200, undefined);
 				res.end(verificationBody.challenge);
 				this._logger.debug(`Successfully subscribed to event: ${id}`);
@@ -1131,17 +1136,22 @@ To silence this warning without enabling this check (and thus to keep it off eve
 					setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
 					subscription._handleData((data as EventSubNotificationBody).event);
 				}
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(202);
-				res.end();
+				res.end('OK');
 			} else if (type === 'revocation') {
 				this._dropSubscription(subscription.id);
 				this._dropTwitchSubscription(subscription.id);
 				this.emit(this.onRevoke, subscription);
 				this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
+				res.setHeader('Content-Type', 'text/plain');
+				res.writeHead(202);
+				res.end('OK');
 			} else {
 				this._logger.warn(`Unknown action ${type} for event: ${id}`);
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(400);
-				res.end();
+				res.end('Not OK');
 			}
 			next();
 		};
@@ -1150,8 +1160,9 @@ To silence this warning without enabling this check (and thus to keep it off eve
 	protected _createDropLegacyRequest(): RequestHandler {
 		return async (req, res, next) => {
 			if (await this._isHostDenied(req)) {
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(404);
-				res.end();
+				res.end('Not OK');
 				return;
 			}
 
@@ -1159,8 +1170,9 @@ To silence this warning without enabling this check (and thus to keep it off eve
 			if (twitchSub) {
 				await this._apiClient.eventSub.deleteSubscription(twitchSub.id);
 				this._logger.debug(`Dropped legacy subscription for event: ${req.params.id}`);
+				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(410);
-				res.end();
+				res.end('Not OK');
 			} else {
 				next();
 			}
@@ -1169,12 +1181,14 @@ To silence this warning without enabling this check (and thus to keep it off eve
 
 	protected _createHandleHealthRequest(): RequestHandler {
 		return async (req, res) => {
+			res.setHeader('Content-Type', 'text/plain');
 			if (await this._isHostDenied(req)) {
 				res.writeHead(404);
-				res.end();
+				res.end('Not OK');
 				return;
 			}
 
+			res.writeHead(200);
 			res.end('@twurple/eventsub is listening here');
 		};
 	}

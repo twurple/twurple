@@ -140,6 +140,10 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * @param pagination
 	 *
 	 * @expandParams
+	 *
+	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
+	 * Use {@HelixSubscriptionApi#getSubscriptions} and {@HelixEventSubApi} instead.
+	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
 	 */
 	async getSubscriptionEventsForBroadcaster(
 		broadcaster: UserIdResolvable,
@@ -152,6 +156,10 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * Creates a paginator for the recent subscription events for a given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to retrieve subscription events for.
+	 *
+	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
+	 * Use {@HelixSubscriptionApi#getSubscriptions} and {@HelixEventSubApi} instead.
+	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
 	 */
 	getSubscriptionEventsForBroadcasterPaginated(
 		broadcaster: UserIdResolvable
@@ -173,6 +181,10 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * Retrieves a single subscription event by ID.
 	 *
 	 * @param id The event ID.
+	 *
+	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
+	 * Use {@HelixSubscriptionApi#getSubscriptions} and {@HelixEventSubApi} instead.
+	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
 	 */
 	async getSubscriptionEventById(id: string): Promise<HelixSubscriptionEvent | null> {
 		const events = await this._getSubscriptionEvents('id', id);
