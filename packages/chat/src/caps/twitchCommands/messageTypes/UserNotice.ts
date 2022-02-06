@@ -22,6 +22,11 @@ export class UserNotice extends Message<UserNotice> {
 		return this._tags.get('id')!;
 	}
 
+	get date(): Date {
+		const timestamp = this._tags.get('tmi-sent-ts')!;
+		return new Date(Number(timestamp));
+	}
+
 	get userInfo(): ChatUser {
 		return new ChatUser(this._tags.get('login')!, this._tags);
 	}

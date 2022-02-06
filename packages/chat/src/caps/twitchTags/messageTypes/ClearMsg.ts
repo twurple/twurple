@@ -17,6 +17,11 @@ export class ClearMsg extends Message<ClearMsg> {
 	})
 	message!: MessageParam;
 
+	get date(): Date {
+		const timestamp = this._tags.get('tmi-sent-ts')!;
+		return new Date(Number(timestamp));
+	}
+
 	get userName(): string {
 		return this._tags.get('login')!;
 	}

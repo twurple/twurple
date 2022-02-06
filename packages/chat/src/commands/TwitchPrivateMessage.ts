@@ -17,6 +17,14 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	}
 
 	/**
+	 * The date the message was sent at.
+	 */
+	get date(): Date {
+		const timestamp = this._tags.get('tmi-sent-ts')!;
+		return new Date(Number(timestamp));
+	}
+
+	/**
 	 * Info about the user that send the message, like their user ID and their status in the current channel.
 	 */
 	get userInfo(): ChatUser {
