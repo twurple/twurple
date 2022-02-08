@@ -4462,10 +4462,10 @@ http2-wrapper@^1.0.0-beta.5.2:
     quick-lru "^5.1.1"
     resolve-alpn "^1.0.0"
 
-httpanda@^0.4.4:
-  version "0.4.4"
-  resolved "https://registry.yarnpkg.com/httpanda/-/httpanda-0.4.4.tgz#b34e2e81707b095fb8aec355c919cf1a680620f8"
-  integrity sha512-YbnQwrrzZRgPIzQrhEUO2FYKJbocSlxR2tT9ahN742+dGtoKPNQ5Dwvu3O/s6yUD7drW+f3IMgjBTzdRk9TlLg==
+httpanda@^0.4.6:
+  version "0.4.6"
+  resolved "https://registry.yarnpkg.com/httpanda/-/httpanda-0.4.6.tgz#5ad2ff2ea0527a8b431a4c252c610a1c90a8dc36"
+  integrity sha512-R70BJcyoMtDj9GVQ7BIsb+Wwe/UCOGPYRv9+uHTFCDgTW+bSh8cg7XIo9W9yc1ad9viUHgDZ4zNS1A57S+qfjQ==
   dependencies:
     "@types/node" "^14.11.2"
     tslib "^2.0.3"
