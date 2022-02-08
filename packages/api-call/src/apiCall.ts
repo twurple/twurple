@@ -2,6 +2,7 @@
 
 import fetch, { Headers } from '@d-fischer/cross-fetch';
 import { stringify } from '@d-fischer/qs';
+import { HttpStatusCodeError } from './errors/HttpStatusCodeError';
 import { transformTwitchApiResponse } from './helpers/transform';
 import { getTwitchApiUrl } from './helpers/url';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchApiCallOptions';
@@ -68,6 +69,19 @@ export async function callTwitchApi<T = unknown>(
 	fetchOptions: TwitchApiCallFetchOptions = {}
 ): Promise<T> {
 	const response = await callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
+
+	if (!response.ok) {
+		const isJson = response.headers.get('Content-Type') === 'application/json';
+		const text = isJson ? JSON.stringify(await response.json(), null, 2) : await response.text();
+		throw new HttpStatusCodeError(
+			response.status,
+			response.statusText,
+			options.url,
+			options.method ?? 'GET',
+			text,
+			isJson
+		);
+	}
 
 	return await transformTwitchApiResponse<T>(response);
 }
