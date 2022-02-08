@@ -1193,7 +1193,7 @@ To silence this warning without enabling this check (and thus to keep it off eve
 		};
 	}
 
-	private async _isHostDenied(req: Request) {
+	protected async _isHostDenied(req: Request): Promise<boolean> {
 		if (this._strictHostCheck) {
 			const ip = req.socket.remoteAddress;
 			if (ip === undefined) {

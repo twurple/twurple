@@ -66,9 +66,9 @@ export class EventSubListener extends EventSubBase {
 		const server = this._adapter.createHttpServer();
 		this._server = new Server({
 			server,
-			onError: (e, req: Request, res: Response, next: NextFunction) => {
+			onError: async (e, req: Request, res: Response, next: NextFunction) => {
 				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-				if (e.code === 404) {
+				if (e.code === 404 && !(await this._isHostDenied(req))) {
 					this._logger.warn(`Access to unknown URL/method attempted: ${req.method!} ${req.url!}`);
 				}
 				defaultOnError(e, req, res, next);
