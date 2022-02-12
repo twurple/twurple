@@ -1711,6 +1711,11 @@
   resolved "https://registry.yarnpkg.com/@types/toposort/-/toposort-2.0.3.tgz#dc490842b77c3e910c8d727ff0bdb2fb124cb41b"
   integrity sha512-jRtyvEu0Na/sy0oIxBW0f6wPQjidgVqlmCTJVHEGTNEUdL1f0YSvdPzHY7nX7MUWAZS6zcAa0KkqofHjy/xDZQ==
 
+"@types/twitch-ext@^1.24.4":
+  version "1.24.4"
+  resolved "https://registry.yarnpkg.com/@types/twitch-ext/-/twitch-ext-1.24.4.tgz#a7ef4aede38324515a6eec67ebdbc6d4b179f654"
+  integrity sha512-zlsEX/o4yWMVkYvh+sCCBYFv9py9KERHUNNA+89E597RFFlyzSu31QysbYbzFpXwu1bp+CEKKFkWLXKYaf2JCQ==
+
 "@types/uglify-js@*":
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/@types/uglify-js/-/uglify-js-3.13.1.tgz#5e889e9e81e94245c75b6450600e1c5ea2878aea"

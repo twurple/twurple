@@ -15,12 +15,16 @@ import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchAp
  * @param accessToken The access token to call the API with.
  *
  * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
+ * @param authorizationType The type of Authorization header to send.
+ *
+ * Defaults to "Bearer" for Helix and "OAuth" for everything else.
  * @param fetchOptions Additional options to be passed to the `fetch` function.
  */
 export async function callTwitchApiRaw(
 	options: TwitchApiCallOptions,
 	clientId?: string,
 	accessToken?: string,
+	authorizationType?: string,
 	fetchOptions: TwitchApiCallFetchOptions = {}
 ): Promise<Response> {
 	const type = options.type ?? 'helix';
@@ -39,7 +43,7 @@ export async function callTwitchApiRaw(
 	}
 
 	if (accessToken) {
-		headers.append('Authorization', `${type === 'helix' ? 'Bearer' : 'OAuth'} ${accessToken}`);
+		headers.append('Authorization', `${type === 'helix' ? authorizationType ?? 'Bearer' : 'OAuth'} ${accessToken}`);
 	}
 
 	const requestOptions: RequestInit = {
@@ -60,15 +64,19 @@ export async function callTwitchApiRaw(
  * @param accessToken The access token to call the API with.
  *
  * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
+ * @param authorizationType The type of Authorization header to send.
+ *
+ * Defaults to "Bearer" for Helix and "OAuth" for everything else.
  * @param fetchOptions Additional options to be passed to the `fetch` function.
  */
 export async function callTwitchApi<T = unknown>(
 	options: TwitchApiCallOptions,
 	clientId?: string,
 	accessToken?: string,
+	authorizationType?: string,
 	fetchOptions: TwitchApiCallFetchOptions = {}
 ): Promise<T> {
-	const response = await callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
+	const response = await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
 
 	if (!response.ok) {
 		const isJson = response.headers.get('Content-Type') === 'application/json';

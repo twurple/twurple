@@ -29,6 +29,11 @@ export interface AuthProvider {
 	tokenType: AuthProviderTokenType;
 
 	/**
+	 * The type of Authorization header to send. Defaults to "Bearer".
+	 */
+	authorizationType?: string;
+
+	/**
 	 * The scopes that are currently available using the access token.
 	 */
 	currentScopes: string[];

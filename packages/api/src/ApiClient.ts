@@ -64,6 +64,7 @@ export interface TwitchApiCallOptionsInternal {
 	options: TwitchApiCallOptions;
 	clientId?: string;
 	accessToken?: string;
+	authorizationType?: string;
 	fetchOptions?: TwitchApiCallFetchOptions;
 }
 
@@ -128,7 +129,13 @@ export class ApiClient {
 			? await authProvider.getAccessToken(options.scope ? [options.scope] : undefined)
 			: null;
 		if (!accessToken) {
-			return await callTwitchApi<T>(options, authProvider.clientId, undefined, this._config.fetchOptions);
+			return await callTwitchApi<T>(
+				options,
+				authProvider.clientId,
+				undefined,
+				undefined,
+				this._config.fetchOptions
+			);
 		}
 
 		if (accessTokenIsExpired(accessToken) && authProvider.refresh) {
@@ -138,12 +145,23 @@ export class ApiClient {
 			}
 		}
 
-		let response = await this._callApiInternal(options, authProvider.clientId, accessToken.accessToken);
+		const authorizationType = authProvider.authorizationType;
+		let response = await this._callApiInternal(
+			options,
+			authProvider.clientId,
+			accessToken.accessToken,
+			authorizationType
+		);
 		if (response.status === 401 && authProvider.refresh) {
 			await authProvider.refresh();
 			accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : []);
 			if (accessToken) {
-				response = await this._callApiInternal(options, authProvider.clientId, accessToken.accessToken);
+				response = await this._callApiInternal(
+					options,
+					authProvider.clientId,
+					accessToken.accessToken,
+					authorizationType
+				);
 			}
 		}
 
@@ -372,12 +390,23 @@ export class ApiClient {
 		return this._config.authProvider;
 	}
 
-	private async _callApiInternal(options: TwitchApiCallOptions, clientId?: string, accessToken?: string) {
+	private async _callApiInternal(
+		options: TwitchApiCallOptions,
+		clientId?: string,
+		accessToken?: string,
+		authorizationType?: string
+	) {
 		const { fetchOptions } = this._config;
 		if (options.type === 'helix') {
-			return await this._helixRateLimiter.request({ options, clientId, accessToken, fetchOptions });
+			return await this._helixRateLimiter.request({
+				options,
+				clientId,
+				accessToken,
+				authorizationType,
+				fetchOptions
+			});
 		}
 
-		return await callTwitchApiRaw(options, clientId, accessToken, fetchOptions);
+		return await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
 	}
 }

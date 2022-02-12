@@ -1,0 +1,1 @@
+export { ExtensionAuthProvider } from './ExtensionAuthProvider';
