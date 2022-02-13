@@ -1070,6 +1070,14 @@ To silence this warning without enabling this check (and thus to keep it off eve
 
 	protected _createHandleRequest(): RequestHandler {
 		return async (req, res, next) => {
+			if (req.readableEnded) {
+				throw new Error(
+					'The request body was already consumed by something else.\n' +
+						"Please make sure you don't globally apply middlewares that consume the request body, " +
+						'such as express.json() or body-parser.'
+				);
+			}
+
 			if (await this._isHostDenied(req)) {
 				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(404);
