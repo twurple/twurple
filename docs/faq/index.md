@@ -89,5 +89,5 @@ This can have different reasons:
 - Make sure your SSL is set up properly.
   In particular, you need to make sure you're using a trusted certificate (self-signed won't work)
   and that you're passing the full certificate chain.  
-  A good way to test your SSL setup is [https://www.ssllabs.com/ssltest](the Qualys SSL Labs test).
+  A good way to test your SSL setup is [the Qualys SSL Labs test](https://www.ssllabs.com/ssltest).
   It will make sure you find all trust and chain issues.
