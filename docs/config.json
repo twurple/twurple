@@ -164,6 +164,12 @@
 			]
 		},
 		{
+			"name": "faq",
+			"title": "FAQ",
+			"indexTitle": "Frequently asked questions (FAQ)",
+			"indexFile": "faq/index.md"
+		},
+		{
 			"name": "migration",
 			"title": "Migration",
 			"indexTitle": "Migration from Twitch.js",

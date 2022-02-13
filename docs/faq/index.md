@@ -1,0 +1,93 @@
+## I'm trying to make my bot say something / join channels right after connecting, but awaiting the `connect()` Promise / listening to the `onConnect` event doesn't work.
+
+Twitch uses the IRC protocol as foundation for its chat. In this protocol, after connection,
+you must tell the server your name and (optionally) authenticate before you can send messages to channels.
+The IRC specification calls this process "registration".
+
+The base library we use for the `ChatClient` is an IRC library that has terminology very close to the IRC specification.
+This means that `onConnect` will happen before the registration step,
+which in turn means that you can't join channels or send messages yet in a listener for that event.
+
+Similarly, awaiting the Promise returned by `connect()` also has this problem of being too early,
+and has the additional downside that your code will only run when the client connects for the first time,
+and does not re-run when you reconnect due to connection instability.
+
+Instead, you should use the `onRegister` event to send messages.
+
+```ts
+chatClient.onRegister(() => {
+	chatClient.say('someone', 'Hello, I\'m now connected!');
+})
+```
+
+For joining channels, the `channels` option exists in the constructor of the `ChatClient` class.
+You can even pass an async function to it to dynamically access a possibly changing set of channels:
+
+```ts
+const chatClient = new ChatClient({
+	authProvider,
+	channels: async () => await someDatabase.select('twitchUsername').from('users').fetchAll().map(u => u.twitchUsername)
+})
+```
+
+## Why does `EventSubMiddleware` show the error "The request body was already consumed by something else", and how do I fix it?
+
+This happens because you're using conflicting middleware that parses the body, such as:
+
+- `body-parser`
+- `express.json()`
+- `express.raw()`
+
+Many popular express tutorials (in fact, even the official documentation of `express`!)
+tell you to apply these body parsers for all requests, like so:
+
+```js
+const express = require('express');
+
+const app = express();
+app.use(express.json()); // don't do this!
+
+app.get('/', (req, res) => res.send('Hello World'));
+app.get('/echo-prop', (req, res) => res.send(req.body.prop));
+
+app.listen(3000);
+```
+
+This code applies the JSON parser middleware for all requests.
+That means that you have a JSON-parsed object in `req.body` at all times.  
+Sadly, it also means that we can't read the raw body from the request anymore,
+since it is already consumed by that middleware.
+
+You might ask: "Why can't you just use `req.body` if it already exists in a parsed form?"  
+The answer to this is that we need access to the raw body in order to match its signature.  
+In order to verify that the request really came from Twitch,
+they sign the request using the secret that was passed at subscription time.  
+If we re-encode the JSON payload in `req.body` rather than using the raw data,
+the result might be slightly mismatched in formatting, which breaks the signature.
+
+The proper way to use body parser middleware is to apply them where you actually expect JSON *input*
+(as opposed to returning JSON):
+
+```js
+const express = require('express');
+
+const app = express();
+
+app.get('/', (req, res) => res.send('Hello World'));
+app.get('/echo-prop', express.json(), (req, res) => res.send(req.body.prop));
+
+app.listen(3000);
+```
+
+## My `EventSubListener` or `EventSubMiddleware` starts up correctly, but it never tells me about successful subscriptions, why?
+
+This can have different reasons:
+
+- If you run a reverse proxy in front of the listener, make sure it forwards the requests properly.
+  The listener expects the `pathPrefix` to be stripped from the received URL.  
+  Consult your reverse proxy's logs and [set up logging for the listener](/docs/getting-data/logging/configuration) as well. 
+- Make sure your SSL is set up properly.
+  In particular, you need to make sure you're using a trusted certificate (self-signed won't work)
+  and that you're passing the full certificate chain.  
+  A good way to test your SSL setup is [https://www.ssllabs.com/ssltest](the Qualys SSL Labs test).
+  It will make sure you find all trust and chain issues.
