@@ -48,7 +48,7 @@ const app = express();
 app.use(express.json()); // don't do this!
 
 app.get('/', (req, res) => res.send('Hello World'));
-app.get('/echo-prop', (req, res) => res.send(req.body.prop));
+app.post('/echo-prop', (req, res) => res.send(req.body.prop));
 
 app.listen(3000);
 ```
@@ -74,7 +74,7 @@ const express = require('express');
 const app = express();
 
 app.get('/', (req, res) => res.send('Hello World'));
-app.get('/echo-prop', express.json(), (req, res) => res.send(req.body.prop));
+app.post('/echo-prop', express.json(), (req, res) => res.send(req.body.prop));
 
 app.listen(3000);
 ```
