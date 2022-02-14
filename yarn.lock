@@ -72,16 +72,16 @@
   resolved "https://registry.yarnpkg.com/@d-fischer/deprecate/-/deprecate-2.0.2.tgz#d1f0d40acc881edd771cace7992a1070460608c8"
   integrity sha512-wlw3HwEanJFJKctwLzhfOM6LKwR70FPfGZGoKOhWBKyOPXk+3a9Cc6S9zhm6tka7xKtpmfxVIReGUwPnMbIaZg==
 
-"@d-fischer/documen.ts@^0.14.0":
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.14.0.tgz#42d0ca47bbe24e3f7d65d310ed585a94e5632523"
-  integrity sha512-1zlk8fU7Ws5olPnsRSHkyyguZoMlzitSIMgzUcLYsgviMSzLArVcd+yLMiOvl/EpFAE7RSDiVfGEQIZST3ex8w==
+"@d-fischer/documen.ts@^0.14.1":
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/@d-fischer/documen.ts/-/documen.ts-0.14.1.tgz#e660c275c86cc46fb4a61245d4a78394b442b40a"
+  integrity sha512-CbSnf8fUftBxWExW8itUcxdILQZaYO6H3mfo7RAFOQwBEo1MtXQ0gIiliJABhwSfJzv7K8ugkmEamx2MY1UWOw==
   dependencies:
     "@d-fischer/react-syntax-highlighter" "^15.4.5"
     "@d-fischer/shared-utils" "^3.0.1"
-    "@fortawesome/fontawesome-svg-core" "^1.2.36"
+    "@fortawesome/fontawesome-svg-core" "1.2.36"
     "@fortawesome/free-solid-svg-icons" "^5.15.4"
-    "@fortawesome/react-fontawesome" "^0.1.15"
+    "@fortawesome/react-fontawesome" "0.1.16"
     "@material-ui/styles" "^5.0.0-alpha.15"
     "@rollup/plugin-multi-entry" "^4.0.0"
     "@types/classnames" "^2.2.10"
@@ -302,7 +302,7 @@
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.36.tgz#b44e52db3b6b20523e0c57ef8c42d315532cb903"
   integrity sha512-a/7BiSgobHAgBWeN7N0w+lAhInrGxksn13uK7231n2m8EDPE3BMCl9NZLTGrj9ZXfCmC6LM0QLqXidIizVQ6yg==
 
-"@fortawesome/fontawesome-svg-core@^1.2.36":
+"@fortawesome/fontawesome-svg-core@1.2.36":
   version "1.2.36"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-svg-core/-/fontawesome-svg-core-1.2.36.tgz#4f2ea6f778298e0c47c6524ce2e7fd58eb6930e3"
   integrity sha512-YUcsLQKYb6DmaJjIHdDWpBIGCcyE/W+p/LMGvjQem55Mm2XWVAP5kWTMKWLv9lwpCVjpLxPyOMOyUocP1GxrtA==
@@ -316,7 +316,7 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.36"
 
-"@fortawesome/react-fontawesome@^0.1.15":
+"@fortawesome/react-fontawesome@0.1.16":
   version "0.1.16"
   resolved "https://registry.yarnpkg.com/@fortawesome/react-fontawesome/-/react-fontawesome-0.1.16.tgz#ce7665490214e20f929368d6b65f68884a99276a"
   integrity sha512-aLmzDwC9rEOAJv2UJdMns89VZR5Ry4IHu5dQQh24Z/lWKEm44lfQr1UNalZlkUaQN8d155tNh+CS7ntntj1VMA==
