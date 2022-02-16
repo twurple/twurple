@@ -46,10 +46,10 @@
     "@types/node" "^14.14.22"
     tslib "^2.1.0"
 
-"@d-fischer/connection@^6.6.0":
-  version "6.6.1"
-  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.6.1.tgz#cbda6ff31220edbd431442707262ea2a5e51a0e1"
-  integrity sha512-YO+5bbfj6Fh8JPO1jm8VeQ7CN0yFuzbg402UoSjnQ0R1T4PiuYRkvVfo0wihhqqRIBJ73CdAQyWHE8YvsTeltg==
+"@d-fischer/connection@^6.6.0", "@d-fischer/connection@^6.6.2":
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.6.2.tgz#4de63824ef08f9b8dd87cd78a9772f474be00ea0"
+  integrity sha512-lupWmQrsgcTUosf02kZK+Ygn3Q6HYisSGIwk3lxExOhmc+GJjwczyod8udC7nQJpwaFxebnBNSkqNGRMJBekSw==
   dependencies:
     "@d-fischer/isomorphic-ws" "^7.0.0"
     "@d-fischer/logger" "^4.0.0"
