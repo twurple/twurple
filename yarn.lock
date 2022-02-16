@@ -39,19 +39,19 @@
     "@types/node" "^14.14.22"
     tslib "^2.1.0"
 
-"@d-fischer/connection@^6.6.0":
-  version "6.6.0"
-  resolved "https://registry.npmjs.org/@d-fischer/connection/-/connection-6.6.0.tgz"
-  integrity sha512-pm+BF3ZGoOu0Mq/l5rkaK0CE9WKwcEVednguuWVNrYggBMEmV5SBLn8k66vMUf+tmym6SP+n3NkpXT2uXbwKqQ==
+"@d-fischer/connection@^6.6.0", "@d-fischer/connection@^6.6.2":
+  version "6.6.2"
+  resolved "https://registry.yarnpkg.com/@d-fischer/connection/-/connection-6.6.2.tgz#4de63824ef08f9b8dd87cd78a9772f474be00ea0"
+  integrity sha512-lupWmQrsgcTUosf02kZK+Ygn3Q6HYisSGIwk3lxExOhmc+GJjwczyod8udC7nQJpwaFxebnBNSkqNGRMJBekSw==
   dependencies:
-    "@d-fischer/isomorphic-ws" "^6.0.0"
+    "@d-fischer/isomorphic-ws" "^7.0.0"
     "@d-fischer/logger" "^4.0.0"
     "@d-fischer/shared-utils" "^3.0.1"
     "@d-fischer/typed-event-emitter" "^3.2.2"
     "@types/node" "^16.7.10"
-    "@types/ws" "^7.4.6"
+    "@types/ws" "^8.2.0"
     tslib "^2.0.3"
-    ws "^7.4.2"
+    ws "^8.2.2"
 
 "@d-fischer/cross-fetch@^4.0.2":
   version "4.0.2"
@@ -156,10 +156,10 @@
     eslint-plugin-import "^2.22.0"
     eslint-plugin-jsdoc "^25.4.3"
 
-"@d-fischer/isomorphic-ws@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.npmjs.org/@d-fischer/isomorphic-ws/-/isomorphic-ws-6.0.0.tgz"
-  integrity sha512-xRhs0tSFxDAbKIxsfXzSz9+KAsz2P64NesfopsqQLf70adKLt+J8am1IFPssN1GlbDnXF15kzrkc8cogpk02gA==
+"@d-fischer/isomorphic-ws@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@d-fischer/isomorphic-ws/-/isomorphic-ws-7.0.0.tgz#ea578e6b8ab6ae9e0c44618a5a8c87b97c92358e"
+  integrity sha512-bydCy1tKvPKvyF0KeDvN1aiAZA4CzQVa2gHifNQczW9Czl89vZ4QHnJMjUcTboWKecbnz5mGiM9PjKA1Xx2Dyg==
 
 "@d-fischer/logger@^4.0.0":
   version "4.1.1"
@@ -1727,10 +1727,10 @@
     anymatch "^3.0.0"
     source-map "^0.6.0"
 
-"@types/ws@^7.4.6":
-  version "7.4.7"
-  resolved "https://registry.npmjs.org/@types/ws/-/ws-7.4.7.tgz"
-  integrity sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==
+"@types/ws@^8.2.0":
+  version "8.2.2"
+  resolved "https://registry.yarnpkg.com/@types/ws/-/ws-8.2.2.tgz#7c5be4decb19500ae6b3d563043cd407bf366c21"
+  integrity sha512-NOn5eIcgWLOo6qW8AcuLZ7G8PycXu0xTxxkS6Q18VWFxgPUSOwV0pBj2a/4viNZVu25i7RIB7GttdkAIUUXOOg==
   dependencies:
     "@types/node" "*"
 
@@ -8703,15 +8703,15 @@ write-pkg@^4.0.0:
     type-fest "^0.4.1"
     write-json-file "^3.2.0"
 
-ws@^7.4.2:
-  version "7.5.5"
-  resolved "https://registry.npmjs.org/ws/-/ws-7.5.5.tgz"
-  integrity sha512-BAkMFcAzl8as1G/hArkxOxq3G7pjUqQ3gzYbLL0/5zNkph70e+lCoxBGnm6AW1+/aiNeV4fnKqZ8m4GZewmH2w==
-
 ws@^8.2.0:
   version "8.2.2"
   resolved "https://registry.npmjs.org/ws/-/ws-8.2.2.tgz"
   integrity sha512-Q6B6H2oc8QY3llc3cB8kVmQ6pnJWVQbP7Q5algTcIxx7YEpc0oU4NBVHlztA7Ekzfhw2r0rPducMUiCGWKQRzw==
+
+ws@^8.2.2:
+  version "8.5.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.5.0.tgz#bfb4be96600757fe5382de12c670dab984a1ed4f"
+  integrity sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==
 
 xtend@^4.0.0, xtend@~4.0.1:
   version "4.0.2"

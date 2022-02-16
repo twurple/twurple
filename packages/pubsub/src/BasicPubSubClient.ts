@@ -1,6 +1,5 @@
-import type { Connection } from '@d-fischer/connection';
+import type { Connection, WebSocketClientOptions } from '@d-fischer/connection';
 import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
-import type { ClientOptions } from '@d-fischer/isomorphic-ws';
 import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
@@ -47,7 +46,7 @@ export interface BasicPubSubClientOptions {
 	/**
 	 * The client options to use for connecting to the WebSocket.
 	 */
-	wsOptions?: ClientOptions;
+	wsOptions?: WebSocketClientOptions;
 }
 
 /**

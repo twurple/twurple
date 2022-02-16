@@ -40,11 +40,11 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/api": "^5.0.17",
+    "@twurple/auth": "^5.0.17",
     "tmi.js": "^1.7.1"
   },
   "peerDependencies": {
-    "@twurple/api": "^5.0.0",
+    "@twurple/auth": "^5.0.0",
     "tmi.js": "^1.6.0"
   },
   "files": [
