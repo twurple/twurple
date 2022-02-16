@@ -1,6 +1,6 @@
 {
   "name": "@twurple/auth",
-  "version": "5.0.17",
+  "version": "5.0.18",
   "publishConfig": {
     "access": "public"
   },
@@ -34,8 +34,8 @@
   "dependencies": {
     "@d-fischer/logger": "^4.0.0",
     "@d-fischer/shared-utils": "^3.2.0",
-    "@twurple/api-call": "^5.0.17",
-    "@twurple/common": "^5.0.17",
+    "@twurple/api-call": "^5.0.18",
+    "@twurple/common": "^5.0.18",
     "tslib": "^2.0.3"
   },
   "files": [

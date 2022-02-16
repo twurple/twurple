@@ -1,6 +1,6 @@
 {
   "name": "@twurple/pubsub",
-  "version": "5.0.17",
+  "version": "5.0.18",
   "publishConfig": {
     "access": "public"
   },
@@ -34,11 +34,11 @@
     "@d-fischer/logger": "^4.0.0",
     "@d-fischer/shared-utils": "^3.2.0",
     "@d-fischer/typed-event-emitter": "^3.2.2",
-    "@twurple/common": "^5.0.17",
+    "@twurple/common": "^5.0.18",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "^5.0.17"
+    "@twurple/auth": "^5.0.18"
   },
   "peerDependencies": {
     "@twurple/auth": "^5.0.0"
