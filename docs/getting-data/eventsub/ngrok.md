@@ -17,7 +17,10 @@ or using npm:
 
 Listening to events using ngrok is easy since the ngrok adapter benefits from the ability to set itself up completely on its own:
 
-```typescript
+```ts
+// This is necessary to prevent conflict errors resulting from ngrok assigning a new host name every time
+await apiClient.eventSub.deleteAllSubscriptions();
+
 const listener = new EventSubListener({
 	apiClient,
 	adapter: new NgrokAdapter(),

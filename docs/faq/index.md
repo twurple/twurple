@@ -91,3 +91,16 @@ This can have different reasons:
   and that you're passing the full certificate chain.  
   A good way to test your SSL setup is [the Qualys SSL Labs test](https://www.ssllabs.com/ssltest).
   It will make sure you find all trust and chain issues.
+
+## EventSub: What does the error message `subscription missing proper authorization` mean?
+
+EventSub uses app tokens to create subscriptions. App tokens can't have any scopes.  
+However, that doesn't mean that authorization isn't necessary at all.
+Twitch will check with its internal systems whether the user ever authorized the necessary scope for the topic
+and give you the mentioned error message when it fails to find this authorization.
+
+To get this authorization, simply [go through OAuth](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/)
+(except the Client Credentials flow) with your client ID and the
+[necessary scopes](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types) that are documented
+for your desired subscription topics. You can throw away the token you get from this.
+The authorization will still get saved on Twitch - now you can subscribe to your topics.
