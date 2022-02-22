@@ -46,6 +46,11 @@ export interface ApiConfig {
 	authProvider: AuthProvider;
 
 	/**
+	 * Whether or not to use the new channel:manage:broadcast scope
+	 */
+	useNewBroadcastScope?: boolean;
+
+	/**
 	 * Additional options to pass to the fetch method.
 	 */
 	fetchOptions?: TwitchApiCallFetchOptions;
@@ -340,6 +345,11 @@ export class ApiClient {
 	/** @private */
 	get _authProvider(): AuthProvider {
 		return this._config.authProvider;
+	}
+
+	/** @private */
+	get _useNewBroadcastScope(): boolean {
+		return this._config.useNewBroadcastScope ?? false;
 	}
 
 	private async _callApiInternal(options: TwitchApiCallOptions, clientId?: string, accessToken?: string) {

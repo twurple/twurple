@@ -216,12 +216,13 @@ export class HelixStreamApi extends BaseApi {
 	 * @param description The description of the marker.
 	 */
 	async createStreamMarker(broadcaster: UserIdResolvable, description?: string): Promise<HelixStreamMarker> {
+		const scope = this._client._useNewBroadcastScope ? 'channel:manage:broadcast' : 'user:edit:broadcast';
 		try {
 			const result = await this._client.callApi<HelixResponse<HelixStreamMarkerData>>({
 				url: 'streams/markers',
 				method: 'POST',
 				type: 'helix',
-				scope: 'user:edit:broadcast',
+				scope: scope,
 				query: {
 					user_id: extractUserId(broadcaster),
 					description
@@ -262,10 +263,11 @@ export class HelixStreamApi extends BaseApi {
 	 * @param tagIds The tags to set. If not given, removes all tags.
 	 */
 	async replaceStreamTags(broadcaster: UserIdResolvable, tagIds?: string[]): Promise<void> {
+		const scope = this._client._useNewBroadcastScope ? 'channel:manage:broadcast' : 'user:edit:broadcast';
 		await this._client.callApi({
 			type: 'helix',
 			url: 'streams/tags',
-			scope: 'user:edit:broadcast',
+			scope: scope,
 			method: 'PUT',
 			query: {
 				broadcaster_id: extractUserId(broadcaster)

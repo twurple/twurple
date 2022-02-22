@@ -73,11 +73,12 @@ export class HelixChannelApi extends BaseApi {
 	 */
 	async updateChannelInfo(user: UserIdResolvable, data: HelixChannelUpdate): Promise<void> {
 		const userId = extractUserId(user);
+		const scope = this._client._useNewBroadcastScope ? 'channel:manage:broadcast' : 'user:edit:broadcast';
 		await this._client.callApi({
 			type: 'helix',
 			url: 'channels',
 			method: 'PATCH',
-			scope: 'user:edit:broadcast',
+			scope: scope,
 			query: {
 				broadcaster_id: userId
 			},
