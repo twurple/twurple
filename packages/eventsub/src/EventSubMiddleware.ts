@@ -1,5 +1,5 @@
 import { rtfm } from '@twurple/common';
-import type { Express, RequestHandler } from 'express-serve-static-core';
+import type { IRouter, RequestHandler } from 'express-serve-static-core';
 import { checkHostName } from './checks';
 import type { EventSubBaseConfig } from './EventSubBase';
 import { EventSubBase } from './EventSubBase';
@@ -19,6 +19,13 @@ export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
 	 * The path your listener is mounted under.
 	 */
 	pathPrefix?: string;
+
+	/**
+	 * Whether the path prefix will added to the mount point. Defaults to `true`.
+	 *
+	 * Must be `false` if you use this with subrouters.
+	 */
+	usePathPrefixInHandlers?: boolean;
 }
 
 /**
@@ -33,6 +40,7 @@ export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
 export class EventSubMiddleware extends EventSubBase {
 	private readonly _hostName: string;
 	private readonly _pathPrefix?: string;
+	private readonly _usePathPrefixInHandlers: boolean;
 
 	/**
 	 * Creates a new EventSub middleware wrapper.
@@ -48,29 +56,33 @@ export class EventSubMiddleware extends EventSubBase {
 
 		this._hostName = config.hostName;
 		this._pathPrefix = config.pathPrefix;
+		this._usePathPrefixInHandlers = config.usePathPrefixInHandlers ?? true;
 	}
 
 	/**
-	 * Applies middleware that handles EventSub notifications to an Express app.
+	 * Applies middleware that handles EventSub notifications to an Express app/router.
 	 *
-	 * @param app The app the middleware should be applied to.
+	 * @param router The app or router the middleware should be applied to.
 	 */
-	async apply(app: Express): Promise<void> {
-		let pathPrefix = this._pathPrefix;
-		if (pathPrefix) {
-			pathPrefix = `/${pathPrefix.replace(/^\/|\/$/g, '')}`;
+	async apply(router: IRouter): Promise<void> {
+		let requestPathPrefix: string | undefined = undefined;
+		if (this._usePathPrefixInHandlers) {
+			requestPathPrefix = this._pathPrefix;
+			if (requestPathPrefix) {
+				requestPathPrefix = `/${requestPathPrefix.replace(/^\/|\/$/g, '')}`;
+			}
 		}
 		const requestHandler = this._createHandleRequest() as unknown as RequestHandler;
 		const dropLegacyHandler = this._createDropLegacyRequest() as unknown as RequestHandler;
 		const healthHandler = this._createHandleHealthRequest() as unknown as RequestHandler;
-		if (pathPrefix) {
-			app.post(`${pathPrefix}/event/:id`, requestHandler);
-			app.post(`${pathPrefix}/:id`, dropLegacyHandler);
-			app.get(`${pathPrefix}`, healthHandler);
+		if (requestPathPrefix) {
+			router.post(`${requestPathPrefix}/event/:id`, requestHandler);
+			router.post(`${requestPathPrefix}/:id`, dropLegacyHandler);
+			router.get(`${requestPathPrefix}`, healthHandler);
 		} else {
-			app.post('event/:id', requestHandler);
-			app.post(':id', dropLegacyHandler);
-			app.get('/', healthHandler);
+			router.post('event/:id', requestHandler);
+			router.post(':id', dropLegacyHandler);
+			router.get('/', healthHandler);
 		}
 	}
 

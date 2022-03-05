@@ -22,6 +22,17 @@ export interface ReverseProxyAdapterConfig {
 	 * The path prefix your reverse proxy redirects to the listener.
 	 */
 	pathPrefix?: string;
+
+	/**
+	 * Whether the path prefix is passed to the handler.
+	 *
+	 * Defaults to `false` which means that the layer redirecting to this server needs to strip the path prefix in order for it to work.
+	 *
+	 * For example, if the path prefix is set to /hooks, an external connection to /hooks/abc should pass /abc as the path to this server.
+	 *
+	 * Conversely, if this is set to `true`, the path should be passed as is (i.e. /hooks/abc).
+	 */
+	usePathPrefixInHandlers?: boolean;
 }
 
 /**
@@ -34,6 +45,7 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _port: number;
 	private readonly _pathPrefix?: string;
+	private readonly _usePathPrefixInHandlers: boolean;
 
 	/**
 	 * Creates a reverse proxy connection adapter.
@@ -50,6 +62,7 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 		this._hostName = options.hostName;
 		this._port = options.port ?? 8080;
 		this._pathPrefix = options.pathPrefix;
+		this._usePathPrefixInHandlers = options.usePathPrefixInHandlers ?? false;
 	}
 
 	/** @protected */
@@ -65,5 +78,10 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 	/** @protected */
 	get pathPrefix(): string | undefined {
 		return this._pathPrefix;
+	}
+
+	/** @protected */
+	get usePathPrefixInHandlers(): boolean {
+		return this._usePathPrefixInHandlers;
 	}
 }

@@ -81,9 +81,28 @@ export class EventSubListener extends EventSubBase {
 			});
 			next();
 		});
-		this._server.get('/', this._createHandleHealthRequest());
-		this._server.post('/:id', this._createDropLegacyRequest());
-		this._server.post('/event/:id', this._createHandleRequest());
+		let requestPathPrefix: string | undefined = undefined;
+		if (this._adapter.usePathPrefixInHandlers) {
+			requestPathPrefix = this._adapter.pathPrefix;
+			if (requestPathPrefix) {
+				requestPathPrefix = `/${requestPathPrefix.replace(/^\/|\/$/g, '')}`;
+			}
+		}
+
+		const healthHandler = this._createHandleHealthRequest();
+		const dropLegacyHandler = this._createDropLegacyRequest();
+		const requestHandler = this._createHandleRequest();
+
+		if (requestPathPrefix) {
+			this._server.post(`${requestPathPrefix}/event/:id`, requestHandler);
+			this._server.post(`${requestPathPrefix}/:id`, dropLegacyHandler);
+			this._server.get(`${requestPathPrefix}`, healthHandler);
+		} else {
+			this._server.post('/event/:id', requestHandler);
+			this._server.post('/:id', dropLegacyHandler);
+			this._server.get('/', healthHandler);
+		}
+
 		const adapterListenerPort = await this._adapter.getListenerPort();
 		if (adapterListenerPort && port) {
 			this._logger.warn(`Your passed port (${port}) is being ignored because the adapter has overridden it.
