@@ -53,7 +53,7 @@ export async function callTwitchApiRaw(
 		body
 	};
 
-	return await fetch(params ? `${url}${params}` : url, requestOptions);
+	return await fetch(`${url}${params}`, requestOptions);
 }
 
 /**
@@ -81,10 +81,12 @@ export async function callTwitchApi<T = unknown>(
 	if (!response.ok) {
 		const isJson = response.headers.get('Content-Type') === 'application/json';
 		const text = isJson ? JSON.stringify(await response.json(), null, 2) : await response.text();
+		const params = stringify(options.query, { arrayFormat: 'repeat', addQueryPrefix: true });
+		const fullUrl = `${options.url}${params}`;
 		throw new HttpStatusCodeError(
 			response.status,
 			response.statusText,
-			options.url,
+			fullUrl,
 			options.method ?? 'GET',
 			text,
 			isJson
