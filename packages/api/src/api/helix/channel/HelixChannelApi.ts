@@ -1,7 +1,7 @@
+import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import type { CommercialLength, UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
-import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
 import type { HelixChannelData } from './HelixChannel';
 import { HelixChannel } from './HelixChannel';
 import type { HelixChannelEditorData } from './HelixChannelEditor';

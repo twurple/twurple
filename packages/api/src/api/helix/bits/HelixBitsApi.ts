@@ -1,7 +1,7 @@
+import type { HelixResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
-import type { HelixResponse } from '../HelixResponse';
 import type { HelixBitsLeaderboardResponse } from './HelixBitsLeaderboard';
 import { HelixBitsLeaderboard } from './HelixBitsLeaderboard';
 import type { HelixCheermoteData } from './HelixCheermoteList';

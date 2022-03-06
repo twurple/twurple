@@ -1,3 +1,4 @@
+import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -7,7 +8,6 @@ import type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from '../Hel
 import { createPaginatedResult, createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
-import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '../HelixResponse';
 import type { HelixInstalledExtensionListData } from './Extensions/HelixInstalledExtensionList';
 import { HelixInstalledExtensionList } from './Extensions/HelixInstalledExtensionList';
 import type { HelixUserExtensionData } from './Extensions/HelixUserExtension';

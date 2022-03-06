@@ -1,9 +1,9 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
+import type { HelixResponse } from '@twurple/api-call';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixDateRangeData } from '../HelixDateRangeData';
-import type { HelixResponse } from '../HelixResponse';
 import type { HelixBitsLeaderboardEntryData } from './HelixBitsLeaderboardEntry';
 import { HelixBitsLeaderboardEntry } from './HelixBitsLeaderboardEntry';
 

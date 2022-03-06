@@ -15,7 +15,6 @@ export { HelixPaginatedRequest } from './api/helix/HelixPaginatedRequest';
 export { HelixPaginatedRequestWithTotal } from './api/helix/HelixPaginatedRequestWithTotal';
 export type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './api/helix/HelixPaginatedResult';
 export type { HelixForwardPagination, HelixPagination } from './api/helix/HelixPagination';
-export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './api/helix/HelixResponse';
 
 export { HelixBitsApi } from './api/helix/bits/HelixBitsApi';
 export type { HelixBitsLeaderboardPeriod, HelixBitsLeaderboardQuery } from './api/helix/bits/HelixBitsApi';
@@ -75,13 +74,6 @@ export type {
 	HelixExtensionTransactionsFilter,
 	HelixExtensionTransactionsPaginatedFilter
 } from './api/helix/extensions/HelixExtensionsApi';
-export { HelixExtension } from './api/helix/extensions/HelixExtension';
-export type {
-	HelixExtensionSubscriptionsSupportLevel,
-	HelixExtensionState,
-	HelixExtensionIconSize,
-	HelixExtensionConfigurationLocation
-} from './api/helix/extensions/HelixExtension';
 export { HelixExtensionBitsProduct } from './api/helix/extensions/HelixExtensionBitsProduct';
 export type { HelixExtensionBitsProductUpdatePayload } from './api/helix/extensions/HelixExtensionBitsProduct';
 export { HelixExtensionTransaction } from './api/helix/extensions/HelixExtensionTransaction';
@@ -201,13 +193,18 @@ export { ConfigError } from './errors/ConfigError';
 export { NoSubscriptionProgramError } from './errors/NoSubscriptionProgramError';
 export { StreamNotLiveError } from './errors/StreamNotLiveError';
 
-export { ChatEmote, extractUserId, extractUserName, HellFreezesOverError } from '@twurple/common';
+export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '@twurple/api-call';
+export { ChatEmote, extractUserId, extractUserName, HelixExtension, HellFreezesOverError } from '@twurple/common';
 export type {
 	CheermoteBackground,
 	CheermoteDisplayInfo,
 	CommercialLength,
 	CheermoteScale,
 	CheermoteState,
+	HelixExtensionSubscriptionsSupportLevel,
+	HelixExtensionState,
+	HelixExtensionIconSize,
+	HelixExtensionConfigurationLocation,
 	HelixUserType,
 	UserIdResolvable,
 	UserNameResolvable

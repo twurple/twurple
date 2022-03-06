@@ -25,6 +25,15 @@ export type {
 	ParsedMessageTextPart
 } from './emotes/ParsedMessagePart';
 
+export { HelixExtension } from './extensions/HelixExtension';
+export type {
+	HelixExtensionConfigurationLocation,
+	HelixExtensionState,
+	HelixExtensionIconSize,
+	HelixExtensionSubscriptionsSupportLevel,
+	HelixExtensionData
+} from './extensions/HelixExtension';
+
 export { CustomError } from './errors/CustomError';
 export { HellFreezesOverError } from './errors/HellFreezesOverError';
 

@@ -1,9 +1,8 @@
-import type { TwitchApiCallOptions } from '@twurple/api-call';
+import type { HelixPaginatedResponse, TwitchApiCallOptions } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
-import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixScheduleResponse } from './HelixSchedule';
 import type { HelixScheduleFilter } from './HelixScheduleApi';
 import type { HelixScheduleSegmentData } from './HelixScheduleSegment';

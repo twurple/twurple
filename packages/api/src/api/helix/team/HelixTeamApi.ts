@@ -1,8 +1,8 @@
+import type { HelixResponse } from '@twurple/api-call';
 import { HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
-import type { HelixResponse } from '../HelixResponse';
 import type { HelixTeamData } from './HelixTeam';
 import { HelixTeam } from './HelixTeam';
 import type { HelixTeamWithUsersData } from './HelixTeamWithUsers';
