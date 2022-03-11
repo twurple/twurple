@@ -47,7 +47,7 @@ const memberNames = [
 	'^twitter_connected$',
 	'^chat_message$',
 	'^badge_tier$',
-	'^(?:previous|new|extension)_version$',
+	'^(?:previous|new|extension|format)_version$',
 	'^(total_)?bits_used$',
 	'^badge_entitlement$',
 	'^moderation_action$',

@@ -1,4 +1,4 @@
-export { getExtension, getExtensionVersion } from './helpers';
+export { getExtension, getExtensionVersion, getExtensionSecrets, createExtensionSecret } from './helpers';
 export type { EbsCallConfig } from './helpers';
 
 export { createExternalJwt } from './jwt';
