@@ -1,8 +1,8 @@
 import { mapNullable } from '@d-fischer/shared-utils';
 import type { HelixResponse } from '@twurple/api-call';
 import { callTwitchApi } from '@twurple/api-call';
-import type { HelixExtensionData } from '@twurple/common';
-import { HelixExtension } from '@twurple/common';
+import type { HelixExtensionData, UserIdResolvable } from '@twurple/common';
+import { extractUserId, HelixExtension } from '@twurple/common';
 import type { HelixExtensionSecretListData } from './classes/HelixExtensionSecretList';
 import { HelixExtensionSecretList } from './classes/HelixExtensionSecretList';
 import type { BaseExternalJwtConfig } from './jwt';
@@ -64,4 +64,29 @@ export async function createExtensionSecret(config: EbsCallConfig, delay?: numbe
 	);
 
 	return new HelixExtensionSecretList(result.data[0]);
+}
+
+export async function setExtensionRequiredConfiguration(
+	config: EbsCallConfig,
+	broadcaster: UserIdResolvable,
+	version: string,
+	configVersion: string
+): Promise<void> {
+	const jwt = createExternalJwt(config);
+
+	await callTwitchApi(
+		{
+			url: 'extensions/required_configuration',
+			query: {
+				broadcaster_id: extractUserId(broadcaster)
+			},
+			jsonBody: {
+				extension_id: config.clientId,
+				extension_version: version,
+				required_configuration: configVersion
+			}
+		},
+		config.clientId,
+		jwt
+	);
 }

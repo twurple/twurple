@@ -96,6 +96,7 @@ const memberNames = [
 	'^sexuality_sex_or_gender$',
 	'^race_ethnicity_or_religion$',
 	'^sex_based_terms$',
+	'^required_configuration$',
 
 	// HTTP
 	'^Accept$'
