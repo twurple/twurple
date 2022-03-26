@@ -200,7 +200,7 @@ const scopeEquivalencies = new Map([
 	['user_follows_edit', 'user:edit:follows'],
 	['user_read', 'user:read:email'],
 	['user_subscriptions', 'user:read:subscriptions'],
-	['user:edit:broadcast', 'channel:manage:broadcast'],
+	['user:edit:broadcast', 'channel:manage:broadcast']
 ]);
 
 /**
