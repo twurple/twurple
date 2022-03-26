@@ -202,8 +202,6 @@ const scopeEquivalencies = new Map([
 	['user_subscriptions', 'user:read:subscriptions'],
 ]);
 
-const reverseScopeEquivalencies = new Map(Array.from(scopeEquivalencies, entry => [entry[1], entry[0]]))
-
 /**
  * Compares scopes for a non-upgradable `AuthProvider` instance.
  *
@@ -216,7 +214,7 @@ export function compareScopes(scopesToCompare: string[], requestedScopes?: strin
 		for (const scope of scopesToCompare) {
 			scopes.add(scope);
 
-			const equivalent = scopeEquivalencies.get(scope) ?? reverseScopeEquivalencies.get(scope);
+			const equivalent = scopeEquivalencies.get(scope);
 			if (equivalent !== undefined) {
 				scopes.add(equivalent);
 			}
