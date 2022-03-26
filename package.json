@@ -11,6 +11,10 @@
     "@d-fischer/documen.ts": "^0.14.1",
     "@d-fischer/eslint-config": "^5.0.0",
     "@types/node": "^12.12.47",
+    "@types/jest": "^27.4.1",
+    "jest": "^27.5.1",
+    "jest-environment-node": "^27.5.1",
+    "ts-jest": "^27.1.4",
     "cross-env": "^7.0.3",
     "eslint": "^7.17.0",
     "eslint-import-resolver-lerna": "^2.0.0",
@@ -29,7 +33,8 @@
     "build": "lerna run build",
     "rebuild": "lerna run rebuild",
     "docs": "documen.ts",
-    "lerna": "lerna"
+    "lerna": "lerna",
+    "test": "jest"
   },
   "husky": {
     "hooks": {
