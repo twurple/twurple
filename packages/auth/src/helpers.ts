@@ -190,6 +190,20 @@ export async function getValidTokenFromProvider(
 	throw lastTokenError ?? new Error('Could not retrieve a valid token');
 }
 
+const scopeEquivalencies = new Map([
+	['channel_commercial', 'channel:edit:commercial'],
+	['channel_editor', 'channel:manage:broadcast'],
+	['channel_read', 'channel:read:stream_key'],
+	['channel_subscriptions', 'channel:read:subscriptions'],
+	['user_blocks_read', 'user:read:blocked_users'],
+	['user_blocks_edit', 'user:manage:blocked_users'],
+	['user_follows_edit', 'user:edit:follows'],
+	['user_read', 'user:read:email'],
+	['user_subscriptions', 'user:read:subscriptions'],
+]);
+
+const reverseScopeEquivalencies = new Map(Array.from(scopeEquivalencies, entry => [entry[1], entry[0]]))
+
 /**
  * Compares scopes for a non-upgradable `AuthProvider` instance.
  *
@@ -197,13 +211,25 @@ export async function getValidTokenFromProvider(
  * @param requestedScopes The scopes you requested.
  */
 export function compareScopes(scopesToCompare: string[], requestedScopes?: string[]): void {
-	if (requestedScopes?.some(scope => !scopesToCompare.includes(scope))) {
-		throw new Error(
-			`This token does not have the requested scopes (${requestedScopes.join(', ')}) and can not be upgraded.
+	if (requestedScopes !== undefined) {
+		const scopes = new Set<string>();
+		for (const scope of scopesToCompare) {
+			scopes.add(scope);
+
+			const equivalent = scopeEquivalencies.get(scope) ?? reverseScopeEquivalencies.get(scope);
+			if (equivalent !== undefined) {
+				scopes.add(equivalent);
+			}
+		}
+
+		if (requestedScopes.some(scope => !scopes.has(scope))) {
+			throw new Error(
+				`This token does not have the requested scopes (${requestedScopes.join(', ')}) and can not be upgraded.
 If you need dynamically upgrading scopes, please implement the AuthProvider interface accordingly:
 
 \thttps://twurple.js.org/reference/auth/interfaces/AuthProvider.html`
-		);
+			);
+		}
 	}
 }
 
