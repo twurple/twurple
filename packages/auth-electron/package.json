@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "@twurple/auth": "^5.1.0-pre.7",
-    "electron": "^11.1.1"
+    "electron": "^13.6.6"
   },
   "peerDependencies": {
     "@twurple/auth": "^5.0.0",
