@@ -221,7 +221,7 @@ export class HelixStreamApi extends BaseApi {
 				url: 'streams/markers',
 				method: 'POST',
 				type: 'helix',
-				scope: 'user:edit:broadcast',
+				scope: 'channel:manage:broadcast',
 				query: {
 					user_id: extractUserId(broadcaster),
 					description
@@ -265,7 +265,7 @@ export class HelixStreamApi extends BaseApi {
 		await this._client.callApi({
 			type: 'helix',
 			url: 'streams/tags',
-			scope: 'user:edit:broadcast',
+			scope: 'channel:manage:broadcast',
 			method: 'PUT',
 			query: {
 				broadcaster_id: extractUserId(broadcaster)

@@ -77,7 +77,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels',
 			method: 'PATCH',
-			scope: 'user:edit:broadcast',
+			scope: 'channel:manage:broadcast',
 			query: {
 				broadcaster_id: userId
 			},

@@ -165,7 +165,7 @@ export class SingleUserPubSubClient {
 	 * It receives a {@PubSubSubscriptionMessage} object.
 	 */
 	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void): Promise<PubSubListener<never>> {
-		return await this._addListener('channel-subscribe-events-v1', callback, 'channel_subscriptions');
+		return await this._addListener('channel-subscribe-events-v1', callback, 'channel:read:subscriptions');
 	}
 
 	/**
