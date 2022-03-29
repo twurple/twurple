@@ -1,10 +1,10 @@
+import type { ConstructedType } from '@d-fischer/shared-utils';
+import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '@twurple/api-call';
+import type { ApiClient } from '../../ApiClient';
+
 /**
  * A result coming from a Helix resource that is paginated using a cursor.
  */
-import type { ConstructedType } from '@d-fischer/shared-utils';
-import type { ApiClient } from '../../ApiClient';
-import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from './HelixResponse';
-
 export interface HelixPaginatedResult<T> {
 	/**
 	 * The returned data.

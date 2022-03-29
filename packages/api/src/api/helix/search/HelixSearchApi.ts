@@ -1,3 +1,4 @@
+import type { HelixPaginatedResponse } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { HelixGameData } from '../game/HelixGame';
@@ -7,7 +8,6 @@ import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
-import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixChannelSearchResultData } from './HelixChannelSearchResult';
 import { HelixChannelSearchResult } from './HelixChannelSearchResult';
 

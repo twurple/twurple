@@ -1,3 +1,4 @@
+import type { HelixPaginatedResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
@@ -6,7 +7,6 @@ import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
-import type { HelixPaginatedResponse } from '../HelixResponse';
 import type { HelixClipData } from './HelixClip';
 import { HelixClip } from './HelixClip';
 

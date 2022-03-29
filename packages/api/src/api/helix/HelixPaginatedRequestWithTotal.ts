@@ -1,6 +1,6 @@
+import type { HelixPaginatedResponseWithTotal } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import { HelixPaginatedRequest } from './HelixPaginatedRequest';
-import type { HelixPaginatedResponseWithTotal } from './HelixResponse';
 
 /**
  * A special case of {@HelixPaginatedRequest} with support for fetching the total number of entities, whenever an endpoint supports it.

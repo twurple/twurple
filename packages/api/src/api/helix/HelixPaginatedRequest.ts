@@ -1,8 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { TwitchApiCallOptions } from '@twurple/api-call';
+import type { HelixPaginatedResponse, TwitchApiCallOptions } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../ApiClient';
-import type { HelixPaginatedResponse } from './HelixResponse';
 
 if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unnecessary-condition,@typescript-eslint/no-unsafe-member-access

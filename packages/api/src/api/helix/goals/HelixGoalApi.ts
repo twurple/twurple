@@ -1,7 +1,7 @@
+import type { HelixResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
-import type { HelixResponse } from '../HelixResponse';
 import type { HelixGoalData } from './HelixGoal';
 import { HelixGoal } from './HelixGoal';
 

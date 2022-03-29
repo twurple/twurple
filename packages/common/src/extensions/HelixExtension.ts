@@ -1,4 +1,5 @@
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { DataObject, rawDataSymbol } from '../DataObject';
+import { rtfm } from '../rtfm';
 
 /**
  * The location of an extension's configuration.

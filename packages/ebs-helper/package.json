@@ -1,0 +1,55 @@
+{
+  "name": "@twurple/ebs-helper",
+  "version": "5.1.0-pre.7",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Helper methods to make your EBS communicate with Twitch more easily.",
+  "keywords": [
+    "twitch",
+    "extension",
+    "backend",
+    "service",
+    "ebs",
+    "api"
+  ],
+  "sideEffects": false,
+  "main": "lib",
+  "types": "lib",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twurple/twurple.git",
+    "directory": "packages/ebs-helper"
+  },
+  "homepage": "https://twurple.js.org",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
+  "license": "MIT",
+  "dependencies": {
+    "@d-fischer/shared-utils": "^3.2.0",
+    "@twurple/api-call": "^5.1.0-pre.7",
+    "@twurple/common": "^5.1.0-pre.7",
+    "jsonwebtoken": "^8.5.1",
+    "tslib": "^2.0.3"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "!lib/**/*.d.ts.map",
+    "es"
+  ],
+  "scripts": {
+    "build": "tsukuru",
+    "rebuild": "tsukuru --clean"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^8.5.8"
+  }
+}

@@ -1,4 +1,6 @@
-import { rtfm } from '@twurple/common';
+import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import type { HelixExtensionData } from '@twurple/common';
+import { HelixExtension, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
 import type { HelixChannelReferenceData } from '../channel/HelixChannelReference';
 import { HelixChannelReference } from '../channel/HelixChannelReference';
@@ -7,9 +9,6 @@ import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination, HelixPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
-import type { HelixPaginatedResponse, HelixResponse } from '../HelixResponse';
-import type { HelixExtensionData } from './HelixExtension';
-import { HelixExtension } from './HelixExtension';
 import type {
 	HelixExtensionBitsProductData,
 	HelixExtensionBitsProductUpdatePayload
