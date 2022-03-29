@@ -8,7 +8,11 @@ export {
 	getExtensionDeveloperConfiguration,
 	setExtensionGlobalConfiguration,
 	setExtensionBroadcasterConfiguration,
-	setExtensionDeveloperConfiguration
+	setExtensionDeveloperConfiguration,
+	sendExtensionChatMessage,
+	sendExtensionPubSubGlobalMessage,
+	sendExtensionPubSubBroadcastMessage,
+	sendExtensionPubSubWhisperMessage
 } from './helpers';
 export type { EbsCallConfig } from './helpers';
 

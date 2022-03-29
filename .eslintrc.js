@@ -97,6 +97,7 @@ const memberNames = [
 	'^race_ethnicity_or_religion$',
 	'^sex_based_terms$',
 	'^required_configuration$',
+	'^pubsub_perms$',
 
 	// HTTP
 	'^Accept$'

@@ -192,3 +192,82 @@ export async function setExtensionDeveloperConfiguration(
 ): Promise<void> {
 	await setAnyConfigurationSegment(config, 'developer', broadcaster, content, version);
 }
+
+export async function sendExtensionChatMessage(
+	config: EbsCallConfig,
+	broadcaster: UserIdResolvable,
+	extensionVersion: string,
+	text: string
+): Promise<void> {
+	const broadcasterId = extractUserId(broadcaster);
+	const jwt = createExternalJwt({ ...config, additionalData: { channel_id: broadcasterId } });
+
+	await callTwitchApi(
+		{
+			url: 'extensions/chat',
+			method: 'POST',
+			query: {
+				broadcaster_id: broadcasterId
+			},
+			jsonBody: {
+				extension_id: config.clientId,
+				extension_version: extensionVersion,
+				text
+			}
+		},
+		config.clientId,
+		jwt
+	);
+}
+
+/** @private */
+async function sendAnyExtensionPubSubMessage(
+	config: EbsCallConfig,
+	targets: string[],
+	message: string,
+	broadcaster?: UserIdResolvable
+): Promise<void> {
+	const broadcasterId = mapOptional(broadcaster, extractUserId);
+	const jwt = createExternalJwt({ ...config, additionalData: { pubsub_perms: { send: targets } } });
+
+	await callTwitchApi(
+		{
+			url: 'extensions/pubsub',
+			method: 'POST',
+			jsonBody: {
+				target: targets,
+				broadcaster_id: broadcasterId,
+				message
+			}
+		},
+		config.clientId,
+		jwt
+	);
+}
+
+export async function sendExtensionPubSubGlobalMessage(config: EbsCallConfig, message: string): Promise<void> {
+	await sendAnyExtensionPubSubMessage(config, ['global'], message);
+}
+
+export async function sendExtensionPubSubBroadcastMessage(
+	config: EbsCallConfig,
+	broadcaster: UserIdResolvable,
+	message: string
+): Promise<void> {
+	await sendAnyExtensionPubSubMessage(config, ['broadcast'], message, broadcaster);
+}
+
+export async function sendExtensionPubSubWhisperMessage(
+	config: EbsCallConfig,
+	broadcaster: UserIdResolvable,
+	targets: UserIdResolvable | UserIdResolvable[],
+	message: string
+): Promise<void> {
+	const targetsArray = Array.isArray(targets) ? targets : [targets];
+	await sendAnyExtensionPubSubMessage(
+		config,
+		targetsArray.map(u => `whisper-${extractUserId(u)}`),
+		message,
+		broadcaster
+	);
+}
