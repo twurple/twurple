@@ -826,7 +826,7 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent progress towards a creator goal.
 	 *
-	 * @param broadcaster The broadcaster for which you want to listen to goal progress events for.
+	 * @param broadcaster The broadcaster for which you want to listen to goal progress events.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelGoalProgressEvents(
@@ -844,7 +844,7 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent the end of a creator goal event.
 	 *
-	 * @param broadcaster The broadcaster for which you want to listen to goal end events for.
+	 * @param broadcaster The broadcaster for which you want to listen to goal end events.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelGoalEndEvents(
@@ -880,7 +880,7 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent progress towards the Hype Train goal.
 	 *
-	 * @param broadcaster The broadcaster for which you want to listen to Hype Train progress events for.
+	 * @param broadcaster The broadcaster for which you want to listen to Hype Train progress events.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelHypeTrainProgressEvents(
@@ -898,7 +898,7 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent the end of a Hype Train event.
 	 *
-	 * @param broadcaster The broadcaster for which you want to listen to Hype Train end events for.
+	 * @param broadcaster The broadcaster for which you want to listen to Hype Train end events.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelHypeTrainEndEvents(
