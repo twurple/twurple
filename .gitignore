@@ -1,20 +1,27 @@
+# npm & yarn
+node_modules
+/package-lock.json
+/yarn.lock
+/yalc.lock
+/.yalc
+*.tgz
+.yarn-integrity
+
+# Editor workspaces
+*.code-workspace
+/.idea
+/.vscode
+
+# Build outputs
+generatedDocs
+/packages/*/es
+/packages/*/lib
+/packages/*/docs.json
+/docs*.json
+
+# Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-node_modules/
-*.tgz
-.yarn-integrity
-.env
-/.idea
-/packages/*/generatedDocs
-/packages/*/es
-/packages/*/lib
-/packages/*/docs.json
-package-lock.json
-*.code-workspace
-/docs*.json
-/generatedDocs
-yalc.lock
-/.yalc
