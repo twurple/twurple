@@ -1,6 +1,6 @@
 {
   "name": "@twurple/eventsub-ngrok",
-  "version": "5.1.0-pre.7",
+  "version": "5.1.0-pre.8",
   "publishConfig": {
     "access": "public"
   },
@@ -38,8 +38,8 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/api": "^5.1.0-pre.7",
-    "@twurple/eventsub": "^5.1.0-pre.7"
+    "@twurple/api": "^5.1.0-pre.8",
+    "@twurple/eventsub": "^5.1.0-pre.8"
   },
   "peerDependencies": {
     "@twurple/api": "^5.0.0",
