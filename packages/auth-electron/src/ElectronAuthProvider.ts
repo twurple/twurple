@@ -138,7 +138,7 @@ export class ElectronAuthProvider extends BaseAuthProvider {
 						}
 					}
 					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-					const params: Record<string, string> = url.hash ? parse(url.hash.substr(1)) : url.searchParams;
+					const params: Record<string, string> = url.hash ? parse(url.hash.slice(1)) : url.searchParams;
 
 					if (params.error || params.access_token) {
 						done = true;
