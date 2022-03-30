@@ -15,7 +15,7 @@ export class HttpStatusCodeError extends CustomError {
 	) {
 		super(
 			`Encountered HTTP status code ${_statusCode}: ${statusText}\n\nURL: ${_url}\nMethod: ${_method}\nBody:\n${
-				!isJson && _body.length > 150 ? `${_body.substr(0, 147)}...` : _body
+				!isJson && _body.length > 150 ? `${_body.slice(0, 147)}...` : _body
 			}`
 		);
 	}

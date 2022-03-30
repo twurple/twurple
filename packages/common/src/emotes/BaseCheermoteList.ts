@@ -121,7 +121,7 @@ export abstract class BaseCheermoteList<DataType> extends DataObject<DataType> {
 				result.push({
 					name,
 					amount,
-					position: utf8Length(message.substr(0, match.index)),
+					position: utf8Length(message.slice(0, match.index)),
 					length: match[0].length,
 					displayInfo: this.getCheermoteDisplayInfo(name, amount, format)
 				});
@@ -155,7 +155,7 @@ export abstract class BaseCheermoteList<DataType> extends DataObject<DataType> {
 		}
 
 		if (currentPosition < message.length) {
-			result.push(message.substr(currentPosition));
+			result.push(message.slice(currentPosition));
 		}
 
 		return result;

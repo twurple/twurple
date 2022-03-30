@@ -17,7 +17,7 @@ export abstract class BotCommand {
 		if (!command.startsWith(prefix)) {
 			return null;
 		}
-		command = command.substr(prefix.length);
+		command = command.slice(prefix.length);
 		if (command === this.name || this.aliases.includes(command)) {
 			return params;
 		}
