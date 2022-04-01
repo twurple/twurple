@@ -27,6 +27,7 @@ import { ClearMsg } from './caps/twitchTags/messageTypes/ClearMsg';
 import type { ChatSayMessageAttributes } from './ChatMessageAttributes';
 import { extractMessageId } from './ChatMessageAttributes';
 import { TwitchPrivateMessage } from './commands/TwitchPrivateMessage';
+import type { ChatAnnouncementInfo } from './userNotices/ChatAnnouncementInfo';
 import type { ChatBitsBadgeUpgradeInfo } from './userNotices/ChatBitsBadgeUpgradeInfo';
 import type { ChatCommunityPayForwardInfo } from './userNotices/ChatCommunityPayForwardInfo';
 import type { ChatCommunitySubInfo } from './userNotices/ChatCommunitySubInfo';
@@ -536,6 +537,19 @@ export class ChatClient extends IrcClient {
 	readonly onCommunityPayForward: EventBinder<
 		[channel: string, user: string, forwardInfo: ChatCommunityPayForwardInfo, msg: UserNotice]
 	> = this.registerEvent();
+
+	/**
+	 * Fires when a user sends an announcement (/announce) to a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel the action was sent to.
+	 * @param user The user that sent the action.
+	 * @param announcementInfo Additional information about the announcement.
+	 * @param msg The full message object containing all message and user information.
+	 */
+	declare readonly onAnnouncement: EventBinder<
+		[channel: string, user: string, announcementInfo: ChatAnnouncementInfo, msg: UserNotice]
+	>;
 
 	/**
 	 * Fires when receiving a whisper from another user.
@@ -1102,6 +1116,13 @@ export class ChatClient extends IrcClient {
 						triggerType: tags.get('msg-param-trigger-type')!
 					};
 					this.emit(this.onRewardGift, channel, tags.get('login')!, rewardGiftInfo, userNotice);
+					break;
+				}
+				case 'announcement': {
+					const announcementInfo: ChatAnnouncementInfo = {
+						color: tags.get('msg-param-color')!
+					};
+					this.emit(this.onAnnouncement, channel, tags.get('login')!, announcementInfo, userNotice);
 					break;
 				}
 				default: {
