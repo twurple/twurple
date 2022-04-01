@@ -602,7 +602,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @eventListener
 	 * @param channel The channel the message was sent to.
-	 * @param user The user that send the message.
+	 * @param user The user that sent the message.
 	 * @param message The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
@@ -620,7 +620,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @eventListener
 	 * @param channel The channel the action was sent to.
-	 * @param user The user that send the action.
+	 * @param user The user that sent the action.
 	 * @param message The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
