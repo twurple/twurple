@@ -542,8 +542,8 @@ export class ChatClient extends IrcClient {
 	 * Fires when a user sends an announcement (/announce) to a channel.
 	 *
 	 * @eventListener
-	 * @param channel The channel the action was sent to.
-	 * @param user The user that sent the action.
+	 * @param channel The channel the announcement was sent to.
+	 * @param user The user that sent the announcement.
 	 * @param announcementInfo Additional information about the announcement.
 	 * @param msg The full message object containing all message and user information.
 	 */
