@@ -547,9 +547,9 @@ export class ChatClient extends IrcClient {
 	 * @param announcementInfo Additional information about the announcement.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare readonly onAnnouncement: EventBinder<
+	readonly onAnnouncement: EventBinder<
 		[channel: string, user: string, announcementInfo: ChatAnnouncementInfo, msg: UserNotice]
-	>;
+	> = this.registerEvent();
 
 	/**
 	 * Fires when receiving a whisper from another user.
