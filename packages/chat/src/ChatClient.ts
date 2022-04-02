@@ -2196,6 +2196,16 @@ export class ChatClient extends IrcClient {
 	}
 
 	/**
+	 * Sends an announcement to a channel.
+	 *
+	 * @param channel The channel to send the announcement to.
+	 * @param message The content of the announcement.
+	 */
+	async announce(channel: string, message: string): Promise<void> {
+		await this.say(channel, `/announce ${message}`);
+	}
+
+	/**
 	 * Sends a message to a channel.
 	 *
 	 * @param channel The channel to send the message to.
