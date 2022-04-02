@@ -231,7 +231,7 @@ export class HelixStreamApi extends BaseApi {
 			return new HelixStreamMarker(result.data[0], this._client);
 		} catch (e) {
 			if (e instanceof HttpStatusCodeError && e.statusCode === 404) {
-				throw new StreamNotLiveError();
+				throw new StreamNotLiveError({ cause: e });
 			}
 
 			throw e;

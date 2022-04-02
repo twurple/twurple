@@ -111,7 +111,7 @@ export class ApiClient {
 			return new TokenInfo(data);
 		} catch (e) {
 			if (e instanceof HttpStatusCodeError && e.statusCode === 401) {
-				throw new InvalidTokenError();
+				throw new InvalidTokenError({ cause: e });
 			}
 			throw e;
 		}

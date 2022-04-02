@@ -1,8 +1,10 @@
+/// <reference lib="es2021.promise"/>
+/// <reference lib="es2022.error"/>
+
 /** @private */
 export class CustomError extends Error {
-	constructor(...params: [string, string?, string?]) {
-		// @ts-ignore
-		super(...params);
+	constructor(message: string, options?: ErrorOptions) {
+		super(message, options);
 
 		// restore prototype chain
 		const actualProto = new.target.prototype;
@@ -16,9 +18,7 @@ export class CustomError extends Error {
 		}
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (Error.captureStackTrace) {
-			Error.captureStackTrace(this, new.target.constructor);
-		}
+		Error.captureStackTrace?.(this, new.target.constructor);
 	}
 
 	get name(): string {

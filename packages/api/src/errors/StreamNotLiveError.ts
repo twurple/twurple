@@ -5,7 +5,7 @@ import { CustomError } from '@twurple/common';
  */
 export class StreamNotLiveError extends CustomError {
 	/** @private */
-	constructor() {
-		super('Your stream needs to be live to do this');
+	constructor(options?: ErrorOptions) {
+		super('Your stream needs to be live to do this', options);
 	}
 }

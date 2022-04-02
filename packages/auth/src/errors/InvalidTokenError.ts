@@ -5,7 +5,7 @@ import { CustomError } from '@twurple/common';
  */
 export class InvalidTokenError extends CustomError {
 	/** @private */
-	constructor() {
-		super('Invalid token supplied');
+	constructor(options?: ErrorOptions) {
+		super('Invalid token supplied', options);
 	}
 }

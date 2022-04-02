@@ -138,7 +138,7 @@ export async function getTokenInfo(accessToken: string, clientId?: string): Prom
 		return new TokenInfo(data);
 	} catch (e) {
 		if (e instanceof HttpStatusCodeError && e.statusCode === 401) {
-			throw new InvalidTokenError();
+			throw new InvalidTokenError({ cause: e });
 		}
 		throw e;
 	}
