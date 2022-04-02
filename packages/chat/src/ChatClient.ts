@@ -1933,9 +1933,31 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Enables r9k mode in a channel.
 	 *
+	 * @deprecated Use `enableUniqueChat` instead.
+	 *
 	 * @param channel The channel to enable r9k mode in.
 	 */
 	async enableR9k(channel: string): Promise<void> {
+		await this.enableUniqueChat(channel);
+	}
+
+	/**
+	 * Disables r9k mode in a channel.
+	 *
+	 * @deprecated Use `disableUniqueChat` instead.
+	 *
+	 * @param channel The channel to disable r9k mode in.
+	 */
+	async disableR9k(channel: string): Promise<void> {
+		await this.disableUniqueChat(channel);
+	}
+
+	/**
+	 * Enables unique messages mode in a channel.
+	 *
+	 * @param channel The channel to enable unique messages mode in.
+	 */
+	async enableUniqueChat(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		await new Promise<void>((resolve, reject) => {
 			const e = this._onR9kResult((_channel, error) => {
@@ -1948,16 +1970,16 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			void this.say(channel, '/r9kbeta');
+			void this.say(channel, '/uniquechat');
 		});
 	}
 
 	/**
-	 * Disables r9k mode in a channel.
+	 * Disables unique messages mode in a channel.
 	 *
-	 * @param channel The channel to disable r9k mode in.
+	 * @param channel The channel to disable unique messages mode in.
 	 */
-	async disableR9k(channel: string): Promise<void> {
+	async disableUniqueChat(channel: string): Promise<void> {
 		channel = toUserName(channel);
 		await new Promise<void>((resolve, reject) => {
 			const e = this._onR9kOffResult((_channel, error) => {
@@ -1970,7 +1992,7 @@ export class ChatClient extends IrcClient {
 					this.removeListener(e);
 				}
 			});
-			void this.say(channel, '/r9kbetaoff');
+			void this.say(channel, '/uniquechatoff');
 		});
 	}
 
