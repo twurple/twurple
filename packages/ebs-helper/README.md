@@ -1,8 +1,20 @@
-# Twurple - API call
+# Twurple - EBS helper
 
-A basic Twitch API call wrapper.
+A collection of functions for executing actions related to Twitch Extensions,
+such as managing secrets and communicating between instances.
 
-This is mostly intended for internal use in the other packages of [Twurple](https://github.com/twurple/twurple).
+## Installation
+
+	yarn add @twurple/ebs-helper
+
+or using npm:
+
+	npm install @twurple/ebs-helper
+
+## Documentation
+
+A good place to start with this library is the [documentation](https://twurple.js.org)
+which also includes a complete reference of all classes and interfaces, as well as changes and deprecations between major versions.
 
 ## If you're getting stuck...
 
