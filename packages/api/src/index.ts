@@ -140,6 +140,7 @@ export { HelixStreamMarker } from './api/helix/stream/HelixStreamMarker';
 export { HelixStreamMarkerWithVideo } from './api/helix/stream/HelixStreamMarkerWithVideo';
 
 export { HelixSubscriptionApi } from './api/helix/subscriptions/HelixSubscriptionApi';
+export type { HelixPaginatedSubscriptionsResult } from './api/helix/subscriptions/HelixSubscriptionApi';
 export { HelixSubscription } from './api/helix/subscriptions/HelixSubscription';
 export { HelixSubscriptionEvent } from './api/helix/subscriptions/HelixSubscriptionEvent';
 export type {
