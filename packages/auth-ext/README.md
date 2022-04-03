@@ -1,4 +1,4 @@
-# Twurple - Electron auth provider
+# Twurple - Extension auth provider
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/twurple/twurple/blob/main/LICENSE)
 [![npm version](https://img.shields.io/npm/v/@twurple/auth-ext.svg?style=flat)](https://www.npmjs.com/package/@twurple/auth-ext)
