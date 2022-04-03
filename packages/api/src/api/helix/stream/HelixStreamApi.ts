@@ -90,6 +90,7 @@ export class HelixStreamApi extends BaseApi {
 	/**
 	 * Retrieves a list of streams.
 	 *
+	 * @param filter
 	 * @expandParams
 	 */
 	async getStreams(filter: HelixPaginatedStreamFilter = {}): Promise<HelixPaginatedResult<HelixStream>> {
@@ -113,6 +114,7 @@ export class HelixStreamApi extends BaseApi {
 	/**
 	 * Creates a paginator for streams.
 	 *
+	 * @param filter
 	 * @expandParams
 	 */
 	getStreamsPaginated(filter: HelixStreamFilter = {}): HelixPaginatedRequest<HelixStreamData, HelixStream> {

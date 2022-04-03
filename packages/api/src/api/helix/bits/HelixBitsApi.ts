@@ -57,6 +57,7 @@ export class HelixBitsApi extends BaseApi {
 	/**
 	 * Retrieves a bits leaderboard of your channel.
 	 *
+	 * @param params
 	 * @expandParams
 	 */
 	async getLeaderboard(params: HelixBitsLeaderboardQuery = {}): Promise<HelixBitsLeaderboard> {

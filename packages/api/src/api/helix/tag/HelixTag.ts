@@ -29,6 +29,8 @@ export class HelixTag extends DataObject<HelixTagData> {
 
 	/**
 	 * Gets the name of the tag in the specified language.
+	 *
+	 * @param language The language to get the name in.
 	 */
 	getName(language: string): string | undefined {
 		return this[rawDataSymbol].localization_names[language];
@@ -36,6 +38,8 @@ export class HelixTag extends DataObject<HelixTagData> {
 
 	/**
 	 * Gets the description of the tag in the specified language.
+	 *
+	 * @param language The language to get the description in.
 	 */
 	getDescription(language: string): string | undefined {
 		return this[rawDataSymbol].localization_descriptions[language];

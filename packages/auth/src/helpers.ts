@@ -62,7 +62,6 @@ export async function exchangeCode(
  *
  * @param clientId The client ID of your application.
  * @param clientSecret The client secret of your application.
- * @param clientSecret
  */
 export async function getAppToken(clientId: string, clientSecret: string): Promise<AccessToken> {
 	return createAccessTokenFromData(
@@ -127,8 +126,8 @@ export async function revokeToken(clientId: string, accessToken: string): Promis
 /**
  * Retrieves information about an access token.
  *
- * @param clientId The client ID of your application.
  * @param accessToken The access token to get the information of.
+ * @param clientId The client ID of your application.
  *
  * You need to obtain one using one of the [Twitch OAuth flows](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/).
  */

@@ -1575,8 +1575,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Hosts a channel on another channel.
 	 *
-	 * @param target The host target, i.e. the channel that is being hosted.
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
+	 * @param target The host target, i.e. the channel that is being hosted.
 	 */
 	async host(channel: string | undefined, target: string): Promise<void> {
 		const channelName = toUserName(channel ?? this._credentials.nick);

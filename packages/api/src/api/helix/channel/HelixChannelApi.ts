@@ -111,6 +111,8 @@ export class HelixChannelApi extends BaseApi {
 
 	/**
 	 * Retrieves a list of users who have editor permissions on your channel.
+	 *
+	 * @param broadcaster The broadcaster to retreive the editors for.
 	 */
 	async getChannelEditors(broadcaster: UserIdResolvable): Promise<HelixChannelEditor[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChannelEditorData>>({

@@ -61,6 +61,9 @@ export class HelixGame extends DataObject<HelixGameData> {
 
 	/**
 	 * Retrieves streams that are currently playing the game.
+	 *
+	 * @param pagination
+	 * @expandParams
 	 */
 	async getStreams(pagination?: HelixPagination): Promise<HelixPaginatedResult<HelixStream>> {
 		return await this._client.streams.getStreams({ ...pagination, game: this[rawDataSymbol].id });

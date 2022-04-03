@@ -183,6 +183,7 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * Returns the ID of the clip.
 	 *
+	 * @param params
 	 * @expandParams
 	 */
 	async createClip(params: HelixClipCreateParams): Promise<string> {

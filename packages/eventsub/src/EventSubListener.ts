@@ -58,6 +58,10 @@ export class EventSubListener extends EventSubBase {
 
 	/**
 	 * Starts the backing server and listens to incoming EventSub notifications.
+	 *
+	 * @param port The port to listen on. Might be overridden by the adapter you passed.
+	 *
+	 * Defaults to 443.
 	 */
 	async listen(port?: number): Promise<void> {
 		if (this._server) {

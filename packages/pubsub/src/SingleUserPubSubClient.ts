@@ -63,9 +63,11 @@ export class SingleUserPubSubClient {
 	/**
 	 * Creates a new Twitch PubSub client.
 	 *
+	 * @param options
 	 * @expandParams
 	 */
-	constructor({ authProvider, pubSubClient, logger }: SingleUserPubSubClientOptions) {
+	constructor(options: SingleUserPubSubClientOptions) {
+		const { authProvider, pubSubClient, logger } = options;
 		this._authProvider = authProvider;
 		this._pubSubClient = pubSubClient ?? new BasicPubSubClient({ logger });
 		this._pubSubClient.onMessage(async (topic, messageData) => {
