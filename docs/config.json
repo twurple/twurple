@@ -14,7 +14,7 @@
 	"defaultVersion": "5.0",
 	"title": "Twurple",
 	"indexFile": "index.md",
-	"ignoredPackages": ["auth-electron", "eventsub-ngrok"],
+	"ignoredPackages": ["auth-electron", "auth-ext", "eventsub-ngrok"],
 	"persistentFiles": ["CNAME"],
 	"categories": [
 		{
@@ -46,6 +46,11 @@
 							"name": "electron",
 							"title": "For Electron apps",
 							"file": "auth/providers/electron.md"
+						},
+						{
+							"name": "extensions",
+							"title": "For Extension frontends",
+							"file": "auth/providers/extensions.md"
 						}
 					]
 				}
