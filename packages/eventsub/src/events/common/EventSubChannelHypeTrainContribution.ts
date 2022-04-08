@@ -2,6 +2,9 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol } from '@twurple/common';
 
+/**
+ * The type of hype train contribution. Can be "bits" or "subscription".
+ */
 export type EventSubChannelHypeTrainContributionType = 'bits' | 'subscription';
 
 /** @private */

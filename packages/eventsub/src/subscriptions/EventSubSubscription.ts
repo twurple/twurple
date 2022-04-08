@@ -4,6 +4,8 @@ import * as crypto from 'crypto';
 import type { EventSubBase } from '../EventSubBase';
 
 /**
+ * A subscription to an EventSub event.
+ *
  * @hideProtected
  */
 @rtfm('eventsub', 'EventSubSubscription')

@@ -1,6 +1,8 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
-/** @private */
+/**
+ * The color of a prediction outcome, blue or pink.
+ */
 export type EventSubChannelPredictionColor = 'blue' | 'pink';
 
 /** @private */

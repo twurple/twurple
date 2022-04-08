@@ -18,11 +18,9 @@ export { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent'
 export { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
 export { EventSubChannelGoalEndEvent } from './events/EventSubChannelGoalEndEvent';
 export { EventSubChannelGoalProgressEvent } from './events/EventSubChannelGoalProgressEvent';
-export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';
 export { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 export { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 export { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
-export type { EventSubChannelHypeTrainContributionType } from './events/common/EventSubChannelHypeTrainContribution';
 export { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 export { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
 export { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEvent';
@@ -51,5 +49,15 @@ export { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';
 export type { EventSubStreamOnlineEventStreamType } from './events/EventSubStreamOnlineEvent';
 export { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 export { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
+
+export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';
+export { EventSubChannelHypeTrainContribution } from './events/common/EventSubChannelHypeTrainContribution';
+export type { EventSubChannelHypeTrainContributionType } from './events/common/EventSubChannelHypeTrainContribution';
+export { EventSubChannelPollBeginChoice } from './events/common/EventSubChannelPollBeginChoice';
+export { EventSubChannelPollChoice } from './events/common/EventSubChannelPollChoice';
+export { EventSubChannelPredictionBeginOutcome } from './events/common/EventSubChannelPredictionBeginOutcome';
+export type { EventSubChannelPredictionColor } from './events/common/EventSubChannelPredictionBeginOutcome';
+export { EventSubChannelPredictionOutcome } from './events/common/EventSubChannelPredictionOutcome';
+export { EventSubChannelPredictionPredictor } from './events/common/EventSubChannelPredictionPredictor';
 
 export { EventSubSubscription } from './subscriptions/EventSubSubscription';
