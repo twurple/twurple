@@ -25,11 +25,6 @@ import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
  */
 export interface HelixStreamFilter {
 	/**
-	 * A community ID or a list thereof.
-	 */
-	community?: string | string[];
-
-	/**
 	 * A game ID or a list thereof.
 	 */
 	game?: string | string[];
@@ -99,7 +94,6 @@ export class HelixStreamApi extends BaseApi {
 			type: 'helix',
 			query: {
 				...makePaginationQuery(filter),
-				community_id: filter.community,
 				game_id: filter.game,
 				language: filter.language,
 				type: filter.type,
@@ -122,7 +116,6 @@ export class HelixStreamApi extends BaseApi {
 			{
 				url: 'streams',
 				query: {
-					community_id: filter.community,
 					game_id: filter.game,
 					language: filter.language,
 					type: filter.type,
