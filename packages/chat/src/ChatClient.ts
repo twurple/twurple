@@ -1489,7 +1489,7 @@ export class ChatClient extends IrcClient {
 				case 'msg_slowmode':
 				case 'msg_r9k':
 				case 'msg_verified_email':
-				case 'msg_timed_out':
+				case 'msg_timedout':
 				case 'msg_rejected_mandatory':
 				case 'msg_channel_blocked': {
 					this.emit(this.onMessageFailed, channel, messageType);
@@ -1541,8 +1541,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Hosts a channel on another channel.
 	 *
-	 * @param target The host target, i.e. the channel that is being hosted.
 	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
+	 * @param target The host target, i.e. the channel that is being hosted.
 	 */
 	async host(channel: string | undefined, target: string): Promise<void> {
 		const channelName = toUserName(channel ?? this._credentials.nick);
