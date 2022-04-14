@@ -1,5 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import type { LoggerOptions } from '@d-fischer/logger';
+import type { Logger, LoggerOptions } from '@d-fischer/logger';
+import { createLogger } from '@d-fischer/logger';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from '@twurple/api-call';
 import { callTwitchApi, callTwitchApiRaw, HttpStatusCodeError, transformTwitchApiResponse } from '@twurple/api-call';
 
@@ -75,6 +76,7 @@ export interface TwitchApiCallOptionsInternal {
 @rtfm('api', 'ApiClient')
 export class ApiClient {
 	private readonly _config: ApiConfig;
+	private readonly _logger: Logger;
 	private readonly _helixRateLimiter: HelixRateLimiter;
 
 	/**
@@ -87,10 +89,11 @@ export class ApiClient {
 			throw new ConfigError('No auth provider given. Please supply the `authProvider` option.');
 		}
 
+		this._config = config;
+		this._logger = createLogger({ name: 'twurple:api:client', ...config.logger });
 		this._helixRateLimiter = new HelixRateLimiter({
 			logger: { name: 'twurple:api:rate-limiter', ...config.logger }
 		});
-		this._config = config;
 	}
 
 	/**
@@ -397,16 +400,27 @@ export class ApiClient {
 		authorizationType?: string
 	) {
 		const { fetchOptions } = this._config;
-		if (options.type === 'helix') {
-			return await this._helixRateLimiter.request({
-				options,
-				clientId,
-				accessToken,
-				authorizationType,
-				fetchOptions
-			});
+		const type = options.type ?? 'helix';
+		this._logger.debug(`Calling ${type} API: ${options.method ?? 'GET'} ${options.url}`);
+		this._logger.trace(`Query: ${JSON.stringify(options.query)}`);
+		if (options.jsonBody) {
+			this._logger.trace(`Request body: ${JSON.stringify(options.jsonBody)}`);
 		}
+		const response =
+			type === 'helix'
+				? await this._helixRateLimiter.request({
+						options,
+						clientId,
+						accessToken,
+						authorizationType,
+						fetchOptions
+				  })
+				: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
 
-		return await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
+		this._logger.debug(
+			`Called ${type} API: ${options.method ?? 'GET'} ${options.url} - result: ${response.status}`
+		);
+
+		return response;
 	}
 }
