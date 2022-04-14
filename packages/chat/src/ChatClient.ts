@@ -1521,7 +1521,7 @@ export class ChatClient extends IrcClient {
 				case 'msg_slowmode':
 				case 'msg_r9k':
 				case 'msg_verified_email':
-				case 'msg_timed_out':
+				case 'msg_timedout':
 				case 'msg_rejected_mandatory':
 				case 'msg_channel_blocked': {
 					this.emit(this.onMessageFailed, channel, messageType);
