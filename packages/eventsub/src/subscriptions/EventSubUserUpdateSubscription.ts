@@ -10,6 +10,8 @@ import { EventSubSubscription } from './EventSubSubscription';
  */
 @rtfm('eventsub', 'EventSubSubscription')
 export class EventSubUserUpdateSubscription extends EventSubSubscription<EventSubUserUpdateEvent> {
+	protected readonly _cliName = 'user.update';
+
 	constructor(
 		handler: (data: EventSubUserUpdateEvent) => void,
 		client: EventSubBase,

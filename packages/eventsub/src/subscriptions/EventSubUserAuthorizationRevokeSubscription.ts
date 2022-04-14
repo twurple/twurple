@@ -10,6 +10,8 @@ import { EventSubSubscription } from './EventSubSubscription';
  */
 @rtfm('eventsub', 'EventSubSubscription')
 export class EventSubUserAuthorizationRevokeSubscription extends EventSubSubscription<EventSubUserAuthorizationRevokeEvent> {
+	protected readonly _cliName = 'revoke';
+
 	constructor(
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void,
 		client: EventSubBase,

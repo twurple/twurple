@@ -10,6 +10,8 @@ import { EventSubSubscription } from './EventSubSubscription';
  */
 @rtfm('eventsub', 'EventSubSubscription')
 export class EventSubChannelModeratorAddSubscription extends EventSubSubscription<EventSubChannelModeratorEvent> {
+	protected readonly _cliName = 'add-moderator';
+
 	constructor(
 		handler: (data: EventSubChannelModeratorEvent) => void,
 		client: EventSubBase,

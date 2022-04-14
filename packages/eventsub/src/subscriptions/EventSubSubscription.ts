@@ -12,6 +12,7 @@ import type { EventSubBase } from '../EventSubBase';
 export abstract class EventSubSubscription</** @private */ T = unknown> {
 	private _verified: boolean = false;
 	private _twitchSubscriptionData?: HelixEventSubSubscription;
+	protected abstract readonly _cliName: string;
 
 	/** @private */
 	protected constructor(protected _handler: (obj: T) => void, protected _client: EventSubBase) {}
@@ -91,6 +92,17 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	async stop(): Promise<void> {
 		await this.suspend();
 		this._client._dropSubscription(this.id);
+	}
+
+	/**
+	 * Outputs the base command to execute for testing the subscription using the Twitch CLI.
+	 *
+	 * Some additional parameters, like the target user, may be required.
+	 */
+	async getCliTestCommand(): Promise<string> {
+		return `twitch event trigger ${this._cliName} -F ${await this._client._buildHookUrl(this.id)} -s ${
+			this._secret
+		}`;
 	}
 
 	protected async _getTransportOptions(): Promise<HelixEventSubTransportOptions> {

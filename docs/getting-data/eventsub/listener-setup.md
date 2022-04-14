@@ -5,6 +5,8 @@ for example using the {@ClientCredentialsAuthProvider}.
 
 :::
 
+## Setting up an EventSub listener
+
 A prerequisite of EventSub is a working {@ApiClient} instance.
 With that, you can create an {@EventSubListener} instance,
 which (in a basic setup without a reverse proxy) requires a trusted SSL certificate for the host name you provide.
@@ -46,6 +48,8 @@ If you are testing locally, you may need to forward the port to your development
 A very helpful tool for that is [ngrok](/docs/getting-data/eventsub/ngrok) -
 this even spares you from creating your own certificate in development!
 
+## Subscribing to (and unsubscribing from) events
+
 When your listener is set up, you can subscribe to all supported events using this listener:
 
 ```ts twoslash
@@ -70,4 +74,27 @@ When you don't want to listen to a particular event anymore, you just stop its s
 
 ```typescript
 await onlineSubscription.stop();
+```
+
+## Testing events
+
+You can use the Twitch CLI to test your subscriptions,
+but you need to take care about some implementation details of this library:  
+- At the end of each callback, each event has a unique identifier that is generally built by joining the event name
+and the other parameters (like the user ID) of the event.
+- This user ID is also prepended to the secret you passed to generate an unique secret for each callback.  
+After this, if the resulting string is longer than 100 characters, the last 100 characters will be taken as the secret.
+
+The easiest way to get the proper test command is by using the method {@EventSubSubscription#getCliTestCommand}:
+
+```ts twoslash
+// @module: esnext
+// @target: ES2017
+// @lib: es2015,dom
+import { EventSubSubscription } from '@twurple/eventsub';
+declare const onlineSubscription: EventSubSubscription;
+// ---cut---
+console.log(await onlineSubscription.getCliTestCommand());
+// outputs something like:
+// twitch event trigger streamup -F https://example.com/event/stream.online.125328655 -s stream.online.125328655.supersecret
 ```

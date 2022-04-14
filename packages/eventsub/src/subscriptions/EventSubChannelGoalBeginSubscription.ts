@@ -10,6 +10,8 @@ import { EventSubSubscription } from './EventSubSubscription';
  */
 @rtfm('eventsub', 'EventSubSubscription')
 export class EventSubChannelGoalBeginSubscription extends EventSubSubscription<EventSubChannelGoalBeginEvent> {
+	protected readonly _cliName = 'goal-begin';
+
 	constructor(
 		handler: (data: EventSubChannelGoalBeginEvent) => void,
 		client: EventSubBase,

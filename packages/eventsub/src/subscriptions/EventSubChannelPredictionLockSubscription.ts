@@ -10,6 +10,8 @@ import { EventSubSubscription } from './EventSubSubscription';
  */
 @rtfm('eventsub', 'EventSubSubscription')
 export class EventSubChannelPredictionLockSubscription extends EventSubSubscription<EventSubChannelPredictionLockEvent> {
+	protected readonly _cliName = 'prediction-lock';
+
 	constructor(
 		handler: (data: EventSubChannelPredictionLockEvent) => void,
 		client: EventSubBase,
