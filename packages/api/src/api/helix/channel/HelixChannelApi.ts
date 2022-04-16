@@ -42,7 +42,7 @@ export interface HelixChannelUpdate {
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const channel = await api.channels.getChannelInfo('125328655');
+ * const channel = await api.channels.getChannelInfoById('125328655');
  * ```
  */
 @rtfm('api', 'HelixChannelApi')
@@ -52,17 +52,38 @@ export class HelixChannelApi extends BaseApi {
 	 *
 	 * @param user The user you want to get channel info for.
 	 */
-	async getChannelInfo(user: UserIdResolvable): Promise<HelixChannel | null> {
-		const userId = extractUserId(user);
+	async getChannelInfoById(user: UserIdResolvable): Promise<HelixChannel | null> {
+		const channels = await this.getChannelInfoByIds([user]);
+		return channels[0] ?? null;
+	}
+
+	/**
+	 * Retrieves the channel data for the given users.
+	 *
+	 * @param users The users you want to get channel info for.
+	 */
+	async getChannelInfoByIds(users: UserIdResolvable[]): Promise<HelixChannel[]> {
+		const userIds = users.map(extractUserId);
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixChannelData>>({
 			type: 'helix',
 			url: 'channels',
 			query: {
-				broadcaster_id: userId
+				broadcaster_id: userIds
 			}
 		});
 
-		return result.data.length ? new HelixChannel(result.data[0], this._client) : null;
+		return result.data.map(data => new HelixChannel(data, this._client));
+	}
+
+	/**
+	 * Retrieves the channel data for the given user.
+	 *
+	 * @param user The user you want to get channel info for.
+	 *
+	 * @deprecated Use getChannelInfoById instead.
+	 */
+	async getChannelInfo(user: UserIdResolvable): Promise<HelixChannel | null> {
+		return await this.getChannelInfoById(user);
 	}
 
 	/**

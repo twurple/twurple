@@ -45,7 +45,7 @@ export class HelixChannelReference extends DataObject<HelixChannelReferenceData>
 	 * Retrieves more information about the channel.
 	 */
 	async getChannel(): Promise<HelixChannel> {
-		return (await this._client.channels.getChannelInfo(this[rawDataSymbol].broadcaster_id))!;
+		return (await this._client.channels.getChannelInfoById(this[rawDataSymbol].broadcaster_id))!;
 	}
 
 	/**
