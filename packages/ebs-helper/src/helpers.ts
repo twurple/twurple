@@ -333,7 +333,10 @@ async function sendAnyExtensionPubSubMessage(
 	broadcaster?: UserIdResolvable
 ): Promise<void> {
 	const broadcasterId = mapOptional(broadcaster, extractUserId);
-	const jwt = createExternalJwt({ ...config, additionalData: { pubsub_perms: { send: targets } } });
+	const jwt = createExternalJwt({
+		...config,
+		additionalData: { channel_id: broadcasterId, pubsub_perms: { send: targets } }
+	});
 
 	await callTwitchApi(
 		{
