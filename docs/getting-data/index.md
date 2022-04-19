@@ -2,51 +2,53 @@ Getting data from the Twitch API is sadly split into many systems. Here's some h
 
 ## Current state & actions
 
-| Operation                                     | `@twurple/api`                     | `@twurple/chat`                |
-| --------------------------------------------- | ---------------------------------- | ------------------------------ |
-| Start an ad                                   | Yes                                | Yes                            |
-| Get Bits leaderboard                          | Yes                                | No                             |
-| Get available Cheermotes                      | Yes                                | No                             |
-| Get Extension transactions                    | Yes                                | No                             |
-| Get channel category/title                    | Yes                                | No                             |
-| Set channel category/title                    | Yes                                | No                             |
-| Get channel editors                           | Yes                                | No                             |
-| Manage custom rewards & redemptions           | Yes                                | No                             |
-| Get available emotes & badges                 | Yes                                | No                             |
-| Get & create clips                            | Yes                                | No                             |
-| Manage drops                                  | No (supported by Twitch)           | No                             |
-| Manage extensions                             | Partial (more supported by Twitch) | No                             |
-| Get category info                             | Yes                                | No                             |
-| Manage polls & predictions                    | Yes                                | No                             |
-| Get banned users                              | Yes                                | No                             |
-| Ban/unban/timeout users                       | No                                 | Yes                            |
-| Get & manage schedules                        | Yes                                | No                             |
-| Search categories                             | Yes                                | No                             |
-| Search channels                               | Yes                                | No                             |
-| Get stream key                                | Yes                                | No                             |
-| Get info about streams                        | Yes                                | No                             |
-| Manage stream markers                         | Yes                                | No                             |
-| Get list of subscribers                       | Yes                                | No                             |
-| Check subscription                            | Yes                                | Only when they write a message |
-| Get list of VIPs                              | No                                 | Yes                            |
-| Check VIP                                     | No                                 | Only when they write a message |
-| Get list of moderators                        | Yes                                | Yes                            |
-| Manage moderators                             | No                                 | Yes                            |
-| Get & manage stream tags                      | Yes                                | No                             |
-| Get team info                                 | Yes                                | No                             |
-| Get user info                                 | Yes                                | Login, display name, ID only   |
-| Get & manage follows                          | Yes                                | No                             |
-| Get & manage VODs                             | Yes                                | No                             |
-| Host users                                    | No                                 | Yes                            |
-| Raid users                                    | No                                 | Yes                            |
-| Send chat messages                            | No                                 | Yes                            |
-| Remove chat messages                          | No                                 | Yes                            |
-| Set chat modes (e.g. emote/sub/follower only) | No                                 | Yes                            |
+| Operation                                     | `@twurple/api`           | `@twurple/chat`                |
+|-----------------------------------------------|--------------------------|--------------------------------|
+| Start an ad                                   | Yes                      | Yes                            |
+| Get Bits leaderboard                          | Yes                      | No                             |
+| Get available Cheermotes                      | Yes                      | No                             |
+| Get Extension transactions                    | Yes                      | No                             |
+| Get channel category/title                    | Yes                      | No                             |
+| Set channel category/title                    | Yes                      | No                             |
+| Get channel editors                           | Yes                      | No                             |
+| Manage custom rewards & redemptions           | Yes                      | No                             |
+| Get available emotes & badges                 | Yes                      | No                             |
+| Get & create clips                            | Yes                      | No                             |
+| Manage drops                                  | No (supported by Twitch) | No                             |
+| Manage extensions                             | Yes                      | No                             |
+| Get category info                             | Yes                      | No                             |
+| Manage polls & predictions                    | Yes                      | No                             |
+| Get banned users                              | Yes                      | No                             |
+| Ban/unban/timeout users                       | No (supported by Twitch) | Yes                            |
+| Get & manage schedules                        | Yes                      | No                             |
+| Search categories                             | Yes                      | No                             |
+| Search channels                               | Yes                      | No                             |
+| Get stream key                                | Yes                      | No                             |
+| Get info about streams                        | Yes                      | No                             |
+| Manage stream markers                         | Yes                      | No                             |
+| Get list of subscribers                       | Yes                      | No                             |
+| Check subscription                            | Yes                      | Only when they write a message |
+| Get list of VIPs                              | No                       | Yes                            |
+| Check VIP                                     | No                       | Only when they write a message |
+| Get list of moderators                        | Yes                      | Yes                            |
+| Manage moderators                             | No                       | Yes                            |
+| Get & manage stream tags                      | Yes                      | No                             |
+| Get team info                                 | Yes                      | No                             |
+| Get user info                                 | Yes                      | Login, display name, ID only   |
+| Get & manage follows                          | Yes                      | No                             |
+| Get & manage VODs                             | Yes                      | No                             |
+| Host users                                    | No                       | Yes                            |
+| Raid users                                    | No                       | Yes                            |
+| Send chat messages                            | No                       | Yes                            |
+| Send chat announcements                       | No                       | Yes                            |
+| Remove chat messages                          | No                       | Yes                            |
+| Set chat modes (e.g. emote/sub/follower only) | No                       | Yes                            |
+| Get & manage AutoMod settings                 | Yes                      | No                             |
 
 ## Events
 
 | Event type                        | `@twurple/api` | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub`                            |
-| --------------------------------- | -------------- | ---------------------------- | ------------------------- | ---------------------------------------------- |
+|-----------------------------------|----------------|------------------------------|---------------------------|------------------------------------------------|
 | Chat messages                     | No             | Yes                          | Sub & cheer messages only | Sub & cheer messages only                      |
 | Chat mode (e.g. sub only) changes | No             | Yes                          | No                        | No                                             |
 | Whispers                          | No             | Yes                          | Yes                       | No                                             |
