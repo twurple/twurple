@@ -95,11 +95,7 @@ export type { HelixHypeTrainEventData, HelixHypeTrainEventType } from './api/hel
 export { HelixModerationApi } from './api/helix/moderation/HelixModerationApi';
 export type { HelixBanFilter, HelixModeratorFilter } from './api/helix/moderation/HelixModerationApi';
 export { HelixBan } from './api/helix/moderation/HelixBan';
-export { HelixBanEvent } from './api/helix/moderation/HelixBanEvent';
-export type { HelixBanEventData, HelixBanEventType } from './api/helix/moderation/HelixBanEvent';
 export { HelixModerator } from './api/helix/moderation/HelixModerator';
-export { HelixModeratorEvent } from './api/helix/moderation/HelixModeratorEvent';
-export type { HelixModeratorEventData, HelixModeratorEventType } from './api/helix/moderation/HelixModeratorEvent';
 
 export { HelixPollApi } from './api/helix/poll/HelixPollApi';
 export type { HelixCreatePollData } from './api/helix/poll/HelixPollApi';
@@ -142,11 +138,6 @@ export { HelixStreamMarkerWithVideo } from './api/helix/stream/HelixStreamMarker
 export { HelixSubscriptionApi } from './api/helix/subscriptions/HelixSubscriptionApi';
 export type { HelixPaginatedSubscriptionsResult } from './api/helix/subscriptions/HelixSubscriptionApi';
 export { HelixSubscription } from './api/helix/subscriptions/HelixSubscription';
-export { HelixSubscriptionEvent } from './api/helix/subscriptions/HelixSubscriptionEvent';
-export type {
-	HelixSubscriptionEventData,
-	HelixSubscriptionEventType
-} from './api/helix/subscriptions/HelixSubscriptionEvent';
 export type { HelixUserSubscription } from './api/helix/subscriptions/HelixUserSubscription';
 
 export { HelixTagApi } from './api/helix/tag/HelixTagApi';

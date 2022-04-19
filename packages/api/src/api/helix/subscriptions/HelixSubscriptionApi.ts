@@ -1,18 +1,15 @@
-import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
+import type { HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
 import { HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
-import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
-import type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
-import { createPaginatedResult, createPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { makePaginationQuery } from '../HelixPagination';
 import type { HelixSubscriptionData } from './HelixSubscription';
 import { HelixSubscription } from './HelixSubscription';
-import type { HelixSubscriptionEventData } from './HelixSubscriptionEvent';
-import { HelixSubscriptionEvent } from './HelixSubscriptionEvent';
 import type { HelixUserSubscriptionData } from './HelixUserSubscription';
 import { HelixUserSubscription } from './HelixUserSubscription';
 
@@ -134,64 +131,6 @@ export class HelixSubscriptionApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the most recent subscription events for a given broadcaster.
-	 *
-	 * @param broadcaster The broadcaster to retrieve subscription events for.
-	 * @param pagination
-	 *
-	 * @expandParams
-	 *
-	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
-	 * Use {@HelixSubscriptionApi#getSubscriptions} and {@HelixEventSubApi} instead.
-	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
-	 */
-	async getSubscriptionEventsForBroadcaster(
-		broadcaster: UserIdResolvable,
-		pagination?: HelixForwardPagination
-	): Promise<HelixPaginatedResult<HelixSubscriptionEvent>> {
-		return await this._getSubscriptionEvents('broadcaster_id', extractUserId(broadcaster), pagination);
-	}
-
-	/**
-	 * Creates a paginator for the recent subscription events for a given broadcaster.
-	 *
-	 * @param broadcaster The broadcaster to retrieve subscription events for.
-	 *
-	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
-	 * Use {@HelixSubscriptionApi#getSubscriptions} and {@HelixEventSubApi} instead.
-	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
-	 */
-	getSubscriptionEventsForBroadcasterPaginated(
-		broadcaster: UserIdResolvable
-	): HelixPaginatedRequest<HelixSubscriptionEventData, HelixSubscriptionEvent> {
-		return new HelixPaginatedRequest(
-			{
-				url: 'subscriptions/events',
-				scope: 'channel:read:subscriptions',
-				query: {
-					broadcaster_id: extractUserId(broadcaster)
-				}
-			},
-			this._client,
-			data => new HelixSubscriptionEvent(data, this._client)
-		);
-	}
-
-	/**
-	 * Retrieves a single subscription event by ID.
-	 *
-	 * @param id The event ID.
-	 *
-	 * @deprecated This endpoint will be decommissioned on March 15th, 2022.
-	 * Use {@HelixSubscriptionApi#getSubscriptions} and {@HelixEventSubApi} instead.
-	 * [More info here](https://discuss.dev.twitch.tv/t/deprecation-of-twitch-api-event-endpoints-that-supported-websub-based-webhooks/35137)
-	 */
-	async getSubscriptionEventById(id: string): Promise<HelixSubscriptionEvent | null> {
-		const events = await this._getSubscriptionEvents('id', id);
-		return events.data[0] ?? null;
-	}
-
-	/**
 	 * Checks if a given user is subscribed to a given broadcaster. Returns null if not subscribed.
 	 *
 	 * This checks with the authorization of a user.
@@ -223,19 +162,5 @@ export class HelixSubscriptionApi extends BaseApi {
 
 			throw e;
 		}
-	}
-
-	private async _getSubscriptionEvents(by: 'broadcaster_id' | 'id', id: string, pagination?: HelixForwardPagination) {
-		const result = await this._client.callApi<HelixPaginatedResponse<HelixSubscriptionEventData>>({
-			type: 'helix',
-			url: 'subscriptions/events',
-			scope: 'channel:read:subscriptions',
-			query: {
-				[by]: id,
-				...makePaginationQuery(pagination)
-			}
-		});
-
-		return createPaginatedResult(result, HelixSubscriptionEvent, this._client);
 	}
 }
