@@ -1,4 +1,5 @@
-Getting data from the Twitch API is sadly split into many systems. Here's some handy tables on which library you can and should use for which use case.
+Getting data from the Twitch API is sadly split into many systems. Here's some handy tables on which library you can and
+should use for which use case.
 
 ## Current state & actions
 
@@ -44,6 +45,8 @@ Getting data from the Twitch API is sadly split into many systems. Here's some h
 | Remove chat messages                          | No                       | Yes                            |
 | Set chat modes (e.g. emote/sub/follower only) | No                       | Yes                            |
 | Get & manage AutoMod settings                 | Yes                      | No                             |
+| Fetch currently playing Soundtrack track      | No (supported by Twitch) | No                             |
+| Get current Creator Goals state               | Yes                      | No                             |
 
 ## Events
 
@@ -60,8 +63,8 @@ Getting data from the Twitch API is sadly split into many systems. Here's some h
 | Follows                           | No             | No                           | No                        | Yes                                            |
 | Hosts                             | No             | Yes                          | No                        | No                                             |
 | Raids                             | No             | Yes                          | No                        | Yes                                            |
-| Bans                              | History only   | Yes                          | Yes                       | Yes                                            |
-| Mod add/remove                    | History only   | No                           | Yes                       | Yes                                            |
+| Bans                              | No             | Yes                          | Yes                       | Yes                                            |
+| Mod add/remove                    | No             | No                           | Yes                       | Yes                                            |
 | Polls & predictions               | No             | No                           | No                        | Yes                                            |
 | Extension transactions            | No             | No                           | No                        | Yes                                            |
 | Hype Trains                       | History only   | No                           | No                        | Yes                                            |
