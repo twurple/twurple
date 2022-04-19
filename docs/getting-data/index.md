@@ -57,7 +57,7 @@ should use for which use case.
 | Whispers                          | No             | Yes                          | Yes                       | No                                             |
 | Cheers                            | No             | Yes                          | Yes                       | Yes                                            |
 | Channel points                    | No             | Redemptions w/ messages only | Redemptions only          | Yes                                            |
-| Subscriptions                     | History only   | Published only               | Published only            | Yes                                            |
+| Subscriptions                     | No             | Published only               | Published only            | Yes                                            |
 | AutoMod                           | No             | No                           | Yes                       | No                                             |
 | Live / offline / stream changes   | No             | No                           | No                        | Yes                                            |
 | Follows                           | No             | No                           | No                        | Yes                                            |
