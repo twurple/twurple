@@ -129,14 +129,36 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current stream for the given user name.
+	 * Retrieves the current streams for the given usernames.
 	 *
-	 * @param user The user name to retrieve the stream for.
+	 * @param users The username to retrieve the streams for.
+	 */
+	async getStreamsByUserNames(users: UserNameResolvable[]): Promise<HelixStream[]> {
+		const result = await this.getStreams({ userName: users.map(extractUserName) });
+
+		return result.data;
+	}
+
+	/**
+	 * Retrieves the current stream for the given username.
+	 *
+	 * @param user The username to retrieve the stream for.
 	 */
 	async getStreamByUserName(user: UserNameResolvable): Promise<HelixStream | null> {
-		const result = await this.getStreams({ userName: extractUserName(user) });
+		const result = await this.getStreamsByUserNames([user]);
 
-		return result.data.length ? result.data[0] : null;
+		return result[0] ?? null;
+	}
+
+	/**
+	 * Retrieves the current streams for the given user IDs.
+	 *
+	 * @param users The user IDs to retrieve the streams for.
+	 */
+	async getStreamsByUserIds(users: UserIdResolvable[]): Promise<HelixStream[]> {
+		const result = await this.getStreams({ userId: users.map(extractUserId) });
+
+		return result.data;
 	}
 
 	/**
@@ -145,9 +167,9 @@ export class HelixStreamApi extends BaseApi {
 	 * @param user The user ID to retrieve the stream for.
 	 */
 	async getStreamByUserId(user: UserIdResolvable): Promise<HelixStream | null> {
-		const result = await this.getStreams({ userId: extractUserId(user) });
+		const result = await this.getStreamsByUserIds([user]);
 
-		return result.data.length ? result.data[0] : null;
+		return result[0] ?? null;
 	}
 
 	/**
