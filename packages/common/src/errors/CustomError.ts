@@ -1,3 +1,6 @@
+/// <reference lib="es2021.promise"/>
+/// <reference lib="es2022.error"/>
+
 /** @private */
 export class CustomError extends Error {
 	constructor(message: string, options?: ErrorOptions) {
