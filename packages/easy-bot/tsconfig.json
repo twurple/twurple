@@ -1,8 +1,24 @@
 {
-	"extends": "../../tsconfig",
+	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"rootDir": "src",
-		"outDir": "lib"
+		"outDir": "lib",
+		"paths": {
+			"@twurple/auth": ["../auth/src"],
+			"@twurple/chat": ["../chat/src"],
+			"@twurple/common": ["../common/src"]
+		}
 	},
+	"references": [
+		{
+			"path": "../auth"
+		},
+		{
+			"path": "../chat"
+		},
+		{
+			"path": "../common"
+		}
+	],
 	"exclude": ["node_modules", "lib", "es"]
 }

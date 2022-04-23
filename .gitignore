@@ -18,6 +18,7 @@ generatedDocs
 /packages/*/lib
 /packages/*/docs.json
 /docs*.json
+*.tsbuildinfo
 
 # Logs
 logs

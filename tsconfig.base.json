@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"composite": true,
+		"module": "commonjs",
+		"target": "es2019",
+		"lib": ["es2019"],
+		"moduleResolution": "node",
+		"declaration": true,
+		"forceConsistentCasingInFileNames": true,
+		"noImplicitReturns": true,
+		"importHelpers": true,
+		"strict": true,
+		"noUnusedLocals": true,
+		"experimentalDecorators": true,
+		"downlevelIteration": true,
+		"isolatedModules": true,
+		"declarationMap": true
+	},
+	"exclude": ["node_modules", "lib", "es"]
+}

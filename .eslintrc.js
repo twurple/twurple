@@ -142,8 +142,13 @@ const namingConvention = [...baseRules.rules['@typescript-eslint/naming-conventi
 	return rule;
 });
 
+const useTypeInfo = !process.env.DF_ESLINT_NO_TYPE_INFO;
+
 module.exports = {
 	extends: ['@d-fischer'],
+	parserOptions: {
+		project: useTypeInfo ? 'tsconfig.base.json' : undefined
+	},
 	rules: {
 		'@typescript-eslint/naming-convention': namingConvention
 	},

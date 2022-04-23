@@ -1,8 +1,20 @@
 {
-	"extends": "../../tsconfig",
+	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
 		"rootDir": "src",
-		"outDir": "lib"
+		"outDir": "lib",
+		"paths": {
+			"@twurple/api-call/src": ["../api-call/src"],
+			"@twurple/common": ["../common/src"]
+		}
 	},
+	"references": [
+		{
+			"path": "../api-call"
+		},
+		{
+			"path": "../common"
+		}
+	],
 	"exclude": ["node_modules", "lib", "es"]
 }
