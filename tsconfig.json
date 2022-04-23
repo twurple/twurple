@@ -1,19 +1,44 @@
 {
-	"compilerOptions": {
-		"module": "commonjs",
-		"target": "es2019",
-		"lib": ["es2019"],
-		"moduleResolution": "node",
-		"declaration": true,
-		"forceConsistentCasingInFileNames": true,
-		"noImplicitReturns": true,
-		"importHelpers": true,
-		"strict": true,
-		"noUnusedLocals": true,
-		"experimentalDecorators": true,
-		"downlevelIteration": true,
-		"isolatedModules": true,
-		"declarationMap": true
-	},
-	"exclude": ["node_modules", "lib", "es", "__tests__"]
+	"references": [
+		{
+			"path": "./packages/api"
+		},
+		{
+			"path": "./packages/api-call"
+		},
+		{
+			"path": "./packages/auth"
+		},
+		{
+			"path": "./packages/auth-electron"
+		},
+		{
+			"path": "./packages/auth-ext"
+		},
+		{
+			"path": "./packages/auth-tmi"
+		},
+		{
+			"path": "./packages/chat"
+		},
+		{
+			"path": "./packages/common"
+		},
+		{
+			"path": "./packages/easy-bot"
+		},
+		{
+			"path": "./packages/ebs-helper"
+		},
+		{
+			"path": "./packages/eventsub"
+		},
+		{
+			"path": "./packages/eventsub-ngrok"
+		},
+		{
+			"path": "./packages/pubsub"
+		}
+	],
+	"files": []
 }
