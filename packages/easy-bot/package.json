@@ -36,9 +36,5 @@
     "README.md",
     "lib",
     "!lib/**/*.d.ts.map"
-  ],
-  "scripts": {
-    "build": "tsc",
-    "rebuild": "rimraf lib && yarn run build"
-  }
+  ]
 }

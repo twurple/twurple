@@ -47,9 +47,5 @@
     "lib",
     "!lib/**/*.d.ts.map",
     "es"
-  ],
-  "scripts": {
-    "build": "tsukuru",
-    "rebuild": "tsukuru --clean"
-  }
+  ]
 }

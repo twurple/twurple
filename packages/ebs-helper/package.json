@@ -45,10 +45,6 @@
     "!lib/**/*.d.ts.map",
     "es"
   ],
-  "scripts": {
-    "build": "tsukuru",
-    "rebuild": "tsukuru --clean"
-  },
   "devDependencies": {
     "@types/jsonwebtoken": "^8.5.8"
   }
