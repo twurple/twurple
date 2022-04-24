@@ -5,6 +5,7 @@
 /packages/*/docs.json
 *.sh
 *.md
+*.tsbuildinfo
 package.json
 /docs*.json
 /generatedDocs
