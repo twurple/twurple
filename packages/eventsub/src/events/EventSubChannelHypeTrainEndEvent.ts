@@ -12,7 +12,7 @@ export interface EventSubChannelHypeTrainEndEventData {
 	broadcaster_user_name: string;
 	level: number;
 	total: number;
-	top_contributions: EventSubChannelHypeTrainContributionData[];
+	top_contributions: EventSubChannelHypeTrainContributionData[] | null;
 	started_at: string;
 	ended_at: string;
 	cooldown_ends_at: string;
@@ -84,8 +84,10 @@ export class EventSubChannelHypeTrainEndEvent extends DataObject<EventSubChannel
 	 * The contributors with the most points, for both bits and subscriptions.
 	 */
 	get topContributors(): EventSubChannelHypeTrainContribution[] {
-		return this[rawDataSymbol].top_contributions.map(
-			data => new EventSubChannelHypeTrainContribution(data, this._client)
+		return (
+			this[rawDataSymbol].top_contributions?.map(
+				data => new EventSubChannelHypeTrainContribution(data, this._client)
+			) ?? []
 		);
 	}
 
