@@ -14,7 +14,7 @@ export interface EventSubChannelHypeTrainProgressEventData {
 	total: number;
 	progress: number;
 	goal: number;
-	top_contributions: EventSubChannelHypeTrainContributionData[];
+	top_contributions: EventSubChannelHypeTrainContributionData[] | null;
 	last_contribution: EventSubChannelHypeTrainContributionData;
 	started_at: string;
 	expires_at: string;
@@ -100,8 +100,10 @@ export class EventSubChannelHypeTrainProgressEvent extends DataObject<EventSubCh
 	 * The contributors with the most points, for both bits and subscriptions.
 	 */
 	get topContributors(): EventSubChannelHypeTrainContribution[] {
-		return this[rawDataSymbol].top_contributions.map(
-			data => new EventSubChannelHypeTrainContribution(data, this._client)
+		return (
+			this[rawDataSymbol].top_contributions?.map(
+				data => new EventSubChannelHypeTrainContribution(data, this._client)
+			) ?? []
 		);
 	}
 
