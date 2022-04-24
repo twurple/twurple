@@ -56,10 +56,10 @@ export class PubSubClient {
 	getUserListener(user: UserIdResolvable): SingleUserPubSubClient {
 		const userId = extractUserId(user);
 		if (!this._userClients.has(userId)) {
-			throw new Error(`No API client registered for user ID ${userId}
+			throw new Error(`No auth provider registered for user ID ${userId}
 Register one using:
 
-\tpubSubClient.registerUserListener(apiClient);`);
+\tpubSubClient.registerUserListener(authProvider);`);
 		}
 		return this._userClients.get(userId)!;
 	}

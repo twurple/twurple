@@ -2,7 +2,13 @@ import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from '@twurple/api-call';
-import { callTwitchApi, callTwitchApiRaw, HttpStatusCodeError, transformTwitchApiResponse } from '@twurple/api-call';
+import {
+	callTwitchApi,
+	callTwitchApiRaw,
+	handleTwitchApiResponseError,
+	HttpStatusCodeError,
+	transformTwitchApiResponse
+} from '@twurple/api-call';
 
 import type { AuthProvider, TokenInfoData } from '@twurple/auth';
 import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
@@ -416,6 +422,8 @@ export class ApiClient {
 						fetchOptions
 				  })
 				: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
+
+		await handleTwitchApiResponseError(response, options);
 
 		this._logger.debug(
 			`Called ${type} API: ${options.method ?? 'GET'} ${options.url} - result: ${response.status}`
