@@ -35,6 +35,9 @@
     "LICENSE",
     "README.md",
     "lib",
-    "!lib/**/*.d.ts.map"
+    "!lib/**/*.d.ts.map",
+    "es",
+    "!es/**/*.d.ts",
+    "!es/**/*.d.ts.map"
   ]
 }

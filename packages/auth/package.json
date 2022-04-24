@@ -43,6 +43,8 @@
     "README.md",
     "lib",
     "!lib/**/*.d.ts.map",
-    "es"
+    "es",
+    "!es/**/*.d.ts",
+    "!es/**/*.d.ts.map"
   ]
 }
