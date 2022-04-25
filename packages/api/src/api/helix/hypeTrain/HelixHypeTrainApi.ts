@@ -71,24 +71,4 @@ export class HelixHypeTrainApi extends BaseApi {
 				new HelixHypeTrainEvent(data, this._client)
 		);
 	}
-
-	/**
-	 * Retrieves a single Hype Train event by ID.
-	 *
-	 * @param id The ID of the Hype Train event.
-	 */
-	async getHypeTrainEventById(id: string): Promise<HelixHypeTrainEvent | null> {
-		const result = await this._client.callApi<
-			HelixPaginatedResponse<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>>
-		>({
-			type: 'helix',
-			url: 'hypetrain/events',
-			scope: 'channel:read:hype_train',
-			query: {
-				id
-			}
-		});
-
-		return result.data.length ? new HelixHypeTrainEvent(result.data[0], this._client) : null;
-	}
 }
