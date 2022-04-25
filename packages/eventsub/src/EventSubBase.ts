@@ -43,6 +43,7 @@ import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateE
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
 import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';
+import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthorizationGrantEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
@@ -79,6 +80,7 @@ import { EventSubExtensionBitsTransactionCreateSubscription } from './subscripti
 import { EventSubStreamOfflineSubscription } from './subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './subscriptions/EventSubStreamOnlineSubscription';
 import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
+import { EventSubUserAuthorizationGrantSubscription } from './subscriptions/EventSubUserAuthorizationGrantSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription';
 
@@ -984,6 +986,19 @@ To silence this warning without enabling this check (and thus to keep it off eve
 	}
 
 	/**
+	 * Subscribes to events that represent a user granting authorization to an application.
+	 *
+	 * @param clientId The Client ID for which to get notifications about authorization grants.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToUserAuthorizationGrantEvents(
+		clientId: string,
+		handler: (data: EventSubUserAuthorizationGrantEvent) => void
+	): Promise<EventSubSubscription> {
+		return await this._genericSubscribe(EventSubUserAuthorizationGrantSubscription, handler, this, clientId);
+	}
+
+	/**
 	 * Subscribes to events that represent a user revoking authorization from an application.
 	 *
 	 * @param clientId The Client ID for which to get notifications about authorization revocations.
@@ -995,6 +1010,7 @@ To silence this warning without enabling this check (and thus to keep it off eve
 	): Promise<EventSubSubscription> {
 		return await this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
+
 	/**
 	 * Subscribes to events that represent a user updating their account details.
 	 *

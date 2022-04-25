@@ -932,6 +932,19 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a user granting authorization to an application.
+	 *
+	 * @param clientId The Client ID for the application you want to listen to authorization grant events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToUserAuthorizationGrantEvents(
+		clientId: string,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription('user.authorization.grant', '1', { client_id: clientId }, transport);
+	}
+
+	/**
 	 * Subscribe to events that represent a user revoking their authorization from an application.
 	 *
 	 * @param clientId The Client ID for the application you want to listen to authorization revoke events for.
