@@ -80,10 +80,8 @@ await onlineSubscription.stop();
 
 You can use the Twitch CLI to test your subscriptions,
 but you need to take care about some implementation details of this library:  
-- At the end of each callback, each event has a unique identifier that is generally built by joining the event name
-and the other parameters (like the user ID) of the event.
-- This user ID is also prepended to the secret you passed to generate an unique secret for each callback.  
-After this, if the resulting string is longer than 100 characters, the last 100 characters will be taken as the secret.
+- At the end of each callback, each event has a unique identifier that is generally built by joining the event name and the other parameters (like the user ID) of the event.
+- This user ID is also prepended to the secret you passed to generate an unique secret for each callback. After this, if the resulting string is longer than 100 characters, the last 100 characters will be taken as the secret.
 
 The easiest way to get the proper test command is by using the method {@EventSubSubscription#getCliTestCommand}:
 

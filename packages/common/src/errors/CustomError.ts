@@ -1,6 +1,3 @@
-/// <reference lib="es2021.promise"/>
-/// <reference lib="es2022.error"/>
-
 declare global {
 	// in case this interface is not available to consumers (TS <4.6), declaring it empty should be enough to prevent TS errors
 	// eslint-disable-next-line @typescript-eslint/no-empty-interface
