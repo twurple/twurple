@@ -174,6 +174,8 @@ export class ApiClient {
 			}
 		}
 
+		await handleTwitchApiResponseError(response, options);
+
 		return await transformTwitchApiResponse<T>(response);
 	}
 
@@ -422,8 +424,6 @@ export class ApiClient {
 						fetchOptions
 				  })
 				: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
-
-		await handleTwitchApiResponseError(response, options);
 
 		this._logger.debug(
 			`Called ${type} API: ${options.method ?? 'GET'} ${options.url} - result: ${response.status}`
