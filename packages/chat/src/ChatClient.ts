@@ -968,11 +968,10 @@ export class ChatClient extends IrcClient {
 					this.emit(event, channel, tags.get('login')!, subInfo, userNotice);
 					break;
 				}
-				case 'subgift':
-				case 'anonsubgift': {
+				case 'subgift': {
 					const plan = tags.get('msg-param-sub-plan')!;
 					const gifter = tags.get('login');
-					const isAnon = messageType === 'anonsubgift' || gifter === 'ananonymousgifter';
+					const isAnon = gifter === 'ananonymousgifter';
 					const subInfo: ChatSubGiftInfo = {
 						userId: tags.get('msg-param-recipient-id')!,
 						displayName: tags.get('msg-param-recipient-display-name')!,
@@ -989,10 +988,9 @@ export class ChatClient extends IrcClient {
 					this.emit(this.onSubGift, channel, tags.get('msg-param-recipient-user-name')!, subInfo, userNotice);
 					break;
 				}
-				case 'anonsubmysterygift':
 				case 'submysterygift': {
 					const gifter = tags.get('login');
-					const isAnon = messageType === 'anonsubmysterygift' || gifter === 'ananonymousgifter';
+					const isAnon = gifter === 'ananonymousgifter';
 					const communitySubInfo: ChatCommunitySubInfo = {
 						gifter: isAnon ? undefined : gifter,
 						gifterUserId: isAnon ? undefined : tags.get('user-id')!,
