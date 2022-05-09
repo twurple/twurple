@@ -1,6 +1,8 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
+import type { RateLimiter } from '@d-fischer/rate-limiter';
+import { TimeBasedRateLimiter } from '@d-fischer/rate-limiter';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from '@twurple/api-call';
 import {
 	callTwitchApi,
@@ -13,6 +15,7 @@ import {
 import type { AuthProvider, TokenInfoData } from '@twurple/auth';
 import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
+import * as isNode from 'detect-node';
 
 import { BadgesApi } from './api/badges/BadgesApi';
 import { HelixBitsApi } from './api/helix/bits/HelixBitsApi';
@@ -83,7 +86,7 @@ export interface TwitchApiCallOptionsInternal {
 export class ApiClient {
 	private readonly _config: ApiConfig;
 	private readonly _logger: Logger;
-	private readonly _helixRateLimiter: HelixRateLimiter;
+	private readonly _rateLimiter: RateLimiter<TwitchApiCallOptionsInternal, Response>;
 
 	/**
 	 * Creates a new API client instance.
@@ -97,9 +100,16 @@ export class ApiClient {
 
 		this._config = config;
 		this._logger = createLogger({ name: 'twurple:api:client', ...config.logger });
-		this._helixRateLimiter = new HelixRateLimiter({
-			logger: { name: 'twurple:api:rate-limiter', ...config.logger }
-		});
+		const rateLimitLoggerOptions: LoggerOptions = { name: 'twurple:api:rate-limiter', ...config.logger };
+		this._rateLimiter = isNode
+			? new HelixRateLimiter({ logger: rateLimitLoggerOptions })
+			: new TimeBasedRateLimiter({
+					logger: rateLimitLoggerOptions,
+					bucketSize: 800,
+					timeFrame: 64000,
+					doRequest: async ({ options, clientId, accessToken, authorizationType, fetchOptions }) =>
+						await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions)
+			  });
 	}
 
 	/**
@@ -379,21 +389,33 @@ export class ApiClient {
 	 * The last known rate limit for the Helix API.
 	 */
 	get lastKnownLimit(): number | null {
-		return this._helixRateLimiter.lastKnownLimit;
+		if (this._rateLimiter instanceof HelixRateLimiter) {
+			return this._rateLimiter.lastKnownLimit;
+		}
+
+		return null;
 	}
 
 	/**
 	 * The last known remaining requests for the Helix API.
 	 */
 	get lastKnownRemainingRequests(): number | null {
-		return this._helixRateLimiter.lastKnownRemainingRequests;
+		if (this._rateLimiter instanceof HelixRateLimiter) {
+			return this._rateLimiter.lastKnownRemainingRequests;
+		}
+
+		return null;
 	}
 
 	/**
 	 * The last known rate limit reset date for the Helix API.
 	 */
 	get lastKnownResetDate(): Date | null {
-		return this._helixRateLimiter.lastKnownResetDate;
+		if (this._rateLimiter instanceof HelixRateLimiter) {
+			return this._rateLimiter.lastKnownResetDate;
+		}
+
+		return null;
 	}
 
 	/** @private */
@@ -416,7 +438,7 @@ export class ApiClient {
 		}
 		const response =
 			type === 'helix'
-				? await this._helixRateLimiter.request({
+				? await this._rateLimiter.request({
 						options,
 						clientId,
 						accessToken,
