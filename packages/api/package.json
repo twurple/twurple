@@ -1,6 +1,6 @@
 {
   "name": "@twurple/api",
-  "version": "5.2.0-pre.3",
+  "version": "5.2.0-pre.4",
   "publishConfig": {
     "access": "public"
   },
@@ -36,13 +36,13 @@
     "@d-fischer/logger": "^4.0.0",
     "@d-fischer/rate-limiter": "^0.5.0",
     "@d-fischer/shared-utils": "^3.2.0",
-    "@twurple/api-call": "^5.2.0-pre.3",
-    "@twurple/common": "^5.2.0-pre.3",
+    "@twurple/api-call": "^5.2.0-pre.4",
+    "@twurple/common": "^5.2.0-pre.4",
     "detect-node": "^2.1.0",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "^5.2.0-pre.3",
+    "@twurple/auth": "^5.2.0-pre.4",
     "@types/detect-node": "^2.0.0"
   },
   "peerDependencies": {
