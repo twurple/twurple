@@ -1,4 +1,5 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import { isNode } from '@d-fischer/detect-node';
 import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
 import type { RateLimiter } from '@d-fischer/rate-limiter';
@@ -15,7 +16,6 @@ import {
 import type { AuthProvider, TokenInfoData } from '@twurple/auth';
 import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
-import * as isNode from 'detect-node';
 
 import { BadgesApi } from './api/badges/BadgesApi';
 import { HelixBitsApi } from './api/helix/bits/HelixBitsApi';
