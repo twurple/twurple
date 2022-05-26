@@ -93,9 +93,14 @@ export { HelixHypeTrainEvent } from './api/helix/hypeTrain/HelixHypeTrainEvent';
 export type { HelixHypeTrainEventData, HelixHypeTrainEventType } from './api/helix/hypeTrain/HelixHypeTrainEvent';
 
 export { HelixModerationApi } from './api/helix/moderation/HelixModerationApi';
-export type { HelixBanFilter, HelixModeratorFilter } from './api/helix/moderation/HelixModerationApi';
+export type {
+	HelixBanFilter,
+	HelixModeratorFilter,
+	HelixBanUserRequest
+} from './api/helix/moderation/HelixModerationApi';
 export { HelixBan } from './api/helix/moderation/HelixBan';
 export { HelixModerator } from './api/helix/moderation/HelixModerator';
+export { HelixBanUser } from './api/helix/moderation/HelixBanUser';
 
 export { HelixPollApi } from './api/helix/poll/HelixPollApi';
 export type { HelixCreatePollData } from './api/helix/poll/HelixPollApi';

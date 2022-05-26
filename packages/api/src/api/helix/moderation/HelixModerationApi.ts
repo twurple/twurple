@@ -57,6 +57,9 @@ export interface HelixCheckAutoModStatusData {
 
 export type HelixAutoModSettingsUpdate = Exclude<HelixAutoModSettings, 'broadcasterId' | 'moderatorId'>;
 
+/**
+ * Information about a user to be banned/timed out from a channel.
+ */
 export interface HelixBanUserRequest {
 	/**
 	 * The duration (in seconds) that the user should be timed out. If this value is null, the user will be banned.
@@ -312,7 +315,10 @@ export class HelixModerationApi extends BaseApi {
 	 * @param broadcasterId The ID of the broadcaster in whose channel the user will be banned/timed out.
 	 * @param moderatorId The ID of a user that has permission to ban/timeout users in the broadcaster's chat room.
 	 * This must match the user ID associated with the user OAuth token.
-	 * @param data The data about the ban/timeout. Don't use the "data" wrapper.
+	 * @param data
+	 *
+	 * @expandParams
+	 *
 	 * @returns The result data from the ban/timeout request.
 	 */
 	async banUser(
