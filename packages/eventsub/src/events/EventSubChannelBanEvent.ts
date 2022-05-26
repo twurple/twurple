@@ -14,6 +14,7 @@ export interface EventSubChannelBanEventData {
 	moderator_user_login: string;
 	moderator_user_name: string;
 	reason: string;
+	banned_at: string;
 	ends_at: string | null;
 	is_permanent: boolean;
 }
@@ -120,6 +121,13 @@ export class EventSubChannelBanEvent extends DataObject<EventSubChannelBanEventD
 	 */
 	get reason(): string {
 		return this[rawDataSymbol].reason;
+	}
+
+	/**
+	 * The date and time when the user was banned or put in a timeout.
+	 */
+	get startDate(): Date {
+		return new Date(this[rawDataSymbol].banned_at);
 	}
 
 	/**

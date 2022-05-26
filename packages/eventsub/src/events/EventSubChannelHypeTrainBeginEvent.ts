@@ -10,6 +10,7 @@ export interface EventSubChannelHypeTrainBeginEventData {
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
+	level: number;
 	total: number;
 	progress: number;
 	goal: number;
@@ -65,6 +66,13 @@ export class EventSubChannelHypeTrainBeginEvent extends DataObject<EventSubChann
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
+	}
+
+	/**
+	 * The level the Hype Train started on.
+	 */
+	get level(): number {
+		return this[rawDataSymbol].level;
 	}
 
 	/**

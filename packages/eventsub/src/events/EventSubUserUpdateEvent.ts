@@ -8,6 +8,7 @@ export interface EventSubUserUpdateEventData {
 	user_login: string;
 	user_name: string;
 	email?: string;
+	email_verified: boolean;
 	description: string;
 }
 
@@ -60,6 +61,16 @@ export class EventSubUserUpdateEvent extends DataObject<EventSubUserUpdateEventD
 	 */
 	get userEmail(): string | null {
 		return this[rawDataSymbol].email ?? null;
+	}
+
+	/**
+	 * Whether the user's email address has been verified by Twitch.
+	 *
+	 * This is `null` if you are not authorized to read the email address,
+	 * i.e. you have never successfully requested the scope `user:read:email` from the user.
+	 */
+	get userEmailIsVerified(): boolean | null {
+		return this[rawDataSymbol].email ? this[rawDataSymbol].email_verified : null;
 	}
 
 	/**
