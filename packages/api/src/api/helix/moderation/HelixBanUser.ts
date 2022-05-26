@@ -11,7 +11,7 @@ export interface HelixBanUserData {
 /**
  * Information about a user who has been banned/timed out.
  */
-@rtfm<HelixBanUser>('api', 'HelixBanUserRequest', 'userId')
+@rtfm<HelixBanUser>('api', 'HelixBanUser', 'userId')
 export class HelixBanUser extends DataObject<HelixBanUserData> {
 	/**
 	 * The ID of the broadcaster whose chat room the user was banned/timed out from chatting in.
