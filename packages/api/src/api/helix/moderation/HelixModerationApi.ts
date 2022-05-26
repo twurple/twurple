@@ -13,6 +13,8 @@ import type { HelixAutoModStatusData } from './HelixAutoModStatus';
 import { HelixAutoModStatus } from './HelixAutoModStatus';
 import type { HelixBanData } from './HelixBan';
 import { HelixBan } from './HelixBan';
+import type { HelixBanUserData } from './HelixBanUser';
+import { HelixBanUser } from './HelixBanUser';
 import type { HelixModeratorData } from './HelixModerator';
 import { HelixModerator } from './HelixModerator';
 
@@ -54,6 +56,23 @@ export interface HelixCheckAutoModStatusData {
 }
 
 export type HelixAutoModSettingsUpdate = Exclude<HelixAutoModSettings, 'broadcasterId' | 'moderatorId'>;
+
+export interface HelixBanUserRequest {
+	/**
+	 * The duration (in seconds) that the user should be timed out. If this value is null, the user will be banned.
+	 */
+	duration: number | null;
+
+	/**
+	 * The reason why the user is being timed out/banned.
+	 */
+	reason: string;
+
+	/**
+	 * The ID of the user who is to be banned/timed out.
+	 */
+	userId: string;
+}
 
 /**
  * The Helix API methods that deal with moderation.
@@ -285,5 +304,66 @@ export class HelixModerationApi extends BaseApi {
 		});
 
 		return result.data.map(settingsData => new HelixAutoModSettings(settingsData));
+	}
+
+	/**
+	 * Bans or times out a user in a channel
+	 *
+	 * @param broadcasterId The ID of the broadcaster in whose channel the user will be banned/timed out.
+	 * @param moderatorId The ID of a user that has permission to ban/timeout users in the broadcaster's chat room.
+	 * This must match the user ID associated with the user OAuth token.
+	 * @param data The data about the ban/timeout, including the user's ID, the reason, and the duration (for timeouts only).
+	 * Don't use the "data" wrapper.
+	 * @returns The result data from the ban/timeout request.
+	 */
+	async banUser(
+		broadcasterId: UserIdResolvable,
+		moderatorId: UserIdResolvable,
+		data: HelixBanUserRequest
+	): Promise<HelixBanUser[]> {
+		const result = await this._client.callApi<HelixResponse<HelixBanUserData>>({
+			type: 'helix',
+			url: 'moderation/bans',
+			method: 'POST',
+			scope: 'moderator:manage:banned_users',
+			query: {
+				broadcaster_id: extractUserId(broadcasterId),
+				moderator_id: extractUserId(moderatorId)
+			},
+			jsonBody: {
+				data: {
+					duration: data.duration,
+					reason: data.reason,
+					user_id: data.userId
+				}
+			}
+		});
+
+		return result.data.map(banData => new HelixBanUser(banData));
+	}
+
+	/**
+	 * Unbans/removes the timeout for a user in a channel.
+	 *
+	 * @param broadcasterId The ID of the broadcaster in whose channel the user will be unbanned/removed from timeout.
+	 * @param moderatorId The ID of a user that has permission to unban/remove timeout users in the broadcaster's chat room.
+	 * @param userId The ID of the user who will be unbanned/removed from timeout.
+	 */
+	async unbanUser(
+		broadcasterId: UserIdResolvable,
+		moderatorId: UserIdResolvable,
+		userId: UserIdResolvable
+	): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'moderation/bans',
+			method: 'DELETE',
+			scope: 'moderator:manage:banned_users',
+			query: {
+				broadcaster_id: extractUserId(broadcasterId),
+				moderator_id: extractUserId(moderatorId),
+				user_id: extractUserId(userId)
+			}
+		});
 	}
 }
