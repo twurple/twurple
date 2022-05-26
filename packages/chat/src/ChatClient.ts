@@ -419,7 +419,7 @@ export class ChatClient extends IrcClient {
 	 * Fires when a user gifts a subscription to a channel to another user.
 	 *
 	 * Community subs also fire multiple `onSubGift` events.
-	 * To prevent alert spam, check [Sub gift spam](/docs/chat/examples/sub-gift-spam).
+	 * To prevent alert spam, check [Sub gift spam](/docs/examples/chat/sub-gift-spam).
 	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
@@ -434,7 +434,7 @@ export class ChatClient extends IrcClient {
 	 * Fires when a user gifts random subscriptions to the community of a channel.
 	 *
 	 * Community subs also fire multiple `onSubGift` events.
-	 * To prevent alert spam, check [Sub gift spam](/docs/chat/examples/sub-gift-spam).
+	 * To prevent alert spam, check [Sub gift spam](/docs/examples/chat/sub-gift-spam).
 	 *
 	 * @eventListener
 	 * @param channel The channel that was subscribed to.
