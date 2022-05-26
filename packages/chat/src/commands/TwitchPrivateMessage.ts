@@ -56,7 +56,7 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 * Whether the message is highlighted by using channel points.
 	 */
 	get isHighlight(): boolean {
-		return this._tags.has('highlighted-message');
+		return this._tags.get('msg-id') === 'highlighted-message';
 	}
 
 	/**
