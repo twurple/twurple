@@ -23,7 +23,7 @@ export class HelixBanUser extends DataObject<HelixBanUserData> {
 	/**
 	 * The date and time that the timeout will end. Is `null` if the user was banned instead of put in a timeout.
 	 */
-	get endTime(): Date | null {
+	get endDate(): Date | null {
 		return this[rawDataSymbol].end_time ? new Date(this[rawDataSymbol].end_time) : null;
 	}
 
