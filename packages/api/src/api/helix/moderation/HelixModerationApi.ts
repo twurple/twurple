@@ -15,6 +15,8 @@ import type { HelixBanData } from './HelixBan';
 import { HelixBan } from './HelixBan';
 import type { HelixBanUserData } from './HelixBanUser';
 import { HelixBanUser } from './HelixBanUser';
+import type { HelixBlockedTermData } from './HelixBlockedTerm';
+import { HelixBlockedTerm } from './HelixBlockedTerm';
 import type { HelixModeratorData } from './HelixModerator';
 import { HelixModerator } from './HelixModerator';
 
@@ -352,6 +354,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param broadcasterId The ID of the broadcaster in whose channel the user will be unbanned/removed from timeout.
 	 * @param moderatorId The ID of a user that has permission to unban/remove timeout users in the broadcaster's chat room.
+	 * This must match the user ID associated with the user OAuth token.
 	 * @param userId The ID of the user who will be unbanned/removed from timeout.
 	 */
 	async unbanUser(
@@ -368,6 +371,91 @@ export class HelixModerationApi extends BaseApi {
 				broadcaster_id: extractUserId(broadcasterId),
 				moderator_id: extractUserId(moderatorId),
 				user_id: extractUserId(userId)
+			}
+		});
+	}
+
+	/**
+	 * Gets the broadcaster’s list of non-private, blocked words or phrases.
+	 *
+	 * @param broadcasterId The ID of the broadcaster for whose channel blocked terms will be retrieved.
+	 * @param moderatorId The ID of a user that has permission to retrieve blocked terms for the broadcaster's channel.
+	 * This must match the user ID associated with the user OAuth token.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 *
+	 * @returns A paginated list of blocked term data in the broadcaster's channel.
+	 */
+	async getBlockedTerms(
+		broadcasterId: UserIdResolvable,
+		moderatorId: UserIdResolvable,
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResult<HelixBlockedTerm>> {
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixBlockedTermData>>({
+			type: 'helix',
+			url: 'moderation/blocked_terms',
+			scope: 'moderator:read:blocked_terms',
+			query: {
+				broadcaster_id: extractUserId(broadcasterId),
+				moderator_id: extractUserId(moderatorId),
+				...makePaginationQuery(pagination)
+			}
+		});
+
+		return createPaginatedResult(result, HelixBlockedTerm, this._client);
+	}
+
+	/**
+	 * Adds a blocked term to the broadcaster's channel.
+	 *
+	 * @param broadcasterId The ID of the broadcaster in whose channel the term will be blocked.
+	 * @param moderatorId The ID of a user that has permission to block terms in the broadcaster's channel.
+	 * This must match the user ID associated with the user OAuth token.
+	 * @param text The word or phrase to block from being used in the broadcaster's channel.
+	 *
+	 * @returns Information about the term that has been blocked.
+	 */
+	async addBlockedTerm(
+		broadcasterId: UserIdResolvable,
+		moderatorId: UserIdResolvable,
+		text: string
+	): Promise<HelixBlockedTerm[]> {
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixBlockedTermData>>({
+			type: 'helix',
+			url: 'moderation/blocked_terms',
+			method: 'POST',
+			scope: 'moderator:manage:blocked_terms',
+			query: {
+				broadcaster_id: extractUserId(broadcasterId),
+				moderator_id: extractUserId(moderatorId)
+			},
+			jsonBody: {
+				text
+			}
+		});
+
+		return result.data.map(blockedTermData => new HelixBlockedTerm(blockedTermData));
+	}
+
+	/**
+	 * Removes a blocked term from the broadcaster's channel.
+	 *
+	 * @param broadcasterId The ID of the broadcaster in whose channel the term will be unblocked.
+	 * @param moderatorId The ID of a user that has permission to unblock terms in the broadcaster's channel.
+	 * This must match the user ID associated with the user OAuth token.
+	 * @param id The ID of the term that should be unblocked.
+	 */
+	async removeBlockedTerm(broadcasterId: UserIdResolvable, moderatorId: UserIdResolvable, id: string): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'moderation/blocked_terms',
+			method: 'DELETE',
+			scope: 'moderator:manage:blocked_terms',
+			query: {
+				broadcaster_id: extractUserId(broadcasterId),
+				moderator_id: extractUserId(moderatorId),
+				id
 			}
 		});
 	}

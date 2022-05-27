@@ -1,0 +1,67 @@
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+
+/** @private */
+export interface HelixBlockedTermData {
+	broadcaster_id: string;
+	created_at: string;
+	expires_at: string;
+	id: string;
+	moderator_id: string;
+	text: string;
+	updated_at: string;
+}
+
+/**
+ * Information about a word or phrase blocked in a broadcaster's channel.
+ */
+@rtfm<HelixBlockedTerm>('api', 'HelixBlockedTerm', 'id')
+export class HelixBlockedTerm extends DataObject<HelixBlockedTermData> {
+	/**
+	 * The ID of the broadcaster that owns the list of blocked terms.
+	 */
+	get broadcasterId(): string {
+		return this[rawDataSymbol].broadcaster_id;
+	}
+
+	/**
+	 * The UTC date and time (in RFC3339 format) of when the term was blocked.
+	 */
+	get createdAt(): string {
+		return this[rawDataSymbol].created_at;
+	}
+
+	/**
+	 * The UTC date and time (in RFC3339 format) of when the blocked term is set to expire. After the block expires, users will be able to use the term in the broadcaster’s chat room.
+	 */
+	get expiresAt(): string {
+		return this[rawDataSymbol].expires_at;
+	}
+
+	/**
+	 * An ID that uniquely identifies this blocked term.
+	 */
+	get id(): string {
+		return this[rawDataSymbol].id;
+	}
+
+	/**
+	 * The ID of the moderator that blocked the word or phrase from being used in the broadcaster’s chat room.
+	 */
+	get moderatorId(): string {
+		return this[rawDataSymbol].moderator_id;
+	}
+
+	/**
+	 * The blocked word or phrase.
+	 */
+	get text(): string {
+		return this[rawDataSymbol].text;
+	}
+
+	/**
+	 * The UTC date and time (in RFC3339 format) of when the term was updated.
+	 */
+	get updatedAt(): string {
+		return this[rawDataSymbol].updated_at;
+	}
+}
