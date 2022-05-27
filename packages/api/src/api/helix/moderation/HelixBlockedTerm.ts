@@ -24,17 +24,18 @@ export class HelixBlockedTerm extends DataObject<HelixBlockedTermData> {
 	}
 
 	/**
-	 * The UTC date and time (in RFC3339 format) of when the term was blocked.
+	 * The date and time of when the term was blocked.
 	 */
-	get createdAt(): string {
-		return this[rawDataSymbol].created_at;
+	get creationDate(): Date {
+		return new Date(this[rawDataSymbol].created_at);
 	}
 
 	/**
-	 * The UTC date and time (in RFC3339 format) of when the blocked term is set to expire. After the block expires, users will be able to use the term in the broadcaster’s chat room.
+	 * The date and time of when the blocked term is set to expire. After the block expires, users will be able to use the term in the broadcaster’s chat room.
+	 * Is `null` if the term was added manually or permanently blocked by AutoMod.
 	 */
-	get expiresAt(): string {
-		return this[rawDataSymbol].expires_at;
+	get expirationDate(): Date | null {
+		return this[rawDataSymbol].expires_at ? new Date(this[rawDataSymbol].expires_at) : null;
 	}
 
 	/**
@@ -59,9 +60,9 @@ export class HelixBlockedTerm extends DataObject<HelixBlockedTermData> {
 	}
 
 	/**
-	 * The UTC date and time (in RFC3339 format) of when the term was updated.
+	 * The date and time of when the term was updated.
 	 */
-	get updatedAt(): string {
-		return this[rawDataSymbol].updated_at;
+	get updatedDate(): Date {
+		return new Date(this[rawDataSymbol].updated_at);
 	}
 }
