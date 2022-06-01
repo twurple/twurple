@@ -25,7 +25,7 @@ export class UnsupportedApi extends BaseApi {
 	 * @param channel The channel to retrieve the chatters for.
 	 */
 	async getChatters(channel: UserNameResolvable): Promise<ChattersList> {
-		const channelName = extractUserName(channel);
+		const channelName = extractUserName(channel).toLowerCase();
 
 		const data: ChattersListData = await this._client.callApi({
 			url: `https://tmi.twitch.tv/group/user/${channelName}/chatters`,
