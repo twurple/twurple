@@ -17,12 +17,20 @@ export class ChatUser {
 		this._userData = userData ? new Map<string, string>(userData) : new Map<string, string>();
 	}
 
-	private _parseBadgesLike(badgesLikeStr?: string): Map<string, string> {
+	private static _parseBadgesLike(badgesLikeStr?: string): Map<string, string> {
 		if (!badgesLikeStr) {
 			return new Map<string, string>();
 		}
 
-		return new Map(badgesLikeStr.split(',').map(badge => badge.split('/', 2) as [string, string]));
+		return new Map<string, string>(
+			badgesLikeStr.split(',').map(badge => {
+				const slashIndex = badge.indexOf('/');
+				if (slashIndex === -1) {
+					return [badge, ''];
+				}
+				return [badge.slice(0, slashIndex), badge.slice(slashIndex + 1)];
+			})
+		);
 	}
 
 	/**
@@ -56,7 +64,7 @@ export class ChatUser {
 	get badges(): Map<string, string> {
 		const badgesStr = this._userData.get('badges');
 
-		return this._parseBadgesLike(badgesStr);
+		return ChatUser._parseBadgesLike(badgesStr);
 	}
 
 	/**
@@ -66,7 +74,7 @@ export class ChatUser {
 	get badgeInfo(): Map<string, string> {
 		const badgeInfoStr = this._userData.get('badge-info');
 
-		return this._parseBadgesLike(badgeInfoStr);
+		return ChatUser._parseBadgesLike(badgeInfoStr);
 	}
 
 	/**
