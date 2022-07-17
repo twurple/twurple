@@ -217,7 +217,7 @@ export class HelixStreamApi extends BaseApi {
 				method: 'POST',
 				type: 'helix',
 				scope: 'channel:manage:broadcast',
-				query: {
+				jsonBody: {
 					user_id: extractUserId(broadcaster),
 					description
 				}
