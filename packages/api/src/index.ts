@@ -101,6 +101,7 @@ export type {
 export { HelixBan } from './api/helix/moderation/HelixBan';
 export { HelixModerator } from './api/helix/moderation/HelixModerator';
 export { HelixBanUser } from './api/helix/moderation/HelixBanUser';
+export { HelixBlockedTerm } from './api/helix/moderation/HelixBlockedTerm';
 
 export { HelixPollApi } from './api/helix/poll/HelixPollApi';
 export type { HelixCreatePollData } from './api/helix/poll/HelixPollApi';
