@@ -14,6 +14,7 @@ export class ClientCredentialsAuthProvider extends BaseAuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;
 	@Enumerable(false) private _token?: AccessToken;
+	private readonly _impliedScopes: string[];
 
 	/**
 	 * The type of tokens the provider generates.
@@ -27,11 +28,14 @@ export class ClientCredentialsAuthProvider extends BaseAuthProvider {
 	 *
 	 * @param clientId The client ID of your application.
 	 * @param clientSecret The client secret of your application.
+	 * @param impliedScopes The scopes that are implied for your application,
+	 * for example an extension that is allowed to access subscriptions.
 	 */
-	constructor(clientId: string, clientSecret: string) {
+	constructor(clientId: string, clientSecret: string, impliedScopes: string[] = []) {
 		super();
 		this._clientId = clientId;
 		this._clientSecret = clientSecret;
+		this._impliedScopes = impliedScopes;
 	}
 
 	/**
@@ -64,9 +68,19 @@ export class ClientCredentialsAuthProvider extends BaseAuthProvider {
 	 */
 	protected async _doGetAccessToken(scopes?: string[]): Promise<AccessToken> {
 		if (scopes && scopes.length > 0) {
-			throw new Error(
-				`Scope ${scopes.join(', ')} requested but the client credentials flow does not support scopes`
-			);
+			if (this._impliedScopes.length) {
+				if (scopes.some(scope => !this._impliedScopes.includes(scope))) {
+					throw new Error(
+						`Scope ${scopes.join(', ')} requested but only the scope ${this._impliedScopes.join(
+							', '
+						)} is implied`
+					);
+				}
+			} else {
+				throw new Error(
+					`Scope ${scopes.join(', ')} requested but the client credentials flow does not support scopes`
+				);
+			}
 		}
 
 		if (!this._token || accessTokenIsExpired(this._token)) {
