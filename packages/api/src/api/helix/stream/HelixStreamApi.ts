@@ -161,7 +161,7 @@ export class HelixStreamApi extends BaseApi {
 	async getStreamMarkersForUser(
 		user: UserIdResolvable,
 		pagination?: HelixPagination
-	): Promise<HelixPaginatedResult<HelixStreamMarker>> {
+	): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
 		return await this._getStreamMarkers('user_id', extractUserId(user), pagination);
 	}
 
