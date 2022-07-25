@@ -33,6 +33,7 @@ import { HelixHypeTrainApi } from './api/helix/hypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './api/helix/moderation/HelixModerationApi';
 import { HelixPollApi } from './api/helix/poll/HelixPollApi';
 import { HelixPredictionApi } from './api/helix/prediction/HelixPredictionApi';
+import { HelixRaidApi } from './api/helix/raids/HelixRaidApi';
 import { HelixScheduleApi } from './api/helix/schedule/HelixScheduleApi';
 import { HelixSearchApi } from './api/helix/search/HelixSearchApi';
 import { HelixStreamApi } from './api/helix/stream/HelixStreamApi';
@@ -301,6 +302,14 @@ export class ApiClient {
 	@CachedGetter()
 	get predictions(): HelixPredictionApi {
 		return new HelixPredictionApi(this);
+	}
+
+	/**
+	 * The Helix raid API methods.
+	 */
+	@CachedGetter()
+	get raids(): HelixRaidApi {
+		return new HelixRaidApi(this);
 	}
 
 	/**

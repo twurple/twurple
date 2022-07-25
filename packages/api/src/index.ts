@@ -116,6 +116,9 @@ export { HelixPredictionOutcome } from './api/helix/prediction/HelixPredictionOu
 export type { HelixPredictionOutcomeColor } from './api/helix/prediction/HelixPredictionOutcome';
 export { HelixPredictor } from './api/helix/prediction/HelixPredictor';
 
+export { HelixRaidApi } from './api/helix/raids/HelixRaidApi';
+export { HelixRaid } from './api/helix/raids/HelixRaid';
+
 export { HelixUserRelation } from './api/helix/relations/HelixUserRelation';
 
 export { HelixScheduleApi } from './api/helix/schedule/HelixScheduleApi';
