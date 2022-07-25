@@ -3,7 +3,7 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 
-export type HelixGoalType = 'follower' | 'subscription';
+export type HelixGoalType = 'follower' | 'subscription' | 'subscription_count' | 'new_subscription_count';
 
 /** @private */
 export interface HelixGoalData {
@@ -67,7 +67,7 @@ export class HelixGoal extends DataObject<HelixGoalData> {
 	}
 
 	/**
-	 * The type of the goal. Can be either "follower" or "subscription".
+	 * The type of the goal. Can be one of "follower", "subscription", "subscription_count" or "new_subscription_count".
 	 */
 	get type(): HelixGoalType {
 		return this[rawDataSymbol].type;

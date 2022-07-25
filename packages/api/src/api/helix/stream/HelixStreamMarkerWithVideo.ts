@@ -11,6 +11,8 @@ export interface HelixStreamMarkerVideoData extends HelixStreamMarkerData {
 
 /**
  * A stream marker, also containing some video data.
+ *
+ * @inheritDoc
  */
 @rtfm<HelixStreamMarkerWithVideo>('api', 'HelixStreamMarkerWithVideo', 'id')
 export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
