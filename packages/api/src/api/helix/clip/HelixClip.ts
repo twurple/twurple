@@ -22,6 +22,7 @@ export interface HelixClipData {
 	created_at: string;
 	thumbnail_url: string;
 	duration: number;
+	vod_offset: number | null;
 }
 
 @rtfm<HelixClip>('api', 'HelixClip', 'id')
@@ -165,5 +166,15 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 */
 	get duration(): number {
 		return this[rawDataSymbol].duration;
+	}
+
+	/**
+	 * The offset of the clip from the start of the corresponding VOD, in seconds.
+	 *
+	 * This may be null if there is no VOD or if the clip is created from a live broadcast,
+	 * in which case it may take a few minutes to associate with the VOD.
+	 */
+	get vodOffset(): number | null {
+		return this[rawDataSymbol].vod_offset;
 	}
 }

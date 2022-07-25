@@ -80,7 +80,7 @@ const memberNames = [
 	'^cumulative_total$',
 	'^in_development$',
 	'^canceled_until$',
-	'^utc_offset$',
+	'^(?:utc|vod)_offset$',
 	'^target_height$',
 	'^(?:allowlisted_(?:config|panel)|icon|screenshot)_urls$',
 	'^bits_enabled$',
