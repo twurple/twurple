@@ -1,6 +1,6 @@
 {
   "name": "@twurple/eventsub",
-  "version": "5.2.0-pre.5",
+  "version": "5.2.0-pre.6",
   "publishConfig": {
     "access": "public"
   },
@@ -36,14 +36,14 @@
     "@d-fischer/raw-body": "^2.4.3",
     "@d-fischer/shared-utils": "^3.2.0",
     "@d-fischer/typed-event-emitter": "^3.2.2",
-    "@twurple/auth": "^5.2.0-pre.5",
-    "@twurple/common": "^5.2.0-pre.5",
+    "@twurple/auth": "^5.2.0-pre.6",
+    "@twurple/common": "^5.2.0-pre.6",
     "@types/express-serve-static-core": "^4.17.24",
     "httpanda": "^0.4.6",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/api": "^5.2.0-pre.5"
+    "@twurple/api": "^5.2.0-pre.6"
   },
   "peerDependencies": {
     "@twurple/api": "^5.0.0"
