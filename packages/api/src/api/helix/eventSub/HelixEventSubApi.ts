@@ -46,7 +46,7 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
 @rtfm('api', 'HelixEventSubApi')
 export class HelixEventSubApi extends BaseApi {
 	/**
-	 * Retrieves the current WebHook subscriptions for the current client.
+	 * Retrieves the current EventSub subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
@@ -67,7 +67,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for the current WebHook subscriptions for the current client.
+	 * Creates a paginator for the current EventSub subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 */
@@ -85,7 +85,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current WebHook subscriptions with the given status for the current client.
+	 * Retrieves the current EventSub subscriptions with the given status for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
@@ -111,7 +111,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for the current WebHook subscriptions with the given status for the current client.
+	 * Creates a paginator for the current EventSub subscriptions with the given status for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
@@ -131,7 +131,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current WebHook subscriptions with the given type for the current client.
+	 * Retrieves the current EventSub subscriptions with the given type for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
@@ -157,7 +157,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for the current WebHook subscriptions with the given type for the current client.
+	 * Creates a paginator for the current EventSub subscriptions with the given type for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
@@ -170,6 +170,52 @@ export class HelixEventSubApi extends BaseApi {
 			{
 				url: 'eventsub/subscriptions',
 				query: { type }
+			},
+			this._client,
+			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
+		);
+	}
+
+	/**
+	 * Retrieves the current EventSub subscriptions for the current user and client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param user The user to retrieve subscriptions for.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getSubscriptionsForUser(
+		user: UserIdResolvable,
+		pagination?: HelixPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+			type: 'helix',
+			url: 'eventsub/subscriptions',
+			query: {
+				...makePaginationQuery(pagination),
+				user_id: extractUserId(user)
+			}
+		});
+
+		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+	}
+
+	/**
+	 * Creates a paginator for the current EventSub subscriptions with the given type for the current client.
+	 *
+	 * Requires an app access token to work; does not work with user tokens.
+	 *
+	 * @param user The user to retrieve subscriptions for.
+	 */
+	getSubscriptionsForUserPaginated(
+		user: UserIdResolvable
+	): HelixPaginatedRequestWithTotal<HelixEventSubSubscriptionData, HelixEventSubSubscription> {
+		return new HelixPaginatedRequestWithTotal(
+			{
+				url: 'eventsub/subscriptions',
+				query: { user_id: extractUserId(user) }
 			},
 			this._client,
 			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
