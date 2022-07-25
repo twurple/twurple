@@ -53,8 +53,10 @@ export interface HelixCheckAutoModStatusData {
 
 	/**
 	 * The ID of the sender of the message the AutoMod status needs to be checked for.
+	 *
+	 * @deprecated This is no longer used by Twitch.
 	 */
-	userId: string;
+	userId?: string;
 }
 
 export type HelixAutoModSettingsUpdate = Exclude<HelixAutoModSettings, 'broadcasterId' | 'moderatorId'>;
