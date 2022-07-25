@@ -1,9 +1,11 @@
+import { mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface HelixBanUserData {
 	broadcaster_id: string;
-	end_time: string;
+	created_at: string;
+	end_time: string | null;
 	moderator_id: string;
 	user_id: string;
 }
@@ -21,10 +23,17 @@ export class HelixBanUser extends DataObject<HelixBanUserData> {
 	}
 
 	/**
+	 * The date and time that the timeout was created.
+	 */
+	get creationDate(): Date {
+		return new Date(this[rawDataSymbol].created_at);
+	}
+
+	/**
 	 * The date and time that the timeout will end. Is `null` if the user was banned instead of put in a timeout.
 	 */
 	get endDate(): Date | null {
-		return this[rawDataSymbol].end_time ? new Date(this[rawDataSymbol].end_time) : null;
+		return mapNullable(this[rawDataSymbol].end_time, ts => new Date(ts));
 	}
 
 	/**
