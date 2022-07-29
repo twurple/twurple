@@ -43,14 +43,18 @@ export type {
 } from './api/helix/channelPoints/HelixCustomRewardRedemption';
 
 export { HelixChatApi } from './api/helix/chat/HelixChatApi';
+export type { HelixUpdateChatSettingsParams } from './api/helix/chat/HelixChatApi';
 export { HelixChatBadgeSet } from './api/helix/chat/HelixChatBadgeSet';
 export { HelixChatBadgeVersion } from './api/helix/chat/HelixChatBadgeVersion';
 export type { HelixChatBadgeScale } from './api/helix/chat/HelixChatBadgeVersion';
+export { HelixChatSettings } from './api/helix/chat/HelixChatSettings';
 export { HelixEmote } from './api/helix/chat/HelixEmote';
 export type { HelixEmoteImageScale } from './api/helix/chat/HelixEmote';
 export { HelixChannelEmote } from './api/helix/chat/HelixChannelEmote';
 export type { HelixChannelEmoteSubscriptionTier } from './api/helix/chat/HelixChannelEmote';
 export { HelixEmoteFromSet } from './api/helix/chat/HelixEmoteFromSet';
+export { HelixPrivilegedChatSettings } from './api/helix/chat/HelixPrivilegedChatSettings';
+export type { HelixPrivilegedChatSettingsData } from './api/helix/chat/HelixPrivilegedChatSettings';
 
 export { HelixClipApi } from './api/helix/clip/HelixClipApi';
 export type { HelixClipCreateParams, HelixClipFilter, HelixPaginatedClipFilter } from './api/helix/clip/HelixClipApi';

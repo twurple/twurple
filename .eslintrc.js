@@ -98,6 +98,8 @@ const memberNames = [
 	'^sex_based_terms$',
 	'^required_configuration$',
 	'^pubsub_perms$',
+	'^(?:slow|follower|subscriber|emote|unique_chat)_mode(?:_wait_time|_duration)?$',
+	'^non_moderator_chat_delay(?:_duration)?$',
 
 	// HTTP
 	'^Accept$'
