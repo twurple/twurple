@@ -41,8 +41,8 @@ should use for which use case.
 | Host users                                    | No                       | Yes                            |
 | Raid users                                    | Yes                      | Yes                            |
 | Send chat messages                            | No                       | Yes                            |
-| Send chat announcements                       | No                       | Yes                            |
-| Remove chat messages                          | Yes                      | Yes                            |
+| Send chat announcements                       | Yes                      | Yes                            |
+| Remove chat messages                          | Yes                       | Yes                            |
 | Set chat modes (e.g. emote/sub/follower only) | Yes                      | Yes                            |
 | Get & manage AutoMod settings                 | Yes                      | No                             |
 | Fetch currently playing Soundtrack track      | No (supported by Twitch) | No                             |

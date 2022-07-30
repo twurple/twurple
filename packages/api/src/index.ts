@@ -43,7 +43,11 @@ export type {
 } from './api/helix/channelPoints/HelixCustomRewardRedemption';
 
 export { HelixChatApi } from './api/helix/chat/HelixChatApi';
-export type { HelixUpdateChatSettingsParams } from './api/helix/chat/HelixChatApi';
+export type {
+	HelixUpdateChatSettingsParams,
+	HelixSendChatAnnoucementParams,
+	HelixChatAnnoucementColor
+} from './api/helix/chat/HelixChatApi';
 export { HelixChatBadgeSet } from './api/helix/chat/HelixChatBadgeSet';
 export { HelixChatBadgeVersion } from './api/helix/chat/HelixChatBadgeVersion';
 export type { HelixChatBadgeScale } from './api/helix/chat/HelixChatBadgeVersion';
