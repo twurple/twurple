@@ -20,7 +20,7 @@ should use for which use case.
 | Get category info                             | Yes                      | No                             |
 | Manage polls & predictions                    | Yes                      | No                             |
 | Get banned users                              | Yes                      | No                             |
-| Ban/unban/timeout users                       | No (supported by Twitch) | Yes                            |
+| Ban/unban/timeout users                       | Yes                      | Yes                            |
 | Get & manage schedules                        | Yes                      | No                             |
 | Search categories                             | Yes                      | No                             |
 | Search channels                               | Yes                      | No                             |
@@ -39,11 +39,11 @@ should use for which use case.
 | Get & manage follows                          | Yes                      | No                             |
 | Get & manage VODs                             | Yes                      | No                             |
 | Host users                                    | No                       | Yes                            |
-| Raid users                                    | No                       | Yes                            |
+| Raid users                                    | Yes                      | Yes                            |
 | Send chat messages                            | No                       | Yes                            |
 | Send chat announcements                       | No                       | Yes                            |
 | Remove chat messages                          | No                       | Yes                            |
-| Set chat modes (e.g. emote/sub/follower only) | No                       | Yes                            |
+| Set chat modes (e.g. emote/sub/follower only) | Yes                      | Yes                            |
 | Get & manage AutoMod settings                 | Yes                      | No                             |
 | Fetch currently playing Soundtrack track      | No (supported by Twitch) | No                             |
 | Get current Creator Goals state               | Yes                      | No                             |
