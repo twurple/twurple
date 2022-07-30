@@ -461,4 +461,32 @@ export class HelixModerationApi extends BaseApi {
 			}
 		});
 	}
+
+	/**
+	 * Removes a single chat message or all chat messages from the broadcaster’s chat room.
+	 *
+	 * @param broadcaster The broadcaster the chat belongs to.
+	 * @param moderator The moderator the request is on behalf of.
+	 *
+	 * This is the user your user token needs to represent.
+	 * You can delete messages from your own chat room by setting `broadcaster` and `moderator` to the same user.
+	 * @param messageId The ID of the message to remove. If not specified, the request removes all messages in the broadcaster’s chat room.
+	 */
+	async deleteChatMessages(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		messageId?: string
+	): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'moderation/chat',
+			method: 'DELETE',
+			scope: 'moderator:manage:chat_messages',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				moderator_id: extractUserId(moderator),
+				message_id: messageId
+			}
+		});
+	}
 }
