@@ -1,6 +1,6 @@
 import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger, LogLevel } from '@d-fischer/logger';
-import type { RateLimiter } from '@d-fischer/rate-limiter';
+import type { RateLimiter, RateLimiterRequestOptions } from '@d-fischer/rate-limiter';
 import {
 	PartitionedTimeBasedRateLimiter,
 	TimeBasedRateLimiter,
@@ -2209,18 +2209,27 @@ export class ChatClient extends IrcClient {
 	 * @param channel The channel to send the message to.
 	 * @param message The message to send.
 	 * @param attributes The attributes to add to the message.
+	 * @param rateLimiterOptions Options to pass to the rate limiter.
 	 */
-	async say(channel: string, message: string, attributes: ChatSayMessageAttributes = {}): Promise<void> {
+	async say(
+		channel: string,
+		message: string,
+		attributes: ChatSayMessageAttributes = {},
+		rateLimiterOptions?: RateLimiterRequestOptions
+	): Promise<void> {
 		const tags: Record<string, string> = {};
 		if (attributes.replyTo) {
 			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
 		}
-		await this._messageRateLimiter.request({
-			type: 'say',
-			channel: toChannelName(channel),
-			message,
-			tags
-		});
+		await this._messageRateLimiter.request(
+			{
+				type: 'say',
+				channel: toChannelName(channel),
+				message,
+				tags
+			},
+			rateLimiterOptions
+		);
 	}
 
 	/**
@@ -2228,13 +2237,17 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @param channel The channel to send the message to.
 	 * @param message The message to send.
+	 * @param rateLimiterOptions Options to pass to the rate limiter.
 	 */
-	async action(channel: string, message: string): Promise<void> {
-		await this._messageRateLimiter.request({
-			type: 'action',
-			channel: toChannelName(channel),
-			message
-		});
+	async action(channel: string, message: string, rateLimiterOptions?: RateLimiterRequestOptions): Promise<void> {
+		await this._messageRateLimiter.request(
+			{
+				type: 'action',
+				channel: toChannelName(channel),
+				message
+			},
+			rateLimiterOptions
+		);
 	}
 
 	/**
