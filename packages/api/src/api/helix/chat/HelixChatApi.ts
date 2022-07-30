@@ -273,7 +273,7 @@ export class HelixChatApi extends BaseApi {
 		moderator: UserIdResolvable,
 		announcement: HelixSendChatAnnoucementParams
 	): Promise<void> {
-		await this._client.callApi<unknown>({
+		await this._client.callApi({
 			type: 'helix',
 			url: 'chat/announcements',
 			method: 'POST',
