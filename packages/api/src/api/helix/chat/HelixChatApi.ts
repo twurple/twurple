@@ -265,7 +265,7 @@ export class HelixChatApi extends BaseApi {
 	 * @param moderator The moderator the request is on behalf of.
 	 *
 	 * This is the user your user token needs to represent.
-	 * You can get your own settings by setting `broadcaster` and `moderator` to the same user.
+	 * You can send an announcement to your own chat by setting `broadcaster` and `moderator` to the same user.
 	 * @param announcement The announcement to send.
 	 */
 	async sendChatAnnouncement(
