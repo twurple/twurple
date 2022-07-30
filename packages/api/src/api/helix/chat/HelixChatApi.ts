@@ -66,6 +66,26 @@ export interface HelixUpdateChatSettingsParams {
 }
 
 /**
+ * The color used to highlight an announcement.
+ */
+export type HelixChatAnnoucementColor = 'blue' | 'green' | 'orange' | 'purple' | 'primary';
+
+/**
+ * A request to send an announcement to a broadcaster's chat.
+ */
+export interface HelixSendChatAnnoucementParams {
+	/**
+	 * The annoucement to make in the broadcaster's chat room. Announcements are limited to a maximum of 500 characters; announcements longer than 500 characters are truncated.
+	 */
+	message: string;
+
+	/**
+	 * The color used to highlight the announcement. If color is set to `primary` or is not set, the channel’s accent color is used to highlight the announcement.
+	 */
+	color?: HelixChatAnnoucementColor;
+}
+
+/**
  * The Helix API methods that deal with chat.
  *
  * Can be accessed using `client.chat` on an {@ApiClient} instance.
@@ -236,5 +256,36 @@ export class HelixChatApi extends BaseApi {
 		});
 
 		return new HelixPrivilegedChatSettings(result.data[0]);
+	}
+
+	/**
+	 * Sends an announcement to a broadcaster's chat.
+	 *
+	 * @param broadcaster The broadcaster the chat belongs to.
+	 * @param moderator The moderator the request is on behalf of.
+	 *
+	 * This is the user your user token needs to represent.
+	 * You can send an announcement to your own chat by setting `broadcaster` and `moderator` to the same user.
+	 * @param announcement The announcement to send.
+	 */
+	async sendChatAnnouncement(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		announcement: HelixSendChatAnnoucementParams
+	): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'chat/announcements',
+			method: 'POST',
+			scope: 'moderator:manage:announcements',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				moderator_id: extractUserId(moderator)
+			},
+			jsonBody: {
+				message: announcement.message,
+				color: announcement.color
+			}
+		});
 	}
 }
