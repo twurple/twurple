@@ -91,7 +91,7 @@ export interface HelixSendChatAnnoucementParams {
  *
  * Note that hex codes can only be used by users that have a Prime or Turbo subscription.
  */
-type HelixChatUserColor =
+export type HelixChatUserColor =
 	| 'blue'
 	| 'blue_violet'
 	| 'cadet_blue'
