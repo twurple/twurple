@@ -29,8 +29,8 @@ should use for which use case.
 | Manage stream markers                         | Yes                      | No                             |
 | Get list of subscribers                       | Yes                      | No                             |
 | Check subscription                            | Yes                      | Only when they write a message |
-| Get list of VIPs                              | No                       | Yes                            |
-| Check VIP                                     | No                       | Only when they write a message |
+| Get list of VIPs                              | Yes                      | Yes                            |
+| Check VIP                                     | Yes                      | Only when they write a message |
 | Manage VIPs                                   | Yes                      | Yes                            |
 | Get list of moderators                        | Yes                      | Yes                            |
 | Manage moderators                             | Yes                      | Yes                            |
@@ -52,24 +52,24 @@ should use for which use case.
 
 ## Events
 
-| Event type                        | `@twurple/api` | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub`                  |
-|-----------------------------------|----------------|------------------------------|---------------------------|--------------------------------------|
-| Chat messages                     | No             | Yes                          | Sub & cheer messages only | Sub & cheer messages only            |
-| Chat mode (e.g. sub only) changes | No             | Yes                          | No                        | No                                   |
-| Whispers                          | No             | Yes                          | Yes                       | No                                   |
-| Cheers                            | No             | Yes                          | Yes                       | Yes                                  |
-| Channel points                    | No             | Redemptions w/ messages only | Redemptions only          | Yes                                  |
-| Subscriptions                     | No             | Published only               | Published only            | Yes                                  |
-| AutoMod                           | No             | No                           | Yes                       | No                                   |
-| Live / offline / stream changes   | No             | No                           | No                        | Yes                                  |
-| Follows                           | No             | No                           | No                        | Yes                                  |
-| Hosts                             | No             | Yes                          | No                        | No                                   |
-| Raids                             | No             | Yes                          | No                        | Yes                                  |
-| Bans                              | No             | Yes                          | Yes                       | Yes                                  |
-| Mod add/remove                    | No             | No                           | Yes                       | Yes                                  |
-| Polls & predictions               | No             | No                           | No                        | Yes                                  |
-| Extension transactions            | No             | No                           | No                        | Yes                                  |
-| Hype Trains                       | History only   | No                           | No                        | Yes                                  |
-| Authorization grant/revoke        | No             | No                           | No                        | Yes                                  |
-| Drops                             | No             | No                           | No                        | No (supported by Twitch)             |
-| Additional concerns               | -              | -                            | -                         | As of now, must have a public server | 
+| Event type                        | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub`                  |
+|-----------------------------------|------------------------------|---------------------------|--------------------------------------|
+| Chat messages                     | Yes                          | Sub & cheer messages only | Sub & cheer messages only            |
+| Chat mode (e.g. sub only) changes | Yes                          | No                        | No                                   |
+| Whispers                          | Yes                          | Yes                       | No                                   |
+| Cheers                            | Yes                          | Yes                       | Yes                                  |
+| Channel points                    | Redemptions w/ messages only | Redemptions only          | Yes                                  |
+| Subscriptions                     | Published only               | Published only            | Yes                                  |
+| AutoMod                           | No                           | Yes                       | No                                   |
+| Live / offline / stream changes   | No                           | No                        | Yes                                  |
+| Follows                           | No                           | No                        | Yes                                  |
+| Hosts                             | Yes                          | No                        | No                                   |
+| Raids                             | Yes                          | No                        | Yes                                  |
+| Bans                              | Yes                          | Yes                       | Yes                                  |
+| Mod add/remove                    | No                           | Yes                       | Yes                                  |
+| Polls & predictions               | No                           | No                        | Yes                                  |
+| Extension transactions            | No                           | No                        | Yes                                  |
+| Hype Trains                       | No                           | No                        | Yes                                  |
+| Authorization grant/revoke        | No                           | No                        | Yes                                  |
+| Drops                             | No                           | No                        | No (supported by Twitch)             |
+| Additional concerns               | -                            | -                         | As of now, must have a public server | 
