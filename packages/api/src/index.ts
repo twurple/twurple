@@ -195,6 +195,8 @@ export type { HelixPaginatedVideoFilter, HelixVideoFilter } from './api/helix/vi
 export { HelixVideo } from './api/helix/video/HelixVideo';
 export type { HelixVideoType } from './api/helix/video/HelixVideo';
 
+export { WhispersApi } from './api/whispers/WhispersApi';
+
 export { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 export { ChattersList } from './api/unsupported/ChattersList';
 
