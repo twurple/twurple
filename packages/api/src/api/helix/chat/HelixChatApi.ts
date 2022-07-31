@@ -362,6 +362,7 @@ export class HelixChatApi extends BaseApi {
 			type: 'helix',
 			url: 'chat/color',
 			method: 'PUT',
+			scope: 'user:manage:chat_color',
 			query: {
 				user_id: extractUserId(user),
 				color
