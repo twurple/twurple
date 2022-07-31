@@ -6,6 +6,7 @@ import type { HelixChannelEmoteData } from './HelixChannelEmote';
 import { HelixChannelEmote } from './HelixChannelEmote';
 import type { HelixChatBadgeSetData } from './HelixChatBadgeSet';
 import { HelixChatBadgeSet } from './HelixChatBadgeSet';
+import type { HelixChatColorDefinitionData } from './HelixChatColorDefinition';
 import type { HelixChatSettingsData } from './HelixChatSettings';
 import { HelixChatSettings } from './HelixChatSettings';
 import type { HelixEmoteData } from './HelixEmote';
@@ -287,5 +288,41 @@ export class HelixChatApi extends BaseApi {
 				color: announcement.color
 			}
 		});
+	}
+
+	/**
+	 * Retrieves the chat colors for a list of users.
+	 *
+	 * Returns a Map with user IDs as keys and their colors as values.
+	 * The value is a color hex code, or `null` if the user did not set a color,
+	 * and unknown users will not be present in the map.
+	 *
+	 * @param users The users to get the chat colors of.
+	 */
+	async getChatColorsForUsers(users: UserIdResolvable[]): Promise<Map<string, string | null>> {
+		const response = await this._client.callApi<HelixResponse<HelixChatColorDefinitionData>>({
+			type: 'helix',
+			url: 'chat/color',
+			query: {
+				user_id: users.map(extractUserId)
+			}
+		});
+
+		return new Map(response.data.map(data => [data.user_id, data.color || null] as const));
+	}
+
+	/**
+	 * Retrieves the chat color for a user.
+	 *
+	 * Returns the color as hex code, `null` if the user did not set a color, or `undefined` if the user is unknown.
+	 *
+	 * @param user The user to get the chat color of.
+	 */
+	async getChatColorForUser(user: UserIdResolvable): Promise<string | null | undefined> {
+		const userId = extractUserId(user);
+
+		const result = await this.getChatColorsForUsers([userId]);
+
+		return result.get(userId);
 	}
 }
