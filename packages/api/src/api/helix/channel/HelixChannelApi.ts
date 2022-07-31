@@ -220,7 +220,7 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
-	 * Checks the VIP status of a list of users in a channel.
+	 * Checks the VIP status of a user in a channel.
 	 *
 	 * @param broadcaster The owner of the channel to check VIP status in.
 	 * @param user The user to check.
