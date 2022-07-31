@@ -2,6 +2,13 @@ import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import type { CommercialLength, UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
+import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import type { HelixPaginatedResult } from '../HelixPaginatedResult';
+import { createPaginatedResult } from '../HelixPaginatedResult';
+import type { HelixForwardPagination } from '../HelixPagination';
+import { makePaginationQuery } from '../HelixPagination';
+import type { HelixUserRelationData } from '../relations/HelixUserRelation';
+import { HelixUserRelation } from '../relations/HelixUserRelation';
 import type { HelixChannelData } from './HelixChannel';
 import { HelixChannel } from './HelixChannel';
 import type { HelixChannelEditorData } from './HelixChannelEditor';
@@ -146,5 +153,82 @@ export class HelixChannelApi extends BaseApi {
 		});
 
 		return result.data.map(data => new HelixChannelEditor(data, this._client));
+	}
+
+	/**
+	 * Retrieves a list of VIPs in a channel.
+	 *
+	 * @param broadcaster The owner of the channel to get VIPs for.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getVips(
+		broadcaster: UserIdResolvable,
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResult<HelixUserRelation>> {
+		const response = await this._client.callApi<HelixPaginatedResponse<HelixUserRelationData>>({
+			type: 'helix',
+			url: 'channels/vips',
+			scope: 'channel:read:vips',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				...makePaginationQuery(pagination)
+			}
+		});
+
+		return createPaginatedResult(response, HelixUserRelation, this._client);
+	}
+
+	/**
+	 * Creates a paginator for VIPs in a channel.
+	 *
+	 * @param broadcaster The owner of the channel to get VIPs for.
+	 */
+	getVipsPaginated(broadcaster: UserIdResolvable): HelixPaginatedRequest<HelixUserRelationData, HelixUserRelation> {
+		return new HelixPaginatedRequest(
+			{
+				url: 'channels/vips',
+				scope: 'channel:read:vips',
+				query: {
+					broadcaster_id: extractUserId(broadcaster)
+				}
+			},
+			this._client,
+			data => new HelixUserRelation(data, this._client)
+		);
+	}
+
+	/**
+	 * Checks the VIP status of a list of users in a channel.
+	 *
+	 * @param broadcaster The owner of the channel to check VIP status in.
+	 * @param users The users to check.
+	 */
+	async checkVipForUsers(broadcaster: UserIdResolvable, users: UserIdResolvable[]): Promise<HelixUserRelation[]> {
+		const response = await this._client.callApi<HelixPaginatedResponse<HelixUserRelationData>>({
+			type: 'helix',
+			url: 'channels/vips',
+			scope: 'channel:read:vips',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				user_id: users.map(extractUserId)
+			}
+		});
+
+		return response.data.map(data => new HelixUserRelation(data, this._client));
+	}
+
+	/**
+	 * Checks the VIP status of a list of users in a channel.
+	 *
+	 * @param broadcaster The owner of the channel to check VIP status in.
+	 * @param user The user to check.
+	 */
+	async checkVipForUser(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<boolean> {
+		const userId = extractUserId(user);
+		const result = await this.checkVipForUsers(broadcaster, [userId]);
+
+		return result.some(rel => rel.id === userId);
 	}
 }
