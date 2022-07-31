@@ -42,6 +42,7 @@ import { HelixTagApi } from './api/helix/tag/HelixTagApi';
 import { HelixTeamApi } from './api/helix/team/HelixTeamApi';
 import { HelixUserApi } from './api/helix/user/HelixUserApi';
 import { HelixVideoApi } from './api/helix/video/HelixVideoApi';
+import { HelixWhisperApi } from './api/helix/whisper/HelixWhisperApi';
 import { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 
 import { ConfigError } from './errors/ConfigError';
@@ -374,6 +375,14 @@ export class ApiClient {
 	@CachedGetter()
 	get videos(): HelixVideoApi {
 		return new HelixVideoApi(this);
+	}
+
+	/**
+	 * The API methods that deal with whispers.
+	 */
+	@CachedGetter()
+	get whispers(): HelixWhisperApi {
+		return new HelixWhisperApi(this);
 	}
 
 	/**
