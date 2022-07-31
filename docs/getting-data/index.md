@@ -32,7 +32,7 @@ should use for which use case.
 | Get list of VIPs                              | No                       | Yes                            |
 | Check VIP                                     | No                       | Only when they write a message |
 | Get list of moderators                        | Yes                      | Yes                            |
-| Manage moderators                             | No                       | Yes                            |
+| Manage moderators                             | Yes                      | Yes                            |
 | Get & manage stream tags                      | Yes                      | No                             |
 | Get team info                                 | Yes                      | No                             |
 | Get user info                                 | Yes                      | Login, display name, ID only   |
