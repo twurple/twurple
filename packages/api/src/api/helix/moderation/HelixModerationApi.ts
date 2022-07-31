@@ -513,7 +513,7 @@ export class HelixModerationApi extends BaseApi {
 	 * Removes a moderator from the broadcaster’s chat room.
 	 *
 	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to remove as a moderator from the broadcaster’s chat room
+	 * @param user The ID of the user to remove as a moderator from the broadcaster’s chat room.
 	 */
 	async removeChannelModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
