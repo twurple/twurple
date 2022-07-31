@@ -46,7 +46,8 @@ export { HelixChatApi } from './api/helix/chat/HelixChatApi';
 export type {
 	HelixUpdateChatSettingsParams,
 	HelixSendChatAnnoucementParams,
-	HelixChatAnnoucementColor
+	HelixChatAnnoucementColor,
+	HelixChatUserColor
 } from './api/helix/chat/HelixChatApi';
 export { HelixChatBadgeSet } from './api/helix/chat/HelixChatBadgeSet';
 export { HelixChatBadgeVersion } from './api/helix/chat/HelixChatBadgeVersion';

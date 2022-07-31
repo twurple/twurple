@@ -87,6 +87,29 @@ export interface HelixSendChatAnnoucementParams {
 }
 
 /**
+ * Colors that can be used by users in chat.
+ *
+ * Note that hex codes can only be used by users that have a Prime or Turbo subscription.
+ */
+export type HelixChatUserColor =
+	| 'blue'
+	| 'blue_violet'
+	| 'cadet_blue'
+	| 'chocolate'
+	| 'coral'
+	| 'dodger_blue'
+	| 'firebrick'
+	| 'golden_rod'
+	| 'green'
+	| 'hot_pink'
+	| 'orange_red'
+	| 'red'
+	| 'sea_green'
+	| 'spring_green'
+	| 'yellow_green'
+	| `#${string}`;
+
+/**
  * The Helix API methods that deal with chat.
  *
  * Can be accessed using `client.chat` on an {@ApiClient} instance.
@@ -324,5 +347,26 @@ export class HelixChatApi extends BaseApi {
 		const result = await this.getChatColorsForUsers([userId]);
 
 		return result.get(userId);
+	}
+
+	/**
+	 * Changes the chat color for a user.
+	 *
+	 * @param user The user to change the color of.
+	 * @param color The color to set.
+	 *
+	 * Note that hex codes can only be used by users that have a Prime or Turbo subscription.
+	 */
+	async setChatColorForUser(user: UserIdResolvable, color: HelixChatUserColor): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'chat/color',
+			method: 'PUT',
+			scope: 'user:manage:chat_color',
+			query: {
+				user_id: extractUserId(user),
+				color
+			}
+		});
 	}
 }

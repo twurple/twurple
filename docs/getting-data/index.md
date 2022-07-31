@@ -31,6 +31,7 @@ should use for which use case.
 | Check subscription                            | Yes                      | Only when they write a message |
 | Get list of VIPs                              | No                       | Yes                            |
 | Check VIP                                     | No                       | Only when they write a message |
+| Manage VIPs                                   | Yes                      | Yes                            |
 | Get list of moderators                        | Yes                      | Yes                            |
 | Manage moderators                             | Yes                      | Yes                            |
 | Get & manage stream tags                      | Yes                      | No                             |

@@ -1,3 +1,4 @@
+/** @private */
 export interface HelixChatColorDefinitionData {
 	user_id: string;
 	user_name: string;
