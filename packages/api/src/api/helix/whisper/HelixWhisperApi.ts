@@ -1,6 +1,6 @@
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
-import { BaseApi } from '../BaseApi';
+import { BaseApi } from '../../BaseApi';
 
 /**
  * The API methods that deal with whispers.
@@ -14,8 +14,8 @@ import { BaseApi } from '../BaseApi';
  * ```
  */
 
-@rtfm('api', 'WhispersApi')
-export class WhispersApi extends BaseApi {
+@rtfm('api', 'HelixWhisperApi')
+export class HelixWhisperApi extends BaseApi {
 	/**
 	 * Sends a whisper message to the specified user.
 	 *

@@ -42,7 +42,7 @@ import { HelixTagApi } from './api/helix/tag/HelixTagApi';
 import { HelixTeamApi } from './api/helix/team/HelixTeamApi';
 import { HelixUserApi } from './api/helix/user/HelixUserApi';
 import { HelixVideoApi } from './api/helix/video/HelixVideoApi';
-import { WhispersApi } from './api/whispers/WhispersApi';
+import { HelixWhisperApi } from './api/helix/whisper/HelixWhisperApi';
 import { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 
 import { ConfigError } from './errors/ConfigError';
@@ -381,8 +381,8 @@ export class ApiClient {
 	 * The API methods that deal with whispers.
 	 */
 	@CachedGetter()
-	get whispers(): WhispersApi {
-		return new WhispersApi(this);
+	get whispers(): HelixWhisperApi {
+		return new HelixWhisperApi(this);
 	}
 
 	/**
