@@ -202,7 +202,7 @@ export class HelixChatApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster the chat belongs to.
 	 */
-	async getChatSettings(broadcaster: UserIdResolvable): Promise<HelixChatSettings> {
+	async getSettings(broadcaster: UserIdResolvable): Promise<HelixChatSettings> {
 		const result = await this._client.callApi<HelixResponse<HelixChatSettingsData>>({
 			type: 'helix',
 			url: 'chat/settings',
@@ -223,7 +223,7 @@ export class HelixChatApi extends BaseApi {
 	 * This is the user your user token needs to represent.
 	 * You can get your own settings by setting `broadcaster` and `moderator` to the same user.
 	 */
-	async getChatSettingsPrivileged(
+	async getSettingsPrivileged(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable
 	): Promise<HelixPrivilegedChatSettings> {
@@ -252,7 +252,7 @@ export class HelixChatApi extends BaseApi {
 	 * You can get your own settings by setting `broadcaster` and `moderator` to the same user.
 	 * @param settings The settings to change.
 	 */
-	async updateChatSettings(
+	async updateSettings(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		settings: HelixUpdateChatSettingsParams
@@ -292,7 +292,7 @@ export class HelixChatApi extends BaseApi {
 	 * You can send an announcement to your own chat by setting `broadcaster` and `moderator` to the same user.
 	 * @param announcement The announcement to send.
 	 */
-	async sendChatAnnouncement(
+	async sendAnnouncement(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		announcement: HelixSendChatAnnoucementParams
@@ -322,7 +322,7 @@ export class HelixChatApi extends BaseApi {
 	 *
 	 * @param users The users to get the chat colors of.
 	 */
-	async getChatColorsForUsers(users: UserIdResolvable[]): Promise<Map<string, string | null>> {
+	async getColorsForUsers(users: UserIdResolvable[]): Promise<Map<string, string | null>> {
 		const response = await this._client.callApi<HelixResponse<HelixChatColorDefinitionData>>({
 			type: 'helix',
 			url: 'chat/color',
@@ -341,10 +341,10 @@ export class HelixChatApi extends BaseApi {
 	 *
 	 * @param user The user to get the chat color of.
 	 */
-	async getChatColorForUser(user: UserIdResolvable): Promise<string | null | undefined> {
+	async getColorForUser(user: UserIdResolvable): Promise<string | null | undefined> {
 		const userId = extractUserId(user);
 
-		const result = await this.getChatColorsForUsers([userId]);
+		const result = await this.getColorsForUsers([userId]);
 
 		return result.get(userId);
 	}
@@ -357,7 +357,7 @@ export class HelixChatApi extends BaseApi {
 	 *
 	 * Note that hex codes can only be used by users that have a Prime or Turbo subscription.
 	 */
-	async setChatColorForUser(user: UserIdResolvable, color: HelixChatUserColor): Promise<void> {
+	async setColorForUser(user: UserIdResolvable, color: HelixChatUserColor): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
 			url: 'chat/color',

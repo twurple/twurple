@@ -231,4 +231,42 @@ export class HelixChannelApi extends BaseApi {
 
 		return result.some(rel => rel.id === userId);
 	}
+
+	/**
+	 * Adds a VIP to the broadcaster’s chat room.
+	 *
+	 * @param broadcaster The ID of the broadcaster that’s granting VIP status to the user. This ID must match the user ID in the access token.
+	 * @param user The ID of the user to add as a VIP in the broadcaster’s chat room.
+	 */
+	async addVip(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'channel/vips',
+			method: 'POST',
+			scope: 'channel:manage:vips',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				user_id: extractUserId(user)
+			}
+		});
+	}
+
+	/**
+	 * Removes a VIP from the broadcaster’s chat room.
+	 *
+	 * @param broadcaster The ID of the broadcaster that’s removing VIP status from the user. This ID must match the user ID in the access token.
+	 * @param user The ID of the user to remove as a VIP from the broadcaster’s chat room.
+	 */
+	async removeVip(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'channel/vips',
+			method: 'DELETE',
+			scope: 'channel:manage:vips',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				user_id: extractUserId(user)
+			}
+		});
+	}
 }

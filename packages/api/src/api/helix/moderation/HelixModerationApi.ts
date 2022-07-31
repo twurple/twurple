@@ -205,6 +205,44 @@ export class HelixModerationApi extends BaseApi {
 	}
 
 	/**
+	 * Adds a moderator to the broadcaster’s chat room.
+	 *
+	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
+	 * @param user The ID of the user to add as a moderator in the broadcaster’s chat room.
+	 */
+	async addModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'moderation/moderators',
+			method: 'POST',
+			scope: 'channel:manage:moderators',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				user_id: extractUserId(user)
+			}
+		});
+	}
+
+	/**
+	 * Removes a moderator from the broadcaster’s chat room.
+	 *
+	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
+	 * @param user The ID of the user to remove as a moderator from the broadcaster’s chat room.
+	 */
+	async removeModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'moderation/moderators',
+			method: 'DELETE',
+			scope: 'channel:manage:moderators',
+			query: {
+				broadcaster_id: extractUserId(broadcaster),
+				user_id: extractUserId(user)
+			}
+		});
+	}
+
+	/**
 	 * Determines whether a string message meets the channel's AutoMod requirements.
 	 *
 	 * @param channel The channel in which the messages to check are posted.
@@ -486,82 +524,6 @@ export class HelixModerationApi extends BaseApi {
 				broadcaster_id: extractUserId(broadcaster),
 				moderator_id: extractUserId(moderator),
 				message_id: messageId
-			}
-		});
-	}
-
-	/**
-	 * Adds a moderator to the broadcaster’s chat room.
-	 *
-	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to add as a moderator in the broadcaster’s chat room.
-	 */
-	async addChannelModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
-		await this._client.callApi({
-			type: 'helix',
-			url: 'moderation/moderators',
-			method: 'POST',
-			scope: 'channel:manage:moderators',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: extractUserId(user)
-			}
-		});
-	}
-
-	/**
-	 * Removes a moderator from the broadcaster’s chat room.
-	 *
-	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to remove as a moderator from the broadcaster’s chat room.
-	 */
-	async removeChannelModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
-		await this._client.callApi({
-			type: 'helix',
-			url: 'moderation/moderators',
-			method: 'DELETE',
-			scope: 'channel:manage:moderators',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: extractUserId(user)
-			}
-		});
-	}
-
-	/**
-	 * Adds a VIP to the broadcaster’s chat room.
-	 *
-	 * @param broadcaster The ID of the broadcaster that’s granting VIP status to the user. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to add as a VIP in the broadcaster’s chat room.
-	 */
-	async addChannelVip(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
-		await this._client.callApi({
-			type: 'helix',
-			url: 'channel/vips',
-			method: 'POST',
-			scope: 'channel:manage:vips',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: extractUserId(user)
-			}
-		});
-	}
-
-	/**
-	 * Removes a VIP from the broadcaster’s chat room.
-	 *
-	 * @param broadcaster The ID of the broadcaster that’s removing VIP status from the user. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to remove as a VIP from the broadcaster’s chat room.
-	 */
-	async removeChannelVip(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
-		await this._client.callApi({
-			type: 'helix',
-			url: 'channel/vips',
-			method: 'DELETE',
-			scope: 'channel:manage:vips',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: extractUserId(user)
 			}
 		});
 	}
