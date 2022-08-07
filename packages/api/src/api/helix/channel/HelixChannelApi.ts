@@ -241,7 +241,7 @@ export class HelixChannelApi extends BaseApi {
 	async addVip(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
-			url: 'channel/vips',
+			url: 'channels/vips',
 			method: 'POST',
 			scope: 'channel:manage:vips',
 			query: {
@@ -260,7 +260,7 @@ export class HelixChannelApi extends BaseApi {
 	async removeVip(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
-			url: 'channel/vips',
+			url: 'channels/vips',
 			method: 'DELETE',
 			scope: 'channel:manage:vips',
 			query: {
