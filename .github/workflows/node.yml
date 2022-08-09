@@ -10,9 +10,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 18
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+      - run: yarn
+      - run: yarn run lerna bootstrap
+      - run: yarn run build
+      - run: yarn run lint
+      - run: yarn run prettier:check
+      - name: Save build assets
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-result
+          path: |
+            packages/*/lib
+            packages/*/es
+            node_modules/.cache/tsukuru
+  test:
     strategy:
       matrix:
-        node-version: [ 18.x, 16.x, 14.x ]
+        node-version: [ 18, 16, 14 ]
+
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -21,10 +43,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: yarn
-      - run: yarn run lerna bootstrap
-      - run: yarn run build
-      - run: yarn run lint
-      - run: yarn run prettier:check
+      - name: Load build assets
+        uses: actions/download-artifact@v3
+        with:
+          name: build-result
+      - run: yarn test
   docs:
     if: ${{ github.event_name == 'push' }}
     needs: [ build ]
@@ -35,9 +58,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18
-      - run: yarn
-      - run: yarn run lerna bootstrap
-      - run: yarn run build
+      - name: Load build assets
+        uses: actions/download-artifact@v3
+        with:
+          name: build-result
       - env:
           BUILD_NUMBER: ${{ github.run_number }}
           REPO_USER: ${{ github.repository_owner }}
