@@ -22,7 +22,7 @@ jobs:
       - run: yarn run lint
       - run: yarn run prettier:check
       - name: Save build assets
-        uses: actions/upload-artifact@v3
+        uses: alehechka/upload-tartifact@v1
         with:
           name: build-result
           path: |
@@ -45,7 +45,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn
       - name: Load build assets
-        uses: actions/download-artifact@v3
+        uses: alehechka/download-tartifact@v1
         with:
           name: build-result
       - run: yarn test
@@ -64,7 +64,7 @@ jobs:
           node-version: 18
       - run: yarn
       - name: Load build assets
-        uses: actions/download-artifact@v3
+        uses: alehechka/download-tartifact@v1
         with:
           name: build-result
       - env:
