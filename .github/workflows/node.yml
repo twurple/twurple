@@ -51,7 +51,7 @@ jobs:
       - run: yarn test
   docs:
     if: ${{ github.event_name == 'push' }}
-    needs: [ build ]
+    needs: [ build, test ]
     runs-on: ubuntu-latest
     concurrency:
       group: docs-${{ github.ref }}
@@ -62,6 +62,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18
+      - run: yarn
       - name: Load build assets
         uses: actions/download-artifact@v3
         with:
