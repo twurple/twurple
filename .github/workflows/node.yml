@@ -21,14 +21,13 @@ jobs:
       - run: yarn run build
       - run: yarn run lint
       - run: yarn run prettier:check
+      - name: Archive build assets
+        run: tar cvf build-result.tar packages/*/lib packages/*/es node_modules/.cache/tsukuru
       - name: Save build assets
-        uses: alehechka/upload-tartifact@v1
+        uses: actions/upload-artifact@v3
         with:
           name: build-result
-          path: |
-            packages/*/lib
-            packages/*/es
-            node_modules/.cache/tsukuru
+          path: build-result.tar
   test:
     strategy:
       matrix:
@@ -45,9 +44,11 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn
       - name: Load build assets
-        uses: alehechka/download-tartifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: build-result
+      - name: Unarchive build assets
+        run: tar xvf build-result.tar
       - run: yarn test
   docs:
     if: ${{ github.event_name == 'push' }}
@@ -64,9 +65,11 @@ jobs:
           node-version: 18
       - run: yarn
       - name: Load build assets
-        uses: alehechka/download-tartifact@v1
+        uses: actions/download-artifact@v3
         with:
           name: build-result
+      - name: Unarchive build assets
+        run: tar xvf build-result.tar
       - env:
           BUILD_NUMBER: ${{ github.run_number }}
           REPO_USER: ${{ github.repository_owner }}
