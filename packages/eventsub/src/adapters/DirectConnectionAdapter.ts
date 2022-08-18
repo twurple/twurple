@@ -31,7 +31,8 @@ export interface DirectConnectionAdapterConfig {
 @rtfm('eventsub', 'DirectConnectionAdapter')
 export class DirectConnectionAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
-	@Enumerable(false) private readonly _ssl: EventSubListenerCertificateConfig;
+	@Enumerable(false) private _ssl: EventSubListenerCertificateConfig;
+	@Enumerable(false) private _httpsServer?: https.Server;
 
 	/**
 	 * Creates a new simple WebHook adapter.
@@ -49,12 +50,24 @@ export class DirectConnectionAdapter extends ConnectionAdapter {
 		this._ssl = options.sslCert;
 	}
 
+	/**
+	 * Updates the SSL certificate, for example if the old one is expired.
+	 *
+	 * @expandParams
+	 *
+	 * @param ssl The new certificate data.
+	 */
+	updateSslCertificate(ssl: EventSubListenerCertificateConfig): void {
+		this._ssl = ssl;
+		this._httpsServer?.setSecureContext(ssl);
+	}
+
 	/** @protected */
 	createHttpServer(): http.Server {
-		return https.createServer({
+		return (this._httpsServer = https.createServer({
 			key: this._ssl.key,
 			cert: this._ssl.cert
-		});
+		}));
 	}
 
 	/** @protected */
