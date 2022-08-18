@@ -22,6 +22,9 @@
 			"path": "./packages/chat"
 		},
 		{
+			"path": "./packages/chat-mock-server"
+		},
+		{
 			"path": "./packages/common"
 		},
 		{

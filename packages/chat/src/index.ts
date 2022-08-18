@@ -4,6 +4,10 @@ export type { WebSocketConnectionOptions } from '@d-fischer/connection';
 
 export { TwitchPrivateMessage as PrivateMessage } from './commands/TwitchPrivateMessage';
 
+export { TwitchCommandsCapability } from './caps/twitchCommands';
+export { TwitchTagsCapability } from './caps/twitchTags';
+export { TwitchMembershipCapability } from './caps/TwitchMembershipCapability';
+
 export { ClearChat } from './caps/twitchCommands/messageTypes/ClearChat';
 export { HostTarget } from './caps/twitchCommands/messageTypes/HostTarget';
 export { Reconnect } from './caps/twitchCommands/messageTypes/Reconnect';

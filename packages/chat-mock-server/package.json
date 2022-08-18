@@ -1,17 +1,19 @@
 {
-  "name": "@twurple/chat",
+  "name": "@twurple/chat-mock-server",
   "version": "5.2.1",
   "publishConfig": {
     "access": "public"
   },
-  "description": "Interact with the Twitch Messaging Interface (aka Twitch chat).",
+  "description": "Run a server to test Twitch chat events.",
   "keywords": [
     "twitch",
     "tmi",
     "stream",
     "chat",
     "bot",
-    "events"
+    "events",
+    "test",
+    "mock"
   ],
   "sideEffects": false,
   "main": "lib",
@@ -25,28 +27,25 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/twurple/twurple.git",
-    "directory": "packages/chat"
+    "directory": "packages/chat-mock-server"
   },
   "homepage": "https://twurple.js.org",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/cache-decorators": "^3.0.0",
-    "@d-fischer/deprecate": "^2.0.2",
     "@d-fischer/logger": "^4.0.0",
-    "@d-fischer/rate-limiter": "^0.6.1",
     "@d-fischer/shared-utils": "^3.2.0",
-    "@d-fischer/typed-event-emitter": "^3.2.2",
     "@twurple/common": "^5.2.1",
     "ircv3": "^0.29.5",
+    "ircv3-server": "^0.3.0",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "^5.2.1"
+    "@twurple/chat": "^5.2.1"
   },
   "peerDependencies": {
-    "@twurple/auth": "^5.0.0"
+    "@twurple/chat": "^5.0.0"
   },
   "files": [
     "LICENSE",
