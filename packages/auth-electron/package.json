@@ -1,6 +1,6 @@
 {
   "name": "@twurple/auth-electron",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "publishConfig": {
     "access": "public"
   },
@@ -35,7 +35,7 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "^5.2.1",
+    "@twurple/auth": "^5.2.2",
     "electron": "^11.1.1"
   },
   "peerDependencies": {
