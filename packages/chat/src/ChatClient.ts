@@ -1551,7 +1551,7 @@ export class ChatClient extends IrcClient {
 				}
 
 				default: {
-					if (!messageType || !messageType.startsWith('usage_')) {
+					if (!messageType.startsWith('usage_')) {
 						this._chatLogger.warn(`Unrecognized notice ID: '${messageType}'`);
 					}
 				}
