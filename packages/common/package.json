@@ -1,6 +1,6 @@
 {
   "name": "@twurple/common",
-  "version": "5.2.1",
+  "version": "5.2.3",
   "publishConfig": {
     "access": "public"
   },
@@ -16,7 +16,8 @@
   "exports": {
     ".": {
       "require": "./lib/index.js",
-      "import": "./es/index.mjs"
+      "import": "./es/index.mjs",
+      "types": "./lib/index.d.ts"
     }
   },
   "repository": {

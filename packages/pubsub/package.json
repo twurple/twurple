@@ -1,6 +1,6 @@
 {
   "name": "@twurple/pubsub",
-  "version": "5.2.1",
+  "version": "5.2.3",
   "publishConfig": {
     "access": "public"
   },
@@ -17,7 +17,8 @@
   "exports": {
     ".": {
       "require": "./lib/index.js",
-      "import": "./es/index.mjs"
+      "import": "./es/index.mjs",
+      "types": "./lib/index.d.ts"
     }
   },
   "repository": {
@@ -34,11 +35,11 @@
     "@d-fischer/logger": "^4.0.0",
     "@d-fischer/shared-utils": "^3.2.0",
     "@d-fischer/typed-event-emitter": "^3.2.2",
-    "@twurple/common": "^5.2.1",
+    "@twurple/common": "^5.2.3",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "^5.2.1"
+    "@twurple/auth": "^5.2.3"
   },
   "peerDependencies": {
     "@twurple/auth": "^5.0.0"

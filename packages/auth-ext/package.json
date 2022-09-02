@@ -1,6 +1,6 @@
 {
   "name": "@twurple/auth-ext",
-  "version": "5.2.1",
+  "version": "5.2.3",
   "publishConfig": {
     "access": "public"
   },
@@ -16,7 +16,8 @@
   "exports": {
     ".": {
       "require": "./lib/index.js",
-      "import": "./es/index.mjs"
+      "import": "./es/index.mjs",
+      "types": "./lib/index.d.ts"
     }
   },
   "repository": {
@@ -32,7 +33,7 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "^5.2.1",
+    "@twurple/auth": "^5.2.3",
     "@types/twitch-ext": "^1.24.4"
   },
   "peerDependencies": {

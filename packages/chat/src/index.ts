@@ -15,6 +15,7 @@ export { Whisper } from './caps/twitchCommands/messageTypes/Whisper';
 export { ClearMsg } from './caps/twitchTags/messageTypes/ClearMsg';
 export { GlobalUserState } from './caps/twitchTags/messageTypes/GlobalUserState';
 
+export type { ChatAnnouncementInfo } from './userNotices/ChatAnnouncementInfo';
 export type { ChatBitsBadgeUpgradeInfo } from './userNotices/ChatBitsBadgeUpgradeInfo';
 export type { ChatCommunityPayForwardInfo } from './userNotices/ChatCommunityPayForwardInfo';
 export type { ChatCommunitySubInfo } from './userNotices/ChatCommunitySubInfo';
