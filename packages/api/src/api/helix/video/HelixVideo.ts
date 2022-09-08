@@ -40,7 +40,7 @@ export interface HelixVideoData {
 	type: HelixVideoType;
 	duration: string;
 	stream_id: string | null;
-	muted_segments: HelixVideoMutedSegmentData[];
+	muted_segments: HelixVideoMutedSegmentData[] | null;
 }
 
 /**
@@ -216,7 +216,7 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 	 * The raw data of muted segments of the video.
 	 */
 	get mutedSegmentData(): HelixVideoMutedSegmentData[] {
-		return this[rawDataSymbol].muted_segments.slice();
+		return this[rawDataSymbol].muted_segments?.slice() ?? [];
 	}
 
 	/**
@@ -230,8 +230,12 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 	 * By default, this function returns true only if the passed range is entirely contained in a muted segment.
 	 */
 	isMutedAt(offset: number, duration?: number, partial = false): boolean {
+		if (this[rawDataSymbol].muted_segments === null) {
+			return false;
+		}
+
 		if (duration == null) {
-			return this[rawDataSymbol].muted_segments.some(
+			return this[rawDataSymbol].muted_segments!.some(
 				seg => seg.offset <= offset && offset <= seg.offset + seg.duration
 			);
 		}
@@ -239,14 +243,14 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 		const end = offset + duration;
 
 		if (partial) {
-			return this[rawDataSymbol].muted_segments.some(seg => {
+			return this[rawDataSymbol].muted_segments!.some(seg => {
 				const segEnd = seg.offset + seg.duration;
 
 				return offset < segEnd && seg.offset < end;
 			});
 		}
 
-		return this[rawDataSymbol].muted_segments.some(seg => {
+		return this[rawDataSymbol].muted_segments!.some(seg => {
 			const segEnd = seg.offset + seg.duration;
 
 			return seg.offset <= offset && end <= segEnd;
