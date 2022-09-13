@@ -349,6 +349,7 @@ export class HelixUserApi extends BaseApi {
 		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
 			type: 'helix',
 			url: 'users/extensions',
+			method: 'PUT',
 			jsonBody: { data }
 		});
 
