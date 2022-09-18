@@ -190,16 +190,16 @@ export async function getValidTokenFromProvider(
 }
 
 const scopeEquivalencies = new Map([
-	['channel_commercial', 'channel:edit:commercial'],
-	['channel_editor', 'channel:manage:broadcast'],
-	['channel_read', 'channel:read:stream_key'],
-	['channel_subscriptions', 'channel:read:subscriptions'],
-	['user_blocks_read', 'user:read:blocked_users'],
-	['user_blocks_edit', 'user:manage:blocked_users'],
-	['user_follows_edit', 'user:edit:follows'],
-	['user_read', 'user:read:email'],
-	['user_subscriptions', 'user:read:subscriptions'],
-	['user:edit:broadcast', 'channel:manage:broadcast']
+	['channel_commercial', ['channel:edit:commercial']],
+	['channel_editor', ['channel:manage:broadcast']],
+	['channel_read', ['channel:read:stream_key']],
+	['channel_subscriptions', ['channel:read:subscriptions']],
+	['user_blocks_read', ['user:read:blocked_users']],
+	['user_blocks_edit', ['user:manage:blocked_users']],
+	['user_follows_edit', ['user:edit:follows']],
+	['user_read', ['user:read:email']],
+	['user_subscriptions', ['user:read:subscriptions']],
+	['user:edit:broadcast', ['channel:manage:broadcast', 'channel:manage:extensions']]
 ]);
 
 /**
@@ -210,15 +210,9 @@ const scopeEquivalencies = new Map([
  */
 export function compareScopes(scopesToCompare: string[], requestedScopes?: string[]): void {
 	if (requestedScopes !== undefined) {
-		const scopes = new Set<string>();
-		for (const scope of scopesToCompare) {
-			scopes.add(scope);
-
-			const equivalent = scopeEquivalencies.get(scope);
-			if (equivalent !== undefined) {
-				scopes.add(equivalent);
-			}
-		}
+		const scopes = new Set<string>(
+			scopesToCompare.flatMap(scope => [scope, ...(scopeEquivalencies.get(scope) ?? [])])
+		);
 
 		if (requestedScopes.some(scope => !scopes.has(scope))) {
 			throw new Error(

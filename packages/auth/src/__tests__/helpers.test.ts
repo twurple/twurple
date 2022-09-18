@@ -39,6 +39,7 @@ describe('Scope comparer', () => {
 
 	it('passes for scope equivalencies', () => {
 		compareScopes(['user:edit:broadcast'], ['channel:manage:broadcast']);
+		compareScopes(['user:edit:broadcast'], ['channel:manage:extensions']);
 		compareScopes(['channel_subscriptions'], ['channel:read:subscriptions']);
 		compareScopes(['channel_subscriptions', 'channel:read:subscriptions'], ['channel:read:subscriptions']);
 		compareScopes(
