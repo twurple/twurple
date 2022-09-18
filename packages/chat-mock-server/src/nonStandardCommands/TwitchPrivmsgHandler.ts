@@ -3,6 +3,8 @@ import { PrivateMessage } from '@twurple/chat';
 import { randomUUID } from 'crypto';
 import { isChannel } from 'ircv3';
 import { CommandHandler, type Server, type User } from 'ircv3-server';
+// eslint-disable-next-line import/no-unassigned-import
+import '../ChannelMetadata';
 
 export class TwitchPrivmsgHandler extends CommandHandler<PrivateMessage> {
 	constructor() {
@@ -47,6 +49,20 @@ export class TwitchPrivmsgHandler extends CommandHandler<PrivateMessage> {
 								])
 							}
 						);
+						break;
+					}
+					case 'slowmode': {
+						const currentValue = channel.getMetadata('slow');
+						if (args[0] === 'off') {
+							if (currentValue !== null) {
+								channel.putMetadata('slow', null);
+							}
+						} else {
+							const delay = Number(args[0]);
+							if (!Number.isNaN(delay) && delay !== currentValue) {
+								channel.putMetadata('slow', delay);
+							}
+						}
 						break;
 					}
 					default: {

@@ -11,7 +11,7 @@
     "@d-fischer/documen.ts": "^0.14.1",
     "@d-fischer/eslint-config": "^6.1.2",
     "@types/jest": "^27.4.1",
-    "@types/node": "^12.12.47",
+    "@types/node": "^14.18.27",
     "cross-env": "^7.0.3",
     "eslint": "^8.12.0",
     "eslint-import-resolver-lerna": "^2.0.0",

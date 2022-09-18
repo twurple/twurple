@@ -10,6 +10,8 @@ import {
 	Server,
 	type User
 } from 'ircv3-server';
+import { RoomStateModule } from './modules/RoomStateModule';
+import { TwitchHostOverrideModule } from './modules/TwitchHostOverrideModule';
 import { TwitchCapabilityNegotiationHandler } from './nonStandardCommands/TwitchCapabilityNegotiationHandler';
 import { TwitchNickChangeHandler } from './nonStandardCommands/TwitchNickChangeHandler';
 import { TwitchPrivmsgHandler } from './nonStandardCommands/TwitchPrivmsgHandler';
@@ -18,6 +20,9 @@ import { TwitchUserRegistrationHandler } from './nonStandardCommands/TwitchUserR
 export class ChatMockServer extends Server {
 	constructor() {
 		super({ serverAddress: 'tmi.twitch.tv', caseMapping: 'ascii', independentUsers: true });
+
+		this.loadModule(new TwitchHostOverrideModule());
+		this.loadModule(new RoomStateModule());
 	}
 
 	sendServerSupportInfo(user: User): void {
