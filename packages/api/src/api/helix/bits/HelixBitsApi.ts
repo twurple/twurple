@@ -44,7 +44,7 @@ export interface HelixBitsLeaderboardQuery {
 /**
  * The Helix API methods that deal with bits.
  *
- * Can be accessed using `client.bits` on an {@ApiClient} instance.
+ * Can be accessed using `client.bits` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

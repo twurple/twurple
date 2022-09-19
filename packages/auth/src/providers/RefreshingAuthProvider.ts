@@ -9,7 +9,7 @@ import type { AuthProviderTokenType } from './AuthProvider';
 import { BaseAuthProvider } from './BaseAuthProvider';
 
 /**
- * Configuration for the {@RefreshingAuthProvider}.
+ * Configuration for the {@link RefreshingAuthProvider}.
  */
 export interface RefreshConfig {
 	/**

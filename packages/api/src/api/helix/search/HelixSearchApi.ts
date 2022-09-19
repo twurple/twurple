@@ -27,7 +27,7 @@ export interface HelixPaginatedChannelSearchFilter extends HelixChannelSearchFil
 /**
  * The Helix API methods that run searches.
  *
- * Can be accessed using `client.search` on an {@ApiClient} instance.
+ * Can be accessed using `client.search` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

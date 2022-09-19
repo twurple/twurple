@@ -11,8 +11,8 @@ export type AuthProviderTokenType = 'user' | 'app';
  * Ideally, it should be able to request a new access token via user input
  * when previously unauthorized scopes are requested.
  *
- * As a starting point, {@StaticAuthProvider} takes an access token,
- * but can't do anything to upgrade it by itself. {@RefreshingAuthProvider}
+ * As a starting point, {@link StaticAuthProvider} takes an access token,
+ * but can't do anything to upgrade it by itself. {@link RefreshingAuthProvider}
  * can make use of refresh tokens to refresh your tokens on expiry or failure.
  *
  * @neverExpand

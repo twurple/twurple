@@ -72,7 +72,7 @@ interface HelixStreamGetMarkersResult {
 /**
  * The Helix API methods that deal with streams.
  *
- * Can be accessed using `client.streams` on an {@ApiClient} instance.
+ * Can be accessed using `client.streams` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

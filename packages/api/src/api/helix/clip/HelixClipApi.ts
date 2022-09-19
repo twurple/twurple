@@ -68,7 +68,7 @@ export interface HelixClipCreateResponse {
 /**
  * The Helix API methods that deal with clips.
  *
- * Can be accessed using `client.clips` on an {@ApiClient} instance.
+ * Can be accessed using `client.clips` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

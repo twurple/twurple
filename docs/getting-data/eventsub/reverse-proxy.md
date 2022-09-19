@@ -33,7 +33,7 @@ const listener = new EventSubListener({
 
 Twitch requires that the reverse proxy is running with SSL on the default port 443.
 
-A full list of configuration options is available on the {@ReverseProxyAdapter} reference page.
+A full list of configuration options is available on the {@link ReverseProxyAdapter} reference page.
 
 ## Listening to events
 

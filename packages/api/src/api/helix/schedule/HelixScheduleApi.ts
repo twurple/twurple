@@ -44,7 +44,7 @@ export interface HelixPaginatedScheduleResult {
 }
 
 /**
- * Vacation mode settings to update using {@HelixScheduleApi#updateScheduleSettings}.
+ * Vacation mode settings to update using {@link HelixScheduleApi#updateScheduleSettings}}.
  */
 interface HelixScheduleSettingsUpdateVacation {
 	/**
@@ -64,7 +64,7 @@ interface HelixScheduleSettingsUpdateVacation {
 }
 
 /**
- * Schedule settings to update using {@HelixScheduleApi#updateScheduleSettings}.
+ * Schedule settings to update using {@link HelixScheduleApi#updateScheduleSettings}}.
  */
 export interface HelixScheduleSettingsUpdate {
 	/**
@@ -152,7 +152,7 @@ export interface HelixUpdateScheduleSegmentData {
 /**
  * The Helix API methods that deal with schedules.
  *
- * Can be accessed using `client.helix.schedule` on an {@ApiClient} instance.
+ * Can be accessed using `client.helix.schedule` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

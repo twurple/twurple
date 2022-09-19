@@ -1,14 +1,14 @@
 :::warning{title="Authentication"}
 
 This section assumes that you have prepared [authentication](/docs/auth/) with an **app token**,
-for example using the {@ClientCredentialsAuthProvider}.
+for example using the {@link ClientCredentialsAuthProvider}.
 
 :::
 
 ## Setting up an EventSub listener
 
-A prerequisite of EventSub is a working {@ApiClient} instance.
-With that, you can create an {@EventSubListener} instance,
+A prerequisite of EventSub is a working {@link ApiClient} instance.
+With that, you can create an {@link EventSubListener} instance,
 which (in a basic setup without a reverse proxy) requires a trusted SSL certificate for the host name you provide.
 
 You also need to provide a random secret which all event payloads will be signed with.  
@@ -83,7 +83,7 @@ but you need to take care about some implementation details of this library:
 - At the end of each callback, each event has a unique identifier that is generally built by joining the event name and the other parameters (like the user ID) of the event.
 - This user ID is also prepended to the secret you passed to generate an unique secret for each callback. After this, if the resulting string is longer than 100 characters, the last 100 characters will be taken as the secret.
 
-The easiest way to get the proper test command is by using the method {@EventSubSubscription#getCliTestCommand}:
+The easiest way to get the proper test command is by using the method {@link EventSubSubscription#getCliTestCommand}}:
 
 ```ts twoslash
 // @module: esnext

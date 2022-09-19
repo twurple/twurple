@@ -8,7 +8,7 @@ import { HelixRaid } from './HelixRaid';
 /**
  * The Helix API methods that deal with raids.
  *
- * Can be accessed using `client.raids` on an {@ApiClient} instance.
+ * Can be accessed using `client.raids` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

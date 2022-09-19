@@ -12,4 +12,4 @@ You can choose between different ways to authenticate:
 - If you run an application that doesn't need user-specific data (or for **EventSub**), you can use [app tokens](/docs/auth/providers/client-credentials).
 - If you are building an Electron app, you can use our premade [Electron auth provider](/docs/auth/providers/electron).
 - If you are building a Twitch Extension frontend, there's an [Extension auth provider](/docs/auth/providers/extensions) too.
-- If you have special requirements, you can write your own provider by implementing the {@AuthProvider} interface.
+- If you have special requirements, you can write your own provider by implementing the {@link AuthProvider} interface.

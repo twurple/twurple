@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/@twurple/auth-ext.svg?style=flat)](https://www.npmjs.com/package/@twurple/auth-ext)
 ![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-This is an {@AuthProvider} implementation for [the `twurple` package family](https://github.com/twurple/twurple)
+This is an {@link AuthProvider} implementation for [the `twurple` package family](https://github.com/twurple/twurple)
 that will use the token provided to your Extension by Twitch.
 
 ## Installation
@@ -19,7 +19,7 @@ or using npm:
 
 ## Basic usage
 
-To instantiate an {@ApiClient} with this auth provider, just pass it to its constructor:
+To instantiate an {@link ApiClient} with this auth provider, just pass it to its constructor:
 
 ```ts
 import { ApiClient } from '@twurple/api';

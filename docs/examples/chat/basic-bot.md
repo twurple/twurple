@@ -189,7 +189,7 @@ We're done! Your bot should now connect to chat and react to a few basic command
 
 ## 9. Profit!
 
-Now you can implement a more elaborated command system, add more events to react to, and much more! All events are documented in the {@ChatClient} class. And don't forget to have fun!
+Now you can implement a more elaborated command system, add more events to react to, and much more! All events are documented in the {@link ChatClient} class. And don't forget to have fun!
 
 For reference, here's the full code that _should_ be the result of everything we just did:
 

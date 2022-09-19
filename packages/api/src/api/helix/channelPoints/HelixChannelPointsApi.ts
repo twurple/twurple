@@ -105,7 +105,7 @@ export interface HelixPaginatedCustomRewardRedemptionFilter
 /**
  * The Helix API methods that deal with channel points.
  *
- * Can be accessed using `client.channelPoints` on an {@ApiClient} instance.
+ * Can be accessed using `client.channelPoints` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

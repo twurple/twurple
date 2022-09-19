@@ -15,7 +15,7 @@ type HelixGameFilterType = 'id' | 'name';
 /**
  * The Helix API methods that deal with games.
  *
- * Can be accessed using `client.games` on an {@ApiClient} instance.
+ * Can be accessed using `client.games` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

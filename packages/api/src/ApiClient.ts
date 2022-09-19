@@ -48,13 +48,13 @@ import { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 import { ConfigError } from './errors/ConfigError';
 
 /**
- * Configuration for an {@ApiClient} instance.
+ * Configuration for an {@link ApiClient} instance.
  */
 export interface ApiConfig {
 	/**
 	 * An authentication provider that supplies tokens to the client.
 	 *
-	 * For more information, see the {@AuthProvider} documentation.
+	 * For more information, see the {@link AuthProvider} documentation.
 	 */
 	authProvider: AuthProvider;
 
@@ -388,7 +388,7 @@ export class ApiClient {
 	/**
 	 * The API methods that deal with badges.
 	 *
-	 * @deprecated Use {@HelixChatApi}'s badge methods instead.
+	 * @deprecated Use {@link HelixChatApi}'s badge methods instead.
 	 */
 	@CachedGetter()
 	get badges(): BadgesApi {

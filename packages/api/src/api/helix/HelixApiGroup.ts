@@ -27,7 +27,7 @@ import { HelixVideoApi } from './video/HelixVideoApi';
 /**
  * Groups all API calls available in Helix a.k.a. the "New Twitch API".
  *
- * Can be accessed using {@ApiClient#helix}.
+ * Can be accessed using {@link ApiClient#helix}}.
  *
  * @deprecated Please remove `.helix` from your calls to access the API namespaces directly.
  */

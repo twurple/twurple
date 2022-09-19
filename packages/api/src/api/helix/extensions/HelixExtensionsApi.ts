@@ -35,7 +35,7 @@ export interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensio
 /**
  * The Helix API methods that deal with extensions.
  *
- * Can be accessed using `client.extensions` on an {@ApiClient} instance.
+ * Can be accessed using `client.extensions` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

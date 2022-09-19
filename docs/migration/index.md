@@ -25,7 +25,7 @@ The packages were moved to a new NPM scope named `@twurple`. Here's the old and 
 
 ## Switch from Kraken to Helix
 
-The namespace `.kraken` was completely removed from the {@ApiClient}.
+The namespace `.kraken` was completely removed from the {@link ApiClient}.
 Please migrate to the respective Helix counterparts.
 
 ## Switch from WebHooks to EventSub
@@ -52,20 +52,20 @@ import { ChatClient } from '@twurple/chat';
 import { PubSubClient } from '@twurple/pubsub';
 ```
 
-## Move all {@EventSubListener} constructor parameters into the options object
+## Move all {@link EventSubListener} constructor parameters into the options object
 
 To be more consistent with other classes in the package family,
-the properties `apiClient` and `secret` were added to {@EventSubListenerConfig}.
-An object of that type is now the only parameter of the {@EventSubListener} constructor.
+the properties `apiClient` and `secret` were added to {@link EventSubListenerConfig}.
+An object of that type is now the only parameter of the {@link EventSubListener} constructor.
 
-## Replace use of `MiddlewareAdapter` with the new {@EventSubMiddleware} class
+## Replace use of `MiddlewareAdapter` with the new {@link EventSubMiddleware} class
 
 A separate listener and a middleware for an existing listener share a lot of common code. 
 Still, but to make better use of their *differences*, the listener class was split and the `MiddlewareAdapter` was in turn removed.
-Instead, you can use the new {@EventSubMiddleware} class to apply a middleware to your existing Express app.
+Instead, you can use the new {@link EventSubMiddleware} class to apply a middleware to your existing Express app.
 
 The "old" way and the "new" way are too different, so instead of a complicated diff,
-we prefer to just link you to the {@EventSubMiddleware} documentation for a comprehensive example.
+we prefer to just link you to the {@link EventSubMiddleware} documentation for a comprehensive example.
 
 ## Clean up your EventSub subscriptions before running the upgraded code for the first time
 
@@ -98,12 +98,12 @@ A few types were changes from enums to literal strings. Please make sure you loo
 During the 4.x series, a few classes, interfaces, enums and properties that were named with improper camel case
 have been renamed, and the old counterparts were deprecated. Please check your usage of the following properties:
 
-- {@HelixExtensionTransaction#productSku} - formerly `productSKU`
-- {@ApiClient#callApi} - formerly `callAPI`
-- {@ChatClient#addVip} - formerly `addVIP`
-- {@ChatClient#removeVip} - formerly `removeVIP`
-- {@ChatClient#getVips} - formerly `getVIPs`
-- {@TwitchClientCredentials#redirectUri} - formerly `redirectURI`
+- {@link HelixExtensionTransaction#productSku}} - formerly `productSKU`
+- {@link ApiClient#callApi}} - formerly `callAPI`
+- {@link ChatClient#addVip}} - formerly `addVIP`
+- {@link ChatClient#removeVip}} - formerly `removeVIP`
+- {@link ChatClient#getVips}} - formerly `getVIPs`
+- {@link TwitchClientCredentials#redirectUri}} - formerly `redirectURI`
 
 ## Use the new logger configuration
 
@@ -130,20 +130,20 @@ In most cases, it's much easier to set up.
 
 :::
 
-## Replace `RefreshableAuthProvider` with {@RefreshingAuthProvider} & make use of the new fully serializable {@AccessToken} interface
+## Replace `RefreshableAuthProvider` with {@link RefreshingAuthProvider} & make use of the new fully serializable {@link AccessToken} interface
 
 The old `RefreshableAuthProvider` was clunky to use. It was initially intended to make it easy to add refreshing
-to any existing {@AuthProvider} implementation, but that benefit never went past the basic {@StaticAuthProvider} wrapping.
+to any existing {@link AuthProvider} implementation, but that benefit never went past the basic {@link StaticAuthProvider} wrapping.
 
-In turn, it is being removed and replaced by a standalone provider called {@RefreshingAuthProvider}
+In turn, it is being removed and replaced by a standalone provider called {@link RefreshingAuthProvider}
 which doesn't need to wrap another provider anymore. Its parameters are divided into two parts:
 
 - The static data, i.e. app credentials and refresh callback
-- The initial token data, which is just an {@AccessToken} object
+- The initial token data, which is just an {@link AccessToken} object
 
-The mentioned {@AccessToken} was changed from a class to a fully serializable interface. This has two implications:
+The mentioned {@link AccessToken} was changed from a class to a fully serializable interface. This has two implications:
 
-- On the downside, it loses a few convenience getters like `.isExpired` - use the free-standing functions like {@accessTokenIsExpired} instead.
+- On the downside, it loses a few convenience getters like `.isExpired` - use the free-standing functions like {@link accessTokenIsExpired} instead.
 - On the upside, you can now just write the data to a file/database/etc. and read it back from there without any manual conversion shenanigans.
 
 ```ts diff -1,3-18 +2,19-26
@@ -177,12 +177,12 @@ const auth = new RefreshingAuthProvider(
 
 ## Use `AuthProvider`s directly
 
-Previously, {@ApiClient} exposed a few helper methods to instantiate it with an {@AuthProvider} created internally.
+Previously, {@link ApiClient} exposed a few helper methods to instantiate it with an {@link AuthProvider} created internally.
 
 In order to decouple these components from each other, these helpers were removed. 
 Instead, you should now instantiate the providers by yourself.
 
-Additionally, some token related helpers on the {@ApiClient} have been removed. 
+Additionally, some token related helpers on the {@link ApiClient} have been removed. 
 You should call them on the provider directly, or use the free-standing helper functions.
 Both the providers and the helpers are now exported from the `@twurple/auth` package.
 
@@ -247,32 +247,32 @@ await pubsub.registerUserListener(authProvider);
 
 ## Pass cheermote formatting options directly to the respective methods
 
-It was previously possible to add defaults for displaying cheermotes to the {@ApiClient}. 
+It was previously possible to add defaults for displaying cheermotes to the {@link ApiClient}. 
 These defaults were removed - now you have to pass all display options
-to {@HelixCheermoteList#getCheermoteDisplayInfo} and {@HelixCheermoteList#parseMessage}
-as well as {@TwitchPrivateMessage#parseEmotesAndBits}.
+to {@link HelixCheermoteList#getCheermoteDisplayInfo}} and {@link HelixCheermoteList#parseMessage}}
+as well as {@link TwitchPrivateMessage#parseEmotesAndBits}}.
 
-## Remove use of the `preAuth` and `initialScopes` properties in {@ApiConfig}
+## Remove use of the `preAuth` and `initialScopes` properties in {@link ApiConfig}
 
 The properties `preAuth` and `initialScopes` were dangerous,
-as they left a dangling promise when constructing an {@ApiClient}.
+as they left a dangling promise when constructing an {@link ApiClient}.
 
-They were replaced by the safer method {@ApiClient#requestScopes},
+They were replaced by the safer method {@link ApiClient#requestScopes}},
 which you can call (and more importanly, `await`) by yourself.
 
-## {@ElectronAuthProvider} now requires at least Electron 9
+## {@link ElectronAuthProvider} now requires at least Electron 9
 
 Electron versions below 9 are way past their support time by now. Please update to a supported version.
 
-## Check your bot type in the {@ChatClient} instantiation
+## Check your bot type in the {@link ChatClient} instantiation
 
-{@ChatClient} now applies rate limiting by default.
+{@link ChatClient} now applies rate limiting by default.
 If your bot is a known or verified bot, it may now use way lower rate limits than it could theoretically use.
 
-Please investigate the properties {@ChatClientOptions#botLevel} and {@ChatClientOptions#isAlwaysMod}
+Please investigate the properties {@link ChatClientOptions#botLevel} and {@link ChatClientOptions#isAlwaysMod}
 to raise them appropriately to your bot status.
 
-## Rename {@PubSubRedemptionMessage}'s `rewardName` property
+## Rename {@link PubSubRedemptionMessage}'s `rewardName` property
 
 The property `rewardName` was renamed to `rewardTitle`
 to be consistent with the API and EventSub versions of the same data.
@@ -280,7 +280,7 @@ Please update your code accordingly.
 
 ## Remove our typos
 
-See, we all make mistakes sometimes. But we fixed them and we ask you to fix them too (otherwise your code will break).
+See, we all make mistakes sometimes. But we fixed them, and we ask you to fix them too (otherwise your code will break).
 
 ```ts diff -2 +3
 declare const reward: HelixCustomReward;
@@ -288,15 +288,15 @@ console.log(reward.propmt);
 console.log(reward.prompt);
 ```
 
-## Update your own {@AuthProvider} implementation
+## Update your own {@link AuthProvider} implementation
 
 If you built your own auth provider, its interface now *requires* setting the `tokenType` property
 to one of the strings `user` or `app` depending on which type of OAuth token it yields.
 You probably want this to be `user`. 
 
-## Update log level passing for {@BasicPubSubClient}
+## Update log level passing for {@link BasicPubSubClient}
 
-In the past, it was possible to directly pass a log level to the {@BasicPubSubClient} constructor.
+In the past, it was possible to directly pass a log level to the {@link BasicPubSubClient} constructor.
 
 Now, only the usual logger configuration is valid.
 
@@ -305,9 +305,9 @@ new BasicPubSubClient('error')
 new BasicPubSubClient({ logger: { minLevel: 'error' } })
 ```
 
-## Check usage of `setId` in {@ChatEmote}
+## Check usage of `setId` in {@link ChatEmote}
 
-The property `setId` was moved from the class {@ChatEmote} to its new subclass {@ChatEmoteWithSet} to better reflect
+The property `setId` was moved from the class {@link ChatEmote} to its new subclass {@link ChatEmoteWithSet} to better reflect
 when a `setId` is available and when it isn't. Previously, a `setId` of `-1` was the indicator for a missing set ID. 
 Now, instead, you should be aware of which methods return a set and which do not.
 
@@ -326,7 +326,7 @@ const data = await api.callApi<any>({ url: 'users' });
 
 ## [TypeScript] Remove the external port setting from EventSub adapter constructors
 
-The external port settings for various {@ConnectionAdapter} implementations were removed,
+The external port settings for various {@link ConnectionAdapter} implementations were removed,
 since Twitch requires port 443 externally anyway.
 
 While in regular JavaScript, this will just be silently ignored, it will make the TypeScript compiler fail,
@@ -334,7 +334,7 @@ so remove it from your code - it probably didn't work anyway.
 
 ## [Deprecation] Remove usage of the `.helix` namespace
 
-The namespace `.helix` has been deprecated. All the Helix sub-namespaces now live directly on the {@ApiClient}.
+The namespace `.helix` has been deprecated. All the Helix sub-namespaces now live directly on the {@link ApiClient}.
 
 ```ts diff -1 +2
 const me = await api.helix.users.getMe();

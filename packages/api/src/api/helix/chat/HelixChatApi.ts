@@ -112,7 +112,7 @@ export type HelixChatUserColor =
 /**
  * The Helix API methods that deal with chat.
  *
- * Can be accessed using `client.chat` on an {@ApiClient} instance.
+ * Can be accessed using `client.chat` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

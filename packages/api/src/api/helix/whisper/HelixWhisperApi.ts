@@ -5,7 +5,7 @@ import { BaseApi } from '../../BaseApi';
 /**
  * The API methods that deal with whispers.
  *
- * Can be accessed using 'client.whispers' on an {@ApiClient} instance
+ * Can be accessed using 'client.whispers' on an {@link ApiClient} instance
  *
  * ## Example
  * ```ts

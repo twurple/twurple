@@ -14,7 +14,7 @@ import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
 /**
  * The Helix API methods that deal with Hype Trains.
  *
- * Can be accessed using `client.hypeTrain` on an {@ApiClient} instance.
+ * Can be accessed using `client.hypeTrain` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

@@ -1,4 +1,4 @@
-Using a fixed token is pretty straightforward. Just pass your application's client ID and your token to {@StaticAuthProvider}.
+Using a fixed token is pretty straightforward. Just pass your application's client ID and your token to {@link StaticAuthProvider}.
 
 ```ts twoslash
 import { StaticAuthProvider } from '@twurple/auth';

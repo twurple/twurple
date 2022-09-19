@@ -33,7 +33,7 @@ export interface HelixCreatePredictionData {
 /**
  * The Helix API methods that deal with predictions.
  *
- * Can be accessed using `client.helix.predictions` on an {@ApiClient} instance.
+ * Can be accessed using `client.helix.predictions` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

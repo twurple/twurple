@@ -7,7 +7,7 @@ import { ChatBadgeList } from './ChatBadgeList';
 /**
  * The API methods that deal with badges.
  *
- * Can be accessed using `client.badges` on an {@ApiClient} instance.
+ * Can be accessed using `client.badges` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

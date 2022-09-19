@@ -12,17 +12,17 @@ export interface Options extends Omit<BaseOptions, 'identity'> {
 	/**
 	 * An authentication provider that supplies tokens to the client.
 	 *
-	 * For more information, see the {@AuthProvider} documentation.
+	 * For more information, see the {@link AuthProvider} documentation.
 	 */
 	authProvider: AuthProvider;
 }
 
 /**
- * An extension of the tmi.js client which extends it with {@AuthProvider} integration.
+ * An extension of the tmi.js client which extends it with {@link AuthProvider} integration.
  */
 export class DecoratedClient extends BaseClient {
 	/**
-	 * Creates a new tmi.js client which utilizes the given {@AuthProvider} instance.
+	 * Creates a new tmi.js client which utilizes the given {@link AuthProvider} instance.
 	 *
 	 * @param opts The tmi.js options, with the auth provider replacing the identity option.
 	 */

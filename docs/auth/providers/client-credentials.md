@@ -1,4 +1,4 @@
-To automatically get app access tokens for use in your applications, just pass your application's client ID and client secret to {@ClientCredentialsAuthProvider}.
+To automatically get app access tokens for use in your applications, just pass your application's client ID and client secret to {@link ClientCredentialsAuthProvider}.
 
 ```ts twoslash
 import { ClientCredentialsAuthProvider } from '@twurple/auth';

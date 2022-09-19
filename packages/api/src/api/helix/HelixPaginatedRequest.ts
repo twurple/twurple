@@ -46,7 +46,7 @@ export class HelixPaginatedRequest<D, T> {
 	/**
 	 * The last retrieved page of data associated to the requested resource.
 	 *
-	 * Only works with {@HelixPaginatedRequest#getNext} and not with any other methods of data retrieval.
+	 * Only works with {@link HelixPaginatedRequest#getNext}} and not with any other methods of data retrieval.
 	 */
 	get current(): D[] | undefined {
 		return this._currentData?.data;
@@ -77,7 +77,7 @@ export class HelixPaginatedRequest<D, T> {
 	 *
 	 * Be aware that this makes multiple calls to the Twitch API. Due to this, you might be more suspectible to rate limits.
 	 *
-	 * Also be aware that this resets the internal cursor, so avoid using this and {@HelixPaginatedRequest#getNext} together.
+	 * Also be aware that this resets the internal cursor, so avoid using this and {@link HelixPaginatedRequest#getNext}} together.
 	 */
 	async getAll(): Promise<T[]> {
 		this.reset();
@@ -106,7 +106,7 @@ export class HelixPaginatedRequest<D, T> {
 	/**
 	 * Resets the internal cursor.
 	 *
-	 * This will make {@HelixPaginatedRequest#getNext} start from the first page again.
+	 * This will make {@link HelixPaginatedRequest#getNext}} start from the first page again.
 	 */
 	reset(): void {
 		this._currentCursor = undefined;

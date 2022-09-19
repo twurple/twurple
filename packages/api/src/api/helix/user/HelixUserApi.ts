@@ -26,7 +26,7 @@ import { HelixUserBlock } from './HelixUserBlock';
 export type UserLookupType = 'id' | 'login';
 
 /**
- * User data to update using {@HelixUserApi#updateUser}.
+ * User data to update using {@link HelixUserApi#updateUser}}.
  */
 export interface HelixUserUpdate {
 	description?: string;
@@ -70,7 +70,7 @@ export interface HelixPaginatedFollowFilter extends HelixFollowFilter, HelixForw
 /**
  * The Helix API methods that deal with users.
  *
- * Can be accessed using `client.users` on an {@ApiClient} instance.
+ * Can be accessed using `client.users` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

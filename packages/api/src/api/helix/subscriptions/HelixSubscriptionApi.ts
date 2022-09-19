@@ -31,7 +31,7 @@ export interface HelixPaginatedSubscriptionsResult extends HelixPaginatedResultW
 /**
  * The Helix API methods that deal with subscriptions.
  *
- * Can be accessed using `client.subscriptions` on an {@ApiClient} instance.
+ * Can be accessed using `client.subscriptions` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts
@@ -117,7 +117,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * Retrieves the subscription data for a given user to a given broadcaster.
 	 *
 	 * This checks with the authorization of a broadcaster.
-	 * If you only have the authorization of a user, check {@HelixSubscriptionApi#checkUserSubscription}.
+	 * If you only have the authorization of a user, check {@link HelixSubscriptionApi#checkUserSubscription}}.
 	 *
 	 * @param broadcaster The broadcaster to check.
 	 * @param user The user to check.
@@ -134,7 +134,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * Checks if a given user is subscribed to a given broadcaster. Returns null if not subscribed.
 	 *
 	 * This checks with the authorization of a user.
-	 * If you only have the authorization of a broadcaster, check {@HelixSubscriptionApi#getSubscriptionForUser}.
+	 * If you only have the authorization of a broadcaster, check {@link HelixSubscriptionApi#getSubscriptionForUser}}.
 	 *
 	 * @param user The user to check.
 	 * @param broadcaster The broadcaster to check the user's subscription for.

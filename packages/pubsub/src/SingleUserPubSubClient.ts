@@ -30,15 +30,15 @@ import { PubSubListener } from './PubSubListener';
  */
 export interface SingleUserPubSubClientOptions {
 	/**
-	 * The {@AuthProvider} instance to use for token management.
+	 * The {@link AuthProvider} instance to use for token management.
 	 */
 	authProvider: AuthProvider;
 
 	/**
-	 * The underlying {@BasicPubSubClient} instance. If not given, we'll create a new one.
+	 * The underlying {@link BasicPubSubClient} instance. If not given, we'll create a new one.
 	 *
 	 * **WARNING:** If you pass this, you shouldn't execute any manual actions on it.
-	 * You can, however, pass the same client to multiple instances of {@SingleUserPubSubClient}.
+	 * You can, however, pass the same client to multiple instances of {@link SingleUserPubSubClient}.
 	 */
 	pubSubClient?: BasicPubSubClient;
 
@@ -87,7 +87,7 @@ export class SingleUserPubSubClient {
 	 * @param channel The channel to listen to.
 	 * @param callback A function to be called when an AutoMod queue event is sent to the user.
 	 *
-	 * It receives a {@PubSubAutoModQueueMessage} object.
+	 * It receives a {@link PubSubAutoModQueueMessage} object.
 	 */
 	async onAutoModQueue(
 		channel: UserIdResolvable,
@@ -101,7 +101,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param callback A function to be called when a bits event happens in the user's channel.
 	 *
-	 * It receives a {@PubSubBitsMessage} object.
+	 * It receives a {@link PubSubBitsMessage} object.
 	 */
 	async onBits(callback: (message: PubSubBitsMessage) => void): Promise<PubSubListener<never>> {
 		return await this._addListener('channel-bits-events-v2', callback, 'bits:read');
@@ -112,7 +112,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param callback A function to be called when a bit badge is unlocked in the user's channel.
 	 *
-	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
+	 * It receives a {@link PubSubBitsBadgeUnlockMessage} object.
 	 */
 	async onBitsBadgeUnlock(callback: (message: PubSubBitsBadgeUnlockMessage) => void): Promise<PubSubListener<never>> {
 		return await this._addListener('channel-bits-badge-unlocks', callback, 'bits:read');
@@ -124,7 +124,7 @@ export class SingleUserPubSubClient {
 	 * @param channel The channel to listen to.
 	 * @param callback A function to be called when a mod action event is sent to the user.
 	 *
-	 * It receives a {@PubSubChatModActionMessage} object.
+	 * It receives a {@link PubSubChatModActionMessage} object.
 	 */
 	async onModAction(
 		channel: UserIdResolvable,
@@ -138,7 +138,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
 	 *
-	 * It receives a {@PubSubRedemptionMessage} object.
+	 * It receives a {@link PubSubRedemptionMessage} object.
 	 */
 	async onRedemption(callback: (message: PubSubRedemptionMessage) => void): Promise<PubSubListener<never>> {
 		return await this._addListener('channel-points-channel-v1', callback, 'channel:read:redemptions');
@@ -150,7 +150,7 @@ export class SingleUserPubSubClient {
 	 * @param channel The channel to listen to.
 	 * @param callback A function to be called when a user moderation event is sent to the user.
 	 *
-	 * It receives a {@PubSubUserModerationNotificationMessage} object.
+	 * It receives a {@link PubSubUserModerationNotificationMessage} object.
 	 */
 	async onUserModeration(
 		channel: UserIdResolvable,
@@ -164,7 +164,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param callback A function to be called when a subscription event happens in the user's channel.
 	 *
-	 * It receives a {@PubSubSubscriptionMessage} object.
+	 * It receives a {@link PubSubSubscriptionMessage} object.
 	 */
 	async onSubscription(callback: (message: PubSubSubscriptionMessage) => void): Promise<PubSubListener<never>> {
 		return await this._addListener('channel-subscribe-events-v1', callback, 'channel:read:subscriptions');
@@ -175,7 +175,7 @@ export class SingleUserPubSubClient {
 	 *
 	 * @param callback A function to be called when a whisper is sent to the user.
 	 *
-	 * It receives a {@PubSubWhisperMessage} object.
+	 * It receives a {@link PubSubWhisperMessage} object.
 	 */
 	async onWhisper(callback: (message: PubSubWhisperMessage) => void): Promise<PubSubListener<never>> {
 		return await this._addListener('whispers', callback, 'whispers:read');
@@ -187,7 +187,7 @@ export class SingleUserPubSubClient {
 	 * @param topic The topic to subscribe to.
 	 * @param callback A function to be called when a custom event is sent to the user.
 	 *
-	 * It receives a {@PubSubCustomMessage} object.
+	 * It receives a {@link PubSubCustomMessage} object.
 	 * @param scope An optional scope if the topic requires it.
 	 * @param channelId The ID of the channel to listen to, if the topic requires it.
 	 */

@@ -84,7 +84,7 @@ export interface HelixBanUserRequest {
 /**
  * The Helix API methods that deal with moderation.
  *
- * Can be accessed using `client.moderation` on an {@ApiClient} instance.
+ * Can be accessed using `client.moderation` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

@@ -12,7 +12,7 @@ import { HelixTag } from './HelixTag';
 /**
  * The Helix API methods that deal with tags.
  *
- * Can be accessed using `client.tags` on an {@ApiClient} instance.
+ * Can be accessed using `client.tags` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

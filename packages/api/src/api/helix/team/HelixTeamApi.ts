@@ -11,7 +11,7 @@ import { HelixTeamWithUsers } from './HelixTeamWithUsers';
 /**
  * The Helix API methods that deal with teams.
  *
- * Can be accessed using `client.teams` on an {@ApiClient} instance.
+ * Can be accessed using `client.teams` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

@@ -19,7 +19,7 @@ import { ApiClient } from '@twurple/api';
 const apiClient = new ApiClient({ authProvider });
 ```
 
-On the {@ApiClient} instance, the API methods are namespaced into the different resources like `users` and `streams`.
+On the {@link ApiClient} instance, the API methods are namespaced into the different resources like `users` and `streams`.
 
 All API methods are `async` and thus can be `await`ed. Here's a quick example:
 
@@ -45,7 +45,7 @@ async function isStreamLive(userName: string) {
 }
 ```
 
-In Helix, some resources are paginated using a cursor. To faciliate easy pagination, there are special methods suffixed with `Paginated` that wrap the result in a {@HelixPaginatedRequest} object. There are multiple ways to use this object to get your results.
+In Helix, some resources are paginated using a cursor. To faciliate easy pagination, there are special methods suffixed with `Paginated` that wrap the result in a {@link HelixPaginatedRequest} object. There are multiple ways to use this object to get your results.
 
 - Using `getNext()`:
 

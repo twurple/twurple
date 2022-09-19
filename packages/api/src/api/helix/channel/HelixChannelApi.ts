@@ -15,7 +15,7 @@ import type { HelixChannelEditorData } from './HelixChannelEditor';
 import { HelixChannelEditor } from './HelixChannelEditor';
 
 /**
- * Channel data to update using {@HelixChannelApi#updateChannel}.
+ * Channel data to update using {@link HelixChannelApi#updateChannelInfo}}.
  */
 export interface HelixChannelUpdate {
 	/**
@@ -44,7 +44,7 @@ export interface HelixChannelUpdate {
 /**
  * The Helix API methods that deal with channels.
  *
- * Can be accessed using `client.channels` on an {@ApiClient} instance.
+ * Can be accessed using `client.channels` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

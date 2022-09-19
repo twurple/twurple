@@ -1598,7 +1598,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
 	 *
-	 * If you don't need this feedback, consider using {@ChatClient#unhostOutside} instead.
+	 * If you don't need this feedback, consider using {@link ChatClient#unhostOutside}} instead.
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */
@@ -1624,7 +1624,7 @@ export class ChatClient extends IrcClient {
 	 *
 	 * This works even when not in the channel that was hosted, but provides no feedback about success of the command.
 	 *
-	 * If you need feedback about success, use {@ChatClient#unhost} (but make sure you're in the channel you are hosting).
+	 * If you need feedback about success, use {@link ChatClient#unhost}} (but make sure you're in the channel you are hosting).
 	 *
 	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
 	 */

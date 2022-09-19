@@ -32,7 +32,7 @@ const followAgeListener = chatClient.onMessage(async (channel: string, user: str
 chatClient.removeListener(followAgeListener);
 ```
 
-A list of all chat events can be found in the {@ChatClient} class reference.
+A list of all chat events can be found in the {@link ChatClient} class reference.
 
 :::warning{title="Why does my onConnect listener not work?"}
 

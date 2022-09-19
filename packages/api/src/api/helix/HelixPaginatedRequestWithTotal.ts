@@ -3,7 +3,7 @@ import { rtfm } from '@twurple/common';
 import { HelixPaginatedRequest } from './HelixPaginatedRequest';
 
 /**
- * A special case of {@HelixPaginatedRequest} with support for fetching the total number of entities, whenever an endpoint supports it.
+ * A special case of {@link HelixPaginatedRequest} with support for fetching the total number of entities, whenever an endpoint supports it.
  */
 @rtfm('api', 'HelixPaginatedRequestWithTotal')
 export class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<D, T> {

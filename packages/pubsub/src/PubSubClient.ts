@@ -71,7 +71,7 @@ Register one using:
 	 * @param channel The channel to listen to.
 	 * @param callback A function to be called when an AutoMod queue event is sent to the user.
 	 *
-	 * It receives a {@PubSubAutoModQueueMessage} object.
+	 * It receives a {@link PubSubAutoModQueueMessage} object.
 	 */
 	async onAutoModQueue(
 		user: UserIdResolvable,
@@ -87,7 +87,7 @@ Register one using:
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a bits event happens in the user's channel.
 	 *
-	 * It receives a {@PubSubBitsMessage} object.
+	 * It receives a {@link PubSubBitsMessage} object.
 	 */
 	async onBits(
 		user: UserIdResolvable,
@@ -102,7 +102,7 @@ Register one using:
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a bit badge is unlocked in the user's channel.
 	 *
-	 * It receives a {@PubSubBitsBadgeUnlockMessage} object.
+	 * It receives a {@link PubSubBitsBadgeUnlockMessage} object.
 	 */
 	async onBitsBadgeUnlock(
 		user: UserIdResolvable,
@@ -118,7 +118,7 @@ Register one using:
 	 * @param channel The channel the event will be subscribed for.
 	 * @param callback A function to be called when a mod action event is sent to the user.
 	 *
-	 * It receives a {@PubSubChatModActionMessage} object.
+	 * It receives a {@link PubSubChatModActionMessage} object.
 	 */
 	async onModAction(
 		user: UserIdResolvable,
@@ -134,7 +134,7 @@ Register one using:
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
 	 *
-	 * It receives a {@PubSubRedemptionMessage} object.
+	 * It receives a {@link PubSubRedemptionMessage} object.
 	 */
 	async onRedemption(
 		user: UserIdResolvable,
@@ -149,7 +149,7 @@ Register one using:
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a subscription event happens in the user's channel.
 	 *
-	 * It receives a {@PubSubSubscriptionMessage} object.
+	 * It receives a {@link PubSubSubscriptionMessage} object.
 	 */
 	async onSubscription(
 		user: UserIdResolvable,
@@ -165,7 +165,7 @@ Register one using:
 	 * @param channel The channel to listen to.
 	 * @param callback A function to be called when a user moderation event is sent to the user.
 	 *
-	 * It receives a {@PubSubUserModerationNotificationMessage} object.
+	 * It receives a {@link PubSubUserModerationNotificationMessage} object.
 	 */
 	async onUserModeration(
 		user: UserIdResolvable,
@@ -181,7 +181,7 @@ Register one using:
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a whisper is sent to the user.
 	 *
-	 * It receives a {@PubSubWhisperMessage} object.
+	 * It receives a {@link PubSubWhisperMessage} object.
 	 */
 	async onWhisper(
 		user: UserIdResolvable,
@@ -197,7 +197,7 @@ Register one using:
 	 * @param topic The topic to subscribe to.
 	 * @param callback A function to be called when a custom event is sent to the user.
 	 *
-	 * It receives a {@PubSubCustomMessage} object.
+	 * It receives a {@link PubSubCustomMessage} object.
 	 * @param scope An optional scope if the topic requires it.
 	 * @param channel An optional second userId if the topic requires it, usually a channel.
 	 */

@@ -43,7 +43,7 @@ export interface HelixCreatePollData {
 /**
  * The Helix API methods that deal with polls.
  *
- * Can be accessed using `client.helix.polls` on an {@ApiClient} instance.
+ * Can be accessed using `client.helix.polls` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

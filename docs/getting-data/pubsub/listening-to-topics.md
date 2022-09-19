@@ -4,7 +4,7 @@ This section assumes that you have prepared [authentication](/docs/auth/) with a
 
 :::
 
-Creating a {@PubSubClient} instance is slightly different from other systems, as you don't pass an auth provider to the constructor.
+Creating a {@link PubSubClient} instance is slightly different from other systems, as you don't pass an auth provider to the constructor.
 
 Instead, you can register multiple auth providers for different users after construction:
 

@@ -52,7 +52,7 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
 /**
  * The Helix API methods that deal with videos.
  *
- * Can be accessed using `client.videos` on an {@ApiClient} instance.
+ * Can be accessed using `client.videos` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

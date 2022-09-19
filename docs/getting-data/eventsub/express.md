@@ -1,6 +1,6 @@
 In some cases, you may already have an existing Express app and you want to mount an EventSub listener into it.
 
-This is made easy with the {@EventSubMiddleware} class.
+This is made easy with the {@link EventSubMiddleware} class.
 
 You just need to follow some easy steps to make sure the events come through:
 

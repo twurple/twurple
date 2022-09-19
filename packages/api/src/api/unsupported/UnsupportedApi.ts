@@ -7,7 +7,7 @@ import { ChattersList } from './ChattersList';
 /**
  * Different API methods that are not officially supported by Twitch.
  *
- * Can be accessed using `client.unsupported` on an {@ApiClient} instance.
+ * Can be accessed using `client.unsupported` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/@twurple/auth-electron.svg?style=flat)](https://www.npmjs.com/package/@twurple/auth-electron)
 ![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-This is an {@AuthProvider} implementation for [the `twurple` package family](https://github.com/twurple/twurple)
+This is an {@link AuthProvider} implementation for [the `twurple` package family](https://github.com/twurple/twurple)
 that will automatically pop up a Twitch OAuth dialog in an Electron `BrowserWindow`
 as soon as new scopes are requested.
 
@@ -20,7 +20,7 @@ or using npm:
 
 ## Basic usage
 
-To instantiate an {@ApiClient} with this auth provider, just pass it to its constructor:
+To instantiate an {@link ApiClient} with this auth provider, just pass it to its constructor:
 
 ```ts
 import { ApiClient } from '@twurple/api';
