@@ -27,6 +27,8 @@ export interface DirectConnectionAdapterConfig {
  * Requires the server to be directly available to the internet.
  *
  * @hideProtected
+ *
+ * @meta category adapters
  */
 @rtfm('eventsub', 'DirectConnectionAdapter')
 export class DirectConnectionAdapter extends ConnectionAdapter {

@@ -79,6 +79,9 @@ interface HelixStreamGetMarkersResult {
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const stream = await api.streams.getStreamByUserId('125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Streams
  */
 @rtfm('api', 'HelixStreamApi')
 export class HelixStreamApi extends BaseApi {

@@ -91,6 +91,9 @@ export interface HelixBanUserRequest {
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const { data: users } = await api.moderation.getBannedUsers('61369223');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Moderation
  */
 @rtfm('api', 'HelixModerationApi')
 export class HelixModerationApi extends BaseApi {

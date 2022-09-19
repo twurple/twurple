@@ -18,6 +18,9 @@ import { HelixTeamWithUsers } from './HelixTeamWithUsers';
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const tags = await api.teams.getChannelTeams('125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Teams
  */
 @rtfm('api', 'HelixTeamApi')
 export class HelixTeamApi extends BaseApi {

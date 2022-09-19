@@ -38,6 +38,9 @@ export interface HelixPaginatedSubscriptionsResult extends HelixPaginatedResultW
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const subscription = await api.subscriptions.getSubscriptionForUser('61369223', '125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Subscriptions
  */
 @rtfm('api', 'HelixSubscriptionApi')
 export class HelixSubscriptionApi extends BaseApi {

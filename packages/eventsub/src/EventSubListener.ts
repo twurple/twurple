@@ -38,6 +38,8 @@ export interface EventSubListenerConfig extends EventSubBaseConfig {
  *
  * @hideProtected
  * @inheritDoc
+ *
+ * @meta category main
  */
 @rtfm('eventsub', 'EventSubListener')
 export class EventSubListener extends EventSubBase {

@@ -6,6 +6,8 @@ import { ConnectionAdapter } from './ConnectionAdapter';
  * The configuration of the reverse proxy connection adapter.
  *
  * @inheritDoc
+ *
+ * @meta category adapters
  */
 export interface ReverseProxyAdapterConfig {
 	/**

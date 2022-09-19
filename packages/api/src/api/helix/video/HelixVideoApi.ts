@@ -59,6 +59,9 @@ export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagina
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const { data: videos } = await api.videos.getVideosByUser('125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Videos
  */
 @rtfm('api', 'HelixVideoApi')
 export class HelixVideoApi extends BaseApi {

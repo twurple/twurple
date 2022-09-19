@@ -82,6 +82,8 @@ export interface TwitchApiCallOptionsInternal {
 
 /**
  * An API client for the Twitch Helix API and other miscellaneous endpoints.
+ *
+ * @meta category main
  */
 @Cacheable
 @rtfm('api', 'ApiClient')

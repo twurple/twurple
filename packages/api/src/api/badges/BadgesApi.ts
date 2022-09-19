@@ -14,6 +14,11 @@ import { ChatBadgeList } from './ChatBadgeList';
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const cheermotes = await api.badges.getGlobalBadges();
  * ```
+ *
+ * @deprecated Use {@link HelixChatApi}'s badge methods instead.
+ *
+ * @meta category misc
+ * @meta categorizedTitle Badges (deprecated)
  */
 @rtfm('api', 'BadgesApi')
 export class BadgesApi extends BaseApi {

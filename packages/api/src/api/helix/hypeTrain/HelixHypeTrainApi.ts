@@ -21,6 +21,9 @@ import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const { data: events } = await api.hypeTrain.getHypeTrainEventsForBroadcaster('125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Hype Trains
  */
 export class HelixHypeTrainApi extends BaseApi {
 	/**

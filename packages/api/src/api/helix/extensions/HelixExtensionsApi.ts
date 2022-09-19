@@ -42,6 +42,9 @@ export interface HelixExtensionTransactionsPaginatedFilter extends HelixExtensio
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const transactions = await api.extionsions.getExtensionTransactions('abcd');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Extensions
  */
 @rtfm('api', 'HelixExtensionsApi')
 export class HelixExtensionsApi extends BaseApi {

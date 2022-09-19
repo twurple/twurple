@@ -34,6 +34,9 @@ export interface HelixPaginatedChannelSearchFilter extends HelixChannelSearchFil
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const channels = await api.search.searchChannels('pear');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Search
  */
 @rtfm('api', 'HelixSearchApi')
 export class HelixSearchApi extends BaseApi {

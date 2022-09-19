@@ -33,7 +33,7 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
  *
  * ## Before using these methods...
  *
- * All of the methods in this class assume that you are already running a working EventSub listener at the given callback URL.
+ * All methods in this class assume that you are already running a working EventSub listener at the given callback URL.
  *
  * If you don't already have one, we recommend use of the `@twurple/eventsub` library, which handles subscribing and unsubscribing to these topics automatically.
  *
@@ -42,6 +42,9 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * await api.eventSub.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle EventSub
  */
 @rtfm('api', 'HelixEventSubApi')
 export class HelixEventSubApi extends BaseApi {
@@ -960,7 +963,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Subscribe to events that represent a extension Bits transaction.
+	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.
 	 * @param transport The transport options.

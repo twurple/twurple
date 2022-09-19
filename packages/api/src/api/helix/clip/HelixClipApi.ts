@@ -75,6 +75,9 @@ export interface HelixClipCreateResponse {
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const clipId = await api.clips.createClip({ channelId: '125328655' });
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Clips
  */
 @rtfm('api', 'HelixClipApi')
 export class HelixClipApi extends BaseApi {

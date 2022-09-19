@@ -180,5 +180,35 @@
 			"indexTitle": "Migration from Twitch.js",
 			"indexFile": "migration/index.md"
 		}
-	]
+	],
+	"referenceConfig": {
+		"api": {
+			"categories": [
+				{
+					"name": "main",
+					"title": "Main classes"
+				},
+				{
+					"name": "helix",
+					"title": "Helix APIs"
+				},
+				{
+					"name": "misc",
+					"title": "Misc. APIs"
+				}
+			]
+		},
+		"eventsub": {
+			"categories": [
+				{
+					"name": "main",
+					"title": "Main classes"
+				},
+				{
+					"name": "adapters",
+					"title": "Adapters"
+				}
+			]
+		}
+	}
 }

@@ -19,6 +19,9 @@ import { HelixTag } from './HelixTag';
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const tags = await api.tags.getAllStreamTags();
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Tags
  */
 @rtfm('api', 'HelixTagApi')
 export class HelixTagApi extends BaseApi {

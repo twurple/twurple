@@ -35,6 +35,8 @@ export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
  *
  * @hideProtected
  * @inheritDoc
+ *
+ * @meta category main
  */
 @rtfm('eventsub', 'EventSubMiddleware')
 export class EventSubMiddleware extends EventSubBase {

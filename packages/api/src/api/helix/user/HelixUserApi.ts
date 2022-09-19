@@ -77,6 +77,9 @@ export interface HelixPaginatedFollowFilter extends HelixFollowFilter, HelixForw
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const user = await api.users.getUserById('125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Users
  */
 @rtfm('api', 'HelixUserApi')
 export class HelixUserApi extends BaseApi {

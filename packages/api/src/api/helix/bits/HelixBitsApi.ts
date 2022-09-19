@@ -51,6 +51,9 @@ export interface HelixBitsLeaderboardQuery {
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const leaderboard = await api.bits.getLeaderboard({ period: 'day' });
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Bits
  */
 @rtfm('api', 'HelixBitsApi')
 export class HelixBitsApi extends BaseApi {

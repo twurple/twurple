@@ -119,6 +119,9 @@ export type HelixChatUserColor =
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const rewards = await api.chat.getChannelBadges('125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Chat
  */
 @rtfm('api', 'HelixChatApi')
 export class HelixChatApi extends BaseApi {

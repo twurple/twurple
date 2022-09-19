@@ -112,6 +112,9 @@ export interface HelixPaginatedCustomRewardRedemptionFilter
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const rewards = await api.channelPoints.getCustomRewards('125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Channel points
  */
 @rtfm('api', 'HelixChannelPointsApi')
 export class HelixChannelPointsApi extends BaseApi {

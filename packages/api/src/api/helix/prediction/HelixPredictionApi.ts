@@ -40,6 +40,9 @@ export interface HelixCreatePredictionData {
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const { data: predictions } = await api.helix.predictions.getPredictions('61369223');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Predictions
  */
 @rtfm('api', 'HelixPredictionApi')
 export class HelixPredictionApi extends BaseApi {

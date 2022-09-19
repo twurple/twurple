@@ -15,6 +15,9 @@ import { HelixRaid } from './HelixRaid';
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const raid = await api.raids.startRaid('125328655', '61369223');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Raids
  */
 @rtfm('api', 'HelixRaidApi')
 export class HelixRaidApi extends BaseApi {

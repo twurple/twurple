@@ -50,6 +50,9 @@ export interface HelixCreatePollData {
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const { data: polls } = await api.helix.polls.getPolls('61369223');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Polls
  */
 @rtfm('api', 'HelixPollApi')
 export class HelixPollApi extends BaseApi {

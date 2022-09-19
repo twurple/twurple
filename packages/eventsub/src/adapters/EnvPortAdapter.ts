@@ -22,6 +22,8 @@ export interface EnvPortAdapterConfig {
  * A connection adapter that reads the port to listen on from the environment.
  *
  * @hideProtected
+ *
+ * @meta category adapters
  */
 @rtfm('eventsub', 'EnvPortAdapter')
 export class EnvPortAdapter extends ReverseProxyAdapter {

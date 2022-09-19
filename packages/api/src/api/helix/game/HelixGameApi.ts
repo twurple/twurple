@@ -22,6 +22,9 @@ type HelixGameFilterType = 'id' | 'name';
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const game = await api.games.getGameByName('Hearthstone');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Games
  */
 @rtfm('api', 'HelixGameApi')
 export class HelixGameApi extends BaseApi {

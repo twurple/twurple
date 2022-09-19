@@ -12,6 +12,9 @@ import { BaseApi } from '../../BaseApi';
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * await api.whispers.sendWhisper('61369223', '86753099', 'Howdy, partner!');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Whispers
  */
 
 @rtfm('api', 'HelixWhisperApi')

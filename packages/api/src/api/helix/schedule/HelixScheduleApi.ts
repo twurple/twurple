@@ -158,6 +158,10 @@ export interface HelixUpdateScheduleSegmentData {
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const { data: schedule } = await api.helix.schedule.getSchedule('61369223');
+ * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Bits
  */
 export class HelixScheduleApi extends BaseApi {
 	/**

@@ -51,6 +51,9 @@ export interface HelixChannelUpdate {
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const channel = await api.channels.getChannelInfoById('125328655');
  * ```
+ *
+ * @meta category helix
+ * @meta categorizedTitle Channels
  */
 @rtfm('api', 'HelixChannelApi')
 export class HelixChannelApi extends BaseApi {

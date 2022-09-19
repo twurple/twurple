@@ -5,7 +5,7 @@ import type { ChattersListData } from './ChattersList';
 import { ChattersList } from './ChattersList';
 
 /**
- * Different API methods that are not officially supported by Twitch.
+ * Miscellaneous API methods that are not officially supported by Twitch.
  *
  * Can be accessed using `client.unsupported` on an {@link ApiClient} instance.
  *
@@ -14,6 +14,9 @@ import { ChattersList } from './ChattersList';
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
  * const events = await api.unsupported.getChatters('yourfavoritestreamer');
  * ```
+ *
+ * @meta category misc
+ * @meta categorizedTitle Unsupported APIs
  */
 @rtfm('api', 'UnsupportedApi')
 export class UnsupportedApi extends BaseApi {
