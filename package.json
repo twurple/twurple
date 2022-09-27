@@ -8,7 +8,7 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "devDependencies": {
-    "@d-fischer/documen.ts": "^0.15.1",
+    "@d-fischer/documen.ts": "^0.16.0-pre.2",
     "@d-fischer/eslint-config": "^6.1.4",
     "@types/jest": "^27.4.1",
     "@types/node": "^12.12.47",
@@ -24,7 +24,7 @@
     "rimraf": "^3.0.0",
     "ts-jest": "^27.1.4",
     "tsukuru": "^0.8.0-pre.5",
-    "typescript": "~4.6.3"
+    "typescript": "~4.8"
   },
   "scripts": {
     "lint": "eslint --ext js,ts packages",
