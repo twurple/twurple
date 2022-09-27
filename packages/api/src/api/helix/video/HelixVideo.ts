@@ -235,7 +235,7 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 		}
 
 		if (duration == null) {
-			return this[rawDataSymbol].muted_segments!.some(
+			return this[rawDataSymbol].muted_segments.some(
 				seg => seg.offset <= offset && offset <= seg.offset + seg.duration
 			);
 		}
@@ -243,14 +243,14 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 		const end = offset + duration;
 
 		if (partial) {
-			return this[rawDataSymbol].muted_segments!.some(seg => {
+			return this[rawDataSymbol].muted_segments.some(seg => {
 				const segEnd = seg.offset + seg.duration;
 
 				return offset < segEnd && seg.offset < end;
 			});
 		}
 
-		return this[rawDataSymbol].muted_segments!.some(seg => {
+		return this[rawDataSymbol].muted_segments.some(seg => {
 			const segEnd = seg.offset + seg.duration;
 
 			return seg.offset <= offset && end <= segEnd;
