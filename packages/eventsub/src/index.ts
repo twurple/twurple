@@ -47,6 +47,7 @@ export { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubEx
 export { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
 export { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';
 export type { EventSubStreamOnlineEventStreamType } from './events/EventSubStreamOnlineEvent';
+export { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthorizationGrantEvent';
 export { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 export { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 
