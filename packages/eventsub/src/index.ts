@@ -48,6 +48,7 @@ export { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent'
 export { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';
 export type { EventSubStreamOnlineEventStreamType } from './events/EventSubStreamOnlineEvent';
 export { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
+export { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthorizationGrantEvent';
 export { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';
