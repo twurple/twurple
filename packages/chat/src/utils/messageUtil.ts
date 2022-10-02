@@ -1,7 +1,6 @@
 import type { Message, MessageConstructor } from 'ircv3';
 import { MessageTypes, parseMessage } from 'ircv3';
 import { ClearChat } from '../caps/twitchCommands/messageTypes/ClearChat';
-import { HostTarget } from '../caps/twitchCommands/messageTypes/HostTarget';
 import { Reconnect } from '../caps/twitchCommands/messageTypes/Reconnect';
 import { RoomState } from '../caps/twitchCommands/messageTypes/RoomState';
 import { UserNotice } from '../caps/twitchCommands/messageTypes/UserNotice';
@@ -33,7 +32,6 @@ const twitchMessageTypes = new Map<string, MessageConstructor>([
 	['376', MessageTypes.Numerics.Reply376EndOfMotd],
 
 	// Twitch extensions
-	['HOSTTARGET', HostTarget],
 	['CLEARCHAT', ClearChat],
 	['USERSTATE', UserState],
 	['GLOBALUSERSTATE', GlobalUserState],

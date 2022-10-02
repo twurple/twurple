@@ -17,7 +17,6 @@ import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
 import { TwitchCommandsCapability } from './caps/twitchCommands';
 import { ClearChat } from './caps/twitchCommands/messageTypes/ClearChat';
-import { HostTarget } from './caps/twitchCommands/messageTypes/HostTarget';
 import { RoomState } from './caps/twitchCommands/messageTypes/RoomState';
 import { UserNotice } from './caps/twitchCommands/messageTypes/UserNotice';
 import { Whisper } from './caps/twitchCommands/messageTypes/Whisper';
@@ -157,8 +156,6 @@ export interface WhisperRequest {
  */
 @rtfm('chat', 'ChatClient')
 export class ChatClient extends IrcClient {
-	private static readonly HOST_MESSAGE_REGEX = /(\w+) is now ((?:auto[- ])?)hosting you(?: for (?:up to )?(\d+))?/;
-
 	/** @private */
 	@Enumerable(false) readonly _authProvider?: AuthProvider;
 
@@ -242,36 +239,41 @@ export class ChatClient extends IrcClient {
 	readonly onFollowersOnly: EventBinder<[channel: string, enabled: boolean, delay?: number]> = this.registerEvent();
 
 	/**
-	 * Fires when a channel hosts another channel.
+	 * Never fires, as Twitch removed the hosting feature on 2022-10-03.
+	 *
+	 * @deprecated No replacement.
 	 *
 	 * @eventListener
-	 * @param channel The hosting channel.
-	 * @param target The channel that is being hosted.
-	 * @param viewers The number of viewers in the hosting channel.
+	 * @param channel *unused*
+	 * @param target *unused*
+	 * @param viewers *unused*
 	 *
 	 * If you're not logged in as the owner of the channel, this is undefined.
 	 */
 	readonly onHost: EventBinder<[channel: string, target: string, viewers?: number]> = this.registerEvent();
 
 	/**
-	 * Fires when a channel you're logged in as its owner is being hosted by another channel.
+	 * Never fires, as Twitch removed the hosting feature on 2022-10-03.
+	 *
+	 * @deprecated No replacement.
 	 *
 	 * @eventListener
-	 * @param channel The channel that is being hosted.
-	 * @param byChannel The hosting channel.
-	 * @param auto Whether the host was triggered automatically (by Twitch's auto-host functionality).
-	 * @param viewers The number of viewers in the hosting channel.
+	 * @param channel *unused*
+	 * @param byChannel *unused*
+	 * @param auto *unused*
+	 * @param viewers *unused*
 	 */
 	readonly onHosted: EventBinder<[channel: string, byChannel: string, auto: boolean, viewers?: number]> =
 		this.registerEvent();
 
 	/**
-	 * Fires when Twitch tells you the number of hosts you have remaining in the next half hour for the channel
-	 * for which you're logged in as owner after hosting a channel.
+	 * Never fires, as Twitch removed the hosting feature on 2022-10-03.
+	 *
+	 * @deprecated No replacement.
 	 *
 	 * @eventListener
-	 * @param channel The hosting channel.
-	 * @param numberOfHosts The number of hosts remaining in the next half hour.
+	 * @param channel *unused*
+	 * @param numberOfHosts *unused*
 	 */
 	readonly onHostsRemaining: EventBinder<[channel: string, numberOfHosts: number]> = this.registerEvent();
 
@@ -332,10 +334,12 @@ export class ChatClient extends IrcClient {
 	readonly onR9k: EventBinder<[channel: string, enabled: boolean]> = this.registerEvent();
 
 	/**
-	 * Fires when host mode is disabled in a channel.
+	 * Never fires, as Twitch removed the hosting feature on 2022-10-03.
+	 *
+	 * @deprecated No replacement.
 	 *
 	 * @eventListener
-	 * @param channel The channel where host mode is being disabled.
+	 * @param channel *unused*
 	 */
 	readonly onUnhost: EventBinder<[channel: string]> = this.registerEvent();
 
@@ -644,8 +648,6 @@ export class ChatClient extends IrcClient {
 		this.registerInternalEvent();
 	private readonly _onFollowersOnlyOffResult: EventBinder<[channel: string, error?: string]> =
 		this.registerInternalEvent();
-	private readonly _onHostResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onUnhostResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
 	private readonly _onModResult: EventBinder<[channel: string, user: string, error?: string]> =
 		this.registerInternalEvent();
 	private readonly _onUnmodResult: EventBinder<[channel: string, user: string, error?: string]> =
@@ -830,21 +832,7 @@ export class ChatClient extends IrcClient {
 		});
 
 		this.addInternalListener(this.onPrivmsg, (channel, user, message, msg) => {
-			if (user === 'jtv') {
-				// 1 = who hosted
-				// 2 = auto-host or not
-				// 3 = how many viewers (not always present)
-				const match = ChatClient.HOST_MESSAGE_REGEX.exec(message);
-				if (match) {
-					this.emit(
-						this.onHosted,
-						channel,
-						match[1],
-						Boolean(match[2]),
-						match[3] ? Number(match[3]) : undefined
-					);
-				}
-			} else {
+			if (user !== 'jtv') {
 				this.emit(this.onMessage, channel, user, message, msg);
 			}
 		});
@@ -882,17 +870,6 @@ export class ChatClient extends IrcClient {
 				targetMessageId
 			} = msg;
 			this.emit(this.onMessageRemove, channel, targetMessageId, msg);
-		});
-
-		this.onTypedMessage(HostTarget, ({ params: { channel, targetAndViewers } }) => {
-			const [target, viewers] = targetAndViewers.split(' ');
-			if (target === '-') {
-				// unhost
-				this.emit(this.onUnhost, channel);
-			} else {
-				const numViewers = Number(viewers);
-				this.emit(this.onHost, channel, target, isNaN(numViewers) ? undefined : numViewers);
-			}
 		});
 
 		this.onTypedMessage(MessageTypes.Commands.ChannelJoin, ({ prefix, params: { channel } }) => {
@@ -1257,28 +1234,6 @@ export class ChatClient extends IrcClient {
 					break;
 				}
 
-				// host
-				case 'bad_host_hosting':
-				case 'bad_host_rate_exceeded':
-				case 'bad_host_error': {
-					this.emit(this._onHostResult, channel, messageType);
-					break;
-				}
-
-				case 'hosts_remaining': {
-					const remainingHostsFromChar = +content[0];
-					const remainingHosts = isNaN(remainingHostsFromChar) ? 0 : Number(remainingHostsFromChar);
-					this.emit(this._onHostResult, channel);
-					this.emit(this.onHostsRemaining, channel, remainingHosts);
-					break;
-				}
-
-				// unhost (only fails, success is handled by HOSTTARGET)
-				case 'not_hosting': {
-					this.emit(this._onUnhostResult, channel, messageType);
-					break;
-				}
-
 				// join (success is handled when ROOMSTATE comes in)
 				case 'msg_channel_suspended':
 				case 'msg_banned': {
@@ -1489,13 +1444,6 @@ export class ChatClient extends IrcClient {
 					break;
 				}
 
-				// ...and HOSTTARGET
-				case 'host_off':
-				case 'host_on':
-				case 'host_target_went_offline': {
-					break;
-				}
-
 				case 'unrecognized_cmd': {
 					break;
 				}
@@ -1571,65 +1519,37 @@ export class ChatClient extends IrcClient {
 	}
 
 	/**
-	 * Hosts a channel on another channel.
+	 * Does nothing, as Twitch removed the hosting feature on 2022-10-03.
 	 *
-	 * @param channel The host source, i.e. the channel that is hosting. Defaults to the channel of the connected user.
-	 * @param target The host target, i.e. the channel that is being hosted.
+	 * @deprecated No replacement.
+	 *
+	 * @param channel *unused*
+	 * @param target *unused*
 	 */
 	async host(channel: string | undefined, target: string): Promise<void> {
-		const channelName = toUserName(channel ?? this._credentials.nick);
-		await new Promise<void>((resolve, reject) => {
-			const e = this._onHostResult((chan, error) => {
-				if (toUserName(chan) === channelName) {
-					if (error) {
-						reject(error);
-					} else {
-						resolve();
-					}
-					this.removeListener(e);
-				}
-			});
-			void this.say(channelName, `/host ${target}`);
-		});
+		this._chatLogger.warn(`Host ${target} in ${channel ?? this._credentials.nick}: hosting was removed by Twitch`);
 	}
 
 	/**
-	 * Ends any host on a channel.
+	 * Does nothing, as Twitch removed the hosting feature on 2022-10-03.
 	 *
-	 * This only works when in the channel that was hosted in order to provide feedback about success of the command.
+	 * @deprecated No replacement.
 	 *
-	 * If you don't need this feedback, consider using {@ChatClient#unhostOutside} instead.
-	 *
-	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
+	 * @param channel *unused*
 	 */
 	async unhost(channel: string = this._credentials.nick): Promise<void> {
-		channel = toUserName(channel);
-		await new Promise<void>((resolve, reject) => {
-			const e = this._onUnhostResult((chan, error) => {
-				if (toUserName(chan) === channel) {
-					if (error) {
-						reject(error);
-					} else {
-						resolve();
-					}
-					this.removeListener(e);
-				}
-			});
-			void this.say(channel, '/unhost');
-		});
+		this._chatLogger.warn(`Unhost in ${channel}: hosting was removed by Twitch`);
 	}
 
 	/**
-	 * Ends any host on a channel.
+	 * Does nothing, as Twitch removed the hosting feature on 2022-10-03.
 	 *
-	 * This works even when not in the channel that was hosted, but provides no feedback about success of the command.
+	 * @deprecated No replacement.
 	 *
-	 * If you need feedback about success, use {@ChatClient#unhost} (but make sure you're in the channel you are hosting).
-	 *
-	 * @param channel The channel to end the host on. Defaults to the channel of the connected user.
+	 * @param channel *unused*
 	 */
 	async unhostOutside(channel: string = this._credentials.nick): Promise<void> {
-		await this.say(channel, '/unhost');
+		this._chatLogger.warn(`Unhost in ${channel}: hosting was removed by Twitch`);
 	}
 
 	/**

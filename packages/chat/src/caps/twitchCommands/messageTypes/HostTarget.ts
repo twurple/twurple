@@ -2,7 +2,10 @@ import type { MessageParam } from 'ircv3';
 import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 
 // this command has no *useful* parameters, all information is in tags
-/** @private */
+/**
+ * @private
+ * @deprecated
+ */
 @MessageType('HOSTTARGET')
 export class HostTarget extends Message<HostTarget> {
 	@MessageParamDefinition({
