@@ -2,7 +2,6 @@ import type { HelixPaginatedResponseWithTotal } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
-import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
@@ -13,6 +12,7 @@ import type {
 	HelixEventSubWebHookTransportData
 } from './HelixEventSubSubscription';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
+import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEventSubSubscriptionsRequest';
 
 /**
  * The properties describing where and how long a WebHook notification is sent, and how it is signed.
@@ -26,6 +26,31 @@ export interface HelixEventSubWebHookTransportOptions extends HelixEventSubWebHo
 
 export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions;
 
+/** @private */
+export interface HelixPaginatedEventSubSubscriptionsResponse
+	extends HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData> {
+	total_cost: number;
+	max_total_cost: number;
+}
+
+/**
+ * The result of an EventSub subscription list request.
+ *
+ * @inheritDoc
+ */
+export interface HelixPaginatedEventSubSubscriptionsResult
+	extends HelixPaginatedResultWithTotal<HelixEventSubSubscription> {
+	/**
+	 * The total cost of all subscriptions.
+	 */
+	totalCost: number;
+
+	/**
+	 * The maximum cost that is allowed for your application.
+	 */
+	maxTotalCost: number;
+}
+
 /**
  * The API methods that deal with EventSub.
  *
@@ -33,7 +58,7 @@ export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions
  *
  * ## Before using these methods...
  *
- * All of the methods in this class assume that you are already running a working EventSub listener at the given callback URL.
+ * All methods in this class assume that you are already running a working EventSub listener at the given callback URL.
  *
  * If you don't already have one, we recommend use of the `@twurple/eventsub` library, which handles subscribing and unsubscribing to these topics automatically.
  *
@@ -54,16 +79,18 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * @expandParams
 	 */
-	async getSubscriptions(
-		pagination?: HelixPagination
-	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
-		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+	async getSubscriptions(pagination?: HelixPagination): Promise<HelixPaginatedEventSubSubscriptionsResult> {
+		const result = await this._client.callApi<HelixPaginatedEventSubSubscriptionsResponse>({
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			query: makePaginationQuery(pagination)
 		});
 
-		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+		return {
+			...createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client),
+			totalCost: result.total_cost,
+			maxTotalCost: result.max_total_cost
+		};
 	}
 
 	/**
@@ -71,17 +98,8 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 */
-	getSubscriptionsPaginated(): HelixPaginatedRequestWithTotal<
-		HelixEventSubSubscriptionData,
-		HelixEventSubSubscription
-	> {
-		return new HelixPaginatedRequestWithTotal(
-			{
-				url: 'eventsub/subscriptions'
-			},
-			this._client,
-			data => new HelixEventSubSubscription(data, this._client)
-		);
+	getSubscriptionsPaginated(): HelixPaginatedEventSubSubscriptionsRequest {
+		return new HelixPaginatedEventSubSubscriptionsRequest({}, this._client);
 	}
 
 	/**
@@ -97,8 +115,8 @@ export class HelixEventSubApi extends BaseApi {
 	async getSubscriptionsForStatus(
 		status: HelixEventSubSubscriptionStatus,
 		pagination?: HelixPagination
-	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
-		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+	): Promise<HelixPaginatedEventSubSubscriptionsResult> {
+		const result = await this._client.callApi<HelixPaginatedEventSubSubscriptionsResponse>({
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			query: {
@@ -107,7 +125,11 @@ export class HelixEventSubApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+		return {
+			...createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client),
+			totalCost: result.total_cost,
+			maxTotalCost: result.max_total_cost
+		};
 	}
 
 	/**
@@ -119,15 +141,8 @@ export class HelixEventSubApi extends BaseApi {
 	 */
 	getSubscriptionsForStatusPaginated(
 		status: HelixEventSubSubscriptionStatus
-	): HelixPaginatedRequestWithTotal<HelixEventSubSubscriptionData, HelixEventSubSubscription> {
-		return new HelixPaginatedRequestWithTotal(
-			{
-				url: 'eventsub/subscriptions',
-				query: { status }
-			},
-			this._client,
-			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
-		);
+	): HelixPaginatedEventSubSubscriptionsRequest {
+		return new HelixPaginatedEventSubSubscriptionsRequest({ status }, this._client);
 	}
 
 	/**
@@ -143,8 +158,8 @@ export class HelixEventSubApi extends BaseApi {
 	async getSubscriptionsForType(
 		type: string,
 		pagination?: HelixPagination
-	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
-		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+	): Promise<HelixPaginatedEventSubSubscriptionsResult> {
+		const result = await this._client.callApi<HelixPaginatedEventSubSubscriptionsResponse>({
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			query: {
@@ -153,7 +168,11 @@ export class HelixEventSubApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+		return {
+			...createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client),
+			totalCost: result.total_cost,
+			maxTotalCost: result.max_total_cost
+		};
 	}
 
 	/**
@@ -163,17 +182,8 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * @param type The type of the subscriptions to retrieve.
 	 */
-	getSubscriptionsForTypePaginated(
-		type: string
-	): HelixPaginatedRequestWithTotal<HelixEventSubSubscriptionData, HelixEventSubSubscription> {
-		return new HelixPaginatedRequestWithTotal(
-			{
-				url: 'eventsub/subscriptions',
-				query: { type }
-			},
-			this._client,
-			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
-		);
+	getSubscriptionsForTypePaginated(type: string): HelixPaginatedEventSubSubscriptionsRequest {
+		return new HelixPaginatedEventSubSubscriptionsRequest({ type }, this._client);
 	}
 
 	/**
@@ -189,8 +199,8 @@ export class HelixEventSubApi extends BaseApi {
 	async getSubscriptionsForUser(
 		user: UserIdResolvable,
 		pagination?: HelixPagination
-	): Promise<HelixPaginatedResultWithTotal<HelixEventSubSubscription>> {
-		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
+	): Promise<HelixPaginatedEventSubSubscriptionsResult> {
+		const result = await this._client.callApi<HelixPaginatedEventSubSubscriptionsResponse>({
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			query: {
@@ -199,7 +209,11 @@ export class HelixEventSubApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client);
+		return {
+			...createPaginatedResultWithTotal(result, HelixEventSubSubscription, this._client),
+			totalCost: result.total_cost,
+			maxTotalCost: result.max_total_cost
+		};
 	}
 
 	/**
@@ -209,17 +223,8 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * @param user The user to retrieve subscriptions for.
 	 */
-	getSubscriptionsForUserPaginated(
-		user: UserIdResolvable
-	): HelixPaginatedRequestWithTotal<HelixEventSubSubscriptionData, HelixEventSubSubscription> {
-		return new HelixPaginatedRequestWithTotal(
-			{
-				url: 'eventsub/subscriptions',
-				query: { user_id: extractUserId(user) }
-			},
-			this._client,
-			(data: HelixEventSubSubscriptionData) => new HelixEventSubSubscription(data, this._client)
-		);
+	getSubscriptionsForUserPaginated(user: UserIdResolvable): HelixPaginatedEventSubSubscriptionsRequest {
+		return new HelixPaginatedEventSubSubscriptionsRequest({ user_id: extractUserId(user) }, this._client);
 	}
 
 	/**
