@@ -4,6 +4,8 @@ import { HelixPaginatedRequest } from './HelixPaginatedRequest';
 
 /**
  * A special case of {@link HelixPaginatedRequest} with support for fetching the total number of entities, whenever an endpoint supports it.
+ *
+ * @inheritDoc
  */
 @rtfm('api', 'HelixPaginatedRequestWithTotal')
 export class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<D, T> {

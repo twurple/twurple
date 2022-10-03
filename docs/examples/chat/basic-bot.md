@@ -91,10 +91,10 @@ Now you can run your code and see your bot sitting in your channel. But we want 
 Fortunately, reacting to things is easy. To listen to chat messages, just use the `onMessage` method. As an example, we implement a few basic commands here:
 
 ```ts
-chatClient.onMessage((channel, user, message) => {
-	if (message === '!ping') {
+chatClient.onMessage((channel, user, text) => {
+	if (text === '!ping') {
 		chatClient.say(channel, 'Pong!');
-	} else if (message === '!dice') {
+	} else if (text === '!dice') {
 		const diceRoll = Math.floor(Math.random() * 6) + 1;
 		chatClient.say(channel, `@${user} rolled a ${diceRoll}`)
 	}
@@ -214,10 +214,10 @@ async function main() {
 	const chatClient = new ChatClient({ authProvider, channels: ['satisfiedpear'] });
 	await chatClient.connect();
 
-	chatClient.onMessage((channel, user, message) => {
-		if (message === '!ping') {
+	chatClient.onMessage((channel, user, text) => {
+		if (text === '!ping') {
 			chatClient.say(channel, 'Pong!');
-		} else if (message === '!dice') {
+		} else if (text === '!dice') {
 			const diceRoll = Math.floor(Math.random() * 6) + 1;
 			chatClient.say(channel, `@${user} rolled a ${diceRoll}`)
 		}

@@ -39,7 +39,6 @@ should use for which use case.
 | Get user info                                 | Yes                      | Login, display name, ID only   |
 | Get & manage follows                          | Yes                      | No                             |
 | Get & manage VODs                             | Yes                      | No                             |
-| Host users                                    | No                       | Yes                            |
 | Raid users                                    | Yes                      | Yes                            |
 | Send chat messages                            | No                       | Yes                            |
 | Send chat announcements                       | Yes                      | Yes                            |
@@ -63,7 +62,6 @@ should use for which use case.
 | AutoMod                           | No                           | Yes                       | No                                   |
 | Live / offline / stream changes   | No                           | No                        | Yes                                  |
 | Follows                           | No                           | No                        | Yes                                  |
-| Hosts                             | Yes                          | No                        | No                                   |
 | Raids                             | Yes                          | No                        | Yes                                  |
 | Bans                              | Yes                          | Yes                       | Yes                                  |
 | Mod add/remove                    | No                           | Yes                       | Yes                                  |

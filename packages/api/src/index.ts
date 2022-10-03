@@ -68,7 +68,8 @@ export { HelixClip } from './api/helix/clip/HelixClip';
 export { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
 export type {
 	HelixEventSubTransportOptions,
-	HelixEventSubWebHookTransportOptions
+	HelixEventSubWebHookTransportOptions,
+	HelixPaginatedEventSubSubscriptionsResult
 } from './api/helix/eventSub/HelixEventSubApi';
 
 export { HelixEventSubSubscription } from './api/helix/eventSub/HelixEventSubSubscription';
@@ -77,6 +78,8 @@ export type {
 	HelixEventSubSubscriptionStatus,
 	HelixEventSubTransportData
 } from './api/helix/eventSub/HelixEventSubSubscription';
+
+export { HelixPaginatedEventSubSubscriptionsRequest } from './api/helix/eventSub/HelixPaginatedEventSubSubscriptionsRequest';
 
 export { HelixExtensionsApi } from './api/helix/extensions/HelixExtensionsApi';
 export type {

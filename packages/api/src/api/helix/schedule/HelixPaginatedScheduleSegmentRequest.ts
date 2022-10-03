@@ -1,6 +1,6 @@
 import type { HelixPaginatedResponse, TwitchApiCallOptions } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixScheduleResponse } from './HelixSchedule';
@@ -11,6 +11,7 @@ import { HelixScheduleSegment } from './HelixScheduleSegment';
 /**
  * A paginator specifically for schedule segments.
  */
+@rtfm('api', 'HelixPaginatedScheduleSegmentRequest')
 export class HelixPaginatedScheduleSegmentRequest extends HelixPaginatedRequest<
 	HelixScheduleSegmentData,
 	HelixScheduleSegment
