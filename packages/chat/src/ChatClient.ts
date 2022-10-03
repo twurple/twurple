@@ -138,14 +138,14 @@ export interface ChatClientOptions {
 export interface ChatMessageRequest {
 	type: 'say' | 'action';
 	channel: string;
-	message: string;
+	text: string;
 	tags?: Record<string, string>;
 }
 
 /** @private */
 export interface WhisperRequest {
 	target: string;
-	message: string;
+	text: string;
 }
 
 /**
@@ -560,37 +560,37 @@ export class ChatClient extends IrcClient {
 	 *
 	 * @eventListener
 	 * @param user The user that sent the whisper.
-	 * @param message The message text.
+	 * @param text The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onWhisper: EventBinder<[user: string, message: string, msg: Whisper]> = this.registerEvent();
+	readonly onWhisper: EventBinder<[user: string, text: string, msg: Whisper]> = this.registerEvent();
 
 	/**
 	 * Fires when you tried to execute a command you don't have sufficient permission for.
 	 *
 	 * @eventListener
 	 * @param channel The channel that a command without sufficient permissions was executed on.
-	 * @param message The message text.
+	 * @param text The message text.
 	 */
-	readonly onNoPermission: EventBinder<[channel: string, message: string]> = this.registerEvent();
+	readonly onNoPermission: EventBinder<[channel: string, text: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a message you tried to send gets rejected by the ratelimiter.
 	 *
 	 * @eventListener
 	 * @param channel The channel that was attempted to send to.
-	 * @param message The message text.
+	 * @param text The message text.
 	 */
-	readonly onMessageRatelimit: EventBinder<[channel: string, message: string]> = this.registerEvent();
+	readonly onMessageRatelimit: EventBinder<[channel: string, text: string]> = this.registerEvent();
 
 	/**
 	 * Fires when authentication fails.
 	 *
 	 * @eventListener
 	 * @param channel The channel that a command without sufficient permissions was executed on.
-	 * @param message The message text.
+	 * @param text The message text.
 	 */
-	readonly onAuthenticationFailure: EventBinder<[message: string, retryCount: number]> = this.registerEvent();
+	readonly onAuthenticationFailure: EventBinder<[text: string, retryCount: number]> = this.registerEvent();
 
 	/**
 	 * Fires when sending a message fails.
@@ -607,17 +607,15 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param channel The channel the message was sent to.
 	 * @param user The user that sent the message.
-	 * @param message The message text.
+	 * @param text The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onMessage: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]> =
+	readonly onMessage: EventBinder<[channel: string, user: string, text: string, msg: TwitchPrivateMessage]> =
 		this.registerEvent();
 
 	// override for specific class
 	/** @private */
-	declare readonly onPrivmsg: EventBinder<
-		[channel: string, user: string, message: string, msg: TwitchPrivateMessage]
-	>;
+	declare readonly onPrivmsg: EventBinder<[channel: string, user: string, text: string, msg: TwitchPrivateMessage]>;
 
 	/**
 	 * Fires when a user sends an action (/me) to a channel.
@@ -625,10 +623,10 @@ export class ChatClient extends IrcClient {
 	 * @eventListener
 	 * @param channel The channel the action was sent to.
 	 * @param user The user that sent the action.
-	 * @param message The action text.
+	 * @param text The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	declare readonly onAction: EventBinder<[channel: string, user: string, message: string, msg: TwitchPrivateMessage]>;
+	declare readonly onAction: EventBinder<[channel: string, user: string, text: string, msg: TwitchPrivateMessage]>;
 
 	// internal events to resolve promises and stuff
 	private readonly _onBanResult: EventBinder<[channel: string, user: string, error?: string]> =
@@ -716,11 +714,11 @@ export class ChatClient extends IrcClient {
 		this._useLegacyScopes = !!config.legacyScopes;
 		this._readOnly = !!config.readOnly;
 
-		const executeChatMessageRequest = async ({ type, message, channel, tags }: ChatMessageRequest) => {
+		const executeChatMessageRequest = async ({ type, text, channel, tags }: ChatMessageRequest) => {
 			if (type === 'say') {
-				super.say(channel, message, tags);
+				super.say(channel, text, tags);
 			} else {
-				super.action(channel, message);
+				super.action(channel, text);
 			}
 		};
 
@@ -749,7 +747,7 @@ export class ChatClient extends IrcClient {
 				super.join(channel);
 			});
 
-		const executeWhisperRequest = async ({ target, message }: WhisperRequest) => this._doWhisper(target, message);
+		const executeWhisperRequest = async ({ target, text }: WhisperRequest) => this._doWhisper(target, text);
 
 		if (config.isAlwaysMod) {
 			this._messageRateLimiter = new TimeBasedRateLimiter({
@@ -2117,23 +2115,23 @@ export class ChatClient extends IrcClient {
 	 * Sends an announcement to a channel.
 	 *
 	 * @param channel The channel to send the announcement to.
-	 * @param message The content of the announcement.
+	 * @param text The content of the announcement.
 	 */
-	async announce(channel: string, message: string): Promise<void> {
-		await this.say(channel, `/announce ${message}`);
+	async announce(channel: string, text: string): Promise<void> {
+		await this.say(channel, `/announce ${text}`);
 	}
 
 	/**
 	 * Sends a message to a channel.
 	 *
 	 * @param channel The channel to send the message to.
-	 * @param message The message to send.
+	 * @param text The message to send.
 	 * @param attributes The attributes to add to the message.
 	 * @param rateLimiterOptions Options to pass to the rate limiter.
 	 */
 	async say(
 		channel: string,
-		message: string,
+		text: string,
 		attributes: ChatSayMessageAttributes = {},
 		rateLimiterOptions?: RateLimiterRequestOptions
 	): Promise<void> {
@@ -2145,7 +2143,7 @@ export class ChatClient extends IrcClient {
 			{
 				type: 'say',
 				channel: toChannelName(channel),
-				message,
+				text,
 				tags
 			},
 			rateLimiterOptions
@@ -2156,15 +2154,15 @@ export class ChatClient extends IrcClient {
 	 * Sends an action message (/me) to a channel.
 	 *
 	 * @param channel The channel to send the message to.
-	 * @param message The message to send.
+	 * @param text The message to send.
 	 * @param rateLimiterOptions Options to pass to the rate limiter.
 	 */
-	async action(channel: string, message: string, rateLimiterOptions?: RateLimiterRequestOptions): Promise<void> {
+	async action(channel: string, text: string, rateLimiterOptions?: RateLimiterRequestOptions): Promise<void> {
 		await this._messageRateLimiter.request(
 			{
 				type: 'action',
 				channel: toChannelName(channel),
-				message
+				text
 			},
 			rateLimiterOptions
 		);
@@ -2174,9 +2172,9 @@ export class ChatClient extends IrcClient {
 	 * Sends a whisper message to another user.
 	 *
 	 * @param user The user to send the message to.
-	 * @param message The message to send.
+	 * @param text The message to send.
 	 */
-	async whisper(user: string, message: string): Promise<void> {
+	async whisper(user: string, text: string): Promise<void> {
 		if (this._needToShowWhisperWarning) {
 			this._needToShowWhisperWarning = false;
 			this._chatLogger.warn(
@@ -2186,7 +2184,7 @@ Please note that your whispers might not arrive reliably if your bot is not a kn
 		}
 		await this._whisperRateLimiter.request({
 			target: toUserName(user),
-			message
+			text
 		});
 	}
 
@@ -2287,8 +2285,8 @@ Please note that your whispers might not arrive reliably if your bot is not a kn
 		throw lastTokenError ?? new Error('Could not retrieve a valid token');
 	}
 
-	private _doWhisper(user: string, message: string): void {
-		super.say(GENERIC_CHANNEL, `/w ${user} ${message}`);
+	private _doWhisper(user: string, text: string): void {
+		super.say(GENERIC_CHANNEL, `/w ${user} ${text}`);
 	}
 
 	private _getNecessaryScopes() {
