@@ -6,7 +6,7 @@ import type { HelixEventSubSubscriptionData } from './HelixEventSubSubscription'
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 
 /**
- * A special case of {@HelixPaginatedRequestWithTotal} with support for fetching the total cost and cost limit
+ * A special case of {@link HelixPaginatedRequestWithTotal} with support for fetching the total cost and cost limit
  * of EventSub subscriptions.
  *
  * @inheritDoc
