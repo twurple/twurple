@@ -58,6 +58,9 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	/**
 	 * Activates the subscription.
 	 *
+	 * You don't have to call this method manually after subscribing, as it's done automatically.
+	 * It's only used to reactivate a subscription after calling `.stop()`.
+	 *
 	 * @param resumeFrom The subscription data from Twitch to check whether the subscription needs to be re-added.
 	 */
 	async start(resumeFrom?: HelixEventSubSubscription): Promise<void> {
