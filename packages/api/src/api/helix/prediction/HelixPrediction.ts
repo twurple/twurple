@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixPredictionOutcomeData } from './HelixPredictionOutcome';
@@ -121,5 +121,27 @@ export class HelixPrediction extends DataObject<HelixPredictionData> {
 	 */
 	get outcomes(): HelixPredictionOutcome[] {
 		return this[rawDataSymbol].outcomes.map(data => new HelixPredictionOutcome(data, this._client));
+	}
+
+	/**
+	 * The ID of the winning outcome, or null if the prediction was canceled.
+	 */
+	get winningOutcomeId(): string | null {
+		return this[rawDataSymbol].winning_outcome_id;
+	}
+
+	/**
+	 * The winning outcome, or null if the prediction was canceled.
+	 */
+	get winningOutcome(): HelixPredictionOutcome | null {
+		if (this[rawDataSymbol].winning_outcome_id === null) {
+			return null;
+		}
+
+		const found = this[rawDataSymbol].outcomes.find(o => o.id === this[rawDataSymbol].winning_outcome_id);
+		if (!found) {
+			throw new HellFreezesOverError('Winning outcome not found in outcomes array');
+		}
+		return new HelixPredictionOutcome(found, this._client);
 	}
 }
