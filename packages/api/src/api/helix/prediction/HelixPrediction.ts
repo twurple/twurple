@@ -124,14 +124,14 @@ export class HelixPrediction extends DataObject<HelixPredictionData> {
 	}
 
 	/**
-	 * The ID of the winning outcome, or null if the prediction was canceled.
+	 * The ID of the winning outcome, or null if the prediction is currently running or was canceled.
 	 */
 	get winningOutcomeId(): string | null {
 		return this[rawDataSymbol].winning_outcome_id;
 	}
 
 	/**
-	 * The winning outcome, or null if the prediction was canceled.
+	 * The winning outcome, or null if the prediction is currently running or was canceled.
 	 */
 	get winningOutcome(): HelixPredictionOutcome | null {
 		if (this[rawDataSymbol].winning_outcome_id === null) {
