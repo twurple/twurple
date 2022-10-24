@@ -2,7 +2,6 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import { NoSubscriptionProgramError } from '../../../errors/NoSubscriptionProgramError';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixStream } from '../stream/HelixStream';
 import type { HelixSubscription } from '../subscriptions/HelixSubscription';
@@ -182,14 +181,6 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	 * @param broadcaster The broadcaster you want to check the subscription for.
 	 */
 	async isSubscribedTo(broadcaster: UserIdResolvable): Promise<boolean> {
-		try {
-			return (await this.getSubscriptionTo(broadcaster)) !== null;
-		} catch (e) {
-			if (e instanceof NoSubscriptionProgramError) {
-				return false;
-			}
-
-			throw e;
-		}
+		return (await this.getSubscriptionTo(broadcaster)) !== null;
 	}
 }

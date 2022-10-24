@@ -1,9 +1,9 @@
 import { CustomError } from '@twurple/common';
 
 /**
- * Thrown whenever you try accessing a subscription-related resource
- * such as {@link ChannelApi#getChannelSubscriptions}}
- * and the given channel does not have a subscription program.
+ * Not thrown anywhere anymore - this is a legacy error class.
+ *
+ * @deprecated
  */
 export class NoSubscriptionProgramError extends CustomError {
 	/** @private */
