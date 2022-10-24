@@ -1597,9 +1597,9 @@ export class ChatClient extends IrcClient {
 	}
 
 	/**
-	 * Clears all messages in a channel.
+	 * Removes all messages from a channel.
 	 *
-	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
+	 * @param channel The channel to remove all messages from. Defaults to the channel of the connected user.
 	 */
 	async clear(channel: string = this._credentials.nick): Promise<void> {
 		channel = toUserName(channel);
