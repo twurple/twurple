@@ -82,7 +82,7 @@ export interface HelixClipCreateResponse {
 @rtfm('api', 'HelixClipApi')
 export class HelixClipApi extends BaseApi {
 	/**
-	 * Retrieves the latest clips for the specified broadcaster.
+	 * Retrieves clips for the specified broadcaster in descending order of views.
 	 *
 	 * @param user The broadcaster to fetch clips for.
 	 * @param filter
@@ -101,7 +101,7 @@ export class HelixClipApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for the latest clips for the specified broadcaster.
+	 * Creates a paginator for clips for the specified broadcaster.
 	 *
 	 * @param user The broadcaster to fetch clips for.
 	 * @param filter
@@ -120,7 +120,7 @@ export class HelixClipApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the latest clips for the specified game.
+	 * Retrieves clips for the specified game in descending order of views.
 	 *
 	 * @param gameId The game ID.
 	 * @param filter
@@ -139,7 +139,7 @@ export class HelixClipApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for the latest clips for the specified game.
+	 * Creates a paginator for clips for the specified game.
 	 *
 	 * @param gameId The game ID.
 	 * @param filter
