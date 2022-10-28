@@ -61,7 +61,7 @@ export class BasicPubSubClient extends EventEmitter {
 
 	private readonly _connection: Connection;
 
-	private readonly _pingOnInactivity: number = 60;
+	private readonly _pingInterval: number = 240;
 	private readonly _pingTimeout: number = 10;
 	private _pingCheckTimer?: NodeJS.Timer;
 	private _pingTimeoutTimer?: NodeJS.Timer;
@@ -128,18 +128,17 @@ export class BasicPubSubClient extends EventEmitter {
 
 		this._connection.onConnect(async () => {
 			this._logger.info('Connection established');
+			this._startPingCheckTimer();
 			await this._resendListens();
 			if (this._topics.size) {
 				this._logger.info('Listened to previously registered topics');
 				this._logger.debug(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
 			}
-			this._startPingCheckTimer();
 			this.emit(this.onConnect);
 		});
 
 		this._connection.onReceive((line: string) => {
 			this._receiveMessage(line.trim());
-			this._startPingCheckTimer();
 		});
 
 		this._connection.onDisconnect((manually: boolean, reason?: Error) => {
@@ -429,7 +428,8 @@ export class BasicPubSubClient extends EventEmitter {
 			clearInterval(this._pingCheckTimer);
 		}
 		if (this._connection.isConnected) {
-			this._pingCheckTimer = setInterval(() => this._pingCheck(), this._pingOnInactivity * 1000);
+			this._pingCheck();
+			this._pingCheckTimer = setInterval(() => this._pingCheck(), this._pingInterval * 1000);
 		} else {
 			this._pingCheckTimer = undefined;
 		}
