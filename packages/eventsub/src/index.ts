@@ -27,6 +27,7 @@ export { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEven
 export { EventSubChannelPollProgressEvent } from './events/EventSubChannelPollProgressEvent';
 export { EventSubChannelPredictionBeginEvent } from './events/EventSubChannelPredictionBeginEvent';
 export { EventSubChannelPredictionEndEvent } from './events/EventSubChannelPredictionEndEvent';
+export type { EventSubChannelPredictionEndStatus } from './events/EventSubChannelPredictionEndEvent';
 export { EventSubChannelPredictionLockEvent } from './events/EventSubChannelPredictionLockEvent';
 export { EventSubChannelPredictionProgressEvent } from './events/EventSubChannelPredictionProgressEvent';
 export { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent';
