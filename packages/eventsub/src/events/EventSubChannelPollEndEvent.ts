@@ -118,7 +118,7 @@ export class EventSubChannelPollEndEvent extends DataObject<EventSubChannelPollE
 	/**
 	 * The status of the poll.
 	 */
-	get status(): string {
+	get status(): EventSubChannelPollEndStatus {
 		return this[rawDataSymbol].status;
 	}
 
