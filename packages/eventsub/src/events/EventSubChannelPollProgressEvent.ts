@@ -5,8 +5,6 @@ import type { EventSubChannelPollChoiceData } from './common/EventSubChannelPoll
 import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice';
 import type { EventSubChannelPollVoteTypeSettingsData } from './common/EventSubChannelPollVoteTypeSettingsData';
 
-export type EventSubChannelPollEndStatus = 'completed' | 'archived' | 'terminated';
-
 /** @private */
 export interface EventSubChannelPollProgressEventData {
 	id: string;
@@ -17,7 +15,6 @@ export interface EventSubChannelPollProgressEventData {
 	choices: EventSubChannelPollChoiceData[];
 	bits_voting: EventSubChannelPollVoteTypeSettingsData;
 	channel_points_voting: EventSubChannelPollVoteTypeSettingsData;
-	status: EventSubChannelPollEndStatus;
 	started_at: string;
 	ends_at: string;
 }
