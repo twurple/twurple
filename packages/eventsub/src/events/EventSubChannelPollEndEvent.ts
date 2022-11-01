@@ -5,6 +5,9 @@ import type { EventSubChannelPollChoiceData } from './common/EventSubChannelPoll
 import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice';
 import type { EventSubChannelPollVoteTypeSettingsData } from './common/EventSubChannelPollVoteTypeSettingsData';
 
+/**
+ * The status of the poll.
+ */
 export type EventSubChannelPollEndStatus = 'completed' | 'archived' | 'terminated';
 
 /** @private */

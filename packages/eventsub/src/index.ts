@@ -24,6 +24,7 @@ export { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelH
 export { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 export { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
 export { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEvent';
+export type { EventSubChannelPollEndStatus } from './events/EventSubChannelPollEndEvent';
 export { EventSubChannelPollProgressEvent } from './events/EventSubChannelPollProgressEvent';
 export { EventSubChannelPredictionBeginEvent } from './events/EventSubChannelPredictionBeginEvent';
 export { EventSubChannelPredictionEndEvent } from './events/EventSubChannelPredictionEndEvent';
