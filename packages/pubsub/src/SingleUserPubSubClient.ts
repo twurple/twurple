@@ -227,6 +227,17 @@ export class SingleUserPubSubClient {
 		}
 	}
 
+	/**
+	 * Removes all listeners from the client.
+	 */
+	async removeAllListeners(): Promise<void> {
+		for (const listeners of this._listeners.values()) {
+			for (const listener of listeners) {
+				await this.removeListener(listener);
+			}
+		}
+	}
+
 	private static _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage {
 		switch (type) {
 			case 'automod-queue': {
