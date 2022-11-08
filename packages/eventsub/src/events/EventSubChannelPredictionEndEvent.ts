@@ -4,7 +4,9 @@ import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/
 import type { EventSubChannelPredictionOutcomeData } from './common/EventSubChannelPredictionOutcome';
 import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
 
-/** @private */
+/**
+ * The status of the prediction.
+ */
 export type EventSubChannelPredictionEndStatus = 'resolved' | 'canceled';
 
 /** @private */
