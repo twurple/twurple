@@ -31,6 +31,8 @@ export interface HelixCreatePollData {
 
 	/**
 	 * The number of bits that a vote should cost. If not given, voting with bits will be disabled.
+	 *
+	 * @deprecated Twitch removed this feature.
 	 */
 	bitsPerVote?: number;
 

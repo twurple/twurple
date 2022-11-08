@@ -84,6 +84,8 @@ export class HelixPoll extends DataObject<HelixPollData> {
 
 	/**
 	 * Whether voting with bits is enabled for the poll.
+	 *
+	 * @deprecated Twitch removed this feature.
 	 */
 	get isBitsVotingEnabled(): boolean {
 		return this[rawDataSymbol].bits_voting_enabled;
