@@ -14,7 +14,13 @@ export type {
 	MessageCheermote
 } from './emotes/BaseCheermoteList';
 export { ChatEmote } from './emotes/ChatEmote';
-export type { ChatEmoteData, EmoteSize } from './emotes/ChatEmote';
+export type {
+	ChatEmoteData,
+	EmoteSettings,
+	EmoteSize,
+	EmoteAnimationSettings,
+	EmoteBackgroundType
+} from './emotes/ChatEmote';
 export { ChatEmoteWithSet } from './emotes/ChatEmoteWithSet';
 export type { ChatEmoteWithSetData } from './emotes/ChatEmoteWithSet';
 export { fillTextPositions } from './emotes/ParsedMessagePart';

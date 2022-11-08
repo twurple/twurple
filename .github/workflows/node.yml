@@ -17,7 +17,6 @@ jobs:
         with:
           node-version: 18
       - run: yarn
-      - run: yarn run lerna bootstrap
       - run: yarn run build
       - run: yarn run lint
       - run: yarn run prettier:check

@@ -1,4 +1,3 @@
-const path = require('path');
 const baseRules = require('@d-fischer/eslint-config');
 
 const memberNames = [
@@ -154,12 +153,5 @@ module.exports = {
 	},
 	rules: {
 		'@typescript-eslint/naming-convention': namingConvention
-	},
-	settings: {
-		'import/resolver': {
-			'eslint-import-resolver-lerna': {
-				packages: path.resolve(__dirname, 'packages')
-			}
-		}
 	}
 };

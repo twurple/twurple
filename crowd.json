@@ -1,0 +1,7 @@
+{
+	"$schema": "http://cdn.jsdelivr.net/gh/d-fischer/crowd/schema.json",
+	"currentVersion": "5.2.5",
+	"commitMessageTemplate": "release version %v",
+	"outOfDateBehavior": "pull",
+	"prereleaseIdentifier": "pre"
+}
