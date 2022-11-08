@@ -93,6 +93,8 @@ export class HelixPoll extends DataObject<HelixPollData> {
 
 	/**
 	 * The amount of bits that a vote costs.
+	 *
+	 * @deprecated Twitch removed this feature.
 	 */
 	get bitsPerVote(): number {
 		return this[rawDataSymbol].bits_per_vote;
