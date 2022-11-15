@@ -42,7 +42,7 @@ export interface ReverseProxyAdapterConfig {
  *
  * @hideProtected
  */
-@rtfm('eventsub', 'ReverseProxyAdapter')
+@rtfm('eventsub-http', 'ReverseProxyAdapter')
 export class ReverseProxyAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	private readonly _port: number;

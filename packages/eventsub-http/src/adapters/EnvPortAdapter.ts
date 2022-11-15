@@ -25,7 +25,7 @@ export interface EnvPortAdapterConfig {
  *
  * @meta category adapters
  */
-@rtfm('eventsub', 'EnvPortAdapter')
+@rtfm('eventsub-http', 'EnvPortAdapter')
 export class EnvPortAdapter extends ReverseProxyAdapter {
 	/**
 	 * Creates a new environment port connection adapter.

@@ -6,8 +6,7 @@
 		"paths": {
 			"@twurple/api": ["../api/src"],
 			"@twurple/auth": ["../auth/src"],
-			"@twurple/common": ["../common/src"],
-			"@twurple/eventsub-base": ["../eventsub-base/src"]
+			"@twurple/common": ["../common/src"]
 		}
 	},
 	"references": [
@@ -19,9 +18,6 @@
 		},
 		{
 			"path": "../common"
-		},
-		{
-			"path": "../eventsub-base"
 		}
 	],
 	"exclude": ["node_modules", "lib", "es"]

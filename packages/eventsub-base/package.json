@@ -1,15 +1,13 @@
 {
-  "name": "@twurple/eventsub-http",
+  "name": "@twurple/eventsub-base",
   "version": "5.3.0-pre.0",
   "publishConfig": {
     "access": "public"
   },
-  "description": "Listen to events on Twitch via their EventSub API.",
+  "description": "Base for the other Twurple EventSub packages",
   "keywords": [
     "twitch",
     "eventsub",
-    "http",
-    "webhooks",
     "stream",
     "bot",
     "events"
@@ -27,7 +25,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/twurple/twurple.git",
-    "directory": "packages/eventsub-http"
+    "directory": "packages/eventsub-base"
   },
   "homepage": "https://twurple.js.org",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
@@ -35,21 +33,12 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/logger": "^4.0.0",
-    "@d-fischer/raw-body": "^2.4.3",
     "@d-fischer/shared-utils": "^3.2.0",
     "@d-fischer/typed-event-emitter": "^3.3.0",
+    "@twurple/api": "5.3.0-pre.0",
     "@twurple/auth": "5.3.0-pre.0",
     "@twurple/common": "5.3.0-pre.0",
-    "@twurple/eventsub-base": "5.3.0-pre.0",
-    "@types/express-serve-static-core": "^4.17.24",
-    "httpanda": "^0.4.6",
     "tslib": "^2.0.3"
-  },
-  "devDependencies": {
-    "@twurple/api": "5.3.0-pre.0"
-  },
-  "peerDependencies": {
-    "@twurple/api": "5.3.0-pre.0"
   },
   "files": [
     "LICENSE",

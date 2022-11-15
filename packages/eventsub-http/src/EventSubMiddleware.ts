@@ -1,15 +1,15 @@
 import { rtfm } from '@twurple/common';
 import type { IRouter, RequestHandler } from 'express-serve-static-core';
 import { checkHostName } from './checks';
-import type { EventSubBaseConfig } from './EventSubBase';
-import { EventSubBase } from './EventSubBase';
+import type { EventSubHttpBaseConfig } from './EventSubHttpBase';
+import { EventSubHttpBase } from './EventSubHttpBase';
 
 /**
  * The configuration of the EventSub middleware.
  *
  * @inheritDoc
  */
-export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
+export interface EventSubMiddlewareConfig extends EventSubHttpBaseConfig {
 	/**
 	 * The host name the root application is available under.
 	 */
@@ -38,8 +38,8 @@ export interface EventSubMiddlewareConfig extends EventSubBaseConfig {
  *
  * @meta category main
  */
-@rtfm('eventsub', 'EventSubMiddleware')
-export class EventSubMiddleware extends EventSubBase {
+@rtfm('eventsub-http', 'EventSubMiddleware')
+export class EventSubMiddleware extends EventSubHttpBase {
 	private readonly _hostName: string;
 	private readonly _pathPrefix?: string;
 	private readonly _usePathPrefixInHandlers: boolean;

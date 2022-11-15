@@ -3,7 +3,7 @@ import { rtfm } from '@twurple/common';
 import type * as http from 'http';
 import * as https from 'https';
 import { checkHostName } from '../checks';
-import type { EventSubListenerCertificateConfig } from '../EventSubListener';
+import type { EventSubListenerCertificateConfig } from '../EventSubHttpListener';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
 /**
@@ -30,7 +30,7 @@ export interface DirectConnectionAdapterConfig {
  *
  * @meta category adapters
  */
-@rtfm('eventsub', 'DirectConnectionAdapter')
+@rtfm('eventsub-http', 'DirectConnectionAdapter')
 export class DirectConnectionAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	@Enumerable(false) private _ssl: EventSubListenerCertificateConfig;
