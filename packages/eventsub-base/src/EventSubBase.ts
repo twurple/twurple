@@ -155,7 +155,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToStreamOnlineEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToStreamOnlineEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 
@@ -176,7 +176,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToStreamOfflineEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToStreamOfflineEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 
@@ -197,7 +197,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
@@ -217,7 +217,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelFollowEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelFollowEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
@@ -237,7 +237,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelSubscriptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelSubscriptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
@@ -257,7 +257,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelSubscriptionGiftEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelSubscriptionGiftEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelSubscriptionGiftSubscription, handler, this, userId);
@@ -277,7 +277,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelSubscriptionMessageEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelSubscriptionMessageEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelSubscriptionMessageSubscription, handler, this, userId);
@@ -297,7 +297,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelSubscriptionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelSubscriptionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelSubscriptionEndSubscription, handler, this, userId);
@@ -317,7 +317,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelCheerEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelCheerEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
@@ -337,7 +337,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelBanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelBanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
@@ -357,7 +357,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelUnbanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelUnbanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
@@ -377,7 +377,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelModeratorAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelModeratorAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelModeratorAddSubscription, handler, this, userId);
@@ -397,7 +397,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelModeratorRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelModeratorRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelModeratorRemoveSubscription, handler, this, userId);
@@ -417,7 +417,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelRaidEventsFrom: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelRaidEventsFrom: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
@@ -437,7 +437,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelRaidEventsTo: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelRaidEventsTo: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
@@ -457,7 +457,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelRewardAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelRewardAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
@@ -477,7 +477,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
@@ -499,7 +499,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
@@ -519,7 +519,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToRewardRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToRewardRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
@@ -541,7 +541,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToRewardRemoveEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToRewardRemoveEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
@@ -561,7 +561,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelRedemptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelRedemptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
@@ -583,7 +583,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToRedemptionAddEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToRedemptionAddEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
@@ -603,7 +603,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelRedemptionUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelRedemptionUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
@@ -625,7 +625,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelRedemptionUpdateEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelRedemptionUpdateEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(
@@ -651,7 +651,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(broadcasterId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelPollBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelPollBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelPollBeginSubscription, handler, this, broadcasterId);
@@ -671,7 +671,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(broadcasterId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelPollProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelPollProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelPollProgressSubscription, handler, this, broadcasterId);
@@ -691,7 +691,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(broadcasterId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelPollEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelPollEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelPollEndSubscription, handler, this, broadcasterId);
@@ -711,7 +711,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(broadcasterId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelPredictionBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelPredictionBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelPredictionBeginSubscription, handler, this, broadcasterId);
@@ -731,7 +731,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(broadcasterId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelPredictionProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelPredictionProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(
@@ -756,7 +756,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(broadcasterId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelPredictionLockEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelPredictionLockEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelPredictionLockSubscription, handler, this, broadcasterId);
@@ -776,7 +776,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(broadcasterId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelPredictionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelPredictionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelPredictionEndSubscription, handler, this, broadcasterId);
@@ -796,7 +796,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelGoalBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelGoalBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelGoalBeginSubscription, handler, this, userId);
@@ -816,7 +816,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelGoalProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelGoalProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelGoalProgressSubscription, handler, this, userId);
@@ -836,7 +836,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelGoalEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelGoalEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelGoalEndSubscription, handler, this, userId);
@@ -856,7 +856,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelHypeTrainBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelHypeTrainBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
@@ -876,7 +876,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelHypeTrainProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelHypeTrainProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
@@ -896,7 +896,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToChannelHypeTrainEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToChannelHypeTrainEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
@@ -960,7 +960,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				'EventSubListener#subscribeToUserUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+				'subscribeToUserUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
 			);
 		}
 		return await this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);

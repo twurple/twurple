@@ -79,7 +79,7 @@ app.post('/echo-prop', express.json(), (req, res) => res.send(req.body.prop));
 app.listen(3000);
 ```
 
-## My `EventSubListener` or `EventSubMiddleware` starts up correctly, but it never tells me about successful subscriptions, why?
+## My `EventSubHttpListener` or `EventSubMiddleware` starts up correctly, but it never tells me about successful subscriptions, why?
 
 This can have different reasons:
 

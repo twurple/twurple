@@ -8,7 +8,7 @@ There are multiple options available to configure your listener.
 Some hosting providers (e.g. Heroku) offer an environment variable (usually named `PORT`) you have to listen on.
 
 ```typescript
-const listener = new EventSubListener({
+const listener = new EventSubHttpListener({
 	apiClient,
 	adapter: new EnvPortAdapter({
 		hostName: 'example.herokuapp.com'
@@ -22,7 +22,7 @@ const listener = new EventSubListener({
 If you don't use an environment variable, you need to set up the listener port manually. Be sure to have it match your reverse proxy's configuration.
 
 ```typescript
-const listener = new EventSubListener({
+const listener = new EventSubHttpListener({
 	apiClient,
 	adapter: new ReverseProxyAdapter({
 		hostName: 'example.com', // The host name the server is available from

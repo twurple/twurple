@@ -3,7 +3,7 @@ import { rtfm } from '@twurple/common';
 import type * as http from 'http';
 import * as https from 'https';
 import { checkHostName } from '../checks';
-import type { EventSubListenerCertificateConfig } from '../EventSubHttpListener';
+import type { EventSubHttpListenerCertificateConfig } from '../EventSubHttpListener';
 import { ConnectionAdapter } from './ConnectionAdapter';
 
 /**
@@ -18,7 +18,7 @@ export interface DirectConnectionAdapterConfig {
 	/**
 	 * The SSL keychain that should be used to make the server available using a secure connection.
 	 */
-	sslCert: EventSubListenerCertificateConfig;
+	sslCert: EventSubHttpListenerCertificateConfig;
 }
 
 /**
@@ -33,7 +33,7 @@ export interface DirectConnectionAdapterConfig {
 @rtfm('eventsub-http', 'DirectConnectionAdapter')
 export class DirectConnectionAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
-	@Enumerable(false) private _ssl: EventSubListenerCertificateConfig;
+	@Enumerable(false) private _ssl: EventSubHttpListenerCertificateConfig;
 	@Enumerable(false) private _httpsServer?: https.Server;
 
 	/**
@@ -59,7 +59,7 @@ export class DirectConnectionAdapter extends ConnectionAdapter {
 	 *
 	 * @param ssl The new certificate data.
 	 */
-	updateSslCertificate(ssl: EventSubListenerCertificateConfig): void {
+	updateSslCertificate(ssl: EventSubHttpListenerCertificateConfig): void {
 		this._ssl = ssl;
 		this._httpsServer?.setSecureContext(ssl);
 	}

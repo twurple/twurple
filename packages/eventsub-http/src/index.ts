@@ -1,6 +1,6 @@
 export type { EventSubHttpBaseConfig } from './EventSubHttpBase';
 export { EventSubHttpListener } from './EventSubHttpListener';
-export type { EventSubListenerCertificateConfig, EventSubHttpListenerConfig } from './EventSubHttpListener';
+export type { EventSubHttpListenerCertificateConfig, EventSubHttpListenerConfig } from './EventSubHttpListener';
 export { EventSubMiddleware } from './EventSubMiddleware';
 export type { EventSubMiddlewareConfig } from './EventSubMiddleware';
 

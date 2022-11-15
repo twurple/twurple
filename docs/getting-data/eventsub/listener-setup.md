@@ -8,14 +8,14 @@ for example using the {@link ClientCredentialsAuthProvider}.
 ## Setting up an EventSub listener
 
 A prerequisite of EventSub is a working {@link ApiClient} instance.
-With that, you can create an {@link EventSubListener} instance,
+With that, you can create an {@link EventSubHttpListener} instance,
 which (in a basic setup without a reverse proxy) requires a trusted SSL certificate for the host name you provide.
 
 You also need to provide a random secret which all event payloads will be signed with.  
 It should be randomly generated, but **kept between server restarts**,
 so subscriptions can be safely resumed without interruption.
 
-At last, you call the `.listen()` method on the listener,
+At last, you call the `.start()` method on the listener,
 which will start the listener in order to receive events from Twitch.
 
 ```ts twoslash
@@ -23,7 +23,7 @@ which will start the listener in order to receive events from Twitch.
 // @target: ES2017
 import { ClientCredentialsAuthProvider } from '@twurple/auth';
 import { ApiClient } from '@twurple/api';
-import { DirectConnectionAdapter, EventSubListener } from '@twurple/eventsub-http';
+import { DirectConnectionAdapter, EventSubHttpListener } from '@twurple/eventsub-http';
 
 const clientId = 'YOUR_CLIENT_ID';
 const clientSecret = 'YOUR_CLIENT_SECRET';
@@ -39,8 +39,8 @@ const adapter = new DirectConnectionAdapter({
 	}
 });
 const secret = 'thisShouldBeARandomlyGeneratedFixedString';
-const listener = new EventSubListener({ apiClient, adapter, secret });
-await listener.listen();
+const listener = new EventSubHttpListener({ apiClient, adapter, secret });
+await listener.start();
 ```
 
 Please note that the server needs to be **available from the outside**.
@@ -56,8 +56,8 @@ When your listener is set up, you can subscribe to all supported events using th
 // @module: esnext
 // @target: ES2017
 // @lib: es2015,dom
-import { EventSubListener } from '@twurple/eventsub-http';
-declare const listener: EventSubListener;
+import { EventSubHttpListener } from '@twurple/eventsub-http';
+declare const listener: EventSubHttpListener;
 // ---cut---
 const userId = 'YOUR_USER_ID';
 

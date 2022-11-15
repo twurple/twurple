@@ -4,7 +4,7 @@
   "publishConfig": {
     "access": "public"
   },
-  "description": "Listen to events on Twitch via their EventSub API.",
+  "description": "Listen to events on Twitch via their EventSub API using a HTTP/WebHook server.",
   "keywords": [
     "twitch",
     "eventsub",
