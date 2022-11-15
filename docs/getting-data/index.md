@@ -51,7 +51,7 @@ should use for which use case.
 
 ## Events
 
-| Event type                        | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub`                  |
+| Event type                        | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub-*`                |
 |-----------------------------------|------------------------------|---------------------------|--------------------------------------|
 | Chat messages                     | Yes                          | Sub & cheer messages only | Sub & cheer messages only            |
 | Chat mode (e.g. sub only) changes | Yes                          | No                        | No                                   |

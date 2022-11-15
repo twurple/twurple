@@ -1213,7 +1213,7 @@ To silence this warning without enabling this check (and thus to keep it off eve
 			}
 
 			res.writeHead(200);
-			res.end('@twurple/eventsub is listening here');
+			res.end('@twurple/eventsub-http is listening here');
 		};
 	}
 

@@ -23,7 +23,7 @@ which will start the listener in order to receive events from Twitch.
 // @target: ES2017
 import { ClientCredentialsAuthProvider } from '@twurple/auth';
 import { ApiClient } from '@twurple/api';
-import { DirectConnectionAdapter, EventSubListener } from '@twurple/eventsub';
+import { DirectConnectionAdapter, EventSubListener } from '@twurple/eventsub-http';
 
 const clientId = 'YOUR_CLIENT_ID';
 const clientSecret = 'YOUR_CLIENT_SECRET';
@@ -56,7 +56,7 @@ When your listener is set up, you can subscribe to all supported events using th
 // @module: esnext
 // @target: ES2017
 // @lib: es2015,dom
-import { EventSubListener } from '@twurple/eventsub';
+import { EventSubListener } from '@twurple/eventsub-http';
 declare const listener: EventSubListener;
 // ---cut---
 const userId = 'YOUR_USER_ID';
@@ -89,7 +89,7 @@ The easiest way to get the proper test command is by using the method {@link Eve
 // @module: esnext
 // @target: ES2017
 // @lib: es2015,dom
-import { EventSubSubscription } from '@twurple/eventsub';
+import { EventSubSubscription } from '@twurple/eventsub-http';
 declare const onlineSubscription: EventSubSubscription;
 // ---cut---
 console.log(await onlineSubscription.getCliTestCommand());

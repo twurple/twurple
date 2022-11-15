@@ -31,7 +31,7 @@
 			"path": "./packages/ebs-helper"
 		},
 		{
-			"path": "./packages/eventsub"
+			"path": "./packages/eventsub-http"
 		},
 		{
 			"path": "./packages/eventsub-ngrok"

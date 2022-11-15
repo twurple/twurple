@@ -17,7 +17,7 @@ Now you can continue subscribing to your desired EventSub events as usual.
 // @target: ES2017
 // @lib: es2015,dom
 import type { ApiClient } from '@twurple/api';
-import { EventSubMiddleware } from '@twurple/eventsub';
+import { EventSubMiddleware } from '@twurple/eventsub-http';
 declare const app: any;
 declare const apiClient: ApiClient;
 // ---cut---

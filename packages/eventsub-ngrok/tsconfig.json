@@ -7,7 +7,7 @@
 			"@twurple/api": ["../api/src"],
 			"@twurple/auth": ["../auth/src"],
 			"@twurple/common": ["../common/src"],
-			"@twurple/eventsub": ["../eventsub/src"]
+			"@twurple/eventsub-http": ["../eventsub-http/src"]
 		}
 	},
 	"references": [
@@ -21,7 +21,7 @@
 			"path": "../common"
 		},
 		{
-			"path": "../eventsub"
+			"path": "../eventsub-http"
 		}
 	],
 	"exclude": ["node_modules", "lib", "es"]

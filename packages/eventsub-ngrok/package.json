@@ -40,11 +40,11 @@
   },
   "devDependencies": {
     "@twurple/api": "5.3.0-pre.0",
-    "@twurple/eventsub": "5.3.0-pre.0"
+    "@twurple/eventsub-http": "5.3.0-pre.0"
   },
   "peerDependencies": {
     "@twurple/api": "5.3.0-pre.0",
-    "@twurple/eventsub": "5.3.0-pre.0"
+    "@twurple/eventsub-http": "5.3.0-pre.0"
   },
   "files": [
     "LICENSE",

@@ -1,18 +1,18 @@
-# Twurple - EventSub listener
+# Twurple - EventSub HTTP listener
 
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/twurple/twurple/blob/main/LICENSE)
-[![npm version](https://img.shields.io/npm/v/@twurple/eventsub.svg?style=flat)](https://www.npmjs.com/package/@twurple/eventsub)
+[![npm version](https://img.shields.io/npm/v/@twurple/eventsub-http.svg?style=flat)](https://www.npmjs.com/package/@twurple/eventsub-http)
 ![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
 Listen to events on Twitch via their EventSub API.
 
 ## Installation
 
-	yarn add @twurple/api @twurple/eventsub
+	yarn add @twurple/api @twurple/eventsub-http
 
 or using npm:
 
-	npm install @twurple/api @twurple/eventsub
+	npm install @twurple/api @twurple/eventsub-http
 
 ## Documentation
 
