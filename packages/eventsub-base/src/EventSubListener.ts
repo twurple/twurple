@@ -34,6 +34,9 @@ import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUser
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
 
+/**
+ * The common interface of all EventSub listeners.
+ */
 export interface EventSubListener {
 	/**
 	 * Start the listener.

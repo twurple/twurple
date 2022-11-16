@@ -9,13 +9,14 @@ import { makePaginationQuery } from '../HelixPagination';
 import type {
 	HelixEventSubSubscriptionData,
 	HelixEventSubSubscriptionStatus,
-	HelixEventSubWebHookTransportData
+	HelixEventSubWebHookTransportData,
+	HelixEventSubWebSocketTransportData
 } from './HelixEventSubSubscription';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEventSubSubscriptionsRequest';
 
 /**
- * The properties describing where and how long a WebHook notification is sent, and how it is signed.
+ * The properties describing where a WebHook notification is sent, and how it is signed.
  */
 export interface HelixEventSubWebHookTransportOptions extends HelixEventSubWebHookTransportData {
 	/**
@@ -24,7 +25,16 @@ export interface HelixEventSubWebHookTransportOptions extends HelixEventSubWebHo
 	secret?: string;
 }
 
-export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions;
+/**
+ * The properties describing where a WebSocket notification is sent.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface HelixEventSubWebSocketTransportOptions
+	extends Omit<HelixEventSubWebSocketTransportData, 'connected_at'> {}
+
+export type HelixEventSubTransportOptions =
+	| HelixEventSubWebHookTransportOptions
+	| HelixEventSubWebSocketTransportOptions;
 
 /** @private */
 export interface HelixPaginatedEventSubSubscriptionsResponse

@@ -9,6 +9,7 @@ import type {
 	UserIdResolvable
 } from '@twurple/api';
 import { extractUserId } from '@twurple/api';
+import { rtfm } from '@twurple/common';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
@@ -97,8 +98,14 @@ export interface EventSubBaseConfig {
 	logger?: Partial<LoggerOptions>;
 }
 
+/**
+ * @private
+ * @hideProtected
+ */
+@rtfm('eventsub-base', 'EventSubBase')
 export abstract class EventSubBase extends EventEmitter {
 	@Enumerable(false) protected readonly _subscriptions = new Map<string, EventSubSubscription>();
+	@Enumerable(false) protected readonly _subscriptionsByTwitchId = new Map<string, EventSubSubscription>();
 	@Enumerable(false) protected _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
 
 	/** @private */ @Enumerable(false) readonly _apiClient: ApiClient;
@@ -133,12 +140,17 @@ export abstract class EventSubBase extends EventEmitter {
 
 	/** @private */
 	_dropTwitchSubscription(id: string): void {
-		this._twitchSubscriptions.delete(id);
+		if (this._twitchSubscriptions.has(id)) {
+			const data = this._twitchSubscriptions.get(id)!;
+			this._twitchSubscriptions.delete(id);
+			this._subscriptionsByTwitchId.delete(data.id);
+		}
 	}
 
 	/** @private */
-	_registerTwitchSubscription(id: string, data: HelixEventSubSubscription): void {
-		this._twitchSubscriptions.set(id, data);
+	_registerTwitchSubscription(subscription: EventSubSubscription, data: HelixEventSubSubscription): void {
+		this._twitchSubscriptions.set(subscription.id, data);
+		this._subscriptionsByTwitchId.set(data.id, subscription);
 	}
 
 	/**
@@ -973,6 +985,10 @@ export abstract class EventSubBase extends EventEmitter {
 
 	/** @private */
 	abstract _getCliTestCommandForSubscription(subscription: EventSubSubscription): Promise<string>;
+
+	protected _getCorrectSubscriptionByTwitchId(id: string): EventSubSubscription | undefined {
+		return this._subscriptionsByTwitchId.get(id);
+	}
 
 	private async _genericSubscribe<T, Args extends unknown[]>(
 		clazz: new (handler: (obj: T) => void, client: EventSubBase, ...args: Args) => EventSubSubscription<T>,

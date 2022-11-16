@@ -58,7 +58,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 			await this._unsubscribe();
 		}
 		this._twitchSubscriptionData = await this._subscribe();
-		this._client._registerTwitchSubscription(this.id, this._twitchSubscriptionData);
+		this._client._registerTwitchSubscription(this as EventSubSubscription, this._twitchSubscriptionData);
 	}
 
 	/**
@@ -69,6 +69,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 			return;
 		}
 		await this._unsubscribe();
+		this._verified = false;
 		this._twitchSubscriptionData = undefined;
 	}
 

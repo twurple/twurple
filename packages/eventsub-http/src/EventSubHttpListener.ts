@@ -35,7 +35,7 @@ export interface EventSubHttpListenerConfig extends EventSubHttpBaseConfig {
 }
 
 /**
- * A listener for the Twitch EventSub event distribution mechanism.
+ * An HTTP listener for the Twitch EventSub event distribution mechanism.
  *
  * @hideProtected
  * @inheritDoc
@@ -48,7 +48,7 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 	private readonly _adapter: ConnectionAdapter;
 
 	/**
-	 * Creates a new EventSub listener.
+	 * Creates a new EventSub HTTP listener.
 	 *
 	 * @param config
 	 *

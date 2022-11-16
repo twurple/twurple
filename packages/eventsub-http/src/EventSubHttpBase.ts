@@ -1,45 +1,25 @@
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type {
-	HelixEventSubSubscription,
-	HelixEventSubSubscriptionStatus,
-	HelixEventSubTransportData,
-	HelixEventSubTransportOptions
-} from '@twurple/api';
+import type { HelixEventSubSubscription, HelixEventSubWebHookTransportOptions } from '@twurple/api';
 import { InvalidTokenTypeError } from '@twurple/auth';
-import type { EventSubBaseConfig, EventSubSubscription } from '@twurple/eventsub-base';
+import type {
+	EventSubBaseConfig,
+	EventSubNotificationPayload,
+	EventSubSubscription,
+	EventSubSubscriptionBody
+} from '@twurple/eventsub-base';
 import { EventSubBase } from '@twurple/eventsub-base';
 import * as crypto from 'crypto';
 import type { Request, RequestHandler } from 'httpanda';
 
 /** @private */
-interface EventSubSubscriptionBody {
-	id: string;
-	status: HelixEventSubSubscriptionStatus;
-	type: string;
-	version: string;
-	condition: Record<string, string>;
-	transport: HelixEventSubTransportData;
-	created_at: string;
-}
-
-/** @private */
-interface BaseEventSubBody {
+export interface EventSubVerificationPayload {
 	subscription: EventSubSubscriptionBody;
-}
-
-/** @private */
-interface EventSubVerificationBody extends BaseEventSubBody {
 	challenge: string;
 }
 
 /** @private */
-interface EventSubNotificationBody extends BaseEventSubBody {
-	event: Record<string, unknown>;
-}
-
-/** @private */
-type EventSubBody = EventSubVerificationBody | EventSubNotificationBody;
+export type EventSubHttpPayload = EventSubVerificationPayload | EventSubNotificationPayload;
 
 /**
  * The base configuration for EventSub over HTTP.
@@ -68,7 +48,6 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	@Enumerable(false) private readonly _seenEventIds = new Set<string>();
 
 	/** @private */ @Enumerable(false) readonly _secret: string;
-
 	/** @private */ readonly _strictHostCheck: boolean;
 
 	/**
@@ -82,16 +61,16 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	readonly onVerify = this.registerEvent<[success: boolean, subscription: EventSubSubscription]>();
 
 	constructor(config: EventSubHttpBaseConfig) {
-		super(config);
 		if (config.apiClient._authProvider.tokenType !== 'app') {
 			throw new InvalidTokenTypeError(
-				'EventSub requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
+				'EventSub over HTTP requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
 			);
 		}
 		// catch the examples copied verbatim
 		if (!config.secret || config.secret === 'thisShouldBeARandomlyGeneratedFixedString') {
 			throw new Error('Please generate a secret and pass it to the constructor!');
 		}
+		super(config);
 		this._secret = config.secret;
 
 		if (config.strictHostCheck === undefined) {
@@ -117,7 +96,7 @@ To silence this warning without enabling this check (and thus to keep it off eve
 	/** @private */
 	async _getTransportOptionsForSubscription(
 		subscription: EventSubSubscription
-	): Promise<HelixEventSubTransportOptions> {
+	): Promise<HelixEventSubWebHookTransportOptions> {
 		return {
 			method: 'webhook',
 			callback: await this._buildHookUrl(subscription.id),
@@ -178,6 +157,8 @@ To silence this warning without enabling this check (and thus to keep it off eve
 				return;
 			}
 
+			// The HTTP listener intentionally does not use the built-in resolution by Twitch subscription ID
+			// to be able to recognize subscriptions from the URL (for avoiding unnecessary re-subscribing)
 			const { id } = req.params;
 			const subscription = this._subscriptions.get(id);
 			const twitchSubscription = this._twitchSubscriptions.get(id);
@@ -203,7 +184,7 @@ To silence this warning without enabling this check (and thus to keep it off eve
 			}
 
 			const verified = this._verifyData(subscription, messageId, timestamp, body, algoAndSignature);
-			const data = JSON.parse(body) as EventSubBody;
+			const data = JSON.parse(body) as EventSubHttpPayload;
 			if (!verified) {
 				this._logger.warn(`Could not verify action ${type} of event: ${id}`);
 				if (type === 'webhook_callback_verification') {
@@ -216,7 +197,7 @@ To silence this warning without enabling this check (and thus to keep it off eve
 			}
 
 			if (type === 'webhook_callback_verification') {
-				const verificationBody = data as EventSubVerificationBody;
+				const verificationBody = data as EventSubVerificationPayload;
 				this.emit(this.onVerify, true, subscription);
 				subscription._verify();
 				if (twitchSubscription) {
@@ -235,7 +216,7 @@ To silence this warning without enabling this check (and thus to keep it off eve
 				} else {
 					this._seenEventIds.add(messageId);
 					setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
-					subscription._handleData((data as EventSubNotificationBody).event);
+					subscription._handleData((data as EventSubNotificationPayload).event);
 				}
 				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(202);

@@ -40,6 +40,9 @@
 			"path": "./packages/eventsub-ngrok"
 		},
 		{
+			"path": "./packages/eventsub-ws"
+		},
+		{
 			"path": "./packages/pubsub"
 		}
 	],

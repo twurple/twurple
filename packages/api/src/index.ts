@@ -69,6 +69,7 @@ export { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
 export type {
 	HelixEventSubTransportOptions,
 	HelixEventSubWebHookTransportOptions,
+	HelixEventSubWebSocketTransportOptions,
 	HelixPaginatedEventSubSubscriptionsResult
 } from './api/helix/eventSub/HelixEventSubApi';
 

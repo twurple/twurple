@@ -1,5 +1,6 @@
 export { EventSubBase, type EventSubBaseConfig } from './EventSubBase';
 export { type EventSubListener } from './EventSubListener';
+export type { EventSubSubscriptionBody, EventSubNotificationPayload } from './EventSubPayload';
 
 export { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 export { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
