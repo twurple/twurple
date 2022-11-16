@@ -1,6 +1,7 @@
 import type { BaseCheermoteList, CheermoteFormat, ParsedMessageCheerPart, ParsedMessagePart } from '@twurple/common';
 import { fillTextPositions, rtfm } from '@twurple/common';
 import { MessageTypes } from 'ircv3';
+import { decodeCtcp } from 'ircv3/lib/Toolkit/StringTools';
 import { ChatUser } from '../ChatUser';
 import { parseEmoteOffsets, parseEmotePositions } from '../utils/emoteUtil';
 
@@ -77,7 +78,12 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 * Parses the message, separating text from emote usages.
 	 */
 	parseEmotes(): ParsedMessagePart[] {
-		const messageText = this.params.content;
+		let messageText = this.params.content;
+		const ctcp = decodeCtcp(messageText);
+		if (ctcp && ctcp.command === 'ACTION') {
+			messageText = ctcp.params;
+		}
+
 		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
 
 		return fillTextPositions(messageText, foundEmotes);
