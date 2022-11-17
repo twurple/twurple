@@ -1,0 +1,72 @@
+export {
+	EventSubHttpListener as EventSubListener,
+	EventSubMiddleware,
+	ConnectionAdapter,
+	DirectConnectionAdapter,
+	EnvPortAdapter,
+	ReverseProxyAdapter
+} from '@twurple/eventsub-http';
+export type {
+	EventSubHttpBaseConfig as EventSubBaseConfig,
+	EventSubHttpListenerCertificateConfig as EventSubListenerCertificateConfig,
+	EventSubHttpListenerConfig as EventSubListenerConfig,
+	EventSubMiddlewareConfig,
+	DirectConnectionAdapterConfig,
+	EnvPortAdapterConfig,
+	ReverseProxyAdapterConfig
+} from '@twurple/eventsub-http';
+
+export {
+	EventSubChannelBanEvent,
+	EventSubChannelCheerEvent,
+	EventSubChannelFollowEvent,
+	EventSubChannelGoalBeginEvent,
+	EventSubChannelGoalEndEvent,
+	EventSubChannelGoalProgressEvent,
+	EventSubChannelHypeTrainBeginEvent,
+	EventSubChannelHypeTrainEndEvent,
+	EventSubChannelHypeTrainProgressEvent,
+	EventSubChannelModeratorEvent,
+	EventSubChannelPollBeginEvent,
+	EventSubChannelPollEndEvent,
+	EventSubChannelPollProgressEvent,
+	EventSubChannelPredictionBeginEvent,
+	EventSubChannelPredictionEndEvent,
+	EventSubChannelPredictionLockEvent,
+	EventSubChannelPredictionProgressEvent,
+	EventSubChannelRaidEvent,
+	EventSubChannelRedemptionAddEvent,
+	EventSubChannelRedemptionUpdateEvent,
+	EventSubChannelRewardEvent,
+	EventSubChannelSubscriptionEndEvent,
+	EventSubChannelSubscriptionEvent,
+	EventSubChannelSubscriptionGiftEvent,
+	EventSubChannelSubscriptionMessageEvent,
+	EventSubChannelUnbanEvent,
+	EventSubChannelUpdateEvent,
+	EventSubExtensionBitsTransactionCreateEvent,
+	EventSubStreamOfflineEvent,
+	EventSubStreamOnlineEvent,
+	EventSubUserAuthorizationGrantEvent,
+	EventSubUserAuthorizationRevokeEvent,
+	EventSubUserUpdateEvent,
+	EventSubChannelHypeTrainContribution,
+	EventSubChannelPollBeginChoice,
+	EventSubChannelPollChoice,
+	EventSubChannelPredictionBeginOutcome,
+	EventSubChannelPredictionOutcome,
+	EventSubChannelPredictionPredictor,
+	EventSubSubscription
+} from '@twurple/eventsub-base';
+export type {
+	EventSubChannelPollEndStatus,
+	EventSubChannelPredictionEndStatus,
+	EventSubChannelSubscriptionEndEventTier,
+	EventSubChannelSubscriptionEventTier,
+	EventSubChannelSubscriptionGiftEventTier,
+	EventSubChannelSubscriptionMessageEventTier,
+	EventSubStreamOnlineEventStreamType,
+	EventSubChannelGoalType,
+	EventSubChannelHypeTrainContributionType,
+	EventSubChannelPredictionColor
+} from '@twurple/eventsub-base';
