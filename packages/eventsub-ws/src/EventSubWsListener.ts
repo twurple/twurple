@@ -46,6 +46,7 @@ interface EventSubWsPacket {
 /**
  * A WebSocket listener for the Twitch EventSub event distribution mechanism.
  *
+ * @beta
  * @hideProtected
  * @inheritDoc
  *
