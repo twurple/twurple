@@ -4,20 +4,12 @@
 		"rootDir": "src",
 		"outDir": "lib",
 		"paths": {
-			"@twurple/api": ["../api/src"],
-			"@twurple/auth": ["../auth/src"],
-			"@twurple/common": ["../common/src"]
+			"@twurple/eventsub-http": ["../eventsub-http/src"]
 		}
 	},
 	"references": [
 		{
-			"path": "../api"
-		},
-		{
-			"path": "../auth"
-		},
-		{
-			"path": "../common"
+			"path": "../eventsub-http"
 		}
 	],
 	"exclude": ["node_modules", "lib", "es"]
