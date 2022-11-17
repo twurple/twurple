@@ -21,7 +21,7 @@ Listening to events using ngrok is easy since the ngrok adapter benefits from th
 // This is necessary to prevent conflict errors resulting from ngrok assigning a new host name every time
 await apiClient.eventSub.deleteAllSubscriptions();
 
-const listener = new EventSubListener({
+const listener = new EventSubHttpListener({
 	apiClient,
 	adapter: new NgrokAdapter(),
 	secret: 'thisShouldBeARandomlyGeneratedFixedString'

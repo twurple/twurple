@@ -52,11 +52,11 @@ import { ChatClient } from '@twurple/chat';
 import { PubSubClient } from '@twurple/pubsub';
 ```
 
-## Move all {@link EventSubListener} constructor parameters into the options object
+## Move all `EventSubListener` constructor parameters into the options object
 
 To be more consistent with other classes in the package family,
-the properties `apiClient` and `secret` were added to {@link EventSubListenerConfig}.
-An object of that type is now the only parameter of the {@link EventSubListener} constructor.
+the properties `apiClient` and `secret` were added to `EventSubListenerConfig`.
+An object of that type is now the only parameter of the `EventSubListener` constructor.
 
 ## Replace use of `MiddlewareAdapter` with the new {@link EventSubMiddleware} class
 

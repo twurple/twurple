@@ -6,6 +6,7 @@ export type HelixEventSubSubscriptionStatus =
 	| 'enabled'
 	| 'webhook_callback_verification_pending'
 	| 'webhook_callback_verification_failed'
+	| 'websocket_disconnected'
 	| 'notification_failures_exceeded'
 	| 'authorization_revoked'
 	| 'user_removed';
@@ -24,7 +25,25 @@ export interface HelixEventSubWebHookTransportData {
 }
 
 /** @private */
-export type HelixEventSubTransportData = HelixEventSubWebHookTransportData;
+export interface HelixEventSubWebSocketTransportData {
+	/**
+	 * The type of transport.
+	 */
+	method: 'websocket';
+
+	/**
+	 * The callback URL to send event notifications to.
+	 */
+	session_id: string;
+
+	/**
+	 * The time when the client initiated the socket connection.
+	 */
+	connected_at: string;
+}
+
+/** @private */
+export type HelixEventSubTransportData = HelixEventSubWebHookTransportData | HelixEventSubWebSocketTransportData;
 
 /** @private */
 export interface HelixEventSubSubscriptionData {

@@ -1,0 +1,28 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"rootDir": "src",
+		"outDir": "lib",
+		"paths": {
+			"@twurple/api": ["../api/src"],
+			"@twurple/auth": ["../auth/src"],
+			"@twurple/common": ["../common/src"],
+			"@twurple/eventsub-base": ["../eventsub-base/src"]
+		}
+	},
+	"references": [
+		{
+			"path": "../api"
+		},
+		{
+			"path": "../auth"
+		},
+		{
+			"path": "../common"
+		},
+		{
+			"path": "../eventsub-base"
+		}
+	],
+	"exclude": ["node_modules", "lib", "es"]
+}

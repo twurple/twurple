@@ -124,8 +124,7 @@ export class BasicPubSubClient extends EventEmitter {
 		this._connection = new PersistentConnection(
 			WebSocketConnection,
 			{ hostName: 'pubsub-edge.twitch.tv', port: 443, secure: true },
-			{ logger: this._logger },
-			{ wsOptions: options?.wsOptions }
+			{ logger: this._logger, additionalOptions: { wsOptions: options?.wsOptions } }
 		);
 
 		this._connection.onConnect(async () => {

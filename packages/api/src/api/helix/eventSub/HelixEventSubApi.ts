@@ -9,13 +9,14 @@ import { makePaginationQuery } from '../HelixPagination';
 import type {
 	HelixEventSubSubscriptionData,
 	HelixEventSubSubscriptionStatus,
-	HelixEventSubWebHookTransportData
+	HelixEventSubWebHookTransportData,
+	HelixEventSubWebSocketTransportData
 } from './HelixEventSubSubscription';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEventSubSubscriptionsRequest';
 
 /**
- * The properties describing where and how long a WebHook notification is sent, and how it is signed.
+ * The properties describing where a WebHook notification is sent, and how it is signed.
  */
 export interface HelixEventSubWebHookTransportOptions extends HelixEventSubWebHookTransportData {
 	/**
@@ -24,7 +25,16 @@ export interface HelixEventSubWebHookTransportOptions extends HelixEventSubWebHo
 	secret?: string;
 }
 
-export type HelixEventSubTransportOptions = HelixEventSubWebHookTransportOptions;
+/**
+ * The properties describing where a WebSocket notification is sent.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface HelixEventSubWebSocketTransportOptions
+	extends Omit<HelixEventSubWebSocketTransportData, 'connected_at'> {}
+
+export type HelixEventSubTransportOptions =
+	| HelixEventSubWebHookTransportOptions
+	| HelixEventSubWebSocketTransportOptions;
 
 /** @private */
 export interface HelixPaginatedEventSubSubscriptionsResponse
@@ -60,7 +70,8 @@ export interface HelixPaginatedEventSubSubscriptionsResult
  *
  * All methods in this class assume that you are already running a working EventSub listener at the given callback URL.
  *
- * If you don't already have one, we recommend use of the `@twurple/eventsub` library, which handles subscribing and unsubscribing to these topics automatically.
+ * If you don't already have one, we recommend use of the `@twurple/eventsub-http` or `@twurple/eventsub-ws` libraries,
+ * which handle subscribing and unsubscribing to these topics automatically.
  *
  * ## Example
  * ```ts
