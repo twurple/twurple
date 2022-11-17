@@ -61,9 +61,11 @@ export class BasicPubSubClient extends EventEmitter {
 
 	private readonly _connection: Connection;
 
+	private readonly _pingOnActivity: number = 240;
 	private readonly _pingOnInactivity: number = 60;
 	private readonly _pingTimeout: number = 10;
-	private _pingCheckTimer?: NodeJS.Timer;
+	private _activityPingCheckTimer?: NodeJS.Timer;
+	private _inactivityPingCheckTimer?: NodeJS.Timer;
 	private _pingTimeoutTimer?: NodeJS.Timer;
 
 	private readonly _onPong: (handler: () => void) => Listener = this.registerInternalEvent();
@@ -127,27 +129,26 @@ export class BasicPubSubClient extends EventEmitter {
 
 		this._connection.onConnect(async () => {
 			this._logger.info('Connection established');
+			this._pingCheck();
+			this._startActivityPingCheckTimer();
+			this._startInactivityPingCheckTimer();
 			await this._resendListens();
 			if (this._topics.size) {
 				this._logger.info('Listened to previously registered topics');
 				this._logger.debug(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
 			}
-			this._startPingCheckTimer();
 			this.emit(this.onConnect);
 		});
 
 		this._connection.onReceive((line: string) => {
 			this._receiveMessage(line.trim());
-			this._startPingCheckTimer();
+			this._startInactivityPingCheckTimer();
 		});
 
 		this._connection.onDisconnect((manually: boolean, reason?: Error) => {
-			if (this._pingCheckTimer) {
-				clearTimeout(this._pingCheckTimer);
-			}
-			if (this._pingTimeoutTimer) {
-				clearTimeout(this._pingTimeoutTimer);
-			}
+			clearInterval(this._activityPingCheckTimer);
+			clearInterval(this._inactivityPingCheckTimer);
+			clearTimeout(this._pingTimeoutTimer);
 			this.removeInternalListener();
 			if (manually) {
 				this._logger.info('Disconnected');
@@ -423,14 +424,27 @@ export class BasicPubSubClient extends EventEmitter {
 		this._sendPacket({ type: 'PING' });
 	}
 
-	private _startPingCheckTimer() {
-		if (this._pingCheckTimer) {
-			clearInterval(this._pingCheckTimer);
-		}
+	private _startActivityPingCheckTimer() {
+		clearInterval(this._activityPingCheckTimer);
 		if (this._connection.isConnected) {
-			this._pingCheckTimer = setInterval(() => this._pingCheck(), this._pingOnInactivity * 1000);
+			this._activityPingCheckTimer = setInterval(() => {
+				this._startInactivityPingCheckTimer();
+				this._pingCheck();
+			}, this._pingOnActivity * 1000);
 		} else {
-			this._pingCheckTimer = undefined;
+			this._activityPingCheckTimer = undefined;
+		}
+	}
+
+	private _startInactivityPingCheckTimer() {
+		clearInterval(this._inactivityPingCheckTimer);
+		if (this._connection.isConnected) {
+			this._inactivityPingCheckTimer = setInterval(() => {
+				this._startActivityPingCheckTimer();
+				this._pingCheck();
+			}, this._pingOnInactivity * 1000);
+		} else {
+			this._inactivityPingCheckTimer = undefined;
 		}
 	}
 }
