@@ -42,6 +42,7 @@ import type {
 	ChatSubInfo,
 	ChatSubUpgradeInfo
 } from './userNotices/ChatSubInfo';
+import { autoSplitterWithSpaces } from './utils/messageUtil';
 import { toChannelName, toUserName } from './utils/userUtil';
 
 const GENERIC_CHANNEL = 'twjs';
@@ -2139,15 +2140,21 @@ export class ChatClient extends IrcClient {
 		if (attributes.replyTo) {
 			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
 		}
-		await this._messageRateLimiter.request(
-			{
-				type: 'say',
-				channel: toChannelName(channel),
-				text,
-				tags
-			},
-			rateLimiterOptions
+
+		// eslint-disable-next-line @typescript-eslint/promise-function-async
+		const textReqs = autoSplitterWithSpaces(text, 500).map(msg =>
+			this._messageRateLimiter.request(
+				{
+					type: 'say',
+					channel: toChannelName(channel),
+					text: msg,
+					tags
+				},
+				rateLimiterOptions
+			)
 		);
+
+		await Promise.all(textReqs);
 	}
 
 	/**
@@ -2158,14 +2165,19 @@ export class ChatClient extends IrcClient {
 	 * @param rateLimiterOptions Options to pass to the rate limiter.
 	 */
 	async action(channel: string, text: string, rateLimiterOptions?: RateLimiterRequestOptions): Promise<void> {
-		await this._messageRateLimiter.request(
-			{
-				type: 'action',
-				channel: toChannelName(channel),
-				text
-			},
-			rateLimiterOptions
+		// eslint-disable-next-line @typescript-eslint/promise-function-async
+		const textReqs = autoSplitterWithSpaces(text, 490).map(msg =>
+			this._messageRateLimiter.request(
+				{
+					type: 'action',
+					channel: toChannelName(channel),
+					text: msg
+				},
+				rateLimiterOptions
+			)
 		);
+
+		await Promise.all(textReqs);
 	}
 
 	/**
