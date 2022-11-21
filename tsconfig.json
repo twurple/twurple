@@ -34,7 +34,16 @@
 			"path": "./packages/eventsub"
 		},
 		{
+			"path": "./packages/eventsub-base"
+		},
+		{
+			"path": "./packages/eventsub-http"
+		},
+		{
 			"path": "./packages/eventsub-ngrok"
+		},
+		{
+			"path": "./packages/eventsub-ws"
 		},
 		{
 			"path": "./packages/pubsub"

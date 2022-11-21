@@ -1,0 +1,52 @@
+{
+  "name": "@twurple/eventsub-base",
+  "version": "5.3.0-pre.2",
+  "publishConfig": {
+    "access": "public"
+  },
+  "description": "Base for the other Twurple EventSub packages",
+  "keywords": [
+    "twitch",
+    "eventsub",
+    "stream",
+    "bot",
+    "events"
+  ],
+  "sideEffects": false,
+  "main": "lib",
+  "types": "lib",
+  "exports": {
+    ".": {
+      "require": "./lib/index.js",
+      "import": "./es/index.mjs",
+      "types": "./lib/index.d.ts"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twurple/twurple.git",
+    "directory": "packages/eventsub-base"
+  },
+  "homepage": "https://twurple.js.org",
+  "author": "Daniel Fischer <daniel@d-fischer.dev>",
+  "funding": "https://github.com/sponsors/d-fischer",
+  "license": "MIT",
+  "dependencies": {
+    "@d-fischer/logger": "^4.0.0",
+    "@d-fischer/shared-utils": "^3.2.0",
+    "@d-fischer/typed-event-emitter": "^3.3.0",
+    "@twurple/api": "5.3.0-pre.2",
+    "@twurple/auth": "5.3.0-pre.2",
+    "@twurple/common": "5.3.0-pre.2",
+    "tslib": "^2.0.3"
+  },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "lib",
+    "!lib/**/*.d.ts.map",
+    "es",
+    "!es/**/*.d.ts",
+    "!es/**/*.d.ts.map"
+  ]
+}

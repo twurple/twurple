@@ -1,7 +1,6 @@
 import type { BaseCheermoteList, CheermoteFormat, ParsedMessageCheerPart, ParsedMessagePart } from '@twurple/common';
 import { fillTextPositions, rtfm } from '@twurple/common';
-import { MessageTypes } from 'ircv3';
-import { decodeCtcp } from 'ircv3/lib/Toolkit/StringTools';
+import { decodeCtcp, MessageTypes } from 'ircv3';
 import { ChatUser } from '../ChatUser';
 import { parseEmoteOffsets, parseEmotePositions } from '../utils/emoteUtil';
 

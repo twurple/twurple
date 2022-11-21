@@ -1,6 +1,6 @@
 import { getPortPromise } from '@d-fischer/portfinder';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { ConnectionAdapter } from '@twurple/eventsub';
+import { ConnectionAdapter } from '@twurple/eventsub-http';
 import { connect } from 'ngrok';
 
 /**

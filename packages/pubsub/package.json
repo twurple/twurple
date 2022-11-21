@@ -1,6 +1,6 @@
 {
   "name": "@twurple/pubsub",
-  "version": "5.3.0-pre.0",
+  "version": "5.3.0-pre.2",
   "publishConfig": {
     "access": "public"
   },
@@ -31,18 +31,18 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/connection": "^6.6.2",
+    "@d-fischer/connection": "^7.0.0",
     "@d-fischer/logger": "^4.0.0",
     "@d-fischer/shared-utils": "^3.2.0",
     "@d-fischer/typed-event-emitter": "^3.3.0",
-    "@twurple/common": "5.3.0-pre.0",
+    "@twurple/common": "5.3.0-pre.2",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "5.3.0-pre.0"
+    "@twurple/auth": "5.3.0-pre.2"
   },
   "peerDependencies": {
-    "@twurple/auth": "5.3.0-pre.0"
+    "@twurple/auth": "5.3.0-pre.2"
   },
   "files": [
     "LICENSE",

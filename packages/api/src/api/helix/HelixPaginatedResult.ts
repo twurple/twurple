@@ -52,7 +52,7 @@ export interface HelixPaginatedResultWithTotal<T> {
 ): HelixPaginatedResult<ConstructedType<O>>;
 /** @private */ export function createPaginatedResult<
 	I,
-	O extends new (data: I, client?: ApiClient) => ConstructedType<O>
+	O extends new (data: I, _client?: ApiClient) => ConstructedType<O>
 >(response: HelixPaginatedResponse<I>, type: O, client?: ApiClient): HelixPaginatedResult<ConstructedType<O>> {
 	return {
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -76,7 +76,7 @@ export interface HelixPaginatedResultWithTotal<T> {
 ): HelixPaginatedResultWithTotal<ConstructedType<O>>;
 /** @private */ export function createPaginatedResultWithTotal<
 	I,
-	O extends new (data: I, client?: ApiClient) => ConstructedType<O>
+	O extends new (data: I, _client?: ApiClient) => ConstructedType<O>
 >(
 	response: HelixPaginatedResponseWithTotal<I>,
 	type: O,

@@ -12,18 +12,19 @@ Twurple consists of multiple packages that mostly communicate with a single syst
 All these system packages rely on a single package that manages authentication tokens, `@twurple/auth`.  
 All peer dependencies between the different packages are shown here:
 
-| Package             | Peer dependencies                |
-| ------------------- | -------------------------------- |
-| `@twurple/api`      | `@twurple/auth`                  |
-| `@twurple/chat`     | `@twurple/auth`                  |
-| `@twurple/eventsub` | `@twurple/auth`, `@twurple/api`  |
-| `@twurple/pubsub`   | `@twurple/auth`                  |
+| Package                  | Peer dependencies                |
+|--------------------------| -------------------------------- |
+| `@twurple/api`           | `@twurple/auth`                  |
+| `@twurple/chat`          | `@twurple/auth`                  |
+| `@twurple/eventsub-http` | `@twurple/auth`, `@twurple/api`  |
+| `@twurple/eventsub-ws`   | `@twurple/auth`, `@twurple/api`  |
+| `@twurple/pubsub`        | `@twurple/auth`                  |
 
-For example, to use EventSub, execute one of:
+For example, to use EventSub over WebSockets, execute one of:
 ```bash
-yarn add @twurple/auth @twurple/api @twurple/eventsub
+yarn add @twurple/auth @twurple/api @twurple/eventsub-ws
 # or
-npm install @twurple/auth @twurple/api @twurple/eventsub
+npm install @twurple/auth @twurple/api @twurple/eventsub-ws
 ```
 
 ## I got stuck/have more questions! Where do I get help?
