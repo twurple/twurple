@@ -46,7 +46,7 @@ export function parseTwitchMessage(rawLine: string): Message {
 	return parseMessage(rawLine, undefined, twitchMessageTypes, true);
 }
 
-export function autoSplitterWithSpaces(text: string, maxMsgLength: number): string[] {
+export function splitOnSpaces(text: string, maxMsgLength: number): string[] {
 	if (text.length <= maxMsgLength) return [text];
 	text = text.trim();
 	const res = [];
@@ -57,11 +57,14 @@ export function autoSplitterWithSpaces(text: string, maxMsgLength: number): stri
 	while (startIndex < text.length) {
 		let spaceIndex = text.lastIndexOf(' ', endIndex);
 
-		if (spaceIndex === -1 || spaceIndex <= startIndex || text.length - startIndex + 1 <= maxMsgLength)
+		if (spaceIndex === -1 || spaceIndex <= startIndex || text.length - startIndex + 1 <= maxMsgLength) {
 			spaceIndex = startIndex + maxMsgLength;
+		}
 
 		const textSlice = text.slice(startIndex, spaceIndex).trim();
-		if (textSlice.length) res.push(textSlice);
+		if (textSlice.length) {
+			res.push(textSlice);
+		}
 
 		startIndex = spaceIndex + (text[spaceIndex] === ' ' ? 1 : 0); // to skip the space
 		endIndex = startIndex + maxMsgLength;
