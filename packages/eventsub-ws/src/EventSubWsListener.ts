@@ -149,7 +149,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 					subscription._handleData((payload as EventSubNotificationPayload).event);
 					break;
 				}
-				case 'reconnect': {
+				case 'session_reconnect': {
 					await this._connection?.disconnect();
 					await this._connectTo((payload as EventSubReconnectPayload).session.reconnect_url!);
 					break;
