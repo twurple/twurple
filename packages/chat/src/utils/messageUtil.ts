@@ -47,7 +47,10 @@ export function parseTwitchMessage(rawLine: string): Message {
 }
 
 export function splitOnSpaces(text: string, maxMsgLength: number): string[] {
-	if (text.length <= maxMsgLength) return [text];
+	if (text.length <= maxMsgLength) {
+		return [text];
+	}
+
 	text = text.trim();
 	const res = [];
 
