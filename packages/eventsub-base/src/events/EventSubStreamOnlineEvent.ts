@@ -66,6 +66,13 @@ export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEv
 	}
 
 	/**
+	 * The ID of the stream going live.
+	 */
+	get id(): string {
+		return this[rawDataSymbol].id;
+	}
+
+	/**
 	 * The type of the stream going live.
 	 */
 	get streamType(): EventSubStreamOnlineEventStreamType {
