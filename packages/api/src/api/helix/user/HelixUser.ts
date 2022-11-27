@@ -80,9 +80,9 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	}
 
 	/**
-	 * The type of the user.
+	 * The type of the broadcaster.
 	 */
-	get broadcasterType(): string {
+	get broadcasterType(): HelixBroadcasterType {
 		return this[rawDataSymbol].broadcaster_type;
 	}
 
