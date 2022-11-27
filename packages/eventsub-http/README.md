@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/@twurple/eventsub-http.svg?style=flat)](https://www.npmjs.com/package/@twurple/eventsub-http)
 ![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-Listen to events on Twitch via their EventSub API.
+Listen to events on Twitch via their EventSub API using HTTP/WebHooks.
 
 ## Installation
 

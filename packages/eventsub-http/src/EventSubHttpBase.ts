@@ -23,6 +23,8 @@ export type EventSubHttpPayload = EventSubVerificationPayload | EventSubNotifica
 
 /**
  * The base configuration for EventSub over HTTP.
+ *
+ * @inheritDoc
  */
 export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 	/**

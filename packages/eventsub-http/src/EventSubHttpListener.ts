@@ -23,7 +23,7 @@ export interface EventSubHttpListenerCertificateConfig {
 }
 
 /**
- * Configuration for an EventSub listener.
+ * Configuration for an EventSub HTTP listener.
  *
  * @inheritDoc
  */
