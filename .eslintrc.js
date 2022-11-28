@@ -101,6 +101,11 @@ const memberNames = [
 	'^non_moderator_chat_delay(?:_duration)?$',
 	'^(?:max_)?total_cost$',
 	'^message_timestamp$',
+	'^decimal_places$',
+	'^charity_name$',
+	'^charity_description$',
+	'^charity_logo$',
+	'^charity_website$',
 
 	// HTTP
 	'^Accept$'

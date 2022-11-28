@@ -19,6 +19,10 @@ export type {
 export {
 	EventSubChannelBanEvent,
 	EventSubChannelCheerEvent,
+	EventSubChannelCharityCampaignProgressEvent,
+	EventSubChannelCharityCampaignStartEvent,
+	EventSubChannelCharityCampaignStopEvent,
+	EventSubChannelCharityDonationEvent,
 	EventSubChannelFollowEvent,
 	EventSubChannelGoalBeginEvent,
 	EventSubChannelGoalEndEvent,
@@ -50,6 +54,7 @@ export {
 	EventSubUserAuthorizationGrantEvent,
 	EventSubUserAuthorizationRevokeEvent,
 	EventSubUserUpdateEvent,
+	EventSubChannelCharityAmount,
 	EventSubChannelHypeTrainContribution,
 	EventSubChannelPollBeginChoice,
 	EventSubChannelPollChoice,

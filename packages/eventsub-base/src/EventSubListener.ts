@@ -1,5 +1,9 @@
 import type { UserIdResolvable } from '@twurple/common';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
+import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
+import type { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
+import type { EventSubChannelCharityDonationEvent } from './events/EventSubChannelCharityDonationEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -145,6 +149,54 @@ export interface EventSubListener {
 	subscribeToChannelCheerEvents: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCheerEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent a charity campaign starting in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaigns starting.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	subscribeToChannelCharityCampaignStartEvents: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignStartEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent a charity campaign ending in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaigns ending.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	subscribeToChannelCharityCampaignStopEvents: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignStopEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent a donation to a charity campaign in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaign donations.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	subscribeToChannelCharityDonationEvents: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityDonationEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent progress in a charity campaign in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaign progress.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	subscribeToChannelCharityCampaignProgressEvents: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void
 	) => Promise<EventSubSubscription>;
 
 	/**

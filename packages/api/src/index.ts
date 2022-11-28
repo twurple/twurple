@@ -42,6 +42,11 @@ export type {
 	HelixCustomRewardRedemptionTargetStatus
 } from './api/helix/channelPoints/HelixCustomRewardRedemption';
 
+export { HelixCharityApi } from './api/helix/charity/HelixCharityApi';
+export { HelixCharityCampaign } from './api/helix/charity/HelixCharityCampaign';
+export { HelixCharityCampaignDonation } from './api/helix/charity/HelixCharityCampaignDonation';
+export { HelixCharityCampaignAmount } from './api/helix/charity/HelixCharityCampaignAmount';
+
 export { HelixChatApi } from './api/helix/chat/HelixChatApi';
 export type {
 	HelixUpdateChatSettingsParams,

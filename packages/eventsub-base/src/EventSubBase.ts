@@ -11,6 +11,10 @@ import type {
 import { extractUserId } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
+import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
+import type { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
+import type { EventSubChannelCharityDonationEvent } from './events/EventSubChannelCharityDonationEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -44,6 +48,10 @@ import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserA
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
+import { EventSubChannelCharityCampaignProgressSubscription } from './subscriptions/EventSubChannelCharityCampaignProgressSubscription';
+import { EventSubChannelCharityCampaignStartSubscription } from './subscriptions/EventSubChannelCharityCampaignStartSubscription';
+import { EventSubChannelCharityCampaignStopSubscription } from './subscriptions/EventSubChannelCharityCampaignStopSubscription';
+import { EventSubChannelCharityDonationSubscription } from './subscriptions/EventSubChannelCharityDonationSubscription';
 import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription';
 import { EventSubChannelGoalBeginSubscription } from './subscriptions/EventSubChannelGoalBeginSubscription';
@@ -333,6 +341,90 @@ export abstract class EventSubBase extends EventEmitter {
 			);
 		}
 		return await this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a charity campaign starting in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaigns starting.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelCharityCampaignStartEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignStartEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'subscribeToChannelCharityCampaignStartEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return await this._genericSubscribe(EventSubChannelCharityCampaignStartSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a charity campaign ending in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaigns ending.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelCharityCampaignStopEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignStopEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'subscribeToChannelCharityCampaignStopEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return await this._genericSubscribe(EventSubChannelCharityCampaignStopSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a donation to a charity campaign in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaign donations.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelCharityDonationEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityDonationEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'subscribeToChannelCharityDonationEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return await this._genericSubscribe(EventSubChannelCharityDonationSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent progress in a charity campaign in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaign progress.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	async subscribeToChannelCharityCampaignProgressEvents(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void
+	): Promise<EventSubSubscription> {
+		const userId = extractUserId(user);
+
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				'subscribeToChannelCharityCampaignProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
+			);
+		}
+		return await this._genericSubscribe(EventSubChannelCharityCampaignProgressSubscription, handler, this, userId);
 	}
 
 	/**

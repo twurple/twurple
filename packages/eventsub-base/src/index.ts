@@ -3,6 +3,10 @@ export { type EventSubListener } from './EventSubListener';
 export type { EventSubSubscriptionBody, EventSubNotificationPayload } from './EventSubPayload';
 
 export { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+export { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
+export { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
+export { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
+export { EventSubChannelCharityDonationEvent } from './events/EventSubChannelCharityDonationEvent';
 export { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 export { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 export { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -43,6 +47,7 @@ export { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthor
 export { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 export { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 
+export { EventSubChannelCharityAmount } from './events/common/EventSubChannelCharityAmount';
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';
 export { EventSubChannelHypeTrainContribution } from './events/common/EventSubChannelHypeTrainContribution';
 export type { EventSubChannelHypeTrainContributionType } from './events/common/EventSubChannelHypeTrainContribution';
