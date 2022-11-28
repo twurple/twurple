@@ -51,7 +51,7 @@ export interface HelixClipCreateParams {
 	/**
 	 * The ID of the broadcaster of which you want to create a clip.
 	 */
-	channelId: string;
+	channelId: UserIdResolvable;
 
 	/**
 	 * Add a delay before the clip creation that accounts for the usual delay in the viewing experience.
@@ -197,7 +197,7 @@ export class HelixClipApi extends BaseApi {
 			method: 'POST',
 			scope: 'clips:edit',
 			query: {
-				broadcaster_id: channelId,
+				broadcaster_id: extractUserId(channelId),
 				has_delay: createAfterDelay.toString()
 			}
 		});

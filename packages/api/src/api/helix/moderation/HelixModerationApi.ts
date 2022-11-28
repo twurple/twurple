@@ -76,9 +76,9 @@ export interface HelixBanUserRequest {
 	reason: string;
 
 	/**
-	 * The ID of the user who is to be banned/timed out.
+	 * The user who is to be banned/timed out.
 	 */
-	userId: string;
+	userId: UserIdResolvable;
 }
 
 /**
@@ -210,8 +210,8 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Adds a moderator to the broadcaster’s chat room.
 	 *
-	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to add as a moderator in the broadcaster’s chat room.
+	 * @param broadcaster The broadcaster that owns the chat room. This ID must match the user ID in the access token.
+	 * @param user The user to add as a moderator in the broadcaster’s chat room.
 	 */
 	async addModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
@@ -229,8 +229,8 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Removes a moderator from the broadcaster’s chat room.
 	 *
-	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to remove as a moderator from the broadcaster’s chat room.
+	 * @param broadcaster The broadcaster that owns the chat room. This ID must match the user ID in the access token.
+	 * @param user The user to remove as a moderator from the broadcaster’s chat room.
 	 */
 	async removeModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
@@ -295,9 +295,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Retrieves the AutoMod settings for a broadcaster.
 	 *
-	 * @param broadcasterId The ID of the broadcaster for which the AutoMod settings are retrieved.
-	 * @param moderatorId The ID of a user that has permission to moderate the broadcaster's chat room.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcasterId The broadcaster for which the AutoMod settings are retrieved.
+	 * @param moderatorId A user that has permission to moderate the broadcaster's chat room.
+	 * This user must match the user associated with the user OAuth token.
 	 */
 	async getAutoModSettings(
 		broadcasterId: UserIdResolvable,
@@ -319,9 +319,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Updates the AutoMod settings for a broadcaster.
 	 *
-	 * @param broadcasterId The ID of the broadcaster for which the AutoMod settings are updated.
-	 * @param moderatorId The ID of a user that has permission to moderate the broadcaster's chat room.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcasterId The broadcaster for which the AutoMod settings are updated.
+	 * @param moderatorId A user that has permission to moderate the broadcaster's chat room.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param data The updated AutoMod settings that replace the current AutoMod settings.
 	 */
 	async updateAutoModSettings(
@@ -357,9 +357,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Bans or times out a user in a channel
 	 *
-	 * @param broadcasterId The ID of the broadcaster in whose channel the user will be banned/timed out.
-	 * @param moderatorId The ID of a user that has permission to ban/timeout users in the broadcaster's chat room.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcasterId The broadcaster in whose channel the user will be banned/timed out.
+	 * @param moderatorId A user that has permission to ban/timeout users in the broadcaster's chat room.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param data
 	 *
 	 * @expandParams
@@ -384,7 +384,7 @@ export class HelixModerationApi extends BaseApi {
 				data: {
 					duration: data.duration,
 					reason: data.reason,
-					user_id: data.userId
+					user_id: extractUserId(data.userId)
 				}
 			}
 		});
@@ -395,10 +395,10 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Unbans/removes the timeout for a user in a channel.
 	 *
-	 * @param broadcasterId The ID of the broadcaster in whose channel the user will be unbanned/removed from timeout.
-	 * @param moderatorId The ID of a user that has permission to unban/remove timeout users in the broadcaster's chat room.
-	 * This must match the user ID associated with the user OAuth token.
-	 * @param userId The ID of the user who will be unbanned/removed from timeout.
+	 * @param broadcasterId The broadcaster in whose channel the user will be unbanned/removed from timeout.
+	 * @param moderatorId A user that has permission to unban/remove timeout users in the broadcaster's chat room.
+	 * This user must match the user associated with the user OAuth token.
+	 * @param userId The user who will be unbanned/removed from timeout.
 	 */
 	async unbanUser(
 		broadcasterId: UserIdResolvable,
@@ -421,9 +421,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Gets the broadcaster’s list of non-private, blocked words or phrases.
 	 *
-	 * @param broadcasterId The ID of the broadcaster for whose channel blocked terms will be retrieved.
-	 * @param moderatorId The ID of a user that has permission to retrieve blocked terms for the broadcaster's channel.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcasterId The broadcaster for whose channel blocked terms will be retrieved.
+	 * @param moderatorId A user that has permission to retrieve blocked terms for the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -452,9 +452,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Adds a blocked term to the broadcaster's channel.
 	 *
-	 * @param broadcasterId The ID of the broadcaster in whose channel the term will be blocked.
-	 * @param moderatorId The ID of a user that has permission to block terms in the broadcaster's channel.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcasterId The broadcaster in whose channel the term will be blocked.
+	 * @param moderatorId A user that has permission to block terms in the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param text The word or phrase to block from being used in the broadcaster's channel.
 	 *
 	 * @returns Information about the term that has been blocked.
@@ -484,9 +484,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Removes a blocked term from the broadcaster's channel.
 	 *
-	 * @param broadcasterId The ID of the broadcaster in whose channel the term will be unblocked.
-	 * @param moderatorId The ID of a user that has permission to unblock terms in the broadcaster's channel.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcasterId The broadcaster in whose channel the term will be unblocked.
+	 * @param moderatorId A user that has permission to unblock terms in the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param id The ID of the term that should be unblocked.
 	 */
 	async removeBlockedTerm(broadcasterId: UserIdResolvable, moderatorId: UserIdResolvable, id: string): Promise<void> {
