@@ -171,13 +171,7 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubStreamOnlineEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
-
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToStreamOnlineEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToStreamOnlineEvents');
 
 		return await this._genericSubscribe(EventSubStreamOnlineSubscription, handler, this, userId);
 	}
@@ -192,13 +186,7 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubStreamOfflineEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
-
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToStreamOfflineEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToStreamOfflineEvents');
 
 		return await this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
 	}
@@ -213,13 +201,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelUpdateEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelUpdateEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
 	}
 
@@ -233,13 +216,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelFollowEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelFollowEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelFollowEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
 	}
 
@@ -253,13 +231,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelSubscriptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
 	}
 
@@ -273,13 +246,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionGiftEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionGiftEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelSubscriptionGiftEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelSubscriptionGiftSubscription, handler, this, userId);
 	}
 
@@ -293,13 +261,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionMessageEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionMessageEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelSubscriptionMessageEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelSubscriptionMessageSubscription, handler, this, userId);
 	}
 
@@ -313,13 +276,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionEndEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionEndEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelSubscriptionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelSubscriptionEndSubscription, handler, this, userId);
 	}
 
@@ -333,13 +291,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCheerEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCheerEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelCheerEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
 	}
 
@@ -354,13 +307,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignStartEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignStartEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelCharityCampaignStartEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelCharityCampaignStartSubscription, handler, this, userId);
 	}
 
@@ -375,13 +323,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignStopEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignStopEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelCharityCampaignStopEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelCharityCampaignStopSubscription, handler, this, userId);
 	}
 
@@ -396,13 +339,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityDonationEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityDonationEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelCharityDonationEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelCharityDonationSubscription, handler, this, userId);
 	}
 
@@ -417,13 +355,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignProgressEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelCharityCampaignProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelCharityCampaignProgressSubscription, handler, this, userId);
 	}
 
@@ -437,13 +370,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelBanEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelBanEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelBanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
 	}
 
@@ -457,13 +385,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelUnbanEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelUnbanEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelUnbanEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
 	}
 
@@ -477,13 +400,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelModeratorEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelModeratorAddEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelModeratorAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelModeratorAddSubscription, handler, this, userId);
 	}
 
@@ -497,13 +415,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelModeratorEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelModeratorRemoveEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelModeratorRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelModeratorRemoveSubscription, handler, this, userId);
 	}
 
@@ -517,13 +430,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelRaidEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRaidEventsFrom');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelRaidEventsFrom: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
 	}
 
@@ -537,13 +445,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelRaidEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRaidEventsTo');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelRaidEventsTo: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
 	}
 
@@ -557,13 +460,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRewardAddEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelRewardAddEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
 	}
 
@@ -577,13 +475,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardUpdateEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
 	}
 
@@ -599,13 +492,8 @@ export abstract class EventSubBase extends EventEmitter {
 		rewardId: string,
 		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardUpdateEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToRewardUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
 	}
 
@@ -619,13 +507,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardRemoveEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToRewardRemoveEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
 	}
 
@@ -641,13 +524,8 @@ export abstract class EventSubBase extends EventEmitter {
 		rewardId: string,
 		handler: (data: EventSubChannelRewardEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardRemoveEventsForReward');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToRewardRemoveEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
 	}
 
@@ -661,13 +539,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRedemptionAddEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelRedemptionEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
 	}
 
@@ -683,13 +556,8 @@ export abstract class EventSubBase extends EventEmitter {
 		rewardId: string,
 		handler: (data: EventSubChannelRedemptionAddEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRedemptionAddEventsForReward');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToRedemptionAddEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
 	}
 
@@ -703,13 +571,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionUpdateEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelRedemptionUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
 	}
 
@@ -725,13 +588,8 @@ export abstract class EventSubBase extends EventEmitter {
 		rewardId: string,
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionUpdateEventsForReward');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelRedemptionUpdateEventsForReward: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(
 			EventSubChannelRedemptionUpdateSubscription,
 			handler,
@@ -751,13 +609,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollBeginEvent) => void
 	): Promise<EventSubSubscription> {
-		const broadcasterId = extractUserId(user);
+		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollBeginEvents');
 
-		if (!numberRegex.test(broadcasterId)) {
-			this._logger.warn(
-				'subscribeToChannelPollBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelPollBeginSubscription, handler, this, broadcasterId);
 	}
 
@@ -771,13 +624,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollProgressEvent) => void
 	): Promise<EventSubSubscription> {
-		const broadcasterId = extractUserId(user);
+		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollProgressEvents');
 
-		if (!numberRegex.test(broadcasterId)) {
-			this._logger.warn(
-				'subscribeToChannelPollProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelPollProgressSubscription, handler, this, broadcasterId);
 	}
 
@@ -791,13 +639,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollEndEvent) => void
 	): Promise<EventSubSubscription> {
-		const broadcasterId = extractUserId(user);
+		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollEndEvents');
 
-		if (!numberRegex.test(broadcasterId)) {
-			this._logger.warn(
-				'subscribeToChannelPollEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelPollEndSubscription, handler, this, broadcasterId);
 	}
 
@@ -811,13 +654,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionBeginEvent) => void
 	): Promise<EventSubSubscription> {
-		const broadcasterId = extractUserId(user);
+		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionBeginEvents');
 
-		if (!numberRegex.test(broadcasterId)) {
-			this._logger.warn(
-				'subscribeToChannelPredictionBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelPredictionBeginSubscription, handler, this, broadcasterId);
 	}
 
@@ -831,13 +669,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionProgressEvent) => void
 	): Promise<EventSubSubscription> {
-		const broadcasterId = extractUserId(user);
+		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionProgressEvents');
 
-		if (!numberRegex.test(broadcasterId)) {
-			this._logger.warn(
-				'subscribeToChannelPredictionProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(
 			EventSubChannelPredictionProgressSubscription,
 			handler,
@@ -856,13 +689,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionLockEvent) => void
 	): Promise<EventSubSubscription> {
-		const broadcasterId = extractUserId(user);
+		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionLockEvents');
 
-		if (!numberRegex.test(broadcasterId)) {
-			this._logger.warn(
-				'subscribeToChannelPredictionLockEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelPredictionLockSubscription, handler, this, broadcasterId);
 	}
 
@@ -876,13 +704,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionEndEvent) => void
 	): Promise<EventSubSubscription> {
-		const broadcasterId = extractUserId(user);
+		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionEndEvents');
 
-		if (!numberRegex.test(broadcasterId)) {
-			this._logger.warn(
-				'subscribeToChannelPredictionEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelPredictionEndSubscription, handler, this, broadcasterId);
 	}
 
@@ -896,13 +719,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalBeginEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalBeginEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelGoalBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelGoalBeginSubscription, handler, this, userId);
 	}
 
@@ -916,13 +734,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalProgressEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalProgressEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelGoalProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelGoalProgressSubscription, handler, this, userId);
 	}
 
@@ -936,13 +749,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalEndEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalEndEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelGoalEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelGoalEndSubscription, handler, this, userId);
 	}
 
@@ -956,13 +764,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainBeginEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainBeginEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelHypeTrainBeginEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
 	}
 
@@ -976,13 +779,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainProgressEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainProgressEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelHypeTrainProgressEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
 	}
 
@@ -996,13 +794,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainEndEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainEndEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToChannelHypeTrainEndEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
 	}
 
@@ -1060,13 +853,8 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		handler: (data: EventSubUserUpdateEvent) => void
 	): Promise<EventSubSubscription> {
-		const userId = extractUserId(user);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToUserUpdateEvents');
 
-		if (!numberRegex.test(userId)) {
-			this._logger.warn(
-				'subscribeToUserUpdateEvents: The given user is a non-numeric string. You might be sending a user name instead of a user ID.'
-			);
-		}
 		return await this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
 	}
 
@@ -1095,5 +883,16 @@ export abstract class EventSubBase extends EventEmitter {
 		this._subscriptions.set(subscription.id, subscription as EventSubSubscription);
 
 		return subscription as EventSubSubscription;
+	}
+
+	private _extractUserIdWithNumericWarning(user: UserIdResolvable, methodName: string) {
+		const userId = extractUserId(user);
+		if (!numberRegex.test(userId)) {
+			this._logger.warn(
+				`${methodName}: The given user is a non-numeric string. You might be sending a user name instead of a user ID.`
+			);
+		}
+
+		return userId;
 	}
 }
