@@ -69,21 +69,21 @@ export interface HelixUpdateChatSettingsParams {
 /**
  * The color used to highlight an announcement.
  */
-export type HelixChatAnnoucementColor = 'blue' | 'green' | 'orange' | 'purple' | 'primary';
+export type HelixChatAnnouncementColor = 'blue' | 'green' | 'orange' | 'purple' | 'primary';
 
 /**
  * A request to send an announcement to a broadcaster's chat.
  */
-export interface HelixSendChatAnnoucementParams {
+export interface HelixSendChatAnnouncementParams {
 	/**
-	 * The annoucement to make in the broadcaster's chat room. Announcements are limited to a maximum of 500 characters; announcements longer than 500 characters are truncated.
+	 * The announcement to make in the broadcaster's chat room. Announcements are limited to a maximum of 500 characters; announcements longer than 500 characters are truncated.
 	 */
 	message: string;
 
 	/**
 	 * The color used to highlight the announcement. If color is set to `primary` or is not set, the channel’s accent color is used to highlight the announcement.
 	 */
-	color?: HelixChatAnnoucementColor;
+	color?: HelixChatAnnouncementColor;
 }
 
 /**
@@ -298,7 +298,7 @@ export class HelixChatApi extends BaseApi {
 	async sendAnnouncement(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		announcement: HelixSendChatAnnoucementParams
+		announcement: HelixSendChatAnnouncementParams
 	): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
