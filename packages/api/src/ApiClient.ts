@@ -21,6 +21,7 @@ import { BadgesApi } from './api/badges/BadgesApi';
 import { HelixBitsApi } from './api/helix/bits/HelixBitsApi';
 import { HelixChannelApi } from './api/helix/channel/HelixChannelApi';
 import { HelixChannelPointsApi } from './api/helix/channelPoints/HelixChannelPointsApi';
+import { HelixCharityApi } from './api/helix/charity/HelixCharityApi';
 import { HelixChatApi } from './api/helix/chat/HelixChatApi';
 import { HelixClipApi } from './api/helix/clip/HelixClipApi';
 import { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
@@ -225,6 +226,16 @@ export class ApiClient {
 	@CachedGetter()
 	get channelPoints(): HelixChannelPointsApi {
 		return new HelixChannelPointsApi(this);
+	}
+
+	/**
+	 * The Helix charity API methods.
+	 *
+	 * @beta
+	 */
+	@CachedGetter()
+	get charity(): HelixCharityApi {
+		return new HelixCharityApi(this);
 	}
 
 	/**
