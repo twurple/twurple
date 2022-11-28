@@ -222,7 +222,7 @@ export class HelixCustomReward extends DataObject<HelixCustomRewardData> {
 	}
 
 	/**
-	 * Them time when the cooldown ends. `null` means there is currently no cooldown.
+	 * The time when the cooldown ends. `null` means there is currently no cooldown.
 	 */
 	get cooldownExpiryDate(): Date | null {
 		return this[rawDataSymbol].cooldown_expires_at ? new Date(this[rawDataSymbol].cooldown_expires_at) : null;

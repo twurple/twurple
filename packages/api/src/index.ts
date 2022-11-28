@@ -50,8 +50,12 @@ export { HelixCharityCampaignAmount } from './api/helix/charity/HelixCharityCamp
 export { HelixChatApi } from './api/helix/chat/HelixChatApi';
 export type {
 	HelixUpdateChatSettingsParams,
-	HelixSendChatAnnoucementParams,
-	HelixChatAnnoucementColor,
+	HelixSendChatAnnouncementParams,
+	/** @deprecated */
+	HelixSendChatAnnouncementParams as HelixSendChatAnnoucementParams,
+	HelixChatAnnouncementColor,
+	/** @deprecated */
+	HelixChatAnnouncementColor as HelixChatAnnoucementColor,
 	HelixChatUserColor
 } from './api/helix/chat/HelixChatApi';
 export { HelixChatBadgeSet } from './api/helix/chat/HelixChatBadgeSet';

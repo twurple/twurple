@@ -74,8 +74,17 @@ export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEv
 
 	/**
 	 * The type of the stream going live.
+	 *
+	 * @deprecated Use {@link EventSubStreamOnlineEvent#type} instead.
 	 */
 	get streamType(): EventSubStreamOnlineEventStreamType {
+		return this[rawDataSymbol].type;
+	}
+
+	/**
+	 * The type of the stream going live.
+	 */
+	get type(): EventSubStreamOnlineEventStreamType {
 		return this[rawDataSymbol].type;
 	}
 
