@@ -58,6 +58,7 @@ export { HelixChatBadgeSet } from './api/helix/chat/HelixChatBadgeSet';
 export { HelixChatBadgeVersion } from './api/helix/chat/HelixChatBadgeVersion';
 export type { HelixChatBadgeScale } from './api/helix/chat/HelixChatBadgeVersion';
 export { HelixChatSettings } from './api/helix/chat/HelixChatSettings';
+export { HelixChatChatter } from './api/helix/chat/HelixChatChatter';
 export { HelixEmote } from './api/helix/chat/HelixEmote';
 export type { HelixEmoteImageScale } from './api/helix/chat/HelixEmote';
 export { HelixChannelEmote } from './api/helix/chat/HelixChannelEmote';

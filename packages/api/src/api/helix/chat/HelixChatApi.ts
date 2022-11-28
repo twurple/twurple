@@ -2,10 +2,13 @@ import type { HelixResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BaseApi } from '../../BaseApi';
+import { createPaginatedResultWithTotal, type HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
+import { type HelixForwardPagination, makePaginationQuery } from '../HelixPagination';
 import type { HelixChannelEmoteData } from './HelixChannelEmote';
 import { HelixChannelEmote } from './HelixChannelEmote';
 import type { HelixChatBadgeSetData } from './HelixChatBadgeSet';
 import { HelixChatBadgeSet } from './HelixChatBadgeSet';
+import { HelixChatChatter, type HelixChatChatterData } from './HelixChatChatter';
 import type { HelixChatColorDefinitionData } from './HelixChatColorDefinition';
 import type { HelixChatSettingsData } from './HelixChatSettings';
 import { HelixChatSettings } from './HelixChatSettings';
@@ -125,6 +128,36 @@ export type HelixChatUserColor =
  */
 @rtfm('api', 'HelixChatApi')
 export class HelixChatApi extends BaseApi {
+	/**
+	 * Gets the list of users that are connected to the broadcaster’s chat session.
+	 *
+	 * @beta
+	 * @param broadcasterId The ID of the broadcaster in whose list of chatters you want to get.
+	 * @param moderatorId The ID of the broadcaster or one of the broadcaster’s moderators.
+	 * This must match the user ID associated with the user OAuth token.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getChatters(
+		broadcasterId: UserIdResolvable,
+		moderatorId: UserIdResolvable,
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResultWithTotal<HelixChatChatter>> {
+		const result = await this._client.callApi<HelixPaginatedResultWithTotal<HelixChatChatterData>>({
+			type: 'helix',
+			url: 'chat/chatters',
+			scope: 'moderator:read:chatters',
+			query: {
+				broadcaster_id: extractUserId(broadcasterId),
+				moderator_id: extractUserId(moderatorId),
+				...makePaginationQuery(pagination)
+			}
+		});
+
+		return createPaginatedResultWithTotal(result, HelixChatChatter, this._client);
+	}
+
 	/**
 	 * Retrieves all global badges.
 	 */
