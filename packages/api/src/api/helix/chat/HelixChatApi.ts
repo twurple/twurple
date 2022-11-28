@@ -132,16 +132,16 @@ export class HelixChatApi extends BaseApi {
 	 * Gets the list of users that are connected to the broadcaster’s chat session.
 	 *
 	 * @beta
-	 * @param broadcasterId The ID of the broadcaster in whose list of chatters you want to get.
-	 * @param moderatorId The ID of the broadcaster or one of the broadcaster’s moderators.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcaster The broadcaster whose list of chatters you want to get.
+	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param pagination
 	 *
 	 * @expandParams
 	 */
 	async getChatters(
-		broadcasterId: UserIdResolvable,
-		moderatorId: UserIdResolvable,
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResultWithTotal<HelixChatChatter>> {
 		const result = await this._client.callApi<HelixPaginatedResultWithTotal<HelixChatChatterData>>({
@@ -149,8 +149,8 @@ export class HelixChatApi extends BaseApi {
 			url: 'chat/chatters',
 			scope: 'moderator:read:chatters',
 			query: {
-				broadcaster_id: extractUserId(broadcasterId),
-				moderator_id: extractUserId(moderatorId),
+				broadcaster_id: extractUserId(broadcaster),
+				moderator_id: extractUserId(moderator),
 				...makePaginationQuery(pagination)
 			}
 		});
