@@ -1,4 +1,4 @@
-import { Enumerable } from '@d-fischer/shared-utils/lib';
+import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type ApiClient } from '../../../ApiClient';
 import { type HelixUser } from '../user/HelixUser';
