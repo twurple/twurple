@@ -12,12 +12,12 @@ import { HelixCharityCampaignDonation, type HelixCharityCampaignDonationData } f
 /**
  * The Helix API methods that deal with charity campaigns.
  *
- * Can be accessed using `client.charities` on an {@link ApiClient} instance.
+ * Can be accessed using `client.charity` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts
  * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
- * const charityCampaign = await api.charities.getCharityCampaign('125328655');
+ * const charityCampaign = await api.charity.getCharityCampaign('125328655');
  * ```
  *
  * @beta

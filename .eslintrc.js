@@ -102,10 +102,7 @@ const memberNames = [
 	'^(?:max_)?total_cost$',
 	'^message_timestamp$',
 	'^decimal_places$',
-	'^charity_name$',
-	'^charity_description$',
-	'^charity_logo$',
-	'^charity_website$',
+	'^charity_(?:name|description|logo|website)$',
 
 	// HTTP
 	'^Accept$'

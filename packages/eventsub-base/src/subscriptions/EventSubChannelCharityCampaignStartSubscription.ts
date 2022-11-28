@@ -7,7 +7,6 @@ import { EventSubSubscription } from './EventSubSubscription';
 
 /**
  * @private
- * @beta
  */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelCharityCampaignStartSubscription extends EventSubSubscription<EventSubChannelCharityCampaignStartEvent> {

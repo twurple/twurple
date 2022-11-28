@@ -1,8 +1,7 @@
-import { Cacheable } from '@d-fischer/cache-decorators/lib';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type ApiClient } from '../../../ApiClient';
-import { type HelixUser } from '../user/HelixUser';
+import type { ApiClient } from '../../../ApiClient';
+import type { HelixUser } from '../user/HelixUser';
 import { HelixCharityCampaignAmount, type HelixCharityCampaignAmountData } from './HelixCharityCampaignAmount';
 
 /** @private */
@@ -19,7 +18,6 @@ export interface HelixCharityCampaignDonationData {
  *
  * @beta
  */
-@Cacheable
 @rtfm('api', 'HelixCharityCampaignDonation')
 export class HelixCharityCampaignDonation extends DataObject<HelixCharityCampaignDonationData> {
 	@Enumerable(false) private readonly _client: ApiClient;

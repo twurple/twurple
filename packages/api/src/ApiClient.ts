@@ -229,12 +229,12 @@ export class ApiClient {
 	}
 
 	/**
-	 * The Helix charities API methods.
+	 * The Helix charity API methods.
 	 *
 	 * @beta
 	 */
 	@CachedGetter()
-	get charities(): HelixCharityApi {
+	get charity(): HelixCharityApi {
 		return new HelixCharityApi(this);
 	}
 

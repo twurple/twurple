@@ -1,4 +1,4 @@
-import { DataObject, rawDataSymbol } from '@twurple/common';
+import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 
 /** @private */
 export interface HelixCharityCampaignAmountData {
@@ -7,6 +7,12 @@ export interface HelixCharityCampaignAmountData {
 	currency: string;
 }
 
+/**
+ * An object representing monetary amount and currency information for charity donations/goals.
+ *
+ * @beta
+ */
+@rtfm('api', 'HelixCharityCampaignAmount')
 export class HelixCharityCampaignAmount extends DataObject<HelixCharityCampaignAmountData> {
 	/**
 	 * The monetary amount. The amount is specified in the currency’s minor unit.
@@ -24,6 +30,14 @@ export class HelixCharityCampaignAmount extends DataObject<HelixCharityCampaignA
 	 */
 	get decimalPlaces(): number {
 		return this[rawDataSymbol].decimal_places;
+	}
+
+	/**
+	 * The localized monetary amount based on the value and the decimal places of the currency.
+	 * For example, the minor units for USD is cents which uses two decimal places, so if `value` is 550, `localizedValue` is set to 5.50.
+	 */
+	get localizedValue(): number {
+		return this.value / 10 ** this.decimalPlaces;
 	}
 
 	/**
