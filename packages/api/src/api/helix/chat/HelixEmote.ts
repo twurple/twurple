@@ -1,21 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixEmoteImageData {
-	url_1x: string;
-	url_2x: string;
-	url_4x: string;
-}
-
-/** @private */
-export type HelixEmoteImageScale = 1 | 2 | 4;
-
-/** @private */
-export interface HelixEmoteData {
-	id: string;
-	name: string;
-	images: HelixEmoteImageData;
-}
+import { type HelixEmoteData, type HelixEmoteImageScale } from '../../../interfaces/helix/chat.external';
 
 /**
  * A Twitch emote.

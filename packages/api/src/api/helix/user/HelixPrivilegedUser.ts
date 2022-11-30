@@ -1,11 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixUserData } from './HelixUser';
+import { type HelixPrivilegedUserData } from '../../../interfaces/helix/user.external';
 import { HelixUser } from './HelixUser';
-
-/** @private */
-export interface HelixPrivilegedUserData extends HelixUserData {
-	email?: string;
-}
 
 /**
  * A user you have extended privilges for, i.e. yourself.

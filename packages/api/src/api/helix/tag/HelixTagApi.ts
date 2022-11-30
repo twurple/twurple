@@ -1,12 +1,13 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
+import { createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import { type HelixTagData } from '../../../interfaces/helix/tag.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixTagData } from './HelixTag';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixTag } from './HelixTag';
 
 /**
@@ -36,7 +37,7 @@ export class HelixTagApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixTagData>>({
 			type: 'helix',
 			url: 'tags/streams',
-			query: makePaginationQuery(pagination)
+			query: createPaginationQuery(pagination)
 		});
 
 		return createPaginatedResult(result, HelixTag);
@@ -67,9 +68,7 @@ export class HelixTagApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixTagData>>({
 			type: 'helix',
 			url: 'tags/streams',
-			query: {
-				tag_id: ids
-			}
+			query: createSingleKeyQuery('tag_id', ids)
 		});
 
 		return result.data.map(data => new HelixTag(data));

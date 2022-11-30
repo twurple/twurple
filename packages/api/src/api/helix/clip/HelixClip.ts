@@ -1,29 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixClipData } from '../../../interfaces/helix/clip.external';
 import type { HelixGame } from '../game/HelixGame';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixVideo } from '../video/HelixVideo';
-
-/** @private */
-export interface HelixClipData {
-	id: string;
-	url: string;
-	embed_url: string;
-	broadcaster_id: string;
-	broadcaster_name: string;
-	creator_id: string;
-	creator_name: string;
-	video_id: string;
-	game_id: string;
-	language: string;
-	title: string;
-	view_count: number;
-	created_at: string;
-	thumbnail_url: string;
-	duration: number;
-	vod_offset: number | null;
-}
 
 @rtfm<HelixClip>('api', 'HelixClip', 'id')
 export class HelixClip extends DataObject<HelixClipData> {

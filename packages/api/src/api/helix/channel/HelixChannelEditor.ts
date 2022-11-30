@@ -1,14 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixChannelEditorData } from '../../../interfaces/helix/channel.external';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixChannelEditorData {
-	user_id: string;
-	user_name: string;
-	created_at: string;
-}
 
 /**
  * An editor of a previously given channel.

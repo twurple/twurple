@@ -5,24 +5,24 @@ import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth'
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { BasicPubSubClient } from './BasicPubSubClient';
-import type { PubSubAutoModQueueMessageData } from './messages/PubSubAutoModQueueMessage';
 import { PubSubAutoModQueueMessage } from './messages/PubSubAutoModQueueMessage';
-import type { PubSubBitsBadgeUnlockMessageData } from './messages/PubSubBitsBadgeUnlockMessage';
+import { type PubSubAutoModQueueMessageData } from './messages/PubSubAutoModQueueMessage.external';
 import { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
-import type { PubSubBitsMessageData } from './messages/PubSubBitsMessage';
+import { type PubSubBitsBadgeUnlockMessageData } from './messages/PubSubBitsBadgeUnlockMessage.external';
 import { PubSubBitsMessage } from './messages/PubSubBitsMessage';
-import type { PubSubChatModActionMessageData } from './messages/PubSubChatModActionMessage';
+import { type PubSubBitsMessageData } from './messages/PubSubBitsMessage.external';
 import { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
+import { type PubSubChatModActionMessageData } from './messages/PubSubChatModActionMessage.external';
 import { PubSubCustomMessage } from './messages/PubSubCustomMessage';
 import type { PubSubMessage, PubSubMessageData } from './messages/PubSubMessage';
-import type { PubSubRedemptionMessageData } from './messages/PubSubRedemptionMessage';
 import { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
-import type { PubSubSubscriptionMessageData } from './messages/PubSubSubscriptionMessage';
+import { type PubSubRedemptionMessageData } from './messages/PubSubRedemptionMessage.external';
 import { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
-import type { PubSubUserModerationNotificationMessageData } from './messages/PubSubUserModerationNotificationMessage';
+import { type PubSubSubscriptionMessageData } from './messages/PubSubSubscriptionMessage.external';
 import { PubSubUserModerationNotificationMessage } from './messages/PubSubUserModerationNotificationMessage';
-import type { PubSubWhisperMessageData } from './messages/PubSubWhisperMessage';
+import { type PubSubUserModerationNotificationMessageData } from './messages/PubSubUserModerationNotificationMessage.external';
 import { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
+import { type PubSubWhisperMessageData } from './messages/PubSubWhisperMessage.external';
 import { PubSubListener } from './PubSubListener';
 
 /**

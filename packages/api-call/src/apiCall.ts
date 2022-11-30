@@ -29,6 +29,7 @@ export async function callTwitchApiRaw(
 	const type = options.type ?? 'helix';
 	const url = getTwitchApiUrl(options.url, type);
 	const params = stringify(options.query, { arrayFormat: 'repeat', addQueryPrefix: true });
+	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const headers = new Headers({ Accept: 'application/json' });
 
 	let body: string | undefined = undefined;

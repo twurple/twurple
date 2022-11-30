@@ -1,13 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixPollChoiceData {
-	id: string;
-	title: string;
-	votes: number;
-	channel_points_votes: number;
-	bits_votes: number;
-}
+import { type HelixPollChoiceData } from '../../../interfaces/helix/poll.external';
 
 /**
  * A choice in a channel poll.

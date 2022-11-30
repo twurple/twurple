@@ -2,39 +2,11 @@ import { Enumerable, utf8Substring } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import type { ParsedMessageEmotePart, ParsedMessagePart } from '@twurple/common';
 import { ChatEmote, DataObject, fillTextPositions, rawDataSymbol, rtfm } from '@twurple/common';
-
-/**
- * The tier of a subscription. 1000 means tier 1, and so on.
- */
-export type EventSubChannelSubscriptionMessageEventTier = '1000' | '2000' | '3000';
-
-/** @private */
-export interface EventSubChannelSubscriptionMessageEmoteData {
-	begin: number;
-	end: number;
-	id: string;
-}
-
-/** @private */
-export interface EventSubChannelSubscriptionMessageData {
-	text: string;
-	emotes: EventSubChannelSubscriptionMessageEmoteData[];
-}
-
-/** @private */
-export interface EventSubChannelSubscriptionMessageEventData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	tier: EventSubChannelSubscriptionMessageEventTier;
-	message: EventSubChannelSubscriptionMessageData;
-	cumulative_months: number;
-	streak_months: number | null;
-	duration_months: number;
-}
+import {
+	type EventSubChannelSubscriptionMessageEmoteData,
+	type EventSubChannelSubscriptionMessageEventData,
+	type EventSubChannelSubscriptionMessageEventTier
+} from './EventSubChannelSubscriptionMessageEvent.external';
 
 /**
  * An EventSub event representing the public announcement of a channel subscription by the subscriber.

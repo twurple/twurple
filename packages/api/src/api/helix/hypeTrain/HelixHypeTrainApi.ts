@@ -1,14 +1,17 @@
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId } from '@twurple/common';
+import { createSingleKeyQuery, type HelixEventData } from '../../../interfaces/helix/generic.external';
+import {
+	type HelixHypeTrainEventData,
+	type HelixHypeTrainEventType
+} from '../../../interfaces/helix/hypeTrain.external';
 import { BaseApi } from '../../BaseApi';
-import type { HelixEventData } from '../HelixEvent';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixHypeTrainEventData, HelixHypeTrainEventType } from './HelixHypeTrainEvent';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
 
 /**
@@ -45,8 +48,8 @@ export class HelixHypeTrainApi extends BaseApi {
 			url: 'hypetrain/events',
 			scope: 'channel:read:hype_train',
 			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				...makePaginationQuery(pagination)
+				...createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+				...createPaginationQuery(pagination)
 			}
 		});
 
@@ -65,9 +68,7 @@ export class HelixHypeTrainApi extends BaseApi {
 			{
 				url: 'hypetrain/events',
 				scope: 'channel:read:hype_train',
-				query: {
-					broadcaster_id: extractUserId(broadcaster)
-				}
+				query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
 			},
 			this._client,
 			(data: HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>) =>

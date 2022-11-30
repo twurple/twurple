@@ -1,20 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelPredictionOutcomeData } from './common/EventSubChannelPredictionOutcome';
 import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
-
-/** @private */
-export interface EventSubChannelPredictionLockEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	title: string;
-	outcomes: EventSubChannelPredictionOutcomeData[];
-	started_at: string;
-	locked_at: string;
-}
+import { type EventSubChannelPredictionLockEventData } from './EventSubChannelPredictionLockEvent.external';
 
 /**
  * An EventSub event representing a prediction being locked in a channel.

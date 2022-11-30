@@ -1,12 +1,12 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
+import { type HelixGameData } from '../../../interfaces/helix/game.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixGameData } from './HelixGame';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixGame } from './HelixGame';
 
 /** @private */
@@ -77,7 +77,7 @@ export class HelixGameApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixGameData>>({
 			type: 'helix',
 			url: 'games/top',
-			query: makePaginationQuery(pagination)
+			query: createPaginationQuery(pagination)
 		});
 
 		return createPaginatedResult(result, HelixGame, this._client);

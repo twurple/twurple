@@ -1,32 +1,22 @@
-import type { HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
+import type { HelixResponse } from '@twurple/api-call';
 import { HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import { createChannelUsersCheckQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import {
+	createSubscriptionCheckQuery,
+	type HelixPaginatedSubscriptionsResponse,
+	type HelixSubscriptionData,
+	type HelixUserSubscriptionData
+} from '../../../interfaces/helix/subscription.external';
+import { type HelixPaginatedSubscriptionsResult } from '../../../interfaces/helix/subscription.input';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
-import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixSubscriptionData } from './HelixSubscription';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixSubscription } from './HelixSubscription';
-import type { HelixUserSubscriptionData } from './HelixUserSubscription';
 import { HelixUserSubscription } from './HelixUserSubscription';
-
-/** @private */
-export interface HelixPaginatedSubscriptionsResponse extends HelixPaginatedResponseWithTotal<HelixSubscriptionData> {
-	points: number;
-}
-
-/**
- * The result of a subscription query, including the subscription data, cursor, total count and sub points.
- */
-export interface HelixPaginatedSubscriptionsResult extends HelixPaginatedResultWithTotal<HelixSubscription> {
-	/**
-	 * The number of sub points the broadcaster currently has.
-	 */
-	points: number;
-}
 
 /**
  * The Helix API methods that deal with subscriptions.
@@ -61,8 +51,8 @@ export class HelixSubscriptionApi extends BaseApi {
 			scope: 'channel:read:subscriptions',
 			type: 'helix',
 			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				...makePaginationQuery(pagination)
+				...createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+				...createPaginationQuery(pagination)
 			}
 		});
 
@@ -84,9 +74,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			{
 				url: 'subscriptions',
 				scope: 'channel:read:subscriptions',
-				query: {
-					broadcaster_id: extractUserId(broadcaster)
-				}
+				query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
 			},
 			this._client,
 			data => new HelixSubscription(data, this._client)
@@ -107,10 +95,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
 			type: 'helix',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: users.map(extractUserId)
-			}
+			query: createChannelUsersCheckQuery(broadcaster, users)
 		});
 
 		return result.data.map(data => new HelixSubscription(data, this._client));
@@ -151,10 +136,7 @@ export class HelixSubscriptionApi extends BaseApi {
 				type: 'helix',
 				url: 'subscriptions/user',
 				scope: 'user:read:subscriptions',
-				query: {
-					broadcaster_id: extractUserId(broadcaster),
-					user_id: extractUserId(user)
-				}
+				query: createSubscriptionCheckQuery(broadcaster, user)
 			});
 
 			return new HelixUserSubscription(result.data[0], this._client);

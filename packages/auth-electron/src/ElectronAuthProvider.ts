@@ -5,6 +5,7 @@ import type { AccessToken, AuthProviderTokenType } from '@twurple/auth';
 import { BaseAuthProvider } from '@twurple/auth';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { BrowserWindow } from 'electron';
+import { createAuthorizeParams } from './AuthorizeParams.external';
 import type {
 	BaseOptions,
 	ElectronAuthProviderOptions,
@@ -12,14 +13,6 @@ import type {
 	WindowStyleOptions
 } from './ElectronAuthProviderOptions';
 import { WindowClosedError } from './WindowClosedError';
-
-interface AuthorizeParams {
-	response_type: string;
-	client_id: string;
-	redirect_uri: string;
-	scope: string;
-	force_verify?: boolean;
-}
 
 export interface TwitchClientCredentials {
 	/**
@@ -77,12 +70,11 @@ export class ElectronAuthProvider extends BaseAuthProvider {
 				return;
 			}
 
-			const queryParams: AuthorizeParams = {
-				response_type: 'token',
-				client_id: this.clientId,
-				redirect_uri: this._redirectUri,
-				scope: Array.from(new Set([...this.currentScopes, ...scopes])).join(' ')
-			};
+			const queryParams = createAuthorizeParams(
+				this.clientId,
+				this._redirectUri,
+				Array.from(new Set([...this.currentScopes, ...scopes]))
+			);
 			if (this._allowUserChange) {
 				queryParams.force_verify = true;
 			}

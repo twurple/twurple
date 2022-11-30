@@ -1,7 +1,7 @@
 import type { UserNameResolvable } from '@twurple/common';
 import { extractUserName, rtfm } from '@twurple/common';
+import { type ChattersListData } from '../../interfaces/unsupported.external';
 import { BaseApi } from '../BaseApi';
-import type { ChattersListData } from './ChattersList';
 import { ChattersList } from './ChattersList';
 
 /**

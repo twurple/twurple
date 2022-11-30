@@ -1,15 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubChannelPredictionPredictorData {
-	user_name: string;
-	user_login: string;
-	user_id: string;
-	channel_points_won: number | null;
-	channel_points_used: number;
-}
+import { type EventSubChannelPredictionPredictorData } from './EventSubChannelPredictionPredictor.external';
 
 /**
  * A user that voted on a prediction.

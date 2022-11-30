@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import { EventSubChannelCharityDonationEvent } from '../events/EventSubChannelCharityDonationEvent';
-import type { EventSubChannelCharityDonationEventData } from '../events/EventSubChannelCharityDonationEvent';
+import { type EventSubChannelCharityDonationEventData } from '../events/EventSubChannelCharityDonationEvent.external';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 

@@ -1,16 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixUserSubscriptionData } from '../../../interfaces/helix/subscription.external';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixUserSubscriptionData {
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
-	is_gift: boolean;
-	tier: string;
-}
 
 /**
  * The user info about a (paid) subscription to a broadcaster.

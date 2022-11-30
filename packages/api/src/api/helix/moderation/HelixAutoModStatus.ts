@@ -1,10 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixAutoModStatusData {
-	msg_id: string;
-	is_permitted: boolean;
-}
+import { type HelixAutoModStatusData } from '../../../interfaces/helix/moderation.external';
 
 /**
  * The status of a message that says whether it is permitted by AutoMod or not.

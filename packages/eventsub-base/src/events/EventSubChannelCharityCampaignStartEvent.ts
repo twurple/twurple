@@ -1,23 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelCharityAmountData } from './common/EventSubChannelCharityAmount';
 import { EventSubChannelCharityAmount } from './common/EventSubChannelCharityAmount';
-
-/** @private */
-export interface EventSubChannelCharityCampaignStartEventData {
-	id: string;
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
-	charity_name: string;
-	charity_description: string;
-	charity_logo: string;
-	charity_website: string;
-	current_amount: EventSubChannelCharityAmountData;
-	target_amount: EventSubChannelCharityAmountData;
-	started_at: string;
-}
+import { type EventSubChannelCharityCampaignStartEventData } from './EventSubChannelCharityCampaignStartEvent.external';
 
 /**
  * An EventSub event representing the start of a charity campaign in a channel.

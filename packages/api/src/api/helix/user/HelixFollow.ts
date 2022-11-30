@@ -1,18 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixFollowData } from '../../../interfaces/helix/user.external';
 import type { HelixUser } from './HelixUser';
-
-/** @private */
-export interface HelixFollowData {
-	from_id: string;
-	from_login: string;
-	from_name: string;
-	to_id: string;
-	to_login: string;
-	to_name: string;
-	followed_at: string;
-}
 
 /**
  * A relation of a user following a broadcaster.

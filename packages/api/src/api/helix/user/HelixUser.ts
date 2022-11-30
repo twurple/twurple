@@ -2,29 +2,11 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixUserData } from '../../../interfaces/helix/user.external';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixStream } from '../stream/HelixStream';
 import type { HelixSubscription } from '../subscriptions/HelixSubscription';
 import type { HelixFollow } from './HelixFollow';
-
-/**
- * The type of a broadcaster.
- */
-export type HelixBroadcasterType = 'partner' | 'affiliate' | '';
-
-/** @private */
-export interface HelixUserData {
-	id: string;
-	login: string;
-	display_name: string;
-	description: string;
-	type: HelixUserType;
-	broadcaster_type: HelixBroadcasterType;
-	profile_image_url: string;
-	offline_image_url: string;
-	view_count: number;
-	created_at: string;
-}
 
 /**
  * A Twitch user.

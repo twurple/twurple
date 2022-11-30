@@ -1,30 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixPredictionData, type HelixPredictionStatus } from '../../../interfaces/helix/prediction.external';
 import type { HelixUser } from '../user/HelixUser';
-import type { HelixPredictionOutcomeData } from './HelixPredictionOutcome';
 import { HelixPredictionOutcome } from './HelixPredictionOutcome';
-
-/**
- * The different statuses a prediction can have.
- */
-export type HelixPredictionStatus = 'ACTIVE' | 'RESOLVED' | 'CANCELED' | 'LOCKED';
-
-/** @private */
-export interface HelixPredictionData {
-	id: string;
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
-	title: string;
-	winning_outcome_id: string | null;
-	outcomes: HelixPredictionOutcomeData[];
-	prediction_window: number;
-	status: HelixPredictionStatus;
-	created_at: string;
-	ended_at: string;
-	locked_at: string;
-}
 
 /**
  * A channel prediction.

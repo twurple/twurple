@@ -1,19 +1,7 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
+import { type HelixSubscriptionData } from '../../../interfaces/helix/subscription.external';
 import type { HelixUser } from '../user/HelixUser';
-import type { HelixUserSubscriptionData } from './HelixUserSubscription';
 import { HelixUserSubscription } from './HelixUserSubscription';
-
-/** @private */
-export interface HelixSubscriptionData extends HelixUserSubscriptionData {
-	gifter_id: string;
-	gifter_login: string;
-	gifter_name: string;
-	plan_name: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	message?: string;
-}
 
 /**
  * A (paid) subscription of a user to a broadcaster.

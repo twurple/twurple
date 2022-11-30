@@ -1,43 +1,20 @@
-import type { PubSubAutoModQueueMessage, PubSubAutoModQueueMessageData } from './PubSubAutoModQueueMessage';
-import type { PubSubBitsBadgeUnlockMessage, PubSubBitsBadgeUnlockMessageData } from './PubSubBitsBadgeUnlockMessage';
-import type { PubSubBitsMessage, PubSubBitsMessageData } from './PubSubBitsMessage';
-import type { PubSubChatModActionMessage, PubSubChatModActionMessageData } from './PubSubChatModActionMessage';
+import type { PubSubAutoModQueueMessage } from './PubSubAutoModQueueMessage';
+import { type PubSubAutoModQueueMessageData } from './PubSubAutoModQueueMessage.external';
+import type { PubSubBitsBadgeUnlockMessage } from './PubSubBitsBadgeUnlockMessage';
+import { type PubSubBitsBadgeUnlockMessageData } from './PubSubBitsBadgeUnlockMessage.external';
+import type { PubSubBitsMessage } from './PubSubBitsMessage';
+import { type PubSubBitsMessageData } from './PubSubBitsMessage.external';
+import type { PubSubChatModActionMessage } from './PubSubChatModActionMessage';
+import { type PubSubChatModActionMessageData } from './PubSubChatModActionMessage.external';
 import type { PubSubCustomMessage } from './PubSubCustomMessage';
-import type { PubSubRedemptionMessage, PubSubRedemptionMessageData } from './PubSubRedemptionMessage';
-import type { PubSubSubscriptionMessage, PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage';
-import type {
-	PubSubUserModerationNotificationMessage,
-	PubSubUserModerationNotificationMessageData
-} from './PubSubUserModerationNotificationMessage';
-import type { PubSubWhisperMessage, PubSubWhisperMessageData } from './PubSubWhisperMessage';
-
-/** @private */
-export interface PubSubBasicMessageInfo {
-	user_name: string;
-	channel_name: string;
-	user_id: string;
-	channel_id: string;
-	time: string;
-}
-
-/** @private */
-export interface PubSubChatMessageEmote {
-	start: number;
-	end: number;
-	id: number;
-}
-
-/** @private */
-export interface PubSubChatMessageBadge {
-	id: string;
-	version: string;
-}
-
-/** @private */
-export interface PubSubChatMessage {
-	message: string;
-	emotes: PubSubChatMessageEmote[];
-}
+import type { PubSubRedemptionMessage } from './PubSubRedemptionMessage';
+import { type PubSubRedemptionMessageData } from './PubSubRedemptionMessage.external';
+import type { PubSubSubscriptionMessage } from './PubSubSubscriptionMessage';
+import { type PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage.external';
+import type { PubSubUserModerationNotificationMessage } from './PubSubUserModerationNotificationMessage';
+import { type PubSubUserModerationNotificationMessageData } from './PubSubUserModerationNotificationMessage.external';
+import type { PubSubWhisperMessage } from './PubSubWhisperMessage';
+import { type PubSubWhisperMessageData } from './PubSubWhisperMessage.external';
 
 /** @private */
 export type PubSubMessageData =

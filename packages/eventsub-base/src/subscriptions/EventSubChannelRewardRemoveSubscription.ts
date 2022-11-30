@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import type { EventSubChannelRewardEventData } from '../events/EventSubChannelRewardEvent';
 import { EventSubChannelRewardEvent } from '../events/EventSubChannelRewardEvent';
+import { type EventSubChannelRewardEventData } from '../events/EventSubChannelRewardEvent.external';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 

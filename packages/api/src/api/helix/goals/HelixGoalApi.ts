@@ -1,8 +1,9 @@
 import type { HelixResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import { createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import { type HelixGoalData } from '../../../interfaces/helix/goal.external';
 import { BaseApi } from '../../BaseApi';
-import type { HelixGoalData } from './HelixGoal';
 import { HelixGoal } from './HelixGoal';
 
 /**
@@ -24,9 +25,7 @@ export class HelixGoalApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixGoalData>>({
 			type: 'helix',
 			url: 'goals',
-			query: {
-				broadcaster_id: extractUserId(broadcaster)
-			}
+			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
 		});
 
 		return result.data.map(data => new HelixGoal(data, this._client));

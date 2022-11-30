@@ -1,29 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelPollChoiceData } from './common/EventSubChannelPollChoice';
 import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice';
-import type { EventSubChannelPollVoteTypeSettingsData } from './common/EventSubChannelPollVoteTypeSettingsData';
-
-/**
- * The status of the poll.
- */
-export type EventSubChannelPollEndStatus = 'completed' | 'archived' | 'terminated';
-
-/** @private */
-export interface EventSubChannelPollEndEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	title: string;
-	choices: EventSubChannelPollChoiceData[];
-	bits_voting: EventSubChannelPollVoteTypeSettingsData;
-	channel_points_voting: EventSubChannelPollVoteTypeSettingsData;
-	status: EventSubChannelPollEndStatus;
-	started_at: string;
-	ended_at: string;
-}
+import {
+	type EventSubChannelPollEndEventData,
+	type EventSubChannelPollEndStatus
+} from './EventSubChannelPollEndEvent.external';
 
 /**
  * An EventSub event representing a poll starting in a channel.

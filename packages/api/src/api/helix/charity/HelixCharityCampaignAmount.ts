@@ -1,11 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixCharityCampaignAmountData {
-	value: number;
-	decimal_places: number;
-	currency: string;
-}
+import { type HelixCharityCampaignAmountData } from '../../../interfaces/helix/charity.external';
 
 /**
  * An object representing monetary amount and currency information for charity donations/goals.

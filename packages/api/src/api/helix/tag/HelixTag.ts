@@ -1,12 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixTagData {
-	tag_id: string;
-	is_auto: boolean;
-	localization_names: Record<string, string>;
-	localization_descriptions: Record<string, string>;
-}
+import { type HelixTagData } from '../../../interfaces/helix/tag.external';
 
 /**
  * A stream tag.

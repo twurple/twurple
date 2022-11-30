@@ -1,29 +1,13 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixEventData } from '../HelixEvent';
+import { type HelixEventData } from '../../../interfaces/helix/generic.external';
+import {
+	type HelixHypeTrainEventData,
+	type HelixHypeTrainEventType
+} from '../../../interfaces/helix/hypeTrain.external';
 import type { HelixUser } from '../user/HelixUser';
-import type { HelixHypeTrainContributionData } from './HelixHypeTrainContribution';
 import { HelixHypeTrainContribution } from './HelixHypeTrainContribution';
-
-/** @private */
-export interface HelixHypeTrainEventData {
-	id: string;
-	broadcaster_id: string;
-	cooldown_end_time: string;
-	expires_at: string;
-	goal: number;
-	last_contribution: HelixHypeTrainContributionData;
-	level: number;
-	started_at: string;
-	top_contributions: HelixHypeTrainContributionData[];
-	total: number;
-}
-
-/**
- * The different types a Hype Train event can have.
- */
-export type HelixHypeTrainEventType = 'hypetrain.progression';
 
 /**
  * A Hype Train event.

@@ -1,13 +1,18 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import {
+	type HelixCharityCampaignData,
+	type HelixCharityCampaignDonationData
+} from '../../../interfaces/helix/charity.external';
+import { createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import { HelixCharityCampaign, type HelixCharityCampaignData } from './HelixCharityCampaign';
-import { HelixCharityCampaignDonation, type HelixCharityCampaignDonationData } from './HelixCharityCampaignDonation';
+import { createPaginationQuery } from '../HelixPagination';
+import { HelixCharityCampaign } from './HelixCharityCampaign';
+import { HelixCharityCampaignDonation } from './HelixCharityCampaignDonation';
 
 /**
  * The Helix API methods that deal with charity campaigns.
@@ -39,9 +44,7 @@ export class HelixCharityApi extends BaseApi {
 			url: 'charity/campaigns',
 			method: 'GET',
 			scope: 'channel:read:charity',
-			query: {
-				broadcaster_id: extractUserId(broadcaster)
-			}
+			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
 		});
 
 		return new HelixCharityCampaign(response.data[0], this._client);
@@ -65,8 +68,8 @@ export class HelixCharityApi extends BaseApi {
 			url: 'charity/donations',
 			scope: 'channel:read:charity',
 			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				...makePaginationQuery(pagination)
+				...createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+				...createPaginationQuery(pagination)
 			}
 		});
 

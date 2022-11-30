@@ -1,32 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixScheduleData } from '../../../interfaces/helix/schedule.external';
 import type { HelixUser } from '../user/HelixUser';
-import type { HelixScheduleSegmentData } from './HelixScheduleSegment';
 import { HelixScheduleSegment } from './HelixScheduleSegment';
-
-/** @private */
-export interface HelixScheduleVacationData {
-	start_time: string;
-	end_time: string;
-}
-
-/** @private */
-export interface HelixScheduleData {
-	segments: HelixScheduleSegmentData[];
-	broadcaster_id: string;
-	broadcaster_name: string;
-	broadcaster_login: string;
-	vacation: HelixScheduleVacationData | null;
-}
-
-/** @private */
-export interface HelixScheduleResponse {
-	data: HelixScheduleData;
-	pagination: {
-		cursor?: string;
-	};
-}
 
 /**
  * A schedule of a channel.

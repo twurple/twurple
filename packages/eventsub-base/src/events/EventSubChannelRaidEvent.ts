@@ -1,17 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubChannelRaidEventData {
-	from_broadcaster_user_id: string;
-	from_broadcaster_user_login: string;
-	from_broadcaster_user_name: string;
-	to_broadcaster_user_id: string;
-	to_broadcaster_user_login: string;
-	to_broadcaster_user_name: string;
-	viewers: number;
-}
+import { type EventSubChannelRaidEventData } from './EventSubChannelRaidEvent.external';
 
 /**
  * An EventSub event representing a broadcaster raiding another broadcaster.

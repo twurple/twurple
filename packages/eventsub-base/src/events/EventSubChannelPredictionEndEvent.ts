@@ -1,27 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelPredictionOutcomeData } from './common/EventSubChannelPredictionOutcome';
 import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
-
-/**
- * The status of the prediction.
- */
-export type EventSubChannelPredictionEndStatus = 'resolved' | 'canceled';
-
-/** @private */
-export interface EventSubChannelPredictionEndEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	title: string;
-	winning_outcome_id: string | null;
-	outcomes: EventSubChannelPredictionOutcomeData[];
-	status: EventSubChannelPredictionEndStatus;
-	started_at: string;
-	ended_at: string;
-}
+import {
+	type EventSubChannelPredictionEndEventData,
+	type EventSubChannelPredictionEndStatus
+} from './EventSubChannelPredictionEndEvent.external';
 
 /**
  * An EventSub event representing a prediction being locked in a channel.

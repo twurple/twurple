@@ -1,16 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
-import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixBitsLeaderboardEntryData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	rank: number;
-	score: number;
-}
+import { type ApiClient } from '../../../ApiClient';
+import { type HelixBitsLeaderboardEntryData } from '../../../interfaces/helix/bits.external';
+import { type HelixUser } from '../user/HelixUser';
 
 /**
  * A Bits leaderboard entry.

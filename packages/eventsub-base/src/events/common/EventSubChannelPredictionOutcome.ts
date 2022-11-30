@@ -1,17 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelPredictionBeginOutcomeData } from './EventSubChannelPredictionBeginOutcome';
 import { EventSubChannelPredictionBeginOutcome } from './EventSubChannelPredictionBeginOutcome';
-import type { EventSubChannelPredictionPredictorData } from './EventSubChannelPredictionPredictor';
+import { type EventSubChannelPredictionOutcomeData } from './EventSubChannelPredictionOutcome.external';
 import { EventSubChannelPredictionPredictor } from './EventSubChannelPredictionPredictor';
-
-/** @private */
-export interface EventSubChannelPredictionOutcomeData extends EventSubChannelPredictionBeginOutcomeData {
-	users: number;
-	channel_points: number;
-	top_predictors: EventSubChannelPredictionPredictorData[];
-}
 
 /**
  * A possible outcome of a prediction.

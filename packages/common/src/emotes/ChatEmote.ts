@@ -1,11 +1,6 @@
 import { DataObject, rawDataSymbol } from '../DataObject';
 import { rtfm } from '../rtfm';
-
-/** @private */
-export interface ChatEmoteData {
-	code: string;
-	id: string;
-}
+import { type ChatEmoteData } from './ChatEmote.external';
 
 /**
  * The possible animation settings for an emote image.

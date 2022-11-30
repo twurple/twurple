@@ -2,21 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { EventSubChannelGoalType } from './common/EventSubChannelGoalType';
-
-/** @private */
-export interface EventSubChannelGoalEndEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	type: EventSubChannelGoalType;
-	description: string;
-	is_achieved: boolean;
-	current_amount: number;
-	target_amount: number;
-	started_at: Date;
-	ended_at: Date;
-}
+import { type EventSubChannelGoalEndEventData } from './EventSubChannelGoalEndEvent.external';
 
 /**
  * An EventSub event representing a creator goal starting in a channel.

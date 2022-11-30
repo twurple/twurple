@@ -11,7 +11,7 @@ export {
 } from './helpers';
 
 export { TokenInfo } from './TokenInfo';
-export type { TokenInfoData } from './TokenInfo';
+export type { TokenInfoData } from './TokenInfo.external';
 
 export type { AuthProvider, AuthProviderTokenType } from './providers/AuthProvider';
 export { BaseAuthProvider } from './providers/BaseAuthProvider';

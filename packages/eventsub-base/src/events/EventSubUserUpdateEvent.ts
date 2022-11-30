@@ -1,16 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubUserUpdateEventData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	email?: string;
-	email_verified: boolean;
-	description: string;
-}
+import { type EventSubUserUpdateEventData } from './EventSubUserUpdateEvent.external';
 
 /**
  * An EventSub event representing updating their account details.

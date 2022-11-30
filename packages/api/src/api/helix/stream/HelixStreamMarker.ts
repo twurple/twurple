@@ -1,15 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-
-/** @private */
-export interface HelixStreamMarkerData {
-	id: string;
-	created_at: string;
-	description: string;
-	position_seconds: number;
-	URL?: string;
-}
+import { type HelixStreamMarkerData } from '../../../interfaces/helix/stream.external';
 
 /**
  * A stream marker.

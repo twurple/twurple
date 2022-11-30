@@ -1,14 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type ApiClient } from '../../../ApiClient';
+import { type HelixChatChatterData } from '../../../interfaces/helix/chat.external';
 import { type HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixChatChatterData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-}
 
 /**
  * A user connected to a Twitch channel's chat session.
@@ -31,18 +25,21 @@ export class HelixChatChatter extends DataObject<HelixChatChatterData> {
 	get userId(): string {
 		return this[rawDataSymbol].user_id;
 	}
+
 	/**
 	 * The name of the user.
 	 */
 	get userName(): string {
 		return this[rawDataSymbol].user_login;
 	}
+
 	/**
 	 * The display name of the user.
 	 */
 	get userDisplayName(): string {
 		return this[rawDataSymbol].user_name;
 	}
+
 	/**
 	 * Retrieves more information about the user.
 	 */

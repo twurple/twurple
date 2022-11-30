@@ -14,15 +14,8 @@ export type {
 	MessageCheermote
 } from './emotes/BaseCheermoteList';
 export { ChatEmote } from './emotes/ChatEmote';
-export type {
-	ChatEmoteData,
-	EmoteSettings,
-	EmoteSize,
-	EmoteAnimationSettings,
-	EmoteBackgroundType
-} from './emotes/ChatEmote';
+export type { EmoteSettings, EmoteSize, EmoteAnimationSettings, EmoteBackgroundType } from './emotes/ChatEmote';
 export { ChatEmoteWithSet } from './emotes/ChatEmoteWithSet';
-export type { ChatEmoteWithSetData } from './emotes/ChatEmoteWithSet';
 export { fillTextPositions } from './emotes/ParsedMessagePart';
 export type {
 	ParsedMessagePart,
@@ -38,7 +31,7 @@ export type {
 	HelixExtensionIconSize,
 	HelixExtensionSubscriptionsSupportLevel,
 	HelixExtensionData
-} from './extensions/HelixExtension';
+} from './extensions/HelixExtension.external';
 
 export { CustomError } from './errors/CustomError';
 export { HellFreezesOverError } from './errors/HellFreezesOverError';

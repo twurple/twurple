@@ -1,19 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixAutoModSettingsData {
-	broadcaster_id: string;
-	moderator_id: string;
-	overall_level: number | null;
-	disability: number;
-	aggression: number;
-	sexuality_sex_or_gender: number;
-	misogyny: number;
-	bullying: number;
-	swearing: number;
-	race_ethnicity_or_religion: number;
-	sex_based_terms: number;
-}
+import { type HelixAutoModSettingsData } from '../../../interfaces/helix/moderation.external';
 
 /**
  * The AutoMod settings of a channel.

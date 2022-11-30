@@ -1,4 +1,5 @@
 import { sign } from 'jsonwebtoken';
+import { createExternalJwtData } from './jwt.external';
 
 /** @private */
 export interface BaseExternalJwtConfig {
@@ -38,12 +39,7 @@ export interface ExternalJwtConfig extends BaseExternalJwtConfig {
  */
 export function createExternalJwt(config: ExternalJwtConfig): string {
 	const ttl = config.ttl ?? 60;
-	const dataToSign = {
-		...config.additionalData,
-		exp: Math.floor(Date.now() / 1000) + ttl,
-		user_id: config.ownerId,
-		role: 'external'
-	};
+	const dataToSign = createExternalJwtData(config, ttl);
 
 	return sign(dataToSign, Buffer.from(config.secret, 'base64'), { algorithm: 'HS256' });
 }

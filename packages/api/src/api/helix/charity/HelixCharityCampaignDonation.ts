@@ -1,17 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixCharityCampaignDonationData } from '../../../interfaces/helix/charity.external';
 import type { HelixUser } from '../user/HelixUser';
-import { HelixCharityCampaignAmount, type HelixCharityCampaignAmountData } from './HelixCharityCampaignAmount';
-
-/** @private */
-export interface HelixCharityCampaignDonationData {
-	campaign_id: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	amount: HelixCharityCampaignAmountData;
-}
+import { HelixCharityCampaignAmount } from './HelixCharityCampaignAmount';
 
 /**
  * A donation to a charity campaign in a Twitch channel.

@@ -1,18 +1,8 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-export type PubSubUserModerationNotificationMessageStatus = 'PENDING' | 'ALLOWED' | 'DENIED' | 'EXPIRED';
-
-/** @private */
-export interface PubSubUserModerationNotificationMessageContent {
-	message_id: string;
-	status: PubSubUserModerationNotificationMessageStatus;
-}
-
-/** @private */
-export interface PubSubUserModerationNotificationMessageData {
-	type: 'automod_caught_message';
-	data: PubSubUserModerationNotificationMessageContent;
-}
+import {
+	type PubSubUserModerationNotificationMessageData,
+	type PubSubUserModerationNotificationMessageStatus
+} from './PubSubUserModerationNotificationMessage.external';
 
 /**
  * A message that informs about a moderation action on your message..

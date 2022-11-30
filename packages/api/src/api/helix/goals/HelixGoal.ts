@@ -1,22 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixGoalData, type HelixGoalType } from '../../../interfaces/helix/goal.external';
 import type { HelixUser } from '../user/HelixUser';
-
-export type HelixGoalType = 'follower' | 'subscription' | 'subscription_count' | 'new_subscription_count';
-
-/** @private */
-export interface HelixGoalData {
-	id: string;
-	broadcaster_id: string;
-	broadcaster_name: string;
-	broadcaster_login: string;
-	type: HelixGoalType;
-	description: string;
-	current_amount: number;
-	target_amount: number;
-	created_at: Date;
-}
 
 /**
  * A creator goal.

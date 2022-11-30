@@ -1,14 +1,6 @@
 import { mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixBanUserData {
-	broadcaster_id: string;
-	created_at: string;
-	end_time: string | null;
-	moderator_id: string;
-	user_id: string;
-}
+import { type HelixBanUserData } from '../../../interfaces/helix/moderation.external';
 
 /**
  * Information about a user who has been banned/timed out.

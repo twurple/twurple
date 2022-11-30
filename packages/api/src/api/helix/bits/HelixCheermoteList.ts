@@ -1,46 +1,7 @@
 import { indexBy } from '@d-fischer/shared-utils';
-import type {
-	CheermoteBackground,
-	CheermoteDisplayInfo,
-	CheermoteFormat,
-	CheermoteScale,
-	CheermoteState
-} from '@twurple/common';
+import type { CheermoteDisplayInfo, CheermoteFormat } from '@twurple/common';
 import { BaseCheermoteList, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export type HelixCheermoteActionImageUrlsByScale = Record<CheermoteScale, string>;
-
-/** @private */
-export type HelixCheermoteActionImageUrlsByStateAndScale = Record<CheermoteState, HelixCheermoteActionImageUrlsByScale>;
-
-/** @private */
-export type HelixCheermoteActionImageUrlsByBackgroundAndStateAndScale = Record<
-	CheermoteBackground,
-	HelixCheermoteActionImageUrlsByStateAndScale
->;
-
-/** @private */
-export interface HelixCheermoteTierData {
-	min_bits: number;
-	id: string;
-	color: string;
-	images: HelixCheermoteActionImageUrlsByBackgroundAndStateAndScale;
-	can_cheer: boolean;
-	show_in_bits_card: boolean;
-}
-
-/** @private */
-type HelixCheermoteType = 'global_first_party' | 'global_third_party' | 'channel_custom' | 'display_only' | 'sponsored';
-
-/** @private */
-export interface HelixCheermoteData {
-	prefix: string;
-	tiers: HelixCheermoteTierData[];
-	type: HelixCheermoteType;
-	last_updated: string;
-	order: number;
-}
+import { type HelixCheermoteData } from '../../../interfaces/helix/bits.external';
 
 /**
  * A list of cheermotes you can use globally or in a specific channel, depending on how you fetched the list.

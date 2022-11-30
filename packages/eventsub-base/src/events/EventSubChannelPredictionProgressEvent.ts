@@ -1,20 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelPredictionOutcomeData } from './common/EventSubChannelPredictionOutcome';
 import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
-
-/** @private */
-export interface EventSubChannelPredictionProgressEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	title: string;
-	outcomes: EventSubChannelPredictionOutcomeData[];
-	started_at: string;
-	locks_at: string;
-}
+import { type EventSubChannelPredictionProgressEventData } from './EventSubChannelPredictionProgressEvent.external';
 
 /**
  * An EventSub event representing a prediction being voted on in a channel.

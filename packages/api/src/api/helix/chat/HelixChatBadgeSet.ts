@@ -1,13 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixChatBadgeVersionData } from './HelixChatBadgeVersion';
+import { type HelixChatBadgeSetData } from '../../../interfaces/helix/chat.external';
 import { HelixChatBadgeVersion } from './HelixChatBadgeVersion';
-
-/** @private */
-export interface HelixChatBadgeSetData {
-	set_id: string;
-	versions: HelixChatBadgeVersionData[];
-}
 
 /**
  * A version of a chat badge.

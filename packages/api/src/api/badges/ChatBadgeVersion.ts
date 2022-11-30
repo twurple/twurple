@@ -1,18 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface ChatBadgeVersionData {
-	click_action: string;
-	click_url: string;
-	description: string;
-	image_url_1x: string;
-	image_url_2x: string;
-	image_url_4x: string;
-	title: string;
-}
-
-/** @private */
-export type ChatBadgeScale = 1 | 2 | 4;
+import { type ChatBadgeScale, type ChatBadgeVersionData } from '../../interfaces/badges.external';
 
 /**
  * A version of a badge.

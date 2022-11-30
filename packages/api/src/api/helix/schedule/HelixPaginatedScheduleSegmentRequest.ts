@@ -1,11 +1,14 @@
 import type { HelixPaginatedResponse, TwitchApiCallOptions } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import {
+	createScheduleQuery,
+	type HelixScheduleResponse,
+	type HelixScheduleSegmentData
+} from '../../../interfaces/helix/schedule.external';
+import { type HelixScheduleFilter } from '../../../interfaces/helix/schedule.input';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
-import type { HelixScheduleResponse } from './HelixSchedule';
-import type { HelixScheduleFilter } from './HelixScheduleApi';
-import type { HelixScheduleSegmentData } from './HelixScheduleSegment';
 import { HelixScheduleSegment } from './HelixScheduleSegment';
 
 /**
@@ -21,11 +24,7 @@ export class HelixPaginatedScheduleSegmentRequest extends HelixPaginatedRequest<
 		super(
 			{
 				url: 'schedule',
-				query: {
-					broadcaster_id: extractUserId(broadcaster),
-					start_time: filter?.startDate,
-					utc_offset: filter?.utcOffset?.toString()
-				}
+				query: createScheduleQuery(broadcaster, filter)
 			},
 			client,
 			data => new HelixScheduleSegment(data, client),

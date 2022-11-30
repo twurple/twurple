@@ -1,24 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelHypeTrainContributionData } from './common/EventSubChannelHypeTrainContribution';
 import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution';
-
-/** @private */
-export interface EventSubChannelHypeTrainBeginEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	level: number;
-	total: number;
-	progress: number;
-	goal: number;
-	top_contributions: EventSubChannelHypeTrainContributionData[] | null;
-	last_contribution: EventSubChannelHypeTrainContributionData;
-	started_at: string;
-	expires_at: string;
-}
+import { type EventSubChannelHypeTrainBeginEventData } from './EventSubChannelHypeTrainBeginEvent.external';
 
 /**
  * An EventSub event representing a Hype Train starting in a channel.

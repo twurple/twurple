@@ -1,22 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixCharityCampaignData } from '../../../interfaces/helix/charity.external';
 import type { HelixUser } from '../user/HelixUser';
-import { HelixCharityCampaignAmount, type HelixCharityCampaignAmountData } from './HelixCharityCampaignAmount';
-
-/** @private */
-export interface HelixCharityCampaignData {
-	id: string;
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
-	charity_name: string;
-	charity_description: string;
-	charity_logo: string;
-	charity_website: string;
-	current_amount: HelixCharityCampaignAmountData;
-	target_amount: HelixCharityCampaignAmountData;
-}
+import { HelixCharityCampaignAmount } from './HelixCharityCampaignAmount';
 
 /**
  * A charity campaign in a Twitch channel.
@@ -83,7 +70,7 @@ export class HelixCharityCampaign extends DataObject<HelixCharityCampaignData> {
 	}
 
 	/**
-	 * A URL to an image of the of the charity;s logo. The image’s type is PNG and its size is 100px X 100px.
+	 * A URL to an image of the charity's logo. The image’s type is PNG and its size is 100px X 100px.
 	 */
 	get charityLogo(): string {
 		return this[rawDataSymbol].charity_logo;

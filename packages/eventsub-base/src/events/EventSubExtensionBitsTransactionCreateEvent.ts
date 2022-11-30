@@ -1,27 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubExtensionBitsTransactionCreateEventProductData {
-	name: string;
-	sku: string;
-	bits: number;
-	in_development: boolean;
-}
-
-/** @private */
-export interface EventSubExtensionBitsTransactionCreateEventData {
-	id: string;
-	extension_client_id: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	product: EventSubExtensionBitsTransactionCreateEventProductData;
-}
+import { type EventSubExtensionBitsTransactionCreateEventData } from './EventSubExtensionBitsTransactionCreateEvent.external';
 
 /**
  * An EventSub event representing a channel subscription.

@@ -1,11 +1,9 @@
 import { rtfm } from '@twurple/common';
-import type { HelixBaseExtensionData } from './HelixBaseExtension';
+import {
+	type HelixBaseExtensionData,
+	type HelixExtensionSlotType
+} from '../../../../interfaces/helix/userExtension.external';
 import { HelixBaseExtension } from './HelixBaseExtension';
-
-/**
- * The possible extension slot types.
- */
-export type HelixExtensionSlotType = 'panel' | 'overlay' | 'component';
 
 /**
  * A Twitch Extension that is installed in a slot of a channel.

@@ -1,24 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixChannelSearchResultData } from '../../../interfaces/helix/search.external';
 import type { HelixGame } from '../game/HelixGame';
 import type { HelixTag } from '../tag/HelixTag';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixChannelSearchResultData {
-	broadcaster_language: string;
-	id: string;
-	broadcaster_login: string;
-	display_name: string;
-	game_id: string;
-	game_name: string;
-	is_live: boolean;
-	tag_ids: string[];
-	thumbnail_url: string;
-	title: string;
-	started_at: string;
-}
 
 /**
  * The result of a channel search.

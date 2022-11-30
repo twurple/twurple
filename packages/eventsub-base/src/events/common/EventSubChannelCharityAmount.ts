@@ -1,11 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubChannelCharityAmountData {
-	value: number;
-	decimal_places: number;
-	currency: string;
-}
+import { type EventSubChannelCharityAmountData } from './EventSubChannelCharityAmount.external';
 
 /**
  * An object representing monetary amount and currency information for charity donations/goals.

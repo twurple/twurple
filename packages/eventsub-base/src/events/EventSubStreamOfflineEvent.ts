@@ -1,13 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubStreamOfflineEventData {
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-}
+import { type EventSubStreamOfflineEventData } from './EventSubStreamOfflineEvent.external';
 
 /**
  * An EventSub event representing a stream going offline.

@@ -1,27 +1,11 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixBaseExtensionData } from './HelixBaseExtension';
-import type { HelixExtensionSlotType } from './HelixInstalledExtension';
+import {
+	type HelixExtensionSlotData,
+	type HelixExtensionSlotType,
+	type HelixInstalledExtensionData,
+	type HelixInstalledExtensionListData
+} from '../../../../interfaces/helix/userExtension.external';
 import { HelixInstalledExtension } from './HelixInstalledExtension';
-
-/** @private */
-export interface HelixInstalledExtensionData extends HelixBaseExtensionData {
-	active: true;
-}
-
-/** @private */
-export interface HelixEmptySlotData {
-	active: false;
-}
-
-/** @private */
-export type HelixExtensionSlotData = HelixInstalledExtensionData | HelixEmptySlotData;
-
-/** @private */
-export interface HelixInstalledExtensionListData {
-	panel: Record<'1' | '2' | '3', HelixExtensionSlotData>;
-	overlay: Record<'1', HelixExtensionSlotData>;
-	component: Record<'1' | '2', HelixExtensionSlotData>;
-}
 
 /**
  * A list of extensions installed in a channel.

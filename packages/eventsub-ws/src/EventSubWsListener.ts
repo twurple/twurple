@@ -6,43 +6,11 @@ import { InvalidTokenTypeError } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
 import type { EventSubBaseConfig, EventSubListener, EventSubNotificationPayload } from '@twurple/eventsub-base';
 import { EventSubBase } from '@twurple/eventsub-base';
-
-/** @private */
-interface EventSubWsMetadata {
-	message_id: string;
-	message_type: string;
-	message_timestamp: string;
-	subscription_type: string;
-	subscription_version: string;
-}
-
-/** @private */
-interface EventSubWsSession {
-	id: string;
-	status: string; // TODO
-	keepalive_timeout_seconds: number | null;
-	reconnect_url: string | null;
-	connected_at: string;
-}
-
-/** @private */
-interface EventSubReconnectPayload {
-	session: EventSubWsSession;
-}
-
-/** @private */
-interface EventSubWelcomePayload {
-	session: EventSubWsSession;
-}
-
-/** @private */
-type EventSubWsPayload = EventSubNotificationPayload | EventSubReconnectPayload | EventSubWelcomePayload;
-
-/** @private */
-interface EventSubWsPacket {
-	metadata: EventSubWsMetadata;
-	payload: EventSubWsPayload;
-}
+import {
+	type EventSubReconnectPayload,
+	type EventSubWelcomePayload,
+	type EventSubWsPacket
+} from './EventSubWsPacket.external';
 
 /**
  * Configuration for an EventSub WebSocket listener.
@@ -119,6 +87,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		}
 		return {
 			method: 'websocket',
+			// eslint-disable-next-line @typescript-eslint/naming-convention
 			session_id: this._sessionId
 		};
 	}

@@ -1,15 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixBanData } from '../../../interfaces/helix/moderation.external';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixBanData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	expires_at: string;
-}
 
 /**
  * Information about the ban of a user.

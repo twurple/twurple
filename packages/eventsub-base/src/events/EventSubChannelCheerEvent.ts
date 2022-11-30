@@ -1,19 +1,7 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubChannelCheerEventData {
-	is_anonymous: boolean;
-	user_id: string | null;
-	user_login: string | null;
-	user_name: string | null;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	message: string;
-	bits: number;
-}
+import { type EventSubChannelCheerEventData } from './EventSubChannelCheerEvent.external';
 
 /**
  * An EventSub event representing a user cheering bits.
