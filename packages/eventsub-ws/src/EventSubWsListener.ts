@@ -42,6 +42,8 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 
 	private _connecting: boolean;
 	private _reconnectInProgress: boolean;
+	private _keepaliveTimeout: number | null;
+	private _keepaliveTimer: NodeJS.Timer | null;
 
 	/**
 	 * Creates a new EventSub HTTP listener.
@@ -60,14 +62,22 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		this._initialUrl = config.url ?? 'wss://eventsub-beta.wss.twitch.tv/ws';
 		this._connecting = false;
 		this._reconnectInProgress = false;
+		this._keepaliveTimeout = null;
+		this._keepaliveTimer = null;
 	}
 
+	/**
+	 * Starts the WebSocket listener.
+	 */
 	async start(): Promise<void> {
 		const welcomePromise = new Promise<void>(resolve => (this._welcomeCallback = resolve));
 		await this._connect();
 		await welcomePromise;
 	}
 
+	/**
+	 * Stops the WebSocket listener.
+	 */
 	async stop(): Promise<void> {
 		if (this._connection) {
 			await Promise.all([...this._subscriptions.values()].map(async sub => await sub.suspend()));
@@ -92,6 +102,10 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		};
 	}
 
+	protected _findTwitchSubscriptionToContinue(): undefined {
+		return undefined;
+	}
+
 	private async _connect(): Promise<void> {
 		await this._connectTo(this._initialUrl);
 	}
@@ -107,8 +121,14 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 
 		while (true) {
 			const newConnection = (this._connection = new WebSocketConnection({ url }, { logger: this._logger }));
+			// eslint-disable-next-line @typescript-eslint/no-loop-func
 			newConnection.onDisconnect(async (manually, reason?: Error) => {
 				this._readyToSubscribe = false;
+				if (this._keepaliveTimer) {
+					clearTimeout(this._keepaliveTimer);
+					this._keepaliveTimer = null;
+				}
+				this._keepaliveTimeout = null;
 				if (manually) {
 					if (this._reconnectInProgress) {
 						this._logger.debug('Reconnect: old connection cleaned up');
@@ -146,12 +166,17 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 						const welcomeCallbackPromise = this._welcomeCallback?.();
 						this._welcomeCallback = undefined;
 						await welcomeCallbackPromise;
+						if (!this._reconnectInProgress) {
+							await Promise.all([...this._subscriptions.values()].map(async sub => await sub.start()));
+						}
+						this._initializeKeepaliveTimeout(
+							(payload as EventSubWelcomePayload).session.keepalive_timeout_seconds!
+						);
 						this._reconnectInProgress = false;
-						// TODO subscribe to all resting subscription objects
 						break;
 					}
 					case 'session_keepalive': {
-						// TODO implement keepalive timeout
+						this._restartKeepaliveTimer();
 						break;
 					}
 					case 'session_reconnect': {
@@ -232,5 +257,24 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 			this._logger.error(`Error while disconnecting for the reconnect: ${e.message}`)
 		);
 		await this._connect();
+	}
+
+	private _initializeKeepaliveTimeout(timeoutInSeconds: number): void {
+		this._keepaliveTimeout = timeoutInSeconds;
+		this._restartKeepaliveTimer();
+	}
+
+	private _restartKeepaliveTimer(): void {
+		if (this._keepaliveTimer) {
+			clearTimeout(this._keepaliveTimer);
+		}
+		if (this._keepaliveTimeout) {
+			this._keepaliveTimer = setTimeout(() => this._handleKeepaliveTimeout(), this._keepaliveTimeout);
+		}
+	}
+
+	private _handleKeepaliveTimeout() {
+		this._keepaliveTimer = null;
+		this._connection?.assumeExternalDisconnect();
 	}
 }

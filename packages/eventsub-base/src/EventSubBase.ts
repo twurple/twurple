@@ -870,6 +870,10 @@ export abstract class EventSubBase extends EventEmitter {
 		return this._subscriptionsByTwitchId.get(id);
 	}
 
+	protected abstract _findTwitchSubscriptionToContinue(
+		subscription: EventSubSubscription
+	): HelixEventSubSubscription | undefined;
+
 	private async _genericSubscribe<T, Args extends unknown[]>(
 		clazz: new (handler: (obj: T) => void, client: EventSubBase, ...args: Args) => EventSubSubscription<T>,
 		handler: (obj: T) => void,
@@ -878,7 +882,7 @@ export abstract class EventSubBase extends EventEmitter {
 	): Promise<EventSubSubscription> {
 		const subscription = new clazz(handler, client, ...params);
 		if (this._readyToSubscribe) {
-			await subscription.start(this._twitchSubscriptions.get(subscription.id));
+			await subscription.start(this._findTwitchSubscriptionToContinue(subscription as EventSubSubscription));
 		}
 		this._subscriptions.set(subscription.id, subscription as EventSubSubscription);
 

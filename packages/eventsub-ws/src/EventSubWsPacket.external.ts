@@ -9,10 +9,12 @@ interface EventSubWsMetadata {
 	subscription_version: string;
 }
 
+type EventSubWsSessionStatus = 'connected' | 'reconnecting';
+
 /** @private */
 interface EventSubWsSession {
 	id: string;
-	status: string; // TODO
+	status: EventSubWsSessionStatus;
 	keepalive_timeout_seconds: number | null;
 	reconnect_url: string | null;
 	connected_at: string;
