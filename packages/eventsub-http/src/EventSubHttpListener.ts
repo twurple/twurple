@@ -1,7 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { type HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { type EventSubListener, type EventSubSubscription } from '@twurple/eventsub-base';
+import { type EventSubListener } from '@twurple/eventsub-base';
 import { defaultOnError, type NextFunction, type Request, type Response, Server } from 'httpanda';
 import { type ConnectionAdapter } from './adapters/ConnectionAdapter';
 import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase';
@@ -160,11 +159,5 @@ Listening on port ${adapterListenerPort} instead.`);
 
 	protected async getPathPrefix(): Promise<string | undefined> {
 		return this._adapter.pathPrefix;
-	}
-
-	protected _findTwitchSubscriptionToContinue(
-		subscription: EventSubSubscription
-	): HelixEventSubSubscription | undefined {
-		return this._twitchSubscriptions.get(subscription.id);
 	}
 }

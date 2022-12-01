@@ -307,6 +307,12 @@ To silence this warning without enabling this check (and thus to keep it off eve
 		return false;
 	}
 
+	protected _findTwitchSubscriptionToContinue(
+		subscription: EventSubSubscription
+	): HelixEventSubSubscription | undefined {
+		return this._twitchSubscriptions.get(subscription.id);
+	}
+
 	private _verifyData(
 		subscription: EventSubSubscription,
 		messageId: string,
