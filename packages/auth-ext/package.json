@@ -1,6 +1,6 @@
 {
   "name": "@twurple/auth-ext",
-  "version": "5.3.0-pre.4",
+  "version": "5.3.0-pre.5",
   "publishConfig": {
     "access": "public"
   },
@@ -33,11 +33,11 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "5.3.0-pre.4",
+    "@twurple/auth": "5.3.0-pre.5",
     "@types/twitch-ext": "^1.24.4"
   },
   "peerDependencies": {
-    "@twurple/auth": "5.3.0-pre.4",
+    "@twurple/auth": "5.3.0-pre.5",
     "@types/twitch-ext": "^1.24.4"
   },
   "files": [
