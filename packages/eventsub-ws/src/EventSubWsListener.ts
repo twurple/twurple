@@ -121,13 +121,9 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 
 		while (true) {
 			const newConnection = (this._connection = new WebSocketConnection({ url }, { logger: this._logger }));
-			// eslint-disable-next-line @typescript-eslint/no-loop-func
 			newConnection.onDisconnect(async (manually, reason?: Error) => {
 				this._readyToSubscribe = false;
-				if (this._keepaliveTimer) {
-					clearTimeout(this._keepaliveTimer);
-					this._keepaliveTimer = null;
-				}
+				this._clearKeepaliveTimer();
 				this._keepaliveTimeout = null;
 				if (manually) {
 					if (this._reconnectInProgress) {
@@ -264,10 +260,15 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		this._restartKeepaliveTimer();
 	}
 
-	private _restartKeepaliveTimer(): void {
+	private _clearKeepaliveTimer(): void {
 		if (this._keepaliveTimer) {
 			clearTimeout(this._keepaliveTimer);
+			this._keepaliveTimer = null;
 		}
+	}
+
+	private _restartKeepaliveTimer(): void {
+		this._clearKeepaliveTimer();
 		if (this._keepaliveTimeout) {
 			this._keepaliveTimer = setTimeout(() => this._handleKeepaliveTimeout(), this._keepaliveTimeout);
 		}
