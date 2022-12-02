@@ -49,7 +49,6 @@ export class HelixChatApi extends BaseApi {
 	/**
 	 * Gets the list of users that are connected to the broadcaster’s chat session.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster whose list of chatters you want to get.
 	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
 	 * This user must match the user associated with the user OAuth token.
