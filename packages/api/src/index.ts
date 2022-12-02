@@ -58,6 +58,9 @@ export { HelixPrivilegedChatSettings } from './api/helix/chat/HelixPrivilegedCha
 export type {
 	HelixChannelEmoteSubscriptionTier,
 	HelixEmoteImageScale,
+	HelixEmoteScale,
+	HelixEmoteFormat,
+	HelixEmoteThemeMode,
 	HelixChatUserColor,
 	HelixChatAnnouncementColor,
 	/** @deprecated */
