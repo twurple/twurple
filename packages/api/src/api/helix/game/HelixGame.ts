@@ -43,6 +43,13 @@ export class HelixGame extends DataObject<HelixGameData> {
 	}
 
 	/**
+	 * The IGDB ID of the game, or null if the game doesn't have an IGDB ID assigned at Twitch.
+	 */
+	get igdbId(): string | null {
+		return this[rawDataSymbol].igdb_id || null;
+	}
+
+	/**
 	 * Builds the URL of the box art of the game using the given dimensions.
 	 *
 	 * @param width The width of the box art.
