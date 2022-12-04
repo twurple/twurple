@@ -1,7 +1,7 @@
 /**
  * The type of a Hype Train contribution.
  */
-export type HelixHypeTrainContributionType = 'BITS' | 'SUBS';
+export type HelixHypeTrainContributionType = 'BITS' | 'SUBS' | 'OTHER';
 
 /** @private */
 export interface HelixHypeTrainContributionData {
