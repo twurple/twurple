@@ -83,6 +83,8 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 
 	/**
 	 * The stream delay of the channel, in seconds.
+	 *
+	 * If you didn't request this with broadcaster access, this is always zero.
 	 */
 	get delay(): number {
 		return this[rawDataSymbol].delay;
