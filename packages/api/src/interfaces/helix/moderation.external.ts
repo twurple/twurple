@@ -24,20 +24,26 @@ export interface HelixAutoModStatusData {
 }
 
 /** @private */
-export interface HelixBanData {
+export interface HelixCommonBanUserData {
 	user_id: string;
-	user_login: string;
-	user_name: string;
-	expires_at: string;
+	moderator_id: string;
+	created_at: string;
 }
 
 /** @private */
-export interface HelixBanUserData {
+export interface HelixBanData extends HelixCommonBanUserData {
+	user_login: string;
+	user_name: string;
+	moderator_login: string;
+	moderator_name: string;
+	expires_at: string;
+	reason: string;
+}
+
+/** @private */
+export interface HelixBanUserData extends HelixCommonBanUserData {
 	broadcaster_id: string;
-	created_at: string;
 	end_time: string | null;
-	moderator_id: string;
-	user_id: string;
 }
 
 /** @private */

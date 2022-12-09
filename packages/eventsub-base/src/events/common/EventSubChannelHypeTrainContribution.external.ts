@@ -1,7 +1,7 @@
 /**
  * The type of hype train contribution. Can be "bits" or "subscription".
  */
-export type EventSubChannelHypeTrainContributionType = 'bits' | 'subscription';
+export type EventSubChannelHypeTrainContributionType = 'bits' | 'subscription' | 'other';
 
 /** @private */
 export interface EventSubChannelHypeTrainContributionData {

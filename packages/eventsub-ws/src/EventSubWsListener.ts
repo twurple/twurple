@@ -81,7 +81,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	async stop(): Promise<void> {
 		if (this._connection) {
 			await Promise.all([...this._subscriptions.values()].map(async sub => await sub.suspend()));
-			await this._connection.disconnect();
+			await this._disconnect();
 		}
 	}
 
@@ -185,6 +185,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 						break;
 					}
 					case 'notification': {
+						this._restartKeepaliveTimer();
 						const id = (payload as EventSubNotificationPayload).subscription.id;
 						const subscription = this._getCorrectSubscriptionByTwitchId(id);
 						if (!subscription) {
@@ -270,7 +271,8 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	private _restartKeepaliveTimer(): void {
 		this._clearKeepaliveTimer();
 		if (this._keepaliveTimeout) {
-			this._keepaliveTimer = setTimeout(() => this._handleKeepaliveTimeout(), this._keepaliveTimeout);
+			// 1200 instead of 1000 to allow for a little more leeway than Twitch wants to give us
+			this._keepaliveTimer = setTimeout(() => this._handleKeepaliveTimeout(), this._keepaliveTimeout * 1200);
 		}
 	}
 

@@ -211,17 +211,21 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param version The version of the event.
 	 * @param condition The condition of the subscription.
 	 * @param transport The transport of the subscription.
+	 * @param requiredScope The scope required by the subscription. Will only be checked for applicable transports.
 	 */
 	async createSubscription(
 		type: string,
 		version: string,
 		condition: Record<string, unknown>,
-		transport: HelixEventSubTransportOptions
+		transport: HelixEventSubTransportOptions,
+		requiredScope?: string
 	): Promise<HelixEventSubSubscription> {
+		const scope = transport.method === 'websocket' ? requiredScope : undefined;
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			method: 'POST',
+			scope,
 			jsonBody: {
 				type,
 				version,
@@ -351,7 +355,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.subscribe',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:subscriptions'
 		);
 	}
 
@@ -369,7 +374,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.subscription.gift',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:subscriptions'
 		);
 	}
 
@@ -387,7 +393,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.subscription.message',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:subscriptions'
 		);
 	}
 
@@ -405,7 +412,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.subscription.end',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:subscriptions'
 		);
 	}
 
@@ -423,7 +431,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.cheer',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'bits:read'
 		);
 	}
 
@@ -442,7 +451,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.charity_campaign.start',
 			'beta',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:charity'
 		);
 	}
 
@@ -461,7 +471,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.charity_campaign.stop',
 			'beta',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:charity'
 		);
 	}
 
@@ -480,7 +491,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.charity_campaign.donate',
 			'beta',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:charity'
 		);
 	}
 
@@ -499,7 +511,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.charity_campaign.progress',
 			'beta',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:charity'
 		);
 	}
 
@@ -517,7 +530,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.ban',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:moderate'
 		);
 	}
 
@@ -535,7 +549,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.unban',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:moderate'
 		);
 	}
 
@@ -553,7 +568,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.moderator.add',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'moderation:read'
 		);
 	}
 
@@ -571,7 +587,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.moderator.remove',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'moderation:read'
 		);
 	}
 
@@ -625,7 +642,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward.add',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -643,7 +661,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward.update',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -663,7 +682,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward.update',
 			'1',
 			createEventSubRewardCondition(broadcaster, rewardId),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -681,7 +701,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward.remove',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -701,7 +722,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward.remove',
 			'1',
 			createEventSubRewardCondition(broadcaster, rewardId),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -719,7 +741,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward_redemption.add',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -739,7 +762,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward_redemption.add',
 			'1',
 			createEventSubRewardCondition(broadcaster, rewardId),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -757,7 +781,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward_redemption.update',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -777,7 +802,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.channel_points_custom_reward_redemption.update',
 			'1',
 			createEventSubRewardCondition(broadcaster, rewardId),
-			transport
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -795,7 +821,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.poll.begin',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:polls'
 		);
 	}
 
@@ -813,7 +840,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.poll.progress',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:polls'
 		);
 	}
 
@@ -831,7 +859,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.poll.end',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:polls'
 		);
 	}
 
@@ -849,7 +878,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.prediction.begin',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:predictions'
 		);
 	}
 
@@ -867,7 +897,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.prediction.progress',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:predictions'
 		);
 	}
 
@@ -885,7 +916,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.prediction.lock',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:predictions'
 		);
 	}
 
@@ -903,7 +935,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.prediction.end',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:predictions'
 		);
 	}
 
@@ -921,7 +954,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.goal.begin',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:goals'
 		);
 	}
 
@@ -939,7 +973,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.goal.progress',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:goals'
 		);
 	}
 
@@ -957,7 +992,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.goal.end',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:goals'
 		);
 	}
 
@@ -975,7 +1011,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.hype_train.begin',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:hype_train'
 		);
 	}
 
@@ -993,7 +1030,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.hype_train.progress',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:hype_train'
 		);
 	}
 
@@ -1011,7 +1049,8 @@ export class HelixEventSubApi extends BaseApi {
 			'channel.hype_train.end',
 			'1',
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
+			transport,
+			'channel:read:hype_train'
 		);
 	}
 
@@ -1074,16 +1113,22 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * @param user The user you want to listen to user update events for.
 	 * @param transport The transport options.
+	 * @param withEmail Whether to request adding the email address of the user to the notification.
+	 *
+	 * Only has an effect with the websocket transport.
+	 * With the webhook transport, this depends solely on the previous authorization given by the user.
 	 */
 	async subscribeToUserUpdateEvents(
 		user: UserIdResolvable,
-		transport: HelixEventSubTransportOptions
+		transport: HelixEventSubTransportOptions,
+		withEmail?: boolean
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'user.update',
 			'1',
 			createSingleKeyQuery('user_id', extractUserId(user)),
-			transport
+			transport,
+			withEmail ? 'user:read:email' : undefined
 		);
 	}
 

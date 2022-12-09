@@ -1,6 +1,6 @@
 {
   "name": "@twurple/chat",
-  "version": "5.3.0-pre.6",
+  "version": "5.3.0-pre.7",
   "publishConfig": {
     "access": "public"
   },
@@ -18,9 +18,9 @@
   "types": "lib",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "require": "./lib/index.js",
-      "import": "./es/index.mjs",
-      "types": "./lib/index.d.ts"
+      "import": "./es/index.mjs"
     }
   },
   "repository": {
@@ -39,16 +39,16 @@
     "@d-fischer/rate-limiter": "^0.6.1",
     "@d-fischer/shared-utils": "^3.4.0",
     "@d-fischer/typed-event-emitter": "^3.3.0",
-    "@twurple/common": "5.3.0-pre.6",
+    "@twurple/common": "5.3.0-pre.7",
     "ircv3": "^0.29.8",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "5.3.0-pre.6",
+    "@twurple/auth": "5.3.0-pre.7",
     "@types/jest": "^29.2.3"
   },
   "peerDependencies": {
-    "@twurple/auth": "5.3.0-pre.6"
+    "@twurple/auth": "5.3.0-pre.7"
   },
   "files": [
     "LICENSE",
