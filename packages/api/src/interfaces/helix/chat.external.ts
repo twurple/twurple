@@ -17,10 +17,22 @@ export interface HelixEmoteImageData {
 export type HelixEmoteImageScale = 1 | 2 | 4;
 
 /** @private */
+export type HelixEmoteFormat = 'static' | 'animated';
+
+/** @private */
+export type HelixEmoteScale = '1.0' | '2.0' | '3.0';
+
+/** @private */
+export type HelixEmoteThemeMode = 'light' | 'dark';
+
+/** @private */
 export interface HelixEmoteData {
 	id: string;
 	name: string;
 	images: HelixEmoteImageData;
+	format: HelixEmoteFormat[];
+	scale: HelixEmoteScale[];
+	theme_mode: HelixEmoteThemeMode[];
 }
 
 /** @private */
