@@ -68,7 +68,11 @@ export class HelixModerationApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResult(result, HelixBan, this._client);
+		// TODO revert to createPaginatedResult when broadcaster ID parameter is gone (prop already deprecated)
+		return {
+			data: result.data.map(data => new HelixBan(data, extractUserId(channel), this._client)),
+			cursor: result.pagination?.cursor
+		};
 	}
 
 	/**
@@ -77,14 +81,15 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to retrieve the banned users from.
 	 */
 	getBannedUsersPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixBanData, HelixBan> {
+		const broadcasterId = extractUserId(channel);
 		return new HelixPaginatedRequest(
 			{
 				url: 'moderation/banned',
 				scope: 'moderation:read',
-				query: createSingleKeyQuery('broadcaster_id', extractUserId(channel))
+				query: createSingleKeyQuery('broadcaster_id', broadcasterId)
 			},
 			this._client,
-			data => new HelixBan(data, this._client),
+			data => new HelixBan(data, broadcasterId, this._client),
 			50 // possibly a relatively consistent workaround for twitchdev/issues#18
 		);
 	}
@@ -300,7 +305,9 @@ export class HelixModerationApi extends BaseApi {
 			jsonBody: createBanUserBody(data)
 		});
 
-		return result.data.map(banData => new HelixBanUser(banData));
+		return result.data.map(
+			banData => new HelixBanUser(banData, banData.broadcaster_id, banData.end_time, this._client)
+		);
 	}
 
 	/**
