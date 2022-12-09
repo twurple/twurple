@@ -57,26 +57,28 @@ export class HelixEmote extends DataObject<HelixEmoteData> {
 	}
 
 	/**
-	 * Gets the URL of the emote image in static format at the given scale, or null if a static emote image at that scale doesn't exist.
+	 * Gets the URL of the emote image in static format at the given scale and theme mode, or null if a static emote image at that scale/theme mode doesn't exist.
 	 *
 	 * @param scale The scale of the image.
+	 * @param themeMode The theme mode of the image, either `light` or `dark`.
 	 */
-	getStaticImageUrl(scale: HelixEmoteScale = '1.0'): string | null {
+	getStaticImageUrl(scale: HelixEmoteScale = '1.0', themeMode: HelixEmoteThemeMode = 'light'): string | null {
 		if (this[rawDataSymbol].format.includes('static') && this[rawDataSymbol].scale.includes(scale)) {
-			this.getFormattedImageUrl(scale, 'static');
+			this.getFormattedImageUrl(scale, 'static', themeMode);
 		}
 
 		return null;
 	}
 
 	/**
-	 * Gets the URL of the emote image in animated format at the given scale, or null if an animated emote image at that scale doesn't exist.
+	 * Gets the URL of the emote image in animated format at the given scale and theme mode, or null if an animated emote image at that scale/theme mode doesn't exist.
 	 *
 	 * @param scale The scale of the image.
+	 * @param themeMode The theme mode of the image, either `light` or `dark`.
 	 */
-	getAnimatedImageUrl(scale: HelixEmoteScale = '1.0'): string | null {
+	getAnimatedImageUrl(scale: HelixEmoteScale = '1.0', themeMode: HelixEmoteThemeMode = 'light'): string | null {
 		if (this[rawDataSymbol].format.includes('animated') && this[rawDataSymbol].scale.includes(scale)) {
-			this.getFormattedImageUrl(scale, 'animated');
+			this.getFormattedImageUrl(scale, 'animated', themeMode);
 		}
 
 		return null;
