@@ -29,6 +29,11 @@ export interface HelixBanData {
 	user_login: string;
 	user_name: string;
 	expires_at: string;
+	created_at: string;
+	reason: string;
+	moderator_id: string;
+	moderator_login: string;
+	moderator_name: string;
 }
 
 /** @private */
