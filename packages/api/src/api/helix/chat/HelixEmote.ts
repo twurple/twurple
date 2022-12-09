@@ -64,7 +64,7 @@ export class HelixEmote extends DataObject<HelixEmoteData> {
 	 */
 	getStaticImageUrl(scale: HelixEmoteScale = '1.0', themeMode: HelixEmoteThemeMode = 'light'): string | null {
 		if (this[rawDataSymbol].format.includes('static') && this[rawDataSymbol].scale.includes(scale)) {
-			this.getFormattedImageUrl(scale, 'static', themeMode);
+			return this.getFormattedImageUrl(scale, 'static', themeMode);
 		}
 
 		return null;
@@ -78,7 +78,7 @@ export class HelixEmote extends DataObject<HelixEmoteData> {
 	 */
 	getAnimatedImageUrl(scale: HelixEmoteScale = '1.0', themeMode: HelixEmoteThemeMode = 'light'): string | null {
 		if (this[rawDataSymbol].format.includes('animated') && this[rawDataSymbol].scale.includes(scale)) {
-			this.getFormattedImageUrl(scale, 'animated', themeMode);
+			return this.getFormattedImageUrl(scale, 'animated', themeMode);
 		}
 
 		return null;
