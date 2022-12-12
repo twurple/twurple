@@ -29,6 +29,8 @@ export { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent';
 export { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent';
 export { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 export { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
+export { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
+export { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 export { EventSubChannelSubscriptionEndEvent } from './events/EventSubChannelSubscriptionEndEvent';
 export type { EventSubChannelSubscriptionEndEventTier } from './events/EventSubChannelSubscriptionEndEvent.external';
 export { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';

@@ -116,6 +116,7 @@ export { HelixBan } from './api/helix/moderation/HelixBan';
 export { HelixModerator } from './api/helix/moderation/HelixModerator';
 export { HelixBanUser } from './api/helix/moderation/HelixBanUser';
 export { HelixBlockedTerm } from './api/helix/moderation/HelixBlockedTerm';
+export { HelixShieldModeStatus } from './api/helix/moderation/HelixShieldModeStatus';
 export type { HelixBanFilter, HelixBanUserRequest, HelixModeratorFilter } from './interfaces/helix/moderation.input';
 
 export { HelixPollApi } from './api/helix/poll/HelixPollApi';

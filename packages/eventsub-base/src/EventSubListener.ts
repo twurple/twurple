@@ -24,6 +24,8 @@ import type { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent
 import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
+import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
+import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChannelSubscriptionEndEvent';
 import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
@@ -219,6 +221,36 @@ export interface EventSubListener {
 	subscribeToChannelUnbanEvents: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelUnbanEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent Shield Mode being activated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications for when Shield Mode is activated in their channel.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 *
+	 * @beta
+	 */
+	subscribeToChannelShieldModeBeginEvents: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelShieldModeBeginEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent Shield Mode being deactivated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications for when Shield Mode is deactivated in their channel.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 *
+	 * @beta
+	 */
+	subscribeToChannelShieldModeEndEvents: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelShieldModeEndEvent) => void
 	) => Promise<EventSubSubscription>;
 
 	/**

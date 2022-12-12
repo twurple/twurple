@@ -65,6 +65,15 @@ export interface HelixModeratorData {
 }
 
 /** @private */
+export interface HelixShieldModeStatusData {
+	is_active: boolean;
+	moderator_id: string;
+	moderator_login: string;
+	moderator_name: string;
+	last_activated_at: string;
+}
+
+/** @private */
 export function createModerationUserListQuery(channel: UserIdResolvable, filter?: HelixBanFilter) {
 	return {
 		broadcaster_id: extractUserId(channel),
@@ -112,5 +121,12 @@ export function createBanUserBody(data: HelixBanUserRequest) {
 			reason: data.reason,
 			user_id: extractUserId(data.userId)
 		}
+	};
+}
+
+/** @private */
+export function createUpdateShieldModeStatusBody(activate: boolean) {
+	return {
+		is_active: activate
 	};
 }
