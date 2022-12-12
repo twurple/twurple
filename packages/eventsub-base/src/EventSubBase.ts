@@ -35,6 +35,8 @@ import type { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent
 import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
+import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
+import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChannelSubscriptionEndEvent';
 import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
@@ -75,6 +77,8 @@ import { EventSubChannelRedemptionUpdateSubscription } from './subscriptions/Eve
 import { EventSubChannelRewardAddSubscription } from './subscriptions/EventSubChannelRewardAddSubscription';
 import { EventSubChannelRewardRemoveSubscription } from './subscriptions/EventSubChannelRewardRemoveSubscription';
 import { EventSubChannelRewardUpdateSubscription } from './subscriptions/EventSubChannelRewardUpdateSubscription';
+import { EventSubChannelShieldModeBeginSubscription } from './subscriptions/EventSubChannelShieldModeBeginSubscription';
+import { EventSubChannelShieldModeEndSubscription } from './subscriptions/EventSubChannelShieldModeEndSubscription';
 import { EventSubChannelSubscriptionEndSubscription } from './subscriptions/EventSubChannelSubscriptionEndSubscription';
 import { EventSubChannelSubscriptionGiftSubscription } from './subscriptions/EventSubChannelSubscriptionGiftSubscription';
 import { EventSubChannelSubscriptionMessageSubscription } from './subscriptions/EventSubChannelSubscriptionMessageSubscription';
@@ -388,6 +392,64 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelUnbanEvents');
 
 		return await this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent Shield Mode being activated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications for when Shield Mode is activated in their channel.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 *
+	 * @beta
+	 */
+	async subscribeToChannelShieldModeBeginEvents(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelShieldModeBeginEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelShieldModeStartEvents'
+		);
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShieldModeStartEvents');
+
+		return await this._genericSubscribe(
+			EventSubChannelShieldModeBeginSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent Shield Mode being deactivated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications for when Shield Mode is deactivated in their channel.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 *
+	 * @beta
+	 */
+	async subscribeToChannelShieldModeEndEvents(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelShieldModeEndEvent) => void
+	): Promise<EventSubSubscription> {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelShieldModeEndEvents'
+		);
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShieldModeEndEvents');
+
+		return await this._genericSubscribe(
+			EventSubChannelShieldModeEndSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId
+		);
 	}
 
 	/**

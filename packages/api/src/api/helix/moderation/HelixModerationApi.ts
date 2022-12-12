@@ -8,12 +8,14 @@ import {
 	createBanUserBody,
 	createModerationUserListQuery,
 	createModeratorModifyQuery,
+	createUpdateShieldModeStatusBody,
 	type HelixAutoModSettingsData,
 	type HelixAutoModStatusData,
 	type HelixBanData,
 	type HelixBanUserData,
 	type HelixBlockedTermData,
-	type HelixModeratorData
+	type HelixModeratorData,
+	type HelixShieldModeStatusData
 } from '../../../interfaces/helix/moderation.external';
 import {
 	type HelixAutoModSettingsUpdate,
@@ -34,6 +36,7 @@ import { HelixBan } from './HelixBan';
 import { HelixBanUser } from './HelixBanUser';
 import { HelixBlockedTerm } from './HelixBlockedTerm';
 import { HelixModerator } from './HelixModerator';
+import { HelixShieldModeStatus } from './HelixShieldModeStatus';
 
 /**
  * The Helix API methods that deal with moderation.
@@ -436,5 +439,60 @@ export class HelixModerationApi extends BaseApi {
 				...createSingleKeyQuery('message_id', messageId)
 			}
 		});
+	}
+
+	/**
+	 * Gets the broadcaster's Shield Mode activation status.
+	 *
+	 * @param broadcaster The broadcaster whose Shield Mode activation status you want to get.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
+	 *
+	 * @beta
+	 */
+	async getShieldModeStatus(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable
+	): Promise<HelixShieldModeStatus> {
+		const result = await this._client.callApi<HelixResponse<HelixShieldModeStatusData>>({
+			type: 'helix',
+			url: 'moderation/shield_mode',
+			method: 'GET',
+			scope: 'moderator:read:shield_mode',
+			query: {
+				...createModeratorActionQuery(broadcaster, moderator)
+			}
+		});
+
+		return new HelixShieldModeStatus(result.data[0], this._client);
+	}
+
+	/**
+	 * Activates or deactivates the broadcaster's Shield Mode.
+	 *
+	 * @param broadcaster The broadcaster whose Shield Mode you want to activate or deactivate.
+	 * @param moderator A user that has permission to update Shield Mode status in the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
+	 * @param activate Whether or not to activate Shield Mode on the broadcaster's channel.
+	 *
+	 * @beta
+	 */
+	async updateShieldModeStatus(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		activate: boolean
+	): Promise<HelixShieldModeStatus> {
+		const result = await this._client.callApi<HelixResponse<HelixShieldModeStatusData>>({
+			type: 'helix',
+			url: 'moderation/shield_mode',
+			method: 'PUT',
+			scope: 'moderator:manage:shield_mode',
+			query: {
+				...createModeratorActionQuery(broadcaster, moderator)
+			},
+			jsonBody: createUpdateShieldModeStatusBody(activate)
+		});
+
+		return new HelixShieldModeStatus(result.data[0], this._client);
 	}
 }

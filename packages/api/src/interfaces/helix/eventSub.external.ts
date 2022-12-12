@@ -67,3 +67,11 @@ export interface HelixPaginatedEventSubSubscriptionsResponse
 export function createEventSubRewardCondition(broadcaster: UserIdResolvable, rewardId: string) {
 	return { broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId };
 }
+
+/** @private */
+export function createEventSubModeratorCondition(broadcaster: UserIdResolvable, moderator: UserIdResolvable) {
+	return {
+		broadcaster_user_id: extractUserId(broadcaster),
+		moderator_user_id: extractUserId(moderator)
+	};
+}

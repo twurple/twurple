@@ -2,6 +2,7 @@ import type { HelixPaginatedResponseWithTotal } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import {
+	createEventSubModeratorCondition,
 	createEventSubRewardCondition,
 	type HelixEventSubSubscriptionData,
 	type HelixEventSubSubscriptionStatus,
@@ -551,6 +552,52 @@ export class HelixEventSubApi extends BaseApi {
 			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
 			transport,
 			'channel:moderate'
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent Shield Mode being activated in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to Shield Mode activation events for.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param transport The transport options.
+	 *
+	 * @beta
+	 */
+	async subscribeToChannelShieldModeBeginEvents(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.shield_mode.begin',
+			'beta',
+			createEventSubModeratorCondition(broadcaster, moderator),
+			transport,
+			'moderator:read:shield_mode'
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent Shield Mode being deactivated in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to Shield Mode deactivation events for.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param transport The transport options.
+	 *
+	 * @beta
+	 */
+	async subscribeToChannelShieldModeEndEvents(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.shield_mode.end',
+			'beta',
+			createEventSubModeratorCondition(broadcaster, moderator),
+			transport,
+			'moderator:read:shield_mode'
 		);
 	}
 

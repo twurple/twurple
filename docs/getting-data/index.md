@@ -4,7 +4,7 @@ should use for which use case.
 ## Current state & actions
 
 | Operation                                     | `@twurple/api`           | `@twurple/chat`                                        |
-|-----------------------------------------------|--------------------------|--------------------------------------------------------|
+| --------------------------------------------- | ------------------------ | ------------------------------------------------------ |
 | Start an ad                                   | Yes                      | Deprecated                                             |
 | Get Bits leaderboard                          | Yes                      | No                                                     |
 | Get available Cheermotes                      | Yes                      | No                                                     |
@@ -50,12 +50,12 @@ should use for which use case.
 | Get current Creator Goals state               | Yes                      | No                                                     |
 | Get list of chatters                          | Yes                      | No                                                     |
 | Get info about charity campaigns              | Yes                      | No                                                     |
-| Get & manage Shield Mode status               | No (supported by Twitch) | No                                                     |
+| Get & manage Shield Mode status               | Yes                      | No                                                     |
 
 ## Events
 
 | Event type                        | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub-*`     |
-|-----------------------------------|------------------------------|---------------------------|---------------------------|
+| --------------------------------- | ---------------------------- | ------------------------- | ------------------------- |
 | Chat messages                     | Yes                          | Sub & cheer messages only | Sub & cheer messages only |
 | Chat mode (e.g. sub only) changes | Yes                          | No                        | No                        |
 | Whispers                          | Yes                          | Yes                       | No                        |
@@ -74,4 +74,4 @@ should use for which use case.
 | Authorization grant/revoke        | No                           | No                        | Yes                       |
 | Drops                             | No                           | No                        | No (supported by Twitch)  |
 | Charity campaigns & donations     | No                           | No                        | Yes                       |
-| Shield mode begin/end             | No                           | No                        | No (supported by Twitch)  |
+| Shield mode begin/end             | No                           | No                        | Yes                       |
