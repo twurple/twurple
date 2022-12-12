@@ -1,4 +1,5 @@
 import type { HelixPaginatedResponseWithTotal } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import {
@@ -280,12 +281,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'stream.online',
-			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
-		);
+		return await this.createSubscription('stream.online', '1', createBroadcasterQuery(broadcaster), transport);
 	}
 
 	/**
@@ -298,12 +294,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'stream.offline',
-			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
-		);
+		return await this.createSubscription('stream.offline', '1', createBroadcasterQuery(broadcaster), transport);
 	}
 
 	/**
@@ -316,12 +307,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'channel.update',
-			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
-		);
+		return await this.createSubscription('channel.update', '1', createBroadcasterQuery(broadcaster), transport);
 	}
 
 	/**
@@ -334,12 +320,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'channel.follow',
-			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
-			transport
-		);
+		return await this.createSubscription('channel.follow', '1', createBroadcasterQuery(broadcaster), transport);
 	}
 
 	/**
@@ -355,7 +336,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.subscribe',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:subscriptions'
 		);
@@ -374,7 +355,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.subscription.gift',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:subscriptions'
 		);
@@ -393,7 +374,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.subscription.message',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:subscriptions'
 		);
@@ -412,7 +393,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.subscription.end',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:subscriptions'
 		);
@@ -431,7 +412,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.cheer',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'bits:read'
 		);
@@ -451,7 +432,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.charity_campaign.start',
 			'beta',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:charity'
 		);
@@ -471,7 +452,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.charity_campaign.stop',
 			'beta',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:charity'
 		);
@@ -491,7 +472,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.charity_campaign.donate',
 			'beta',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:charity'
 		);
@@ -511,7 +492,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.charity_campaign.progress',
 			'beta',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:charity'
 		);
@@ -530,7 +511,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.ban',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:moderate'
 		);
@@ -549,7 +530,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.unban',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:moderate'
 		);
@@ -614,7 +595,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.moderator.add',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'moderation:read'
 		);
@@ -633,7 +614,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.moderator.remove',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'moderation:read'
 		);
@@ -688,7 +669,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward.add',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:redemptions'
 		);
@@ -707,7 +688,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward.update',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:redemptions'
 		);
@@ -747,7 +728,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward.remove',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:redemptions'
 		);
@@ -787,7 +768,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.add',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:redemptions'
 		);
@@ -827,7 +808,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.update',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:redemptions'
 		);
@@ -867,7 +848,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.poll.begin',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:polls'
 		);
@@ -886,7 +867,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.poll.progress',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:polls'
 		);
@@ -905,7 +886,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.poll.end',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:polls'
 		);
@@ -924,7 +905,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.prediction.begin',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:predictions'
 		);
@@ -943,7 +924,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.prediction.progress',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:predictions'
 		);
@@ -962,7 +943,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.prediction.lock',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:predictions'
 		);
@@ -981,7 +962,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.prediction.end',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:predictions'
 		);
@@ -1000,7 +981,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.goal.begin',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:goals'
 		);
@@ -1019,7 +1000,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.goal.progress',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:goals'
 		);
@@ -1038,7 +1019,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.goal.end',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:goals'
 		);
@@ -1057,7 +1038,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.hype_train.begin',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:hype_train'
 		);
@@ -1076,7 +1057,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.hype_train.progress',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:hype_train'
 		);
@@ -1095,7 +1076,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.hype_train.end',
 			'1',
-			createSingleKeyQuery('broadcaster_user_id', extractUserId(broadcaster)),
+			createBroadcasterQuery(broadcaster),
 			transport,
 			'channel:read:hype_train'
 		);

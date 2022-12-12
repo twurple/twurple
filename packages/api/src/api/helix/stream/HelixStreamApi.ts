@@ -1,6 +1,6 @@
 import { flatten } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
-import { HttpStatusCodeError } from '@twurple/api-call';
+import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
@@ -212,7 +212,7 @@ export class HelixStreamApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixTagData>>({
 			type: 'helix',
 			url: 'streams/tags',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+			query: createBroadcasterQuery(broadcaster)
 		});
 
 		return result.data.map(data => new HelixTag(data));
@@ -230,7 +230,7 @@ export class HelixStreamApi extends BaseApi {
 			url: 'streams/tags',
 			scope: 'channel:manage:broadcast',
 			method: 'PUT',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+			query: createBroadcasterQuery(broadcaster),
 			jsonBody: createSingleKeyQuery('tag_ids', tagIds)
 		});
 	}
@@ -245,7 +245,7 @@ export class HelixStreamApi extends BaseApi {
 			type: 'helix',
 			url: 'streams/key',
 			scope: 'channel:read:stream_key',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+			query: createBroadcasterQuery(broadcaster)
 		});
 
 		return result.data[0].stream_key;

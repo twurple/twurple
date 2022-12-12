@@ -1,4 +1,5 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { CommercialLength, UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import {
@@ -84,13 +85,12 @@ export class HelixChannelApi extends BaseApi {
 	 * @param data The channel info to set.
 	 */
 	async updateChannelInfo(user: UserIdResolvable, data: HelixChannelUpdate): Promise<void> {
-		const userId = extractUserId(user);
 		await this._client.callApi({
 			type: 'helix',
 			url: 'channels',
 			method: 'PATCH',
 			scope: 'channel:manage:broadcast',
-			query: createSingleKeyQuery('broadcaster_id', userId),
+			query: createBroadcasterQuery(user),
 			jsonBody: createChannelUpdateBody(data)
 		});
 	}
@@ -121,7 +121,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/editors',
 			scope: 'channel:read:editors',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+			query: createBroadcasterQuery(broadcaster)
 		});
 
 		return result.data.map(data => new HelixChannelEditor(data, this._client));
@@ -144,7 +144,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/vips',
 			scope: 'channel:read:vips',
 			query: {
-				...createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
 			}
 		});
@@ -162,7 +162,7 @@ export class HelixChannelApi extends BaseApi {
 			{
 				url: 'channels/vips',
 				scope: 'channel:read:vips',
-				query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
 			data => new HelixUserRelation(data, this._client)

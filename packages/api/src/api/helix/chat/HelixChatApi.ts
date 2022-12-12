@@ -1,4 +1,5 @@
 import type { HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import {
@@ -95,7 +96,7 @@ export class HelixChatApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixChatBadgeSetData>>({
 			type: 'helix',
 			url: 'chat/badges',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+			query: createBroadcasterQuery(broadcaster)
 		});
 
 		return result.data.map(data => new HelixChatBadgeSet(data));
@@ -122,7 +123,7 @@ export class HelixChatApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixChannelEmoteData>>({
 			type: 'helix',
 			url: 'chat/emotes',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(channel))
+			query: createBroadcasterQuery(channel)
 		});
 
 		return result.data.map(data => new HelixChannelEmote(data, this._client));
@@ -152,7 +153,7 @@ export class HelixChatApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixChatSettingsData>>({
 			type: 'helix',
 			url: 'chat/settings',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+			query: createBroadcasterQuery(broadcaster)
 		});
 
 		return new HelixChatSettings(result.data[0]);

@@ -1,6 +1,7 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import {
 	createCustomRewardBody,
 	createCustomRewardChangeQuery,
@@ -18,7 +19,7 @@ import {
 	type HelixPaginatedCustomRewardRedemptionFilter,
 	type HelixUpdateCustomRewardData
 } from '../../../interfaces/helix/channelPoints.input';
-import { createGetByIdsQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import { createGetByIdsQuery } from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
@@ -108,7 +109,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards',
 			method: 'POST',
 			scope: 'channel:manage:redemptions',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+			query: createBroadcasterQuery(broadcaster),
 			jsonBody: createCustomRewardBody(data)
 		});
 

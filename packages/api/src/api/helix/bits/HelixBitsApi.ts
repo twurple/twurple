@@ -1,14 +1,14 @@
 import { mapOptional } from '@d-fischer/shared-utils';
 import type { HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import {
 	createBitsLeaderboardQuery,
 	type HelixBitsLeaderboardResponse,
 	type HelixCheermoteData
 } from '../../../interfaces/helix/bits.external';
 import { type HelixBitsLeaderboardQuery } from '../../../interfaces/helix/bits.input';
-import { createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixBitsLeaderboard } from './HelixBitsLeaderboard';
 import { HelixCheermoteList } from './HelixCheermoteList';
@@ -57,7 +57,7 @@ export class HelixBitsApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixCheermoteData>>({
 			type: 'helix',
 			url: 'bits/cheermotes',
-			query: createSingleKeyQuery('broadcaster_id', mapOptional(broadcaster, extractUserId))
+			query: mapOptional(broadcaster, createBroadcasterQuery)
 		});
 
 		return new HelixCheermoteList(result.data);

@@ -1,7 +1,8 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
-import { createGetByIdsQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import { rtfm } from '@twurple/common';
+import { createGetByIdsQuery } from '../../../interfaces/helix/generic.external';
 import {
 	createEndPredictionBody,
 	createPredictionBody,
@@ -50,7 +51,7 @@ export class HelixPredictionApi extends BaseApi {
 			url: 'predictions',
 			scope: 'channel:read:predictions',
 			query: {
-				...createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
 			}
 		});
@@ -70,7 +71,7 @@ export class HelixPredictionApi extends BaseApi {
 			{
 				url: 'predictions',
 				scope: 'channel:read:predictions',
-				query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
 			data => new HelixPrediction(data, this._client),

@@ -1,5 +1,6 @@
 import { mapOptional } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from '@twurple/common';
 import { createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
@@ -212,7 +213,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/blocks',
 			scope: 'user:read:blocked_users',
 			query: {
-				...createSingleKeyQuery('broadcaster_id', extractUserId(user)),
+				...createBroadcasterQuery(user),
 				...createPaginationQuery(pagination)
 			}
 		});
@@ -230,7 +231,7 @@ export class HelixUserApi extends BaseApi {
 			{
 				url: 'users/blocks',
 				scope: 'user:read:blocked_users',
-				query: createSingleKeyQuery('broadcaster_id', extractUserId(user))
+				query: createBroadcasterQuery(user)
 			},
 			this._client,
 			data => new HelixUserBlock(data, this._client)

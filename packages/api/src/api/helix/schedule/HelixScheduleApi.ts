@@ -1,6 +1,6 @@
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId } from '@twurple/common';
-import { createGetByIdsQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import { createGetByIdsQuery } from '../../../interfaces/helix/generic.external';
 import {
 	createScheduleQuery,
 	createScheduleSegmentBody,
@@ -117,7 +117,7 @@ export class HelixScheduleApi extends BaseApi {
 		return await this._client.callApi<string>({
 			type: 'helix',
 			url: 'schedule/icalendar',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+			query: createBroadcasterQuery(broadcaster)
 		});
 	}
 
@@ -156,7 +156,7 @@ export class HelixScheduleApi extends BaseApi {
 			url: 'schedule/segment',
 			method: 'POST',
 			scope: 'channel:manage:schedule',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+			query: createBroadcasterQuery(broadcaster),
 			jsonBody: createScheduleSegmentBody(data)
 		});
 

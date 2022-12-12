@@ -1,4 +1,5 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { createModeratorActionQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
@@ -84,15 +85,14 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to retrieve the banned users from.
 	 */
 	getBannedUsersPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixBanData, HelixBan> {
-		const broadcasterId = extractUserId(channel);
 		return new HelixPaginatedRequest(
 			{
 				url: 'moderation/banned',
 				scope: 'moderation:read',
-				query: createSingleKeyQuery('broadcaster_id', broadcasterId)
+				query: createBroadcasterQuery(channel)
 			},
 			this._client,
-			data => new HelixBan(data, broadcasterId, this._client),
+			data => new HelixBan(data, extractUserId(channel), this._client),
 			50 // possibly a relatively consistent workaround for twitchdev/issues#18
 		);
 	}
@@ -143,7 +143,7 @@ export class HelixModerationApi extends BaseApi {
 			{
 				url: 'moderation/moderators',
 				scope: 'moderation:read',
-				query: createSingleKeyQuery('broadcaster_id', extractUserId(channel))
+				query: createBroadcasterQuery(channel)
 			},
 			this._client,
 			data => new HelixModerator(data, this._client)
@@ -210,7 +210,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/enforcements/status',
 			method: 'POST',
 			scope: 'moderation:read',
-			query: createSingleKeyQuery('broadcaster_id', extractUserId(channel)),
+			query: createBroadcasterQuery(channel),
 			jsonBody: {
 				data
 			}

@@ -1,8 +1,8 @@
 import type { HelixResponse } from '@twurple/api-call';
-import { HttpStatusCodeError } from '@twurple/api-call';
+import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
-import { createChannelUsersCheckQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import { rtfm } from '@twurple/common';
+import { createChannelUsersCheckQuery } from '../../../interfaces/helix/generic.external';
 import {
 	createSubscriptionCheckQuery,
 	type HelixPaginatedSubscriptionsResponse,
@@ -51,7 +51,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			scope: 'channel:read:subscriptions',
 			type: 'helix',
 			query: {
-				...createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
 			}
 		});
@@ -74,7 +74,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			{
 				url: 'subscriptions',
 				scope: 'channel:read:subscriptions',
-				query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
 			data => new HelixSubscription(data, this._client)

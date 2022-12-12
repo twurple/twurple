@@ -1,7 +1,8 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
-import { createGetByIdsQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import { rtfm } from '@twurple/common';
+import { createGetByIdsQuery } from '../../../interfaces/helix/generic.external';
 import { createPollBody, createPollEndBody, type HelixPollData } from '../../../interfaces/helix/poll.external';
 import { type HelixCreatePollData } from '../../../interfaces/helix/poll.input';
 import { BaseApi } from '../../BaseApi';
@@ -45,7 +46,7 @@ export class HelixPollApi extends BaseApi {
 			url: 'polls',
 			scope: 'channel:read:polls',
 			query: {
-				...createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster)),
+				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
 			}
 		});
@@ -63,7 +64,7 @@ export class HelixPollApi extends BaseApi {
 			{
 				url: 'polls',
 				scope: 'channel:read:polls',
-				query: createSingleKeyQuery('broadcaster_id', extractUserId(broadcaster))
+				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
 			data => new HelixPoll(data, this._client),
