@@ -459,9 +459,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/shield_mode',
 			method: 'GET',
 			scope: 'moderator:read:shield_mode',
-			query: {
-				...createModeratorActionQuery(broadcaster, moderator)
-			}
+			query: createModeratorActionQuery(broadcaster, moderator)
 		});
 
 		return new HelixShieldModeStatus(result.data[0], this._client);
@@ -487,9 +485,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/shield_mode',
 			method: 'PUT',
 			scope: 'moderator:manage:shield_mode',
-			query: {
-				...createModeratorActionQuery(broadcaster, moderator)
-			},
+			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: createUpdateShieldModeStatusBody(activate)
 		});
 
