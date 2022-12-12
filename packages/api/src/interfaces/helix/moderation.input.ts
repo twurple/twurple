@@ -4,6 +4,8 @@ import { type HelixAutoModSettings } from '../../api/helix/moderation/HelixAutoM
 
 /**
  * Filters for the banned users request.
+ *
+ * @inheritDoc
  */
 export interface HelixBanFilter extends HelixForwardPagination {
 	/**
@@ -14,6 +16,8 @@ export interface HelixBanFilter extends HelixForwardPagination {
 
 /**
  * Filters for the moderators request.
+ *
+ * @inheritDoc
  */
 export interface HelixModeratorFilter extends HelixForwardPagination {
 	/**

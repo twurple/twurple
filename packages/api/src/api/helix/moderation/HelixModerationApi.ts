@@ -60,6 +60,8 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve the banned users from.
 	 * @param filter Additional filters for the result set.
+	 *
+	 * @expandParams
 	 */
 	async getBannedUsers(channel: UserIdResolvable, filter?: HelixBanFilter): Promise<HelixPaginatedResult<HelixBan>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBanData>>({
@@ -115,6 +117,8 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve moderators from.
 	 * @param filter Additional filters for the result set.
+	 *
+	 * @expandParams
 	 */
 	async getModerators(
 		channel: UserIdResolvable,
