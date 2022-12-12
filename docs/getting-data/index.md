@@ -4,7 +4,7 @@ should use for which use case.
 ## Current state & actions
 
 | Operation                                     | `@twurple/api`           | `@twurple/chat`                                        |
-| --------------------------------------------- | ------------------------ | ------------------------------------------------------ |
+|-----------------------------------------------|--------------------------|--------------------------------------------------------|
 | Start an ad                                   | Yes                      | Deprecated                                             |
 | Get Bits leaderboard                          | Yes                      | No                                                     |
 | Get available Cheermotes                      | Yes                      | No                                                     |
@@ -55,7 +55,7 @@ should use for which use case.
 ## Events
 
 | Event type                        | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub-*`     |
-| --------------------------------- | ---------------------------- | ------------------------- | ------------------------- |
+|-----------------------------------|------------------------------|---------------------------|---------------------------|
 | Chat messages                     | Yes                          | Sub & cheer messages only | Sub & cheer messages only |
 | Chat mode (e.g. sub only) changes | Yes                          | No                        | No                        |
 | Whispers                          | Yes                          | Yes                       | No                        |
