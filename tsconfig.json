@@ -31,9 +31,6 @@
 			"path": "./packages/ebs-helper"
 		},
 		{
-			"path": "./packages/eventsub"
-		},
-		{
 			"path": "./packages/eventsub-base"
 		},
 		{
