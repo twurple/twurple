@@ -28,7 +28,7 @@ import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEven
  *
  * ## Before using these methods...
  *
- * All methods in this class assume that you are already running a working EventSub listener at the given callback URL.
+ * All methods in this class assume that you are already running a working EventSub listener reachable using the given transport.
  *
  * If you don't already have one, we recommend use of the `@twurple/eventsub-http` or `@twurple/eventsub-ws` libraries,
  * which handle subscribing and unsubscribing to these topics automatically.
