@@ -1,61 +1,54 @@
-import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixBanData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	expires_at: string;
-}
+import { type HelixBanData } from '../../../interfaces/helix/moderation.external';
+import { HelixBanUser } from './HelixBanUser';
 
 /**
  * Information about the ban of a user.
+ *
+ * @inheritDoc
  */
 @rtfm<HelixBan>('api', 'HelixBan', 'userId')
-export class HelixBan extends DataObject<HelixBanData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+export class HelixBan extends HelixBanUser {
+	/** @private */ declare readonly [rawDataSymbol]: HelixBanData;
 
 	/** @private */
-	constructor(data: HelixBanData, client: ApiClient) {
-		super(data);
-		this._client = client;
+	constructor(data: HelixBanData, broadcasterId: string, client: ApiClient) {
+		super(data, broadcasterId, data.expires_at || null, client);
 	}
 
 	/**
-	 * The ID of the banned user.
-	 */
-	get userId(): string {
-		return this[rawDataSymbol].user_id;
-	}
-
-	/**
-	 * The name of the banned user.
+	 * The name of the user that was banned or put in a timeout.
 	 */
 	get userName(): string {
 		return this[rawDataSymbol].user_login;
 	}
 
 	/**
-	 * The display name of the banned user.
+	 * The display name of the user that was banned or put in a timeout.
 	 */
 	get userDisplayName(): string {
 		return this[rawDataSymbol].user_name;
 	}
 
 	/**
-	 * Retrieves more information about the user.
+	 * The name of the moderator that banned or put the user in the timeout.
 	 */
-	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+	get moderatorName(): string {
+		return this[rawDataSymbol].moderator_login;
 	}
 
 	/**
-	 * The date when the ban will expire; null for permanent bans.
+	 * The display name of the moderator that banned or put the user in the timeout.
 	 */
-	get expiryDate(): Date | null {
-		return this[rawDataSymbol].expires_at ? new Date(this[rawDataSymbol].expires_at) : null;
+	get moderatorDisplayName(): string {
+		return this[rawDataSymbol].moderator_name;
+	}
+
+	/**
+	 * The reason why the user was banned or timed out. Returns `null` if no reason was given.
+	 */
+	get reason(): string | null {
+		return this[rawDataSymbol].reason || null;
 	}
 }

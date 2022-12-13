@@ -1,28 +1,22 @@
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
+import { type HelixGameData } from '../../../interfaces/helix/game.external';
+import {
+	createSearchChannelsQuery,
+	type HelixChannelSearchResultData
+} from '../../../interfaces/helix/search.external';
+import {
+	type HelixChannelSearchFilter,
+	type HelixPaginatedChannelSearchFilter
+} from '../../../interfaces/helix/search.input';
 import { BaseApi } from '../../BaseApi';
-import type { HelixGameData } from '../game/HelixGame';
 import { HelixGame } from '../game/HelixGame';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixChannelSearchResultData } from './HelixChannelSearchResult';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixChannelSearchResult } from './HelixChannelSearchResult';
-
-/**
- * Filters for a channel search.
- */
-export interface HelixChannelSearchFilter {
-	/**
-	 * Include only channels that are currently live.
-	 */
-	liveOnly?: boolean;
-}
-
-/** @inheritDoc */
-export interface HelixPaginatedChannelSearchFilter extends HelixChannelSearchFilter, HelixForwardPagination {}
 
 /**
  * The Helix API methods that run searches.
@@ -57,7 +51,7 @@ export class HelixSearchApi extends BaseApi {
 			url: 'search/categories',
 			query: {
 				query,
-				...makePaginationQuery(pagination)
+				...createPaginationQuery(pagination)
 			}
 		});
 
@@ -98,9 +92,8 @@ export class HelixSearchApi extends BaseApi {
 			type: 'helix',
 			url: 'search/channels',
 			query: {
-				query,
-				live_only: filter.liveOnly?.toString(),
-				...makePaginationQuery(filter)
+				...createSearchChannelsQuery(query, filter),
+				...createPaginationQuery(filter)
 			}
 		});
 
@@ -122,10 +115,7 @@ export class HelixSearchApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'search/channels',
-				query: {
-					query,
-					live_only: filter.liveOnly?.toString()
-				}
+				query: createSearchChannelsQuery(query, filter)
 			},
 			this._client,
 			data => new HelixChannelSearchResult(data, this._client)

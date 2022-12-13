@@ -1,18 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixGame, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { type EventSubChannelUpdateEventData } from './EventSubChannelUpdateEvent.external';
 
-/** @private */
-export interface EventSubChannelUpdateEventData {
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	title: string;
-	language: string;
-	category_id: string;
-	category_name: string;
-	is_mature: boolean;
-}
 /**
  * An EventSub event representing a change in channel metadata.
  */

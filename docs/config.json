@@ -11,10 +11,10 @@
 	"mainBranchName": "main",
 	"versionBranchPrefix": "versions/",
 	"versionFolder": "versions",
-	"defaultVersion": "5.2",
+	"defaultVersion": "5.3",
 	"title": "Twurple",
 	"indexFile": "index.md",
-	"ignoredPackages": ["auth-electron", "auth-ext", "eventsub-ngrok"],
+	"ignoredPackages": ["auth-electron", "auth-ext", "eventsub-ngrok", "eventsub"],
 	"persistentFiles": ["CNAME"],
 	"categories": [
 		{

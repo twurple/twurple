@@ -1,5 +1,5 @@
 /** @private */
-export interface EventSubChannelRedemptionReward {
+export interface EventSubChannelRedemptionRewardData {
 	id: string;
 	title: string;
 	cost: number;

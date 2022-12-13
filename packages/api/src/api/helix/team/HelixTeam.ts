@@ -1,20 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixTeamData } from '../../../interfaces/helix/team.external';
 import type { HelixUserRelation } from '../relations/HelixUserRelation';
-
-/** @private */
-export interface HelixTeamData {
-	id: string;
-	team_name: string;
-	team_display_name: string;
-	background_image_url: string | null;
-	banner: string | null;
-	created_at: string;
-	updated_at: string;
-	info: string;
-	thumbnail_url: string;
-}
 
 /**
  * A Stream Team.

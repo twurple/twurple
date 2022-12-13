@@ -1,14 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixUserRelationData } from '../../../interfaces/helix/generic.external';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixUserRelationData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-}
 
 /**
  * A relation of anything with a user.

@@ -23,6 +23,8 @@ export type EventSubHttpPayload = EventSubVerificationPayload | EventSubNotifica
 
 /**
  * The base configuration for EventSub over HTTP.
+ *
+ * @inheritDoc
  */
 export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 	/**
@@ -303,6 +305,12 @@ To silence this warning without enabling this check (and thus to keep it off eve
 			}
 		}
 		return false;
+	}
+
+	protected _findTwitchSubscriptionToContinue(
+		subscription: EventSubSubscription
+	): HelixEventSubSubscription | undefined {
+		return this._twitchSubscriptions.get(subscription.id);
 	}
 
 	private _verifyData(

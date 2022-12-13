@@ -1,11 +1,5 @@
 import { DataObject, rawDataSymbol } from '@twurple/common';
-
-/** @private */
-export interface HelixBaseExtensionData {
-	id: string;
-	version: string;
-	name: string;
-}
+import { type HelixBaseExtensionData } from '../../../../interfaces/helix/userExtension.external';
 
 /** @protected */
 export abstract class HelixBaseExtension extends DataObject<HelixBaseExtensionData> {

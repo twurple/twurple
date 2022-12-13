@@ -1,34 +1,22 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { rtfm } from '@twurple/common';
+import { createGetByIdsQuery } from '../../../interfaces/helix/generic.external';
+import {
+	createEndPredictionBody,
+	createPredictionBody,
+	type HelixPredictionData,
+	type HelixPredictionStatus
+} from '../../../interfaces/helix/prediction.external';
+import { type HelixCreatePredictionData } from '../../../interfaces/helix/prediction.input';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixPredictionData, HelixPredictionStatus } from './HelixPrediction';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixPrediction } from './HelixPrediction';
-
-/**
- * Data to create a new prediction.
- */
-export interface HelixCreatePredictionData {
-	/**
-	 * The title of the prediction.
-	 */
-	title: string;
-
-	/**
-	 * The possible outcomes for the prediction.
-	 */
-	outcomes: string[];
-
-	/**
-	 * The time after which the prediction will be automatically locked, in seconds from creation.
-	 */
-	autoLockAfter: number;
-}
 
 /**
  * The Helix API methods that deal with predictions.
@@ -63,8 +51,8 @@ export class HelixPredictionApi extends BaseApi {
 			url: 'predictions',
 			scope: 'channel:read:predictions',
 			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				...makePaginationQuery(pagination)
+				...createBroadcasterQuery(broadcaster),
+				...createPaginationQuery(pagination)
 			}
 		});
 
@@ -83,9 +71,7 @@ export class HelixPredictionApi extends BaseApi {
 			{
 				url: 'predictions',
 				scope: 'channel:read:predictions',
-				query: {
-					broadcaster_id: extractUserId(broadcaster)
-				}
+				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
 			data => new HelixPrediction(data, this._client),
@@ -108,10 +94,7 @@ export class HelixPredictionApi extends BaseApi {
 			type: 'helix',
 			url: 'predictions',
 			scope: 'channel:read:predictions',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				id: ids
-			}
+			query: createGetByIdsQuery(broadcaster, ids)
 		});
 
 		return result.data.map(data => new HelixPrediction(data, this._client));
@@ -142,12 +125,7 @@ export class HelixPredictionApi extends BaseApi {
 			url: 'predictions',
 			method: 'POST',
 			scope: 'channel:manage:predictions',
-			jsonBody: {
-				broadcaster_id: extractUserId(broadcaster),
-				title: data.title,
-				outcomes: data.outcomes.map(title => ({ title })),
-				prediction_window: data.autoLockAfter
-			}
+			jsonBody: createPredictionBody(broadcaster, data)
 		});
 
 		return new HelixPrediction(result.data[0], this._client);
@@ -195,12 +173,7 @@ export class HelixPredictionApi extends BaseApi {
 			url: 'predictions',
 			method: 'PATCH',
 			scope: 'channel:manage:predictions',
-			jsonBody: {
-				broadcaster_id: extractUserId(broadcaster),
-				id,
-				status,
-				winning_outcome_id: outcomeId
-			}
+			jsonBody: createEndPredictionBody(broadcaster, id, status, outcomeId)
 		});
 
 		return new HelixPrediction(result.data[0], this._client);

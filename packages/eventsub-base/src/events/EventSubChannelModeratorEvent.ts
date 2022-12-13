@@ -1,16 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubChannelModeratorEventData {
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-}
+import { type EventSubChannelModeratorEventData } from './EventSubChannelModeratorEvent.external';
 
 /**
  * An EventSub event representing a broadcaster adding or removing a moderator in their channel.

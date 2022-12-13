@@ -1,22 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelRedemptionReward } from './common/EventSubChannelRedemptionReward';
-
-/** @private */
-export interface EventSubChannelRedemptionUpdateEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	user_input: string;
-	status: 'fulfilled' | 'canceled';
-	reward: EventSubChannelRedemptionReward;
-	redeemed_at: string;
-}
+import { type EventSubChannelRedemptionUpdateEventData } from './EventSubChannelRedemptionUpdateEvent.external';
 
 /**
  * An EventSub event representing a Channel Points redemption being updated.

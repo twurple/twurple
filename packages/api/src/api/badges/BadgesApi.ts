@@ -1,7 +1,6 @@
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
+import { type ChatBadgeResultData } from '../../interfaces/badges.external';
 import { BaseApi } from '../BaseApi';
-import type { ChatBadgeListData } from './ChatBadgeList';
 import { ChatBadgeList } from './ChatBadgeList';
 
 /**
@@ -28,12 +27,12 @@ export class BadgesApi extends BaseApi {
 	 * @param language The language of the retrieved badge descriptions.
 	 */
 	async getGlobalBadges(language?: string): Promise<ChatBadgeList> {
-		const data = await this._client.callApi<{ badge_sets: ChatBadgeListData }>({
+		const data = await this._client.callApi<ChatBadgeResultData>({
+			type: 'custom',
 			url: 'https://badges.twitch.tv/v1/badges/global/display',
 			query: {
 				language
-			},
-			type: 'custom'
+			}
 		});
 
 		return new ChatBadgeList(data.badge_sets);
@@ -51,12 +50,12 @@ export class BadgesApi extends BaseApi {
 		includeGlobal: boolean = true,
 		language?: string
 	): Promise<ChatBadgeList> {
-		const data = await this._client.callApi<{ badge_sets: ChatBadgeListData }>({
+		const data = await this._client.callApi<ChatBadgeResultData>({
+			type: 'custom',
 			url: `https://badges.twitch.tv/v1/badges/channels/${extractUserId(channel)}/display`,
 			query: {
 				language
-			},
-			type: 'custom'
+			}
 		});
 
 		const channelBadges = new ChatBadgeList(data.badge_sets);

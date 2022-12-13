@@ -1,85 +1,43 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import { createModeratorActionQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import {
+	createAutoModProcessBody,
+	createAutoModSettingsBody,
+	createBanUserBody,
+	createModerationUserListQuery,
+	createModeratorModifyQuery,
+	createUpdateShieldModeStatusBody,
+	type HelixAutoModSettingsData,
+	type HelixAutoModStatusData,
+	type HelixBanData,
+	type HelixBanUserData,
+	type HelixBlockedTermData,
+	type HelixModeratorData,
+	type HelixShieldModeStatusData
+} from '../../../interfaces/helix/moderation.external';
+import {
+	type HelixAutoModSettingsUpdate,
+	type HelixBanFilter,
+	type HelixBanUserRequest,
+	type HelixCheckAutoModStatusData,
+	type HelixModeratorFilter
+} from '../../../interfaces/helix/moderation.input';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixAutoModSettingsData } from './HelixAutoModSettings';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixAutoModSettings } from './HelixAutoModSettings';
-import type { HelixAutoModStatusData } from './HelixAutoModStatus';
 import { HelixAutoModStatus } from './HelixAutoModStatus';
-import type { HelixBanData } from './HelixBan';
 import { HelixBan } from './HelixBan';
-import type { HelixBanUserData } from './HelixBanUser';
 import { HelixBanUser } from './HelixBanUser';
-import type { HelixBlockedTermData } from './HelixBlockedTerm';
 import { HelixBlockedTerm } from './HelixBlockedTerm';
-import type { HelixModeratorData } from './HelixModerator';
 import { HelixModerator } from './HelixModerator';
-
-/**
- * Filters for the banned users request.
- */
-export interface HelixBanFilter extends HelixForwardPagination {
-	/**
-	 * A user ID or a list thereof.
-	 */
-	userId: string | string[];
-}
-
-/**
- * Filters for the moderators request.
- */
-export interface HelixModeratorFilter extends HelixForwardPagination {
-	/**
-	 * A user ID or a list thereof.
-	 */
-	userId: string | string[];
-}
-
-export interface HelixCheckAutoModStatusData {
-	/**
-	 * The developer-generated ID for mapping messages to their status results.
-	 */
-	messageId: string;
-
-	/**
-	 * The text of the message the AutoMod status needs to be checked for.
-	 */
-	messageText: string;
-
-	/**
-	 * The ID of the sender of the message the AutoMod status needs to be checked for.
-	 *
-	 * @deprecated This is no longer used by Twitch.
-	 */
-	userId?: string;
-}
-
-export type HelixAutoModSettingsUpdate = Exclude<HelixAutoModSettings, 'broadcasterId' | 'moderatorId'>;
-
-/**
- * Information about a user to be banned/timed out from a channel.
- */
-export interface HelixBanUserRequest {
-	/**
-	 * The duration (in seconds) that the user should be timed out. If this value is null, the user will be banned.
-	 */
-	duration?: number;
-
-	/**
-	 * The reason why the user is being timed out/banned.
-	 */
-	reason: string;
-
-	/**
-	 * The ID of the user who is to be banned/timed out.
-	 */
-	userId: string;
-}
+import { HelixShieldModeStatus } from './HelixShieldModeStatus';
 
 /**
  * The Helix API methods that deal with moderation.
@@ -102,6 +60,8 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve the banned users from.
 	 * @param filter Additional filters for the result set.
+	 *
+	 * @expandParams
 	 */
 	async getBannedUsers(channel: UserIdResolvable, filter?: HelixBanFilter): Promise<HelixPaginatedResult<HelixBan>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBanData>>({
@@ -109,13 +69,16 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/banned',
 			scope: 'moderation:read',
 			query: {
-				broadcaster_id: extractUserId(channel),
-				user_id: filter?.userId,
-				...makePaginationQuery(filter)
+				...createModerationUserListQuery(channel, filter),
+				...createPaginationQuery(filter)
 			}
 		});
 
-		return createPaginatedResult(result, HelixBan, this._client);
+		// TODO revert to createPaginatedResult when broadcaster ID parameter is gone (prop already deprecated)
+		return {
+			data: result.data.map(data => new HelixBan(data, extractUserId(channel), this._client)),
+			cursor: result.pagination?.cursor
+		};
 	}
 
 	/**
@@ -128,12 +91,10 @@ export class HelixModerationApi extends BaseApi {
 			{
 				url: 'moderation/banned',
 				scope: 'moderation:read',
-				query: {
-					broadcaster_id: extractUserId(channel)
-				}
+				query: createBroadcasterQuery(channel)
 			},
 			this._client,
-			data => new HelixBan(data, this._client),
+			data => new HelixBan(data, extractUserId(channel), this._client),
 			50 // possibly a relatively consistent workaround for twitchdev/issues#18
 		);
 	}
@@ -156,6 +117,8 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param channel The channel to retrieve moderators from.
 	 * @param filter Additional filters for the result set.
+	 *
+	 * @expandParams
 	 */
 	async getModerators(
 		channel: UserIdResolvable,
@@ -166,9 +129,8 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/moderators',
 			scope: 'moderation:read',
 			query: {
-				broadcaster_id: extractUserId(channel),
-				user_id: filter?.userId,
-				...makePaginationQuery(filter)
+				...createModerationUserListQuery(channel, filter),
+				...createPaginationQuery(filter)
 			}
 		});
 
@@ -185,9 +147,7 @@ export class HelixModerationApi extends BaseApi {
 			{
 				url: 'moderation/moderators',
 				scope: 'moderation:read',
-				query: {
-					broadcaster_id: extractUserId(channel)
-				}
+				query: createBroadcasterQuery(channel)
 			},
 			this._client,
 			data => new HelixModerator(data, this._client)
@@ -210,8 +170,8 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Adds a moderator to the broadcaster’s chat room.
 	 *
-	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to add as a moderator in the broadcaster’s chat room.
+	 * @param broadcaster The broadcaster that owns the chat room. This ID must match the user ID in the access token.
+	 * @param user The user to add as a moderator in the broadcaster’s chat room.
 	 */
 	async addModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
@@ -219,18 +179,15 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/moderators',
 			method: 'POST',
 			scope: 'channel:manage:moderators',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: extractUserId(user)
-			}
+			query: createModeratorModifyQuery(broadcaster, user)
 		});
 	}
 
 	/**
 	 * Removes a moderator from the broadcaster’s chat room.
 	 *
-	 * @param broadcaster The ID of the broadcaster that owns the chat room. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to remove as a moderator from the broadcaster’s chat room.
+	 * @param broadcaster The broadcaster that owns the chat room. This ID must match the user ID in the access token.
+	 * @param user The user to remove as a moderator from the broadcaster’s chat room.
 	 */
 	async removeModerator(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
@@ -238,10 +195,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/moderators',
 			method: 'DELETE',
 			scope: 'channel:manage:moderators',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: extractUserId(user)
-			}
+			query: createModeratorModifyQuery(broadcaster, user)
 		});
 	}
 
@@ -260,11 +214,9 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/enforcements/status',
 			method: 'POST',
 			scope: 'moderation:read',
-			query: {
-				broadcaster_id: extractUserId(channel)
-			},
+			query: createBroadcasterQuery(channel),
 			jsonBody: {
-				data: data
+				data
 			}
 		});
 
@@ -284,33 +236,26 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/automod/message',
 			method: 'POST',
 			scope: 'moderator:manage:automod',
-			jsonBody: {
-				user_id: extractUserId(user),
-				msg_id: msgId,
-				action: allow ? 'ALLOW' : 'DENY'
-			}
+			jsonBody: createAutoModProcessBody(user, msgId, allow)
 		});
 	}
 
 	/**
 	 * Retrieves the AutoMod settings for a broadcaster.
 	 *
-	 * @param broadcasterId The ID of the broadcaster for which the AutoMod settings are retrieved.
-	 * @param moderatorId The ID of a user that has permission to moderate the broadcaster's chat room.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcaster The broadcaster for which the AutoMod settings are retrieved.
+	 * @param moderator A user that has permission to moderate the broadcaster's chat room.
+	 * This user must match the user associated with the user OAuth token.
 	 */
 	async getAutoModSettings(
-		broadcasterId: UserIdResolvable,
-		moderatorId: UserIdResolvable
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable
 	): Promise<HelixAutoModSettings[]> {
 		const result = await this._client.callApi<HelixResponse<HelixAutoModSettingsData>>({
 			type: 'helix',
 			url: 'moderation/automod/settings',
 			scope: 'moderator:read:automod_settings',
-			query: {
-				broadcaster_id: extractUserId(broadcasterId),
-				moderator_id: extractUserId(moderatorId)
-			}
+			query: createModeratorActionQuery(broadcaster, moderator)
 		});
 
 		return result.data.map(data => new HelixAutoModSettings(data));
@@ -319,14 +264,14 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Updates the AutoMod settings for a broadcaster.
 	 *
-	 * @param broadcasterId The ID of the broadcaster for which the AutoMod settings are updated.
-	 * @param moderatorId The ID of a user that has permission to moderate the broadcaster's chat room.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcaster The broadcaster for which the AutoMod settings are updated.
+	 * @param moderator A user that has permission to moderate the broadcaster's chat room.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param data The updated AutoMod settings that replace the current AutoMod settings.
 	 */
 	async updateAutoModSettings(
-		broadcasterId: UserIdResolvable,
-		moderatorId: UserIdResolvable,
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
 		data: HelixAutoModSettingsUpdate
 	): Promise<HelixAutoModSettings[]> {
 		const result = await this._client.callApi<HelixResponse<HelixAutoModSettingsData>>({
@@ -334,21 +279,8 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/automod/settings',
 			method: 'PUT',
 			scope: 'moderator:manage:automod_settings',
-			query: {
-				broadcaster_id: extractUserId(broadcasterId),
-				moderator_id: extractUserId(moderatorId)
-			},
-			jsonBody: {
-				overall_level: data.overallLevel,
-				aggression: data.aggression,
-				bullying: data.bullying,
-				disability: data.disability,
-				misogyny: data.misogyny,
-				race_ethnicity_or_religion: data.raceEthnicityOrReligion,
-				sex_based_terms: data.sexBasedTerms,
-				sexuality_sex_or_gender: data.sexualitySexOrGender,
-				swearing: data.swearing
-			}
+			query: createModeratorActionQuery(broadcaster, moderator),
+			jsonBody: createAutoModSettingsBody(data)
 		});
 
 		return result.data.map(settingsData => new HelixAutoModSettings(settingsData));
@@ -357,9 +289,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Bans or times out a user in a channel
 	 *
-	 * @param broadcasterId The ID of the broadcaster in whose channel the user will be banned/timed out.
-	 * @param moderatorId The ID of a user that has permission to ban/timeout users in the broadcaster's chat room.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcaster The broadcaster in whose channel the user will be banned/timed out.
+	 * @param moderator A user that has permission to ban/timeout users in the broadcaster's chat room.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param data
 	 *
 	 * @expandParams
@@ -367,8 +299,8 @@ export class HelixModerationApi extends BaseApi {
 	 * @returns The result data from the ban/timeout request.
 	 */
 	async banUser(
-		broadcasterId: UserIdResolvable,
-		moderatorId: UserIdResolvable,
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
 		data: HelixBanUserRequest
 	): Promise<HelixBanUser[]> {
 		const result = await this._client.callApi<HelixResponse<HelixBanUserData>>({
@@ -376,44 +308,32 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/bans',
 			method: 'POST',
 			scope: 'moderator:manage:banned_users',
-			query: {
-				broadcaster_id: extractUserId(broadcasterId),
-				moderator_id: extractUserId(moderatorId)
-			},
-			jsonBody: {
-				data: {
-					duration: data.duration,
-					reason: data.reason,
-					user_id: data.userId
-				}
-			}
+			query: createModeratorActionQuery(broadcaster, moderator),
+			jsonBody: createBanUserBody(data)
 		});
 
-		return result.data.map(banData => new HelixBanUser(banData));
+		return result.data.map(
+			banData => new HelixBanUser(banData, banData.broadcaster_id, banData.end_time, this._client)
+		);
 	}
 
 	/**
 	 * Unbans/removes the timeout for a user in a channel.
 	 *
-	 * @param broadcasterId The ID of the broadcaster in whose channel the user will be unbanned/removed from timeout.
-	 * @param moderatorId The ID of a user that has permission to unban/remove timeout users in the broadcaster's chat room.
-	 * This must match the user ID associated with the user OAuth token.
-	 * @param userId The ID of the user who will be unbanned/removed from timeout.
+	 * @param broadcaster The broadcaster in whose channel the user will be unbanned/removed from timeout.
+	 * @param moderator A user that has permission to unban/remove timeout users in the broadcaster's chat room.
+	 * This user must match the user associated with the user OAuth token.
+	 * @param user The user who will be unbanned/removed from timeout.
 	 */
-	async unbanUser(
-		broadcasterId: UserIdResolvable,
-		moderatorId: UserIdResolvable,
-		userId: UserIdResolvable
-	): Promise<void> {
+	async unbanUser(broadcaster: UserIdResolvable, moderator: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
 			url: 'moderation/bans',
 			method: 'DELETE',
 			scope: 'moderator:manage:banned_users',
 			query: {
-				broadcaster_id: extractUserId(broadcasterId),
-				moderator_id: extractUserId(moderatorId),
-				user_id: extractUserId(userId)
+				...createModeratorActionQuery(broadcaster, moderator),
+				...createSingleKeyQuery('user_id', extractUserId(user))
 			}
 		});
 	}
@@ -421,9 +341,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Gets the broadcaster’s list of non-private, blocked words or phrases.
 	 *
-	 * @param broadcasterId The ID of the broadcaster for whose channel blocked terms will be retrieved.
-	 * @param moderatorId The ID of a user that has permission to retrieve blocked terms for the broadcaster's channel.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcaster The broadcaster for whose channel blocked terms will be retrieved.
+	 * @param moderator A user that has permission to retrieve blocked terms for the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -431,8 +351,8 @@ export class HelixModerationApi extends BaseApi {
 	 * @returns A paginated list of blocked term data in the broadcaster's channel.
 	 */
 	async getBlockedTerms(
-		broadcasterId: UserIdResolvable,
-		moderatorId: UserIdResolvable,
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixBlockedTerm>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBlockedTermData>>({
@@ -440,9 +360,8 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/blocked_terms',
 			scope: 'moderator:read:blocked_terms',
 			query: {
-				broadcaster_id: extractUserId(broadcasterId),
-				moderator_id: extractUserId(moderatorId),
-				...makePaginationQuery(pagination)
+				...createModeratorActionQuery(broadcaster, moderator),
+				...createPaginationQuery(pagination)
 			}
 		});
 
@@ -452,16 +371,16 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Adds a blocked term to the broadcaster's channel.
 	 *
-	 * @param broadcasterId The ID of the broadcaster in whose channel the term will be blocked.
-	 * @param moderatorId The ID of a user that has permission to block terms in the broadcaster's channel.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcaster The broadcaster in whose channel the term will be blocked.
+	 * @param moderator A user that has permission to block terms in the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param text The word or phrase to block from being used in the broadcaster's channel.
 	 *
 	 * @returns Information about the term that has been blocked.
 	 */
 	async addBlockedTerm(
-		broadcasterId: UserIdResolvable,
-		moderatorId: UserIdResolvable,
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
 		text: string
 	): Promise<HelixBlockedTerm[]> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBlockedTermData>>({
@@ -469,10 +388,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/blocked_terms',
 			method: 'POST',
 			scope: 'moderator:manage:blocked_terms',
-			query: {
-				broadcaster_id: extractUserId(broadcasterId),
-				moderator_id: extractUserId(moderatorId)
-			},
+			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: {
 				text
 			}
@@ -484,20 +400,19 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Removes a blocked term from the broadcaster's channel.
 	 *
-	 * @param broadcasterId The ID of the broadcaster in whose channel the term will be unblocked.
-	 * @param moderatorId The ID of a user that has permission to unblock terms in the broadcaster's channel.
-	 * This must match the user ID associated with the user OAuth token.
+	 * @param broadcaster The broadcaster in whose channel the term will be unblocked.
+	 * @param moderator A user that has permission to unblock terms in the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param id The ID of the term that should be unblocked.
 	 */
-	async removeBlockedTerm(broadcasterId: UserIdResolvable, moderatorId: UserIdResolvable, id: string): Promise<void> {
+	async removeBlockedTerm(broadcaster: UserIdResolvable, moderator: UserIdResolvable, id: string): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
 			url: 'moderation/blocked_terms',
 			method: 'DELETE',
 			scope: 'moderator:manage:blocked_terms',
 			query: {
-				broadcaster_id: extractUserId(broadcasterId),
-				moderator_id: extractUserId(moderatorId),
+				...createModeratorActionQuery(broadcaster, moderator),
 				id
 			}
 		});
@@ -524,10 +439,60 @@ export class HelixModerationApi extends BaseApi {
 			method: 'DELETE',
 			scope: 'moderator:manage:chat_messages',
 			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				moderator_id: extractUserId(moderator),
-				message_id: messageId
+				...createModeratorActionQuery(broadcaster, moderator),
+				...createSingleKeyQuery('message_id', messageId)
 			}
 		});
+	}
+
+	/**
+	 * Gets the broadcaster's Shield Mode activation status.
+	 *
+	 * @param broadcaster The broadcaster whose Shield Mode activation status you want to get.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
+	 *
+	 * @beta
+	 */
+	async getShieldModeStatus(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable
+	): Promise<HelixShieldModeStatus> {
+		const result = await this._client.callApi<HelixResponse<HelixShieldModeStatusData>>({
+			type: 'helix',
+			url: 'moderation/shield_mode',
+			method: 'GET',
+			scope: 'moderator:read:shield_mode',
+			query: createModeratorActionQuery(broadcaster, moderator)
+		});
+
+		return new HelixShieldModeStatus(result.data[0], this._client);
+	}
+
+	/**
+	 * Activates or deactivates the broadcaster's Shield Mode.
+	 *
+	 * @param broadcaster The broadcaster whose Shield Mode you want to activate or deactivate.
+	 * @param moderator A user that has permission to update Shield Mode status in the broadcaster's channel.
+	 * This user must match the user associated with the user OAuth token.
+	 * @param activate Whether or not to activate Shield Mode on the broadcaster's channel.
+	 *
+	 * @beta
+	 */
+	async updateShieldModeStatus(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		activate: boolean
+	): Promise<HelixShieldModeStatus> {
+		const result = await this._client.callApi<HelixResponse<HelixShieldModeStatusData>>({
+			type: 'helix',
+			url: 'moderation/shield_mode',
+			method: 'PUT',
+			scope: 'moderator:manage:shield_mode',
+			query: createModeratorActionQuery(broadcaster, moderator),
+			jsonBody: createUpdateShieldModeStatusBody(activate)
+		});
+
+		return new HelixShieldModeStatus(result.data[0], this._client);
 	}
 }

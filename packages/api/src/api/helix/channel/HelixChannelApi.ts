@@ -1,45 +1,29 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { CommercialLength, UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import {
+	createChannelCommercialBody,
+	createChannelUpdateBody,
+	createChannelVipUpdateQuery,
+	type HelixChannelData,
+	type HelixChannelEditorData
+} from '../../../interfaces/helix/channel.external';
+import { type HelixChannelUpdate } from '../../../interfaces/helix/channel.input';
+import {
+	createChannelUsersCheckQuery,
+	createSingleKeyQuery,
+	type HelixUserRelationData
+} from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixUserRelationData } from '../relations/HelixUserRelation';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixUserRelation } from '../relations/HelixUserRelation';
-import type { HelixChannelData } from './HelixChannel';
 import { HelixChannel } from './HelixChannel';
-import type { HelixChannelEditorData } from './HelixChannelEditor';
 import { HelixChannelEditor } from './HelixChannelEditor';
-
-/**
- * Channel data to update using {@link HelixChannelApi#updateChannelInfo}}.
- */
-export interface HelixChannelUpdate {
-	/**
-	 * The language of the stream.
-	 */
-	language?: string;
-
-	/**
-	 * The ID of the game you're playing.
-	 */
-	gameId?: string;
-
-	/**
-	 * The title of the stream.
-	 */
-	title?: string;
-
-	/**
-	 * The delay of the stream, in seconds.
-	 *
-	 * Only works if you're a Twitch partner.
-	 */
-	delay?: number;
-}
 
 /**
  * The Helix API methods that deal with channels.
@@ -77,9 +61,7 @@ export class HelixChannelApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixChannelData>>({
 			type: 'helix',
 			url: 'channels',
-			query: {
-				broadcaster_id: userIds
-			}
+			query: createSingleKeyQuery('broadcaster_id', userIds)
 		});
 
 		return result.data.map(data => new HelixChannel(data, this._client));
@@ -103,21 +85,13 @@ export class HelixChannelApi extends BaseApi {
 	 * @param data The channel info to set.
 	 */
 	async updateChannelInfo(user: UserIdResolvable, data: HelixChannelUpdate): Promise<void> {
-		const userId = extractUserId(user);
 		await this._client.callApi({
 			type: 'helix',
 			url: 'channels',
 			method: 'PATCH',
 			scope: 'channel:manage:broadcast',
-			query: {
-				broadcaster_id: userId
-			},
-			jsonBody: {
-				game_id: data.gameId,
-				broadcaster_language: data.language,
-				title: data.title,
-				delay: data.delay?.toString()
-			}
+			query: createBroadcasterQuery(user),
+			jsonBody: createChannelUpdateBody(data)
 		});
 	}
 
@@ -133,10 +107,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/commercial',
 			method: 'POST',
 			scope: 'channel:edit:commercial',
-			jsonBody: {
-				broadcaster_id: extractUserId(broadcaster),
-				length: length
-			}
+			jsonBody: createChannelCommercialBody(broadcaster, length)
 		});
 	}
 
@@ -150,9 +121,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/editors',
 			scope: 'channel:read:editors',
-			query: {
-				broadcaster_id: extractUserId(broadcaster)
-			}
+			query: createBroadcasterQuery(broadcaster)
 		});
 
 		return result.data.map(data => new HelixChannelEditor(data, this._client));
@@ -175,8 +144,8 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/vips',
 			scope: 'channel:read:vips',
 			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				...makePaginationQuery(pagination)
+				...createBroadcasterQuery(broadcaster),
+				...createPaginationQuery(pagination)
 			}
 		});
 
@@ -193,9 +162,7 @@ export class HelixChannelApi extends BaseApi {
 			{
 				url: 'channels/vips',
 				scope: 'channel:read:vips',
-				query: {
-					broadcaster_id: extractUserId(broadcaster)
-				}
+				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
 			data => new HelixUserRelation(data, this._client)
@@ -213,10 +180,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/vips',
 			scope: 'channel:read:vips',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: users.map(extractUserId)
-			}
+			query: createChannelUsersCheckQuery(broadcaster, users)
 		});
 
 		return response.data.map(data => new HelixUserRelation(data, this._client));
@@ -238,8 +202,8 @@ export class HelixChannelApi extends BaseApi {
 	/**
 	 * Adds a VIP to the broadcaster’s chat room.
 	 *
-	 * @param broadcaster The ID of the broadcaster that’s granting VIP status to the user. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to add as a VIP in the broadcaster’s chat room.
+	 * @param broadcaster The broadcaster that’s granting VIP status to the user. This ID must match the user ID in the access token.
+	 * @param user The user to add as a VIP in the broadcaster’s chat room.
 	 */
 	async addVip(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
@@ -247,18 +211,15 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/vips',
 			method: 'POST',
 			scope: 'channel:manage:vips',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: extractUserId(user)
-			}
+			query: createChannelVipUpdateQuery(broadcaster, user)
 		});
 	}
 
 	/**
 	 * Removes a VIP from the broadcaster’s chat room.
 	 *
-	 * @param broadcaster The ID of the broadcaster that’s removing VIP status from the user. This ID must match the user ID in the access token.
-	 * @param user The ID of the user to remove as a VIP from the broadcaster’s chat room.
+	 * @param broadcaster The broadcaster that’s removing VIP status from the user. This ID must match the user ID in the access token.
+	 * @param user The user to remove as a VIP from the broadcaster’s chat room.
 	 */
 	async removeVip(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
@@ -266,10 +227,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/vips',
 			method: 'DELETE',
 			scope: 'channel:manage:vips',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				user_id: extractUserId(user)
-			}
+			query: createChannelVipUpdateQuery(broadcaster, user)
 		});
 	}
 }

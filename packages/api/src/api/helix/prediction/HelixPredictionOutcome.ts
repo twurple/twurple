@@ -1,20 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixPredictorData } from './HelixPredictor';
+import {
+	type HelixPredictionOutcomeColor,
+	type HelixPredictionOutcomeData
+} from '../../../interfaces/helix/prediction.external';
 import { HelixPredictor } from './HelixPredictor';
-
-export type HelixPredictionOutcomeColor = 'BLUE' | 'PINK';
-
-/** @private */
-export interface HelixPredictionOutcomeData {
-	id: string;
-	title: string;
-	users: number;
-	channel_points: number;
-	top_predictors: HelixPredictorData[] | null;
-	color: HelixPredictionOutcomeColor;
-}
 
 /**
  * A possible outcome in a channel prediction.

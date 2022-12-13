@@ -1,18 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface PubSubChatModActionMessageContent {
-	type: string;
-	moderation_action: string;
-	args: string[];
-	created_by: string;
-	created_by_user_id: string;
-}
-
-/** @private */
-export interface PubSubChatModActionMessageData {
-	data: PubSubChatModActionMessageContent;
-}
+import { type PubSubChatModActionMessageData } from './PubSubChatModActionMessage.external';
 
 /**
  * A message that informs about a moderation action being performed in a channel.

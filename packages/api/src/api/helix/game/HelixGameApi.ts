@@ -1,16 +1,16 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
+import { type HelixGameData } from '../../../interfaces/helix/game.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixGameData } from './HelixGame';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixGame } from './HelixGame';
 
 /** @private */
-type HelixGameFilterType = 'id' | 'name';
+type HelixGameFilterType = 'id' | 'name' | 'igdb_id';
 
 /**
  * The Helix API methods that deal with games.
@@ -47,13 +47,22 @@ export class HelixGameApi extends BaseApi {
 	}
 
 	/**
+	 * Retrieves the game data for the given list of IGDB IDs.
+	 *
+	 * @param igdbIds The IGDB IDs you want to look up.
+	 */
+	async getGamesByIgdbIds(igdbIds: string[]): Promise<HelixGame[]> {
+		return await this._getGames('igdb_id', igdbIds);
+	}
+
+	/**
 	 * Retrieves the game data for the given game ID.
 	 *
 	 * @param id The game ID you want to look up.
 	 */
 	async getGameById(id: string): Promise<HelixGame | null> {
 		const games = await this._getGames('id', [id]);
-		return games.length ? games[0] : null;
+		return games[0] ?? null;
 	}
 
 	/**
@@ -63,7 +72,17 @@ export class HelixGameApi extends BaseApi {
 	 */
 	async getGameByName(name: string): Promise<HelixGame | null> {
 		const games = await this._getGames('name', [name]);
-		return games.length ? games[0] : null;
+		return games[0] ?? null;
+	}
+
+	/**
+	 * Retrieves the game data for the given IGDB ID.
+	 *
+	 * @param igdbId The IGDB ID you want to look up.
+	 */
+	async getGameByIgdbId(igdbId: string): Promise<HelixGame | null> {
+		const games = await this._getGames('igdb_id', [igdbId]);
+		return games[0] ?? null;
 	}
 
 	/**
@@ -77,7 +96,7 @@ export class HelixGameApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixGameData>>({
 			type: 'helix',
 			url: 'games/top',
-			query: makePaginationQuery(pagination)
+			query: createPaginationQuery(pagination)
 		});
 
 		return createPaginatedResult(result, HelixGame, this._client);

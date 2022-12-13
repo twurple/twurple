@@ -1,41 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import {
+	type HelixCustomRewardRedemptionData,
+	type HelixCustomRewardRedemptionTargetStatus
+} from '../../../interfaces/helix/channelPoints.external';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixCustomReward } from './HelixCustomReward';
-
-/**
- * The possible statuses of a custom Channel Points reward redemption you can set.
- */
-export type HelixCustomRewardRedemptionTargetStatus = 'FULFILLED' | 'CANCELED';
-
-/**
- * The possible statuses of a custom Channel Points reward redemption.
- */
-export type HelixCustomRewardRedemptionStatus = 'UNFULFILLED' | HelixCustomRewardRedemptionTargetStatus;
-
-/** @private */
-export interface HelixCustomRewardRedemptionRewardData {
-	id: string;
-	title: string;
-	prompt: string;
-	cost: number;
-}
-
-/** @private */
-export interface HelixCustomRewardRedemptionData {
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
-	id: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	user_input: string;
-	status: HelixCustomRewardRedemptionStatus;
-	redeemed_at: string;
-	reward: HelixCustomRewardRedemptionRewardData;
-}
 
 /**
  * A redemption of a custom Channel Points reward.

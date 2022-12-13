@@ -1,20 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol } from '@twurple/common';
-
-/**
- * The type of hype train contribution. Can be "bits" or "subscription".
- */
-export type EventSubChannelHypeTrainContributionType = 'bits' | 'subscription';
-
-/** @private */
-export interface EventSubChannelHypeTrainContributionData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	type: EventSubChannelHypeTrainContributionType;
-	total: number;
-}
+import {
+	type EventSubChannelHypeTrainContributionData,
+	type EventSubChannelHypeTrainContributionType
+} from './EventSubChannelHypeTrainContribution.external';
 
 export class EventSubChannelHypeTrainContribution extends DataObject<EventSubChannelHypeTrainContributionData> {
 	@Enumerable(false) private readonly _client: ApiClient;

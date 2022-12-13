@@ -1,25 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import {
+	type HelixExtensionProductType,
+	type HelixExtensionTransactionData
+} from '../../../interfaces/helix/extensions.external';
 import type { HelixUser } from '../user/HelixUser';
-import type { HelixExtensionProductData } from './HelixExtensionProductData';
-
-/** @private */
-type HelixExtensionProductType = 'BITS_IN_EXTENSION';
-
-/** @private */
-export interface HelixExtensionTransactionData {
-	id: string;
-	timestamp: string;
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	product_type: HelixExtensionProductType;
-	product_data: HelixExtensionProductData;
-}
 
 /**
  * A bits transaction made inside an extension.

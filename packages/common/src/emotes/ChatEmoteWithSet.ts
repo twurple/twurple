@@ -1,12 +1,7 @@
 import { rawDataSymbol } from '../DataObject';
 import { rtfm } from '../rtfm';
-import type { ChatEmoteData } from './ChatEmote';
 import { ChatEmote } from './ChatEmote';
-
-/** @private */
-export interface ChatEmoteWithSetData extends ChatEmoteData {
-	emoticon_set: number;
-}
+import { type ChatEmoteWithSetData } from './ChatEmoteWithSet.external';
 
 /**
  * A chat emote from an emote set.

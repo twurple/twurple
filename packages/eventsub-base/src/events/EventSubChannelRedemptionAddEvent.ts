@@ -7,22 +7,7 @@ import type {
 	HelixUser
 } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelRedemptionReward } from './common/EventSubChannelRedemptionReward';
-
-/** @private */
-export interface EventSubChannelRedemptionAddEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	user_input: string;
-	status: 'unfulfilled' | 'unknown' | 'fulfilled' | 'canceled';
-	reward: EventSubChannelRedemptionReward;
-	redeemed_at: string;
-}
+import { type EventSubChannelRedemptionAddEventData } from './EventSubChannelRedemptionAddEvent.external';
 
 /**
  * An EventSub event representing a Channel Points redemption.

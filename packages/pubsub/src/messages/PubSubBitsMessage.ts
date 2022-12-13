@@ -1,31 +1,5 @@
-import type { MakeOptional } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { PubSubBasicMessageInfo } from './PubSubMessage';
-
-/** @private */
-export interface PubSubBitsMessageBadgeEntitlement {
-	previous_version: number;
-	new_version: number;
-}
-
-/** @private */
-export interface PubSubBitsMessageContent
-	extends MakeOptional<PubSubBasicMessageInfo, 'channel_id' | 'channel_name' | 'user_id' | 'user_name'> {
-	chat_message: string;
-	bits_used: number;
-	total_bits_used: number;
-	context: 'cheer';
-	badge_entitlement: PubSubBitsMessageBadgeEntitlement | null;
-	is_anonymous: boolean;
-}
-
-/** @private */
-export interface PubSubBitsMessageData {
-	data: PubSubBitsMessageContent;
-	version: string;
-	message_type: string;
-	message_id: string;
-}
+import { type PubSubBitsMessageData } from './PubSubBitsMessage.external';
 
 /**
  * A message that informs about bits being used in a channel.

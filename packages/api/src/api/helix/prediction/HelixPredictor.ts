@@ -1,16 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixPredictorData } from '../../../interfaces/helix/prediction.external';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixPredictorData {
-	id: string;
-	name: string;
-	login: string;
-	channel_points_used: number;
-	channel_points_won: number | null;
-}
 
 /**
  * A user that took part in a prediction.

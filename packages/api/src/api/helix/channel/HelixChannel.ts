@@ -1,20 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixChannelData } from '../../../interfaces/helix/channel.external';
 import type { HelixGame } from '../game/HelixGame';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixChannelData {
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
-	broadcaster_language: string;
-	game_id: string;
-	game_name: string;
-	title: string;
-	delay: number;
-}
 
 /**
  * A Twitch channel.
@@ -94,6 +83,8 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 
 	/**
 	 * The stream delay of the channel, in seconds.
+	 *
+	 * If you didn't request this with broadcaster access, this is always zero.
 	 */
 	get delay(): number {
 		return this[rawDataSymbol].delay;

@@ -1,11 +1,6 @@
 import { flatten } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface ChattersListData {
-	chatter_count: number;
-	chatters: Record<string, string[]>;
-}
+import { type ChattersListData } from '../../interfaces/unsupported.external';
 
 /**
  * A list of chatters in a Twitch chat.

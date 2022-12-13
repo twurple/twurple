@@ -1,16 +1,6 @@
 import { DataObject, rawDataSymbol } from '@twurple/common';
 import { JsonWebTokenError, verify } from 'jsonwebtoken';
-
-export interface HelixExtensionSecretData {
-	content: string;
-	active_at: string;
-	expires_at: string;
-}
-
-export interface HelixExtensionSecretListData {
-	format_version: number;
-	secrets: HelixExtensionSecretData[];
-}
+import { type HelixExtensionSecretListData } from './HelixExtensionSecretList.external';
 
 export class HelixExtensionSecretList extends DataObject<HelixExtensionSecretListData> {
 	get latestSecret(): string | null {

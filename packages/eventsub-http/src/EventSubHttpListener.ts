@@ -1,11 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
-import type { EventSubListener } from '@twurple/eventsub-base';
-import type { NextFunction, Request, Response } from 'httpanda';
-import { defaultOnError, Server } from 'httpanda';
-import type { ConnectionAdapter } from './adapters/ConnectionAdapter';
-import type { EventSubHttpBaseConfig } from './EventSubHttpBase';
-import { EventSubHttpBase } from './EventSubHttpBase';
+import { type EventSubListener } from '@twurple/eventsub-base';
+import { defaultOnError, type NextFunction, type Request, type Response, Server } from 'httpanda';
+import { type ConnectionAdapter } from './adapters/ConnectionAdapter';
+import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase';
 
 /**
  * Certificate data used to make the listener server SSL capable.
@@ -23,7 +21,7 @@ export interface EventSubHttpListenerCertificateConfig {
 }
 
 /**
- * Configuration for an EventSub listener.
+ * Configuration for an EventSub HTTP listener.
  *
  * @inheritDoc
  */
@@ -141,10 +139,16 @@ Listening on port ${adapterListenerPort} instead.`);
 		this._readyToSubscribe = false;
 	}
 
+	/**
+	 * Starts the HTTP listener.
+	 */
 	async start(): Promise<void> {
 		await this.listen();
 	}
 
+	/**
+	 * Stops the HTTP listener.
+	 */
 	async stop(): Promise<void> {
 		await this.unlisten();
 	}

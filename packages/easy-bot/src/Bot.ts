@@ -41,7 +41,7 @@ export class Bot {
 		});
 
 		this.chat.onPrivmsg(async (currentChannel, user, message, msg) => {
-			const match = this.findMatch(msg);
+			const match = this._findMatch(msg);
 			if (match !== null) {
 				await match.command.execute(match.params, new BotCommandContext(this.chat, msg));
 			}
@@ -58,7 +58,7 @@ export class Bot {
 		return config.auth;
 	}
 
-	private findMatch(msg: PrivateMessage): BotCommandMatch | null {
+	private _findMatch(msg: PrivateMessage): BotCommandMatch | null {
 		const line = msg.params.content.trim().replace(/  +/g, ' ');
 		for (const command of this._commands.values()) {
 			const params = command.match(line, this._prefix);

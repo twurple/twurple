@@ -1,21 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixEmoteData } from './HelixEmote';
+import {
+	type HelixChannelEmoteData,
+	type HelixChannelEmoteSubscriptionTier
+} from '../../../interfaces/helix/chat.external';
 import { HelixEmote } from './HelixEmote';
 import type { HelixEmoteFromSet } from './HelixEmoteFromSet';
-
-/**
- * The subscription tier necessary to unlock an emote. 1000 means tier 1, and so on.
- */
-export type HelixChannelEmoteSubscriptionTier = '1000' | '2000' | '3000';
-
-/** @private */
-export interface HelixChannelEmoteData extends HelixEmoteData {
-	tier: HelixChannelEmoteSubscriptionTier | '';
-	emote_type: string;
-	emote_set_id: string;
-}
 
 /**
  * A Twitch Channel emote.

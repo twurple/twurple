@@ -1,13 +1,8 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixStreamMarkerVideoData } from '../../../interfaces/helix/stream.external';
 import type { HelixVideo } from '../video/HelixVideo';
-import type { HelixStreamMarkerData } from './HelixStreamMarker';
 import { HelixStreamMarker } from './HelixStreamMarker';
-
-/** @private */
-export interface HelixStreamMarkerVideoData extends HelixStreamMarkerData {
-	URL: string;
-}
 
 /**
  * A stream marker, also containing some video data.

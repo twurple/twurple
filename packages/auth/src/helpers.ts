@@ -1,18 +1,17 @@
 import type { Logger } from '@d-fischer/logger';
 import { callTwitchApi, HttpStatusCodeError } from '@twurple/api-call';
 import type { AccessToken } from './AccessToken';
+import { type AccessTokenData } from './AccessToken.external';
 import { InvalidTokenError } from './errors/InvalidTokenError';
+import {
+	createExchangeCodeQuery,
+	createGetAppTokenQuery,
+	createRefreshTokenQuery,
+	createRevokeTokenQuery
+} from './helpers.external';
 import type { AuthProvider } from './providers/AuthProvider';
-import type { TokenInfoData } from './TokenInfo';
 import { TokenInfo } from './TokenInfo';
-
-/** @private */
-interface AccessTokenData {
-	access_token: string;
-	refresh_token: string;
-	expires_in?: number;
-	scope?: string[];
-}
+import { type TokenInfoData } from './TokenInfo.external';
 
 /** @private */
 function createAccessTokenFromData(data: AccessTokenData): AccessToken {
@@ -46,13 +45,7 @@ export async function exchangeCode(
 			type: 'auth',
 			url: 'token',
 			method: 'POST',
-			query: {
-				grant_type: 'authorization_code',
-				client_id: clientId,
-				client_secret: clientSecret,
-				code,
-				redirect_uri: redirectUri
-			}
+			query: createExchangeCodeQuery(clientId, clientSecret, code, redirectUri)
 		})
 	);
 }
@@ -69,11 +62,7 @@ export async function getAppToken(clientId: string, clientSecret: string): Promi
 			type: 'auth',
 			url: 'token',
 			method: 'POST',
-			query: {
-				grant_type: 'client_credentials',
-				client_id: clientId,
-				client_secret: clientSecret
-			}
+			query: createGetAppTokenQuery(clientId, clientSecret)
 		})
 	);
 }
@@ -95,12 +84,7 @@ export async function refreshUserToken(
 			type: 'auth',
 			url: 'token',
 			method: 'POST',
-			query: {
-				grant_type: 'refresh_token',
-				client_id: clientId,
-				client_secret: clientSecret,
-				refresh_token: refreshToken
-			}
+			query: createRefreshTokenQuery(clientId, clientSecret, refreshToken)
 		})
 	);
 }
@@ -116,10 +100,7 @@ export async function revokeToken(clientId: string, accessToken: string): Promis
 		type: 'auth',
 		url: 'revoke',
 		method: 'POST',
-		query: {
-			client_id: clientId,
-			token: accessToken
-		}
+		query: createRevokeTokenQuery(clientId, accessToken)
 	});
 }
 

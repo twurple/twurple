@@ -1,20 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelPredictionBeginOutcomeData } from './common/EventSubChannelPredictionBeginOutcome';
 import { EventSubChannelPredictionBeginOutcome } from './common/EventSubChannelPredictionBeginOutcome';
-
-/** @private */
-export interface EventSubChannelPredictionBeginEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	title: string;
-	outcomes: EventSubChannelPredictionBeginOutcomeData[];
-	started_at: string;
-	locks_at: string;
-}
+import { type EventSubChannelPredictionBeginEventData } from './EventSubChannelPredictionBeginEvent.external';
 
 /**
  * An EventSub event representing a prediction starting in a channel.

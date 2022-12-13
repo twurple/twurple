@@ -10,7 +10,8 @@ import type { AuthProvider } from '@twurple/auth';
 import { getValidTokenFromProvider } from '@twurple/auth';
 import { HellFreezesOverError, rtfm } from '@twurple/common';
 import type { PubSubMessageData } from './messages/PubSubMessage';
-import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket';
+import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket.external';
+import { createListenPacket } from './PubSubPacket.external';
 
 /** @private */
 interface StaticTokenResolvable {
@@ -254,13 +255,7 @@ export class BasicPubSubClient extends EventEmitter {
 	}
 
 	private async _sendListen(topics: string[], accessToken?: string) {
-		await this._sendNonced({
-			type: 'LISTEN',
-			data: {
-				topics,
-				auth_token: accessToken
-			}
-		});
+		await this._sendNonced(createListenPacket(topics, accessToken));
 	}
 
 	private async _sendUnlisten(topics: string[]) {

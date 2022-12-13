@@ -1,30 +1,9 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { PubSubBasicMessageInfo, PubSubChatMessage } from './PubSubMessage';
-
-/** @private */
-export interface PubSubSubscriptionDetail {
-	context: 'sub' | 'resub';
-	cumulative_months: number;
-	streak_months: number;
-}
-
-/** @private */
-export interface PubSubSubscriptionGiftDetail {
-	context: 'subgift' | 'anonsubgift' | 'resubgift' | 'anonresubgift';
-	recipient_id: string;
-	recipient_user_name: string;
-	recipient_display_name: string;
-	months: number;
-	multi_month_duration: number;
-}
-
-/** @private */
-export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
-	display_name: string;
-	sub_plan: 'Prime' | '1000' | '2000' | '3000';
-	sub_plan_name: string;
-	sub_message: PubSubChatMessage;
-} & (PubSubSubscriptionDetail | PubSubSubscriptionGiftDetail);
+import { type PubSubChatMessage } from './PubSubMessage.external';
+import {
+	type PubSubSubscriptionDetail,
+	type PubSubSubscriptionMessageData
+} from './PubSubSubscriptionMessage.external';
 
 /**
  * A message that informs about a user subscribing to a channel.

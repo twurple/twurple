@@ -1,23 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelPollChoiceData } from './common/EventSubChannelPollChoice';
 import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice';
-import type { EventSubChannelPollVoteTypeSettingsData } from './common/EventSubChannelPollVoteTypeSettingsData';
-
-/** @private */
-export interface EventSubChannelPollProgressEventData {
-	id: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	title: string;
-	choices: EventSubChannelPollChoiceData[];
-	bits_voting: EventSubChannelPollVoteTypeSettingsData;
-	channel_points_voting: EventSubChannelPollVoteTypeSettingsData;
-	started_at: string;
-	ends_at: string;
-}
+import { type EventSubChannelPollProgressEventData } from './EventSubChannelPollProgressEvent.external';
 
 /**
  * An EventSub event representing a poll starting in a channel.

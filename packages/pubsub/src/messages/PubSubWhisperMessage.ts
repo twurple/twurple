@@ -1,46 +1,5 @@
-import type { HelixUserType } from '@twurple/common';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { PubSubChatMessageBadge, PubSubChatMessageEmote } from './PubSubMessage';
-
-/** @private */
-export interface PubSubWhisperTags {
-	login: string;
-	display_name: string;
-	color: string;
-	user_type: HelixUserType;
-	emotes: PubSubChatMessageEmote[];
-	badges: PubSubChatMessageBadge[];
-}
-
-/** @private */
-export interface PubSubWhisperRecipient {
-	id: number; // Twitch pls...
-	username: string;
-	display_name: string;
-	color: string;
-	user_type: HelixUserType;
-	badges: PubSubChatMessageBadge[];
-	profile_image: string | null;
-}
-
-/** @private */
-export interface PubSubWhisperMessageContent {
-	id: number;
-	message_id: string;
-	thread_id: string;
-	body: string;
-	sent_ts: number;
-	from_id: number; // Twitch pls...
-	tags: PubSubWhisperTags;
-	recipient: PubSubWhisperRecipient;
-}
-
-/** @private */
-export interface PubSubWhisperMessageData {
-	type: 'whisper_received';
-	data: string;
-	data_object: PubSubWhisperMessageContent;
-}
+import { type PubSubWhisperMessageData } from './PubSubWhisperMessage.external';
 
 /**
  * A message informing about a whisper being received from another user.

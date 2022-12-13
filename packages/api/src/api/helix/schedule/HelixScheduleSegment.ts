@@ -1,24 +1,8 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixScheduleSegmentData } from '../../../interfaces/helix/schedule.external';
 import type { HelixGame } from '../game/HelixGame';
-
-/** @private */
-export interface HelixScheduleSegmentCategoryData {
-	id: string;
-	name: string;
-}
-
-/** @private */
-export interface HelixScheduleSegmentData {
-	id: string;
-	start_time: string;
-	end_time: string;
-	title: string;
-	canceled_until: string | null;
-	category: HelixScheduleSegmentCategoryData | null;
-	is_recurring: boolean;
-}
 
 /**
  * A segment of a schedule.

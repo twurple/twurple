@@ -1,59 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixCustomRewardData } from '../../../interfaces/helix/channelPoints.external';
+import { type HelixCustomRewardImageScale } from '../../../interfaces/helix/channelPoints.input';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixCustomRewardImageData {
-	url_1x: string;
-	url_2x: string;
-	url_4x: string;
-}
-
-/** @private */
-export interface HelixCustomRewardMaxPerStreamSettingData {
-	is_enabled: boolean;
-	max_per_stream: number;
-}
-
-/** @private */
-export interface HelixCustomRewardMaxPerUserPerStreamSettingData {
-	is_enabled: boolean;
-	max_per_user_per_stream: number;
-}
-
-/** @private */
-export interface HelixCustomRewardGlobalCooldownSettingData {
-	is_enabled: boolean;
-	global_cooldown_seconds: number;
-}
-
-/** @private */
-export type HelixCustomRewardImageScale = 1 | 2 | 4;
-
-/** @private */
-export interface HelixCustomRewardData {
-	broadcaster_id: string;
-	broadcaster_login: string;
-	broadcaster_name: string;
-	id: string;
-	image: HelixCustomRewardImageData | null;
-	background_color: string;
-	is_enabled: boolean;
-	cost: number;
-	title: string;
-	prompt: string;
-	is_user_input_required: boolean;
-	max_per_stream_setting: HelixCustomRewardMaxPerStreamSettingData;
-	max_per_user_per_stream_setting: HelixCustomRewardMaxPerUserPerStreamSettingData;
-	global_cooldown_setting: HelixCustomRewardGlobalCooldownSettingData;
-	is_paused: boolean;
-	is_in_stock: boolean;
-	default_image: HelixCustomRewardImageData;
-	should_redemptions_skip_request_queue: boolean;
-	redemptions_redeemed_current_stream: number | null;
-	cooldown_expires_at: string;
-}
 
 /**
  * A custom Channel Points reward.
@@ -222,7 +172,7 @@ export class HelixCustomReward extends DataObject<HelixCustomRewardData> {
 	}
 
 	/**
-	 * Them time when the cooldown ends. `null` means there is currently no cooldown.
+	 * The time when the cooldown ends. `null` means there is currently no cooldown.
 	 */
 	get cooldownExpiryDate(): Date | null {
 		return this[rawDataSymbol].cooldown_expires_at ? new Date(this[rawDataSymbol].cooldown_expires_at) : null;

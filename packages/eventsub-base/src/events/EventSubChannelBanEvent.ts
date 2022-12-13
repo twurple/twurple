@@ -1,23 +1,7 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubChannelBanEventData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	moderator_user_id: string;
-	moderator_user_login: string;
-	moderator_user_name: string;
-	reason: string;
-	banned_at: string;
-	ends_at: string | null;
-	is_permanent: boolean;
-}
+import { type EventSubChannelBanEventData } from './EventSubChannelBanEvent.external';
 
 /**
  * An EventSub event representing a user being banned in a channel.

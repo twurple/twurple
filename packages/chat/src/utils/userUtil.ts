@@ -1,9 +1,9 @@
 // valid names must be alphanumberic or underscores between 1 and 25 characters (cannot start with underscore)
-const validNames = /^[a-zA-Z0-9][a-zA-Z0-9_]{0,24}$/;
+const validNames = /^[a-z0-9][a-z0-9_]{0,24}$/;
 
 /** @private */
 export function toUserName(channel: string): string {
-	// it's okay if this is already a user name, we only remove the first character if it's a pound
+	// it's okay if this is already a username, we only remove the first character if it's a pound
 	const name = channel.replace(/^#/, '').toLowerCase();
 	if (!validNames.test(name)) {
 		throw new Error(

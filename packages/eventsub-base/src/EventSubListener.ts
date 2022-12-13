@@ -1,5 +1,9 @@
 import type { UserIdResolvable } from '@twurple/common';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
+import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
+import type { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
+import type { EventSubChannelCharityDonationEvent } from './events/EventSubChannelCharityDonationEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -20,6 +24,8 @@ import type { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent
 import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
+import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
+import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChannelSubscriptionEndEvent';
 import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
@@ -148,6 +154,54 @@ export interface EventSubListener {
 	) => Promise<EventSubSubscription>;
 
 	/**
+	 * Subscribes to events that represent a charity campaign starting in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaigns starting.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	subscribeToChannelCharityCampaignStartEvents: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignStartEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent a charity campaign ending in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaigns ending.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	subscribeToChannelCharityCampaignStopEvents: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignStopEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent a donation to a charity campaign in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaign donations.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	subscribeToChannelCharityDonationEvents: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityDonationEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent progress in a charity campaign in a channel.
+	 *
+	 * @beta
+	 * @param user The user for which to get notifications about charity campaign progress.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	subscribeToChannelCharityCampaignProgressEvents: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
 	 * Subscribes to events that represent a user getting banned from a channel.
 	 *
 	 * @param user The user for which to get notifications for when users get banned in their channel.
@@ -167,6 +221,36 @@ export interface EventSubListener {
 	subscribeToChannelUnbanEvents: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelUnbanEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent Shield Mode being activated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications for when Shield Mode is activated in their channel.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 *
+	 * @beta
+	 */
+	subscribeToChannelShieldModeBeginEvents: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelShieldModeBeginEvent) => void
+	) => Promise<EventSubSubscription>;
+
+	/**
+	 * Subscribes to events that represent Shield Mode being deactivated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications for when Shield Mode is deactivated in their channel.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 *
+	 * @beta
+	 */
+	subscribeToChannelShieldModeEndEvents: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelShieldModeEndEvent) => void
 	) => Promise<EventSubSubscription>;
 
 	/**

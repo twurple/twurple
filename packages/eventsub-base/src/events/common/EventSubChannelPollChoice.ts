@@ -1,13 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelPollBeginChoiceData } from './EventSubChannelPollBeginChoice';
 import { EventSubChannelPollBeginChoice } from './EventSubChannelPollBeginChoice';
-
-/** @private */
-export interface EventSubChannelPollChoiceData extends EventSubChannelPollBeginChoiceData {
-	bits_votes: number;
-	channel_points_votes: number;
-	votes: number;
-}
+import { type EventSubChannelPollChoiceData } from './EventSubChannelPollChoice.external';
 
 /**
  * A choice in a poll.

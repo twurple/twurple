@@ -1,17 +1,9 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { HelixResponse } from '@twurple/api-call';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import type { HelixDateRangeData } from '../HelixDateRangeData';
-import type { HelixBitsLeaderboardEntryData } from './HelixBitsLeaderboardEntry';
+import { type HelixBitsLeaderboardResponse } from '../../../interfaces/helix/bits.external';
 import { HelixBitsLeaderboardEntry } from './HelixBitsLeaderboardEntry';
-
-/** @private */
-export interface HelixBitsLeaderboardResponse extends HelixResponse<HelixBitsLeaderboardEntryData> {
-	date_range: HelixDateRangeData;
-	total: number;
-}
 
 /**
  * A leaderboard where the users who used the most bits to a broadcaster are listed.

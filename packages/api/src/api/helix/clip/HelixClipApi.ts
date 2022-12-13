@@ -1,69 +1,25 @@
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import {
+	createClipCreateQuery,
+	createClipQuery,
+	type HelixClipCreateResponse,
+	type HelixClipData
+} from '../../../interfaces/helix/clip.external';
+import {
+	type HelixClipCreateParams,
+	type HelixClipFilter,
+	type HelixClipIdFilter,
+	type HelixPaginatedClipFilter,
+	type HelixPaginatedClipIdFilter
+} from '../../../interfaces/helix/clip.input';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import type { HelixPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixClipData } from './HelixClip';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixClip } from './HelixClip';
-
-/** @private */
-export type HelixClipFilterType = 'broadcaster_id' | 'game_id' | 'id';
-
-/**
- * Filters for clip queries.
- */
-export interface HelixClipFilter {
-	/**
-	 * The earliest date to find clips for.
-	 */
-	startDate?: string;
-	/**
-	 * The latest date to find clips for.
-	 */
-	endDate?: string;
-}
-
-/**
- * @inheritDoc
- */
-export interface HelixPaginatedClipFilter extends HelixClipFilter, HelixPagination {}
-
-/** @private */
-export interface HelixClipIdFilterPart {
-	filterType: HelixClipFilterType;
-	ids: string | string[];
-}
-
-/** @private */
-export interface HelixClipIdFilter extends HelixClipFilter, HelixClipIdFilterPart {}
-
-/** @private */
-export interface HelixPaginatedClipIdFilter extends HelixPaginatedClipFilter, HelixClipIdFilterPart {}
-
-/**
- * Parameters for creating a clip.
- */
-export interface HelixClipCreateParams {
-	/**
-	 * The ID of the broadcaster of which you want to create a clip.
-	 */
-	channelId: string;
-
-	/**
-	 * Add a delay before the clip creation that accounts for the usual delay in the viewing experience.
-	 */
-	createAfterDelay?: boolean;
-}
-
-/** @private */
-export interface HelixClipCreateResponse {
-	id: string;
-	edit_url: string;
-}
 
 /**
  * The Helix API methods that deal with clips.
@@ -196,19 +152,14 @@ export class HelixClipApi extends BaseApi {
 			url: 'clips',
 			method: 'POST',
 			scope: 'clips:edit',
-			query: {
-				broadcaster_id: channelId,
-				has_delay: createAfterDelay.toString()
-			}
+			query: createClipCreateQuery(channelId, createAfterDelay)
 		});
 
 		return result.data[0].id;
 	}
 
 	private async _getClips(params: HelixPaginatedClipIdFilter): Promise<HelixPaginatedResult<HelixClip>> {
-		const { filterType, ids, startDate, endDate, ...pagination } = params;
-
-		if (!ids.length) {
+		if (!params.ids.length) {
 			return { data: [] };
 		}
 
@@ -216,10 +167,8 @@ export class HelixClipApi extends BaseApi {
 			type: 'helix',
 			url: 'clips',
 			query: {
-				[filterType]: ids,
-				started_at: startDate,
-				ended_at: endDate,
-				...makePaginationQuery(pagination)
+				...createClipQuery(params),
+				...createPaginationQuery(params)
 			}
 		});
 
@@ -227,16 +176,10 @@ export class HelixClipApi extends BaseApi {
 	}
 
 	private _getClipsPaginated(params: HelixClipIdFilter): HelixPaginatedRequest<HelixClipData, HelixClip> {
-		const { filterType, ids, startDate, endDate } = params;
-
 		return new HelixPaginatedRequest(
 			{
 				url: 'clips',
-				query: {
-					[filterType]: ids,
-					started_at: startDate,
-					ended_at: endDate
-				}
+				query: createClipQuery(params)
 			},
 			this._client,
 			data => new HelixClip(data, this._client)

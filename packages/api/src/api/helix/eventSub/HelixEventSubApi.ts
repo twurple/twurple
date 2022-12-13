@@ -1,65 +1,25 @@
 import type { HelixPaginatedResponseWithTotal } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import {
+	createEventSubModeratorCondition,
+	createEventSubRewardCondition,
+	type HelixEventSubSubscriptionData,
+	type HelixEventSubSubscriptionStatus,
+	type HelixPaginatedEventSubSubscriptionsResponse
+} from '../../../interfaces/helix/eventSub.external';
+import {
+	type HelixEventSubTransportOptions,
+	type HelixPaginatedEventSubSubscriptionsResult
+} from '../../../interfaces/helix/eventSub.input';
+import { createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
-import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type {
-	HelixEventSubSubscriptionData,
-	HelixEventSubSubscriptionStatus,
-	HelixEventSubWebHookTransportData,
-	HelixEventSubWebSocketTransportData
-} from './HelixEventSubSubscription';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEventSubSubscriptionsRequest';
-
-/**
- * The properties describing where a WebHook notification is sent, and how it is signed.
- */
-export interface HelixEventSubWebHookTransportOptions extends HelixEventSubWebHookTransportData {
-	/**
-	 * The secret to sign the notification payloads with.
-	 */
-	secret?: string;
-}
-
-/**
- * The properties describing where a WebSocket notification is sent.
- */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface HelixEventSubWebSocketTransportOptions
-	extends Omit<HelixEventSubWebSocketTransportData, 'connected_at'> {}
-
-export type HelixEventSubTransportOptions =
-	| HelixEventSubWebHookTransportOptions
-	| HelixEventSubWebSocketTransportOptions;
-
-/** @private */
-export interface HelixPaginatedEventSubSubscriptionsResponse
-	extends HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData> {
-	total_cost: number;
-	max_total_cost: number;
-}
-
-/**
- * The result of an EventSub subscription list request.
- *
- * @inheritDoc
- */
-export interface HelixPaginatedEventSubSubscriptionsResult
-	extends HelixPaginatedResultWithTotal<HelixEventSubSubscription> {
-	/**
-	 * The total cost of all subscriptions.
-	 */
-	totalCost: number;
-
-	/**
-	 * The maximum cost that is allowed for your application.
-	 */
-	maxTotalCost: number;
-}
 
 /**
  * The API methods that deal with EventSub.
@@ -97,7 +57,7 @@ export class HelixEventSubApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedEventSubSubscriptionsResponse>({
 			type: 'helix',
 			url: 'eventsub/subscriptions',
-			query: makePaginationQuery(pagination)
+			query: createPaginationQuery(pagination)
 		});
 
 		return {
@@ -134,7 +94,7 @@ export class HelixEventSubApi extends BaseApi {
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			query: {
-				...makePaginationQuery(pagination),
+				...createPaginationQuery(pagination),
 				status
 			}
 		});
@@ -177,7 +137,7 @@ export class HelixEventSubApi extends BaseApi {
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			query: {
-				...makePaginationQuery(pagination),
+				...createPaginationQuery(pagination),
 				type
 			}
 		});
@@ -218,8 +178,8 @@ export class HelixEventSubApi extends BaseApi {
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			query: {
-				...makePaginationQuery(pagination),
-				user_id: extractUserId(user)
+				...createSingleKeyQuery('user_id', extractUserId(user)),
+				...createPaginationQuery(pagination)
 			}
 		});
 
@@ -238,7 +198,10 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param user The user to retrieve subscriptions for.
 	 */
 	getSubscriptionsForUserPaginated(user: UserIdResolvable): HelixPaginatedEventSubSubscriptionsRequest {
-		return new HelixPaginatedEventSubSubscriptionsRequest({ user_id: extractUserId(user) }, this._client);
+		return new HelixPaginatedEventSubSubscriptionsRequest(
+			createSingleKeyQuery('user_id', extractUserId(user)) as Record<string, string>,
+			this._client
+		);
 	}
 
 	/**
@@ -250,17 +213,21 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param version The version of the event.
 	 * @param condition The condition of the subscription.
 	 * @param transport The transport of the subscription.
+	 * @param requiredScope The scope required by the subscription. Will only be checked for applicable transports.
 	 */
 	async createSubscription(
 		type: string,
 		version: string,
 		condition: Record<string, unknown>,
-		transport: HelixEventSubTransportOptions
+		transport: HelixEventSubTransportOptions,
+		requiredScope?: string
 	): Promise<HelixEventSubSubscription> {
+		const scope = transport.method === 'websocket' ? requiredScope : undefined;
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
 			type: 'helix',
 			url: 'eventsub/subscriptions',
 			method: 'POST',
+			scope,
 			jsonBody: {
 				type,
 				version,
@@ -314,12 +281,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'stream.online',
-			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
-		);
+		return await this.createSubscription('stream.online', '1', createBroadcasterQuery(broadcaster), transport);
 	}
 
 	/**
@@ -332,12 +294,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'stream.offline',
-			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
-		);
+		return await this.createSubscription('stream.offline', '1', createBroadcasterQuery(broadcaster), transport);
 	}
 
 	/**
@@ -350,12 +307,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'channel.update',
-			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
-		);
+		return await this.createSubscription('channel.update', '1', createBroadcasterQuery(broadcaster), transport);
 	}
 
 	/**
@@ -368,12 +320,7 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'channel.follow',
-			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
-		);
+		return await this.createSubscription('channel.follow', '1', createBroadcasterQuery(broadcaster), transport);
 	}
 
 	/**
@@ -389,8 +336,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.subscribe',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:subscriptions'
 		);
 	}
 
@@ -407,8 +355,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.subscription.gift',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:subscriptions'
 		);
 	}
 
@@ -425,8 +374,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.subscription.message',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:subscriptions'
 		);
 	}
 
@@ -443,8 +393,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.subscription.end',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:subscriptions'
 		);
 	}
 
@@ -461,8 +412,89 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.cheer',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'bits:read'
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a charity campaign starting in a channel.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
+	 * @param transport The transport option.
+	 */
+	async subscribeToChannelCharityCampaignStartEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.charity_campaign.start',
+			'beta',
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:charity'
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a charity campaign ending in a channel.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
+	 * @param transport The transport option.
+	 */
+	async subscribeToChannelCharityCampaignStopEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.charity_campaign.stop',
+			'beta',
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:charity'
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a user donating to a charity campaign in a channel.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
+	 * @param transport The transport option.
+	 */
+	async subscribeToChannelCharityDonationEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.charity_campaign.donate',
+			'beta',
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:charity'
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a charity campaign progressing in a channel.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
+	 * @param transport The transport option.
+	 */
+	async subscribeToChannelCharityCampaignProgressEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.charity_campaign.progress',
+			'beta',
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:charity'
 		);
 	}
 
@@ -479,8 +511,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.ban',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:moderate'
 		);
 	}
 
@@ -497,8 +530,55 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.unban',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:moderate'
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent Shield Mode being activated in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to Shield Mode activation events for.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param transport The transport options.
+	 *
+	 * @beta
+	 */
+	async subscribeToChannelShieldModeBeginEvents(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.shield_mode.begin',
+			'beta',
+			createEventSubModeratorCondition(broadcaster, moderator),
+			transport,
+			'moderator:read:shield_mode'
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent Shield Mode being deactivated in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to Shield Mode deactivation events for.
+	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
+	 * @param transport The transport options.
+	 *
+	 * @beta
+	 */
+	async subscribeToChannelShieldModeEndEvents(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.shield_mode.end',
+			'beta',
+			createEventSubModeratorCondition(broadcaster, moderator),
+			transport,
+			'moderator:read:shield_mode'
 		);
 	}
 
@@ -515,8 +595,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.moderator.add',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'moderation:read'
 		);
 	}
 
@@ -533,8 +614,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.moderator.remove',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'moderation:read'
 		);
 	}
 
@@ -551,7 +633,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.raid',
 			'1',
-			{ from_broadcaster_user_id: extractUserId(broadcaster) },
+			createSingleKeyQuery('from_broadcaster_user_id', extractUserId(broadcaster)),
 			transport
 		);
 	}
@@ -569,7 +651,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.raid',
 			'1',
-			{ to_broadcaster_user_id: extractUserId(broadcaster) },
+			createSingleKeyQuery('to_broadcaster_user_id', extractUserId(broadcaster)),
 			transport
 		);
 	}
@@ -587,8 +669,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward.add',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -605,8 +688,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward.update',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -625,8 +709,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward.update',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
-			transport
+			createEventSubRewardCondition(broadcaster, rewardId),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -643,8 +728,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward.remove',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -663,8 +749,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward.remove',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
-			transport
+			createEventSubRewardCondition(broadcaster, rewardId),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -681,8 +768,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.add',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -701,8 +789,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.add',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
-			transport
+			createEventSubRewardCondition(broadcaster, rewardId),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -719,8 +808,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.update',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -739,8 +829,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.channel_points_custom_reward_redemption.update',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId },
-			transport
+			createEventSubRewardCondition(broadcaster, rewardId),
+			transport,
+			'channel:read:redemptions'
 		);
 	}
 
@@ -757,8 +848,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.poll.begin',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:polls'
 		);
 	}
 
@@ -775,8 +867,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.poll.progress',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:polls'
 		);
 	}
 
@@ -793,8 +886,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.poll.end',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:polls'
 		);
 	}
 
@@ -811,8 +905,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.prediction.begin',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:predictions'
 		);
 	}
 
@@ -829,8 +924,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.prediction.progress',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:predictions'
 		);
 	}
 
@@ -847,8 +943,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.prediction.lock',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:predictions'
 		);
 	}
 
@@ -865,8 +962,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.prediction.end',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:predictions'
 		);
 	}
 
@@ -883,8 +981,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.goal.begin',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:goals'
 		);
 	}
 
@@ -901,8 +1000,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.goal.progress',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:goals'
 		);
 	}
 
@@ -919,8 +1019,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.goal.end',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:goals'
 		);
 	}
 
@@ -937,8 +1038,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.hype_train.begin',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:hype_train'
 		);
 	}
 
@@ -955,8 +1057,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.hype_train.progress',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:hype_train'
 		);
 	}
 
@@ -973,8 +1076,9 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'channel.hype_train.end',
 			'1',
-			{ broadcaster_user_id: extractUserId(broadcaster) },
-			transport
+			createBroadcasterQuery(broadcaster),
+			transport,
+			'channel:read:hype_train'
 		);
 	}
 
@@ -991,7 +1095,7 @@ export class HelixEventSubApi extends BaseApi {
 		return await this.createSubscription(
 			'extension.bits_transaction.create',
 			'1',
-			{ extension_client_id: clientId },
+			createSingleKeyQuery('extension_client_id', clientId),
 			transport
 		);
 	}
@@ -1006,7 +1110,12 @@ export class HelixEventSubApi extends BaseApi {
 		clientId: string,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription('user.authorization.grant', '1', { client_id: clientId }, transport);
+		return await this.createSubscription(
+			'user.authorization.grant',
+			'1',
+			createSingleKeyQuery('client_id', clientId),
+			transport
+		);
 	}
 
 	/**
@@ -1019,7 +1128,12 @@ export class HelixEventSubApi extends BaseApi {
 		clientId: string,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription('user.authorization.revoke', '1', { client_id: clientId }, transport);
+		return await this.createSubscription(
+			'user.authorization.revoke',
+			'1',
+			createSingleKeyQuery('client_id', clientId),
+			transport
+		);
 	}
 
 	/**
@@ -1027,12 +1141,23 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * @param user The user you want to listen to user update events for.
 	 * @param transport The transport options.
+	 * @param withEmail Whether to request adding the email address of the user to the notification.
+	 *
+	 * Only has an effect with the websocket transport.
+	 * With the webhook transport, this depends solely on the previous authorization given by the user.
 	 */
 	async subscribeToUserUpdateEvents(
 		user: UserIdResolvable,
-		transport: HelixEventSubTransportOptions
+		transport: HelixEventSubTransportOptions,
+		withEmail?: boolean
 	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription('user.update', '1', { user_id: extractUserId(user) }, transport);
+		return await this.createSubscription(
+			'user.update',
+			'1',
+			createSingleKeyQuery('user_id', extractUserId(user)),
+			transport,
+			withEmail ? 'user:read:email' : undefined
+		);
 	}
 
 	private async _deleteSubscriptionsWithCondition(cond?: (sub: HelixEventSubSubscription) => boolean): Promise<void> {

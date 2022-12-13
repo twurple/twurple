@@ -1,14 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixUserBlockData } from '../../../interfaces/helix/user.external';
 import type { HelixUser } from './/HelixUser';
-
-/** @private */
-export interface HelixUserBlockData {
-	user_id: string;
-	user_login: string;
-	display_name: string;
-}
 
 /**
  * An user blocked by a previously given user.

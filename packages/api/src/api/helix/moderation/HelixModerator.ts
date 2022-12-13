@@ -1,14 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixModeratorData } from '../../../interfaces/helix/moderation.external';
 import type { HelixUser } from '../user/HelixUser';
-
-/** @private */
-export interface HelixModeratorData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-}
 
 /**
  * Information about the moderator status of a user.

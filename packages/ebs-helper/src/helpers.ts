@@ -1,6 +1,6 @@
-import { mapNullable, mapOptional } from '@d-fischer/shared-utils';
+import { mapNullable } from '@d-fischer/shared-utils';
 import type { HelixResponse } from '@twurple/api-call';
-import { callTwitchApi } from '@twurple/api-call';
+import { callTwitchApi, createBroadcasterQuery } from '@twurple/api-call';
 import type { HelixExtensionData, UserIdResolvable } from '@twurple/common';
 import { extractUserId, HelixExtension } from '@twurple/common';
 import type {
@@ -8,8 +8,20 @@ import type {
 	HelixExtensionConfigurationSegmentName
 } from './classes/HelixExtensionConfigurationSegment';
 import { HelixExtensionConfigurationSegment } from './classes/HelixExtensionConfigurationSegment';
-import type { HelixExtensionSecretListData } from './classes/HelixExtensionSecretList';
 import { HelixExtensionSecretList } from './classes/HelixExtensionSecretList';
+import { type HelixExtensionSecretListData } from './classes/HelixExtensionSecretList.external';
+import {
+	createChatMessageBody,
+	createChatMessageJwtData,
+	createConfigurationSegmentBody,
+	createConfigurationSegmentQuery,
+	createExtensionRequiredConfigurationBody,
+	createPubSubMessageBody,
+	createPubSubMessageJwtData,
+	getExtensionQuery,
+	getExtensionSecretCreateQuery,
+	getExtensionSecretsQuery
+} from './helpers.external';
 import type { BaseExternalJwtConfig } from './jwt';
 import { createExternalJwt } from './jwt';
 
@@ -41,10 +53,7 @@ export async function getExtension(config: EbsCallConfig, version?: string): Pro
 	const result = await callTwitchApi<HelixResponse<HelixExtensionData>>(
 		{
 			url: 'extensions',
-			query: {
-				extension_id: config.clientId,
-				extension_version: version
-			}
+			query: getExtensionQuery(config, version)
 		},
 		config.clientId,
 		jwt
@@ -66,9 +75,7 @@ export async function getExtensionSecrets(config: EbsCallConfig): Promise<HelixE
 	const result = await callTwitchApi<HelixResponse<HelixExtensionSecretListData>>(
 		{
 			url: 'extensions/jwt/secrets',
-			query: {
-				extension_id: config.clientId
-			}
+			query: getExtensionSecretsQuery(config)
 		},
 		config.clientId,
 		jwt
@@ -92,10 +99,7 @@ export async function createExtensionSecret(config: EbsCallConfig, delay?: numbe
 		{
 			url: 'extensions/jwt/secrets',
 			method: 'POST',
-			query: {
-				extension_id: config.clientId,
-				delay: delay?.toString()
-			}
+			query: getExtensionSecretCreateQuery(config, delay)
 		},
 		config.clientId,
 		jwt
@@ -125,14 +129,8 @@ export async function setExtensionRequiredConfiguration(
 	await callTwitchApi(
 		{
 			url: 'extensions/required_configuration',
-			query: {
-				broadcaster_id: extractUserId(broadcaster)
-			},
-			jsonBody: {
-				extension_id: config.clientId,
-				extension_version: version,
-				required_configuration: configVersion
-			}
+			query: createBroadcasterQuery(broadcaster),
+			jsonBody: createExtensionRequiredConfigurationBody(config, version, configVersion)
 		},
 		config.clientId,
 		jwt
@@ -150,11 +148,7 @@ async function getAnyConfigurationSegment(
 	const result = await callTwitchApi<HelixResponse<HelixExtensionConfigurationSegmentData>>(
 		{
 			url: 'extensions/configurations',
-			query: {
-				extension_id: config.clientId,
-				segment,
-				broadcaster_id: mapOptional(broadcaster, extractUserId)
-			}
+			query: createConfigurationSegmentQuery(config, segment, broadcaster)
 		},
 		config.clientId,
 		jwt
@@ -220,13 +214,7 @@ async function setAnyConfigurationSegment(
 		{
 			url: 'extensions/configurations',
 			method: 'PUT',
-			jsonBody: {
-				extension_id: config.clientId,
-				segment,
-				broadcaster_id: mapOptional(broadcaster, extractUserId),
-				version,
-				content
-			}
+			jsonBody: createConfigurationSegmentBody(config, segment, broadcaster, version, content)
 		},
 		config.clientId,
 		jwt
@@ -304,21 +292,14 @@ export async function sendExtensionChatMessage(
 	extensionVersion: string,
 	text: string
 ): Promise<void> {
-	const broadcasterId = extractUserId(broadcaster);
-	const jwt = createExternalJwt({ ...config, additionalData: { channel_id: broadcasterId } });
+	const jwt = createExternalJwt({ ...config, additionalData: createChatMessageJwtData(broadcaster) });
 
 	await callTwitchApi(
 		{
 			url: 'extensions/chat',
 			method: 'POST',
-			query: {
-				broadcaster_id: broadcasterId
-			},
-			jsonBody: {
-				extension_id: config.clientId,
-				extension_version: extensionVersion,
-				text
-			}
+			query: createBroadcasterQuery(broadcaster),
+			jsonBody: createChatMessageBody(config, extensionVersion, text)
 		},
 		config.clientId,
 		jwt
@@ -332,21 +313,16 @@ async function sendAnyExtensionPubSubMessage(
 	message: string,
 	broadcaster?: UserIdResolvable
 ): Promise<void> {
-	const broadcasterId = mapOptional(broadcaster, extractUserId);
 	const jwt = createExternalJwt({
 		...config,
-		additionalData: { channel_id: broadcasterId, pubsub_perms: { send: targets } }
+		additionalData: createPubSubMessageJwtData(broadcaster, targets)
 	});
 
 	await callTwitchApi(
 		{
 			url: 'extensions/pubsub',
 			method: 'POST',
-			jsonBody: {
-				target: targets,
-				broadcaster_id: broadcasterId,
-				message
-			}
+			jsonBody: createPubSubMessageBody(targets, broadcaster, message)
 		},
 		config.clientId,
 		jwt

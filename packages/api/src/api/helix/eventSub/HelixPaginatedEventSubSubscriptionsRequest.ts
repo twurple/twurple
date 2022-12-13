@@ -1,8 +1,10 @@
 import { rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import {
+	type HelixEventSubSubscriptionData,
+	type HelixPaginatedEventSubSubscriptionsResponse
+} from '../../../interfaces/helix/eventSub.external';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
-import type { HelixPaginatedEventSubSubscriptionsResponse } from './HelixEventSubApi';
-import type { HelixEventSubSubscriptionData } from './HelixEventSubSubscription';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 
 /**

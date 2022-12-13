@@ -1,53 +1,17 @@
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
+import { type HelixVideoData } from '../../../interfaces/helix/video.external';
+import { type HelixPaginatedVideoFilter, type HelixVideoFilter } from '../../../interfaces/helix/video.input';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import type { HelixPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixVideoData, HelixVideoType } from './HelixVideo';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixVideo } from './HelixVideo';
 
 /** @private */
 export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
-
-/** @private */
-export type HelixVideoFilterPeriod = 'all' | 'day' | 'week' | 'month';
-
-/** @private */
-export type HelixVideoSort = 'time' | 'trending' | 'views';
-
-/**
- * Filters for the videos request.
- */
-export interface HelixVideoFilter {
-	/**
-	 * The language of the videos.
-	 */
-	language?: string;
-
-	/**
-	 * The period of time when the videos were created.
-	 */
-	period?: HelixVideoFilterPeriod;
-
-	/**
-	 * The value to order the videos by.
-	 */
-	orderBy?: HelixVideoSort;
-
-	/**
-	 * The type of the videos.
-	 */
-	type?: HelixVideoType | 'all';
-}
-
-/**
- * @inheritDoc
- */
-export interface HelixPaginatedVideoFilter extends HelixVideoFilter, HelixPagination {}
 
 /**
  * The Helix API methods that deal with videos.
@@ -178,7 +142,7 @@ export class HelixVideoApi extends BaseApi {
 			type: 'helix',
 			query: {
 				...HelixVideoApi._makeVideosQuery(filterType, filterValues, filter),
-				...makePaginationQuery(filter)
+				...createPaginationQuery(filter)
 			}
 		});
 

@@ -1,15 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixBlockedTermData {
-	broadcaster_id: string;
-	created_at: string;
-	expires_at: string;
-	id: string;
-	moderator_id: string;
-	text: string;
-	updated_at: string;
-}
+import { type HelixBlockedTermData } from '../../../interfaces/helix/moderation.external';
 
 /**
  * Information about a word or phrase blocked in a broadcaster's channel.

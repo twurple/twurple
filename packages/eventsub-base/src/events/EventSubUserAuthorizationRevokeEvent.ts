@@ -1,14 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { type EventSubUserAuthorizationRevokeEventData } from './EventSubUserAuthorizationRevokeEvent.external';
 
-/** @private */
-export interface EventSubUserAuthorizationRevokeEventData {
-	client_id: string;
-	user_id: string;
-	user_login: string | null;
-	user_name: string | null;
-}
 /**
  * An EventSub event representing a user revoking authorization for an application.
  */

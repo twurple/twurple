@@ -1,16 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixEmoteFromSetData } from '../../../interfaces/helix/chat.external';
 import type { HelixUser } from '../user/HelixUser';
-import type { HelixEmoteData } from './HelixEmote';
 import { HelixEmote } from './HelixEmote';
-
-/** @private */
-export interface HelixEmoteFromSetData extends HelixEmoteData {
-	emote_type: string;
-	emote_set_id: string;
-	owner_id: string;
-}
 
 /**
  * A Twitch Channel emote.

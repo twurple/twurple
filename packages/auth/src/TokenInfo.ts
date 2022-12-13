@@ -1,14 +1,7 @@
 /** @private */
 import { mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-export interface TokenInfoData {
-	client_id: string;
-	login?: string;
-	scopes: string[];
-	user_id?: string;
-	expires_in?: number;
-}
+import { type TokenInfoData } from './TokenInfo.external';
 
 /**
  * Information about an access token.

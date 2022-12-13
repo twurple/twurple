@@ -1,17 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixGameData } from '../../../interfaces/helix/game.external';
+import { type HelixStreamData } from '../../../interfaces/helix/stream.external';
 import type { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixPagination } from '../HelixPagination';
-import type { HelixStream, HelixStreamData } from '../stream/HelixStream';
-
-/** @private */
-export interface HelixGameData {
-	id: string;
-	name: string;
-	box_art_url: string;
-}
+import type { HelixStream } from '../stream/HelixStream';
 
 /**
  * A game as displayed on Twitch.
@@ -45,6 +40,13 @@ export class HelixGame extends DataObject<HelixGameData> {
 	 */
 	get boxArtUrl(): string {
 		return this[rawDataSymbol].box_art_url;
+	}
+
+	/**
+	 * The IGDB ID of the game, or null if the game doesn't have an IGDB ID assigned at Twitch.
+	 */
+	get igdbId(): string | null {
+		return this[rawDataSymbol].igdb_id || null;
 	}
 
 	/**

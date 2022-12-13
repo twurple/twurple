@@ -1,10 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubChannelPollBeginChoiceData {
-	id: string;
-	title: string;
-}
+import { type EventSubChannelPollBeginChoiceData } from './EventSubChannelPollBeginChoice.external';
 
 /**
  * A choice in a poll, as defined when beginning that poll.

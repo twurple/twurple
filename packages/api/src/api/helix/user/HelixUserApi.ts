@@ -1,71 +1,42 @@
+import { mapOptional } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from '@twurple/common';
+import { createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
+import {
+	createUserBlockCreateQuery,
+	createUserBlockDeleteQuery,
+	type HelixFollowData,
+	type HelixPrivilegedUserData,
+	type HelixUserBlockData,
+	type HelixUserData,
+	type UserLookupType
+} from '../../../interfaces/helix/user.external';
+import {
+	type HelixFollowFilter,
+	type HelixPaginatedFollowFilter,
+	type HelixUserBlockAdditionalInfo,
+	type HelixUserUpdate
+} from '../../../interfaces/helix/user.input';
+import {
+	type HelixInstalledExtensionListData,
+	type HelixUserExtensionData
+} from '../../../interfaces/helix/userExtension.external';
+import { type HelixUserExtensionUpdatePayload } from '../../../interfaces/helix/userExtension.input';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginatedResult, createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixInstalledExtensionListData } from './Extensions/HelixInstalledExtensionList';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixInstalledExtensionList } from './Extensions/HelixInstalledExtensionList';
-import type { HelixUserExtensionData } from './Extensions/HelixUserExtension';
 import { HelixUserExtension } from './Extensions/HelixUserExtension';
-import type { HelixUserExtensionUpdatePayload } from './Extensions/HelixUserExtensionUpdatePayload';
-import type { HelixFollowData } from './HelixFollow';
 import { HelixFollow } from './HelixFollow';
-import type { HelixPrivilegedUserData } from './HelixPrivilegedUser';
 import { HelixPrivilegedUser } from './HelixPrivilegedUser';
-import type { HelixUserData } from './HelixUser';
 import { HelixUser } from './HelixUser';
-import type { HelixUserBlockData } from './HelixUserBlock';
 import { HelixUserBlock } from './HelixUserBlock';
-
-/** @private */
-export type UserLookupType = 'id' | 'login';
-
-/**
- * User data to update using {@link HelixUserApi#updateUser}}.
- */
-export interface HelixUserUpdate {
-	description?: string;
-}
-
-/**
- * Additional info for a block to be created.
- */
-export interface HelixUserBlockAdditionalInfo {
-	/**
-	 * The source context for blocking the user.
-	 */
-	sourceContext?: 'chat' | 'whisper';
-
-	/**
-	 * The reason for blocking the user.
-	 */
-	reason?: 'spam' | 'harassment' | 'other';
-}
-
-/**
- * Filters for the follower request.
- */
-export interface HelixFollowFilter {
-	/**
-	 * The following user.
-	 */
-	user?: UserIdResolvable;
-
-	/**
-	 * The followed user.
-	 */
-	followedUser?: UserIdResolvable;
-}
-
-/**
- * @inheritDoc
- */
-export interface HelixPaginatedFollowFilter extends HelixFollowFilter, HelixForwardPagination {}
 
 /**
  * The Helix API methods that deal with users.
@@ -104,10 +75,10 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Retrieves the user data for the given user ID.
 	 *
-	 * @param userId The user ID you want to look up.
+	 * @param user The user ID you want to look up.
 	 */
-	async getUserById(userId: UserIdResolvable): Promise<HelixUser | null> {
-		const users = await this._getUsers('id', [extractUserId(userId)]);
+	async getUserById(user: UserIdResolvable): Promise<HelixUser | null> {
+		const users = await this._getUsers('id', [extractUserId(user)]);
 		return users.length ? users[0] : null;
 	}
 
@@ -173,7 +144,7 @@ export class HelixUserApi extends BaseApi {
 			type: 'helix',
 			query: {
 				...HelixUserApi._makeFollowsQuery(filter),
-				...makePaginationQuery(filter)
+				...createPaginationQuery(filter)
 			}
 		});
 
@@ -242,8 +213,8 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/blocks',
 			scope: 'user:read:blocked_users',
 			query: {
-				broadcaster_id: extractUserId(user),
-				...makePaginationQuery(pagination)
+				...createBroadcasterQuery(user),
+				...createPaginationQuery(pagination)
 			}
 		});
 
@@ -260,9 +231,7 @@ export class HelixUserApi extends BaseApi {
 			{
 				url: 'users/blocks',
 				scope: 'user:read:blocked_users',
-				query: {
-					broadcaster_id: extractUserId(user)
-				}
+				query: createBroadcasterQuery(user)
 			},
 			this._client,
 			data => new HelixUserBlock(data, this._client)
@@ -283,11 +252,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/blocks',
 			method: 'PUT',
 			scope: 'user:manage:blocked_users',
-			query: {
-				target_user_id: extractUserId(target),
-				source_context: additionalInfo.sourceContext,
-				reason: additionalInfo.reason
-			}
+			query: createUserBlockCreateQuery(target, additionalInfo)
 		});
 	}
 
@@ -302,9 +267,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/blocks',
 			method: 'DELETE',
 			scope: 'user:manage:blocked_users',
-			query: {
-				target_user_id: extractUserId(target)
-			}
+			query: createUserBlockDeleteQuery(target)
 		});
 	}
 
@@ -328,13 +291,10 @@ export class HelixUserApi extends BaseApi {
 	 * If not given, get the installed extensions for the authenticated user.
 	 */
 	async getActiveExtensions(user?: UserIdResolvable): Promise<HelixInstalledExtensionList> {
-		const userId = user ? extractUserId(user) : undefined;
 		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
 			type: 'helix',
 			url: 'users/extensions',
-			query: {
-				user_id: userId
-			}
+			query: createSingleKeyQuery('user_id', mapOptional(user, extractUserId))
 		});
 
 		return new HelixInstalledExtensionList(result.data);

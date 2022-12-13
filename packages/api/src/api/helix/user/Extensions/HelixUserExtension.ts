@@ -1,16 +1,9 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixBaseExtensionData } from './HelixBaseExtension';
+import {
+	type HelixExtensionType,
+	type HelixUserExtensionData
+} from '../../../../interfaces/helix/userExtension.external';
 import { HelixBaseExtension } from './HelixBaseExtension';
-import type { HelixExtensionSlotType } from './HelixInstalledExtension';
-
-/** @private */
-export type HelixExtensionType = HelixExtensionSlotType | 'mobile';
-
-/** @private */
-export interface HelixUserExtensionData extends HelixBaseExtensionData {
-	can_activate: boolean;
-	type: HelixExtensionType[];
-}
 
 /**
  * A Twitch Extension that was installed by a user.

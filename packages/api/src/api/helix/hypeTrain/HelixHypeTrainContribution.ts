@@ -1,19 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import {
+	type HelixHypeTrainContributionData,
+	type HelixHypeTrainContributionType
+} from '../../../interfaces/helix/hypeTrain.external';
 import type { HelixUser } from '../user/HelixUser';
-
-/**
- * The type of a Hype Train contribution.
- */
-export type HelixHypeTrainContributionType = 'BITS' | 'SUBS';
-
-/** @private */
-export interface HelixHypeTrainContributionData {
-	total: number;
-	user: string;
-	type: HelixHypeTrainContributionType;
-}
 
 /**
  * A Hype Train contributor.

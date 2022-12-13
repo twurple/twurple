@@ -42,6 +42,7 @@ import type {
 	ChatSubInfo,
 	ChatSubUpgradeInfo
 } from './userNotices/ChatSubInfo';
+import { splitOnSpaces } from './utils/messageUtil';
 import { toChannelName, toUserName } from './utils/userUtil';
 
 const GENERIC_CHANNEL = 'twjs';
@@ -940,6 +941,28 @@ export class ChatClient extends IrcClient {
 						streak: streakMonths ? Number(streakMonths) : undefined,
 						message
 					};
+					const wasGifted = tags.get('msg-param-was-gifted') === 'true';
+					if (wasGifted) {
+						const wasAnonGift = tags.get('msg-param-anon-gift') === 'true';
+						const duration = Number(tags.get('msg-param-gift-months'));
+						const redeemedMonth = Number(tags.get('msg-param-gift-month-being-redeemed'));
+						if (wasAnonGift) {
+							subInfo.originalGiftInfo = {
+								anonymous: true,
+								duration,
+								redeemedMonth
+							};
+						} else {
+							subInfo.originalGiftInfo = {
+								anonymous: false,
+								duration,
+								redeemedMonth,
+								userId: tags.get('msg-param-gifter-id')!,
+								userName: tags.get('msg-param-gifter-login')!,
+								userDisplayName: tags.get('msg-param-gifter-name')!
+							};
+						}
+					}
 					this.emit(event, channel, tags.get('login')!, subInfo, userNotice);
 					break;
 				}
@@ -1553,6 +1576,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Starts a raid on a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixRaidApi#startRaid} instead.
+	 *
 	 * @param channel The channel to start the raid in. Defaults to the channel of the connected user.
 	 * @param target The channel to raid.
 	 */
@@ -1565,6 +1590,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Ends a raid on a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixRaidApi#cancelRaid} instead.
+	 *
 	 * @param channel The channel to end the raid in. Defaults to the channel of the connected user.
 	 */
 	async unraid(channel: string | undefined): Promise<void> {
@@ -1573,6 +1600,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Bans a user from a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixModerationApi#banUser} instead.
 	 *
 	 * @param channel The channel to ban the user from. Defaults to the channel of the connected user.
 	 * @param user The user to ban from the channel.
@@ -1599,6 +1628,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Removes all messages from a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixModerationApi#deleteChannelMessages} instead.
+	 *
 	 * @param channel The channel to remove all messages from. Defaults to the channel of the connected user.
 	 */
 	async clear(channel: string = this._credentials.nick): Promise<void> {
@@ -1616,6 +1647,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Changes your username color.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#setColorForUser} instead.
 	 *
 	 * @param color The hexadecimal code (prefixed with #) or color name to use for your username.
 	 *
@@ -1642,6 +1675,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Runs a commercial break on a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChannelApi#startChannelCommercial} instead.
+	 *
 	 * @param channel The channel to run the commercial break on.
 	 * @param duration The duration of the commercial break.
 	 */
@@ -1664,6 +1699,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Deletes a message from a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixModerationApi#deleteChannelMessages} instead.
 	 *
 	 * @param channel The channel to delete the message from.
 	 * @param message The message (as message ID or message object) to delete.
@@ -1689,6 +1726,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Enables emote-only mode in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
+	 *
 	 * @param channel The channel to enable emote-only mode in.
 	 */
 	async enableEmoteOnly(channel: string): Promise<void> {
@@ -1711,6 +1750,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Disables emote-only mode in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
+	 *
 	 * @param channel The channel to disable emote-only mode in.
 	 */
 	async disableEmoteOnly(channel: string): Promise<void> {
@@ -1732,6 +1773,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Enables followers-only mode in a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
 	 *
 	 * @param channel The channel to enable followers-only mode in.
 	 * @param minFollowTime The time (in minutes) a user needs to be following before being able to send messages.
@@ -1761,6 +1804,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Disables followers-only mode in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
+	 *
 	 * @param channel The channel to disable followers-only mode in.
 	 */
 	async disableFollowersOnly(channel: string): Promise<void> {
@@ -1782,6 +1827,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Gives a user moderator rights in a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixModerationApi#addModerator} instead.
 	 *
 	 * @param channel The channel to give the user moderator rights in.
 	 * @param user The user to give moderator rights.
@@ -1807,6 +1854,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Takes moderator rights from a user in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixModerationApi#removeModerator} instead.
+	 *
 	 * @param channel The channel to remove the user's moderator rights in.
 	 * @param user The user to take moderator rights from.
 	 */
@@ -1831,6 +1880,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Retrieves a list of moderators in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixModerationApi#getModerators} instead.
+	 *
 	 * @param channel The channel to retrieve the moderators of.
 	 */
 	async getMods(channel: string): Promise<string[]> {
@@ -1849,7 +1900,7 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Enables r9k mode in a channel.
 	 *
-	 * @deprecated Use `enableUniqueChat` instead.
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
 	 *
 	 * @param channel The channel to enable r9k mode in.
 	 */
@@ -1860,7 +1911,7 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Disables r9k mode in a channel.
 	 *
-	 * @deprecated Use `disableUniqueChat` instead.
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
 	 *
 	 * @param channel The channel to disable r9k mode in.
 	 */
@@ -1870,6 +1921,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Enables unique messages mode in a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
 	 *
 	 * @param channel The channel to enable unique messages mode in.
 	 */
@@ -1893,6 +1946,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Disables unique messages mode in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
+	 *
 	 * @param channel The channel to disable unique messages mode in.
 	 */
 	async disableUniqueChat(channel: string): Promise<void> {
@@ -1914,6 +1969,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Enables slow mode in a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
 	 *
 	 * @param channel The channel to enable slow mode in.
 	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
@@ -1943,6 +2000,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Disables slow mode in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
+	 *
 	 * @param channel The channel to disable slow mode in.
 	 */
 	async disableSlow(channel: string): Promise<void> {
@@ -1964,6 +2023,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Enables subscribers-only mode in a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
 	 *
 	 * @param channel The channel to enable subscribers-only mode in.
 	 */
@@ -1987,6 +2048,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Disables subscribers-only mode in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
+	 *
 	 * @param channel The channel to disable subscribers-only mode in.
 	 */
 	async disableSubsOnly(channel: string): Promise<void> {
@@ -2008,6 +2071,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Times out a user in a channel and removes all their messages.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#updateSettings} instead.
 	 *
 	 * @param channel The channel to time out the user in.
 	 * @param user The user to time out.
@@ -2037,6 +2102,9 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Removes all messages of a user from a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18.
+	 * Use {@link HelixChatApi#updateSettings} with 1 second duration instead.
+	 *
 	 * @param channel The channel to purge the user's messages from.
 	 * @param user The user to purge.
 	 * @param reason The reason for the purge.
@@ -2047,6 +2115,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Gives a user VIP status in a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChannelApi#addVip} instead.
 	 *
 	 * @param channel The channel to give the user VIP status in.
 	 * @param user The user to give VIP status.
@@ -2072,6 +2142,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Takes VIP status from a user in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChannelApi#removeVip} instead.
+	 *
 	 * @param channel The channel to remove the user's VIP status in.
 	 * @param user The user to take VIP status from.
 	 */
@@ -2096,6 +2168,8 @@ export class ChatClient extends IrcClient {
 	/**
 	 * Retrieves a list of VIPs in a channel.
 	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChannelApi#getVips} instead.
+	 *
 	 * @param channel The channel to retrieve the VIPs of.
 	 */
 	async getVips(channel: string): Promise<string[]> {
@@ -2113,6 +2187,8 @@ export class ChatClient extends IrcClient {
 
 	/**
 	 * Sends an announcement to a channel.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixChatApi#sendAnnouncement} instead.
 	 *
 	 * @param channel The channel to send the announcement to.
 	 * @param text The content of the announcement.
@@ -2139,14 +2215,21 @@ export class ChatClient extends IrcClient {
 		if (attributes.replyTo) {
 			tags['reply-parent-msg-id'] = extractMessageId(attributes.replyTo);
 		}
-		await this._messageRateLimiter.request(
-			{
-				type: 'say',
-				channel: toChannelName(channel),
-				text,
-				tags
-			},
-			rateLimiterOptions
+
+		const texts = splitOnSpaces(text, 500);
+		await Promise.all(
+			texts.map(
+				async msg =>
+					await this._messageRateLimiter.request(
+						{
+							type: 'say',
+							channel: toChannelName(channel),
+							text: msg,
+							tags
+						},
+						rateLimiterOptions
+					)
+			)
 		);
 	}
 
@@ -2158,18 +2241,26 @@ export class ChatClient extends IrcClient {
 	 * @param rateLimiterOptions Options to pass to the rate limiter.
 	 */
 	async action(channel: string, text: string, rateLimiterOptions?: RateLimiterRequestOptions): Promise<void> {
-		await this._messageRateLimiter.request(
-			{
-				type: 'action',
-				channel: toChannelName(channel),
-				text
-			},
-			rateLimiterOptions
+		const texts = splitOnSpaces(text, 490);
+		await Promise.all(
+			texts.map(
+				async msg =>
+					await this._messageRateLimiter.request(
+						{
+							type: 'action',
+							channel: toChannelName(channel),
+							text: msg
+						},
+						rateLimiterOptions
+					)
+			)
 		);
 	}
 
 	/**
 	 * Sends a whisper message to another user.
+	 *
+	 * @deprecated Will be removed by Twitch on 2023-02-18. Use {@link HelixWhisperApi#sendWhisper} instead.
 	 *
 	 * @param user The user to send the message to.
 	 * @param text The message to send.

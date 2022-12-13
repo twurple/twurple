@@ -1,6 +1,6 @@
 {
   "name": "@twurple/ebs-helper",
-  "version": "5.3.0-pre.2",
+  "version": "5.3.0-pre.9",
   "publishConfig": {
     "access": "public"
   },
@@ -18,9 +18,9 @@
   "types": "lib",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "require": "./lib/index.js",
-      "import": "./es/index.mjs",
-      "types": "./lib/index.d.ts"
+      "import": "./es/index.mjs"
     }
   },
   "repository": {
@@ -33,9 +33,9 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/shared-utils": "^3.2.0",
-    "@twurple/api-call": "5.3.0-pre.2",
-    "@twurple/common": "5.3.0-pre.2",
+    "@d-fischer/shared-utils": "^3.4.0",
+    "@twurple/api-call": "5.3.0-pre.9",
+    "@twurple/common": "5.3.0-pre.9",
     "jsonwebtoken": "^8.5.1",
     "tslib": "^2.0.3"
   },

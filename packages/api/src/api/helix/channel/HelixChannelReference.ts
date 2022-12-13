@@ -1,18 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixChannelReferenceData } from '../../../interfaces/helix/channel.external';
 import type { HelixGame } from '../game/HelixGame';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixChannel } from './HelixChannel';
-
-/** @private */
-export interface HelixChannelReferenceData {
-	broadcaster_id: string;
-	broadcaster_name: string;
-	game_id: string;
-	game_name: string;
-	title: string;
-}
 
 /**
  * A reference to a Twitch channel.

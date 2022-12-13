@@ -1,10 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixRaidData {
-	created_at: string;
-	is_mature: boolean;
-}
+import { type HelixRaidData } from '../../../interfaces/helix/raid.external';
 
 /**
  * A result of a successful raid initiation.

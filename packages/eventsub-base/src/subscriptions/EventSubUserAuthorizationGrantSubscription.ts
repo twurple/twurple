@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import type { EventSubUserAuthorizationGrantEventData } from '../events/EventSubUserAuthorizationGrantEvent';
 import { EventSubUserAuthorizationGrantEvent } from '../events/EventSubUserAuthorizationGrantEvent';
+import { type EventSubUserAuthorizationGrantEventData } from '../events/EventSubUserAuthorizationGrantEvent.external';
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 

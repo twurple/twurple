@@ -1,14 +1,6 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-export type HelixChatBadgeScale = 1 | 2 | 4;
-
-/** @private */
-export interface HelixChatBadgeVersionData {
-	id: string;
-	image_url_1x: string;
-	image_url_2x: string;
-	image_url_4x: string;
-}
+import { type HelixChatBadgeVersionData } from '../../../interfaces/helix/chat.external';
+import { type HelixChatBadgeScale } from '../../../interfaces/helix/chat.input';
 
 /**
  * A version of a chat badge.

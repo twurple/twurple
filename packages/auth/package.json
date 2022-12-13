@@ -1,6 +1,6 @@
 {
   "name": "@twurple/auth",
-  "version": "5.3.0-pre.2",
+  "version": "5.3.0-pre.9",
   "publishConfig": {
     "access": "public"
   },
@@ -18,9 +18,9 @@
   "types": "lib",
   "exports": {
     ".": {
+      "types": "./lib/index.d.ts",
       "require": "./lib/index.js",
-      "import": "./es/index.mjs",
-      "types": "./lib/index.d.ts"
+      "import": "./es/index.mjs"
     }
   },
   "repository": {
@@ -34,9 +34,9 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/logger": "^4.0.0",
-    "@d-fischer/shared-utils": "^3.2.0",
-    "@twurple/api-call": "5.3.0-pre.2",
-    "@twurple/common": "5.3.0-pre.2",
+    "@d-fischer/shared-utils": "^3.4.0",
+    "@twurple/api-call": "5.3.0-pre.9",
+    "@twurple/common": "5.3.0-pre.9",
     "tslib": "^2.0.3"
   },
   "files": [

@@ -1,9 +1,6 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ChatBadgeSetData } from './ChatBadgeSet';
+import { type ChatBadgeListData } from '../../interfaces/badges.external';
 import { ChatBadgeSet } from './ChatBadgeSet';
-
-/** @private */
-export type ChatBadgeListData = Record<string, ChatBadgeSetData>;
 
 /**
  * A list of badge sets.

@@ -61,3 +61,14 @@ export type PubSubIncomingPacket =
 export type PubSubNoncedOutgoingPacket = PubSubListenPacket | PubSubUnlistenPacket;
 /** @private */
 export type PubSubOutgoingPacket = PubSubPingPacket | PubSubNoncedOutgoingPacket;
+
+/** @private */
+export function createListenPacket(topics: string[], accessToken: string | undefined): PubSubListenPacket {
+	return {
+		type: 'LISTEN',
+		data: {
+			topics,
+			auth_token: accessToken
+		}
+	};
+}

@@ -1,16 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface HelixChatSettingsData {
-	broadcaster_id: string;
-	slow_mode: boolean;
-	slow_mode_wait_time: number | null;
-	follower_mode: boolean;
-	follower_mode_duration: number | null;
-	subscriber_mode: boolean;
-	emote_mode: boolean;
-	unique_chat_mode: boolean;
-}
+import { type HelixChatSettingsData } from '../../../interfaces/helix/chat.external';
 
 /**
  * The settings of a broadcaster's chat.

@@ -20,7 +20,7 @@ export type {
 	PubSubReconnectPacket,
 	PubSubResponsePacket,
 	PubSubUnlistenPacket
-} from './PubSubPacket';
+} from './PubSubPacket.external';
 
 export type { PubSubMessage } from './messages/PubSubMessage';
 export { PubSubAutoModQueueMessage } from './messages/PubSubAutoModQueueMessage';

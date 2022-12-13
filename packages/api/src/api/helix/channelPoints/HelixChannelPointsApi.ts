@@ -1,106 +1,32 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { rtfm } from '@twurple/common';
+import {
+	createCustomRewardBody,
+	createCustomRewardChangeQuery,
+	createCustomRewardsQuery,
+	createRedemptionsForBroadcasterQuery,
+	createRewardRedemptionsByIdsQuery,
+	type HelixCustomRewardData,
+	type HelixCustomRewardRedemptionData,
+	type HelixCustomRewardRedemptionStatus,
+	type HelixCustomRewardRedemptionTargetStatus
+} from '../../../interfaces/helix/channelPoints.external';
+import {
+	type HelixCreateCustomRewardData,
+	type HelixCustomRewardRedemptionFilter,
+	type HelixPaginatedCustomRewardRedemptionFilter,
+	type HelixUpdateCustomRewardData
+} from '../../../interfaces/helix/channelPoints.input';
+import { createGetByIdsQuery } from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
-import type { HelixForwardPagination } from '../HelixPagination';
-import { makePaginationQuery } from '../HelixPagination';
-import type { HelixCustomRewardData } from './HelixCustomReward';
+import { createPaginationQuery } from '../HelixPagination';
 import { HelixCustomReward } from './HelixCustomReward';
-import type {
-	HelixCustomRewardRedemptionData,
-	HelixCustomRewardRedemptionStatus,
-	HelixCustomRewardRedemptionTargetStatus
-} from './HelixCustomRewardRedemption';
 import { HelixCustomRewardRedemption } from './HelixCustomRewardRedemption';
-
-/**
- * Data to create a new custom reward.
- */
-export interface HelixCreateCustomRewardData {
-	/**
-	 * The title of the reward.
-	 */
-	title: string;
-
-	/**
-	 * The channel points cost of the reward.
-	 */
-	cost: number;
-
-	/**
-	 * The prompt shown to users when redeeming the reward.
-	 */
-	prompt?: string;
-
-	/**
-	 * Whether the reward is enabled (shown to users).
-	 */
-	isEnabled?: boolean;
-
-	/**
-	 * The hex code of the background color of the reward.
-	 */
-	backgroundColor?: string;
-
-	/**
-	 * Whether the reward requires user input to be redeemed.
-	 */
-	userInputRequired?: boolean;
-
-	/**
-	 * The maximum number of redemptions of the reward per stream. 0 or `null` means no limit.
-	 */
-	maxRedemptionsPerStream?: number | null;
-
-	/**
-	 * The maximum number of redemptions of the reward per stream for each user. 0 or `null` means no limit.
-	 */
-	maxRedemptionsPerUserPerStream?: number | null;
-
-	/**
-	 * The cooldown between two redemptions of the reward, in seconds. 0 or `null` means no cooldown.
-	 */
-	globalCooldown?: number | null;
-
-	/**
-	 * Whether the redemption should automatically set its status to fulfilled.
-	 */
-	autoFulfill?: boolean;
-}
-
-/**
- * Data to update an existing custom reward.
- *
- * @inheritDoc
- */
-export interface HelixUpdateCustomRewardData extends Partial<HelixCreateCustomRewardData> {
-	/**
-	 * Whether the reward is paused. If true, users can't redeem it.
-	 */
-	isPaused?: boolean;
-}
-
-/**
- * Filters for the custom reward redemptions request.
- */
-export interface HelixCustomRewardRedemptionFilter {
-	/**
-	 * Whether to put the newest redemptions first.
-	 *
-	 * Oldest redemptions are shown first by default.
-	 */
-	newestFirst?: boolean;
-}
-
-/**
- * @inheritDoc
- */
-export interface HelixPaginatedCustomRewardRedemptionFilter
-	extends HelixCustomRewardRedemptionFilter,
-		HelixForwardPagination {}
 
 /**
  * The Helix API methods that deal with channel points.
@@ -129,10 +55,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			scope: 'channel:read:redemptions',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				only_manageable_rewards: onlyManageable?.toString()
-			}
+			query: createCustomRewardsQuery(broadcaster, onlyManageable)
 		});
 
 		return result.data.map(data => new HelixCustomReward(data, this._client));
@@ -152,10 +75,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			scope: 'channel:read:redemptions',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				id: rewardIds
-			}
+			query: createGetByIdsQuery(broadcaster, rewardIds)
 		});
 
 		return result.data.map(data => new HelixCustomReward(data, this._client));
@@ -189,10 +109,8 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards',
 			method: 'POST',
 			scope: 'channel:manage:redemptions',
-			query: {
-				broadcaster_id: extractUserId(broadcaster)
-			},
-			jsonBody: HelixChannelPointsApi._transformRewardData(data)
+			query: createBroadcasterQuery(broadcaster),
+			jsonBody: createCustomRewardBody(data)
 		});
 
 		return new HelixCustomReward(result.data[0], this._client);
@@ -215,11 +133,8 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards',
 			method: 'PATCH',
 			scope: 'channel:manage:redemptions',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				id: rewardId
-			},
-			jsonBody: HelixChannelPointsApi._transformRewardData(data)
+			query: createCustomRewardChangeQuery(broadcaster, rewardId),
+			jsonBody: createCustomRewardBody(data)
 		});
 
 		return new HelixCustomReward(result.data[0], this._client);
@@ -237,10 +152,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards',
 			method: 'DELETE',
 			scope: 'channel:manage:redemptions',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				id: rewardId
-			}
+			query: createCustomRewardChangeQuery(broadcaster, rewardId)
 		});
 	}
 
@@ -263,11 +175,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: 'helix',
 			url: 'channel_points/custom_rewards/redemptions',
 			scope: 'channel:read:redemptions',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				reward_id: rewardId,
-				id: redemptionIds
-			}
+			query: createRewardRedemptionsByIdsQuery(broadcaster, rewardId, redemptionIds)
 		});
 
 		return result.data.map(data => new HelixCustomRewardRedemption(data, this._client));
@@ -310,11 +218,8 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards/redemptions',
 			scope: 'channel:read:redemptions',
 			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				reward_id: rewardId,
-				status,
-				sort: filter.newestFirst ? 'NEWEST' : 'OLDEST',
-				...makePaginationQuery(filter)
+				...createRedemptionsForBroadcasterQuery(broadcaster, rewardId, status, filter),
+				...createPaginationQuery(filter)
 			}
 		});
 
@@ -341,12 +246,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			{
 				url: 'channel_points/custom_rewards/redemptions',
 				scope: 'channel:read:redemptions',
-				query: {
-					broadcaster_id: extractUserId(broadcaster),
-					reward_id: rewardId,
-					status,
-					sort: filter.newestFirst ? 'NEWEST' : 'OLDEST'
-				}
+				query: createRedemptionsForBroadcasterQuery(broadcaster, rewardId, status, filter)
 			},
 			this._client,
 			data => new HelixCustomRewardRedemption(data, this._client),
@@ -376,49 +276,12 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards/redemptions',
 			method: 'PATCH',
 			scope: 'channel:manage:redemptions',
-			query: {
-				broadcaster_id: extractUserId(broadcaster),
-				reward_id: rewardId,
-				id: redemptionIds
-			},
+			query: createRewardRedemptionsByIdsQuery(broadcaster, rewardId, redemptionIds),
 			jsonBody: {
 				status
 			}
 		});
 
 		return result.data.map(data => new HelixCustomRewardRedemption(data, this._client));
-	}
-
-	private static _transformRewardData(data: HelixCreateCustomRewardData | HelixUpdateCustomRewardData) {
-		const result: Record<string, unknown> = {
-			title: data.title,
-			cost: data.cost,
-			prompt: data.prompt,
-			background_color: data.backgroundColor,
-			is_enabled: data.isEnabled,
-			is_user_input_required: data.userInputRequired,
-			should_redemptions_skip_request_queue: data.autoFulfill
-		};
-
-		if (data.maxRedemptionsPerStream !== undefined) {
-			result.is_max_per_stream_enabled = !!data.maxRedemptionsPerStream;
-			result.max_per_stream = data.maxRedemptionsPerStream ?? 0;
-		}
-
-		if (data.maxRedemptionsPerUserPerStream !== undefined) {
-			result.is_max_per_user_per_stream_enabled = !!data.maxRedemptionsPerUserPerStream;
-			result.max_per_user_per_stream = data.maxRedemptionsPerUserPerStream ?? 0;
-		}
-
-		if (data.globalCooldown !== undefined) {
-			result.is_global_cooldown_enabled = !!data.globalCooldown;
-			result.global_cooldown_seconds = data.globalCooldown ?? 0;
-		}
-
-		if ('isPaused' in data) {
-			result.is_paused = data.isPaused;
-		}
-
-		return result;
 	}
 }

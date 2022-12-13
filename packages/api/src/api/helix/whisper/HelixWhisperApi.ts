@@ -1,5 +1,6 @@
 import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { rtfm } from '@twurple/common';
+import { createWhisperQuery } from '../../../interfaces/helix/whisper.external';
 import { BaseApi } from '../../BaseApi';
 
 /**
@@ -24,8 +25,8 @@ export class HelixWhisperApi extends BaseApi {
 	 *
 	 * NOTE: The API may silently drop whispers that it suspects of violating Twitch policies. (The API does not indicate that it dropped the whisper; it returns a 204 status code as if it succeeded).
 	 *
-	 * @param from The ID of the user sending the whisper. This user must have a verified phone number and must match the user ID in the access token.
-	 * @param to The ID of the user to receive the whisper.
+	 * @param from The user sending the whisper. This user must have a verified phone number and must match the user in the access token.
+	 * @param to The user to receive the whisper.
 	 * @param message The whisper message to send. The message must not be empty.
 	 *
 	 * The maximum message lengths are:
@@ -41,10 +42,7 @@ export class HelixWhisperApi extends BaseApi {
 			url: 'whispers',
 			method: 'POST',
 			scope: 'user:manage:whispers',
-			query: {
-				from_user_id: extractUserId(from),
-				to_user_id: extractUserId(to)
-			},
+			query: createWhisperQuery(from, to),
 			jsonBody: {
 				message
 			}

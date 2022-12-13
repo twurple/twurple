@@ -1,17 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/** @private */
-export interface EventSubChannelFollowEventData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	followed_at: string;
-}
+import { type EventSubChannelFollowEventData } from './EventSubChannelFollowEvent.external';
 
 /**
  * An EventSub event representing a channel being followed.

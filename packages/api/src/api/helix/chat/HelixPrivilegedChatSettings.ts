@@ -1,13 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixChatSettingsData } from './HelixChatSettings';
+import { type HelixPrivilegedChatSettingsData } from '../../../interfaces/helix/chat.external';
 import { HelixChatSettings } from './HelixChatSettings';
-
-/** @private */
-export interface HelixPrivilegedChatSettingsData extends HelixChatSettingsData {
-	moderator_id: string;
-	non_moderator_chat_delay: boolean;
-	non_moderator_chat_delay_duration: number | null;
-}
 
 /**
  * The settings of a broadcaster's chat, with additional privileged data.

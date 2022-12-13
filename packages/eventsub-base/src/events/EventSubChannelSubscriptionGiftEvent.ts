@@ -1,25 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-
-/**
- * The tier of a gifted subscription. 1000 means tier 1, and so on.
- */
-export type EventSubChannelSubscriptionGiftEventTier = '1000' | '2000' | '3000';
-
-/** @private */
-export interface EventSubChannelSubscriptionGiftEventData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	broadcaster_user_id: string;
-	broadcaster_user_login: string;
-	broadcaster_user_name: string;
-	total: number;
-	tier: EventSubChannelSubscriptionGiftEventTier;
-	cumulative_total: number | null;
-	is_anonymous: boolean;
-}
+import {
+	type EventSubChannelSubscriptionGiftEventData,
+	type EventSubChannelSubscriptionGiftEventTier
+} from './EventSubChannelSubscriptionGiftEvent.external';
 
 /**
  * An EventSub event representing a channel subscription.

@@ -1,33 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
+import { type HelixStreamData, type HelixStreamType } from '../../../interfaces/helix/stream.external';
 import type { HelixGame } from '../game/HelixGame';
 import type { HelixTag } from '../tag/HelixTag';
 import type { HelixUser } from '../user/HelixUser';
-
-/**
- * The type of a stream.
- */
-export type HelixStreamType = 'live' | 'vodcast' | '';
-
-/** @private */
-export interface HelixStreamData {
-	id: string;
-	user_id: string;
-	user_login: string;
-	user_name: string;
-	game_id: string;
-	game_name: string;
-	community_ids: string[];
-	type: HelixStreamType;
-	title: string;
-	viewer_count: number;
-	started_at: string;
-	language: string;
-	thumbnail_url: string;
-	tag_ids: string[] | null;
-	is_mature: boolean;
-}
 
 /**
  * A Twitch stream.
