@@ -2,7 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
-import { type HelixUserData } from '../../../interfaces/helix/user.external';
+import { type HelixBroadcasterType, type HelixUserData } from '../../../interfaces/helix/user.external';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixStream } from '../stream/HelixStream';
 import type { HelixSubscription } from '../subscriptions/HelixSubscription';
@@ -62,9 +62,9 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	}
 
 	/**
-	 * The type of the user.
+	 * The type of the broadcaster.
 	 */
-	get broadcasterType(): string {
+	get broadcasterType(): HelixBroadcasterType {
 		return this[rawDataSymbol].broadcaster_type;
 	}
 
