@@ -25,11 +25,12 @@ export type { ChatRewardGiftInfo } from './userNotices/ChatRewardGiftInfo';
 export type { ChatRitualInfo } from './userNotices/ChatRitualInfo';
 export type { ChatStandardPayForwardInfo } from './userNotices/ChatStandardPayForwardInfo';
 export type {
+	ChatSubExtendInfo,
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
-	ChatSubUpgradeInfo,
-	ChatSubExtendInfo,
-	ChatSubInfo
+	ChatSubInfo,
+	ChatSubOriginalGiftInfo,
+	ChatSubUpgradeInfo
 } from './userNotices/ChatSubInfo';
 
 export type { ChatSayMessageAttributes } from './ChatMessageAttributes';

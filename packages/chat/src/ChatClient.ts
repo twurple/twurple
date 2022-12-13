@@ -941,6 +941,28 @@ export class ChatClient extends IrcClient {
 						streak: streakMonths ? Number(streakMonths) : undefined,
 						message
 					};
+					const wasGifted = tags.get('msg-param-was-gifted') === 'true';
+					if (wasGifted) {
+						const wasAnonGift = tags.get('msg-param-anon-gift') === 'true';
+						const duration = Number(tags.get('msg-param-gift-months'));
+						const redeemedMonth = Number(tags.get('msg-param-gift-month-being-redeemed'));
+						if (wasAnonGift) {
+							subInfo.originalGiftInfo = {
+								anonymous: true,
+								duration,
+								redeemedMonth
+							};
+						} else {
+							subInfo.originalGiftInfo = {
+								anonymous: false,
+								duration,
+								redeemedMonth,
+								userId: tags.get('msg-param-gifter-id')!,
+								userName: tags.get('msg-param-gifter-login')!,
+								userDisplayName: tags.get('msg-param-gifter-name')!
+							};
+						}
+					}
 					this.emit(event, channel, tags.get('login')!, subInfo, userNotice);
 					break;
 				}

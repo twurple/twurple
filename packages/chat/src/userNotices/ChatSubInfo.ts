@@ -1,4 +1,39 @@
 /**
+ * Information about the original gift of a subscription.
+ */
+export interface ChatSubOriginalGiftInfo {
+	/**
+	 * Whether the gift was anonymous.
+	 */
+	anonymous: boolean;
+
+	/**
+	 * The ID of the user that originally gifted the subscription. Only set if the gift was not anonymous.
+	 */
+	userId?: string;
+
+	/**
+	 * The name of the user that originally gifted the subscription. Only set if the gift was not anonymous.
+	 */
+	userName?: string;
+
+	/**
+	 * The display name of the user that originally gifted the subscription. Only set if the gift was not anonymous.
+	 */
+	userDisplayName?: string;
+
+	/**
+	 * The duration of the gift, in months.
+	 */
+	duration: number;
+
+	/**
+	 * The number of the month out of the total gift duration that was just redeemed.
+	 */
+	redeemedMonth: number;
+}
+
+/**
  * Information about a subscription.
  */
 export interface ChatSubInfo {
@@ -45,6 +80,11 @@ export interface ChatSubInfo {
 	 * The message that was sent with the subscription.
 	 */
 	message?: string;
+
+	/**
+	 * The info about the original gift of the subscription, when renewing a multi-month gift.
+	 */
+	originalGiftInfo?: ChatSubOriginalGiftInfo;
 }
 
 /**
