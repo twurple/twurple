@@ -163,15 +163,6 @@ export class HelixCustomReward extends DataObject<HelixCustomRewardData> {
 	}
 
 	/**
-	 * Whether redemptions should automatically be marked as fulfilled.
-	 *
-	 * @deprecated Use `autoFulfill` instead.
-	 */
-	get autoApproved(): boolean {
-		return this[rawDataSymbol].should_redemptions_skip_request_queue;
-	}
-
-	/**
 	 * The time when the cooldown ends. `null` means there is currently no cooldown.
 	 */
 	get cooldownExpiryDate(): Date | null {

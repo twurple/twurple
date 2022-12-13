@@ -5,7 +5,7 @@ should use for which use case.
 
 | Operation                                     | `@twurple/api`           | `@twurple/chat`                                        |
 |-----------------------------------------------|--------------------------|--------------------------------------------------------|
-| Start an ad                                   | Yes                      | Deprecated                                             |
+| Start an ad                                   | Yes                      | No                                                     |
 | Get Bits leaderboard                          | Yes                      | No                                                     |
 | Get available Cheermotes                      | Yes                      | No                                                     |
 | Get Extension transactions                    | Yes                      | No                                                     |
@@ -20,7 +20,7 @@ should use for which use case.
 | Get category info                             | Yes                      | No                                                     |
 | Manage polls & predictions                    | Yes                      | No                                                     |
 | Get banned users                              | Yes                      | No                                                     |
-| Ban/unban/timeout users                       | Yes                      | Yes (deprecated)                                       |
+| Ban/unban/timeout users                       | Yes                      | No                                                     |
 | Get & manage schedules                        | Yes                      | No                                                     |
 | Search categories                             | Yes                      | No                                                     |
 | Search channels                               | Yes                      | No                                                     |
@@ -29,22 +29,22 @@ should use for which use case.
 | Manage stream markers                         | Yes                      | No                                                     |
 | Get list of subscribers                       | Yes                      | No                                                     |
 | Check subscription                            | Yes                      | Yes (in message context)                               |
-| Get list of VIPs                              | Yes                      | Yes (deprecated)                                       |
+| Get list of VIPs                              | Yes                      | No                                                     |
 | Check VIP                                     | Yes                      | Yes (in message context)                               |
-| Manage VIPs                                   | Yes                      | Yes (deprecated)                                       |
-| Get list of moderators                        | Yes                      | Yes (deprecated)                                       |
-| Manage moderators                             | Yes                      | Yes (deprecated)                                       |
+| Manage VIPs                                   | Yes                      | No                                                     |
+| Get list of moderators                        | Yes                      | No                                                     |
+| Manage moderators                             | Yes                      | No                                                     |
 | Get & manage stream tags                      | Yes                      | No                                                     |
 | Get team info                                 | Yes                      | No                                                     |
 | Get user info                                 | Yes                      | Yes (in message context; login, display name, ID only) |
 | Get & manage follows                          | Yes                      | No                                                     |
 | Get & manage VODs                             | Yes                      | No                                                     |
-| Raid users                                    | Yes                      | Yes (deprecated)                                       |
+| Raid users                                    | Yes                      | No                                                     |
 | Send chat messages                            | No                       | Yes                                                    |
-| Send chat announcements                       | Yes                      | Yes (deprecated)                                       |
-| Send whispers                                 | Yes                      | Yes (deprecated)                                       |
-| Remove chat messages                          | Yes                      | Yes (deprecated)                                       |
-| Set chat modes (e.g. emote/sub/follower only) | Yes                      | Yes (deprecated)                                       |
+| Send chat announcements                       | Yes                      | No                                                     |
+| Send whispers                                 | Yes                      | No                                                     |
+| Remove chat messages                          | Yes                      | No                                                     |
+| Set chat modes (e.g. emote/sub/follower only) | Yes                      | No                                                     |
 | Get & manage AutoMod settings                 | Yes                      | No                                                     |
 | Fetch currently playing Soundtrack track      | No (supported by Twitch) | No                                                     |
 | Get current Creator Goals state               | Yes                      | No                                                     |

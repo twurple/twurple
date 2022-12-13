@@ -12,15 +12,6 @@ export class EventSubChannelPollChoice extends EventSubChannelPollBeginChoice {
 	/** @private */ declare readonly [rawDataSymbol]: EventSubChannelPollChoiceData;
 
 	/**
-	 * The number of votes for the choice added by using bits.
-	 *
-	 * @deprecated Twitch removed this feature.
-	 */
-	get bitsVotes(): number {
-		return this[rawDataSymbol].bits_votes;
-	}
-
-	/**
 	 * The number of votes for the choice added by using channel points.
 	 */
 	get channelPointsVotes(): number {

@@ -61,24 +61,6 @@ export class HelixPoll extends DataObject<HelixPollData> {
 	}
 
 	/**
-	 * Whether voting with bits is enabled for the poll.
-	 *
-	 * @deprecated Twitch removed this feature.
-	 */
-	get isBitsVotingEnabled(): boolean {
-		return this[rawDataSymbol].bits_voting_enabled;
-	}
-
-	/**
-	 * The amount of bits that a vote costs.
-	 *
-	 * @deprecated Twitch removed this feature.
-	 */
-	get bitsPerVote(): number {
-		return this[rawDataSymbol].bits_per_vote;
-	}
-
-	/**
 	 * Whether voting with channel points is enabled for the poll.
 	 */
 	get isChannelPointsVotingEnabled(): boolean {

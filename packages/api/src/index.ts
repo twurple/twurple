@@ -3,13 +3,6 @@ export type { ApiConfig } from './ApiClient';
 
 export type { BaseApi } from './api/BaseApi';
 
-export { BadgesApi } from './api/badges/BadgesApi';
-export { ChatBadgeList } from './api/badges/ChatBadgeList';
-export { ChatBadgeSet } from './api/badges/ChatBadgeSet';
-export { ChatBadgeVersion } from './api/badges/ChatBadgeVersion';
-export { type ChatBadgeScale } from './interfaces/badges.external';
-
-export { HelixApiGroup } from './api/helix/HelixApiGroup';
 export { HelixPaginatedRequest } from './api/helix/HelixPaginatedRequest';
 export { HelixPaginatedRequestWithTotal } from './api/helix/HelixPaginatedRequestWithTotal';
 export type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './api/helix/HelixPaginatedResult';
@@ -62,15 +55,11 @@ export type {
 	HelixEmoteFormat,
 	HelixEmoteThemeMode,
 	HelixChatUserColor,
-	HelixChatAnnouncementColor,
-	/** @deprecated */
-	HelixChatAnnouncementColor as HelixChatAnnoucementColor
+	HelixChatAnnouncementColor
 } from './interfaces/helix/chat.external';
 export type {
 	HelixUpdateChatSettingsParams,
 	HelixSendChatAnnouncementParams,
-	/** @deprecated */
-	HelixSendChatAnnouncementParams as HelixSendChatAnnoucementParams,
 	HelixChatBadgeScale
 } from './interfaces/helix/chat.input';
 
@@ -208,7 +197,6 @@ export { UnsupportedApi } from './api/unsupported/UnsupportedApi';
 export { ChattersList } from './api/unsupported/ChattersList';
 
 export { ConfigError } from './errors/ConfigError';
-export { NoSubscriptionProgramError } from './errors/NoSubscriptionProgramError';
 export { StreamNotLiveError } from './errors/StreamNotLiveError';
 
 export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '@twurple/api-call';

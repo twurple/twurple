@@ -16,8 +16,6 @@ import {
 import type { AuthProvider, TokenInfoData } from '@twurple/auth';
 import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
-
-import { BadgesApi } from './api/badges/BadgesApi';
 import { HelixBitsApi } from './api/helix/bits/HelixBitsApi';
 import { HelixChannelApi } from './api/helix/channel/HelixChannelApi';
 import { HelixChannelPointsApi } from './api/helix/channelPoints/HelixChannelPointsApi';
@@ -28,7 +26,6 @@ import { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from './api/helix/extensions/HelixExtensionsApi';
 import { HelixGameApi } from './api/helix/game/HelixGameApi';
 import { HelixGoalApi } from './api/helix/goals/HelixGoalApi';
-import { HelixApiGroup } from './api/helix/HelixApiGroup';
 import { HelixRateLimiter } from './api/helix/HelixRateLimiter';
 import { HelixHypeTrainApi } from './api/helix/hypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from './api/helix/moderation/HelixModerationApi';
@@ -192,16 +189,6 @@ export class ApiClient {
 		await handleTwitchApiResponseError(response, options);
 
 		return await transformTwitchApiResponse<T>(response);
-	}
-
-	/**
-	 * A group of Helix API methods.
-	 *
-	 * @deprecated Please remove `.helix` from your calls to access the API namespaces directly.
-	 */
-	@CachedGetter()
-	get helix(): HelixApiGroup {
-		return new HelixApiGroup(this);
 	}
 
 	/**
@@ -396,16 +383,6 @@ export class ApiClient {
 	@CachedGetter()
 	get whispers(): HelixWhisperApi {
 		return new HelixWhisperApi(this);
-	}
-
-	/**
-	 * The API methods that deal with badges.
-	 *
-	 * @deprecated Use {@link HelixChatApi}'s badge methods instead.
-	 */
-	@CachedGetter()
-	get badges(): BadgesApi {
-		return new BadgesApi(this);
 	}
 
 	/**

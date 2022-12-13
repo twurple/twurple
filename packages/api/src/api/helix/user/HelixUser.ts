@@ -83,15 +83,6 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	}
 
 	/**
-	 * The total number of views of the user's channel.
-	 *
-	 * @deprecated This contains stale data, as Twitch stopped counting on 2022-06-06.
-	 */
-	get views(): number {
-		return this[rawDataSymbol].view_count;
-	}
-
-	/**
 	 * The date when the user was created, i.e. when they registered on Twitch.
 	 */
 	get creationDate(): Date {

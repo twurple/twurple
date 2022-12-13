@@ -68,17 +68,6 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the channel data for the given user.
-	 *
-	 * @param user The user you want to get channel info for.
-	 *
-	 * @deprecated Use `getChannelInfoById` instead.
-	 */
-	async getChannelInfo(user: UserIdResolvable): Promise<HelixChannel | null> {
-		return await this.getChannelInfoById(user);
-	}
-
-	/**
 	 * Updates the given user's channel data.
 	 *
 	 * @param user The user you want to update channel info for.

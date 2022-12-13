@@ -18,13 +18,6 @@ export interface HelixCreatePollData {
 	duration: number;
 
 	/**
-	 * The number of bits that a vote should cost. If not given, voting with bits will be disabled.
-	 *
-	 * @deprecated Twitch removed this feature.
-	 */
-	bitsPerVote?: number;
-
-	/**
 	 * The number of channel points that a vote should cost. If not given, voting with channel points will be disabled.
 	 */
 	channelPointsPerVote?: number;

@@ -12,30 +12,13 @@ import { type HelixUser } from '../user/HelixUser';
 @rtfm<HelixBanUser>('api', 'HelixBanUser', 'userId')
 export class HelixBanUser extends DataObject<HelixCommonBanUserData> {
 	@Enumerable(false) private readonly _client: ApiClient;
-	@Enumerable(false) private readonly _broadcasterId: string;
 	@Enumerable(false) private readonly _expiryTimestamp: string | null;
 
 	/** @private */
-	constructor(
-		data: HelixCommonBanUserData,
-		broadcasterId: string,
-		expiryTimestamp: string | null,
-		client: ApiClient
-	) {
+	constructor(data: HelixCommonBanUserData, expiryTimestamp: string | null, client: ApiClient) {
 		super(data);
-		this._broadcasterId = broadcasterId;
 		this._expiryTimestamp = expiryTimestamp;
 		this._client = client;
-	}
-
-	/**
-	 * The ID of the broadcaster whose chat room the user was banned/timed out from chatting in.
-	 *
-	 * @deprecated As this is the result of a ban action or list request that takes the broadcaster ID as a parameter,
-	 * use that directly instead.
-	 */
-	get broadcasterId(): string {
-		return this._broadcasterId;
 	}
 
 	/**
@@ -50,13 +33,6 @@ export class HelixBanUser extends DataObject<HelixCommonBanUserData> {
 	 */
 	get expiryDate(): Date | null {
 		return mapNullable(this._expiryTimestamp, ts => new Date(ts));
-	}
-
-	/**
-	 * @deprecated Use {@link HelixBanUser#expiryDate} instead.
-	 */
-	get endDate(): Date | null {
-		return this.expiryDate;
 	}
 
 	/**

@@ -39,8 +39,6 @@ export function createPollBody(broadcaster: UserIdResolvable, data: HelixCreateP
 		title: data.title,
 		choices: data.choices.map(title => ({ title })),
 		duration: data.duration,
-		bits_voting_enabled: data.bitsPerVote != null,
-		bits_per_vote: data.bitsPerVote ?? 0,
 		channel_points_voting_enabled: data.channelPointsPerVote != null,
 		channel_points_per_vote: data.channelPointsPerVote ?? 0
 	};

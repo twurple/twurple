@@ -33,13 +33,4 @@ export class HelixPollChoice extends DataObject<HelixPollChoiceData> {
 	get channelPointsVotes(): number {
 		return this[rawDataSymbol].channel_points_votes;
 	}
-
-	/**
-	 * The votes the choice received by spending bits.
-	 *
-	 * @deprecated Twitch removed this feature.
-	 */
-	get bitsVotes(): number {
-		return this[rawDataSymbol].bits_votes;
-	}
 }

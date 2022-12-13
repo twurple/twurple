@@ -58,15 +58,9 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 	}
 
 	/**
-	 * Starts the backing server and listens to incoming EventSub notifications.
-	 *
-	 * @deprecated Use {@link EventSubHttpListener#start} instead. Specifying a custom port will be removed.
-	 *
-	 * @param port The port to listen on. Might be overridden by the adapter you passed.
-	 *
-	 * Defaults to 443.
+	 * Starts the HTTP listener.
 	 */
-	async listen(port?: number): Promise<void> {
+	async start(): Promise<void> {
 		if (this._server) {
 			throw new Error('Trying to start while already running');
 		}
@@ -111,11 +105,7 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 		}
 
 		const adapterListenerPort = await this._adapter.getListenerPort();
-		if (adapterListenerPort && port) {
-			this._logger.warn(`Your passed port (${port}) is being ignored because the adapter has overridden it.
-Listening on port ${adapterListenerPort} instead.`);
-		}
-		const listenerPort = adapterListenerPort ?? port ?? 443;
+		const listenerPort = adapterListenerPort ?? 443;
 		await this._server.listen(listenerPort);
 		this._readyToSubscribe = true;
 		this._logger.info(`Listening on port ${listenerPort}`);
@@ -123,11 +113,9 @@ Listening on port ${adapterListenerPort} instead.`);
 	}
 
 	/**
-	 * Stops the backing server, suspending all active subscriptions.
-	 *
-	 * @deprecated Use {@link EventSubHttpListener#stop} instead.
+	 * Stops the HTTP listener.
 	 */
-	async unlisten(): Promise<void> {
+	async stop(): Promise<void> {
 		if (!this._server) {
 			throw new Error('Trying to stop while not running');
 		}
@@ -137,20 +125,6 @@ Listening on port ${adapterListenerPort} instead.`);
 		await this._server.close();
 		this._server = undefined;
 		this._readyToSubscribe = false;
-	}
-
-	/**
-	 * Starts the HTTP listener.
-	 */
-	async start(): Promise<void> {
-		await this.listen();
-	}
-
-	/**
-	 * Stops the HTTP listener.
-	 */
-	async stop(): Promise<void> {
-		await this.unlisten();
 	}
 
 	protected async getHostName(): Promise<string> {

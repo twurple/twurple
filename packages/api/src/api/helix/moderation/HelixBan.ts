@@ -13,8 +13,8 @@ export class HelixBan extends HelixBanUser {
 	/** @private */ declare readonly [rawDataSymbol]: HelixBanData;
 
 	/** @private */
-	constructor(data: HelixBanData, broadcasterId: string, client: ApiClient) {
-		super(data, broadcasterId, data.expires_at || null, client);
+	constructor(data: HelixBanData, client: ApiClient) {
+		super(data, data.expires_at || null, client);
 	}
 
 	/**

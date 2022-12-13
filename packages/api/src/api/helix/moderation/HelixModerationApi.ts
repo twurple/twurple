@@ -74,11 +74,7 @@ export class HelixModerationApi extends BaseApi {
 			}
 		});
 
-		// TODO revert to createPaginatedResult when broadcaster ID parameter is gone (prop already deprecated)
-		return {
-			data: result.data.map(data => new HelixBan(data, extractUserId(channel), this._client)),
-			cursor: result.pagination?.cursor
-		};
+		return createPaginatedResult(result, HelixBan, this._client);
 	}
 
 	/**
@@ -94,7 +90,7 @@ export class HelixModerationApi extends BaseApi {
 				query: createBroadcasterQuery(channel)
 			},
 			this._client,
-			data => new HelixBan(data, extractUserId(channel), this._client),
+			data => new HelixBan(data, this._client),
 			50 // possibly a relatively consistent workaround for twitchdev/issues#18
 		);
 	}
@@ -312,9 +308,7 @@ export class HelixModerationApi extends BaseApi {
 			jsonBody: createBanUserBody(data)
 		});
 
-		return result.data.map(
-			banData => new HelixBanUser(banData, banData.broadcaster_id, banData.end_time, this._client)
-		);
+		return result.data.map(banData => new HelixBanUser(banData, banData.end_time, this._client));
 	}
 
 	/**
