@@ -66,7 +66,7 @@ export class EventSubMiddleware extends EventSubHttpBase {
 	 *
 	 * @param router The app or router the middleware should be applied to.
 	 */
-	async apply(router: IRouter): Promise<void> {
+	apply(router: IRouter): void {
 		let requestPathPrefix: string | undefined = undefined;
 		if (this._usePathPrefixInHandlers) {
 			requestPathPrefix = this._pathPrefix;
