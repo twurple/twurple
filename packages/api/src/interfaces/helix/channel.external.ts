@@ -14,6 +14,22 @@ export interface HelixChannelData {
 }
 
 /** @private */
+export interface HelixChannelEditorData {
+	user_id: string;
+	user_name: string;
+	created_at: string;
+}
+
+/** @private */
+export interface HelixChannelReferenceData {
+	broadcaster_id: string;
+	broadcaster_name: string;
+	game_id: string;
+	game_name: string;
+	title: string;
+}
+
+/** @private */
 export function createChannelUpdateBody(data: HelixChannelUpdate) {
 	return {
 		game_id: data.gameId,
@@ -37,20 +53,4 @@ export function createChannelVipUpdateQuery(broadcaster: UserIdResolvable, user:
 		broadcaster_id: extractUserId(broadcaster),
 		user_id: extractUserId(user)
 	};
-}
-
-/** @private */
-export interface HelixChannelEditorData {
-	user_id: string;
-	user_name: string;
-	created_at: string;
-}
-
-/** @private */
-export interface HelixChannelReferenceData {
-	broadcaster_id: string;
-	broadcaster_name: string;
-	game_id: string;
-	game_name: string;
-	title: string;
 }

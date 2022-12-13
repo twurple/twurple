@@ -4,17 +4,6 @@ import { type HelixBitsLeaderboardQuery } from './bits.input';
 import { type HelixDateRangeData } from './generic.external';
 
 /** @private */
-export function createBitsLeaderboardQuery(params: HelixBitsLeaderboardQuery = {}) {
-	const { count = 10, period = 'all', startDate, contextUserId } = params;
-	return {
-		count: count.toString(),
-		period,
-		started_at: startDate?.toISOString(),
-		user_id: contextUserId
-	};
-}
-
-/** @private */
 export interface HelixBitsLeaderboardEntryData {
 	user_id: string;
 	user_login: string;
@@ -59,4 +48,15 @@ export interface HelixCheermoteData {
 	type: HelixCheermoteType;
 	last_updated: string;
 	order: number;
+}
+
+/** @private */
+export function createBitsLeaderboardQuery(params: HelixBitsLeaderboardQuery = {}) {
+	const { count = 10, period = 'all', startDate, contextUserId } = params;
+	return {
+		count: count.toString(),
+		period,
+		started_at: startDate?.toISOString(),
+		user_id: contextUserId
+	};
 }

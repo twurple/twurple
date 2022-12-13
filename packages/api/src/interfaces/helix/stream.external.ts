@@ -54,6 +54,11 @@ export interface HelixStreamGetMarkersResponse {
 }
 
 /** @private */
+export interface HelixGetStreamKeyData {
+	stream_key: string;
+}
+
+/** @private */
 export function createStreamQuery(filter: HelixStreamFilter) {
 	return {
 		game_id: filter.game,
@@ -70,9 +75,4 @@ export function createStreamMarkerBody(broadcaster: UserIdResolvable, descriptio
 		user_id: extractUserId(broadcaster),
 		description
 	};
-}
-
-/** @private */
-export interface HelixGetStreamKeyData {
-	stream_key: string;
 }
