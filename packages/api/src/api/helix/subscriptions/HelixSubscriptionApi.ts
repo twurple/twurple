@@ -11,10 +11,10 @@ import {
 } from '../../../interfaces/helix/subscription.external';
 import { type HelixPaginatedSubscriptionsResult } from '../../../interfaces/helix/subscription.input';
 import { BaseApi } from '../../BaseApi';
-import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import { createPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { createPaginationQuery } from '../HelixPagination';
+import { HelixPaginatedSubscriptionsRequest } from './HelixPaginatedSubscriptionsRequest';
 import { HelixSubscription } from './HelixSubscription';
 import { HelixUserSubscription } from './HelixUserSubscription';
 
@@ -67,18 +67,8 @@ export class HelixSubscriptionApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 */
-	getSubscriptionsPaginated(
-		broadcaster: UserIdResolvable
-	): HelixPaginatedRequestWithTotal<HelixSubscriptionData, HelixSubscription> {
-		return new HelixPaginatedRequestWithTotal(
-			{
-				url: 'subscriptions',
-				scope: 'channel:read:subscriptions',
-				query: createBroadcasterQuery(broadcaster)
-			},
-			this._client,
-			data => new HelixSubscription(data, this._client)
-		);
+	getSubscriptionsPaginated(broadcaster: UserIdResolvable): HelixPaginatedSubscriptionsRequest {
+		return new HelixPaginatedSubscriptionsRequest(createBroadcasterQuery(broadcaster), this._client);
 	}
 
 	/**
