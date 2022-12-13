@@ -31,9 +31,9 @@ export interface HelixClipCreateResponse {
 }
 
 /** @private */
-export function createClipCreateQuery(channelId: UserIdResolvable, createAfterDelay: boolean) {
+export function createClipCreateQuery(channel: UserIdResolvable, createAfterDelay: boolean) {
 	return {
-		broadcaster_id: extractUserId(channelId),
+		broadcaster_id: extractUserId(channel),
 		has_delay: createAfterDelay.toString()
 	};
 }

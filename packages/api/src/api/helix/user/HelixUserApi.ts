@@ -75,10 +75,10 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Retrieves the user data for the given user ID.
 	 *
-	 * @param userId The user ID you want to look up.
+	 * @param user The user ID you want to look up.
 	 */
-	async getUserById(userId: UserIdResolvable): Promise<HelixUser | null> {
-		const users = await this._getUsers('id', [extractUserId(userId)]);
+	async getUserById(user: UserIdResolvable): Promise<HelixUser | null> {
+		const users = await this._getUsers('id', [extractUserId(user)]);
 		return users.length ? users[0] : null;
 	}
 
