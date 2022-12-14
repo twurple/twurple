@@ -38,9 +38,9 @@ export interface HelixPaginatedClipIdFilter extends HelixPaginatedClipFilter, He
  */
 export interface HelixClipCreateParams {
 	/**
-	 * The ID of the broadcaster of which you want to create a clip.
+	 * The broadcaster of which you want to create a clip.
 	 */
-	channelId: UserIdResolvable;
+	channel: UserIdResolvable;
 
 	/**
 	 * Add a delay before the clip creation that accounts for the usual delay in the viewing experience.

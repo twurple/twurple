@@ -146,13 +146,13 @@ export class HelixClipApi extends BaseApi {
 	 * @expandParams
 	 */
 	async createClip(params: HelixClipCreateParams): Promise<string> {
-		const { channelId, createAfterDelay = false } = params;
+		const { channel, createAfterDelay = false } = params;
 		const result = await this._client.callApi<{ data: [HelixClipCreateResponse] }>({
 			type: 'helix',
 			url: 'clips',
 			method: 'POST',
 			scope: 'clips:edit',
-			query: createClipCreateQuery(channelId, createAfterDelay)
+			query: createClipCreateQuery(channel, createAfterDelay)
 		});
 
 		return result.data[0].id;

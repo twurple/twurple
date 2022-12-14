@@ -119,7 +119,7 @@ export function createBanUserBody(data: HelixBanUserRequest) {
 		data: {
 			duration: data.duration,
 			reason: data.reason,
-			user_id: extractUserId(data.userId)
+			user_id: extractUserId(data.user)
 		}
 	};
 }

@@ -57,5 +57,5 @@ export interface HelixBanUserRequest {
 	/**
 	 * The user who is to be banned/timed out.
 	 */
-	userId: UserIdResolvable;
+	user: UserIdResolvable;
 }
