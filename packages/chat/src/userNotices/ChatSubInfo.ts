@@ -143,10 +143,18 @@ export interface ChatSubUpgradeInfo {
 
 /**
  * Information about a subscription that was upgraded from a gift.
- *
- * @inheritDoc
  */
-export interface ChatSubGiftUpgradeInfo extends ChatSubUpgradeInfo {
+export interface ChatSubGiftUpgradeInfo {
+	/**
+	 * The user ID of the subscribing user.
+	 */
+	userId: string;
+
+	/**
+	 * The display name of the subscribing user.
+	 */
+	displayName: string;
+
 	/**
 	 * The name of the user that gifted the original subscription.
 	 */

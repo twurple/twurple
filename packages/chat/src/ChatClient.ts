@@ -937,7 +937,6 @@ export class ChatClient extends IrcClient {
 					const upgradeInfo: ChatSubGiftUpgradeInfo = {
 						userId: tags.get('user-id')!,
 						displayName: tags.get('display-name')!,
-						plan: tags.get('msg-param-sub-plan')!,
 						gifter: tags.get('msg-param-sender-login')!,
 						gifterDisplayName: tags.get('msg-param-sender-name')!
 					};
