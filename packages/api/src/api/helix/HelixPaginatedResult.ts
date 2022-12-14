@@ -9,7 +9,7 @@ export interface HelixPaginatedResult<T> {
 	/**
 	 * The returned data.
 	 */
-	data: T[];
+	readonly data: T[];
 
 	/**
 	 * A cursor for traversing more results.
@@ -24,7 +24,7 @@ export interface HelixPaginatedResultWithTotal<T> {
 	/**
 	 * The returned data.
 	 */
-	data: T[];
+	readonly data: T[];
 
 	/**
 	 * A cursor for traversing more results.
@@ -54,9 +54,11 @@ export interface HelixPaginatedResultWithTotal<T> {
 	I,
 	O extends new (data: I, _client?: ApiClient) => ConstructedType<O>
 >(response: HelixPaginatedResponse<I>, type: O, client?: ApiClient): HelixPaginatedResult<ConstructedType<O>> {
+	let dataCache: Array<ConstructedType<O>> | undefined = undefined;
 	return {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		data: response.data?.map(data => new type(data, client)) ?? [],
+		get data() {
+			return (dataCache ??= (response.data as I[] | undefined)?.map(data => new type(data, client)) ?? []);
+		},
 		cursor: response.pagination?.cursor
 	};
 }
@@ -82,8 +84,11 @@ export interface HelixPaginatedResultWithTotal<T> {
 	type: O,
 	client?: ApiClient
 ): HelixPaginatedResultWithTotal<ConstructedType<O>> {
+	let dataCache: Array<ConstructedType<O>> | undefined = undefined;
 	return {
-		data: response.data.map(data => new type(data, client)),
+		get data() {
+			return (dataCache ??= (response.data as I[] | undefined)?.map(data => new type(data, client)) ?? []);
+		},
 		cursor: response.pagination!.cursor!,
 		total: response.total
 	};
