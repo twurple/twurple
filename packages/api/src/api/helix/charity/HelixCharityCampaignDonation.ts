@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixCharityCampaignDonationData } from '../../../interfaces/helix/charity.external';
 import type { HelixUser } from '../user/HelixUser';
@@ -52,7 +52,7 @@ export class HelixCharityCampaignDonation extends DataObject<HelixCharityCampaig
 	 * Retrieves more information about the donating user.
 	 */
 	async getDonor(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**

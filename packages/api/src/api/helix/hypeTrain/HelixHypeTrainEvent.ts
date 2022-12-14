@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixEventData } from '../../../interfaces/helix/generic.external';
 import {
@@ -68,7 +68,9 @@ export class HelixHypeTrainEvent extends DataObject<HelixEventData<HelixHypeTrai
 	 * Retrieves more information about the broadcaster where the Hype Train event was triggered.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].event_data.broadcaster_id))!;
+		return checkRelationAssertion(
+			await this._client.users.getUserById(this[rawDataSymbol].event_data.broadcaster_id)
+		);
 	}
 
 	/**

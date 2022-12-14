@@ -1,4 +1,4 @@
-import { rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixStreamMarkerVideoData } from '../../../interfaces/helix/stream.external';
 import type { HelixVideo } from '../video/HelixVideo';
@@ -36,6 +36,6 @@ export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
 	 * Retrieves the video data of the video the marker was set in.
 	 */
 	async getVideo(): Promise<HelixVideo> {
-		return (await this._client.videos.getVideoById(this._videoId))!;
+		return checkRelationAssertion(await this._client.videos.getVideoById(this._videoId));
 	}
 }

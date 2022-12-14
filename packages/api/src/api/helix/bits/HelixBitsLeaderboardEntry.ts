@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type ApiClient } from '../../../ApiClient';
 import { type HelixBitsLeaderboardEntryData } from '../../../interfaces/helix/bits.external';
 import { type HelixUser } from '../user/HelixUser';
@@ -56,6 +56,6 @@ export class HelixBitsLeaderboardEntry extends DataObject<HelixBitsLeaderboardEn
 	 * Retrieves the user of entry on the leaderboard.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

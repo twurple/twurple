@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixPredictionData, type HelixPredictionStatus } from '../../../interfaces/helix/prediction.external';
 import type { HelixUser } from '../user/HelixUser';
@@ -50,7 +50,7 @@ export class HelixPrediction extends DataObject<HelixPredictionData> {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
 	/**

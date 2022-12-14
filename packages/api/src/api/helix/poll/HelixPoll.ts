@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixPollData, type HelixPollStatus } from '../../../interfaces/helix/poll.external';
 import type { HelixUser } from '../user/HelixUser';
@@ -50,7 +50,7 @@ export class HelixPoll extends DataObject<HelixPollData> {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
 	/**

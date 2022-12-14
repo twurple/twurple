@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type EventSubUserAuthorizationRevokeEventData } from './EventSubUserAuthorizationRevokeEvent.external';
 
 /**
@@ -44,8 +44,11 @@ export class EventSubUserAuthorizationRevokeEvent extends DataObject<EventSubUse
 	/**
 	 * Retrieves more information about the user.
 	 */
-	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+	async getUser(): Promise<HelixUser | null> {
+		if (this[rawDataSymbol].user_login == null) {
+			return null;
+		}
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**

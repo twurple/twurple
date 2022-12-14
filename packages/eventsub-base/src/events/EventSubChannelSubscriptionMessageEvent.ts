@@ -1,7 +1,7 @@
 import { Enumerable, utf8Substring } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import type { ParsedMessageEmotePart, ParsedMessagePart } from '@twurple/common';
-import { ChatEmote, DataObject, fillTextPositions, rawDataSymbol, rtfm } from '@twurple/common';
+import { ChatEmote, checkRelationAssertion, DataObject, fillTextPositions, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelSubscriptionMessageEmoteData,
 	type EventSubChannelSubscriptionMessageEventData,
@@ -46,7 +46,7 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 	 * Retrieves more information about the user whose subscription is being announced.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**
@@ -74,7 +74,7 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
 	/**

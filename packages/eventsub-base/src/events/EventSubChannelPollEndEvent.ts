@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice';
 import {
 	type EventSubChannelPollEndEventData,
@@ -52,7 +52,7 @@ export class EventSubChannelPollEndEvent extends DataObject<EventSubChannelPollE
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
 	/**

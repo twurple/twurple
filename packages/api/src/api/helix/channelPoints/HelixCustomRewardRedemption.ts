@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import {
 	type HelixCustomRewardRedemptionData,
@@ -53,7 +53,7 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	 * Retrieves more information about the broadcaster where the reward was redeemed.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
 	/**
@@ -81,7 +81,7 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	 * Retrieves more information about the user that redeemed the reward.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**
@@ -144,10 +144,12 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	 * Retrieves more info about the reward that was redeemed.
 	 */
 	async getReward(): Promise<HelixCustomReward> {
-		return (await this._client.channelPoints.getCustomRewardById(
-			this[rawDataSymbol].broadcaster_id,
-			this[rawDataSymbol].reward.id
-		))!;
+		return checkRelationAssertion(
+			await this._client.channelPoints.getCustomRewardById(
+				this[rawDataSymbol].broadcaster_id,
+				this[rawDataSymbol].reward.id
+			)
+		);
 	}
 
 	/**

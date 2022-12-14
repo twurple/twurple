@@ -1,5 +1,7 @@
 export { DataObject, getRawData, rawDataSymbol } from './DataObject';
 
+export { checkRelationAssertion } from './relations';
+
 export { rtfm } from './rtfm';
 
 export type { CommercialLength, HelixUserType } from './types';
@@ -35,6 +37,7 @@ export type {
 
 export { CustomError } from './errors/CustomError';
 export { HellFreezesOverError } from './errors/HellFreezesOverError';
+export { RelationAssertionError } from './errors/RelationAssertionError';
 
 export type {
 	UserIdResolvable,

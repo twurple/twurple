@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixStreamData, type HelixStreamType } from '../../../interfaces/helix/stream.external';
 import type { HelixGame } from '../game/HelixGame';
@@ -51,7 +51,7 @@ export class HelixStream extends DataObject<HelixStreamData> {
 	 * Retrieves information about the user broadcasting the stream.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**

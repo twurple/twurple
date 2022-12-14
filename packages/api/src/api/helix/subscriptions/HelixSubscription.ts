@@ -1,4 +1,4 @@
-import { rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, rawDataSymbol, rtfm } from '@twurple/common';
 import { type HelixSubscriptionData } from '../../../interfaces/helix/subscription.external';
 import type { HelixUser } from '../user/HelixUser';
 import { HelixUserSubscription } from './HelixUserSubscription';
@@ -37,35 +37,37 @@ export class HelixSubscription extends HelixUserSubscription {
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
 	/**
 	 * The user ID of the gifter.
 	 */
-	get gifterId(): string {
-		return this[rawDataSymbol].gifter_id;
+	get gifterId(): string | null {
+		return this[rawDataSymbol].is_gift ? this[rawDataSymbol].gifter_id : null;
 	}
 
 	/**
 	 * The name of the gifter.
 	 */
-	get gifterName(): string {
-		return this[rawDataSymbol].gifter_login;
+	get gifterName(): string | null {
+		return this[rawDataSymbol].is_gift ? this[rawDataSymbol].gifter_login : null;
 	}
 
 	/**
 	 * The display name of the gifter.
 	 */
-	get gifterDisplayName(): string {
-		return this[rawDataSymbol].gifter_name;
+	get gifterDisplayName(): string | null {
+		return this[rawDataSymbol].is_gift ? this[rawDataSymbol].gifter_name : null;
 	}
 
 	/**
 	 * Retrieves more information about the gifter.
 	 */
-	async getGifter(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].gifter_id))!;
+	async getGifter(): Promise<HelixUser | null> {
+		return this[rawDataSymbol].is_gift
+			? checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].gifter_id))
+			: null;
 	}
 
 	/**
@@ -93,6 +95,6 @@ export class HelixSubscription extends HelixUserSubscription {
 	 * Retrieves more information about the subscribed user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

@@ -1,5 +1,5 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type ApiClient } from '../../../ApiClient';
 import { type HelixCommonBanUserData } from '../../../interfaces/helix/moderation.external';
 import { type HelixUser } from '../user/HelixUser';
@@ -46,7 +46,7 @@ export class HelixBanUser extends DataObject<HelixCommonBanUserData> {
 	 * Retrieves more information about the moderator that banned or put the user in the timeout.
 	 */
 	async getModerator(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].moderator_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_id));
 	}
 
 	/**
@@ -60,6 +60,6 @@ export class HelixBanUser extends DataObject<HelixCommonBanUserData> {
 	 * Fetches more info about the user that was banned or put in a timeout.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

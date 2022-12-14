@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixChannelReferenceData } from '../../../interfaces/helix/channel.external';
 import type { HelixGame } from '../game/HelixGame';
@@ -37,14 +37,16 @@ export class HelixChannelReference extends DataObject<HelixChannelReferenceData>
 	 * Retrieves more information about the channel.
 	 */
 	async getChannel(): Promise<HelixChannel> {
-		return (await this._client.channels.getChannelInfoById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(
+			await this._client.channels.getChannelInfoById(this[rawDataSymbol].broadcaster_id)
+		);
 	}
 
 	/**
 	 * Retrieves more information about the broadcaster of the channel.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
 	/**
@@ -65,7 +67,7 @@ export class HelixChannelReference extends DataObject<HelixChannelReferenceData>
 	 * Retrieves information about the game that is being played on the stream.
 	 */
 	async getGame(): Promise<HelixGame> {
-		return (await this._client.games.getGameById(this[rawDataSymbol].game_id))!;
+		return checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].game_id));
 	}
 
 	/**

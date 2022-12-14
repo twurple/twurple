@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixUserBlockData } from '../../../interfaces/helix/user.external';
 import type { HelixUser } from './/HelixUser';
@@ -42,6 +42,6 @@ export class HelixUserBlock extends DataObject<HelixUserBlockData> {
 	 * Retrieves additional information about the blocked user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelSubscriptionGiftEventData,
 	type EventSubChannelSubscriptionGiftEventTier
@@ -44,7 +44,7 @@ export class EventSubChannelSubscriptionGiftEvent extends DataObject<EventSubCha
 	 * Retrieves more information about the gifting user.
 	 */
 	async getGifter(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**
@@ -72,7 +72,7 @@ export class EventSubChannelSubscriptionGiftEvent extends DataObject<EventSubCha
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
 	/**

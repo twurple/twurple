@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import {
 	type HelixHypeTrainContributionData,
@@ -31,7 +31,7 @@ export class HelixHypeTrainContribution extends DataObject<HelixHypeTrainContrib
 	 * Retrieves additional information about the user contributing to the Hype Train.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user));
 	}
 
 	/**

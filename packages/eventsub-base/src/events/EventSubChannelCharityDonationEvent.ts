@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelCharityAmount } from './common/EventSubChannelCharityAmount';
 import { type EventSubChannelCharityDonationEventData } from './EventSubChannelCharityDonationEvent.external';
 
@@ -51,7 +51,7 @@ export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChan
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
 	/**
@@ -79,7 +79,7 @@ export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChan
 	 * Retrieves more information about the donating user.
 	 */
 	async getDonor(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**
@@ -97,7 +97,7 @@ export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChan
 	}
 
 	/**
-	 * A URL to an image of the of the charity;s logo. The image’s type is PNG and its size is 100px X 100px.
+	 * A URL to an image of the charity's logo. The image’s type is PNG and its size is 100px X 100px.
 	 */
 	get charityLogo(): string {
 		return this[rawDataSymbol].charity_logo;

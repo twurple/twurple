@@ -1,6 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import {
 	type HelixVideoData,
@@ -55,7 +55,7 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 	 * Retrieves information about the user who created the video.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**

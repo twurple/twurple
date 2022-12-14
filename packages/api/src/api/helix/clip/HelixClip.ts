@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixClipData } from '../../../interfaces/helix/clip.external';
 import type { HelixGame } from '../game/HelixGame';
@@ -55,7 +55,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 * Retrieves information about the broadcaster of the stream where the clip was created.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
 	/**
@@ -76,7 +76,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 * Retrieves information about the creator of the clip.
 	 */
 	async getCreator(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].creator_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].creator_id));
 	}
 
 	/**
@@ -90,7 +90,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 * Retrieves information about the video the clip is taken from.
 	 */
 	async getVideo(): Promise<HelixVideo> {
-		return (await this._client.videos.getVideoById(this[rawDataSymbol].video_id))!;
+		return checkRelationAssertion(await this._client.videos.getVideoById(this[rawDataSymbol].video_id));
 	}
 
 	/**
@@ -104,7 +104,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	 * Retrieves information about the game that was being played when the clip was created.
 	 */
 	async getGame(): Promise<HelixGame> {
-		return (await this._client.games.getGameById(this[rawDataSymbol].game_id))!;
+		return checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].game_id));
 	}
 
 	/**

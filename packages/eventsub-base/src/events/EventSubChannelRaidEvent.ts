@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type EventSubChannelRaidEventData } from './EventSubChannelRaidEvent.external';
 
 /**
@@ -41,7 +41,9 @@ export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEven
 	 * Retrieves more information about the raiding broadcaster.
 	 */
 	async getRaidingBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id))!;
+		return checkRelationAssertion(
+			await this._client.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id)
+		);
 	}
 
 	/**
@@ -69,7 +71,7 @@ export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEven
 	 * Retrieves more information about the raided broadcaster.
 	 */
 	async getRaidedBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].to_broadcaster_user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].to_broadcaster_user_id));
 	}
 
 	/**

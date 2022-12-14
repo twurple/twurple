@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type ApiClient } from '../../../ApiClient';
 import { type HelixChatChatterData } from '../../../interfaces/helix/chat.external';
 import { type HelixUser } from '../user/HelixUser';
@@ -44,6 +44,6 @@ export class HelixChatChatter extends DataObject<HelixChatChatterData> {
 	 * Retrieves more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { DataObject, rawDataSymbol } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol } from '@twurple/common';
 import {
 	type EventSubChannelHypeTrainContributionData,
 	type EventSubChannelHypeTrainContributionType
@@ -40,7 +40,7 @@ export class EventSubChannelHypeTrainContribution extends DataObject<EventSubCha
 	 * Retrieves more information about the contributor.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**

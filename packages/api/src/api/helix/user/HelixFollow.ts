@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixFollowData } from '../../../interfaces/helix/user.external';
 import type { HelixUser } from './HelixUser';
@@ -42,7 +42,7 @@ export class HelixFollow extends DataObject<HelixFollowData> {
 	 * Retrieves the data of the following user.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].from_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].from_id));
 	}
 
 	/**
@@ -70,7 +70,7 @@ export class HelixFollow extends DataObject<HelixFollowData> {
 	 * Retrieves the data of the followed broadcaster.
 	 */
 	async getFollowedUser(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].to_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].to_id));
 	}
 
 	/**

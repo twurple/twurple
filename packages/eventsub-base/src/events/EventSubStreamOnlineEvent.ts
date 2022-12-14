@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixStream, HelixUser } from '@twurple/api';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubStreamOnlineEventData,
 	type EventSubStreamOnlineEventStreamType
@@ -44,14 +44,14 @@ export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEv
 	 * Retrieves more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
 	/**
 	 * Retrieves more information about the stream.
 	 */
-	async getStream(): Promise<HelixStream> {
-		return (await this._client.streams.getStreamByUserId(this[rawDataSymbol].broadcaster_user_id))!;
+	async getStream(): Promise<HelixStream | null> {
+		return await this._client.streams.getStreamByUserId(this[rawDataSymbol].broadcaster_user_id);
 	}
 
 	/**

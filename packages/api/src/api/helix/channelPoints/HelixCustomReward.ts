@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient } from '../../../ApiClient';
 import { type HelixCustomRewardData } from '../../../interfaces/helix/channelPoints.external';
 import { type HelixCustomRewardImageScale } from '../../../interfaces/helix/channelPoints.input';
@@ -50,7 +50,7 @@ export class HelixCustomReward extends DataObject<HelixCustomRewardData> {
 	 * Retrieves more information about the reward's broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
-		return (await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id))!;
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
 	/**
