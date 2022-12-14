@@ -64,6 +64,13 @@ export interface HelixPaginatedEventSubSubscriptionsResponse
 }
 
 /** @private */
+export function createEventSubBroadcasterCondition(broadcaster: UserIdResolvable) {
+	return {
+		broadcaster_user_id: extractUserId(broadcaster)
+	};
+}
+
+/** @private */
 export function createEventSubRewardCondition(broadcaster: UserIdResolvable, rewardId: string) {
 	return { broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId };
 }
