@@ -35,7 +35,7 @@ import { HelixScheduleSegment } from './HelixScheduleSegment';
  * ```
  *
  * @meta category helix
- * @meta categorizedTitle Bits
+ * @meta categorizedTitle Schedule
  */
 export class HelixScheduleApi extends BaseApi {
 	/**
