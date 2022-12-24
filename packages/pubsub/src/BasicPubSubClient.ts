@@ -7,7 +7,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { Listener } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from '@twurple/auth';
-import { getValidTokenFromProvider } from '@twurple/auth';
+import { getValidTokenFromProviderForUser } from '@twurple/auth';
 import { HellFreezesOverError, rtfm } from '@twurple/common';
 import type { PubSubMessageData } from './messages/PubSubMessage';
 import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket.external';
@@ -30,6 +30,7 @@ interface ProviderTokenResolvable {
 	type: 'provider';
 	provider: AuthProvider;
 	scopes: string[];
+	userId: string;
 }
 
 /** @private */
@@ -169,18 +170,13 @@ export class BasicPubSubClient extends EventEmitter {
 	 *
 	 * @param topics A topic or a list of topics to listen to.
 	 * @param tokenResolvable An access token, an AuthProvider or a function that returns a token.
-	 * @param scope The scope necessary for the topic(s).
 	 */
-	async listen(
-		topics: string | string[],
-		tokenResolvable: ResolvableValue<string> | AuthProvider | TokenResolvable,
-		scope?: string
-	): Promise<void> {
+	async listen(topics: string | string[], tokenResolvable: ResolvableValue<string> | TokenResolvable): Promise<void> {
 		if (typeof topics === 'string') {
 			topics = [topics];
 		}
 
-		const wrapped = BasicPubSubClient._wrapResolvable(tokenResolvable, scope);
+		const wrapped = BasicPubSubClient._wrapResolvable(tokenResolvable);
 		for (const topic of topics) {
 			this._topics.set(topic, wrapped);
 		}
@@ -267,20 +263,10 @@ export class BasicPubSubClient extends EventEmitter {
 		});
 	}
 
-	private static _wrapResolvable(
-		resolvable: ResolvableValue<string> | AuthProvider | TokenResolvable,
-		scope?: string
-	): TokenResolvable {
+	private static _wrapResolvable(resolvable: ResolvableValue<string> | TokenResolvable): TokenResolvable {
 		switch (typeof resolvable) {
 			case 'object': {
-				if ('type' in resolvable) {
-					return resolvable;
-				}
-				return {
-					type: 'provider',
-					provider: resolvable,
-					scopes: scope ? [scope] : []
-				};
+				return resolvable;
 			}
 			case 'string': {
 				return {
@@ -303,8 +289,8 @@ export class BasicPubSubClient extends EventEmitter {
 	private async _resolveToken(resolvable: TokenResolvable): Promise<string | undefined> {
 		switch (resolvable.type) {
 			case 'provider': {
-				const { provider, scopes } = resolvable;
-				const { accessToken } = await getValidTokenFromProvider(provider, scopes, this._logger);
+				const { provider, scopes, userId } = resolvable;
+				const { accessToken } = await getValidTokenFromProviderForUser(provider, userId, scopes, this._logger);
 				return accessToken.accessToken;
 			}
 			case 'function': {

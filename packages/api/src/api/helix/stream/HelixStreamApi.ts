@@ -1,9 +1,9 @@
-import { flatten } from '@d-fischer/shared-utils';
+import { flatten, mapNullable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { StreamNotLiveError } from '../../../errors/StreamNotLiveError';
 import { createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
 import {
@@ -118,13 +118,19 @@ export class HelixStreamApi extends BaseApi {
 	 * @param user The user ID to retrieve the stream for.
 	 */
 	async getStreamByUserId(user: UserIdResolvable): Promise<HelixStream | null> {
-		const result = await this.getStreamsByUserIds([user]);
+		const userId = extractUserId(user);
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamData>>({
+			url: 'streams',
+			type: 'helix',
+			userId,
+			query: createStreamQuery({ userName: userId })
+		});
 
-		return result[0] ?? null;
+		return mapNullable(result.data[0], data => new HelixStream(data, this._client));
 	}
 
 	/**
-	 * Retrieves a list of all stream markers for an user.
+	 * Retrieves a list of all stream markers for a user.
 	 *
 	 * @param user The user to list the stream markers for.
 	 * @param pagination
@@ -139,7 +145,7 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for all stream markers for an user.
+	 * Creates a paginator for all stream markers for a user.
 	 *
 	 * @param user The user to list the stream markers for.
 	 */
@@ -328,7 +334,7 @@ export class HelixStreamApi extends BaseApi {
 		);
 	}
 
-	private static _mapGetStreamMarkersResult(this: ApiClient, data: HelixStreamGetMarkersResponse) {
+	private static _mapGetStreamMarkersResult(this: BaseApiClient, data: HelixStreamGetMarkersResponse) {
 		return data.videos.reduce<HelixStreamMarkerWithVideo[]>(
 			(result, video) => [
 				...result,

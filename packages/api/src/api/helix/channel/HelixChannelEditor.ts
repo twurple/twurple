@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixChannelEditorData } from '../../../interfaces/helix/channel.external';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -9,10 +9,10 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixChannelEditor>('api', 'HelixChannelEditor', 'userId')
 export class HelixChannelEditor extends DataObject<HelixChannelEditorData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixChannelEditorData, client: ApiClient) {
+	constructor(data: HelixChannelEditorData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

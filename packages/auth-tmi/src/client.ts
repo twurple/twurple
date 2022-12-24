@@ -1,5 +1,5 @@
 import type { AuthProvider } from '@twurple/auth';
-import { getValidTokenFromProvider, InvalidTokenTypeError } from '@twurple/auth';
+import { getValidTokenFromProviderForIntent } from '@twurple/auth';
 import type { Options as BaseOptions } from 'tmi.js';
 import { Client as BaseClient } from 'tmi.js';
 
@@ -31,16 +31,13 @@ export class DecoratedClient extends BaseClient {
 		super({
 			...tmiOpts,
 			identity: {
-				// need this because we can't get a user name dynamically, but need something to not default to justinfan
+				// need this because we can't get a username dynamically, but need something to not default to justinfan
 				username: 'dummy',
 				password: async () => {
-					if (authProvider.tokenType === 'app') {
-						throw new InvalidTokenTypeError(
-							`You can not connect to chat using an AuthProvider that supplies app access tokens.
-Please provide an auth provider that provides user access tokens, such as \`RefreshingAuthProvider\`.`
-						);
-					}
-					const { accessToken } = await getValidTokenFromProvider(authProvider, ['chat:read', 'chat:edit']);
+					const { accessToken } = await getValidTokenFromProviderForIntent(authProvider, 'chat', [
+						'chat:read',
+						'chat:edit'
+					]);
 					return accessToken.accessToken;
 				}
 			}

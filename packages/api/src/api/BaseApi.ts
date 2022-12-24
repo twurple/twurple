@@ -1,13 +1,13 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { ApiClient } from '../ApiClient';
+import { type BaseApiClient } from '../client/BaseApiClient';
 
 /** @private */
 export class BaseApi {
 	/** @private */
-	@Enumerable(false) protected readonly _client: ApiClient;
+	@Enumerable(false) protected readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(client: ApiClient) {
+	constructor(client: BaseApiClient) {
 		this._client = client;
 	}
 }

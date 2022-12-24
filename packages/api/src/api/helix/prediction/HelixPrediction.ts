@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixPredictionData, type HelixPredictionStatus } from '../../../interfaces/helix/prediction.external';
 import type { HelixUser } from '../user/HelixUser';
 import { HelixPredictionOutcome } from './HelixPredictionOutcome';
@@ -10,10 +10,10 @@ import { HelixPredictionOutcome } from './HelixPredictionOutcome';
  */
 @rtfm<HelixPrediction>('api', 'HelixPrediction', 'id')
 export class HelixPrediction extends DataObject<HelixPredictionData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixPredictionData, client: ApiClient) {
+	constructor(data: HelixPredictionData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

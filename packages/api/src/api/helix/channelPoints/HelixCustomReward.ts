@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixCustomRewardData } from '../../../interfaces/helix/channelPoints.external';
 import { type HelixCustomRewardImageScale } from '../../../interfaces/helix/channelPoints.input';
 import type { HelixUser } from '../user/HelixUser';
@@ -10,10 +10,10 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixCustomReward>('api', 'HelixCustomReward', 'id')
 export class HelixCustomReward extends DataObject<HelixCustomRewardData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixCustomRewardData, client: ApiClient) {
+	constructor(data: HelixCustomRewardData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

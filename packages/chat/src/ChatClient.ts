@@ -641,11 +641,11 @@ export class ChatClient extends IrcClient {
 			nonConformingCommands: ['004']
 		});
 
-		if (config.authProvider?.tokenType === 'app') {
+		if (!config.authProvider?.getAccessTokenForIntent) {
 			throw new InvalidTokenTypeError(
-				'You can not connect to chat using an AuthProvider that supplies app access tokens.\n' +
+				'You can not connect to chat using an AuthProvider that does not support intents.\n' +
 					"To get an anonymous, read-only connection, please don't pass an `AuthProvider` at all.\n" +
-					'To get a read-write connection, please provide an auth provider that provides user access tokens, such as `RefreshingAuthProvider`.'
+					'To get a read-write connection, please provide an auth provider that provides user access tokens via intents, such as `RefreshingAuthProvider`.'
 			);
 		}
 
@@ -1569,19 +1569,17 @@ export class ChatClient extends IrcClient {
 		let lastTokenError: InvalidTokenError | undefined = undefined;
 
 		try {
-			this._authToken = await this._authProvider.getAccessToken(scopes);
-			if (this._authToken) {
-				const token = await getTokenInfo(this._authToken.accessToken);
-				if (!token.userName) {
-					throw new InvalidTokenTypeError(
-						'Could not determine a user name for your token; you might be trying to disguise an app token as a user token.'
-					);
-				}
-				this._updateCredentials({
-					nick: token.userName
-				});
-				return `oauth:${this._authToken.accessToken}`;
+			this._authToken = await this._authProvider.getAccessTokenForIntent!('chat', scopes);
+			const token = await getTokenInfo(this._authToken.accessToken);
+			if (!token.userName) {
+				throw new InvalidTokenTypeError(
+					'Could not determine a user name for your token; you might be trying to disguise an app token as a user token.'
+				);
 			}
+			this._updateCredentials({
+				nick: token.userName
+			});
+			return `oauth:${this._authToken.accessToken}`;
 		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
@@ -1593,7 +1591,7 @@ export class ChatClient extends IrcClient {
 		this._chatLogger.warn('No valid token available; trying to refresh');
 
 		try {
-			this._authToken = await this._authProvider.refresh?.();
+			this._authToken = await this._authProvider.refreshAccessTokenForIntent?.('chat');
 
 			if (this._authToken) {
 				const token = await getTokenInfo(this._authToken.accessToken);

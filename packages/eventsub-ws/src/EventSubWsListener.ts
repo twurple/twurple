@@ -2,7 +2,6 @@ import { WebSocketConnection } from '@d-fischer/connection';
 import { delay, Enumerable, fibWithLimit } from '@d-fischer/shared-utils';
 import type { HelixEventSubWebSocketTransportOptions } from '@twurple/api';
 import { HellFreezesOverError } from '@twurple/api';
-import { InvalidTokenTypeError } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
 import type { EventSubBaseConfig, EventSubListener, EventSubNotificationPayload } from '@twurple/eventsub-base';
 import { EventSubBase } from '@twurple/eventsub-base';
@@ -53,10 +52,6 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	 * @expandParams
 	 */
 	constructor(config: EventSubWsConfig) {
-		if (config.apiClient._authProvider.tokenType !== 'user') {
-			throw new InvalidTokenTypeError('EventSub over WebSockets requires user access tokens to work.');
-		}
-
 		super(config);
 
 		this._initialUrl = config.url ?? 'wss://eventsub-beta.wss.twitch.tv/ws';

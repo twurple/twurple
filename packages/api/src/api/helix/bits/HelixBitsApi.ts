@@ -2,7 +2,7 @@ import { mapOptional } from '@d-fischer/shared-utils';
 import type { HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import {
 	createBitsLeaderboardQuery,
 	type HelixBitsLeaderboardResponse,
@@ -32,13 +32,18 @@ export class HelixBitsApi extends BaseApi {
 	/**
 	 * Retrieves a bits leaderboard of your channel.
 	 *
+	 * @param broadcaster The user to retrieve the leaderboard of.
 	 * @param params
 	 * @expandParams
 	 */
-	async getLeaderboard(params: HelixBitsLeaderboardQuery = {}): Promise<HelixBitsLeaderboard> {
+	async getLeaderboard(
+		broadcaster: UserIdResolvable,
+		params: HelixBitsLeaderboardQuery = {}
+	): Promise<HelixBitsLeaderboard> {
 		const result = await this._client.callApi<HelixBitsLeaderboardResponse>({
 			type: 'helix',
 			url: 'bits/leaderboard',
+			userId: extractUserId(broadcaster),
 			scope: 'bits:read',
 			query: createBitsLeaderboardQuery(params)
 		});
@@ -57,6 +62,7 @@ export class HelixBitsApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixCheermoteData>>({
 			type: 'helix',
 			url: 'bits/cheermotes',
+			userId: mapOptional(broadcaster, extractUserId),
 			query: mapOptional(broadcaster, createBroadcasterQuery)
 		});
 

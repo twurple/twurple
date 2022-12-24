@@ -2,7 +2,7 @@ import { type UserIdResolvable } from '@twurple/common';
 import { type HelixForwardPagination } from '../../api/helix/HelixPagination';
 
 /**
- * User data to update using {@link HelixUserApi#updateUser}}.
+ * User data to update using {@link HelixUserApi#updateAuthenticatedUser}}.
  */
 export interface HelixUserUpdate {
 	description?: string;

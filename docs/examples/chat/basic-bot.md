@@ -6,7 +6,7 @@ If you already have an authentication flow up and running with an `AuthProvider`
 
 ## 1. Create a Twitch application
 
-Go to your [Twitch developer console](https://dev.twitch.tv/console/apps) and create a new application. If you don't know what a Redirect URI is, use `http://localhost`. Write down Client ID and Client Secret somewhere - you're gonna need them!
+Go to your [Twitch developer console](https://dev.twitch.tv/console/apps) and create a new application. If you don't know what a Redirect URI is, use `http://localhost`. Write down Client ID and Client Secret somewhere - you're going to need them!
 
 ## 2. Obtain an access token from Twitch
 
@@ -47,21 +47,11 @@ Write down the `access_token` and `refresh_token` properties of the response bod
 
 ## 3. Create an `AuthProvider` instance
 
-Now you can finally start writing code! First, import all the classes you're gonna need from `@twurple/auth` and `@twurple/chat`.
+Now you can finally start writing code! First, import all the classes you're going to need from `@twurple/auth` and `@twurple/chat`.
 
 ```ts
 import { StaticAuthProvider } from '@twurple/auth';
 import { ChatClient } from '@twurple/chat';
-```
-
-Now, as long as [top-level await](https://github.com/tc39/proposal-top-level-await) has not landed in popular runtimes, you need to work around that by placing your main routine inside an async function and running it.
-
-```ts
-async function main() {
-	// code goes here
-}
-
-main();
 ```
 
 All the following code needs to be inside this function (or at least called from inside it) so we can use `await` and still avoid race conditions.
@@ -121,9 +111,16 @@ Now you have a working bot! Until you have to restart it a few hours later...
 
 ## 6. Setting up automatic token refreshing
 
-Fortunately, with the access token in step 2, we also got a refresh token! (You wrote that down, didn't you?)
+Fortunately, with the access token in step 2, we also got a refresh token! *(You wrote that down, didn't you?)*
 
-With that, you can create another type of auth provider that automatically refreshes the given token.
+With that, you can create another type of auth provider that supports multi-user operation (via the `addUser` method)
+and automatically refreshes all tokens stored in it.
+
+For the chat client to figure out which user to connect as, you need to specify which one you want to use for chat.
+
+The feature managing this is called **intents**.
+You can give a user a specific set of intents by passing them to the `addUser` function as the third parameter.
+The chat client looks for the `chat` intent by default.
 
 Just replace the initialization line with this (but keep the `clientId` and `accessToken` constants):
 
@@ -138,12 +135,13 @@ const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
 		clientSecret
-	},
-	{
-		accessToken,
-		refreshToken
 	}
 );
+
+authProvider.addUser('125328655', {
+	accessToken,
+	refreshToken
+}, ['chat']);
 ```
 
 ## 7. Persisting the refreshed token data
@@ -152,7 +150,7 @@ The last problem we have is restarting the bot. When it crashes for any reason, 
 
 The `refreshConfig` parameter we just added can contain another property named `onRefresh`. Using this, you can persist tokens as soon as they're refreshed.
 
-To prepare for this, let's move the tokens to a JSON file named `tokens.json`:
+To prepare for this, let's move the tokens to a JSON file named `tokens.125328655.json`:
 
 ```json
 {
@@ -165,21 +163,21 @@ To prepare for this, let's move the tokens to a JSON file named `tokens.json`:
 
 I also added two new properties called `expiresIn` and `obtainmentTimestamp`. They will save the expiry time of the access token so the client can determine when to refresh the token without making a failing call first. If you didn't get a current timetamp when sending the manual code request (you probably didn't - I wouldn't either), you can initialize them to zero to always make a refresh call in the beginning.
 
-Now, we can parse this JSON file on startup, load the tokens from it and when the tokens refresh, save them back into the same file.
+Now, we can parse this JSON file on startup, load the tokens from it and when the tokens refresh,
+save them back into the same file. (We're adding the user ID to the file name dynamically in the callback to make it easy to extend to multiple users later.)
 
 ```ts
-// add to import block before async function
+// add to imports
 import { promises as fs } from 'fs';
 
-// inside the async function again
-const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
+// replace the constructor line
+const tokenData = JSON.parse(await fs.readFile('./tokens.125328655.json', 'UTF-8'));
 const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
 		clientSecret,
-		onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
-	},
-	tokenData
+		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8')
+	}
 );
 ```
 
@@ -198,41 +196,40 @@ import { RefreshingAuthProvider } from '@twurple/auth';
 import { ChatClient } from '@twurple/chat';
 import { promises as fs } from 'fs';
 
-async function main() {
-	const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
-	const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
-	const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
-	const authProvider = new RefreshingAuthProvider(
-		{
-			clientId,
-			clientSecret,
-			onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
-		},
-		tokenData
-	);
+const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
+const clientSecret = 'nyo51xcdrerl8z9m56w9w6wg';
+const tokenData = JSON.parse(await fs.readFile('./tokens.125328655.json', 'UTF-8'));
+const authProvider = new RefreshingAuthProvider(
+	{
+		clientId,
+		clientSecret,
+		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8')
+	}
+);
+authProvider.addUser('125328655', {
+	accessToken,
+	refreshToken
+}, ['chat']);
 
-	const chatClient = new ChatClient({ authProvider, channels: ['satisfiedpear'] });
-	await chatClient.connect();
+const chatClient = new ChatClient({ authProvider, channels: ['satisfiedpear'] });
+await chatClient.connect();
 
-	chatClient.onMessage((channel, user, text) => {
-		if (text === '!ping') {
-			chatClient.say(channel, 'Pong!');
-		} else if (text === '!dice') {
-			const diceRoll = Math.floor(Math.random() * 6) + 1;
-			chatClient.say(channel, `@${user} rolled a ${diceRoll}`)
-		}
-	});
+chatClient.onMessage((channel, user, text) => {
+	if (text === '!ping') {
+		chatClient.say(channel, 'Pong!');
+	} else if (text === '!dice') {
+		const diceRoll = Math.floor(Math.random() * 6) + 1;
+		chatClient.say(channel, `@${user} rolled a ${diceRoll}`)
+	}
+});
 
-	chatClient.onSub((channel, user) => {
-		chatClient.say(channel, `Thanks to @${user} for subscribing to the channel!`);
-	});
-	chatClient.onResub((channel, user, subInfo) => {
-		chatClient.say(channel, `Thanks to @${user} for subscribing to the channel for a total of ${subInfo.months} months!`);
-	});
-	chatClient.onSubGift((channel, user, subInfo) => {
-		chatClient.say(channel, `Thanks to ${subInfo.gifter} for gifting a subscription to ${user}!`);
-	});
-}
-
-main();
+chatClient.onSub((channel, user) => {
+	chatClient.say(channel, `Thanks to @${user} for subscribing to the channel!`);
+});
+chatClient.onResub((channel, user, subInfo) => {
+	chatClient.say(channel, `Thanks to @${user} for subscribing to the channel for a total of ${subInfo.months} months!`);
+});
+chatClient.onSubGift((channel, user, subInfo) => {
+	chatClient.say(channel, `Thanks to ${subInfo.gifter} for gifting a subscription to ${user}!`);
+});
 ```

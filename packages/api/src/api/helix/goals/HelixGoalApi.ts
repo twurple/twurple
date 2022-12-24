@@ -1,7 +1,7 @@
 import type { HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { type HelixGoalData } from '../../../interfaces/helix/goal.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixGoal } from './HelixGoal';
@@ -25,6 +25,8 @@ export class HelixGoalApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixGoalData>>({
 			type: 'helix',
 			url: 'goals',
+			userId: extractUserId(broadcaster),
+			scope: 'channel:read:goals',
 			query: createBroadcasterQuery(broadcaster)
 		});
 

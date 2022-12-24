@@ -1,21 +1,27 @@
-export type { AccessToken, ExpireableAccessToken } from './AccessToken';
+export type {
+	AccessToken,
+	AccessTokenMaybeWithUserId,
+	AccessTokenWithUserId,
+	ExpireableAccessToken
+} from './AccessToken';
 export { accessTokenIsExpired, getExpiryDateOfAccessToken } from './AccessToken';
 
 export {
 	exchangeCode,
 	getAppToken,
 	getTokenInfo,
-	getValidTokenFromProvider,
+	getValidTokenFromProviderForUser,
+	getValidTokenFromProviderForIntent,
 	refreshUserToken,
 	revokeToken
 } from './helpers';
 
+export { TokenFetcher } from './TokenFetcher';
 export { TokenInfo } from './TokenInfo';
 export type { TokenInfoData } from './TokenInfo.external';
 
-export type { AuthProvider, AuthProviderTokenType } from './providers/AuthProvider';
-export { BaseAuthProvider } from './providers/BaseAuthProvider';
-export { ClientCredentialsAuthProvider } from './providers/ClientCredentialsAuthProvider';
+export type { AuthProvider } from './providers/AuthProvider';
+export { AppTokenAuthProvider } from './providers/AppTokenAuthProvider';
 export { RefreshingAuthProvider } from './providers/RefreshingAuthProvider';
 export type { RefreshConfig } from './providers/RefreshingAuthProvider';
 export { StaticAuthProvider } from './providers/StaticAuthProvider';

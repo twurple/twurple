@@ -1,6 +1,6 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixCommonBanUserData } from '../../../interfaces/helix/moderation.external';
 import { type HelixUser } from '../user/HelixUser';
 
@@ -11,11 +11,11 @@ import { type HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixBanUser>('api', 'HelixBanUser', 'userId')
 export class HelixBanUser extends DataObject<HelixCommonBanUserData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 	@Enumerable(false) private readonly _expiryTimestamp: string | null;
 
 	/** @private */
-	constructor(data: HelixCommonBanUserData, expiryTimestamp: string | null, client: ApiClient) {
+	constructor(data: HelixCommonBanUserData, expiryTimestamp: string | null, client: BaseApiClient) {
 		super(data);
 		this._expiryTimestamp = expiryTimestamp;
 		this._client = client;

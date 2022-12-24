@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixStreamMarkerData } from '../../../interfaces/helix/stream.external';
 
 /**
@@ -8,10 +8,10 @@ import { type HelixStreamMarkerData } from '../../../interfaces/helix/stream.ext
  */
 @rtfm<HelixStreamMarker>('api', 'HelixStreamMarker', 'id')
 export class HelixStreamMarker extends DataObject<HelixStreamMarkerData> {
-	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
+	/** @private */ @Enumerable(false) protected readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixStreamMarkerData, client: ApiClient) {
+	constructor(data: HelixStreamMarkerData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

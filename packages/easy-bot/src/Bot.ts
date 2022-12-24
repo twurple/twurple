@@ -1,6 +1,5 @@
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import type { AuthProvider } from '@twurple/auth';
-import { getTokenInfo, StaticAuthProvider } from '@twurple/auth';
 import type { PrivateMessage } from '@twurple/chat';
 import { ChatClient, LogLevel } from '@twurple/chat';
 import type { BotCommand, BotCommandMatch } from './BotCommand';
@@ -52,8 +51,9 @@ export class Bot {
 
 	private static async _createAuthProviderForConfig(config: BotConfig): Promise<AuthProvider> {
 		if (typeof config.auth === 'string') {
-			const info = await getTokenInfo(config.auth);
-			return new StaticAuthProvider(info.clientId, config.auth, info.scopes);
+			// const info = await getTokenInfo(config.auth);
+			// return new StaticAuthProvider(info.clientId, config.auth, info.scopes);
+			throw new Error('TODO');
 		}
 		return config.auth;
 	}

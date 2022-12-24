@@ -1,12 +1,12 @@
 import type { MakeOptional } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
-import type { AccessToken } from '../AccessToken';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
+import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
 import { InvalidTokenError } from '../errors/InvalidTokenError';
-import { compareScopes, loadAndCompareScopes, refreshUserToken } from '../helpers';
-import type { AuthProviderTokenType } from './AuthProvider';
-import { BaseAuthProvider } from './BaseAuthProvider';
+import { compareScopes, getAppToken, loadAndCompareTokenInfo, refreshUserToken } from '../helpers';
+import { TokenFetcher } from '../TokenFetcher';
+import { type AuthProvider } from './AuthProvider';
 
 /**
  * Configuration for the {@link RefreshingAuthProvider}.
@@ -27,7 +27,12 @@ export interface RefreshConfig {
 	 *
 	 * @param token The token data.
 	 */
-	onRefresh?: (token: AccessToken) => void;
+	onRefresh?: (userId: string, token: AccessToken) => void;
+
+	/**
+	 * The scopes to be implied by the provider's app access token.
+	 */
+	appImpliedScopes?: string[];
 }
 
 /**
@@ -35,45 +40,119 @@ export interface RefreshConfig {
  * automatically refreshing the access token whenever necessary.
  */
 @rtfm<RefreshingAuthProvider>('auth', 'RefreshingAuthProvider', 'clientId')
-export class RefreshingAuthProvider extends BaseAuthProvider {
+export class RefreshingAuthProvider implements AuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;
-	@Enumerable(false) private _accessToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>;
+	@Enumerable(false) private readonly _userAccessTokens = new Map<
+		string,
+		MakeOptional<AccessTokenWithUserId, 'accessToken' | 'scope'>
+	>();
+	@Enumerable(false) private readonly _userTokenFetchers = new Map<string, TokenFetcher<AccessTokenWithUserId>>();
+	private readonly _intentToUserId = new Map<string, string>();
 
-	private readonly _onRefresh?: (token: AccessToken) => void;
+	@Enumerable(false) private _appAccessToken?: AccessToken;
+	@Enumerable(false) private readonly _appTokenFetcher;
+	private readonly _appImpliedScopes: string[];
 
-	/**
-	 * The type of tokens the provider generates.
-	 *
-	 * This auth provider generates user tokens.
-	 */
-	readonly tokenType: AuthProviderTokenType = 'user';
+	private readonly _onRefresh?: (userId: string, token: AccessToken) => void;
 
 	/**
 	 * Creates a new auth provider based on the given one that can automatically
 	 * refresh access tokens.
 	 *
 	 * @param refreshConfig The information necessary to automatically refresh an access token.
-	 * @param initialToken The initial access token.
 	 */
-	constructor(refreshConfig: RefreshConfig, initialToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>) {
-		super();
+	constructor(refreshConfig: RefreshConfig) {
 		this._clientId = refreshConfig.clientId;
 		this._clientSecret = refreshConfig.clientSecret;
 		this._onRefresh = refreshConfig.onRefresh;
-		this._accessToken = initialToken;
+		this._appImpliedScopes = refreshConfig.appImpliedScopes ?? [];
+		this._appTokenFetcher = new TokenFetcher(async scopes => await this._fetchAppToken(scopes));
 	}
 
 	/**
-	 * Force a refresh of the access token.
+	 * Adds a user to the provider.
+	 *
+	 * @param user The user to add.
+	 * @param initialToken The token for the user.
+	 * @param intents The intents to add to the user.
+	 *
+	 * Any intents that were already set before will be overwritten to point to this user instead.
 	 */
-	async refresh(): Promise<AccessToken> {
-		const tokenData = await refreshUserToken(this.clientId, this._clientSecret, this._accessToken.refreshToken!);
-		this._accessToken = tokenData;
+	addUser(
+		user: UserIdResolvable,
+		initialToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>,
+		intents?: string[]
+	): void {
+		const userId = extractUserId(user);
+		this._userAccessTokens.set(userId, {
+			...initialToken,
+			userId
+		});
+		this._userTokenFetchers.set(
+			userId,
+			new TokenFetcher(async scopes => await this._fetchUserToken(userId, scopes))
+		);
+		if (intents) {
+			this.addIntentsToUser(user, intents);
+		}
+	}
 
-		this._onRefresh?.(tokenData);
+	/**
+	 * Adds intents to a user.
+	 *
+	 * Any intents that were already set before will be overwritten to point to this user instead.
+	 *
+	 * @param user The user to add intents to.
+	 * @param intents The intents to add to the user.
+	 */
+	addIntentsToUser(user: UserIdResolvable, intents: string[]): void {
+		const userId = extractUserId(user);
+		for (const intent of intents) {
+			this._intentToUserId.set(intent, userId);
+		}
+	}
 
-		return tokenData;
+	/**
+	 * Requests that the provider fetches a new token from Twitch for the given user.
+	 *
+	 * @param user The user to refresh the token for.
+	 */
+	async refreshAccessTokenForUser(user: UserIdResolvable): Promise<AccessTokenWithUserId> {
+		const userId = extractUserId(user);
+		const previousTokenData = this._userAccessTokens.get(userId);
+
+		if (!previousTokenData) {
+			throw new Error('Trying to refresh token for user that was not added to the provider');
+		}
+
+		const tokenData = await refreshUserToken(this.clientId, this._clientSecret, previousTokenData.refreshToken!);
+		this._userAccessTokens.set(userId, {
+			...tokenData,
+			userId
+		});
+
+		this._onRefresh?.(userId, tokenData);
+
+		return {
+			...tokenData,
+			userId
+		};
+	}
+
+	/**
+	 * Requests that the provider fetches a new token from Twitch for the given intent.
+	 *
+	 * @param intent The intent to refresh the token for.
+	 */
+	async refreshAccessTokenForIntent(intent: string): Promise<AccessTokenWithUserId> {
+		if (!this._intentToUserId.has(intent)) {
+			throw new Error(`Undefined intent: ${intent}`);
+		}
+
+		const userId = this._intentToUserId.get(intent)!;
+
+		return await this.refreshAccessTokenForUser(userId);
 	}
 
 	/**
@@ -84,41 +163,118 @@ export class RefreshingAuthProvider extends BaseAuthProvider {
 	}
 
 	/**
-	 * The scopes that are currently available using the access token.
+	 * Gets the scopes that are currently available using the access token.
+	 *
+	 * @param user The user to get the current scopes for.
 	 */
-	get currentScopes(): string[] {
-		return this._accessToken.scope ?? [];
+	getCurrentScopesForUser(user: UserIdResolvable): string[] {
+		const token = this._userAccessTokens.get(extractUserId(user));
+
+		if (!token) {
+			throw new Error('Trying to get scopes for user that was not added to the provider');
+		}
+
+		return token.scope ?? [];
 	}
 
 	/**
-	 * Retrieves an access token.
+	 * Gets an access token for the given user.
 	 *
-	 * If the current access token does not have the requested scopes, the base auth
-	 * provider is called.
-	 *
-	 * If the current access token is expired, automatically renew it.
-	 *
+	 * @param user The user to get an access token for.
 	 * @param scopes The requested scopes.
 	 */
-	protected async _doGetAccessToken(scopes?: string[]): Promise<AccessToken | null> {
+	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId> {
+		const fetcher = this._userTokenFetchers.get(extractUserId(user));
+
+		if (!fetcher) {
+			throw new Error('Trying to get token for user that was not added to the provider');
+		}
+
+		return await fetcher.fetch(scopes);
+	}
+
+	/**
+	 * Fetches a token for a user identified by the given intent.
+	 *
+	 * @param intent The intent to fetch a token for.
+	 * @param scopes The requested scopes.
+	 */
+	async getAccessTokenForIntent(intent: string, scopes?: string[]): Promise<AccessTokenWithUserId> {
+		if (!this._intentToUserId.has(intent)) {
+			throw new Error(`Undefined intent: ${intent}`);
+		}
+
+		const userId = this._intentToUserId.get(intent)!;
+
+		const newToken = await this.getAccessTokenForUser(userId, scopes);
+
+		return {
+			...newToken,
+			userId
+		};
+	}
+
+	/**
+	 * Fetches any token to use with a request that supports both user and app tokens,
+	 * i.e. public data relating to a user.
+	 *
+	 * @param user The user.
+	 */
+	async getAnyAccessToken(user?: UserIdResolvable): Promise<AccessTokenMaybeWithUserId> {
+		if (user) {
+			const userId = extractUserId(user);
+			if (this._userAccessTokens.has(userId)) {
+				const token = await this.getAccessTokenForUser(userId);
+				return {
+					...token,
+					userId
+				};
+			}
+		}
+
+		return await this.getAppAccessToken();
+	}
+
+	/**
+	 * Fetches an app access token.
+	 *
+	 * @param forceNew Whether to always get a new token, even if the old one is still deemed valid internally.
+	 */
+	async getAppAccessToken(forceNew = false): Promise<AccessToken> {
+		if (forceNew) {
+			this._appAccessToken = undefined;
+		}
+		return await this._appTokenFetcher.fetch(this._appImpliedScopes);
+	}
+
+	private async _fetchUserToken(userId: string, scopes?: string[]): Promise<AccessTokenWithUserId> {
+		const previousToken = this._userAccessTokens.get(userId);
+
+		if (!previousToken) {
+			throw new Error('Trying to get token for user that was not added to the provider');
+		}
+
 		// if we don't have a current token, we just pass this and refresh right away
-		if (this._accessToken.accessToken && !accessTokenIsExpired(this._accessToken)) {
+		if (previousToken.accessToken && !accessTokenIsExpired(previousToken)) {
 			try {
 				// don't create new object on every get
-				if (this._accessToken.scope) {
-					compareScopes(this._accessToken.scope, scopes);
-				} else {
-					this._accessToken = {
-						...this._accessToken,
-						scope: await loadAndCompareScopes(
-							this._clientId,
-							this._accessToken.accessToken,
-							this._accessToken.scope,
-							scopes
-						)
-					};
+				if (previousToken.scope) {
+					compareScopes(previousToken.scope, scopes);
+					return previousToken as AccessTokenWithUserId;
 				}
-				return this._accessToken as AccessToken;
+
+				const [scope = []] = await loadAndCompareTokenInfo(
+					this._clientId,
+					previousToken.accessToken,
+					previousToken.scope,
+					scopes
+				);
+				const newToken: AccessTokenWithUserId = {
+					...(previousToken as AccessTokenWithUserId),
+					scope
+				};
+				this._userAccessTokens.set(userId, newToken);
+				return newToken;
 			} catch (e) {
 				// if loading scopes failed, ignore InvalidTokenError and proceed with refreshing
 				if (!(e instanceof InvalidTokenError)) {
@@ -127,8 +283,36 @@ export class RefreshingAuthProvider extends BaseAuthProvider {
 			}
 		}
 
-		const refreshedToken = await this.refresh();
+		const refreshedToken = await this.refreshAccessTokenForUser(userId);
 		compareScopes(refreshedToken.scope, scopes);
 		return refreshedToken;
+	}
+
+	private async _fetchAppToken(scopes?: string[]): Promise<AccessToken> {
+		if (scopes && scopes.length > 0) {
+			if (this._appImpliedScopes.length) {
+				if (scopes.some(scope => !this._appImpliedScopes.includes(scope))) {
+					throw new Error(
+						`Scope ${scopes.join(', ')} requested but only the scope ${this._appImpliedScopes.join(
+							', '
+						)} is implied`
+					);
+				}
+			} else {
+				throw new Error(
+					`Scope ${scopes.join(', ')} requested but the client credentials flow does not support scopes`
+				);
+			}
+		}
+
+		if (!this._appAccessToken || accessTokenIsExpired(this._appAccessToken)) {
+			return await this._refreshAppToken();
+		}
+
+		return this._appAccessToken;
+	}
+
+	private async _refreshAppToken(): Promise<AccessToken> {
+		return (this._appAccessToken = await getAppToken(this._clientId, this._clientSecret));
 	}
 }

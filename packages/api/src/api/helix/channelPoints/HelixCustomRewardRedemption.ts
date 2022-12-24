@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import {
 	type HelixCustomRewardRedemptionData,
 	type HelixCustomRewardRedemptionTargetStatus
@@ -13,10 +13,10 @@ import type { HelixCustomReward } from './HelixCustomReward';
  */
 @rtfm<HelixCustomRewardRedemption>('api', 'HelixCustomRewardRedemption', 'id')
 export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRedemptionData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixCustomRewardRedemptionData, client: ApiClient) {
+	constructor(data: HelixCustomRewardRedemptionData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

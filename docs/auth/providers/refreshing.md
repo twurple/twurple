@@ -4,7 +4,7 @@ timestamp in some way.
 This example uses files to make it easily understandable, but you should probably use a database or similar,
 especially if you need to fetch data for more than one user.
 
-It also assumes that you pre-populated this file (in this example named `tokens.json`) with some data:
+It also assumes that you created a file named `tokens.125328655.json` with some data in it (the number represents a user ID):
 
 ```json
 {
@@ -30,13 +30,14 @@ import { promises as fs } from 'fs';
 
 const clientId = 'YOUR_CLIENT_ID';
 const clientSecret = 'YOUR_CLIENT_SECRET';
-const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
+const tokenData = JSON.parse(await fs.readFile('./tokens.125328655.json', 'UTF-8'));
 const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
 		clientSecret,
-		onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
-	},
-	tokenData
+		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8')
+	}
 );
+
+authProvider.addUser('125328655', tokenData);
 ```

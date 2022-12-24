@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixBitsLeaderboardEntryData } from '../../../interfaces/helix/bits.external';
 import { type HelixUser } from '../user/HelixUser';
 
@@ -9,10 +9,10 @@ import { type HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixBitsLeaderboardEntry>('api', 'HelixBitsLeaderboardEntry', 'userId')
 export class HelixBitsLeaderboardEntry extends DataObject<HelixBitsLeaderboardEntryData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixBitsLeaderboardEntryData, client: ApiClient) {
+	constructor(data: HelixBitsLeaderboardEntryData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

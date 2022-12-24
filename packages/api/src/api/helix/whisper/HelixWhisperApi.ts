@@ -1,5 +1,5 @@
 import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { createWhisperQuery } from '../../../interfaces/helix/whisper.external';
 import { BaseApi } from '../../BaseApi';
 
@@ -41,6 +41,7 @@ export class HelixWhisperApi extends BaseApi {
 			type: 'helix',
 			url: 'whispers',
 			method: 'POST',
+			userId: extractUserId(from),
 			scope: 'user:manage:whispers',
 			query: createWhisperQuery(from, to),
 			jsonBody: {

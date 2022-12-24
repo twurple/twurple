@@ -3,9 +3,6 @@ export { PubSubClient } from './PubSubClient';
 export { BasicPubSubClient } from './BasicPubSubClient';
 export type { BasicPubSubClientOptions } from './BasicPubSubClient';
 
-export { SingleUserPubSubClient } from './SingleUserPubSubClient';
-export type { SingleUserPubSubClientOptions } from './SingleUserPubSubClient';
-
 export { PubSubListener } from './PubSubListener';
 
 export type {

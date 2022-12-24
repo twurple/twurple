@@ -1,7 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixBitsLeaderboardResponse } from '../../../interfaces/helix/bits.external';
 import { HelixBitsLeaderboardEntry } from './HelixBitsLeaderboardEntry';
 
@@ -11,10 +11,10 @@ import { HelixBitsLeaderboardEntry } from './HelixBitsLeaderboardEntry';
 @Cacheable
 @rtfm('api', 'HelixBitsLeaderboard')
 export class HelixBitsLeaderboard extends DataObject<HelixBitsLeaderboardResponse> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixBitsLeaderboardResponse, client: ApiClient) {
+	constructor(data: HelixBitsLeaderboardResponse, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

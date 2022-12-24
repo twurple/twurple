@@ -1,8 +1,8 @@
-import type { AccessToken, AuthProvider, AuthProviderTokenType } from '@twurple/auth';
+import type { AccessTokenMaybeWithUserId, AccessTokenWithUserId, AuthProvider } from '@twurple/auth';
+import { extractUserId, type UserIdResolvable } from '@twurple/common';
 
 export class ExtensionAuthProvider implements AuthProvider {
 	authorizationType = 'Extension';
-	tokenType: AuthProviderTokenType = 'app';
 	currentScopes = [];
 
 	constructor(public readonly clientId: string) {
@@ -11,7 +11,11 @@ export class ExtensionAuthProvider implements AuthProvider {
 		}
 	}
 
-	async getAccessToken(scopes?: string[]): Promise<AccessToken> {
+	getCurrentScopesForUser(): string[] {
+		return [];
+	}
+
+	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId> {
 		if (scopes?.length) {
 			throw new Error(
 				`Scope ${scopes.join(
@@ -19,6 +23,14 @@ export class ExtensionAuthProvider implements AuthProvider {
 				)} requested but direct extension calls do not support scopes. Please use an EBS instead.`
 			);
 		}
+
+		return {
+			...(await this.getAnyAccessToken()),
+			userId: extractUserId(user)
+		};
+	}
+
+	async getAnyAccessToken(): Promise<AccessTokenMaybeWithUserId> {
 		const accessToken = Twitch.ext.viewer.helixToken as string | null;
 
 		if (accessToken == null) {
@@ -37,8 +49,8 @@ export class ExtensionAuthProvider implements AuthProvider {
 		};
 	}
 
-	async refresh(): Promise<AccessToken> {
+	async refreshAccessTokenForUser(user: UserIdResolvable): Promise<AccessTokenWithUserId> {
 		// basically just retry
-		return await this.getAccessToken();
+		return await this.getAccessTokenForUser(user);
 	}
 }

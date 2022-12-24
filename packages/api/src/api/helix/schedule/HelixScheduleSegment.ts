@@ -1,6 +1,6 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixScheduleSegmentData } from '../../../interfaces/helix/schedule.external';
 import type { HelixGame } from '../game/HelixGame';
 
@@ -9,10 +9,10 @@ import type { HelixGame } from '../game/HelixGame';
  */
 @rtfm<HelixScheduleSegment>('api', 'HelixScheduleSegment', 'id')
 export class HelixScheduleSegment extends DataObject<HelixScheduleSegmentData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixScheduleSegmentData, client: ApiClient) {
+	constructor(data: HelixScheduleSegmentData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixUserSubscriptionData } from '../../../interfaces/helix/subscription.external';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -9,10 +9,10 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixUserSubscription>('api', 'HelixUserSubscription', 'broadcasterId')
 export class HelixUserSubscription extends DataObject<HelixUserSubscriptionData> {
-	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
+	/** @private */ @Enumerable(false) protected readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixUserSubscriptionData, client: ApiClient) {
+	constructor(data: HelixUserSubscriptionData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

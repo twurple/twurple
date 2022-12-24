@@ -1,5 +1,5 @@
 import { rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import {
 	type HelixEventSubSubscriptionData,
 	type HelixPaginatedEventSubSubscriptionsResponse
@@ -22,10 +22,11 @@ export class HelixPaginatedEventSubSubscriptionsRequest extends HelixPaginatedRe
 	protected declare _currentData?: HelixPaginatedEventSubSubscriptionsResponse;
 
 	/** @private */
-	constructor(query: Record<string, string>, client: ApiClient) {
+	constructor(query: Record<string, string>, userId: string | undefined, client: BaseApiClient) {
 		super(
 			{
 				url: 'eventsub/subscriptions',
+				userId,
 				query
 			},
 			client,

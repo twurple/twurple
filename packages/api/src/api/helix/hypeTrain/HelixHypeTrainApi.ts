@@ -1,6 +1,7 @@
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId } from '@twurple/common';
 import { type HelixEventData } from '../../../interfaces/helix/generic.external';
 import {
 	type HelixHypeTrainEventData,
@@ -46,6 +47,7 @@ export class HelixHypeTrainApi extends BaseApi {
 		>({
 			type: 'helix',
 			url: 'hypetrain/events',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:read:hype_train',
 			query: {
 				...createBroadcasterQuery(broadcaster),
@@ -67,6 +69,7 @@ export class HelixHypeTrainApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'hypetrain/events',
+				userId: extractUserId(broadcaster),
 				scope: 'channel:read:hype_train',
 				query: createBroadcasterQuery(broadcaster)
 			},

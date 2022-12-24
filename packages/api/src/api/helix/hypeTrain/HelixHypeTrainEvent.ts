@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixEventData } from '../../../interfaces/helix/generic.external';
 import {
 	type HelixHypeTrainEventData,
@@ -14,10 +14,10 @@ import { HelixHypeTrainContribution } from './HelixHypeTrainContribution';
  */
 @rtfm<HelixHypeTrainEvent>('api', 'HelixHypeTrainEvent', 'id')
 export class HelixHypeTrainEvent extends DataObject<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>, client: ApiClient) {
+	constructor(data: HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

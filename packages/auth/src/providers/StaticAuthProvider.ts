@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
-import type { AccessToken } from '../AccessToken';
-import { loadAndCompareScopes } from '../helpers';
-import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
+import { rtfm, type UserIdResolvable } from '@twurple/common';
+import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
+import { loadAndCompareTokenInfo } from '../helpers';
+import type { AuthProvider } from './AuthProvider';
 
 /**
  * An auth provider that always returns the same initially given credentials.
@@ -15,12 +15,8 @@ import type { AuthProvider, AuthProviderTokenType } from './AuthProvider';
 export class StaticAuthProvider implements AuthProvider {
 	@Enumerable(false) private readonly _clientId: string;
 	@Enumerable(false) private readonly _accessToken: AccessToken;
+	private _userId?: string;
 	private _scopes?: string[];
-
-	/**
-	 * The type of token the provider holds.
-	 */
-	readonly tokenType: AuthProviderTokenType;
 
 	/**
 	 * Creates a new auth provider with static credentials.
@@ -34,20 +30,9 @@ export class StaticAuthProvider implements AuthProvider {
 	 * If this argument is given, the scopes need to be correct, or weird things might happen. If it's not (i.e. it's `undefined`), we fetch the correct scopes for you.
 	 *
 	 * If you can't exactly say which scopes your token has, don't use this parameter/set it to `undefined`.
-	 * @param tokenType The type of the supplied token.
-	 *
-	 * This has to match with the actual type of the token. If it doesn't match, the behavior is undefined.
-	 *
-	 * The Client Credentials flow only produces app tokens, while the other flows produce user tokens.
 	 */
-	constructor(
-		clientId: string,
-		accessToken: string | AccessToken,
-		scopes?: string[],
-		tokenType: AuthProviderTokenType = 'user'
-	) {
+	constructor(clientId: string, accessToken: string | AccessToken, scopes?: string[]) {
 		this._clientId = clientId || '';
-		this.tokenType = tokenType;
 		this._accessToken =
 			typeof accessToken === 'string'
 				? {
@@ -62,25 +47,6 @@ export class StaticAuthProvider implements AuthProvider {
 	}
 
 	/**
-	 * Retrieves an access token.
-	 *
-	 * If the current access token does not have the requested scopes, this method throws.
-	 * This makes supplying an access token with the correct scopes from the beginning necessary.
-	 *
-	 * @param requestedScopes The requested scopes.
-	 */
-	async getAccessToken(requestedScopes?: string[]): Promise<AccessToken | null> {
-		this._scopes = await loadAndCompareScopes(
-			this._clientId,
-			this._accessToken.accessToken,
-			this._scopes,
-			requestedScopes
-		);
-
-		return this._accessToken;
-	}
-
-	/**
 	 * The client ID.
 	 */
 	get clientId(): string {
@@ -88,9 +54,57 @@ export class StaticAuthProvider implements AuthProvider {
 	}
 
 	/**
+	 * Retrieves the static access token.
+	 *
+	 * If the current access token does not have the requested scopes, this method throws.
+	 * This makes supplying an access token with the correct scopes from the beginning necessary.
+	 *
+	 * @param intent Ignored.
+	 * @param scopes The requested scopes.
+	 */
+	async getAccessTokenForIntent(intent: string, scopes: string[] | undefined): Promise<AccessTokenWithUserId> {
+		return await this._getAccessToken(scopes);
+	}
+
+	/**
+	 * Retrieves the static access token.
+	 *
+	 * If the current access token does not have the requested scopes, this method throws.
+	 * This makes supplying an access token with the correct scopes from the beginning necessary.
+	 *
+	 * @param user Ignored.
+	 * @param scopes The requested scopes.
+	 */
+	async getAccessTokenForUser(user: UserIdResolvable, scopes: string[] | undefined): Promise<AccessTokenWithUserId> {
+		return await this._getAccessToken(scopes);
+	}
+
+	/**
+	 * Retrieves the static access token.
+	 */
+	async getAnyAccessToken(): Promise<AccessTokenMaybeWithUserId> {
+		return await this._getAccessToken();
+	}
+
+	/**
 	 * The scopes that are currently available using the access token.
 	 */
-	get currentScopes(): string[] {
+	getCurrentScopesForUser(): string[] {
 		return this._scopes ?? [];
+	}
+
+	private async _getAccessToken(requestedScopes?: string[]): Promise<AccessTokenWithUserId> {
+		const [scopes, userId] = await loadAndCompareTokenInfo(
+			this._clientId,
+			this._accessToken.accessToken,
+			this._userId,
+			this._scopes,
+			requestedScopes
+		);
+
+		this._scopes = scopes;
+		this._userId = userId;
+
+		return { ...this._accessToken, userId };
 	}
 }

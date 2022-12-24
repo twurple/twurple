@@ -65,6 +65,7 @@ export class HelixChatApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResultWithTotal<HelixChatChatterData>>({
 			type: 'helix',
 			url: 'chat/chatters',
+			userId: extractUserId(moderator),
 			scope: 'moderator:read:chatters',
 			query: {
 				...createModeratorActionQuery(broadcaster, moderator),
@@ -96,6 +97,7 @@ export class HelixChatApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixChatBadgeSetData>>({
 			type: 'helix',
 			url: 'chat/badges',
+			userId: extractUserId(broadcaster),
 			query: createBroadcasterQuery(broadcaster)
 		});
 
@@ -115,15 +117,16 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves all emotes from a channel.
+	 * Retrieves all emotes specific to the given broadcaster.
 	 *
-	 * @param channel The channel to retrieve emotes from.
+	 * @param broadcaster The broadcaster to retrieve emotes for.
 	 */
-	async getChannelEmotes(channel: UserIdResolvable): Promise<HelixChannelEmote[]> {
+	async getChannelEmotes(broadcaster: UserIdResolvable): Promise<HelixChannelEmote[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChannelEmoteData>>({
 			type: 'helix',
 			url: 'chat/emotes',
-			query: createBroadcasterQuery(channel)
+			userId: extractUserId(broadcaster),
+			query: createBroadcasterQuery(broadcaster)
 		});
 
 		return result.data.map(data => new HelixChannelEmote(data, this._client));
@@ -153,6 +156,7 @@ export class HelixChatApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixChatSettingsData>>({
 			type: 'helix',
 			url: 'chat/settings',
+			userId: extractUserId(broadcaster),
 			query: createBroadcasterQuery(broadcaster)
 		});
 
@@ -175,6 +179,7 @@ export class HelixChatApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedChatSettingsData>>({
 			type: 'helix',
 			url: 'chat/settings',
+			userId: extractUserId(moderator),
 			scope: 'moderator:read:chat_settings',
 			query: createModeratorActionQuery(broadcaster, moderator)
 		});
@@ -203,6 +208,7 @@ export class HelixChatApi extends BaseApi {
 			type: 'helix',
 			url: 'chat/settings',
 			method: 'PATCH',
+			userId: extractUserId(moderator),
 			scope: 'moderator:manage:chat_settings',
 			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: createChatSettingsUpdateBody(settings)
@@ -230,6 +236,7 @@ export class HelixChatApi extends BaseApi {
 			type: 'helix',
 			url: 'chat/announcements',
 			method: 'POST',
+			userId: extractUserId(moderator),
 			scope: 'moderator:manage:announcements',
 			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: {
@@ -266,11 +273,18 @@ export class HelixChatApi extends BaseApi {
 	 * @param user The user to get the chat color of.
 	 */
 	async getColorForUser(user: UserIdResolvable): Promise<string | null | undefined> {
-		const userId = extractUserId(user);
+		const response = await this._client.callApi<HelixResponse<HelixChatColorDefinitionData>>({
+			type: 'helix',
+			url: 'chat/color',
+			userId: extractUserId(user),
+			query: createSingleKeyQuery('user_id', extractUserId(user))
+		});
 
-		const result = await this.getColorsForUsers([userId]);
+		if (!response.data.length) {
+			return undefined;
+		}
 
-		return result.get(userId);
+		return response.data[0].color || null;
 	}
 
 	/**
@@ -286,6 +300,7 @@ export class HelixChatApi extends BaseApi {
 			type: 'helix',
 			url: 'chat/color',
 			method: 'PUT',
+			userId: extractUserId(user),
 			scope: 'user:manage:chat_color',
 			query: createChatColorUpdateQuery(user, color)
 		});

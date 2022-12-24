@@ -38,9 +38,9 @@
 							"file": "auth/providers/refreshing.md"
 						},
 						{
-							"name": "client-credentials",
+							"name": "app-tokens",
 							"title": "Using app tokens",
-							"file": "auth/providers/client-credentials.md"
+							"file": "auth/providers/app-tokens.md"
 						},
 						{
 							"name": "electron",

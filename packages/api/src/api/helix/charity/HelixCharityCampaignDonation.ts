@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixCharityCampaignDonationData } from '../../../interfaces/helix/charity.external';
 import type { HelixUser } from '../user/HelixUser';
 import { HelixCharityCampaignAmount } from './HelixCharityCampaignAmount';
@@ -12,10 +12,10 @@ import { HelixCharityCampaignAmount } from './HelixCharityCampaignAmount';
  */
 @rtfm('api', 'HelixCharityCampaignDonation')
 export class HelixCharityCampaignDonation extends DataObject<HelixCharityCampaignDonationData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixCharityCampaignDonationData, client: ApiClient) {
+	constructor(data: HelixCharityCampaignDonationData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

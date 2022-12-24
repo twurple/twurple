@@ -138,8 +138,9 @@ export class HelixVideoApi extends BaseApi {
 			return { data: [] };
 		}
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixVideoData>>({
-			url: 'videos',
 			type: 'helix',
+			url: 'videos',
+			userId: filterType === 'user_id' ? filterValues[0] : undefined,
 			query: {
 				...HelixVideoApi._makeVideosQuery(filterType, filterValues, filter),
 				...createPaginationQuery(filter)
@@ -157,6 +158,7 @@ export class HelixVideoApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'videos',
+				userId: filterType === 'user_id' ? filterValues[0] : undefined,
 				query: HelixVideoApi._makeVideosQuery(filterType, filterValues, filter)
 			},
 			this._client,

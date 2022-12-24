@@ -40,38 +40,40 @@ export class HelixClipApi extends BaseApi {
 	/**
 	 * Retrieves clips for the specified broadcaster in descending order of views.
 	 *
-	 * @param user The broadcaster to fetch clips for.
+	 * @param broadcaster The broadcaster to fetch clips for.
 	 * @param filter
 	 *
 	 * @expandParams
 	 */
 	async getClipsForBroadcaster(
-		user: UserIdResolvable,
+		broadcaster: UserIdResolvable,
 		filter: HelixPaginatedClipFilter = {}
 	): Promise<HelixPaginatedResult<HelixClip>> {
 		return await this._getClips({
 			...filter,
 			filterType: 'broadcaster_id',
-			ids: extractUserId(user)
+			ids: extractUserId(broadcaster),
+			userId: extractUserId(broadcaster)
 		});
 	}
 
 	/**
 	 * Creates a paginator for clips for the specified broadcaster.
 	 *
-	 * @param user The broadcaster to fetch clips for.
+	 * @param broadcaster The broadcaster to fetch clips for.
 	 * @param filter
 	 *
 	 * @expandParams
 	 */
 	getClipsForBroadcasterPaginated(
-		user: UserIdResolvable,
+		broadcaster: UserIdResolvable,
 		filter: HelixClipFilter = {}
 	): HelixPaginatedRequest<HelixClipData, HelixClip> {
 		return this._getClipsPaginated({
 			...filter,
 			filterType: 'broadcaster_id',
-			ids: extractUserId(user)
+			ids: extractUserId(broadcaster),
+			userId: extractUserId(broadcaster)
 		});
 	}
 
@@ -151,6 +153,7 @@ export class HelixClipApi extends BaseApi {
 			type: 'helix',
 			url: 'clips',
 			method: 'POST',
+			userId: extractUserId(params.channel),
 			scope: 'clips:edit',
 			query: createClipCreateQuery(channel, createAfterDelay)
 		});
@@ -166,6 +169,7 @@ export class HelixClipApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixClipData>>({
 			type: 'helix',
 			url: 'clips',
+			userId: params.userId,
 			query: {
 				...createClipQuery(params),
 				...createPaginationQuery(params)
@@ -179,6 +183,7 @@ export class HelixClipApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'clips',
+				userId: params.userId,
 				query: createClipQuery(params)
 			},
 			this._client,

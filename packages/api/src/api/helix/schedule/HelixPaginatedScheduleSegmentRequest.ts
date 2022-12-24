@@ -1,7 +1,7 @@
 import type { HelixPaginatedResponse, TwitchApiCallOptions } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import {
 	createScheduleQuery,
 	type HelixScheduleResponse,
@@ -20,7 +20,7 @@ export class HelixPaginatedScheduleSegmentRequest extends HelixPaginatedRequest<
 	HelixScheduleSegment
 > {
 	/** @private */
-	constructor(broadcaster: UserIdResolvable, client: ApiClient, filter?: HelixScheduleFilter) {
+	constructor(broadcaster: UserIdResolvable, client: BaseApiClient, filter?: HelixScheduleFilter) {
 		super(
 			{
 				url: 'schedule',

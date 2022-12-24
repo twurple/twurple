@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixBroadcasterType, type HelixUserData } from '../../../interfaces/helix/user.external';
 import type { HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import type { HelixStream } from '../stream/HelixStream';
@@ -13,10 +13,10 @@ import type { HelixFollow } from './HelixFollow';
  */
 @rtfm<HelixUser>('api', 'HelixUser', 'id')
 export class HelixUser extends DataObject<HelixUserData> implements UserIdResolvableType, UserNameResolveableType {
-	/** @private */ @Enumerable(false) protected readonly _client: ApiClient;
+	/** @private */ @Enumerable(false) protected readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixUserData, client: ApiClient) {
+	constructor(data: HelixUserData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

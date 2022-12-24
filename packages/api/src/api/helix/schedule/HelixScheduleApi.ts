@@ -1,5 +1,6 @@
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
+import { extractUserId } from '@twurple/common';
 import { createGetByIdsQuery } from '../../../interfaces/helix/generic.external';
 import {
 	createScheduleQuery,
@@ -53,6 +54,7 @@ export class HelixScheduleApi extends BaseApi {
 		const result = await this._client.callApi<HelixScheduleResponse>({
 			type: 'helix',
 			url: 'schedule',
+			userId: extractUserId(broadcaster),
 			query: {
 				...createScheduleQuery(broadcaster, filter),
 				...createPaginationQuery(filter)
@@ -90,6 +92,7 @@ export class HelixScheduleApi extends BaseApi {
 		const result = await this._client.callApi<HelixScheduleResponse>({
 			type: 'helix',
 			url: 'schedule',
+			userId: extractUserId(broadcaster),
 			query: createGetByIdsQuery(broadcaster, ids)
 		});
 
@@ -134,6 +137,7 @@ export class HelixScheduleApi extends BaseApi {
 			type: 'helix',
 			url: 'schedule/settings',
 			method: 'PATCH',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:manage:schedule',
 			query: createScheduleSettingsUpdateQuery(broadcaster, settings)
 		});
@@ -155,6 +159,7 @@ export class HelixScheduleApi extends BaseApi {
 			type: 'helix',
 			url: 'schedule/segment',
 			method: 'POST',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:manage:schedule',
 			query: createBroadcasterQuery(broadcaster),
 			jsonBody: createScheduleSegmentBody(data)
@@ -181,6 +186,7 @@ export class HelixScheduleApi extends BaseApi {
 			type: 'helix',
 			url: 'schedule/segment',
 			method: 'PATCH',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:manage:schedule',
 			query: createScheduleSegmentModifyQuery(broadcaster, segmentId),
 			jsonBody: createScheduleSegmentUpdateBody(data)
@@ -200,6 +206,7 @@ export class HelixScheduleApi extends BaseApi {
 			type: 'helix',
 			url: 'schedule/segment',
 			method: 'DELETE',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:manage:schedule',
 			query: createScheduleSegmentModifyQuery(broadcaster, segmentId)
 		});

@@ -1,7 +1,7 @@
 import type { HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { createChannelUsersCheckQuery } from '../../../interfaces/helix/generic.external';
 import {
 	createSubscriptionCheckQuery,
@@ -50,6 +50,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			url: 'subscriptions',
 			scope: 'channel:read:subscriptions',
 			type: 'helix',
+			userId: extractUserId(broadcaster),
 			query: {
 				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
@@ -68,7 +69,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 */
 	getSubscriptionsPaginated(broadcaster: UserIdResolvable): HelixPaginatedSubscriptionsRequest {
-		return new HelixPaginatedSubscriptionsRequest(createBroadcasterQuery(broadcaster), this._client);
+		return new HelixPaginatedSubscriptionsRequest(broadcaster, this._client);
 	}
 
 	/**
@@ -82,9 +83,10 @@ export class HelixSubscriptionApi extends BaseApi {
 		users: UserIdResolvable[]
 	): Promise<HelixSubscription[]> {
 		const result = await this._client.callApi<HelixResponse<HelixSubscriptionData>>({
-			url: 'subscriptions',
-			scope: 'channel:read:subscriptions',
 			type: 'helix',
+			url: 'subscriptions',
+			userId: extractUserId(broadcaster),
+			scope: 'channel:read:subscriptions',
 			query: createChannelUsersCheckQuery(broadcaster, users)
 		});
 
@@ -125,6 +127,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			const result = await this._client.callApi<HelixResponse<HelixUserSubscriptionData>>({
 				type: 'helix',
 				url: 'subscriptions/user',
+				userId: extractUserId(user),
 				scope: 'user:read:subscriptions',
 				query: createSubscriptionCheckQuery(broadcaster, user)
 			});

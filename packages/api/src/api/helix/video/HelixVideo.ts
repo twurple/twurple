@@ -1,7 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import {
 	type HelixVideoData,
 	type HelixVideoMutedSegmentData,
@@ -15,10 +15,10 @@ import type { HelixUser } from '../user/HelixUser';
 @Cacheable
 @rtfm<HelixVideo>('api', 'HelixVideo', 'id')
 export class HelixVideo extends DataObject<HelixVideoData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixVideoData, client: ApiClient) {
+	constructor(data: HelixVideoData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

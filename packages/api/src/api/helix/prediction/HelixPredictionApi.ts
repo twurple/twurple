@@ -1,7 +1,7 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { createGetByIdsQuery } from '../../../interfaces/helix/generic.external';
 import {
 	createEndPredictionBody,
@@ -49,6 +49,7 @@ export class HelixPredictionApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixPredictionData>>({
 			type: 'helix',
 			url: 'predictions',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:read:predictions',
 			query: {
 				...createBroadcasterQuery(broadcaster),
@@ -70,6 +71,7 @@ export class HelixPredictionApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'predictions',
+				userId: extractUserId(broadcaster),
 				scope: 'channel:read:predictions',
 				query: createBroadcasterQuery(broadcaster)
 			},
@@ -93,6 +95,7 @@ export class HelixPredictionApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixPredictionData>>({
 			type: 'helix',
 			url: 'predictions',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:read:predictions',
 			query: createGetByIdsQuery(broadcaster, ids)
 		});
@@ -124,6 +127,7 @@ export class HelixPredictionApi extends BaseApi {
 			type: 'helix',
 			url: 'predictions',
 			method: 'POST',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:manage:predictions',
 			jsonBody: createPredictionBody(broadcaster, data)
 		});
@@ -172,6 +176,7 @@ export class HelixPredictionApi extends BaseApi {
 			type: 'helix',
 			url: 'predictions',
 			method: 'PATCH',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:manage:predictions',
 			jsonBody: createEndPredictionBody(broadcaster, id, status, outcomeId)
 		});

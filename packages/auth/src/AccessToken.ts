@@ -36,6 +36,31 @@ export interface AccessToken {
 }
 
 /**
+ * Represents the data of an OAuth access token returned by Twitch, together with the ID of the user it represents.
+ *
+ * @inheritDoc
+ */
+export interface AccessTokenWithUserId extends AccessToken {
+	/**
+	 * The ID of the user represented by the token.
+	 */
+	userId: string;
+}
+
+/**
+ * Represents the data of an OAuth access token returned by Twitch, together with the ID of the user it represents,
+ * if it's not an app access token.
+ *
+ * @inheritDoc
+ */
+export interface AccessTokenMaybeWithUserId extends AccessToken {
+	/**
+	 * The ID of the user represented by the token, or undefined if it's an app access token.
+	 */
+	userId?: string;
+}
+
+/**
  * The part of an access token that is required to calculate expiredness.
  */
 export type ExpireableAccessToken = Pick<AccessToken, 'expiresIn' | 'obtainmentTimestamp'>;

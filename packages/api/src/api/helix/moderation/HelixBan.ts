@@ -1,5 +1,5 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixBanData } from '../../../interfaces/helix/moderation.external';
 import { HelixBanUser } from './HelixBanUser';
 
@@ -13,7 +13,7 @@ export class HelixBan extends HelixBanUser {
 	/** @private */ declare readonly [rawDataSymbol]: HelixBanData;
 
 	/** @private */
-	constructor(data: HelixBanData, client: ApiClient) {
+	constructor(data: HelixBanData, client: BaseApiClient) {
 		super(data, data.expires_at || null, client);
 	}
 

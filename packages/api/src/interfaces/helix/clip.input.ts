@@ -25,6 +25,7 @@ export interface HelixPaginatedClipFilter extends HelixClipFilter, HelixPaginati
 export interface HelixClipIdFilterPart {
 	filterType: HelixClipFilterType;
 	ids: string | string[];
+	userId?: string;
 }
 
 /** @private */

@@ -1,7 +1,7 @@
 import type { HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import { type HelixTeamData, type HelixTeamWithUsersData } from '../../../interfaces/helix/team.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixTeam } from './HelixTeam';
@@ -32,6 +32,7 @@ export class HelixTeamApi extends BaseApi {
 		const result = await this._client.callApi<Partial<HelixResponse<HelixTeamData>>>({
 			type: 'helix',
 			url: 'teams/channel',
+			userId: extractUserId(broadcaster),
 			query: createBroadcasterQuery(broadcaster)
 		});
 

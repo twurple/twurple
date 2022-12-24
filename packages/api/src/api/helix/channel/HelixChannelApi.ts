@@ -1,3 +1,4 @@
+import { mapNullable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { CommercialLength, UserIdResolvable } from '@twurple/common';
@@ -47,8 +48,15 @@ export class HelixChannelApi extends BaseApi {
 	 * @param user The user you want to get channel info for.
 	 */
 	async getChannelInfoById(user: UserIdResolvable): Promise<HelixChannel | null> {
-		const channels = await this.getChannelInfoByIds([user]);
-		return channels[0] ?? null;
+		const userId = extractUserId(user);
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixChannelData>>({
+			type: 'helix',
+			url: 'channels',
+			userId,
+			query: createBroadcasterQuery(userId)
+		});
+
+		return mapNullable(result.data[0], data => new HelixChannel(data, this._client));
 	}
 
 	/**
@@ -78,6 +86,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels',
 			method: 'PATCH',
+			userId: extractUserId(user),
 			scope: 'channel:manage:broadcast',
 			query: createBroadcasterQuery(user),
 			jsonBody: createChannelUpdateBody(data)
@@ -95,6 +104,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/commercial',
 			method: 'POST',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:edit:commercial',
 			jsonBody: createChannelCommercialBody(broadcaster, length)
 		});
@@ -109,6 +119,7 @@ export class HelixChannelApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixChannelEditorData>>({
 			type: 'helix',
 			url: 'channels/editors',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:read:editors',
 			query: createBroadcasterQuery(broadcaster)
 		});
@@ -131,6 +142,7 @@ export class HelixChannelApi extends BaseApi {
 		const response = await this._client.callApi<HelixPaginatedResponse<HelixUserRelationData>>({
 			type: 'helix',
 			url: 'channels/vips',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:read:vips',
 			query: {
 				...createBroadcasterQuery(broadcaster),
@@ -150,6 +162,7 @@ export class HelixChannelApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'channels/vips',
+				userId: extractUserId(broadcaster),
 				scope: 'channel:read:vips',
 				query: createBroadcasterQuery(broadcaster)
 			},
@@ -168,6 +181,7 @@ export class HelixChannelApi extends BaseApi {
 		const response = await this._client.callApi<HelixPaginatedResponse<HelixUserRelationData>>({
 			type: 'helix',
 			url: 'channels/vips',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:read:vips',
 			query: createChannelUsersCheckQuery(broadcaster, users)
 		});
@@ -199,6 +213,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/vips',
 			method: 'POST',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:manage:vips',
 			query: createChannelVipUpdateQuery(broadcaster, user)
 		});
@@ -215,6 +230,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/vips',
 			method: 'DELETE',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:manage:vips',
 			query: createChannelVipUpdateQuery(broadcaster, user)
 		});

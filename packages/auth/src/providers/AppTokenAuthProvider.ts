@@ -3,25 +3,19 @@ import { rtfm } from '@twurple/common';
 import type { AccessToken } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
 import { getAppToken } from '../helpers';
-import type { AuthProviderTokenType } from './AuthProvider';
-import { BaseAuthProvider } from './BaseAuthProvider';
+import { TokenFetcher } from '../TokenFetcher';
+import { type AuthProvider } from './AuthProvider';
 
 /**
  * An auth provider that retrieve tokens using client credentials.
  */
-@rtfm<ClientCredentialsAuthProvider>('auth', 'ClientCredentialsAuthProvider', 'clientId')
-export class ClientCredentialsAuthProvider extends BaseAuthProvider {
+@rtfm<AppTokenAuthProvider>('auth', 'AppTokenAuthProvider', 'clientId')
+export class AppTokenAuthProvider implements AuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;
 	@Enumerable(false) private _token?: AccessToken;
+	@Enumerable(false) private readonly _fetcher: TokenFetcher;
 	private readonly _impliedScopes: string[];
-
-	/**
-	 * The type of tokens the provider generates.
-	 *
-	 * This auth provider generates app tokens.
-	 */
-	readonly tokenType: AuthProviderTokenType = 'app';
 
 	/**
 	 * Creates a new auth provider to receive an application token with using the client ID and secret.
@@ -32,17 +26,10 @@ export class ClientCredentialsAuthProvider extends BaseAuthProvider {
 	 * for example an extension that is allowed to access subscriptions.
 	 */
 	constructor(clientId: string, clientSecret: string, impliedScopes: string[] = []) {
-		super();
 		this._clientId = clientId;
 		this._clientSecret = clientSecret;
 		this._impliedScopes = impliedScopes;
-	}
-
-	/**
-	 * Retrieves a new app access token.
-	 */
-	async refresh(): Promise<AccessToken> {
-		return (this._token = await getAppToken(this._clientId, this._clientSecret));
+		this._fetcher = new TokenFetcher(async scopes => await this._fetch(scopes));
 	}
 
 	/**
@@ -56,17 +43,43 @@ export class ClientCredentialsAuthProvider extends BaseAuthProvider {
 	 * The scopes that are currently available using the access token.
 	 */
 	get currentScopes(): string[] {
-		return [];
+		return this._impliedScopes;
 	}
 
 	/**
-	 * Retrieves an access token.
-	 *
-	 * If any scopes are provided, this throws. The client credentials flow does not support scopes.
-	 *
-	 * @param scopes The requested scopes.
+	 * Throws, because this auth provider does not support user authentication.
 	 */
-	protected async _doGetAccessToken(scopes?: string[]): Promise<AccessToken> {
+	async getAccessTokenForUser(): Promise<never> {
+		throw new Error('Can not get user access token for AppTokenAuthProvider');
+	}
+
+	/**
+	 * Throws, because this auth provider does not support user authentication.
+	 */
+	getCurrentScopesForUser(): never {
+		throw new Error('Can not get user scopes for AppTokenAuthProvider');
+	}
+
+	/**
+	 * Fetches an app access token.
+	 */
+	async getAnyAccessToken(): Promise<AccessToken> {
+		return await this._fetcher.fetch();
+	}
+
+	/**
+	 * Fetches an app access token.
+	 *
+	 * @param forceNew Whether to always get a new token, even if the old one is still deemed valid internally.
+	 */
+	async getAppAccessToken(forceNew = false): Promise<AccessToken> {
+		if (forceNew) {
+			this._token = undefined;
+		}
+		return await this._fetcher.fetch();
+	}
+
+	private async _fetch(scopes?: string[]): Promise<AccessToken> {
 		if (scopes && scopes.length > 0) {
 			if (this._impliedScopes.length) {
 				if (scopes.some(scope => !this._impliedScopes.includes(scope))) {
@@ -84,7 +97,7 @@ export class ClientCredentialsAuthProvider extends BaseAuthProvider {
 		}
 
 		if (!this._token || accessTokenIsExpired(this._token)) {
-			return await this.refresh();
+			return (this._token = await getAppToken(this._clientId, this._clientSecret));
 		}
 
 		return this._token;

@@ -120,7 +120,7 @@ export class HelixExtensionsApi extends BaseApi {
 	/**
 	 * Creates or updates a Bits product of an extension.
 	 *
-	 * * This only works if the provided token belongs to an extension's client ID,
+	 * This only works if the provided token belongs to an extension's client ID,
 	 * and will create/update a product for that extension.
 	 *
 	 * @param data

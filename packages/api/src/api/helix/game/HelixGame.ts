@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixGameData } from '../../../interfaces/helix/game.external';
 import { type HelixStreamData } from '../../../interfaces/helix/stream.external';
 import type { HelixPaginatedRequest } from '../HelixPaginatedRequest';
@@ -13,10 +13,10 @@ import type { HelixStream } from '../stream/HelixStream';
  */
 @rtfm<HelixGame>('api', 'HelixGame', 'id')
 export class HelixGame extends DataObject<HelixGameData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixGameData, client: ApiClient) {
+	constructor(data: HelixGameData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

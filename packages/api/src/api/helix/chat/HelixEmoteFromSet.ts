@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixEmoteFromSetData } from '../../../interfaces/helix/chat.external';
 import type { HelixUser } from '../user/HelixUser';
 import { HelixEmote } from './HelixEmote';
@@ -13,9 +13,9 @@ import { HelixEmote } from './HelixEmote';
 @rtfm<HelixEmoteFromSet>('api', 'HelixEmoteFromSet', 'id')
 export class HelixEmoteFromSet extends HelixEmote {
 	/** @private */ declare readonly [rawDataSymbol]: HelixEmoteFromSetData;
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
-	constructor(data: HelixEmoteFromSetData, client: ApiClient) {
+	constructor(data: HelixEmoteFromSetData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

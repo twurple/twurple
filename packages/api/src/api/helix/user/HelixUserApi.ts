@@ -1,4 +1,4 @@
-import { mapOptional } from '@d-fischer/shared-utils';
+import { mapNullable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
@@ -64,9 +64,9 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the user data for the given list of user names.
+	 * Retrieves the user data for the given list of usernames.
 	 *
-	 * @param userNames The user names you want to look up.
+	 * @param userNames The usernames you want to look up.
 	 */
 	async getUsersByNames(userNames: UserNameResolvable[]): Promise<HelixUser[]> {
 		return await this._getUsers('login', userNames.map(extractUserName));
@@ -78,14 +78,23 @@ export class HelixUserApi extends BaseApi {
 	 * @param user The user ID you want to look up.
 	 */
 	async getUserById(user: UserIdResolvable): Promise<HelixUser | null> {
-		const users = await this._getUsers('id', [extractUserId(user)]);
-		return users.length ? users[0] : null;
+		const userId = extractUserId(user);
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserData>>({
+			type: 'helix',
+			url: 'users',
+			userId,
+			query: {
+				id: userId
+			}
+		});
+
+		return mapNullable(result.data[0], data => new HelixUser(data, this._client));
 	}
 
 	/**
-	 * Retrieves the user data for the given user name.
+	 * Retrieves the user data for the given username.
 	 *
-	 * @param userName The user name you want to look up.
+	 * @param userName The username you want to look up.
 	 */
 	async getUserByName(userName: UserNameResolvable): Promise<HelixUser | null> {
 		const users = await this._getUsers('login', [extractUserName(userName)]);
@@ -93,15 +102,18 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the user data of the currently authenticated user.
+	 * Retrieves the user data of the given authenticated user.
 	 *
+	 * @param user The user to retrieve data for.
 	 * @param withEmail Whether you need the user's email address.
 	 */
-	async getMe(withEmail: boolean = false): Promise<HelixPrivilegedUser> {
+	async getAuthenticatedUser(user: UserIdResolvable, withEmail: boolean = false): Promise<HelixPrivilegedUser> {
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedUserData>>({
 			type: 'helix',
 			url: 'users',
-			scope: withEmail ? 'user:read:email' : ''
+			forceType: 'user',
+			userId: extractUserId(user),
+			scope: withEmail ? 'user:read:email' : undefined
 		});
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -113,15 +125,17 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Updates the currently authenticated user's data.
+	 * Updates the given authenticated user's data.
 	 *
+	 * @param user The user to update.
 	 * @param data The data to update.
 	 */
-	async updateUser(data: HelixUserUpdate): Promise<HelixPrivilegedUser> {
+	async updateAuthenticatedUser(user: UserIdResolvable, data: HelixUserUpdate): Promise<HelixPrivilegedUser> {
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedUserData>>({
 			type: 'helix',
 			url: 'users',
 			method: 'PUT',
+			userId: extractUserId(user),
 			scope: 'user:edit',
 			query: {
 				description: data.description
@@ -139,11 +153,13 @@ export class HelixUserApi extends BaseApi {
 	 * @expandParams
 	 */
 	async getFollows(filter: HelixPaginatedFollowFilter): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
+		const query = HelixUserApi._makeFollowsQuery(filter);
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowData>>({
-			url: 'users/follows',
 			type: 'helix',
+			url: 'users/follows',
+			userId: extractUserId(filter.followedUser ?? filter.user!),
 			query: {
-				...HelixUserApi._makeFollowsQuery(filter),
+				...query,
 				...createPaginationQuery(filter)
 			}
 		});
@@ -164,6 +180,7 @@ export class HelixUserApi extends BaseApi {
 		return new HelixPaginatedRequestWithTotal(
 			{
 				url: 'users/follows',
+				userId: extractUserId(filter.followedUser ?? filter.user!),
 				query
 			},
 			this._client,
@@ -211,6 +228,7 @@ export class HelixUserApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserBlockData>>({
 			type: 'helix',
 			url: 'users/blocks',
+			userId: extractUserId(user),
 			scope: 'user:read:blocked_users',
 			query: {
 				...createBroadcasterQuery(user),
@@ -230,6 +248,7 @@ export class HelixUserApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'users/blocks',
+				userId: extractUserId(user),
 				scope: 'user:read:blocked_users',
 				query: createBroadcasterQuery(user)
 			},
@@ -241,16 +260,22 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Blocks the given user.
 	 *
+	 * @param broadcaster The user to add the block to.
 	 * @param target The user to block.
 	 * @param additionalInfo Additional info to give context to the block.
 	 *
 	 * @expandParams
 	 */
-	async createBlock(target: UserIdResolvable, additionalInfo: HelixUserBlockAdditionalInfo = {}): Promise<void> {
+	async createBlock(
+		broadcaster: UserIdResolvable,
+		target: UserIdResolvable,
+		additionalInfo: HelixUserBlockAdditionalInfo = {}
+	): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
 			url: 'users/blocks',
 			method: 'PUT',
+			userId: extractUserId(broadcaster),
 			scope: 'user:manage:blocked_users',
 			query: createUserBlockCreateQuery(target, additionalInfo)
 		});
@@ -259,25 +284,30 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Unblocks the given user.
 	 *
+	 * @param broadcaster The user to remove the block from.
 	 * @param target The user to unblock.
 	 */
-	async deleteBlock(target: UserIdResolvable): Promise<void> {
+	async deleteBlock(broadcaster: UserIdResolvable, target: UserIdResolvable): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
 			url: 'users/blocks',
 			method: 'DELETE',
+			userId: extractUserId(broadcaster),
 			scope: 'user:manage:blocked_users',
 			query: createUserBlockDeleteQuery(target)
 		});
 	}
 
 	/**
-	 * Retrieves a list of all extensions for the authenticated user.
+	 * Retrieves a list of all extensions for the given authenticated user.
+	 *
+	 * @param broadcaster The broadcaster to get the list of extensions for.
 	 */
-	async getMyExtensions(): Promise<HelixUserExtension[]> {
+	async getExtensionsForAuthenticatedUser(broadcaster: UserIdResolvable): Promise<HelixUserExtension[]> {
 		const result = await this._client.callApi<HelixResponse<HelixUserExtensionData>>({
 			type: 'helix',
-			url: 'users/extensions/list'
+			url: 'users/extensions/list',
+			userId: extractUserId(broadcaster)
 		});
 
 		return result.data.map(data => new HelixUserExtension(data));
@@ -287,32 +317,38 @@ export class HelixUserApi extends BaseApi {
 	 * Retrieves a list of all installed extensions for the given user.
 	 *
 	 * @param user The user to get the installed extensions for.
-	 *
-	 * If not given, get the installed extensions for the authenticated user.
 	 */
-	async getActiveExtensions(user?: UserIdResolvable): Promise<HelixInstalledExtensionList> {
+	async getActiveExtensions(user: UserIdResolvable): Promise<HelixInstalledExtensionList> {
+		const userId = extractUserId(user);
 		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
 			type: 'helix',
 			url: 'users/extensions',
-			query: createSingleKeyQuery('user_id', mapOptional(user, extractUserId))
+			userId,
+			query: createSingleKeyQuery('user_id', userId)
 		});
 
 		return new HelixInstalledExtensionList(result.data);
 	}
 
 	/**
-	 * Updates the installed extensions for the authenticated user.
+	 * Updates the installed extensions for the given authenticated user.
 	 *
+	 * @param broadcaster The user to update the installed extensions for.
 	 * @param data The extension installation payload.
 	 *
 	 * The format is shown on the [Twitch documentation](https://dev.twitch.tv/docs/api/reference#update-user-extensions).
 	 * Don't use the "data" wrapper though.
 	 */
-	async updateMyActiveExtensions(data: HelixUserExtensionUpdatePayload): Promise<HelixInstalledExtensionList> {
+	async updateActiveExtensionsForAuthenticatedUser(
+		broadcaster: UserIdResolvable,
+		data: HelixUserExtensionUpdatePayload
+	): Promise<HelixInstalledExtensionList> {
 		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
 			type: 'helix',
 			url: 'users/extensions',
 			method: 'PUT',
+			userId: extractUserId(broadcaster),
+			scope: 'user:edit:broadcast',
 			jsonBody: { data }
 		});
 

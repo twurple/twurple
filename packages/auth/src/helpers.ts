@@ -3,6 +3,7 @@ import { callTwitchApi, HttpStatusCodeError } from '@twurple/api-call';
 import type { AccessToken } from './AccessToken';
 import { type AccessTokenData } from './AccessToken.external';
 import { InvalidTokenError } from './errors/InvalidTokenError';
+import { InvalidTokenTypeError } from './errors/InvalidTokenTypeError';
 import {
 	createExchangeCodeQuery,
 	createGetAppTokenQuery,
@@ -125,20 +126,19 @@ export async function getTokenInfo(accessToken: string, clientId?: string): Prom
 }
 
 /** @private */
-export async function getValidTokenFromProvider(
+export async function getValidTokenFromProviderForUser(
 	provider: AuthProvider,
+	userId: string,
 	scopes?: string[],
 	logger?: Logger
 ): Promise<{ accessToken: AccessToken; tokenInfo: TokenInfo }> {
 	let lastTokenError: InvalidTokenError | null = null;
 
 	try {
-		const accessToken = await provider.getAccessToken(scopes);
-		if (accessToken) {
-			// check validity
-			const tokenInfo = await getTokenInfo(accessToken.accessToken);
-			return { accessToken, tokenInfo };
-		}
+		const accessToken = await provider.getAccessTokenForUser(userId, scopes);
+		// check validity
+		const tokenInfo = await getTokenInfo(accessToken.accessToken);
+		return { accessToken, tokenInfo };
 	} catch (e: unknown) {
 		if (e instanceof InvalidTokenError) {
 			lastTokenError = e;
@@ -149,15 +149,62 @@ export async function getValidTokenFromProvider(
 
 	logger?.warn('No valid token available; trying to refresh');
 
-	if (provider.refresh) {
+	if (provider.refreshAccessTokenForUser) {
 		try {
-			const newToken = await provider.refresh();
+			const newToken = await provider.refreshAccessTokenForUser(userId);
 
-			if (newToken) {
-				// check validity
-				const tokenInfo = await getTokenInfo(newToken.accessToken);
-				return { accessToken: newToken, tokenInfo };
+			// check validity
+			const tokenInfo = await getTokenInfo(newToken.accessToken);
+			return { accessToken: newToken, tokenInfo };
+		} catch (e: unknown) {
+			if (e instanceof InvalidTokenError) {
+				lastTokenError = e;
+			} else {
+				logger?.error(`Refreshing the access token failed: ${(e as Error).message}`);
 			}
+		}
+	}
+
+	throw lastTokenError ?? new Error('Could not retrieve a valid token');
+}
+
+/** @private */
+export async function getValidTokenFromProviderForIntent(
+	provider: AuthProvider,
+	intent: string,
+	scopes?: string[],
+	logger?: Logger
+): Promise<{ accessToken: AccessToken; tokenInfo: TokenInfo }> {
+	let lastTokenError: InvalidTokenError | null = null;
+
+	try {
+		if (!provider.getAccessTokenForIntent) {
+			throw new InvalidTokenTypeError(
+				`This call requires an AuthProvider that supports intents.
+Please provide an auth provider that does, such as \`RefreshingAuthProvider\`.`
+			);
+		}
+		const accessToken = await provider.getAccessTokenForIntent(intent, scopes);
+		// check validity
+		const tokenInfo = await getTokenInfo(accessToken.accessToken);
+		return { accessToken, tokenInfo };
+	} catch (e: unknown) {
+		if (e instanceof InvalidTokenError) {
+			lastTokenError = e;
+		} else {
+			logger?.error(`Retrieving an access token failed: ${(e as Error).message}`);
+		}
+	}
+
+	logger?.warn('No valid token available; trying to refresh');
+
+	if (provider.refreshAccessTokenForIntent) {
+		try {
+			const newToken = await provider.refreshAccessTokenForIntent(intent);
+
+			// check validity
+			const tokenInfo = await getTokenInfo(newToken.accessToken);
+			return { accessToken: newToken, tokenInfo };
 		} catch (e: unknown) {
 			if (e instanceof InvalidTokenError) {
 				lastTokenError = e;
@@ -207,25 +254,33 @@ If you need dynamically upgrading scopes, please implement the AuthProvider inte
 }
 
 /**
- * Compares scopes for a non-upgradable `AuthProvider` instance, loading them from the token if necessary.
+ * Compares scopes for a non-upgradable `AuthProvider` instance, loading them from the token if necessary,
+ * and returns them together with the user ID.
  *
  * @param clientId The client ID of your application.
  * @param token The access token.
+ * @param userId The user ID that was already loaded.
  * @param loadedScopes The scopes that were already loaded.
  * @param requestedScopes The scopes you requested.
  */
-export async function loadAndCompareScopes(
+export async function loadAndCompareTokenInfo(
 	clientId: string,
 	token: string,
+	userId?: string,
 	loadedScopes?: string[],
 	requestedScopes?: string[]
-): Promise<string[] | undefined> {
-	if (requestedScopes?.length) {
-		const scopesToCompare = loadedScopes ?? (await getTokenInfo(token, clientId)).scopes;
+): Promise<[string[] | undefined, string]> {
+	if (requestedScopes?.length || !userId) {
+		const userInfo = await getTokenInfo(token, clientId);
+		if (!userInfo.userId) {
+			throw new Error('Trying to use an app access token as a user access token');
+		}
+
+		const scopesToCompare = loadedScopes ?? userInfo.scopes;
 		compareScopes(scopesToCompare, requestedScopes);
 
-		return scopesToCompare;
+		return [scopesToCompare, userInfo.userId];
 	}
 
-	return loadedScopes;
+	return [loadedScopes, userId];
 }

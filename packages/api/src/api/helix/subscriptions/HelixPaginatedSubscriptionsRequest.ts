@@ -1,5 +1,6 @@
-import { rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { createBroadcasterQuery } from '@twurple/api-call';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import {
 	type HelixPaginatedSubscriptionsResponse,
 	type HelixSubscriptionData
@@ -22,12 +23,13 @@ export class HelixPaginatedSubscriptionsRequest extends HelixPaginatedRequestWit
 	protected declare _currentData?: HelixPaginatedSubscriptionsResponse;
 
 	/** @private */
-	constructor(query: Record<string, string>, client: ApiClient) {
+	constructor(broadcaster: UserIdResolvable, client: BaseApiClient) {
 		super(
 			{
 				url: 'subscriptions',
 				scope: 'channel:read:subscriptions',
-				query
+				userId: extractUserId(broadcaster),
+				query: createBroadcasterQuery(broadcaster)
 			},
 			client,
 			data => new HelixSubscription(data, client)

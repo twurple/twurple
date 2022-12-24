@@ -1,5 +1,5 @@
 import { checkRelationAssertion, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixStreamMarkerVideoData } from '../../../interfaces/helix/stream.external';
 import type { HelixVideo } from '../video/HelixVideo';
 import { HelixStreamMarker } from './HelixStreamMarker';
@@ -14,7 +14,7 @@ export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
 	/** @private */ declare readonly [rawDataSymbol]: HelixStreamMarkerVideoData;
 
 	/** @private */
-	constructor(data: HelixStreamMarkerVideoData, private readonly _videoId: string, client: ApiClient) {
+	constructor(data: HelixStreamMarkerVideoData, private readonly _videoId: string, client: BaseApiClient) {
 		super(data, client);
 	}
 

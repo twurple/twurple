@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixPollData, type HelixPollStatus } from '../../../interfaces/helix/poll.external';
 import type { HelixUser } from '../user/HelixUser';
 import { HelixPollChoice } from './HelixPollChoice';
@@ -10,10 +10,10 @@ import { HelixPollChoice } from './HelixPollChoice';
  */
 @rtfm<HelixPoll>('api', 'HelixPoll', 'id')
 export class HelixPoll extends DataObject<HelixPollData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixPollData, client: ApiClient) {
+	constructor(data: HelixPollData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

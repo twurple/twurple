@@ -1,8 +1,14 @@
 /// <reference lib="dom" />
 
 import { parse, stringify } from '@d-fischer/qs';
-import type { AccessToken, AuthProviderTokenType } from '@twurple/auth';
-import { BaseAuthProvider } from '@twurple/auth';
+import type { AccessToken } from '@twurple/auth';
+import {
+	type AccessTokenMaybeWithUserId,
+	type AccessTokenWithUserId,
+	type AuthProvider,
+	TokenFetcher
+} from '@twurple/auth';
+import { extractUserId, type UserIdResolvable } from '@twurple/common';
 import type { BrowserWindowConstructorOptions } from 'electron';
 import { BrowserWindow } from 'electron';
 import { createAuthorizeParams } from './AuthorizeParams.external';
@@ -31,24 +37,23 @@ const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> 
 	closeOnLogin: true
 };
 
-export class ElectronAuthProvider extends BaseAuthProvider {
+export class ElectronAuthProvider implements AuthProvider {
 	private _accessToken?: AccessToken;
 	private readonly _currentScopes = new Set<string>();
 	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
 	private _allowUserChange = false;
 	private readonly _clientId: string;
 	private readonly _redirectUri: string;
-
-	readonly tokenType: AuthProviderTokenType = 'user';
+	private readonly _fetcher: TokenFetcher;
 
 	constructor(
 		clientCredentials: TwitchClientCredentials,
 		options?: ElectronAuthProviderOptions | ElectronAuthProviderOptions<WindowOptions>
 	) {
-		super();
 		this._clientId = clientCredentials.clientId;
 		this._redirectUri = clientCredentials.redirectUri;
 		this._options = { ...defaultOptions, ...options };
+		this._fetcher = new TokenFetcher(async scopes => await this._fetch(scopes));
 	}
 
 	allowUserChange(): void {
@@ -59,11 +64,24 @@ export class ElectronAuthProvider extends BaseAuthProvider {
 		return this._clientId;
 	}
 
-	get currentScopes(): string[] {
+	getCurrentScopesForUser(): string[] {
 		return Array.from(this._currentScopes);
 	}
 
-	async _doGetAccessToken(scopes: string[] = []): Promise<AccessToken> {
+	async getAccessTokenForUser(user: UserIdResolvable, scopes: string[] | undefined): Promise<AccessTokenWithUserId> {
+		const token = await this._fetcher.fetch(scopes);
+
+		return {
+			...token,
+			userId: extractUserId(user)
+		};
+	}
+
+	async getAnyAccessToken(): Promise<AccessTokenMaybeWithUserId> {
+		return await this._fetcher.fetch();
+	}
+
+	private async _fetch(scopes: string[] = []): Promise<AccessToken> {
 		return await new Promise<AccessToken>((resolve, reject) => {
 			if (this._accessToken && scopes.every(scope => this._currentScopes.has(scope))) {
 				resolve(this._accessToken);
@@ -73,7 +91,7 @@ export class ElectronAuthProvider extends BaseAuthProvider {
 			const queryParams = createAuthorizeParams(
 				this.clientId,
 				this._redirectUri,
-				Array.from(new Set([...this.currentScopes, ...scopes]))
+				Array.from(new Set([...this._currentScopes, ...scopes]))
 			);
 			if (this._allowUserChange) {
 				queryParams.force_verify = true;
@@ -149,7 +167,7 @@ export class ElectronAuthProvider extends BaseAuthProvider {
 						}
 						this._accessToken = {
 							accessToken,
-							scope: this.currentScopes,
+							scope: Array.from(this._currentScopes),
 							refreshToken: null,
 							expiresIn: null,
 							obtainmentTimestamp: Date.now()

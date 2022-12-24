@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixChannelSearchResultData } from '../../../interfaces/helix/search.external';
 import type { HelixGame } from '../game/HelixGame';
 import type { HelixTag } from '../tag/HelixTag';
@@ -11,10 +11,10 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixChannelSearchResult>('api', 'HelixChannelSearchResult', 'id')
 export class HelixChannelSearchResult extends DataObject<HelixChannelSearchResultData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixChannelSearchResultData, client: ApiClient) {
+	constructor(data: HelixChannelSearchResultData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

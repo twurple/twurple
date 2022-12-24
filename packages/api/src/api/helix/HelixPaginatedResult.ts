@@ -1,6 +1,6 @@
 import type { ConstructedType } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '@twurple/api-call';
-import type { ApiClient } from '../../ApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient';
 
 /**
  * A result coming from a Helix resource that is paginated using a cursor.
@@ -39,12 +39,12 @@ export interface HelixPaginatedResultWithTotal<T> {
 
 /** @private */ export function createPaginatedResult<
 	I,
-	O extends new (data: I, client: ApiClient) => ConstructedType<O>
+	O extends new (data: I, client: BaseApiClient) => ConstructedType<O>
 >(
 	response: HelixPaginatedResponse<I>,
 	type: O,
 	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	client: ApiClient
+	client: BaseApiClient
 ): HelixPaginatedResult<ConstructedType<O>>;
 /** @private */ export function createPaginatedResult<I, O extends new (data: I) => ConstructedType<O>>(
 	response: HelixPaginatedResponse<I>,
@@ -52,8 +52,8 @@ export interface HelixPaginatedResultWithTotal<T> {
 ): HelixPaginatedResult<ConstructedType<O>>;
 /** @private */ export function createPaginatedResult<
 	I,
-	O extends new (data: I, _client?: ApiClient) => ConstructedType<O>
->(response: HelixPaginatedResponse<I>, type: O, client?: ApiClient): HelixPaginatedResult<ConstructedType<O>> {
+	O extends new (data: I, _client?: BaseApiClient) => ConstructedType<O>
+>(response: HelixPaginatedResponse<I>, type: O, client?: BaseApiClient): HelixPaginatedResult<ConstructedType<O>> {
 	let dataCache: Array<ConstructedType<O>> | undefined = undefined;
 	return {
 		get data() {
@@ -65,12 +65,12 @@ export interface HelixPaginatedResultWithTotal<T> {
 
 /** @private */ export function createPaginatedResultWithTotal<
 	I,
-	O extends new (data: I, client: ApiClient) => ConstructedType<O>
+	O extends new (data: I, client: BaseApiClient) => ConstructedType<O>
 >(
 	response: HelixPaginatedResponseWithTotal<I>,
 	type: O,
 	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	client: ApiClient
+	client: BaseApiClient
 ): HelixPaginatedResultWithTotal<ConstructedType<O>>;
 /** @private */ export function createPaginatedResultWithTotal<I, O extends new (data: I) => ConstructedType<O>>(
 	response: HelixPaginatedResponseWithTotal<I>,
@@ -78,11 +78,11 @@ export interface HelixPaginatedResultWithTotal<T> {
 ): HelixPaginatedResultWithTotal<ConstructedType<O>>;
 /** @private */ export function createPaginatedResultWithTotal<
 	I,
-	O extends new (data: I, _client?: ApiClient) => ConstructedType<O>
+	O extends new (data: I, _client?: BaseApiClient) => ConstructedType<O>
 >(
 	response: HelixPaginatedResponseWithTotal<I>,
 	type: O,
-	client?: ApiClient
+	client?: BaseApiClient
 ): HelixPaginatedResultWithTotal<ConstructedType<O>> {
 	let dataCache: Array<ConstructedType<O>> | undefined = undefined;
 	return {

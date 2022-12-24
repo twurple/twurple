@@ -1,7 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, TwitchApiCallOptions } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
-import type { ApiClient } from '../../ApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type ContextApiCallOptions } from '../../client/ContextApiCallOptions';
 
 if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any,@typescript-eslint/no-unnecessary-condition,@typescript-eslint/no-unsafe-member-access
@@ -22,7 +23,7 @@ if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
  */
 @rtfm('api', 'HelixPaginatedRequest')
 export class HelixPaginatedRequest<D, T> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
 	protected _currentCursor?: string;
@@ -35,8 +36,8 @@ export class HelixPaginatedRequest<D, T> {
 
 	/** @private */
 	constructor(
-		private readonly _callOptions: Omit<TwitchApiCallOptions, 'type'>,
-		client: ApiClient,
+		private readonly _callOptions: Omit<ContextApiCallOptions, 'type'>,
+		client: BaseApiClient,
 		private readonly _mapper: (data: D) => T | T[],
 		private readonly _limitPerPage: number = 100
 	) {

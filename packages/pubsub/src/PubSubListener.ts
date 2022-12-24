@@ -1,21 +1,21 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import type { PubSubMessage } from './messages/PubSubMessage';
-import type { SingleUserPubSubClient } from './SingleUserPubSubClient';
+import { type PubSubClient } from './PubSubClient';
 
 /**
  * A listener attached to a single PubSub topic.
  */
 @rtfm<PubSubListener>('pubsub', 'PubSubListener', 'userId')
 export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
-	@Enumerable(false) private readonly _client: SingleUserPubSubClient;
+	@Enumerable(false) private readonly _client: PubSubClient;
 
 	/** @private */
 	constructor(
 		private readonly _topic: string,
 		private readonly _userId: string,
 		private readonly _callback: (message: T) => void,
-		client: SingleUserPubSubClient
+		client: PubSubClient
 	) {
 		this._client = client;
 	}

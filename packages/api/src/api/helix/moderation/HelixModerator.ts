@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixModeratorData } from '../../../interfaces/helix/moderation.external';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -9,10 +9,10 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixModerator>('api', 'HelixModerator', 'userId')
 export class HelixModerator extends DataObject<HelixModeratorData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixModeratorData, client: ApiClient) {
+	constructor(data: HelixModeratorData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

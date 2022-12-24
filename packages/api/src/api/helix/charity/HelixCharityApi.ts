@@ -1,7 +1,7 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { extractUserId, rtfm } from '@twurple/common';
 import {
 	type HelixCharityCampaignData,
 	type HelixCharityCampaignDonationData
@@ -43,6 +43,7 @@ export class HelixCharityApi extends BaseApi {
 			type: 'helix',
 			url: 'charity/campaigns',
 			method: 'GET',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:read:charity',
 			query: createBroadcasterQuery(broadcaster)
 		});
@@ -66,6 +67,7 @@ export class HelixCharityApi extends BaseApi {
 		const response = await this._client.callApi<HelixPaginatedResponse<HelixCharityCampaignDonationData>>({
 			type: 'helix',
 			url: 'charity/donations',
+			userId: extractUserId(broadcaster),
 			scope: 'channel:read:charity',
 			query: {
 				...createBroadcasterQuery(broadcaster),

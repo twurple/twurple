@@ -1,7 +1,6 @@
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixEventSubSubscription, HelixEventSubWebHookTransportOptions } from '@twurple/api';
-import { InvalidTokenTypeError } from '@twurple/auth';
 import type {
 	EventSubBaseConfig,
 	EventSubNotificationPayload,
@@ -63,11 +62,6 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	readonly onVerify = this.registerEvent<[success: boolean, subscription: EventSubSubscription]>();
 
 	constructor(config: EventSubHttpBaseConfig) {
-		if (config.apiClient._authProvider.tokenType !== 'app') {
-			throw new InvalidTokenTypeError(
-				'EventSub over HTTP requires app access tokens to work; please use the ClientCredentialsAuthProvider in your API client.'
-			);
-		}
 		// catch the examples copied verbatim
 		if (!config.secret || config.secret === 'thisShouldBeARandomlyGeneratedFixedString') {
 			throw new Error('Please generate a secret and pass it to the constructor!');

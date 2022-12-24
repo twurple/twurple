@@ -1,5 +1,5 @@
-export { ApiClient } from './ApiClient';
-export type { ApiConfig } from './ApiClient';
+export { ApiClient } from './client/ApiClient';
+export type { ApiConfig } from './client/ApiClient';
 
 export type { BaseApi } from './api/BaseApi';
 

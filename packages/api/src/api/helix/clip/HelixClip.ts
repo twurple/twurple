@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { ApiClient } from '../../../ApiClient';
+import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixClipData } from '../../../interfaces/helix/clip.external';
 import type { HelixGame } from '../game/HelixGame';
 import type { HelixUser } from '../user/HelixUser';
@@ -8,10 +8,10 @@ import type { HelixVideo } from '../video/HelixVideo';
 
 @rtfm<HelixClip>('api', 'HelixClip', 'id')
 export class HelixClip extends DataObject<HelixClipData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixClipData, client: ApiClient) {
+	constructor(data: HelixClipData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}

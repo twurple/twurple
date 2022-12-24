@@ -1,10 +1,8 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
-import { isNode } from '@d-fischer/detect-node';
-import type { Logger, LoggerOptions } from '@d-fischer/logger';
-import { createLogger } from '@d-fischer/logger';
+import type { Logger } from '@d-fischer/logger';
 import type { RateLimiter } from '@d-fischer/rate-limiter';
-import { TimeBasedRateLimiter } from '@d-fischer/rate-limiter';
-import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from '@twurple/api-call';
+import { mapOptional } from '@d-fischer/shared-utils';
+import type { TwitchApiCallOptions } from '@twurple/api-call';
 import {
 	callTwitchApi,
 	callTwitchApiRaw,
@@ -13,114 +11,62 @@ import {
 	transformTwitchApiResponse
 } from '@twurple/api-call';
 
-import type { AuthProvider, TokenInfoData } from '@twurple/auth';
+import type { AccessTokenMaybeWithUserId, AuthProvider, TokenInfoData } from '@twurple/auth';
 import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
-import { rtfm } from '@twurple/common';
-import { HelixBitsApi } from './api/helix/bits/HelixBitsApi';
-import { HelixChannelApi } from './api/helix/channel/HelixChannelApi';
-import { HelixChannelPointsApi } from './api/helix/channelPoints/HelixChannelPointsApi';
-import { HelixCharityApi } from './api/helix/charity/HelixCharityApi';
-import { HelixChatApi } from './api/helix/chat/HelixChatApi';
-import { HelixClipApi } from './api/helix/clip/HelixClipApi';
-import { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
-import { HelixExtensionsApi } from './api/helix/extensions/HelixExtensionsApi';
-import { HelixGameApi } from './api/helix/game/HelixGameApi';
-import { HelixGoalApi } from './api/helix/goals/HelixGoalApi';
-import { HelixRateLimiter } from './api/helix/HelixRateLimiter';
-import { HelixHypeTrainApi } from './api/helix/hypeTrain/HelixHypeTrainApi';
-import { HelixModerationApi } from './api/helix/moderation/HelixModerationApi';
-import { HelixPollApi } from './api/helix/poll/HelixPollApi';
-import { HelixPredictionApi } from './api/helix/prediction/HelixPredictionApi';
-import { HelixRaidApi } from './api/helix/raids/HelixRaidApi';
-import { HelixScheduleApi } from './api/helix/schedule/HelixScheduleApi';
-import { HelixSearchApi } from './api/helix/search/HelixSearchApi';
-import { HelixStreamApi } from './api/helix/stream/HelixStreamApi';
-import { HelixSubscriptionApi } from './api/helix/subscriptions/HelixSubscriptionApi';
-import { HelixTagApi } from './api/helix/tag/HelixTagApi';
-import { HelixTeamApi } from './api/helix/team/HelixTeamApi';
-import { HelixUserApi } from './api/helix/user/HelixUserApi';
-import { HelixVideoApi } from './api/helix/video/HelixVideoApi';
-import { HelixWhisperApi } from './api/helix/whisper/HelixWhisperApi';
-import { UnsupportedApi } from './api/unsupported/UnsupportedApi';
+import { HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
+import { HelixBitsApi } from '../api/helix/bits/HelixBitsApi';
+import { HelixChannelApi } from '../api/helix/channel/HelixChannelApi';
+import { HelixChannelPointsApi } from '../api/helix/channelPoints/HelixChannelPointsApi';
+import { HelixCharityApi } from '../api/helix/charity/HelixCharityApi';
+import { HelixChatApi } from '../api/helix/chat/HelixChatApi';
+import { HelixClipApi } from '../api/helix/clip/HelixClipApi';
+import { HelixEventSubApi } from '../api/helix/eventSub/HelixEventSubApi';
+import { HelixExtensionsApi } from '../api/helix/extensions/HelixExtensionsApi';
+import { HelixGameApi } from '../api/helix/game/HelixGameApi';
+import { HelixGoalApi } from '../api/helix/goals/HelixGoalApi';
+import { HelixRateLimiter } from '../api/helix/HelixRateLimiter';
+import { HelixHypeTrainApi } from '../api/helix/hypeTrain/HelixHypeTrainApi';
+import { HelixModerationApi } from '../api/helix/moderation/HelixModerationApi';
+import { HelixPollApi } from '../api/helix/poll/HelixPollApi';
+import { HelixPredictionApi } from '../api/helix/prediction/HelixPredictionApi';
+import { HelixRaidApi } from '../api/helix/raids/HelixRaidApi';
+import { HelixScheduleApi } from '../api/helix/schedule/HelixScheduleApi';
+import { HelixSearchApi } from '../api/helix/search/HelixSearchApi';
+import { HelixStreamApi } from '../api/helix/stream/HelixStreamApi';
+import { HelixSubscriptionApi } from '../api/helix/subscriptions/HelixSubscriptionApi';
+import { HelixTagApi } from '../api/helix/tag/HelixTagApi';
+import { HelixTeamApi } from '../api/helix/team/HelixTeamApi';
+import { HelixUserApi } from '../api/helix/user/HelixUserApi';
+import { HelixVideoApi } from '../api/helix/video/HelixVideoApi';
+import { HelixWhisperApi } from '../api/helix/whisper/HelixWhisperApi';
+import { UnsupportedApi } from '../api/unsupported/UnsupportedApi';
 
-import { ConfigError } from './errors/ConfigError';
+import { type ApiConfig, type TwitchApiCallOptionsInternal } from './ApiClient';
+import { type ContextApiCallOptions } from './ContextApiCallOptions';
 
-/**
- * Configuration for an {@link ApiClient} instance.
- */
-export interface ApiConfig {
-	/**
-	 * An authentication provider that supplies tokens to the client.
-	 *
-	 * For more information, see the {@link AuthProvider} documentation.
-	 */
-	authProvider: AuthProvider;
-
-	/**
-	 * Additional options to pass to the fetch method.
-	 */
-	fetchOptions?: TwitchApiCallFetchOptions;
-
-	/**
-	 * Options to pass to the logger.
-	 */
-	logger?: Partial<LoggerOptions>;
-}
-
-/**
- * @private
- */
-export interface TwitchApiCallOptionsInternal {
-	options: TwitchApiCallOptions;
-	clientId?: string;
-	accessToken?: string;
-	authorizationType?: string;
-	fetchOptions?: TwitchApiCallFetchOptions;
-}
-
-/**
- * An API client for the Twitch Helix API and other miscellaneous endpoints.
- *
- * @meta category main
- */
+/** @private */
 @Cacheable
 @rtfm('api', 'ApiClient')
-export class ApiClient {
-	private readonly _config: ApiConfig;
-	private readonly _logger: Logger;
-	private readonly _rateLimiter: RateLimiter<TwitchApiCallOptionsInternal, Response>;
+export class BaseApiClient {
+	protected readonly _config: ApiConfig;
+	protected readonly _logger: Logger;
+	protected readonly _rateLimiter: RateLimiter<TwitchApiCallOptionsInternal, Response>;
 
-	/**
-	 * Creates a new API client instance.
-	 *
-	 * @param config Configuration for the client instance.
-	 */
-	constructor(config: ApiConfig) {
-		if (!(config as Partial<ApiConfig>).authProvider) {
-			throw new ConfigError('No auth provider given. Please supply the `authProvider` option.');
-		}
-
+	/** @private */
+	constructor(config: ApiConfig, logger: Logger, rateLimiter: RateLimiter<TwitchApiCallOptionsInternal, Response>) {
 		this._config = config;
-		this._logger = createLogger({ name: 'twurple:api:client', ...config.logger });
-		const rateLimitLoggerOptions: LoggerOptions = { name: 'twurple:api:rate-limiter', ...config.logger };
-		this._rateLimiter = isNode
-			? new HelixRateLimiter({ logger: rateLimitLoggerOptions })
-			: new TimeBasedRateLimiter({
-					logger: rateLimitLoggerOptions,
-					bucketSize: 800,
-					timeFrame: 64000,
-					doRequest: async ({ options, clientId, accessToken, authorizationType, fetchOptions }) =>
-						await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions)
-			  });
+		this._logger = logger;
+		this._rateLimiter = rateLimiter;
 	}
 
 	/**
-	 * Requests scopes from the auth provider.
+	 * Requests scopes from the auth provider for the given user.
 	 *
+	 * @param user The user to request scopes for.
 	 * @param scopes The scopes to request.
 	 */
-	async requestScopes(scopes: string[]): Promise<void> {
-		await this._config.authProvider.getAccessToken(scopes);
+	async requestScopesForUser(user: UserIdResolvable, scopes: string[]): Promise<void> {
+		await this._config.authProvider.getAccessTokenForUser(user, scopes);
 	}
 
 	/**
@@ -143,13 +89,11 @@ export class ApiClient {
 	 *
 	 * @param options The configuration of the call.
 	 */
-	async callApi<T = unknown>(options: TwitchApiCallOptions): Promise<T> {
+	async callApi<T = unknown>(options: ContextApiCallOptions): Promise<T> {
 		const { authProvider } = this._config;
 		const shouldAuth = options.auth ?? true;
-		let accessToken = shouldAuth
-			? await authProvider.getAccessToken(options.scope ? [options.scope] : undefined)
-			: null;
-		if (!accessToken) {
+
+		if (!shouldAuth) {
 			return await callTwitchApi<T>(
 				options,
 				authProvider.clientId,
@@ -159,36 +103,60 @@ export class ApiClient {
 			);
 		}
 
-		if (accessTokenIsExpired(accessToken) && authProvider.refresh) {
-			const newAccessToken = await authProvider.refresh();
-			if (newAccessToken) {
-				accessToken = newAccessToken;
+		let forceUser = false;
+
+		if (options.forceType) {
+			switch (options.forceType) {
+				case 'app': {
+					if (!authProvider.getAppAccessToken) {
+						throw new Error(
+							'Tried to make an API call that requires an app access token but your auth provider does not support that'
+						);
+					}
+					const accessToken = await authProvider.getAppAccessToken();
+					return await this._callApiUsingInitialToken(options, accessToken);
+				}
+				case 'user': {
+					forceUser = true;
+					break;
+				}
+				default: {
+					throw new HellFreezesOverError(`Unknown forced token type: ${options.forceType as string}`);
+				}
 			}
 		}
 
-		const authorizationType = authProvider.authorizationType;
-		let response = await this._callApiInternal(
-			options,
-			authProvider.clientId,
-			accessToken.accessToken,
-			authorizationType
-		);
-		if (response.status === 401 && authProvider.refresh) {
-			await authProvider.refresh();
-			accessToken = await authProvider.getAccessToken(options.scope ? [options.scope] : []);
-			if (accessToken) {
-				response = await this._callApiInternal(
-					options,
-					authProvider.clientId,
-					accessToken.accessToken,
-					authorizationType
-				);
-			}
+		if (options.scope) {
+			forceUser = true;
 		}
 
-		await handleTwitchApiResponseError(response, options);
+		if (forceUser) {
+			if (!options.userId) {
+				throw new Error('Tried to make an API call with a scope but no context user ID');
+			}
 
-		return await transformTwitchApiResponse<T>(response);
+			const accessToken = await authProvider.getAccessTokenForUser(
+				options.userId,
+				mapOptional(options.scope, scope => [scope])
+			);
+
+			if (accessTokenIsExpired(accessToken) && authProvider.refreshAccessTokenForUser) {
+				const newAccessToken = await authProvider.refreshAccessTokenForUser(options.userId);
+				return await this._callApiUsingInitialToken(options, newAccessToken);
+			}
+
+			return await this._callApiUsingInitialToken(options, accessToken);
+		}
+
+		const contextUserId = this._getUserIdFromRequestContext(options) ?? options.userId;
+		const accessToken = await authProvider.getAnyAccessToken(contextUserId);
+
+		if (accessTokenIsExpired(accessToken) && accessToken.userId && authProvider.refreshAccessTokenForUser) {
+			const newAccessToken = await authProvider.refreshAccessTokenForUser(accessToken.userId);
+			return await this._callApiUsingInitialToken(options, newAccessToken);
+		}
+
+		return await this._callApiUsingInitialToken<T>(options, accessToken);
 	}
 
 	/**
@@ -429,6 +397,52 @@ export class ApiClient {
 	/** @private */
 	get _authProvider(): AuthProvider {
 		return this._config.authProvider;
+	}
+
+	protected _getUserIdFromRequestContext(options: ContextApiCallOptions): string | undefined {
+		return options.userId;
+	}
+
+	private async _callApiUsingInitialToken<T = unknown>(
+		options: ContextApiCallOptions,
+		accessToken: AccessTokenMaybeWithUserId
+	): Promise<T> {
+		const { authProvider } = this._config;
+
+		const authorizationType = authProvider.authorizationType;
+		let response = await this._callApiInternal(
+			options,
+			authProvider.clientId,
+			accessToken.accessToken,
+			authorizationType
+		);
+		if (response.status === 401) {
+			if (accessToken.userId) {
+				if (authProvider.refreshAccessTokenForUser) {
+					const token = await authProvider.refreshAccessTokenForUser(accessToken.userId);
+					response = await this._callApiInternal(
+						options,
+						authProvider.clientId,
+						token.accessToken,
+						authorizationType
+					);
+				}
+			} else {
+				if (authProvider.getAppAccessToken) {
+					const token = await authProvider.getAppAccessToken(true);
+					response = await this._callApiInternal(
+						options,
+						authProvider.clientId,
+						token.accessToken,
+						authorizationType
+					);
+				}
+			}
+		}
+
+		await handleTwitchApiResponseError(response, options);
+
+		return await transformTwitchApiResponse<T>(response);
 	}
 
 	private async _callApiInternal(

@@ -24,6 +24,6 @@ export class HelixPrivilegedUser extends HelixUser {
 	 * @param description The new description.
 	 */
 	async setDescription(description: string): Promise<HelixPrivilegedUser> {
-		return await this._client.users.updateUser({ description });
+		return await this._client.users.updateAuthenticatedUser(this, { description });
 	}
 }
