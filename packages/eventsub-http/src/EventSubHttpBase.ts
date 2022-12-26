@@ -102,9 +102,9 @@ To silence this warning without enabling this check (and thus to keep it off eve
 
 	/** @private */
 	async _getCliTestCommandForSubscription(subscription: EventSubSubscription): Promise<string> {
-		return `twitch event trigger ${subscription._cliName} -F ${await this._buildHookUrl(subscription.id)} -s ${
-			this._secret
-		}`;
+		return `twitch event trigger ${subscription._cliName} -F ${await this._buildHookUrl(
+			subscription.id
+		)} -s ${this._createSecretForSubscription(subscription)}`;
 	}
 
 	protected abstract getHostName(): Promise<string>;
