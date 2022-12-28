@@ -81,7 +81,6 @@ export type {
 export { HelixExtensionsApi } from './api/helix/extensions/HelixExtensionsApi';
 export { HelixExtensionBitsProduct } from './api/helix/extensions/HelixExtensionBitsProduct';
 export { HelixExtensionTransaction } from './api/helix/extensions/HelixExtensionTransaction';
-export type { HelixExtensionTransactionData } from './interfaces/helix/extensions.external';
 export type {
 	HelixExtensionBitsProductUpdatePayload,
 	HelixExtensionTransactionsPaginatedFilter,
@@ -166,7 +165,7 @@ export { HelixUserBlock } from './api/helix/user/HelixUserBlock';
 export { HelixFollow } from './api/helix/user/HelixFollow';
 export { HelixPrivilegedUser } from './api/helix/user/HelixPrivilegedUser';
 export { HelixUser } from './api/helix/user/HelixUser';
-export type { HelixFollowData, HelixUserData, HelixBroadcasterType } from './interfaces/helix/user.external';
+export type { HelixBroadcasterType } from './interfaces/helix/user.external';
 export type {
 	HelixPaginatedFollowFilter,
 	HelixFollowFilter,
