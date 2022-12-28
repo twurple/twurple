@@ -39,7 +39,7 @@ export class Bot {
 			channels: resolvableChannels
 		});
 
-		this.chat.onPrivmsg(async (currentChannel, user, message, msg) => {
+		this.chat.onMessage(async (currentChannel, user, message, msg) => {
 			const match = this._findMatch(msg);
 			if (match !== null) {
 				await match.command.execute(match.params, new BotCommandContext(this.chat, msg));
