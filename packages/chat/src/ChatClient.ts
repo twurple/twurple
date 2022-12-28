@@ -149,9 +149,6 @@ export interface WhisperRequest {
 
 /**
  * An interface to Twitch chat.
- *
- * @inheritDoc
- * @hideProtected
  */
 @rtfm('chat', 'ChatClient')
 export class ChatClient extends EventEmitter {
