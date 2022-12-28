@@ -7,7 +7,7 @@ import {
 	TimedPassthruRateLimiter
 } from '@d-fischer/rate-limiter';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import { delay, Enumerable, resolveConfigValue } from '@d-fischer/shared-utils';
+import { delay, Enumerable, fibWithLimit, resolveConfigValue } from '@d-fischer/shared-utils';
 import type { EventBinder } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
@@ -1439,7 +1439,7 @@ export class ChatClient extends EventEmitter {
 						) {
 							this._authVerified = false;
 							if (!this._authRetryTimer) {
-								this._authRetryTimer = ChatClient._getReauthenticateWaitTime();
+								this._authRetryTimer = fibWithLimit(120);
 								this._authRetryCount = 0;
 							}
 							const secs = this._authRetryTimer.next().value;
@@ -1646,20 +1646,5 @@ export class ChatClient extends EventEmitter {
 			.toString()
 			.padStart(5, '0');
 		return `justinfan${randomSuffix}`;
-	}
-
-	// yes, this is just fibonacci with a limit
-	private static *_getReauthenticateWaitTime(): Iterator<number, never> {
-		let current = 0;
-		let next = 1;
-
-		while (current < 120) {
-			yield current;
-			[current, next] = [next, current + next];
-		}
-
-		while (true) {
-			yield 120;
-		}
 	}
 }
