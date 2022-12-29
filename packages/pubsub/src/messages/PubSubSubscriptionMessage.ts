@@ -167,17 +167,12 @@ export class PubSubSubscriptionMessage extends DataObject<PubSubSubscriptionMess
 	}
 
 	/**
-	 * The duration of the gifted subscription, in months.
+	 * The duration of subscription, in months.
 	 *
-	 * Returns null if the subscription is not a gift.
+	 * This refers to first-time subscriptions, auto-renewal subscriptions, re-subscriptions, or gifted subscriptions.
 	 */
-	get giftDuration(): number | null {
-		const data = this[rawDataSymbol];
-		return data.context === 'subgift' ||
-			data.context === 'resubgift' ||
-			data.context === 'anonsubgift' ||
-			data.context === 'anonresubgift'
-			? data.multi_month_duration
-			: null;
+	get duration(): number {
+		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+		return this[rawDataSymbol].multi_month_duration || 1;
 	}
 }
