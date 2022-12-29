@@ -34,7 +34,7 @@
     "docs": "documen.ts",
     "test": "jest",
     "preversion": "yarn build && yarn lint && yarn prettier:check",
-    "prepublishOnly": "yarn build"
+    "prepublishOnly": "yarn rebuild"
   },
   "husky": {
     "hooks": {
