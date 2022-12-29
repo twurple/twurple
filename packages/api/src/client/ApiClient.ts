@@ -1,12 +1,13 @@
 import { isNode } from '@d-fischer/detect-node';
 import { createLogger, type LoggerOptions } from '@d-fischer/logger';
-import { TimeBasedRateLimiter } from '@d-fischer/rate-limiter';
-import { callTwitchApiRaw, type TwitchApiCallFetchOptions, type TwitchApiCallOptions } from '@twurple/api-call';
+import { PartitionedRateLimiter, PartitionedTimeBasedRateLimiter } from '@d-fischer/rate-limiter';
+import { callTwitchApiRaw, type TwitchApiCallFetchOptions } from '@twurple/api-call';
 import { type AuthProvider } from '@twurple/auth';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import { HelixRateLimiter } from '../api/helix/HelixRateLimiter';
 import { ConfigError } from '../errors/ConfigError';
 import { BaseApiClient } from './BaseApiClient';
+import { type ContextApiCallOptions } from './ContextApiCallOptions';
 import { UserContextApiClient } from './UserContextApiClient';
 
 /**
@@ -35,8 +36,9 @@ export interface ApiConfig {
  * @private
  */
 export interface TwitchApiCallOptionsInternal {
-	options: TwitchApiCallOptions;
+	options: ContextApiCallOptions;
 	clientId?: string;
+	userId?: string;
 	accessToken?: string;
 	authorizationType?: string;
 	fetchOptions?: TwitchApiCallFetchOptions;
@@ -65,13 +67,23 @@ export class ApiClient extends BaseApiClient {
 			config,
 			createLogger({ name: 'twurple:api:client', ...config.logger }),
 			isNode
-				? new HelixRateLimiter({ logger: rateLimitLoggerOptions })
-				: new TimeBasedRateLimiter({
+				? new PartitionedRateLimiter<TwitchApiCallOptionsInternal, Response>({
+						getPartitionKey: req => req.userId ?? null,
+						createChild: () => new HelixRateLimiter({ logger: rateLimitLoggerOptions })
+				  })
+				: new PartitionedTimeBasedRateLimiter({
 						logger: rateLimitLoggerOptions,
 						bucketSize: 800,
 						timeFrame: 64000,
-						doRequest: async ({ options, clientId, accessToken, authorizationType, fetchOptions }) =>
-							await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions)
+						doRequest: async ({
+							options,
+							clientId,
+							accessToken,
+							authorizationType,
+							fetchOptions
+						}: TwitchApiCallOptionsInternal) =>
+							await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions),
+						getPartitionKey: req => req.userId ?? null
 				  })
 		);
 	}

@@ -2,7 +2,6 @@ import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { Logger } from '@d-fischer/logger';
 import type { RateLimiter } from '@d-fischer/rate-limiter';
 import { mapOptional } from '@d-fischer/shared-utils';
-import type { TwitchApiCallOptions } from '@twurple/api-call';
 import {
 	callTwitchApi,
 	callTwitchApiRaw,
@@ -446,7 +445,7 @@ export class BaseApiClient {
 	}
 
 	private async _callApiInternal(
-		options: TwitchApiCallOptions,
+		options: ContextApiCallOptions,
 		clientId?: string,
 		accessToken?: string,
 		authorizationType?: string

@@ -92,8 +92,6 @@ export function getExpiryDateOfAccessToken(token: ExpireableAccessToken): Date |
  * A one-minute grace period is applied for smooth handling of API latency.
  *
  * @param token The access token.
- *
- * Defaults to a minute.
  */
 export function accessTokenIsExpired(token: ExpireableAccessToken): boolean {
 	return mapNullable(getExpiryMillis(token), _ => Date.now() > _) ?? false;
