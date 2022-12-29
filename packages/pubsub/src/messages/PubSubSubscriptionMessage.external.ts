@@ -14,7 +14,6 @@ export interface PubSubSubscriptionGiftDetail {
 	recipient_user_name: string;
 	recipient_display_name: string;
 	months: number;
-	multi_month_duration: number;
 }
 
 /** @private */
@@ -23,4 +22,5 @@ export type PubSubSubscriptionMessageData = PubSubBasicMessageInfo & {
 	sub_plan: 'Prime' | '1000' | '2000' | '3000';
 	sub_plan_name: string;
 	sub_message: PubSubChatMessage;
+	multi_month_duration?: number;
 } & (PubSubSubscriptionDetail | PubSubSubscriptionGiftDetail);
