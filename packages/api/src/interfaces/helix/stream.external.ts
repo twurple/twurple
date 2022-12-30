@@ -76,3 +76,10 @@ export function createStreamMarkerBody(broadcaster: UserIdResolvable, descriptio
 		description
 	};
 }
+
+/** @private */
+export function createVideoQuery(id: string) {
+	return {
+		video_id: id
+	};
+}

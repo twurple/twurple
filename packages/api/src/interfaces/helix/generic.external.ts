@@ -31,6 +31,13 @@ export function createSingleKeyQuery(
 }
 
 /** @private */
+export function createUserQuery(user: UserIdResolvable) {
+	return {
+		user_id: extractUserId(user)
+	};
+}
+
+/** @private */
 export function createModeratorActionQuery(broadcaster: UserIdResolvable, moderator: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
