@@ -1449,7 +1449,7 @@ export class ChatClient extends EventEmitter {
 								this._chatLogger.info(`Retrying authentication in ${secs} seconds`);
 							}
 							await delay(secs * 1000);
-							await this._ircClient.reconnect();
+							this._ircClient.reconnect();
 						}
 						break;
 					}
@@ -1469,7 +1469,7 @@ export class ChatClient extends EventEmitter {
 			this._ircClient.changeNick(ChatClient._generateJustinfanNick());
 		}
 
-		await this._ircClient.connect();
+		this._ircClient.connect();
 	}
 
 	/**

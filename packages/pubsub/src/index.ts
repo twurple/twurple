@@ -3,7 +3,7 @@ export { PubSubClient } from './PubSubClient';
 export { BasicPubSubClient } from './BasicPubSubClient';
 export type { BasicPubSubClientOptions } from './BasicPubSubClient';
 
-export { PubSubListener } from './PubSubListener';
+export { PubSubHandler } from './PubSubHandler';
 
 export type {
 	PubSubIncomingPacket,

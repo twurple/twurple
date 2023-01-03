@@ -57,8 +57,10 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 			this._client._logger.info(`Cycling broken conflicting subscription for event: ${this.id}`);
 			await this._unsubscribe();
 		}
-		this._twitchSubscriptionData = await this._subscribe();
-		this._client._registerTwitchSubscription(this as EventSubSubscription, this._twitchSubscriptionData);
+		this._twitchSubscriptionData = await this._subscribeOrNotify();
+		if (this._twitchSubscriptionData) {
+			this._client._registerTwitchSubscription(this as EventSubSubscription, this._twitchSubscriptionData);
+		}
 	}
 
 	/**
@@ -100,6 +102,15 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	protected abstract _subscribe(): Promise<HelixEventSubSubscription>;
 
 	protected abstract transformData(response: unknown): T;
+
+	private async _subscribeOrNotify(): Promise<HelixEventSubSubscription | undefined> {
+		try {
+			return await this._subscribe();
+		} catch (e) {
+			this._client._notifySubscriptionError(this as EventSubSubscription, e as Error);
+			return undefined;
+		}
+	}
 
 	private async _unsubscribe() {
 		if (this._twitchSubscriptionData) {

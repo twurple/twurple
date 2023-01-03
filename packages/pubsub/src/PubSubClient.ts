@@ -1,4 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from '@twurple/auth';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
@@ -21,7 +22,7 @@ import { PubSubUserModerationNotificationMessage } from './messages/PubSubUserMo
 import { type PubSubUserModerationNotificationMessageData } from './messages/PubSubUserModerationNotificationMessage.external';
 import { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
 import { type PubSubWhisperMessageData } from './messages/PubSubWhisperMessage.external';
-import { PubSubListener } from './PubSubListener';
+import { PubSubHandler } from './PubSubHandler';
 
 /**
  * Options for the PubSub client.
@@ -36,11 +37,24 @@ export interface PubSubClientConfig extends BasicPubSubClientOptions {
  * A high level PubSub client attachable to a multiple users.
  */
 @rtfm('pubsub', 'PubSubClient')
-export class PubSubClient {
+export class PubSubClient extends EventEmitter {
 	@Enumerable(false) private readonly _authProvider: AuthProvider;
 	@Enumerable(false) private readonly _basicClient: BasicPubSubClient;
 
-	private readonly _listeners = new Map<string, Array<PubSubListener<never>>>();
+	private readonly _handlers = new Map<string, Array<PubSubHandler<never>>>();
+
+	/**
+	 * Fires when listening to a topic fails.
+	 *
+	 * @eventListener
+	 *
+	 * @param topic The name of the topic.
+	 * @param error The error.
+	 * @param userInitiated Whether the listen was directly initiated by a user.
+	 *
+	 * The other case would happen in cases like re-sending listen packets after a reconnect.
+	 */
+	readonly onListenError = this.registerEvent<[handler: PubSubHandler, error: Error, userInitiated: boolean]>();
 
 	/**
 	 * Creates a new PubSub client.
@@ -50,21 +64,32 @@ export class PubSubClient {
 	 * @expandParams
 	 */
 	constructor(config: PubSubClientConfig) {
+		super();
+
 		this._authProvider = config.authProvider;
 		this._basicClient = new BasicPubSubClient(config);
-		this._basicClient.onMessage(async (topic, messageData) => {
+		this._basicClient.onMessage((topic, messageData) => {
 			const [type, , ...args] = topic.split('.');
-			if (this._listeners.has(topic)) {
+			if (this._handlers.has(topic)) {
 				const message = PubSubClient._parseMessage(type, args, messageData);
-				for (const listener of this._listeners.get(topic)!) {
-					(listener as PubSubListener).call(message);
+				for (const handler of this._handlers.get(topic)!) {
+					(handler as PubSubHandler).call(message);
+				}
+			}
+		});
+		this._basicClient.onListenError((topic, error, userInitiated) => {
+			const handlers = this._handlers.get(topic);
+			if (handlers) {
+				for (const handler of handlers) {
+					handler.remove();
+					this.emit(this.onListenError, handler, error, userInitiated);
 				}
 			}
 		});
 	}
 
 	/**
-	 * Adds a listener to AutoMod queue events to the client.
+	 * Adds a handler to AutoMod queue events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param channel The channel to listen to.
@@ -72,46 +97,43 @@ export class PubSubClient {
 	 *
 	 * It receives a {@link PubSubAutoModQueueMessage} object.
 	 */
-	async onAutoModQueue(
+	onAutoModQueue(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
 		callback: (message: PubSubAutoModQueueMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener('automod-queue', callback, user, 'channel:moderate', extractUserId(channel));
+	): PubSubHandler<never> {
+		return this._addHandler('automod-queue', callback, user, 'channel:moderate', extractUserId(channel));
 	}
 
 	/**
-	 * Adds a listener to bits events to the client.
+	 * Adds a handler to bits events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a bits event happens in the user's channel.
 	 *
 	 * It receives a {@link PubSubBitsMessage} object.
 	 */
-	async onBits(
-		user: UserIdResolvable,
-		callback: (message: PubSubBitsMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener('channel-bits-events-v2', callback, user, 'bits:read');
+	onBits(user: UserIdResolvable, callback: (message: PubSubBitsMessage) => void): PubSubHandler<never> {
+		return this._addHandler('channel-bits-events-v2', callback, user, 'bits:read');
 	}
 
 	/**
-	 * Adds a listener to bits badge unlock events to the client.
+	 * Adds a handler to bits badge unlock events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a bit badge is unlocked in the user's channel.
 	 *
 	 * It receives a {@link PubSubBitsBadgeUnlockMessage} object.
 	 */
-	async onBitsBadgeUnlock(
+	onBitsBadgeUnlock(
 		user: UserIdResolvable,
 		callback: (message: PubSubBitsBadgeUnlockMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener('channel-bits-badge-unlocks', callback, user, 'bits:read');
+	): PubSubHandler<never> {
+		return this._addHandler('channel-bits-badge-unlocks', callback, user, 'bits:read');
 	}
 
 	/**
-	 * Adds a listener to mod action events to the client.
+	 * Adds a handler to mod action events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param channel The channel the event will be subscribed for.
@@ -119,52 +141,43 @@ export class PubSubClient {
 	 *
 	 * It receives a {@link PubSubChatModActionMessage} object.
 	 */
-	async onModAction(
+	onModAction(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
 		callback: (message: PubSubChatModActionMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener(
-			'chat_moderator_actions',
-			callback,
-			user,
-			'channel:moderate',
-			extractUserId(channel)
-		);
+	): PubSubHandler<never> {
+		return this._addHandler('chat_moderator_actions', callback, user, 'channel:moderate', extractUserId(channel));
 	}
 
 	/**
-	 * Adds a listener to redemption events to the client.
+	 * Adds a handler to redemption events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a channel point reward is redeemed in the user's channel.
 	 *
 	 * It receives a {@link PubSubRedemptionMessage} object.
 	 */
-	async onRedemption(
-		user: UserIdResolvable,
-		callback: (message: PubSubRedemptionMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener('channel-points-channel-v1', callback, user, 'channel:read:redemptions');
+	onRedemption(user: UserIdResolvable, callback: (message: PubSubRedemptionMessage) => void): PubSubHandler<never> {
+		return this._addHandler('channel-points-channel-v1', callback, user, 'channel:read:redemptions');
 	}
 
 	/**
-	 * Adds a listener to subscription events to the client.
+	 * Adds a handler to subscription events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a subscription event happens in the user's channel.
 	 *
 	 * It receives a {@link PubSubSubscriptionMessage} object.
 	 */
-	async onSubscription(
+	onSubscription(
 		user: UserIdResolvable,
 		callback: (message: PubSubSubscriptionMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener('channel-subscribe-events-v1', callback, user, 'channel:read:subscriptions');
+	): PubSubHandler<never> {
+		return this._addHandler('channel-subscribe-events-v1', callback, user, 'channel:read:subscriptions');
 	}
 
 	/**
-	 * Adds a listener to user moderation events to the client.
+	 * Adds a handler to user moderation events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param channel The channel to listen to.
@@ -172,37 +185,28 @@ export class PubSubClient {
 	 *
 	 * It receives a {@link PubSubUserModerationNotificationMessage} object.
 	 */
-	async onUserModeration(
+	onUserModeration(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
 		callback: (message: PubSubSubscriptionMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener(
-			'user-moderation-notifications',
-			callback,
-			user,
-			'chat:read',
-			extractUserId(channel)
-		);
+	): PubSubHandler<never> {
+		return this._addHandler('user-moderation-notifications', callback, user, 'chat:read', extractUserId(channel));
 	}
 
 	/**
-	 * Adds a listener to whisper events to the client.
+	 * Adds a handler to whisper events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param callback A function to be called when a whisper is sent to the user.
 	 *
 	 * It receives a {@link PubSubWhisperMessage} object.
 	 */
-	async onWhisper(
-		user: UserIdResolvable,
-		callback: (message: PubSubWhisperMessage) => void
-	): Promise<PubSubListener<never>> {
-		return await this._addListener('whispers', callback, user, 'whispers:read');
+	onWhisper(user: UserIdResolvable, callback: (message: PubSubWhisperMessage) => void): PubSubHandler<never> {
+		return this._addHandler('whispers', callback, user, 'whispers:read');
 	}
 
 	/**
-	 * Adds a listener for arbitrary/undocumented events to the client.
+	 * Adds a handler for arbitrary/undocumented events to the client.
 	 *
 	 * @param user The user the event will be subscribed for.
 	 * @param topic The topic to subscribe to.
@@ -212,77 +216,77 @@ export class PubSubClient {
 	 * @param scope An optional scope if the topic requires it.
 	 * @param channel An optional second userId if the topic requires it, usually a channel.
 	 */
-	async onCustomTopic(
+	onCustomTopic(
 		user: UserIdResolvable,
 		topic: string,
 		callback: (message: PubSubCustomMessage) => void,
 		scope?: string,
 		channel?: UserIdResolvable
-	): Promise<PubSubListener<never>> {
+	): PubSubHandler<never> {
 		if (channel) {
-			return await this._addListener(topic, callback, user, scope, extractUserId(channel));
+			return this._addHandler(topic, callback, user, scope, extractUserId(channel));
 		} else {
-			return await this._addListener(topic, callback, user, scope);
+			return this._addHandler(topic, callback, user, scope);
 		}
 	}
 
 	/**
-	 * Removes a listener from the client.
+	 * Removes a handler from the client.
 	 *
-	 * @param listener A listener returned by one of the `add*Listener` methods.
+	 * @param handler A handler returned by one of the `on*` methods.
 	 */
-	async removeListener(listener: PubSubListener<never>): Promise<void> {
-		if (this._listeners.has(listener.topic)) {
-			const newListeners = this._listeners.get(listener.topic)!.filter(l => l !== listener);
-			if (newListeners.length === 0) {
-				this._listeners.delete(listener.topic);
-				await this._basicClient.unlisten(`${listener.topic}.${listener.userId}`);
+	removeHandler(handler: PubSubHandler<never>): void {
+		if (this._handlers.has(handler.topic)) {
+			const newHandlers = this._handlers.get(handler.topic)!.filter(l => l !== handler);
+			if (newHandlers.length === 0) {
+				this._handlers.delete(handler.topic);
+				this._basicClient.unlisten(`${handler.topic}.${handler.userId}`);
 				if (
 					!this._basicClient.hasAnyTopics &&
 					(this._basicClient.isConnected || this._basicClient.isConnecting)
 				) {
-					await this._basicClient.disconnect();
+					this._basicClient.disconnect();
 				}
 			} else {
-				this._listeners.set(listener.topic, newListeners);
+				this._handlers.set(handler.topic, newHandlers);
 			}
 		}
 	}
 
 	/**
-	 * Removes all listeners from the client.
+	 * Removes all handlers from the client.
 	 */
-	async removeAllListeners(): Promise<void> {
-		for (const listeners of this._listeners.values()) {
-			for (const listener of listeners) {
-				await this.removeListener(listener);
+	removeAllHandlers(): void {
+		for (const handlers of this._handlers.values()) {
+			for (const handler of handlers) {
+				this.removeHandler(handler);
 			}
 		}
 	}
 
-	private async _addListener<T extends PubSubMessage>(
+	private _addHandler<T extends PubSubMessage>(
 		type: string,
 		callback: (message: T) => void,
 		user: UserIdResolvable,
 		scope?: string,
 		...additionalParams: string[]
 	) {
-		await this._basicClient.connect();
+		this._basicClient.connect();
 		const userId = extractUserId(user);
 		const topicName = [type, userId, ...additionalParams].join('.');
-		const listener = new PubSubListener(topicName, userId, callback, this);
-		if (this._listeners.has(topicName)) {
-			this._listeners.get(topicName)!.push(listener);
+		const handler = new PubSubHandler(topicName, userId, callback, this);
+		if (this._handlers.has(topicName)) {
+			this._handlers.get(topicName)!.push(handler);
 		} else {
-			this._listeners.set(topicName, [listener]);
-			await this._basicClient.listen(topicName, {
+			this._handlers.set(topicName, [handler]);
+			this._basicClient.listen(topicName, {
 				type: 'provider',
 				provider: this._authProvider,
 				scopes: scope ? [scope] : [],
 				userId
 			});
 		}
-		return listener;
+		return handler;
 	}
 
 	private static _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage {

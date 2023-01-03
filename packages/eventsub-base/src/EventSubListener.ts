@@ -45,12 +45,12 @@ import type { EventSubSubscription } from './subscriptions/EventSubSubscription'
  */
 export interface EventSubListener {
 	/**
-	 * Start the listener.
+	 * Starts the listener.
 	 */
 	start: () => Promise<void>;
 
 	/**
-	 * Stop the listener.
+	 * Stops the listener.
 	 */
 	stop: () => Promise<void>;
 

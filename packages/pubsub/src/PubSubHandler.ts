@@ -4,10 +4,10 @@ import type { PubSubMessage } from './messages/PubSubMessage';
 import { type PubSubClient } from './PubSubClient';
 
 /**
- * A listener attached to a single PubSub topic.
+ * A handler attached to a single PubSub topic.
  */
-@rtfm<PubSubListener>('pubsub', 'PubSubListener', 'userId')
-export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
+@rtfm<PubSubHandler>('pubsub', 'PubSubHandler', 'userId')
+export class PubSubHandler<T extends PubSubMessage = PubSubMessage> {
 	@Enumerable(false) private readonly _client: PubSubClient;
 
 	/** @private */
@@ -37,8 +37,8 @@ export class PubSubListener<T extends PubSubMessage = PubSubMessage> {
 	/**
 	 * Removes the topic from the PubSub client.
 	 */
-	async remove(): Promise<void> {
-		await this._client.removeListener(this);
+	remove(): void {
+		this._client.removeHandler(this);
 	}
 
 	/** @private */

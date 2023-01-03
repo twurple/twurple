@@ -4,7 +4,6 @@ import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { Listener } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from '@twurple/auth';
 import { getValidTokenFromProviderForUser } from '@twurple/auth';
@@ -70,34 +69,47 @@ export class BasicPubSubClient extends EventEmitter {
 	private _inactivityPingCheckTimer?: NodeJS.Timer;
 	private _pingTimeoutTimer?: NodeJS.Timer;
 
-	private readonly _onPong: (handler: () => void) => Listener = this.registerInternalEvent();
-	private readonly _onResponse: (handler: (nonce: string, error: string) => void) => Listener =
-		this.registerInternalEvent();
+	private readonly _onPong = this.registerInternalEvent<[]>();
+	private readonly _onResponse = this.registerInternalEvent<[nonce: string, error: string]>();
 
 	/**
 	 * Fires when a message that matches your listening topics is received.
 	 *
 	 * @eventListener
+	 *
 	 * @param topic The name of the topic.
 	 * @param message The message data.
 	 */
-	readonly onMessage: (handler: (topic: string, message: PubSubMessageData) => void) => Listener =
-		this.registerEvent();
+	readonly onMessage = this.registerEvent<[topic: string, message: PubSubMessageData]>();
+
+	/**
+	 * Fires when listening to a topic fails.
+	 *
+	 * @eventListener
+	 *
+	 * @param topic The name of the topic.
+	 * @param error The error.
+	 * @param userInitiated Whether the listen was directly initiated by a user.
+	 *
+	 * The other case would happen in cases like re-sending listen packets after a reconnect.
+	 */
+	readonly onListenError = this.registerEvent<[topic: string, error: Error, userInitiated: boolean]>();
 
 	/**
 	 * Fires when the client finishes establishing a connection to the PubSub server.
 	 *
 	 * @eventListener
 	 */
-	readonly onConnect: (handler: () => void) => Listener = this.registerEvent();
+	readonly onConnect = this.registerEvent<[]>();
 
 	/**
 	 * Fires when the client closes its connection to the PubSub server.
 	 *
 	 * @eventListener
 	 * @param isError Whether the cause of the disconnection was an error. A reconnect will be attempted if this is true.
+	 * @param reason The error object.
 	 */
-	readonly onDisconnect: (handler: (isError: boolean, reason?: Error) => void) => Listener = this.registerEvent();
+	readonly onDisconnect = this.registerEvent<[isError: boolean, reason?: Error]>();
 
 	/**
 	 * Fires when the client receives a pong message from the PubSub server.
@@ -106,7 +118,7 @@ export class BasicPubSubClient extends EventEmitter {
 	 * @param latency The current latency to the server, in milliseconds.
 	 * @param requestTimestampe The time the ping request was sent to the PubSub server.
 	 */
-	readonly onPong: (handler: (latency: number, requestTimestamp: number) => void) => Listener = this.registerEvent();
+	readonly onPong = this.registerEvent<[latency: number, requestTimestamp: number]>();
 
 	/**
 	 * Creates a new PubSub client.
@@ -134,7 +146,7 @@ export class BasicPubSubClient extends EventEmitter {
 			this._pingCheck();
 			this._startActivityPingCheckTimer();
 			this._startInactivityPingCheckTimer();
-			await this._resendListens();
+			this._resendListens();
 			if (this._topics.size) {
 				this._logger.info('Listened to previously registered topics');
 				this._logger.debug(`Previously registered topics: ${Array.from(this._topics.keys()).join(', ')}`);
@@ -171,18 +183,22 @@ export class BasicPubSubClient extends EventEmitter {
 	 * @param topics A topic or a list of topics to listen to.
 	 * @param tokenResolvable An access token, an AuthProvider or a function that returns a token.
 	 */
-	async listen(topics: string | string[], tokenResolvable: ResolvableValue<string> | TokenResolvable): Promise<void> {
-		if (typeof topics === 'string') {
-			topics = [topics];
-		}
+	listen(topics: string | string[], tokenResolvable: ResolvableValue<string> | TokenResolvable): void {
+		const topicsArray = typeof topics === 'string' ? [topics] : topics;
 
 		const wrapped = BasicPubSubClient._wrapResolvable(tokenResolvable);
-		for (const topic of topics) {
+		for (const topic of topicsArray) {
 			this._topics.set(topic, wrapped);
 		}
 
 		if (this.isConnected) {
-			await this._sendListen(topics, await this._resolveToken(wrapped));
+			this._resolveToken(wrapped)
+				.then(async token => await this._sendListen(topicsArray, token))
+				.catch(e => {
+					for (const topic of topicsArray) {
+						this.emit(this.onListenError, topic, e, true);
+					}
+				});
 		}
 	}
 
@@ -191,44 +207,48 @@ export class BasicPubSubClient extends EventEmitter {
 	 *
 	 * @param topics A topic or a list of topics to not listen to anymore.
 	 */
-	async unlisten(topics: string | string[]): Promise<void> {
-		if (typeof topics === 'string') {
-			topics = [topics];
-		}
+	unlisten(topics: string | string[]): void {
+		const topicsArray = typeof topics === 'string' ? [topics] : topics;
 
 		for (const topic of topics) {
 			this._topics.delete(topic);
 		}
 
 		if (this.isConnected) {
-			await this._sendUnlisten(topics);
+			this._sendUnlisten(topicsArray).catch(e => {
+				this._logger.error(
+					`Error during unlisten of topics ${topicsArray.join(', ')}: ${
+						(e as Error | undefined)?.message ?? (e as string)
+					}`
+				);
+			});
 		}
 	}
 
 	/**
 	 * Connects to the PubSub interface.
 	 */
-	async connect(): Promise<void> {
+	connect(): void {
 		if (!this._connection.isConnected && !this._connection.isConnecting) {
 			this._logger.info('Connecting...');
-			await this._connection.connect();
+			this._connection.connect();
 		}
 	}
 
 	/**
 	 * Disconnects from the PubSub interface.
 	 */
-	async disconnect(): Promise<void> {
+	disconnect(): void {
 		this._logger.info('Disconnecting...');
-		await this._connection.disconnect();
+		this._connection.disconnect();
 	}
 
 	/**
 	 * Reconnects to the PubSub interface.
 	 */
-	async reconnect(): Promise<void> {
-		await this.disconnect();
-		await this.connect();
+	reconnect(): void {
+		this.disconnect();
+		this.connect();
 	}
 
 	/**
@@ -307,7 +327,7 @@ export class BasicPubSubClient extends EventEmitter {
 		}
 	}
 
-	private async _resendListens() {
+	private _resendListens() {
 		const topicsByTokenResolvable = new Map<TokenResolvable, string[]>();
 		for (const [topic, tokenResolvable] of this._topics) {
 			if (topicsByTokenResolvable.has(tokenResolvable)) {
@@ -316,18 +336,32 @@ export class BasicPubSubClient extends EventEmitter {
 				topicsByTokenResolvable.set(tokenResolvable, [topic]);
 			}
 		}
-		const topicsByToken = new Map<string | undefined, string[]>();
-		for (const [tokenResolvable, topics] of topicsByTokenResolvable) {
-			const token = await this._resolveToken(tokenResolvable);
-			if (topicsByToken.has(token)) {
-				topicsByToken.get(token)!.push(...topics);
-			} else {
-				topicsByToken.set(token, topics);
-			}
-		}
-		return await Promise.all(
-			Array.from(topicsByToken.entries()).map(async ([token, topics]) => await this._sendListen(topics, token))
-		);
+		void Array.from(topicsByTokenResolvable)
+			.reduce(
+				// eslint-disable-next-line @typescript-eslint/promise-function-async
+				(chain, [tokenResolvable, topics]) =>
+					// eslint-disable-next-line @typescript-eslint/return-await
+					chain.then(async topicsByToken => {
+						const token = await this._resolveToken(tokenResolvable);
+						if (topicsByToken.has(token)) {
+							topicsByToken.get(token)!.push(...topics);
+						} else {
+							topicsByToken.set(token, topics);
+						}
+
+						return topicsByToken;
+					}),
+				Promise.resolve(new Map<string | undefined, string[]>())
+			)
+			.then(topicsByToken => {
+				for (const [token, topics] of topicsByToken) {
+					this._sendListen(topics, token).catch(e => {
+						for (const topic of topics) {
+							this.emit(this.onListenError, topic, e, false);
+						}
+					});
+				}
+			});
 	}
 
 	private async _sendNonced<T extends PubSubNoncedOutgoingPacket>(packet: T) {
@@ -361,7 +395,7 @@ export class BasicPubSubClient extends EventEmitter {
 				break;
 			}
 			case 'RECONNECT': {
-				void this.reconnect();
+				this.reconnect();
 				break;
 			}
 			case 'RESPONSE': {

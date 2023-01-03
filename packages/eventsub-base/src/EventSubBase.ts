@@ -132,6 +132,16 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	readonly onRevoke = this.registerEvent<[subscription: EventSubSubscription]>();
 
+	/**
+	 * Fires when the client fails to create a subscription.
+	 *
+	 * @eventListener
+	 *
+	 * @param subscription The subscription that was not successfully created.
+	 * @param error The error that was thrown.
+	 */
+	readonly onSubscriptionFailure = this.registerEvent<[subscription: EventSubSubscription, error: Error]>();
+
 	protected _readyToSubscribe = false;
 
 	constructor(config: EventSubBaseConfig) {
@@ -163,6 +173,11 @@ export abstract class EventSubBase extends EventEmitter {
 	_registerTwitchSubscription(subscription: EventSubSubscription, data: HelixEventSubSubscription): void {
 		this._twitchSubscriptions.set(subscription.id, data);
 		this._subscriptionsByTwitchId.set(data.id, subscription);
+	}
+
+	/** @private */
+	_notifySubscriptionError(subscription: EventSubSubscription, error: Error): void {
+		this.emit(this.onSubscriptionFailure, subscription, error);
 	}
 
 	/**
