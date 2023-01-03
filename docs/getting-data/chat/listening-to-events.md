@@ -34,10 +34,10 @@ chatClient.removeListener(followAgeListener);
 
 A list of all chat events can be found in the {@link ChatClient} class reference.
 
-:::warning{title="Why does my onConnect listener not work?"}
+:::warning{title="Why do actions right after the `connect()` call not work?"}
 
 You should use `onRegister` to do things after the registration with the chat server finishes.
 
-The `onConnect` event is fired before authentication and is therefore unlikely to be what you want since you can't send any messages at this point.
+The `connect()` method finishes before authentication and is therefore unlikely to be what you want since you can't send any messages at this point.
 
 :::

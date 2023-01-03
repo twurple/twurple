@@ -4,9 +4,7 @@ This section assumes that you have prepared [authentication](/docs/auth/) with a
 
 :::
 
-Creating a {@link PubSubClient} instance is slightly different from other systems, as you don't pass an auth provider to the constructor.
-
-Instead, you can register multiple auth providers for different users after construction:
+Creating a {@link PubSubClient} instance works like all the other clients do; just pass an {@link AuthProvider} instance:
 
 ```ts twoslash
 // @module: esnext
@@ -17,11 +15,10 @@ declare const authProvider: AuthProvider;
 // ---cut---
 import { PubSubClient } from '@twurple/pubsub';
 
-const pubSubClient = new PubSubClient();
-const userId = await pubSubClient.registerUserListener(authProvider);
+const pubSubClient = new PubSubClient({ authProvider });
 ```
 
-It's very easy to listen to events for any registered user now:
+It's very easy to listen to events for any authenticated user now:
 
 ```ts twoslash
 // @module: esnext
@@ -33,16 +30,16 @@ declare const userId: string;
 // ---cut---
 import { PubSubSubscriptionMessage } from '@twurple/pubsub';
 
-const listener = await pubSubClient.onSubscription(userId, (message: PubSubSubscriptionMessage) => {
+const handler = pubSubClient.onSubscription(userId, (message: PubSubSubscriptionMessage) => {
 	console.log(`${message.userDisplayName} just subscribed!`);
 });
 ```
 
-When you don't want to listen to an event anymore, you just remove the listener:
+When you don't want to listen to an event anymore, you just remove the handler:
 
 ```ts twoslash
-import type { PubSubListener } from '@twurple/pubsub';
-declare const listener: PubSubListener;
+import type { PubSubHandler } from '@twurple/pubsub';
+declare const handler: PubSubHandler;
 // ---cut---
-listener.remove();
+handler.remove();
 ```

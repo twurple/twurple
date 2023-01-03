@@ -1,16 +1,12 @@
-## I'm trying to make my bot say something / join channels right after connecting, but awaiting the `connect()` Promise / listening to the `onConnect` event doesn't work.
+## I'm trying to make my bot say something / join channels right after connecting, but doing it after calling `connect()` doesn't work.
 
 Twitch uses the IRC protocol as foundation for its chat. In this protocol, after connection,
 you must tell the server your name and (optionally) authenticate before you can send messages to channels.
 The IRC specification calls this process "registration".
 
 The base library we use for the `ChatClient` is an IRC library that has terminology very close to the IRC specification.
-This means that `onConnect` will happen before the registration step,
-which in turn means that you can't join channels or send messages yet in a listener for that event.
-
-Similarly, awaiting the Promise returned by `connect()` also has this problem of being too early,
-and has the additional downside that your code will only run when the client connects for the first time,
-and does not re-run when you reconnect due to connection instability.
+This means that `connect()` will finish before the registration step,
+which in turn means that you can't join channels or send messages yet.
 
 Instead, you should use the `onRegister` event to send messages.
 
