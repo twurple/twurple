@@ -1,6 +1,6 @@
 {
   "name": "@twurple/eventsub-ws",
-  "version": "6.0.0-pre.0",
+  "version": "6.0.0-pre.1",
   "publishConfig": {
     "access": "public"
   },
@@ -37,16 +37,16 @@
     "@d-fischer/logger": "^4.0.0",
     "@d-fischer/shared-utils": "^3.4.0",
     "@d-fischer/typed-event-emitter": "^3.3.0",
-    "@twurple/auth": "6.0.0-pre.0",
-    "@twurple/common": "6.0.0-pre.0",
-    "@twurple/eventsub-base": "6.0.0-pre.0",
+    "@twurple/auth": "6.0.0-pre.1",
+    "@twurple/common": "6.0.0-pre.1",
+    "@twurple/eventsub-base": "6.0.0-pre.1",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/api": "6.0.0-pre.0"
+    "@twurple/api": "6.0.0-pre.1"
   },
   "peerDependencies": {
-    "@twurple/api": "6.0.0-pre.0"
+    "@twurple/api": "6.0.0-pre.1"
   },
   "files": [
     "LICENSE",
