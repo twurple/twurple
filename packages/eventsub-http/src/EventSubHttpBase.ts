@@ -131,9 +131,9 @@ To silence this warning without enabling this check (and thus to keep it off eve
 				.filter(<T>(x?: T): x is T => !!x)
 		);
 
-		await Promise.all(
-			[...this._subscriptions].map(async ([subId, sub]) => await sub.start(this._twitchSubscriptions.get(subId)))
-		);
+		for (const [subId, sub] of this._subscriptions) {
+			sub.start(this._twitchSubscriptions.get(subId));
+		}
 	}
 
 	protected _createHandleRequest(): RequestHandler {
