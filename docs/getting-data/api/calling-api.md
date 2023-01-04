@@ -21,7 +21,7 @@ const apiClient = new ApiClient({ authProvider });
 
 On the {@link ApiClient} instance, the API methods are namespaced into the different resources like `users` and `streams`.
 
-All API methods are `async` and thus can be `await`ed. Here's a quick example:
+All API methods are `async` and thus must be `await`ed. Here's a quick example:
 
 ```typescript
 async function isStreamLive(userName: string) {

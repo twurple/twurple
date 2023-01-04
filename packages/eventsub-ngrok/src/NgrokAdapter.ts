@@ -1,14 +1,35 @@
-import { getPortPromise } from '@d-fischer/portfinder';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { ConnectionAdapter } from '@twurple/eventsub-http';
 import { connect } from 'ngrok';
 
 /**
+ * The configuration of the ngrok adapter.
+ */
+export interface NgrokAdapterConfig {
+	/**
+	 * The port to listen on. Defaults to 8000.
+	 */
+	port?: number;
+}
+
+/**
  * A connection adapter that uses ngrok to make local testing easy.
  */
 export class NgrokAdapter extends ConnectionAdapter {
-	@Enumerable(false) private _listenerPortPromise?: Promise<number>;
+	@Enumerable(false) private readonly _listenerPort: number;
 	@Enumerable(false) private _hostNamePromise?: Promise<string>;
+
+	/**
+	 * Creates a new instance of the `NgrokAdapter`.
+	 *
+	 * @expandParams
+	 *
+	 * @param config
+	 */
+	constructor(config: NgrokAdapterConfig = {}) {
+		super();
+		this._listenerPort = config.port ?? 8000;
+	}
 
 	/** @protected */
 	// eslint-disable-next-line @typescript-eslint/class-literal-property-style
@@ -17,20 +38,16 @@ export class NgrokAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
-	async getListenerPort(): Promise<number> {
-		if (!this._listenerPortPromise) {
-			this._listenerPortPromise = getPortPromise();
-		}
-
-		return await this._listenerPortPromise;
+	get listenerPort(): number {
+		return this._listenerPort;
 	}
 
 	/** @protected */
 	async getHostName(): Promise<string> {
-		const listenerPort = await this.getListenerPort();
-
 		if (!this._hostNamePromise) {
-			this._hostNamePromise = connect({ addr: listenerPort }).then(url => url.replace(/^https?:\/\/|\/$/, ''));
+			this._hostNamePromise = connect({ addr: this._listenerPort }).then(url =>
+				url.replace(/^https?:\/\/|\/$/, '')
+			);
 		}
 
 		return await this._hostNamePromise;

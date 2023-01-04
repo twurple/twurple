@@ -39,7 +39,7 @@ const adapter = new DirectConnectionAdapter({
 });
 const secret = 'thisShouldBeARandomlyGeneratedFixedString';
 const listener = new EventSubHttpListener({ apiClient, adapter, secret });
-await listener.start();
+listener.start();
 ```
 
 Please note that the server needs to be **available from the outside**.
@@ -74,7 +74,7 @@ const authProvider = new StaticAuthProvider(clientId, accessToken);
 const apiClient = new ApiClient({ authProvider });
 
 const listener = new EventSubWsListener({ apiClient });
-await listener.start();
+listener.start();
 ```
 
 ## Subscribing to (and unsubscribing from) events
@@ -90,11 +90,11 @@ declare const listener: EventSubListener;
 // ---cut---
 const userId = 'YOUR_USER_ID';
 
-const onlineSubscription = await listener.subscribeToStreamOnlineEvents(userId, e => {
+const onlineSubscription = listener.onStreamOnline(userId, e => {
 	console.log(`${e.broadcasterDisplayName} just went live!`);
 });
 
-const offlineSubscription = await listener.subscribeToStreamOfflineEvents(userId, e => {
+const offlineSubscription = listener.onStreamOffline(userId, e => {
 	console.log(`${e.broadcasterDisplayName} just went offline`);
 });
 ```
@@ -104,13 +104,13 @@ The subscription will then automatically start.
 When you don't want to listen to a particular event anymore, you just stop its subscription:
 
 ```ts
-await onlineSubscription.stop();
+onlineSubscription.stop();
 ```
 
 To start it back up after stopping, you can use:
 
 ```ts
-await onlineSubscription.start();
+onlineSubscription.start();
 ```
 
 Note that you don't need to call `.start()` after creating the subscription.

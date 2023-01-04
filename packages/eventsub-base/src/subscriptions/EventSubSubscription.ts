@@ -46,7 +46,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	 *
 	 * @param resumeFrom The subscription data from Twitch to check whether the subscription needs to be re-added.
 	 */
-	async start(resumeFrom?: HelixEventSubSubscription): Promise<void> {
+	start(resumeFrom?: HelixEventSubSubscription): void {
 		if (resumeFrom) {
 			if (resumeFrom.status === 'enabled') {
 				this._twitchSubscriptionData = resumeFrom;
@@ -55,31 +55,36 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 			}
 
 			this._client._logger.info(`Cycling broken conflicting subscription for event: ${this.id}`);
-			await this._unsubscribe();
-		}
-		this._twitchSubscriptionData = await this._subscribeOrNotify();
-		if (this._twitchSubscriptionData) {
-			this._client._registerTwitchSubscription(this as EventSubSubscription, this._twitchSubscriptionData);
+			this._unsubscribe().then(
+				() => this._subscribeAndSave(),
+				e => this._client._notifySubscriptionDeleteError(this as EventSubSubscription, e)
+			);
+		} else {
+			this._subscribeAndSave();
 		}
 	}
 
 	/**
 	 * Suspends the subscription, not removing it from the listener.
 	 */
-	async suspend(): Promise<void> {
+	suspend(): void {
 		if (!this._twitchSubscriptionData) {
 			return;
 		}
-		await this._unsubscribe();
-		this._verified = false;
-		this._twitchSubscriptionData = undefined;
+		this._unsubscribe().then(
+			() => {
+				this._verified = false;
+				this._twitchSubscriptionData = undefined;
+			},
+			e => this._client._notifySubscriptionDeleteError(this as EventSubSubscription, e)
+		);
 	}
 
 	/**
 	 * Deactivates the subscription and removes it from the listener.
 	 */
-	async stop(): Promise<void> {
-		await this.suspend();
+	stop(): void {
+		this.suspend();
 		this._client._dropSubscription(this.id);
 	}
 
@@ -103,13 +108,14 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 
 	protected abstract transformData(response: unknown): T;
 
-	private async _subscribeOrNotify(): Promise<HelixEventSubSubscription | undefined> {
-		try {
-			return await this._subscribe();
-		} catch (e) {
-			this._client._notifySubscriptionError(this as EventSubSubscription, e as Error);
-			return undefined;
-		}
+	private _subscribeAndSave() {
+		this._subscribe().then(
+			data => {
+				this._twitchSubscriptionData = data;
+				this._client._registerTwitchSubscription(this as EventSubSubscription, data);
+			},
+			e => this._client._notifySubscriptionCreateError(this as EventSubSubscription, e)
+		);
 	}
 
 	private async _unsubscribe() {

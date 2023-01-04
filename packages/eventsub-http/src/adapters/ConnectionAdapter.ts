@@ -26,11 +26,11 @@ export abstract class ConnectionAdapter {
 	/**
 	 * The port the HTTP server should listen on.
 	 *
-	 * If not given, this should be a parameter to `EventSub#listen` instead.
+	 * If not given, the listener will default to use port 443.
 	 *
 	 * @protected
 	 */
-	async getListenerPort(): Promise<number | undefined> {
+	get listenerPort(): number | undefined {
 		return;
 	}
 

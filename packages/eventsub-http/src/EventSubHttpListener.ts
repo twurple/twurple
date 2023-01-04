@@ -60,7 +60,7 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 	/**
 	 * Starts the HTTP listener.
 	 */
-	async start(): Promise<void> {
+	start(): void {
 		if (this._server) {
 			throw new Error('Trying to start while already running');
 		}
@@ -104,27 +104,39 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 			this._server.get('/', healthHandler);
 		}
 
-		const adapterListenerPort = await this._adapter.getListenerPort();
+		const adapterListenerPort = this._adapter.listenerPort;
 		const listenerPort = adapterListenerPort ?? 443;
-		await this._server.listen(listenerPort);
-		this._readyToSubscribe = true;
-		this._logger.info(`Listening on port ${listenerPort}`);
-		await this._resumeExistingSubscriptions();
+		this._server
+			.listen(listenerPort)
+			.then(async () => {
+				this._readyToSubscribe = true;
+				this._logger.info(`Listening on port ${listenerPort}`);
+				await this._resumeExistingSubscriptions();
+			})
+			.catch(e => {
+				this._logger.crit(`Could not listen on port ${listenerPort}: ${(e as Error).message}`);
+			});
 	}
 
 	/**
 	 * Stops the HTTP listener.
 	 */
-	async stop(): Promise<void> {
+	stop(): void {
 		if (!this._server) {
 			throw new Error('Trying to stop while not running');
 		}
 
-		await Promise.all([...this._subscriptions.values()].map(async sub => await sub.suspend()));
+		for (const sub of this._subscriptions.values()) {
+			sub.suspend();
+		}
 
-		await this._server.close();
-		this._server = undefined;
-		this._readyToSubscribe = false;
+		this._server.close().then(
+			() => {
+				this._server = undefined;
+				this._readyToSubscribe = false;
+			},
+			e => this._logger.crit(`Could not stop listener: ${(e as Error).message}`)
+		);
 	}
 
 	protected async getHostName(): Promise<string> {

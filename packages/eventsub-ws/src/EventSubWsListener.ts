@@ -70,12 +70,12 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 			}
 		);
 
-		this._connection.onDisconnect(async () => {
+		this._connection.onDisconnect(() => {
 			this._readyToSubscribe = false;
 			this._clearKeepaliveTimer();
 			this._keepaliveTimeout = null;
 		});
-		this._connection.onReceive(async data => {
+		this._connection.onReceive(data => {
 			this._logger.debug(`Received data: ${data.trim()}`);
 			const { metadata, payload } = JSON.parse(data) as EventSubWsPacket;
 			switch (metadata.message_type) {
@@ -86,7 +86,9 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 					this._sessionId = (payload as EventSubWelcomePayload).session.id;
 					this._readyToSubscribe = true;
 					if (!this._reconnectInProgress) {
-						await Promise.all([...this._subscriptions.values()].map(async sub => await sub.start()));
+						for (const sub of this._subscriptions.values()) {
+							sub.start();
+						}
 					}
 					this._initializeKeepaliveTimeout(
 						(payload as EventSubWelcomePayload).session.keepalive_timeout_seconds!
@@ -140,15 +142,14 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	/**
 	 * Starts the WebSocket listener.
 	 */
-	async start(): Promise<void> {
+	start(): void {
 		this._connection.connect();
 	}
 
 	/**
 	 * Stops the WebSocket listener.
 	 */
-	async stop(): Promise<void> {
-		await Promise.all([...this._subscriptions.values()].map(async sub => await sub.suspend()));
+	stop(): void {
 		this._connection.disconnect();
 	}
 

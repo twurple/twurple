@@ -68,7 +68,7 @@ export class ReverseProxyAdapter extends ConnectionAdapter {
 	}
 
 	/** @protected */
-	async getListenerPort(): Promise<number> {
+	get listenerPort(): number {
 		return this._port;
 	}
 

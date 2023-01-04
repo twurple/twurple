@@ -47,12 +47,12 @@ export interface EventSubListener {
 	/**
 	 * Starts the listener.
 	 */
-	start: () => Promise<void>;
+	start: () => void;
 
 	/**
 	 * Stops the listener.
 	 */
-	stop: () => Promise<void>;
+	stop: () => void;
 
 	/**
 	 * Subscribes to events representing a stream going live.
@@ -60,10 +60,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about their streams going live.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToStreamOnlineEvents: (
+	onStreamOnline: (
 		user: UserIdResolvable,
 		handler: (event: EventSubStreamOnlineEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events representing a stream going offline.
@@ -71,10 +71,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about their streams going offline.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToStreamOfflineEvents: (
+	onStreamOffline: (
 		user: UserIdResolvable,
 		handler: (event: EventSubStreamOfflineEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events representing a change in channel metadata, e.g. stream title or category.
@@ -82,10 +82,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about updates.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelUpdateEvents: (
+	onChannelUpdate: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelUpdateEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user following a channel.
@@ -93,10 +93,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about their followers.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelFollowEvents: (
+	onChannelFollow: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelFollowEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user subscribing to a channel.
@@ -104,10 +104,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for about their subscribers.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	subscribeToChannelSubscriptionEvents: (
+	onChannelSubscription: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user gifting a subscription to a channel to someone else.
@@ -115,10 +115,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for about subscriptions people gift in their channel.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	subscribeToChannelSubscriptionGiftEvents: (
+	onChannelSubscriptionGift: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionGiftEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user's subscription to a channel being announced.
@@ -126,10 +126,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for about announced subscriptions.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	subscribeToChannelSubscriptionMessageEvents: (
+	onChannelSubscriptionMessage: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionMessageEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user's subscription to a channel ending.
@@ -137,10 +137,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for about ending subscriptions.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	subscribeToChannelSubscriptionEndEvents: (
+	onChannelSubscriptionEnd: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionEndEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user cheering some bits.
@@ -148,10 +148,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for about cheers they get.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelCheerEvents: (
+	onChannelCheer: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCheerEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a charity campaign starting in a channel.
@@ -160,10 +160,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about charity campaigns starting.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelCharityCampaignStartEvents: (
+	onChannelCharityCampaignStart: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignStartEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a charity campaign ending in a channel.
@@ -172,10 +172,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about charity campaigns ending.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelCharityCampaignStopEvents: (
+	onChannelCharityCampaignStop: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignStopEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a donation to a charity campaign in a channel.
@@ -184,10 +184,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about charity campaign donations.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelCharityDonationEvents: (
+	onChannelCharityDonation: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityDonationEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent progress in a charity campaign in a channel.
@@ -196,10 +196,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about charity campaign progress.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelCharityCampaignProgressEvents: (
+	onChannelCharityCampaignProgress: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user getting banned from a channel.
@@ -207,10 +207,7 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when users get banned in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelBanEvents: (
-		user: UserIdResolvable,
-		handler: (event: EventSubChannelBanEvent) => void
-	) => Promise<EventSubSubscription>;
+	onChannelBan: (user: UserIdResolvable, handler: (event: EventSubChannelBanEvent) => void) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user getting unbanned from a channel.
@@ -218,10 +215,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when users get unbanned in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelUnbanEvents: (
+	onChannelUnban: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelUnbanEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent Shield Mode being activated in a channel.
@@ -232,11 +229,11 @@ export interface EventSubListener {
 	 *
 	 * @beta
 	 */
-	subscribeToChannelShieldModeBeginEvents: (
+	onChannelShieldModeBegin: (
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (event: EventSubChannelShieldModeBeginEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent Shield Mode being deactivated in a channel.
@@ -247,11 +244,11 @@ export interface EventSubListener {
 	 *
 	 * @beta
 	 */
-	subscribeToChannelShieldModeEndEvents: (
+	onChannelShieldModeEnd: (
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (event: EventSubChannelShieldModeEndEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user getting moderator permissions in a channel.
@@ -259,10 +256,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when users get moderator permissions in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelModeratorAddEvents: (
+	onChannelModeratorAdd: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelModeratorEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user losing moderator permissions in a channel.
@@ -270,10 +267,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when users lose moderator permissions in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelModeratorRemoveEvents: (
+	onChannelModeratorRemove: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelModeratorEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a broadcaster raiding another broadcaster.
@@ -281,10 +278,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to get outgoing raid notifications.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRaidEventsFrom: (
+	onChannelRaidFrom: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelRaidEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a broadcaster being raided by another broadcaster.
@@ -292,10 +289,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to get incoming raid notifications.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRaidEventsTo: (
+	onChannelRaidTo: (
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelRaidEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a Channel Points reward being added to a channel.
@@ -303,10 +300,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when they add a reward to their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRewardAddEvents: (
+	onChannelRewardAdd: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a Channel Points reward being updated.
@@ -314,10 +311,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when they update a reward.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRewardUpdateEvents: (
+	onChannelRewardUpdate: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a specific Channel Points reward being updated.
@@ -326,11 +323,11 @@ export interface EventSubListener {
 	 * @param rewardId The ID of the reward for which to get notifications when it is updated.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRewardUpdateEventsForReward: (
+	onChannelRewardUpdateForReward: (
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRewardEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a Channel Points reward being removed.
@@ -338,10 +335,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when they remove a reward.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRewardRemoveEvents: (
+	onChannelRewardRemove: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a specific Channel Points reward being removed.
@@ -350,11 +347,11 @@ export interface EventSubListener {
 	 * @param rewardId The ID of the reward to get notifications for when it is removed.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRewardRemoveEventsForReward: (
+	onChannelRewardRemoveForReward: (
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRewardEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represents a Channel Points reward being redeemed.
@@ -362,10 +359,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when their rewards are redeemed.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRedemptionAddEvents: (
+	onChannelRedemptionAdd: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRedemptionAddEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a specific Channel Points reward being redeemed.
@@ -374,11 +371,11 @@ export interface EventSubListener {
 	 * @param rewardId The ID of the reward for which to get notifications when it is redeemed.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRedemptionAddEventsForReward: (
+	onChannelRedemptionAddForReward: (
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRedemptionAddEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a Channel Points reward being updated by a broadcaster.
@@ -386,10 +383,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications for when they update a reward.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRedemptionUpdateEvents: (
+	onChannelRedemptionUpdate: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a specific Channel Points reward being updated by a broadcaster.
@@ -398,11 +395,11 @@ export interface EventSubListener {
 	 * @param rewardId The ID of the reward for which to get notifications when it gets updated.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelRedemptionUpdateEventsForReward: (
+	onChannelRedemptionUpdateForReward: (
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a poll starting in a channel.
@@ -410,10 +407,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to receive poll begin events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelPollBeginEvents: (
+	onChannelPollBegin: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollBeginEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a poll being voted on in a channel.
@@ -421,10 +418,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to receive poll progress events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelPollProgressEvents: (
+	onChannelPollProgress: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollProgressEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a poll ending in a channel.
@@ -432,10 +429,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to receive poll end events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelPollEndEvents: (
+	onChannelPollEnd: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollEndEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a prediction starting in a channel.
@@ -443,10 +440,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to receive prediction begin events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelPredictionBeginEvents: (
+	onChannelPredictionBegin: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionBeginEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a prediction being voted on in a channel.
@@ -454,10 +451,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to receive prediction progress events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelPredictionProgressEvents: (
+	onChannelPredictionProgress: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionProgressEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a prediction being locked in a channel.
@@ -465,10 +462,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to receive prediction lock events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelPredictionLockEvents: (
+	onChannelPredictionLock: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionLockEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a prediction ending in a channel.
@@ -476,10 +473,10 @@ export interface EventSubListener {
 	 * @param user The broadcaster for which to receive prediction end events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelPredictionEndEvents: (
+	onChannelPredictionEnd: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionEndEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a Goal beginning.
@@ -487,10 +484,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about Goals in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelGoalBeginEvents: (
+	onChannelGoalBegin: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalBeginEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent progress in a Goal in a channel.
@@ -498,10 +495,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about Goals in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelGoalProgressEvents: (
+	onChannelGoalProgress: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalProgressEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent the end of a Goal in a channel.
@@ -509,10 +506,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about Goals in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelGoalEndEvents: (
+	onChannelGoalEnd: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalEndEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a Hype Train beginning.
@@ -520,10 +517,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelHypeTrainBeginEvents: (
+	onChannelHypeTrainBegin: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainBeginEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent progress in a Hype Train in a channel.
@@ -531,10 +528,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelHypeTrainProgressEvents: (
+	onChannelHypeTrainProgress: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainProgressEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent the end of a Hype Train in a channel.
@@ -542,10 +539,10 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToChannelHypeTrainEndEvents: (
+	onChannelHypeTrainEnd: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainEndEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a Bits transaction in an extension.
@@ -553,10 +550,10 @@ export interface EventSubListener {
 	 * @param clientId The Client ID of the extension for which to get notifications for about Bits transactions.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	subscribeToExtensionBitsTransactionCreateEvents: (
+	onExtensionBitsTransactionCreate: (
 		clientId: string,
 		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user granting authorization to an application.
@@ -564,10 +561,10 @@ export interface EventSubListener {
 	 * @param clientId The Client ID for which to get notifications about authorization grants.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToUserAuthorizationGrantEvents: (
+	onUserAuthorizationGrant: (
 		clientId: string,
 		handler: (data: EventSubUserAuthorizationGrantEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user revoking authorization from an application.
@@ -575,10 +572,10 @@ export interface EventSubListener {
 	 * @param clientId The Client ID for which to get notifications about authorization revocations.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToUserAuthorizationRevokeEvents: (
+	onUserAuthorizationRevoke: (
 		clientId: string,
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void
-	) => Promise<EventSubSubscription>;
+	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user updating their account details.
@@ -586,8 +583,5 @@ export interface EventSubListener {
 	 * @param user The user for which to get notifications about account updates.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	subscribeToUserUpdateEvents: (
-		user: UserIdResolvable,
-		handler: (data: EventSubUserUpdateEvent) => void
-	) => Promise<EventSubSubscription>;
+	onUserUpdate: (user: UserIdResolvable, handler: (data: EventSubUserUpdateEvent) => void) => EventSubSubscription;
 }

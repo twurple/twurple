@@ -140,7 +140,17 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param subscription The subscription that was not successfully created.
 	 * @param error The error that was thrown.
 	 */
-	readonly onSubscriptionFailure = this.registerEvent<[subscription: EventSubSubscription, error: Error]>();
+	readonly onSubscriptionCreateFailure = this.registerEvent<[subscription: EventSubSubscription, error: Error]>();
+
+	/**
+	 * Fires when the client fails to delete a subscription.
+	 *
+	 * @eventListener
+	 *
+	 * @param subscription The subscription that was not successfully created.
+	 * @param error The error that was thrown.
+	 */
+	readonly onSubscriptionDeleteFailure = this.registerEvent<[subscription: EventSubSubscription, error: Error]>();
 
 	protected _readyToSubscribe = false;
 
@@ -176,8 +186,13 @@ export abstract class EventSubBase extends EventEmitter {
 	}
 
 	/** @private */
-	_notifySubscriptionError(subscription: EventSubSubscription, error: Error): void {
-		this.emit(this.onSubscriptionFailure, subscription, error);
+	_notifySubscriptionCreateError(subscription: EventSubSubscription, error: Error): void {
+		this.emit(this.onSubscriptionCreateFailure, subscription, error);
+	}
+
+	/** @private */
+	_notifySubscriptionDeleteError(subscription: EventSubSubscription, error: Error): void {
+		this.emit(this.onSubscriptionDeleteFailure, subscription, error);
 	}
 
 	/**
@@ -186,13 +201,10 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about their streams going live.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToStreamOnlineEvents(
-		user: UserIdResolvable,
-		handler: (event: EventSubStreamOnlineEvent) => void
-	): Promise<EventSubSubscription> {
+	onStreamOnline(user: UserIdResolvable, handler: (event: EventSubStreamOnlineEvent) => void): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToStreamOnlineEvents');
 
-		return await this._genericSubscribe(EventSubStreamOnlineSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubStreamOnlineSubscription, handler, this, userId);
 	}
 
 	/**
@@ -201,13 +213,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about their streams going offline.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToStreamOfflineEvents(
+	onStreamOffline(
 		user: UserIdResolvable,
 		handler: (event: EventSubStreamOfflineEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToStreamOfflineEvents');
 
-		return await this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubStreamOfflineSubscription, handler, this, userId);
 	}
 
 	/**
@@ -216,13 +228,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about updates.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelUpdateEvents(
+	onChannelUpdate(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelUpdateEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelUpdateEvents');
 
-		return await this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -231,13 +243,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about their followers.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelFollowEvents(
+	onChannelFollow(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelFollowEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelFollowEvents');
 
-		return await this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId);
 	}
 
 	/**
@@ -246,13 +258,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for about their subscribers.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelSubscriptionEvents(
+	onChannelSubscription(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionEvents');
 
-		return await this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelSubscriptionSubscription, handler, this, userId);
 	}
 
 	/**
@@ -261,13 +273,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for about subscriptions people gift in their channel.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelSubscriptionGiftEvents(
+	onChannelSubscriptionGift(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionGiftEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionGiftEvents');
 
-		return await this._genericSubscribe(EventSubChannelSubscriptionGiftSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelSubscriptionGiftSubscription, handler, this, userId);
 	}
 
 	/**
@@ -276,13 +288,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for about announced subscriptions.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelSubscriptionMessageEvents(
+	onChannelSubscriptionMessage(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionMessageEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionMessageEvents');
 
-		return await this._genericSubscribe(EventSubChannelSubscriptionMessageSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelSubscriptionMessageSubscription, handler, this, userId);
 	}
 
 	/**
@@ -291,13 +303,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for about ending subscriptions.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelSubscriptionEndEvents(
+	onChannelSubscriptionEnd(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelSubscriptionEndEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionEndEvents');
 
-		return await this._genericSubscribe(EventSubChannelSubscriptionEndSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelSubscriptionEndSubscription, handler, this, userId);
 	}
 
 	/**
@@ -306,13 +318,10 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for about cheers they get.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelCheerEvents(
-		user: UserIdResolvable,
-		handler: (event: EventSubChannelCheerEvent) => void
-	): Promise<EventSubSubscription> {
+	onChannelCheer(user: UserIdResolvable, handler: (event: EventSubChannelCheerEvent) => void): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCheerEvents');
 
-		return await this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelCheerSubscription, handler, this, userId);
 	}
 
 	/**
@@ -322,13 +331,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about charity campaigns starting.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelCharityCampaignStartEvents(
+	onChannelCharityCampaignStart(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignStartEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignStartEvents');
 
-		return await this._genericSubscribe(EventSubChannelCharityCampaignStartSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelCharityCampaignStartSubscription, handler, this, userId);
 	}
 
 	/**
@@ -338,13 +347,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about charity campaigns ending.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelCharityCampaignStopEvents(
+	onChannelCharityCampaignStop(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignStopEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignStopEvents');
 
-		return await this._genericSubscribe(EventSubChannelCharityCampaignStopSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelCharityCampaignStopSubscription, handler, this, userId);
 	}
 
 	/**
@@ -354,13 +363,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about charity campaign donations.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelCharityDonationEvents(
+	onChannelCharityDonation(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityDonationEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityDonationEvents');
 
-		return await this._genericSubscribe(EventSubChannelCharityDonationSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelCharityDonationSubscription, handler, this, userId);
 	}
 
 	/**
@@ -370,13 +379,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about charity campaign progress.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelCharityCampaignProgressEvents(
+	onChannelCharityCampaignProgress(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignProgressEvents');
 
-		return await this._genericSubscribe(EventSubChannelCharityCampaignProgressSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelCharityCampaignProgressSubscription, handler, this, userId);
 	}
 
 	/**
@@ -385,13 +394,10 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when users get banned in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelBanEvents(
-		user: UserIdResolvable,
-		handler: (event: EventSubChannelBanEvent) => void
-	): Promise<EventSubSubscription> {
+	onChannelBan(user: UserIdResolvable, handler: (event: EventSubChannelBanEvent) => void): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelBanEvents');
 
-		return await this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelBanSubscription, handler, this, userId);
 	}
 
 	/**
@@ -400,13 +406,10 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when users get unbanned in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelUnbanEvents(
-		user: UserIdResolvable,
-		handler: (event: EventSubChannelUnbanEvent) => void
-	): Promise<EventSubSubscription> {
+	onChannelUnban(user: UserIdResolvable, handler: (event: EventSubChannelUnbanEvent) => void): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelUnbanEvents');
 
-		return await this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelUnbanSubscription, handler, this, userId);
 	}
 
 	/**
@@ -418,18 +421,18 @@ export abstract class EventSubBase extends EventEmitter {
 	 *
 	 * @beta
 	 */
-	async subscribeToChannelShieldModeBeginEvents(
+	onChannelShieldModeBegin(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (event: EventSubChannelShieldModeBeginEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(
 			broadcaster,
 			'subscribeToChannelShieldModeStartEvents'
 		);
 		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShieldModeStartEvents');
 
-		return await this._genericSubscribe(
+		return this._genericSubscribe(
 			EventSubChannelShieldModeBeginSubscription,
 			handler,
 			this,
@@ -447,18 +450,18 @@ export abstract class EventSubBase extends EventEmitter {
 	 *
 	 * @beta
 	 */
-	async subscribeToChannelShieldModeEndEvents(
+	onChannelShieldModeEnd(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (event: EventSubChannelShieldModeEndEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(
 			broadcaster,
 			'subscribeToChannelShieldModeEndEvents'
 		);
 		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShieldModeEndEvents');
 
-		return await this._genericSubscribe(
+		return this._genericSubscribe(
 			EventSubChannelShieldModeEndSubscription,
 			handler,
 			this,
@@ -473,13 +476,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when users get moderator permissions in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelModeratorAddEvents(
+	onChannelModeratorAdd(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelModeratorEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelModeratorAddEvents');
 
-		return await this._genericSubscribe(EventSubChannelModeratorAddSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelModeratorAddSubscription, handler, this, userId);
 	}
 
 	/**
@@ -488,13 +491,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when users lose moderator permissions in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelModeratorRemoveEvents(
+	onChannelModeratorRemove(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelModeratorEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelModeratorRemoveEvents');
 
-		return await this._genericSubscribe(EventSubChannelModeratorRemoveSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelModeratorRemoveSubscription, handler, this, userId);
 	}
 
 	/**
@@ -503,13 +506,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to get outgoing raid notifications.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRaidEventsFrom(
+	onChannelRaidFrom(
 		user: UserIdResolvable,
 		handler: (event: EventSubChannelRaidEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRaidEventsFrom');
 
-		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
+		return this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'from');
 	}
 
 	/**
@@ -518,13 +521,10 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to get incoming raid notifications.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRaidEventsTo(
-		user: UserIdResolvable,
-		handler: (event: EventSubChannelRaidEvent) => void
-	): Promise<EventSubSubscription> {
+	onChannelRaidTo(user: UserIdResolvable, handler: (event: EventSubChannelRaidEvent) => void): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRaidEventsTo');
 
-		return await this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
+		return this._genericSubscribe(EventSubChannelRaidSubscription, handler, this, userId, 'to');
 	}
 
 	/**
@@ -533,13 +533,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when they add a reward to their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRewardAddEvents(
+	onChannelRewardAdd(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRewardAddEvents');
 
-		return await this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelRewardAddSubscription, handler, this, userId);
 	}
 
 	/**
@@ -548,13 +548,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when they update a reward.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRewardUpdateEvents(
+	onChannelRewardUpdate(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardUpdateEvents');
 
-		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -564,14 +564,14 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param rewardId The ID of the reward for which to get notifications when it is updated.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRewardUpdateEventsForReward(
+	onChannelRewardUpdateForReward(
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRewardEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardUpdateEvents');
 
-		return await this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
+		return this._genericSubscribe(EventSubChannelRewardUpdateSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -580,13 +580,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when they remove a reward.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRewardRemoveEvents(
+	onChannelRewardRemove(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRewardEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardRemoveEvents');
 
-		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId);
 	}
 
 	/**
@@ -596,14 +596,14 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param rewardId The ID of the reward to get notifications for when it is removed.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRewardRemoveEventsForReward(
+	onChannelRewardRemoveForReward(
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRewardEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardRemoveEventsForReward');
 
-		return await this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
+		return this._genericSubscribe(EventSubChannelRewardRemoveSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -612,13 +612,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when their rewards are redeemed.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRedemptionAddEvents(
+	onChannelRedemptionAdd(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRedemptionAddEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionEvents');
 
-		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId);
 	}
 
 	/**
@@ -628,14 +628,14 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param rewardId The ID of the reward for which to get notifications when it is redeemed.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRedemptionAddEventsForReward(
+	onChannelRedemptionAddForReward(
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRedemptionAddEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRedemptionAddEventsForReward');
 
-		return await this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
+		return this._genericSubscribe(EventSubChannelRedemptionAddSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -644,13 +644,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications for when they update a reward.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRedemptionUpdateEvents(
+	onChannelRedemptionUpdate(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionUpdateEvents');
 
-		return await this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId);
 	}
 
 	/**
@@ -660,20 +660,14 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param rewardId The ID of the reward for which to get notifications when it gets updated.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelRedemptionUpdateEventsForReward(
+	onChannelRedemptionUpdateForReward(
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionUpdateEventsForReward');
 
-		return await this._genericSubscribe(
-			EventSubChannelRedemptionUpdateSubscription,
-			handler,
-			this,
-			userId,
-			rewardId
-		);
+		return this._genericSubscribe(EventSubChannelRedemptionUpdateSubscription, handler, this, userId, rewardId);
 	}
 
 	/**
@@ -682,13 +676,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to receive poll begin events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelPollBeginEvents(
+	onChannelPollBegin(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollBeginEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollBeginEvents');
 
-		return await this._genericSubscribe(EventSubChannelPollBeginSubscription, handler, this, broadcasterId);
+		return this._genericSubscribe(EventSubChannelPollBeginSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -697,13 +691,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to receive poll progress events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelPollProgressEvents(
+	onChannelPollProgress(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollProgressEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollProgressEvents');
 
-		return await this._genericSubscribe(EventSubChannelPollProgressSubscription, handler, this, broadcasterId);
+		return this._genericSubscribe(EventSubChannelPollProgressSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -712,13 +706,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to receive poll end events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelPollEndEvents(
+	onChannelPollEnd(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPollEndEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollEndEvents');
 
-		return await this._genericSubscribe(EventSubChannelPollEndSubscription, handler, this, broadcasterId);
+		return this._genericSubscribe(EventSubChannelPollEndSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -727,13 +721,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to receive prediction begin events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelPredictionBeginEvents(
+	onChannelPredictionBegin(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionBeginEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionBeginEvents');
 
-		return await this._genericSubscribe(EventSubChannelPredictionBeginSubscription, handler, this, broadcasterId);
+		return this._genericSubscribe(EventSubChannelPredictionBeginSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -742,18 +736,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to receive prediction progress events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelPredictionProgressEvents(
+	onChannelPredictionProgress(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionProgressEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionProgressEvents');
 
-		return await this._genericSubscribe(
-			EventSubChannelPredictionProgressSubscription,
-			handler,
-			this,
-			broadcasterId
-		);
+		return this._genericSubscribe(EventSubChannelPredictionProgressSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -762,13 +751,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to receive prediction lock events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelPredictionLockEvents(
+	onChannelPredictionLock(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionLockEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionLockEvents');
 
-		return await this._genericSubscribe(EventSubChannelPredictionLockSubscription, handler, this, broadcasterId);
+		return this._genericSubscribe(EventSubChannelPredictionLockSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -777,13 +766,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The broadcaster for which to receive prediction end events.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelPredictionEndEvents(
+	onChannelPredictionEnd(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelPredictionEndEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionEndEvents');
 
-		return await this._genericSubscribe(EventSubChannelPredictionEndSubscription, handler, this, broadcasterId);
+		return this._genericSubscribe(EventSubChannelPredictionEndSubscription, handler, this, broadcasterId);
 	}
 
 	/**
@@ -792,13 +781,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about Goals in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelGoalBeginEvents(
+	onChannelGoalBegin(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalBeginEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalBeginEvents');
 
-		return await this._genericSubscribe(EventSubChannelGoalBeginSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelGoalBeginSubscription, handler, this, userId);
 	}
 
 	/**
@@ -807,13 +796,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about Goals in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelGoalProgressEvents(
+	onChannelGoalProgress(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalProgressEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalProgressEvents');
 
-		return await this._genericSubscribe(EventSubChannelGoalProgressSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelGoalProgressSubscription, handler, this, userId);
 	}
 
 	/**
@@ -822,13 +811,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about Goals in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelGoalEndEvents(
+	onChannelGoalEnd(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelGoalEndEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalEndEvents');
 
-		return await this._genericSubscribe(EventSubChannelGoalEndSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelGoalEndSubscription, handler, this, userId);
 	}
 
 	/**
@@ -837,13 +826,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelHypeTrainBeginEvents(
+	onChannelHypeTrainBegin(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainBeginEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainBeginEvents');
 
-		return await this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelHypeTrainBeginSubscription, handler, this, userId);
 	}
 
 	/**
@@ -852,13 +841,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelHypeTrainProgressEvents(
+	onChannelHypeTrainProgress(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainProgressEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainProgressEvents');
 
-		return await this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelHypeTrainProgressSubscription, handler, this, userId);
 	}
 
 	/**
@@ -867,13 +856,13 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToChannelHypeTrainEndEvents(
+	onChannelHypeTrainEnd(
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainEndEvent) => void
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainEndEvents');
 
-		return await this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
 	}
 
 	/**
@@ -882,16 +871,11 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param clientId The Client ID of the extension for which to get notifications for about Bits transactions.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
-	async subscribeToExtensionBitsTransactionCreateEvents(
+	onExtensionBitsTransactionCreate(
 		clientId: string,
 		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void
-	): Promise<EventSubSubscription> {
-		return await this._genericSubscribe(
-			EventSubExtensionBitsTransactionCreateSubscription,
-			handler,
-			this,
-			clientId
-		);
+	): EventSubSubscription {
+		return this._genericSubscribe(EventSubExtensionBitsTransactionCreateSubscription, handler, this, clientId);
 	}
 
 	/**
@@ -900,11 +884,11 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param clientId The Client ID for which to get notifications about authorization grants.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToUserAuthorizationGrantEvents(
+	onUserAuthorizationGrant(
 		clientId: string,
 		handler: (data: EventSubUserAuthorizationGrantEvent) => void
-	): Promise<EventSubSubscription> {
-		return await this._genericSubscribe(EventSubUserAuthorizationGrantSubscription, handler, this, clientId);
+	): EventSubSubscription {
+		return this._genericSubscribe(EventSubUserAuthorizationGrantSubscription, handler, this, clientId);
 	}
 
 	/**
@@ -913,11 +897,11 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param clientId The Client ID for which to get notifications about authorization revocations.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToUserAuthorizationRevokeEvents(
+	onUserAuthorizationRevoke(
 		clientId: string,
 		handler: (data: EventSubUserAuthorizationRevokeEvent) => void
-	): Promise<EventSubSubscription> {
-		return await this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
+	): EventSubSubscription {
+		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
 
 	/**
@@ -926,13 +910,10 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param user The user for which to get notifications about account updates.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	async subscribeToUserUpdateEvents(
-		user: UserIdResolvable,
-		handler: (data: EventSubUserUpdateEvent) => void
-	): Promise<EventSubSubscription> {
+	onUserUpdate(user: UserIdResolvable, handler: (data: EventSubUserUpdateEvent) => void): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToUserUpdateEvents');
 
-		return await this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
 	}
 
 	/** @private */
@@ -951,15 +932,15 @@ export abstract class EventSubBase extends EventEmitter {
 		subscription: EventSubSubscription
 	): HelixEventSubSubscription | undefined;
 
-	private async _genericSubscribe<T, Args extends unknown[]>(
+	private _genericSubscribe<T, Args extends unknown[]>(
 		clazz: new (handler: (obj: T) => void, client: EventSubBase, ...args: Args) => EventSubSubscription<T>,
 		handler: (obj: T) => void,
 		client: EventSubBase,
 		...params: Args
-	): Promise<EventSubSubscription> {
+	): EventSubSubscription {
 		const subscription = new clazz(handler, client, ...params);
 		if (this._readyToSubscribe) {
-			await subscription.start(this._findTwitchSubscriptionToContinue(subscription as EventSubSubscription));
+			subscription.start(this._findTwitchSubscriptionToContinue(subscription as EventSubSubscription));
 		}
 		this._subscriptions.set(subscription.id, subscription as EventSubSubscription);
 

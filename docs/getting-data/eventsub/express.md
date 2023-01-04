@@ -5,7 +5,7 @@ This is made easy with the {@link EventSubMiddleware} class.
 You just need to follow some easy steps to make sure the events come through:
 
 1. Create an instance
-2. Run (and await) the `.apply(app)` method, passing your Express app as parameter
+2. Run the `.apply(app)` method, passing your Express app as parameter
 3. In the listen callback of the app, run (and await) the `.markAsReady()` method
 
 Now you can continue subscribing to your desired EventSub events as usual.
@@ -28,10 +28,10 @@ const middleware = new EventSubMiddleware({
   secret: 'secretHere'
 });
 
-await middleware.apply(app);
+middleware.apply(app);
 app.listen(3000, async () => {
   await middleware.markAsReady();
-  await middleware.subscribeToChannelFollowEvents('125328655', event => {
+  middleware.onChannelFollow('125328655', event => {
     console.log(`${event.userDisplayName} just followed ${event.broadcasterDisplayName}!`);
   });
 });

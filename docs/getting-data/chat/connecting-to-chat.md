@@ -25,5 +25,5 @@ declare const authProvider: AuthProvider;
 import { ChatClient } from '@twurple/chat';
 
 const chatClient = new ChatClient({ authProvider, channels: ['lidlrini'] });
-await chatClient.connect();
+chatClient.connect();
 ```
