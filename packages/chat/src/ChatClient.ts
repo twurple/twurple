@@ -43,7 +43,7 @@ import type {
 	ChatSubUpgradeInfo
 } from './userNotices/ChatSubInfo';
 import { splitOnSpaces } from './utils/messageUtil';
-import { toChannelName, toUserName } from './utils/userUtil';
+import { toChannelName } from './utils/userUtil';
 
 /**
  * A Twitch bot level, i.e. whether you're connecting as a known or verified bot.
@@ -579,44 +579,7 @@ export class ChatClient extends EventEmitter {
 		this.registerEvent();
 
 	// internal events to resolve promises and stuff
-	private readonly _onBanResult: EventBinder<[channel: string, user: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onTimeoutResult: EventBinder<[channel: string, user: string, duration?: number, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onUnbanResult: EventBinder<[channel: string, user: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onColorResult: EventBinder<[error?: string]> = this.registerInternalEvent();
-	private readonly _onCommercialResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onDeleteMessageResult: EventBinder<[channel: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onEmoteOnlyResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onEmoteOnlyOffResult: EventBinder<[channel: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onFollowersOnlyResult: EventBinder<[channel: string, minFollowTime?: number, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onFollowersOnlyOffResult: EventBinder<[channel: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onModResult: EventBinder<[channel: string, user: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onUnmodResult: EventBinder<[channel: string, user: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onModsResult: EventBinder<[channel: string, mods?: string[], error?: string]> =
-		this.registerInternalEvent();
 	private readonly _onJoinResult: EventBinder<[channel: string, state?: Map<string, string>, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onR9kResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onR9kOffResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onSlowResult: EventBinder<[channel: string, delay?: number, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onSlowOffResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onSubsOnlyResult: EventBinder<[channel: string, error?: string]> = this.registerInternalEvent();
-	private readonly _onSubsOnlyOffResult: EventBinder<[channel: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onVipResult: EventBinder<[channel: string, user?: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onUnvipResult: EventBinder<[channel: string, user: string, error?: string]> =
-		this.registerInternalEvent();
-	private readonly _onVipsResult: EventBinder<[channel: string, vips?: string[], error?: string]> =
 		this.registerInternalEvent();
 
 	/**
@@ -789,7 +752,6 @@ export class ChatClient extends EventEmitter {
 				} else {
 					// timeout
 					this.emit(this.onTimeout, channel, user, Number(duration), msg);
-					this.emit(this._onTimeoutResult, channel, user, Number(duration));
 				}
 			} else {
 				// full chat clear
@@ -821,31 +783,21 @@ export class ChatClient extends EventEmitter {
 				isInitial = true;
 			}
 
-			if (tags.has('slow')) {
-				const slowDelay = Number(tags.get('slow'));
-				if (slowDelay) {
-					this.emit(this._onSlowResult, channel, slowDelay);
-					if (!isInitial) {
+			if (!isInitial) {
+				if (tags.has('slow')) {
+					const slowDelay = Number(tags.get('slow'));
+					if (slowDelay) {
 						this.emit(this.onSlow, channel, true, slowDelay);
-					}
-				} else {
-					this.emit(this._onSlowOffResult, channel);
-					if (!isInitial) {
+					} else {
 						this.emit(this.onSlow, channel, false);
 					}
 				}
-			}
 
-			if (tags.has('followers-only')) {
-				const followDelay = Number(tags.get('followers-only'));
-				if (followDelay === -1) {
-					this.emit(this._onFollowersOnlyOffResult, channel);
-					if (!isInitial) {
+				if (tags.has('followers-only')) {
+					const followDelay = Number(tags.get('followers-only'));
+					if (followDelay === -1) {
 						this.emit(this.onFollowersOnly, channel, false);
-					}
-				} else {
-					this.emit(this._onFollowersOnlyResult, channel, followDelay);
-					if (!isInitial) {
+					} else {
 						this.emit(this.onFollowersOnly, channel, true, followDelay);
 					}
 				}
@@ -1069,123 +1021,14 @@ export class ChatClient extends EventEmitter {
 			async ({ params: { target: channel, content }, tags }) => {
 				const messageType = tags.get('msg-id');
 
-				// this event handler involves a lot of parsing strings you shouldn't parse...
-				// but Twitch doesn't give us the required info in tags (╯°□°）╯︵ ┻━┻
-				// (this code also might not do the right thing with foreign character display names...)
 				switch (messageType) {
-					// ban
-					case 'already_banned': {
-						const match = content.split(' ');
-						const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
-						if (user) {
-							this.emit(this._onBanResult, channel, user, messageType);
-						}
-						break;
-					}
-
-					case 'bad_ban_self': {
-						this.emit(this._onBanResult, channel, this._ircClient.currentNick, messageType);
-						break;
-					}
-
-					case 'bad_ban_broadcaster': {
-						this.emit(this._onBanResult, channel, toUserName(channel), messageType);
-						break;
-					}
-
-					case 'bad_ban_admin':
-					case 'bad_ban_global_mod':
-					case 'bad_ban_staff': {
-						const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(content);
-						if (match) {
-							this.emit(this._onBanResult, channel, match[1].toLowerCase(), messageType);
-						}
-						break;
-					}
-
-					case 'ban_success': {
-						const match = content.split(' ');
-						const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
-						if (user) {
-							this.emit(this._onBanResult, channel, user);
-						}
-						break;
-					}
-
-					// unban
-					case 'bad_unban_no_ban': {
-						const match = content.split(' ');
-						const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
-						if (user) {
-							this.emit(this._onUnbanResult, channel, user, messageType);
-						}
-						break;
-					}
-
-					case 'unban_success': {
-						const match = content.split(' ');
-						const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
-						if (user) {
-							this.emit(this._onUnbanResult, channel, user);
-						}
-						break;
-					}
-
-					// color
-					case 'turbo_only_color': {
-						this.emit(this._onColorResult, messageType);
-						break;
-					}
-
-					case 'color_changed': {
-						this.emit(this._onColorResult);
-						break;
-					}
-
-					// commercial
-					case 'bad_commercial_error': {
-						this.emit(this._onCommercialResult, channel, messageType);
-						break;
-					}
-
-					case 'commercial_success': {
-						this.emit(this._onCommercialResult, channel);
-						break;
-					}
-
-					// delete message
-					case 'bad_delete_message_error':
-					case 'bad_delete_message_broadcaster':
-					case 'bad_delete_message_mod': {
-						this.emit(this._onDeleteMessageResult, channel, messageType);
-						break;
-					}
-
-					case 'delete_message_success': {
-						this.emit(this._onDeleteMessageResult, channel);
-						break;
-					}
-
 					// emote only
-					case 'already_emote_only_on': {
-						this.emit(this._onEmoteOnlyResult, channel, messageType);
-						break;
-					}
-
 					case 'emote_only_on': {
-						this.emit(this._onEmoteOnlyResult, channel);
 						this.emit(this.onEmoteOnly, channel, true);
 						break;
 					}
 
-					// emote only off
-					case 'already_emote_only_off': {
-						this.emit(this._onEmoteOnlyOffResult, channel, messageType);
-						break;
-					}
-
 					case 'emote_only_off': {
-						this.emit(this._onEmoteOnlyOffResult, channel);
 						this.emit(this.onEmoteOnly, channel, false);
 						break;
 					}
@@ -1197,186 +1040,25 @@ export class ChatClient extends EventEmitter {
 						break;
 					}
 
-					// mod
-					case 'bad_mod_banned':
-					case 'bad_mod_mod': {
-						const match = content.split(' ');
-						const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
-						if (user) {
-							this.emit(this._onModResult, channel, user, messageType);
-						}
-						break;
-					}
-
-					case 'mod_success': {
-						const match = /^You have added (\w+) /.exec(content);
-						if (match) {
-							this.emit(this._onModResult, channel, match[1]);
-						}
-						break;
-					}
-
-					// unmod
-					case 'bad_unmod_mod': {
-						const match = content.split(' ');
-						const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
-						if (user) {
-							this.emit(this._onUnmodResult, channel, user, messageType);
-						}
-						break;
-					}
-
-					case 'unmod_success': {
-						const match = /^You have removed (\w+) /.exec(content);
-						if (match) {
-							this.emit(this._onUnmodResult, channel, match[1]);
-						}
-						break;
-					}
-
-					// mods
-					case 'no_mods': {
-						this.emit(this._onModsResult, channel, []);
-						break;
-					}
-
-					case 'room_mods': {
-						const [, modList] = content.replace(/\.$/, '').split(': ');
-						const mods = modList.split(', ');
-						this.emit(this._onModsResult, channel, mods);
-						break;
-					}
-
 					// r9k
-					case 'already_r9k_on': {
-						this.emit(this._onR9kResult, channel, messageType);
-						break;
-					}
-
 					case 'r9k_on': {
-						this.emit(this._onR9kResult, channel);
 						this.emit(this.onR9k, channel, true);
 						break;
 					}
 
-					// r9k off
-					case 'already_r9k_off': {
-						this.emit(this._onR9kOffResult, channel, messageType);
-						break;
-					}
-
 					case 'r9k_off': {
-						this.emit(this._onR9kOffResult, channel);
 						this.emit(this.onR9k, channel, false);
 						break;
 					}
 
 					// subs only
-					case 'already_subs_on': {
-						this.emit(this._onSubsOnlyResult, channel, messageType);
-						break;
-					}
-
 					case 'subs_on': {
-						this.emit(this._onSubsOnlyResult, channel);
 						this.emit(this.onSubsOnly, channel, true);
 						break;
 					}
 
-					// subs only off
-					case 'already_subs_off': {
-						this.emit(this._onSubsOnlyOffResult, channel, messageType);
-						break;
-					}
-
 					case 'subs_off': {
-						this.emit(this._onSubsOnlyOffResult, channel);
 						this.emit(this.onSubsOnly, channel, false);
-						break;
-					}
-
-					// timeout (only fails, success is handled by CLEARCHAT)
-					case 'bad_timeout_self': {
-						this.emit(this._onTimeoutResult, channel, this._ircClient.currentNick, undefined, messageType);
-						break;
-					}
-
-					case 'bad_timeout_broadcaster': {
-						this.emit(this._onTimeoutResult, channel, toUserName(channel), undefined, messageType);
-						break;
-					}
-
-					case 'bad_timeout_mod': {
-						const match = /^You cannot timeout moderator (\w+) unless/.exec(content);
-						if (match) {
-							this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
-						}
-						break;
-					}
-
-					case 'bad_timeout_admin':
-					case 'bad_timeout_global_mod':
-					case 'bad_timeout_staff': {
-						const match = /^You cannot ban (?:\w+ )+?(\w+)\.$/.exec(content);
-						if (match) {
-							this.emit(this._onTimeoutResult, channel, toUserName(match[1]), undefined, messageType);
-						}
-						break;
-					}
-
-					// vip
-					case 'bad_vip_grantee_banned':
-					case 'bad_vip_grantee_already_vip': {
-						const match = content.split(' ');
-						const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
-						if (user) {
-							this.emit(this._onVipResult, channel, user, messageType);
-						}
-						break;
-					}
-
-					case 'bad_vip_achievement_incomplete':
-					case 'bad_vip_max_vips_reached': {
-						this.emit(this._onVipResult, channel, undefined, messageType);
-						break;
-					}
-
-					case 'vip_success': {
-						const match = /^You have added (\w+) /.exec(content);
-						if (match) {
-							this.emit(this._onVipResult, channel, match[1]);
-						}
-						break;
-					}
-
-					// unvip
-					case 'bad_unvip_grantee_not_vip': {
-						const match = content.split(' ');
-						const user = /^\w+$/.test(match[0]) ? match[0] : undefined;
-						if (user) {
-							this.emit(this._onUnvipResult, channel, user, messageType);
-						}
-						break;
-					}
-
-					case 'unvip_success': {
-						const match = /^You have removed (\w+) /.exec(content);
-						if (match) {
-							this.emit(this._onUnvipResult, channel, match[1]);
-						}
-						break;
-					}
-
-					// vips
-					case 'no_vips': {
-						this.emit(this._onVipsResult, channel, []);
-						break;
-					}
-
-					case 'vips_success': {
-						const [, vipList] = content.replace(/\.$/, '').split(': ');
-						const vips = vipList.split(', ');
-						this.emit(this._onVipsResult, channel, vips);
 						break;
 					}
 
