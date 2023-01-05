@@ -49,6 +49,8 @@ export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEv
 
 	/**
 	 * Retrieves more information about the stream.
+	 *
+	 * This may sometimes return null, as the Helix API might be behind due to caching on Twitch's side.
 	 */
 	async getStream(): Promise<HelixStream | null> {
 		return await this._client.streams.getStreamByUserId(this[rawDataSymbol].broadcaster_user_id);

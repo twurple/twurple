@@ -103,8 +103,10 @@ export class HelixClip extends DataObject<HelixClipData> {
 	/**
 	 * Retrieves information about the game that was being played when the clip was created.
 	 */
-	async getGame(): Promise<HelixGame> {
-		return checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].game_id));
+	async getGame(): Promise<HelixGame | null> {
+		return this[rawDataSymbol].game_id
+			? checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].game_id))
+			: null;
 	}
 
 	/**

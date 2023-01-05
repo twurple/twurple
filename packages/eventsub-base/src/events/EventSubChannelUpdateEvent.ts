@@ -75,8 +75,10 @@ export class EventSubChannelUpdateEvent extends DataObject<EventSubChannelUpdate
 	/**
 	 * Retrieves more information about the game that is currently being played on the channel.
 	 */
-	async getGame(): Promise<HelixGame> {
-		return checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].category_id));
+	async getGame(): Promise<HelixGame | null> {
+		return this[rawDataSymbol].category_id
+			? checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].category_id))
+			: null;
 	}
 
 	/**

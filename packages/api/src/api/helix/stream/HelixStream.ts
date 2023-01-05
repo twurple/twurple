@@ -74,7 +74,9 @@ export class HelixStream extends DataObject<HelixStreamData> {
 	 * Returns null if the stream doesn't currently have a game.
 	 */
 	async getGame(): Promise<HelixGame | null> {
-		return this[rawDataSymbol].game_id ? await this._client.games.getGameById(this[rawDataSymbol].game_id) : null;
+		return this[rawDataSymbol].game_id
+			? checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].game_id))
+			: null;
 	}
 
 	/**
