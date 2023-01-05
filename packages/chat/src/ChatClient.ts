@@ -630,7 +630,8 @@ export class ChatClient extends EventEmitter {
 				name: 'twurple:chat:irc',
 				...config.logger
 			},
-			nonConformingCommands: ['004']
+			nonConformingCommands: ['004'],
+			manuallyAcknowledgeJoins: true
 		});
 
 		this._ircClient.registerMessageType(TwitchPrivateMessage);
@@ -750,6 +751,8 @@ export class ChatClient extends EventEmitter {
 		this.addInternalListener(this._onJoinResult, (channel, _, error) => {
 			if (error) {
 				this.emit(this.onJoinFailure, channel, error);
+			} else {
+				this._ircClient.acknowledgeJoin(channel);
 			}
 		});
 
@@ -1173,6 +1176,13 @@ export class ChatClient extends EventEmitter {
 	 */
 	get irc(): IrcClient {
 		return this._ircClient;
+	}
+
+	/**
+	 * The channels the client is currently in.
+	 */
+	get currentChannels(): string[] {
+		return this._ircClient.currentChannels;
 	}
 
 	/**
