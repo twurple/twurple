@@ -79,20 +79,24 @@ export class AppTokenAuthProvider implements AuthProvider {
 		return await this._fetcher.fetch();
 	}
 
-	private async _fetch(scopes?: string[]): Promise<AccessToken> {
-		if (scopes && scopes.length > 0) {
-			if (this._impliedScopes.length) {
-				if (scopes.some(scope => !this._impliedScopes.includes(scope))) {
+	private async _fetch(scopeSets: string[][]): Promise<AccessToken> {
+		if (scopeSets.length > 0) {
+			for (const scopes of scopeSets) {
+				if (this._impliedScopes.length) {
+					if (scopes.every(scope => !this._impliedScopes.includes(scope))) {
+						throw new Error(
+							`One of the scopes ${scopes.join(
+								', '
+							)} requested but only the scope ${this._impliedScopes.join(', ')} is implied`
+						);
+					}
+				} else {
 					throw new Error(
-						`Scope ${scopes.join(', ')} requested but only the scope ${this._impliedScopes.join(
+						`One of the scopes ${scopes.join(
 							', '
-						)} is implied`
+						)} requested but the client credentials flow does not support scopes`
 					);
 				}
-			} else {
-				throw new Error(
-					`Scope ${scopes.join(', ')} requested but the client credentials flow does not support scopes`
-				);
 			}
 		}
 

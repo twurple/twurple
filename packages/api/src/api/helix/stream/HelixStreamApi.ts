@@ -150,7 +150,7 @@ export class HelixStreamApi extends BaseApi {
 				...createPaginationQuery(pagination)
 			},
 			userId: extractUserId(user),
-			scope: 'user:read:broadcast'
+			scopes: ['user:read:broadcast']
 		});
 
 		return {
@@ -172,7 +172,7 @@ export class HelixStreamApi extends BaseApi {
 				url: 'streams/markers',
 				query: createUserQuery(user),
 				userId: extractUserId(user),
-				scope: 'user:read:broadcast'
+				scopes: ['user:read:broadcast']
 			},
 			this._client,
 			data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client)
@@ -201,7 +201,7 @@ export class HelixStreamApi extends BaseApi {
 				...createPaginationQuery(pagination)
 			},
 			userId: extractUserId(user),
-			scope: 'user:read:broadcast'
+			scopes: ['user:read:broadcast']
 		});
 
 		return {
@@ -225,7 +225,7 @@ export class HelixStreamApi extends BaseApi {
 				url: 'streams/markers',
 				query: createVideoQuery(videoId),
 				userId: extractUserId(user),
-				scope: 'user:read:broadcast'
+				scopes: ['user:read:broadcast']
 			},
 			this._client,
 			data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client)
@@ -246,7 +246,7 @@ export class HelixStreamApi extends BaseApi {
 				url: 'streams/markers',
 				method: 'POST',
 				type: 'helix',
-				scope: 'channel:manage:broadcast',
+				scopes: ['channel:manage:broadcast'],
 				jsonBody: createStreamMarkerBody(broadcaster, description)
 			});
 
@@ -285,7 +285,7 @@ export class HelixStreamApi extends BaseApi {
 		await this._client.callApi({
 			type: 'helix',
 			url: 'streams/tags',
-			scope: 'channel:manage:broadcast',
+			scopes: ['channel:manage:broadcast'],
 			method: 'PUT',
 			query: createBroadcasterQuery(broadcaster),
 			jsonBody: createSingleKeyQuery('tag_ids', tagIds)
@@ -301,7 +301,7 @@ export class HelixStreamApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixGetStreamKeyData>>({
 			type: 'helix',
 			url: 'streams/key',
-			scope: 'channel:read:stream_key',
+			scopes: ['channel:read:stream_key'],
 			query: createBroadcasterQuery(broadcaster)
 		});
 
@@ -323,7 +323,7 @@ export class HelixStreamApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResult<HelixStreamData>>({
 			type: 'helix',
 			url: 'streams/followed',
-			scope: 'user:read:follows',
+			scopes: ['user:read:follows'],
 			query: {
 				...createSingleKeyQuery('user_id', extractUserId(user)),
 				...createPaginationQuery(pagination)
@@ -342,7 +342,7 @@ export class HelixStreamApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'streams/followed',
-				scope: 'user:read:follows',
+				scopes: ['user:read:follows'],
 				query: createSingleKeyQuery('user_id', extractUserId(user))
 			},
 			this._client,

@@ -154,7 +154,7 @@ export class HelixClipApi extends BaseApi {
 			url: 'clips',
 			method: 'POST',
 			userId: extractUserId(params.channel),
-			scope: 'clips:edit',
+			scopes: ['clips:edit'],
 			query: createClipCreateQuery(channel, createAfterDelay)
 		});
 

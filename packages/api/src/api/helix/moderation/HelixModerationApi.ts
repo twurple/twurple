@@ -68,7 +68,7 @@ export class HelixModerationApi extends BaseApi {
 			type: 'helix',
 			url: 'moderation/banned',
 			userId: extractUserId(channel),
-			scope: 'moderation:read',
+			scopes: ['moderation:read'],
 			query: {
 				...createModerationUserListQuery(channel, filter),
 				...createPaginationQuery(filter)
@@ -88,7 +88,7 @@ export class HelixModerationApi extends BaseApi {
 			{
 				url: 'moderation/banned',
 				userId: extractUserId(channel),
-				scope: 'moderation:read',
+				scopes: ['moderation:read'],
 				query: createBroadcasterQuery(channel)
 			},
 			this._client,
@@ -126,7 +126,7 @@ export class HelixModerationApi extends BaseApi {
 			type: 'helix',
 			url: 'moderation/moderators',
 			userId: extractUserId(channel),
-			scope: 'moderation:read',
+			scopes: ['moderation:read'],
 			query: {
 				...createModerationUserListQuery(channel, filter),
 				...createPaginationQuery(filter)
@@ -146,7 +146,7 @@ export class HelixModerationApi extends BaseApi {
 			{
 				url: 'moderation/moderators',
 				userId: extractUserId(channel),
-				scope: 'moderation:read',
+				scopes: ['moderation:read'],
 				query: createBroadcasterQuery(channel)
 			},
 			this._client,
@@ -179,7 +179,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/moderators',
 			method: 'POST',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:moderators',
+			scopes: ['channel:manage:moderators'],
 			query: createModeratorModifyQuery(broadcaster, user)
 		});
 	}
@@ -196,7 +196,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/moderators',
 			method: 'DELETE',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:moderators',
+			scopes: ['channel:manage:moderators'],
 			query: createModeratorModifyQuery(broadcaster, user)
 		});
 	}
@@ -216,7 +216,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/enforcements/status',
 			method: 'POST',
 			userId: extractUserId(channel),
-			scope: 'moderation:read',
+			scopes: ['moderation:read'],
 			query: createBroadcasterQuery(channel),
 			jsonBody: {
 				data
@@ -239,7 +239,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/automod/message',
 			method: 'POST',
 			userId: extractUserId(user),
-			scope: 'moderator:manage:automod',
+			scopes: ['moderator:manage:automod'],
 			jsonBody: createAutoModProcessBody(user, msgId, allow)
 		});
 	}
@@ -259,7 +259,7 @@ export class HelixModerationApi extends BaseApi {
 			type: 'helix',
 			url: 'moderation/automod/settings',
 			userId: extractUserId(moderator),
-			scope: 'moderator:read:automod_settings',
+			scopes: ['moderator:read:automod_settings'],
 			query: createModeratorActionQuery(broadcaster, moderator)
 		});
 
@@ -284,7 +284,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/automod/settings',
 			method: 'PUT',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:automod_settings',
+			scopes: ['moderator:manage:automod_settings'],
 			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: createAutoModSettingsBody(data)
 		});
@@ -314,7 +314,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/bans',
 			method: 'POST',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:banned_users',
+			scopes: ['moderator:manage:banned_users'],
 			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: createBanUserBody(data)
 		});
@@ -336,7 +336,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/bans',
 			method: 'DELETE',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:banned_users',
+			scopes: ['moderator:manage:banned_users'],
 			query: {
 				...createModeratorActionQuery(broadcaster, moderator),
 				...createSingleKeyQuery('user_id', extractUserId(user))
@@ -365,7 +365,7 @@ export class HelixModerationApi extends BaseApi {
 			type: 'helix',
 			url: 'moderation/blocked_terms',
 			userId: extractUserId(moderator),
-			scope: 'moderator:read:blocked_terms',
+			scopes: ['moderator:read:blocked_terms'],
 			query: {
 				...createModeratorActionQuery(broadcaster, moderator),
 				...createPaginationQuery(pagination)
@@ -395,7 +395,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/blocked_terms',
 			method: 'POST',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:blocked_terms',
+			scopes: ['moderator:manage:blocked_terms'],
 			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: {
 				text
@@ -419,7 +419,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/blocked_terms',
 			method: 'DELETE',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:blocked_terms',
+			scopes: ['moderator:manage:blocked_terms'],
 			query: {
 				...createModeratorActionQuery(broadcaster, moderator),
 				id
@@ -447,7 +447,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/chat',
 			method: 'DELETE',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:chat_messages',
+			scopes: ['moderator:manage:chat_messages'],
 			query: {
 				...createModeratorActionQuery(broadcaster, moderator),
 				...createSingleKeyQuery('message_id', messageId)
@@ -473,7 +473,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/shield_mode',
 			method: 'GET',
 			userId: extractUserId(moderator),
-			scope: 'moderator:read:shield_mode',
+			scopes: ['moderator:read:shield_mode'],
 			query: createModeratorActionQuery(broadcaster, moderator)
 		});
 
@@ -500,7 +500,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/shield_mode',
 			method: 'PUT',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:shield_mode',
+			scopes: ['moderator:manage:shield_mode'],
 			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: createUpdateShieldModeStatusBody(activate)
 		});

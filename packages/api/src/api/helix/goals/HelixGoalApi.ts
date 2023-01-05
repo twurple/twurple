@@ -26,7 +26,7 @@ export class HelixGoalApi extends BaseApi {
 			type: 'helix',
 			url: 'goals',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:goals',
+			scopes: ['channel:read:goals'],
 			query: createBroadcasterQuery(broadcaster)
 		});
 

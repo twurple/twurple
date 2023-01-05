@@ -45,7 +45,7 @@ export class HelixPollApi extends BaseApi {
 			type: 'helix',
 			url: 'polls',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:polls',
+			scopes: ['channel:read:polls'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
@@ -65,7 +65,7 @@ export class HelixPollApi extends BaseApi {
 			{
 				url: 'polls',
 				userId: extractUserId(broadcaster),
-				scope: 'channel:read:polls',
+				scopes: ['channel:read:polls'],
 				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
@@ -89,7 +89,7 @@ export class HelixPollApi extends BaseApi {
 			type: 'helix',
 			url: 'polls',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:polls',
+			scopes: ['channel:read:polls'],
 			query: createGetByIdsQuery(broadcaster, ids)
 		});
 
@@ -121,7 +121,7 @@ export class HelixPollApi extends BaseApi {
 			url: 'polls',
 			method: 'POST',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:polls',
+			scopes: ['channel:manage:polls'],
 			jsonBody: createPollBody(broadcaster, data)
 		});
 
@@ -141,7 +141,7 @@ export class HelixPollApi extends BaseApi {
 			url: 'polls',
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:polls',
+			scopes: ['channel:manage:polls'],
 			jsonBody: createPollEndBody(broadcaster, id, showResult)
 		});
 

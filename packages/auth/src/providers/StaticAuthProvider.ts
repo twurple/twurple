@@ -62,7 +62,7 @@ export class StaticAuthProvider implements AuthProvider {
 	 * @param intent Ignored.
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessTokenForIntent(intent: string, scopes: string[] | undefined): Promise<AccessTokenWithUserId> {
+	async getAccessTokenForIntent(intent: string, scopes?: string[]): Promise<AccessTokenWithUserId> {
 		return await this._getAccessToken(scopes);
 	}
 
@@ -75,7 +75,7 @@ export class StaticAuthProvider implements AuthProvider {
 	 * @param user Ignored.
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessTokenForUser(user: UserIdResolvable, scopes: string[] | undefined): Promise<AccessTokenWithUserId> {
+	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId> {
 		return await this._getAccessToken(scopes);
 	}
 
@@ -99,7 +99,7 @@ export class StaticAuthProvider implements AuthProvider {
 			this._accessToken.accessToken,
 			this._userId,
 			this._scopes,
-			requestedScopes
+			requestedScopes ? [requestedScopes] : []
 		);
 
 		this._scopes = scopes;

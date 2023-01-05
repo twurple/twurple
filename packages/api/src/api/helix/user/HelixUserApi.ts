@@ -113,7 +113,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users',
 			forceType: 'user',
 			userId: extractUserId(user),
-			scope: withEmail ? 'user:read:email' : undefined
+			scopes: withEmail ? ['user:read:email'] : undefined
 		});
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -136,7 +136,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users',
 			method: 'PUT',
 			userId: extractUserId(user),
-			scope: 'user:edit',
+			scopes: ['user:edit'],
 			query: {
 				description: data.description
 			}
@@ -229,7 +229,7 @@ export class HelixUserApi extends BaseApi {
 			type: 'helix',
 			url: 'users/blocks',
 			userId: extractUserId(user),
-			scope: 'user:read:blocked_users',
+			scopes: ['user:read:blocked_users'],
 			query: {
 				...createBroadcasterQuery(user),
 				...createPaginationQuery(pagination)
@@ -249,7 +249,7 @@ export class HelixUserApi extends BaseApi {
 			{
 				url: 'users/blocks',
 				userId: extractUserId(user),
-				scope: 'user:read:blocked_users',
+				scopes: ['user:read:blocked_users'],
 				query: createBroadcasterQuery(user)
 			},
 			this._client,
@@ -276,7 +276,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/blocks',
 			method: 'PUT',
 			userId: extractUserId(broadcaster),
-			scope: 'user:manage:blocked_users',
+			scopes: ['user:manage:blocked_users'],
 			query: createUserBlockCreateQuery(target, additionalInfo)
 		});
 	}
@@ -293,7 +293,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/blocks',
 			method: 'DELETE',
 			userId: extractUserId(broadcaster),
-			scope: 'user:manage:blocked_users',
+			scopes: ['user:manage:blocked_users'],
 			query: createUserBlockDeleteQuery(target)
 		});
 	}
@@ -348,7 +348,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/extensions',
 			method: 'PUT',
 			userId: extractUserId(broadcaster),
-			scope: 'user:edit:broadcast',
+			scopes: ['user:edit:broadcast'],
 			jsonBody: { data }
 		});
 

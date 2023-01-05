@@ -1,7 +1,6 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { Logger } from '@d-fischer/logger';
 import type { RateLimiter } from '@d-fischer/rate-limiter';
-import { mapOptional } from '@d-fischer/shared-utils';
 import {
 	callTwitchApi,
 	callTwitchApiRaw,
@@ -125,7 +124,7 @@ export class BaseApiClient {
 			}
 		}
 
-		if (options.scope) {
+		if (options.scopes) {
 			forceUser = true;
 		}
 
@@ -134,10 +133,7 @@ export class BaseApiClient {
 				throw new Error('Tried to make an API call with a scope but no context user ID');
 			}
 
-			const accessToken = await authProvider.getAccessTokenForUser(
-				options.userId,
-				mapOptional(options.scope, scope => [scope])
-			);
+			const accessToken = await authProvider.getAccessTokenForUser(options.userId, options.scopes);
 
 			if (accessTokenIsExpired(accessToken) && authProvider.refreshAccessTokenForUser) {
 				const newAccessToken = await authProvider.refreshAccessTokenForUser(options.userId);

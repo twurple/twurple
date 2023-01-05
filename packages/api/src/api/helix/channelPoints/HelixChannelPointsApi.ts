@@ -55,7 +55,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:redemptions',
+			scopes: ['channel:read:redemptions'],
 			query: createCustomRewardsQuery(broadcaster, onlyManageable)
 		});
 
@@ -76,7 +76,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: 'helix',
 			url: 'channel_points/custom_rewards',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:redemptions',
+			scopes: ['channel:read:redemptions'],
 			query: createGetByIdsQuery(broadcaster, rewardIds)
 		});
 
@@ -111,7 +111,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards',
 			method: 'POST',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:redemptions',
+			scopes: ['channel:manage:redemptions'],
 			query: createBroadcasterQuery(broadcaster),
 			jsonBody: createCustomRewardBody(data)
 		});
@@ -136,7 +136,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards',
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:redemptions',
+			scopes: ['channel:manage:redemptions'],
 			query: createCustomRewardChangeQuery(broadcaster, rewardId),
 			jsonBody: createCustomRewardBody(data)
 		});
@@ -156,7 +156,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards',
 			method: 'DELETE',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:redemptions',
+			scopes: ['channel:manage:redemptions'],
 			query: createCustomRewardChangeQuery(broadcaster, rewardId)
 		});
 	}
@@ -180,7 +180,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: 'helix',
 			url: 'channel_points/custom_rewards/redemptions',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:redemptions',
+			scopes: ['channel:read:redemptions'],
 			query: createRewardRedemptionsByIdsQuery(broadcaster, rewardId, redemptionIds)
 		});
 
@@ -223,7 +223,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			type: 'helix',
 			url: 'channel_points/custom_rewards/redemptions',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:redemptions',
+			scopes: ['channel:read:redemptions'],
 			query: {
 				...createRedemptionsForBroadcasterQuery(broadcaster, rewardId, status, filter),
 				...createPaginationQuery(filter)
@@ -253,7 +253,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			{
 				url: 'channel_points/custom_rewards/redemptions',
 				userId: extractUserId(broadcaster),
-				scope: 'channel:read:redemptions',
+				scopes: ['channel:read:redemptions'],
 				query: createRedemptionsForBroadcasterQuery(broadcaster, rewardId, status, filter)
 			},
 			this._client,
@@ -284,7 +284,7 @@ export class HelixChannelPointsApi extends BaseApi {
 			url: 'channel_points/custom_rewards/redemptions',
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:redemptions',
+			scopes: ['channel:manage:redemptions'],
 			query: createRewardRedemptionsByIdsQuery(broadcaster, rewardId, redemptionIds),
 			jsonBody: {
 				status

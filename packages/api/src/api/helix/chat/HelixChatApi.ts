@@ -66,7 +66,7 @@ export class HelixChatApi extends BaseApi {
 			type: 'helix',
 			url: 'chat/chatters',
 			userId: extractUserId(moderator),
-			scope: 'moderator:read:chatters',
+			scopes: ['moderator:read:chatters'],
 			query: {
 				...createModeratorActionQuery(broadcaster, moderator),
 				...createPaginationQuery(pagination)
@@ -180,7 +180,7 @@ export class HelixChatApi extends BaseApi {
 			type: 'helix',
 			url: 'chat/settings',
 			userId: extractUserId(moderator),
-			scope: 'moderator:read:chat_settings',
+			scopes: ['moderator:read:chat_settings'],
 			query: createModeratorActionQuery(broadcaster, moderator)
 		});
 
@@ -209,7 +209,7 @@ export class HelixChatApi extends BaseApi {
 			url: 'chat/settings',
 			method: 'PATCH',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:chat_settings',
+			scopes: ['moderator:manage:chat_settings'],
 			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: createChatSettingsUpdateBody(settings)
 		});
@@ -237,7 +237,7 @@ export class HelixChatApi extends BaseApi {
 			url: 'chat/announcements',
 			method: 'POST',
 			userId: extractUserId(moderator),
-			scope: 'moderator:manage:announcements',
+			scopes: ['moderator:manage:announcements'],
 			query: createModeratorActionQuery(broadcaster, moderator),
 			jsonBody: {
 				message: announcement.message,
@@ -301,7 +301,7 @@ export class HelixChatApi extends BaseApi {
 			url: 'chat/color',
 			method: 'PUT',
 			userId: extractUserId(user),
-			scope: 'user:manage:chat_color',
+			scopes: ['user:manage:chat_color'],
 			query: createChatColorUpdateQuery(user, color)
 		});
 	}

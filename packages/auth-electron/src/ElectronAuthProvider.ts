@@ -39,7 +39,7 @@ const defaultOptions: BaseOptions & Partial<WindowStyleOptions & WindowOptions> 
 
 export class ElectronAuthProvider implements AuthProvider {
 	private _accessToken?: AccessToken;
-	private readonly _currentScopes = new Set<string>();
+	private _currentScopes = new Set<string>();
 	private readonly _options: BaseOptions & Partial<WindowOptions & WindowStyleOptions>;
 	private _allowUserChange = false;
 	private readonly _clientId: string;
@@ -68,7 +68,7 @@ export class ElectronAuthProvider implements AuthProvider {
 		return Array.from(this._currentScopes);
 	}
 
-	async getAccessTokenForUser(user: UserIdResolvable, scopes: string[] | undefined): Promise<AccessTokenWithUserId> {
+	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId> {
 		const token = await this._fetcher.fetch(scopes);
 
 		return {
@@ -81,18 +81,20 @@ export class ElectronAuthProvider implements AuthProvider {
 		return await this._fetcher.fetch();
 	}
 
-	private async _fetch(scopes: string[] = []): Promise<AccessToken> {
+	private async _fetch(scopeSets: string[][]): Promise<AccessToken> {
 		return await new Promise<AccessToken>((resolve, reject) => {
-			if (this._accessToken && scopes.every(scope => this._currentScopes.has(scope))) {
+			if (this._accessToken && scopeSets.every(scopes => scopes.some(scope => this._currentScopes.has(scope)))) {
 				resolve(this._accessToken);
 				return;
 			}
 
-			const queryParams = createAuthorizeParams(
-				this.clientId,
-				this._redirectUri,
-				Array.from(new Set([...this._currentScopes, ...scopes]))
-			);
+			const scopesToRequest = new Set(this._currentScopes);
+			for (const scopes of scopeSets) {
+				if (scopes.length && scopes.every(scope => !scopesToRequest.has(scope))) {
+					scopesToRequest.add(scopes[0]);
+				}
+			}
+			const queryParams = createAuthorizeParams(this.clientId, this._redirectUri, Array.from(scopesToRequest));
 			if (this._allowUserChange) {
 				queryParams.force_verify = true;
 			}
@@ -162,9 +164,7 @@ export class ElectronAuthProvider implements AuthProvider {
 						reject(new Error(`Error received from Twitch: ${params.error}`));
 					} else if (params.access_token) {
 						const accessToken = params.access_token;
-						for (const scope of scopes) {
-							this._currentScopes.add(scope);
-						}
+						this._currentScopes = scopesToRequest;
 						this._accessToken = {
 							accessToken,
 							scope: Array.from(this._currentScopes),

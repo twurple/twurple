@@ -50,7 +50,7 @@ export class HelixPredictionApi extends BaseApi {
 			type: 'helix',
 			url: 'predictions',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:predictions',
+			scopes: ['channel:read:predictions'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
@@ -72,7 +72,7 @@ export class HelixPredictionApi extends BaseApi {
 			{
 				url: 'predictions',
 				userId: extractUserId(broadcaster),
-				scope: 'channel:read:predictions',
+				scopes: ['channel:read:predictions'],
 				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
@@ -96,7 +96,7 @@ export class HelixPredictionApi extends BaseApi {
 			type: 'helix',
 			url: 'predictions',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:predictions',
+			scopes: ['channel:read:predictions'],
 			query: createGetByIdsQuery(broadcaster, ids)
 		});
 
@@ -128,7 +128,7 @@ export class HelixPredictionApi extends BaseApi {
 			url: 'predictions',
 			method: 'POST',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:predictions',
+			scopes: ['channel:manage:predictions'],
 			jsonBody: createPredictionBody(broadcaster, data)
 		});
 
@@ -177,7 +177,7 @@ export class HelixPredictionApi extends BaseApi {
 			url: 'predictions',
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:predictions',
+			scopes: ['channel:manage:predictions'],
 			jsonBody: createEndPredictionBody(broadcaster, id, status, outcomeId)
 		});
 

@@ -42,7 +42,7 @@ export class HelixWhisperApi extends BaseApi {
 			url: 'whispers',
 			method: 'POST',
 			userId: extractUserId(from),
-			scope: 'user:manage:whispers',
+			scopes: ['user:manage:whispers'],
 			query: createWhisperQuery(from, to),
 			jsonBody: {
 				message

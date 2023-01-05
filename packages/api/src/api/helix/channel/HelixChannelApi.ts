@@ -87,7 +87,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels',
 			method: 'PATCH',
 			userId: extractUserId(user),
-			scope: 'channel:manage:broadcast',
+			scopes: ['channel:manage:broadcast'],
 			query: createBroadcasterQuery(user),
 			jsonBody: createChannelUpdateBody(data)
 		});
@@ -105,7 +105,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/commercial',
 			method: 'POST',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:edit:commercial',
+			scopes: ['channel:edit:commercial'],
 			jsonBody: createChannelCommercialBody(broadcaster, length)
 		});
 	}
@@ -120,7 +120,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/editors',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:editors',
+			scopes: ['channel:read:editors'],
 			query: createBroadcasterQuery(broadcaster)
 		});
 
@@ -143,7 +143,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/vips',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:vips',
+			scopes: ['channel:read:vips'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
@@ -163,7 +163,7 @@ export class HelixChannelApi extends BaseApi {
 			{
 				url: 'channels/vips',
 				userId: extractUserId(broadcaster),
-				scope: 'channel:read:vips',
+				scopes: ['channel:read:vips'],
 				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
@@ -182,7 +182,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/vips',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:vips',
+			scopes: ['channel:read:vips'],
 			query: createChannelUsersCheckQuery(broadcaster, users)
 		});
 
@@ -214,7 +214,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/vips',
 			method: 'POST',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:vips',
+			scopes: ['channel:manage:vips'],
 			query: createChannelVipUpdateQuery(broadcaster, user)
 		});
 	}
@@ -231,7 +231,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/vips',
 			method: 'DELETE',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:vips',
+			scopes: ['channel:manage:vips'],
 			query: createChannelVipUpdateQuery(broadcaster, user)
 		});
 	}

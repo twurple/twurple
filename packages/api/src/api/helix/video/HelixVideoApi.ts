@@ -122,7 +122,7 @@ export class HelixVideoApi extends BaseApi {
 			type: 'helix',
 			url: 'videos',
 			method: 'DELETE',
-			scope: 'channel:manage:videos',
+			scopes: ['channel:manage:videos'],
 			query: {
 				id: ids
 			}

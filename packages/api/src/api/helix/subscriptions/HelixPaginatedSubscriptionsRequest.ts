@@ -27,7 +27,7 @@ export class HelixPaginatedSubscriptionsRequest extends HelixPaginatedRequestWit
 		super(
 			{
 				url: 'subscriptions',
-				scope: 'channel:read:subscriptions',
+				scopes: ['channel:read:subscriptions'],
 				userId: extractUserId(broadcaster),
 				query: createBroadcasterQuery(broadcaster)
 			},

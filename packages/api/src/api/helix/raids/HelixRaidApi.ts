@@ -34,7 +34,7 @@ export class HelixRaidApi extends BaseApi {
 			url: 'raids',
 			method: 'POST',
 			userId: extractUserId(from),
-			scope: 'channel:manage:raids',
+			scopes: ['channel:manage:raids'],
 			query: createRaidStartQuery(from, to)
 		});
 
@@ -52,7 +52,7 @@ export class HelixRaidApi extends BaseApi {
 			url: 'raids',
 			method: 'DELETE',
 			userId: extractUserId(from),
-			scope: 'channel:manage:raids',
+			scopes: ['channel:manage:raids'],
 			query: createBroadcasterQuery(from)
 		});
 	}

@@ -4,7 +4,7 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
 import { InvalidTokenError } from '../errors/InvalidTokenError';
-import { compareScopes, getAppToken, loadAndCompareTokenInfo, refreshUserToken } from '../helpers';
+import { compareScopeSets, getAppToken, loadAndCompareTokenInfo, refreshUserToken } from '../helpers';
 import { TokenFetcher } from '../TokenFetcher';
 import { type AuthProvider } from './AuthProvider';
 
@@ -247,7 +247,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 		return await this._appTokenFetcher.fetch(this._appImpliedScopes);
 	}
 
-	private async _fetchUserToken(userId: string, scopes?: string[]): Promise<AccessTokenWithUserId> {
+	private async _fetchUserToken(userId: string, scopeSets: string[][]): Promise<AccessTokenWithUserId> {
 		const previousToken = this._userAccessTokens.get(userId);
 
 		if (!previousToken) {
@@ -259,15 +259,16 @@ export class RefreshingAuthProvider implements AuthProvider {
 			try {
 				// don't create new object on every get
 				if (previousToken.scope) {
-					compareScopes(previousToken.scope, scopes);
+					compareScopeSets(previousToken.scope, scopeSets);
 					return previousToken as AccessTokenWithUserId;
 				}
 
 				const [scope = []] = await loadAndCompareTokenInfo(
 					this._clientId,
 					previousToken.accessToken,
+					userId,
 					previousToken.scope,
-					scopes
+					scopeSets
 				);
 				const newToken: AccessTokenWithUserId = {
 					...(previousToken as AccessTokenWithUserId),
@@ -284,24 +285,28 @@ export class RefreshingAuthProvider implements AuthProvider {
 		}
 
 		const refreshedToken = await this.refreshAccessTokenForUser(userId);
-		compareScopes(refreshedToken.scope, scopes);
+		compareScopeSets(refreshedToken.scope, scopeSets);
 		return refreshedToken;
 	}
 
-	private async _fetchAppToken(scopes?: string[]): Promise<AccessToken> {
-		if (scopes && scopes.length > 0) {
-			if (this._appImpliedScopes.length) {
-				if (scopes.some(scope => !this._appImpliedScopes.includes(scope))) {
+	private async _fetchAppToken(scopeSets: string[][]): Promise<AccessToken> {
+		if (scopeSets.length > 0) {
+			for (const scopes of scopeSets) {
+				if (this._appImpliedScopes.length) {
+					if (scopes.every(scope => !this._appImpliedScopes.includes(scope))) {
+						throw new Error(
+							`One of the scopes ${scopes.join(
+								', '
+							)} requested but only the scope ${this._appImpliedScopes.join(', ')} is implied`
+						);
+					}
+				} else {
 					throw new Error(
-						`Scope ${scopes.join(', ')} requested but only the scope ${this._appImpliedScopes.join(
+						`One of the scopes ${scopes.join(
 							', '
-						)} is implied`
+						)} requested but the client credentials flow does not support scopes`
 					);
 				}
-			} else {
-				throw new Error(
-					`Scope ${scopes.join(', ')} requested but the client credentials flow does not support scopes`
-				);
 			}
 		}
 

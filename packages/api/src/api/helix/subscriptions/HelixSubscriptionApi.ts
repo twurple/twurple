@@ -48,7 +48,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	): Promise<HelixPaginatedSubscriptionsResult> {
 		const result = await this._client.callApi<HelixPaginatedSubscriptionsResponse>({
 			url: 'subscriptions',
-			scope: 'channel:read:subscriptions',
+			scopes: ['channel:read:subscriptions'],
 			type: 'helix',
 			userId: extractUserId(broadcaster),
 			query: {
@@ -86,7 +86,7 @@ export class HelixSubscriptionApi extends BaseApi {
 			type: 'helix',
 			url: 'subscriptions',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:subscriptions',
+			scopes: ['channel:read:subscriptions'],
 			query: createChannelUsersCheckQuery(broadcaster, users)
 		});
 
@@ -128,7 +128,7 @@ export class HelixSubscriptionApi extends BaseApi {
 				type: 'helix',
 				url: 'subscriptions/user',
 				userId: extractUserId(user),
-				scope: 'user:read:subscriptions',
+				scopes: ['user:read:subscriptions'],
 				query: createSubscriptionCheckQuery(broadcaster, user)
 			});
 

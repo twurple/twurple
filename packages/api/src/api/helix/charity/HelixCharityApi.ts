@@ -44,7 +44,7 @@ export class HelixCharityApi extends BaseApi {
 			url: 'charity/campaigns',
 			method: 'GET',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:charity',
+			scopes: ['channel:read:charity'],
 			query: createBroadcasterQuery(broadcaster)
 		});
 
@@ -68,7 +68,7 @@ export class HelixCharityApi extends BaseApi {
 			type: 'helix',
 			url: 'charity/donations',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:charity',
+			scopes: ['channel:read:charity'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)

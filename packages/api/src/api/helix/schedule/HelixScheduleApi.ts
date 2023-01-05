@@ -138,7 +138,7 @@ export class HelixScheduleApi extends BaseApi {
 			url: 'schedule/settings',
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:schedule',
+			scopes: ['channel:manage:schedule'],
 			query: createScheduleSettingsUpdateQuery(broadcaster, settings)
 		});
 	}
@@ -160,7 +160,7 @@ export class HelixScheduleApi extends BaseApi {
 			url: 'schedule/segment',
 			method: 'POST',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:schedule',
+			scopes: ['channel:manage:schedule'],
 			query: createBroadcasterQuery(broadcaster),
 			jsonBody: createScheduleSegmentBody(data)
 		});
@@ -187,7 +187,7 @@ export class HelixScheduleApi extends BaseApi {
 			url: 'schedule/segment',
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:schedule',
+			scopes: ['channel:manage:schedule'],
 			query: createScheduleSegmentModifyQuery(broadcaster, segmentId),
 			jsonBody: createScheduleSegmentUpdateBody(data)
 		});
@@ -207,7 +207,7 @@ export class HelixScheduleApi extends BaseApi {
 			url: 'schedule/segment',
 			method: 'DELETE',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:manage:schedule',
+			scopes: ['channel:manage:schedule'],
 			query: createScheduleSegmentModifyQuery(broadcaster, segmentId)
 		});
 	}

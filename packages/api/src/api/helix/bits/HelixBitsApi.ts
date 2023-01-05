@@ -44,7 +44,7 @@ export class HelixBitsApi extends BaseApi {
 			type: 'helix',
 			url: 'bits/leaderboard',
 			userId: extractUserId(broadcaster),
-			scope: 'bits:read',
+			scopes: ['bits:read'],
 			query: createBitsLeaderboardQuery(params)
 		});
 

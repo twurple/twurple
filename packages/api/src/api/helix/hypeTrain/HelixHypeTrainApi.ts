@@ -48,7 +48,7 @@ export class HelixHypeTrainApi extends BaseApi {
 			type: 'helix',
 			url: 'hypetrain/events',
 			userId: extractUserId(broadcaster),
-			scope: 'channel:read:hype_train',
+			scopes: ['channel:read:hype_train'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
@@ -70,7 +70,7 @@ export class HelixHypeTrainApi extends BaseApi {
 			{
 				url: 'hypetrain/events',
 				userId: extractUserId(broadcaster),
-				scope: 'channel:read:hype_train',
+				scopes: ['channel:read:hype_train'],
 				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,

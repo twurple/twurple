@@ -41,9 +41,9 @@ export interface TwitchApiCallOptions {
 	jsonBody?: unknown;
 
 	/**
-	 * The scope the request needs.
+	 * The list of scopes that can be used by the request.
 	 */
-	scope?: string;
+	scopes?: string[];
 
 	/**
 	 * Whether OAuth credentials should be generated and sent with the request. Defaults to `true`.

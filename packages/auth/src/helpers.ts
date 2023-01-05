@@ -231,25 +231,38 @@ const scopeEquivalencies = new Map([
 ]);
 
 /**
- * Compares scopes for a non-upgradable `AuthProvider` instance.
+ * Compares scopes for a non-upgradable {@link AuthProvider} instance.
  *
  * @param scopesToCompare The scopes to compare against.
  * @param requestedScopes The scopes you requested.
  */
 export function compareScopes(scopesToCompare: string[], requestedScopes?: string[]): void {
-	if (requestedScopes !== undefined) {
+	if (requestedScopes?.length) {
 		const scopes = new Set<string>(
 			scopesToCompare.flatMap(scope => [scope, ...(scopeEquivalencies.get(scope) ?? [])])
 		);
 
-		if (requestedScopes.some(scope => !scopes.has(scope))) {
+		if (requestedScopes.every(scope => !scopes.has(scope))) {
+			const scopesStr = requestedScopes.join(', ');
 			throw new Error(
-				`This token does not have the requested scopes (${requestedScopes.join(', ')}) and can not be upgraded.
+				`This token does not have any of the requested scopes (${scopesStr}) and can not be upgraded.
 If you need dynamically upgrading scopes, please implement the AuthProvider interface accordingly:
 
 \thttps://twurple.js.org/reference/auth/interfaces/AuthProvider.html`
 			);
 		}
+	}
+}
+
+/**
+ * Compares scope sets for a non-upgradable {@link AuthProvider} instance.
+ *
+ * @param scopesToCompare The scopes to compare against.
+ * @param requestedScopeSets The scope sets you requested.
+ */
+export function compareScopeSets(scopesToCompare: string[], requestedScopeSets: string[][]): void {
+	for (const requestedScopes of requestedScopeSets) {
+		compareScopes(scopesToCompare, requestedScopes);
 	}
 }
 
@@ -261,23 +274,25 @@ If you need dynamically upgrading scopes, please implement the AuthProvider inte
  * @param token The access token.
  * @param userId The user ID that was already loaded.
  * @param loadedScopes The scopes that were already loaded.
- * @param requestedScopes The scopes you requested.
+ * @param requestedScopeSets The scope sets you requested.
  */
 export async function loadAndCompareTokenInfo(
 	clientId: string,
 	token: string,
 	userId?: string,
 	loadedScopes?: string[],
-	requestedScopes?: string[]
+	requestedScopeSets?: string[][]
 ): Promise<[string[] | undefined, string]> {
-	if (requestedScopes?.length || !userId) {
+	if (requestedScopeSets?.length || !userId) {
 		const userInfo = await getTokenInfo(token, clientId);
 		if (!userInfo.userId) {
 			throw new Error('Trying to use an app access token as a user access token');
 		}
 
 		const scopesToCompare = loadedScopes ?? userInfo.scopes;
-		compareScopes(scopesToCompare, requestedScopes);
+		if (requestedScopeSets) {
+			compareScopeSets(scopesToCompare, requestedScopeSets);
+		}
 
 		return [scopesToCompare, userInfo.userId];
 	}
