@@ -11,7 +11,13 @@ import { delay, Enumerable, fibWithLimit, resolveConfigValue } from '@d-fischer/
 import type { EventBinder } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
-import { accessTokenIsExpired, getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from '@twurple/auth';
+import {
+	accessTokenIsExpired,
+	getTokenInfo,
+	InvalidTokenError,
+	InvalidTokenTypeError,
+	UnknownIntentError
+} from '@twurple/auth';
 import { rtfm } from '@twurple/common';
 import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
@@ -131,6 +137,13 @@ export interface ChatClientOptions {
 	 * This defaults to 'none', which limits your messages to the standard rate limit.
 	 */
 	botLevel?: TwitchBotLevel;
+
+	/**
+	 * The intents to use to query the auth provider.
+	 *
+	 * The "chat" intent will always be queried last, after the ones you give here.
+	 */
+	authIntents?: string[];
 }
 
 /** @private */
@@ -157,6 +170,7 @@ export class ChatClient extends EventEmitter {
 
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;
+	private readonly _authIntents: string[];
 
 	private _authToken?: AccessToken | null;
 	private _authVerified = false;
@@ -631,6 +645,7 @@ export class ChatClient extends EventEmitter {
 
 		this._useLegacyScopes = !!config.legacyScopes;
 		this._readOnly = !!config.readOnly;
+		this._authIntents = [...(config.authIntents ?? []), 'chat'];
 
 		const executeChatMessageRequest = async ({ type, text, channel, tags }: ChatMessageRequest) => {
 			if (type === 'say') {
@@ -1267,31 +1282,12 @@ export class ChatClient extends EventEmitter {
 
 		const scopes = this._getNecessaryScopes();
 		let lastTokenError: InvalidTokenError | undefined = undefined;
+		let foundSomeIntent = false;
 
-		try {
-			this._authToken = await this._authProvider.getAccessTokenForIntent!('chat', scopes);
-			const token = await getTokenInfo(this._authToken.accessToken);
-			if (!token.userName) {
-				throw new InvalidTokenTypeError(
-					'Could not determine a user name for your token; you might be trying to disguise an app token as a user token.'
-				);
-			}
-			this._ircClient.changeNick(token.userName);
-			return `oauth:${this._authToken.accessToken}`;
-		} catch (e: unknown) {
-			if (e instanceof InvalidTokenError) {
-				lastTokenError = e;
-			} else {
-				this._chatLogger.error(`Retrieving an access token failed: ${(e as Error).message}`);
-			}
-		}
-
-		this._chatLogger.warn('No valid token available; trying to refresh');
-
-		try {
-			this._authToken = await this._authProvider.refreshAccessTokenForIntent?.('chat');
-
-			if (this._authToken) {
+		for (const intent of this._authIntents) {
+			try {
+				this._authToken = await this._authProvider.getAccessTokenForIntent!(intent, scopes);
+				foundSomeIntent = true;
 				const token = await getTokenInfo(this._authToken.accessToken);
 				if (!token.userName) {
 					throw new InvalidTokenTypeError(
@@ -1300,17 +1296,50 @@ export class ChatClient extends EventEmitter {
 				}
 				this._ircClient.changeNick(token.userName);
 				return `oauth:${this._authToken.accessToken}`;
+			} catch (e: unknown) {
+				if (e instanceof UnknownIntentError) {
+					continue;
+				}
+				if (e instanceof InvalidTokenError) {
+					lastTokenError = e;
+				} else {
+					this._chatLogger.error(`Retrieving an access token failed: ${(e as Error).message}`);
+				}
 			}
-		} catch (e: unknown) {
-			if (e instanceof InvalidTokenError) {
-				lastTokenError = e;
-			} else {
-				this._chatLogger.error(`Refreshing the access token failed: ${(e as Error).message}`);
+
+			this._chatLogger.warn('No valid token available; trying to refresh');
+
+			try {
+				this._authToken = await this._authProvider.refreshAccessTokenForIntent?.('chat');
+
+				if (this._authToken) {
+					const token = await getTokenInfo(this._authToken.accessToken);
+					if (!token.userName) {
+						throw new InvalidTokenTypeError(
+							'Could not determine a user name for your token; you might be trying to disguise an app token as a user token.'
+						);
+					}
+					this._ircClient.changeNick(token.userName);
+					return `oauth:${this._authToken.accessToken}`;
+				}
+			} catch (e: unknown) {
+				if (e instanceof InvalidTokenError) {
+					lastTokenError = e;
+				} else {
+					this._chatLogger.error(`Refreshing the access token failed: ${(e as Error).message}`);
+				}
 			}
 		}
 
 		this._authVerified = false;
-		throw lastTokenError ?? new Error('Could not retrieve a valid token');
+		throw (
+			lastTokenError ??
+			new Error(
+				foundSomeIntent
+					? 'Could not retrieve a valid token'
+					: `None of the queried intents (${this._authIntents.join(', ')}) are known by the auth provider`
+			)
+		);
 	}
 
 	private _getNecessaryScopes() {

@@ -4,6 +4,7 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
 import { InvalidTokenError } from '../errors/InvalidTokenError';
+import { UnknownIntentError } from '../errors/UnknownIntentError';
 import { compareScopeSets, getAppToken, loadAndCompareTokenInfo, refreshUserToken } from '../helpers';
 import { TokenFetcher } from '../TokenFetcher';
 import { type AuthProvider } from './AuthProvider';
@@ -201,7 +202,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 */
 	async getAccessTokenForIntent(intent: string, scopes?: string[]): Promise<AccessTokenWithUserId> {
 		if (!this._intentToUserId.has(intent)) {
-			throw new Error(`Undefined intent: ${intent}`);
+			throw new UnknownIntentError(intent);
 		}
 
 		const userId = this._intentToUserId.get(intent)!;

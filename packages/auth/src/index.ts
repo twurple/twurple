@@ -28,3 +28,4 @@ export { StaticAuthProvider } from './providers/StaticAuthProvider';
 
 export { InvalidTokenError } from './errors/InvalidTokenError';
 export { InvalidTokenTypeError } from './errors/InvalidTokenTypeError';
+export { UnknownIntentError } from './errors/UnknownIntentError';
