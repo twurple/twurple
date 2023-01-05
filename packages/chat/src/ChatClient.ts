@@ -590,15 +590,15 @@ export class ChatClient extends EventEmitter {
 	 * @param config
 	 */
 	constructor(config: ChatClientOptions = {}) {
-		super();
-
-		if (!config.authProvider?.getAccessTokenForIntent) {
+		if (config.authProvider && !config.authProvider.getAccessTokenForIntent) {
 			throw new InvalidTokenTypeError(
 				'You can not connect to chat using an AuthProvider that does not support intents.\n' +
 					"To get an anonymous, read-only connection, please don't pass an `AuthProvider` at all.\n" +
 					'To get a read-write connection, please provide an auth provider that provides user access tokens via intents, such as `RefreshingAuthProvider`.'
 			);
 		}
+
+		super();
 
 		this._ircClient = new IrcClient({
 			connection: {
