@@ -637,7 +637,6 @@ export class ChatClient extends EventEmitter {
 
 		this._chatLogger = createLogger({
 			name: 'twurple:chat:twitch',
-			emoji: true,
 			...config.logger
 		});
 

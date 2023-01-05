@@ -9,5 +9,6 @@ export interface PubSubChatModActionMessageContent {
 
 /** @private */
 export interface PubSubChatModActionMessageData {
+	type: 'moderation_action';
 	data: PubSubChatModActionMessageContent;
 }

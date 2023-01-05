@@ -160,7 +160,6 @@ export abstract class EventSubBase extends EventEmitter {
 		this._apiClient = config.apiClient;
 		this._logger = createLogger({
 			name: 'twurple:eventsub',
-			emoji: true,
 			...config.logger
 		});
 	}

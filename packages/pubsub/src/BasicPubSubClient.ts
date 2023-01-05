@@ -130,8 +130,7 @@ export class BasicPubSubClient extends EventEmitter {
 	constructor(options?: BasicPubSubClientOptions) {
 		super();
 		this._logger = createLogger({
-			name: 'twurple:pubsub',
-			emoji: true,
+			name: 'twurple:pubsub:basic',
 			...options?.logger
 		});
 

@@ -1,8 +1,8 @@
+import { createLogger, type Logger } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
-import type { AuthProvider } from '@twurple/auth';
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { type AuthProvider } from '@twurple/auth';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import { BasicPubSubClient, type BasicPubSubClientOptions } from './BasicPubSubClient';
 import { PubSubAutoModQueueMessage } from './messages/PubSubAutoModQueueMessage';
 import { type PubSubAutoModQueueMessageData } from './messages/PubSubAutoModQueueMessage.external';
@@ -10,10 +10,15 @@ import { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMe
 import { type PubSubBitsBadgeUnlockMessageData } from './messages/PubSubBitsBadgeUnlockMessage.external';
 import { PubSubBitsMessage } from './messages/PubSubBitsMessage';
 import { type PubSubBitsMessageData } from './messages/PubSubBitsMessage.external';
+import { PubSubChannelTermsActionMessage } from './messages/PubSubChannelTermsActionMessage';
 import { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
-import { type PubSubChatModActionMessageData } from './messages/PubSubChatModActionMessage.external';
 import { PubSubCustomMessage } from './messages/PubSubCustomMessage';
-import { type PubSubMessage, type PubSubMessageData } from './messages/PubSubMessage';
+import {
+	type PubSubMessage,
+	type PubSubMessageData,
+	type PubSubModActionMessage,
+	type PubSubModActionMessageData
+} from './messages/PubSubMessage';
 import { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
 import { type PubSubRedemptionMessageData } from './messages/PubSubRedemptionMessage.external';
 import { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
@@ -42,6 +47,7 @@ export class PubSubClient extends EventEmitter {
 	@Enumerable(false) private readonly _basicClient: BasicPubSubClient;
 
 	private readonly _handlers = new Map<string, Array<PubSubHandler<never>>>();
+	private readonly _logger: Logger;
 
 	/**
 	 * Fires when listening to a topic fails.
@@ -67,13 +73,19 @@ export class PubSubClient extends EventEmitter {
 		super();
 
 		this._authProvider = config.authProvider;
+		this._logger = createLogger({
+			name: 'twurple:pubsub',
+			...config.logger
+		});
 		this._basicClient = new BasicPubSubClient(config);
 		this._basicClient.onMessage((topic, messageData) => {
-			const [type, , ...args] = topic.split('.');
 			if (this._handlers.has(topic)) {
-				const message = PubSubClient._parseMessage(type, args, messageData);
-				for (const handler of this._handlers.get(topic)!) {
-					(handler as PubSubHandler).call(message);
+				const [type, , ...args] = topic.split('.');
+				const message = this._parseMessage(type, args, messageData);
+				if (message) {
+					for (const handler of this._handlers.get(topic)!) {
+						(handler as PubSubHandler).call(message);
+					}
 				}
 			}
 		});
@@ -139,12 +151,12 @@ export class PubSubClient extends EventEmitter {
 	 * @param channel The channel the event will be subscribed for.
 	 * @param callback A function to be called when a mod action event is sent to the user.
 	 *
-	 * It receives a {@link PubSubChatModActionMessage} object.
+	 * It can receive any kind of {@link PubSubModActionMessage} object.
 	 */
 	onModAction(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
-		callback: (message: PubSubChatModActionMessage) => void
+		callback: (message: PubSubModActionMessage) => void
 	): PubSubHandler<never> {
 		return this._addHandler('chat_moderator_actions', callback, user, 'channel:moderate', extractUserId(channel));
 	}
@@ -289,7 +301,7 @@ export class PubSubClient extends EventEmitter {
 		return handler;
 	}
 
-	private static _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage {
+	private _parseMessage(type: string, args: string[], messageData: PubSubMessageData): PubSubMessage | undefined {
 		switch (type) {
 			case 'automod-queue': {
 				return new PubSubAutoModQueueMessage(messageData as PubSubAutoModQueueMessageData, args[0]);
@@ -307,7 +319,22 @@ export class PubSubClient extends EventEmitter {
 				return new PubSubSubscriptionMessage(messageData as PubSubSubscriptionMessageData);
 			}
 			case 'chat_moderator_actions': {
-				return new PubSubChatModActionMessage(messageData as PubSubChatModActionMessageData, args[0]);
+				const data = messageData as PubSubModActionMessageData;
+				switch (data.type) {
+					case 'moderation_action': {
+						return new PubSubChatModActionMessage(data, args[0]);
+					}
+					case 'channel_terms_action': {
+						return new PubSubChannelTermsActionMessage(data, args[0]);
+					}
+					default: {
+						this._logger
+							.error(`Unknown moderator action received; please open an issue with the following info (redact IDs and names if you want):
+Type: ${(data as PubSubModActionMessageData).type}
+Data: ${JSON.stringify(data, undefined, 2)}`);
+						return undefined;
+					}
+				}
 			}
 			case 'user-moderation-notifications': {
 				return new PubSubUserModerationNotificationMessage(
