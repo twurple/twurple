@@ -603,7 +603,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			broadcaster,
-			['moderator:read:shield_mode']
+			['moderator:read:shield_mode', 'moderator:manage:shield_mode']
 		);
 	}
 
@@ -627,7 +627,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			broadcaster,
-			['moderator:read:shield_mode']
+			['moderator:read:shield_mode', 'moderator:manage:shield_mode']
 		);
 	}
 
@@ -725,7 +725,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -745,7 +745,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -767,7 +767,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubRewardCondition(broadcaster, rewardId),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -787,7 +787,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -809,7 +809,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubRewardCondition(broadcaster, rewardId),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -829,7 +829,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -851,7 +851,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubRewardCondition(broadcaster, rewardId),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -871,7 +871,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -893,7 +893,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubRewardCondition(broadcaster, rewardId),
 			transport,
 			broadcaster,
-			['channel:read:redemptions']
+			['channel:read:redemptions', 'channel:manage:redemptions']
 		);
 	}
 
@@ -913,7 +913,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:polls']
+			['channel:read:polls', 'channel:manage:polls']
 		);
 	}
 
@@ -933,7 +933,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:polls']
+			['channel:read:polls', 'channel:manage:polls']
 		);
 	}
 
@@ -953,7 +953,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:polls']
+			['channel:read:polls', 'channel:manage:polls']
 		);
 	}
 
@@ -973,7 +973,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:predictions']
+			['channel:read:predictions', 'channel:manage:predictions']
 		);
 	}
 
@@ -993,7 +993,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:predictions']
+			['channel:read:predictions', 'channel:manage:predictions']
 		);
 	}
 
@@ -1013,7 +1013,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:predictions']
+			['channel:read:predictions', 'channel:manage:predictions']
 		);
 	}
 
@@ -1033,7 +1033,7 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
-			['channel:read:predictions']
+			['channel:read:predictions', 'channel:manage:predictions']
 		);
 	}
 

@@ -126,7 +126,7 @@ export class HelixModerationApi extends BaseApi {
 			type: 'helix',
 			url: 'moderation/moderators',
 			userId: extractUserId(channel),
-			scopes: ['moderation:read'],
+			scopes: ['moderation:read', 'channel:manage:moderators'],
 			query: {
 				...createModerationUserListQuery(channel, filter),
 				...createPaginationQuery(filter)
@@ -146,7 +146,7 @@ export class HelixModerationApi extends BaseApi {
 			{
 				url: 'moderation/moderators',
 				userId: extractUserId(channel),
-				scopes: ['moderation:read'],
+				scopes: ['moderation:read', 'channel:manage:moderators'],
 				query: createBroadcasterQuery(channel)
 			},
 			this._client,
@@ -473,7 +473,7 @@ export class HelixModerationApi extends BaseApi {
 			url: 'moderation/shield_mode',
 			method: 'GET',
 			userId: extractUserId(moderator),
-			scopes: ['moderator:read:shield_mode'],
+			scopes: ['moderator:read:shield_mode', 'moderator:manage:shield_mode'],
 			query: createModeratorActionQuery(broadcaster, moderator)
 		});
 

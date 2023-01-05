@@ -302,12 +302,17 @@ export class HelixUserApi extends BaseApi {
 	 * Retrieves a list of all extensions for the given authenticated user.
 	 *
 	 * @param broadcaster The broadcaster to get the list of extensions for.
+	 * @param withInactive Whether to include inactive extensions.
 	 */
-	async getExtensionsForAuthenticatedUser(broadcaster: UserIdResolvable): Promise<HelixUserExtension[]> {
+	async getExtensionsForAuthenticatedUser(
+		broadcaster: UserIdResolvable,
+		withInactive = false
+	): Promise<HelixUserExtension[]> {
 		const result = await this._client.callApi<HelixResponse<HelixUserExtensionData>>({
 			type: 'helix',
 			url: 'users/extensions/list',
-			userId: extractUserId(broadcaster)
+			userId: extractUserId(broadcaster),
+			scopes: withInactive ? ['user:edit:broadcast'] : ['user:read:broadcast', 'user:edit:broadcast']
 		});
 
 		return result.data.map(data => new HelixUserExtension(data));
@@ -317,13 +322,15 @@ export class HelixUserApi extends BaseApi {
 	 * Retrieves a list of all installed extensions for the given user.
 	 *
 	 * @param user The user to get the installed extensions for.
+	 * @param withDev Whether to include extensions that are in development.
 	 */
-	async getActiveExtensions(user: UserIdResolvable): Promise<HelixInstalledExtensionList> {
+	async getActiveExtensions(user: UserIdResolvable, withDev = false): Promise<HelixInstalledExtensionList> {
 		const userId = extractUserId(user);
 		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
 			type: 'helix',
 			url: 'users/extensions',
 			userId,
+			scopes: withDev ? ['user:read:broadcast', 'user:edit:broadcast'] : undefined,
 			query: createSingleKeyQuery('user_id', userId)
 		});
 

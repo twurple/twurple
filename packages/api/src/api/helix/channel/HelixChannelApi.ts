@@ -143,7 +143,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/vips',
 			userId: extractUserId(broadcaster),
-			scopes: ['channel:read:vips'],
+			scopes: ['channel:read:vips', 'channel:manage:vips'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
 				...createPaginationQuery(pagination)
@@ -163,7 +163,7 @@ export class HelixChannelApi extends BaseApi {
 			{
 				url: 'channels/vips',
 				userId: extractUserId(broadcaster),
-				scopes: ['channel:read:vips'],
+				scopes: ['channel:read:vips', 'channel:manage:vips'],
 				query: createBroadcasterQuery(broadcaster)
 			},
 			this._client,
@@ -182,7 +182,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/vips',
 			userId: extractUserId(broadcaster),
-			scopes: ['channel:read:vips'],
+			scopes: ['channel:read:vips', 'channel:manage:vips'],
 			query: createChannelUsersCheckQuery(broadcaster, users)
 		});
 
