@@ -84,6 +84,8 @@ export class HelixChannelSearchResult extends DataObject<HelixChannelSearchResul
 
 	/**
 	 * The IDs of the tags set on the channel.
+	 *
+	 * @deprecated
 	 */
 	get tagIds(): string[] {
 		return this[rawDataSymbol].tag_ids;
@@ -91,9 +93,18 @@ export class HelixChannelSearchResult extends DataObject<HelixChannelSearchResul
 
 	/**
 	 * Retrieves the tags of the channel.
+	 *
+	 * @deprecated
 	 */
 	async getTags(): Promise<HelixTag[]> {
 		return await this._client.tags.getStreamTagsByIds(this[rawDataSymbol].tag_ids);
+	}
+
+	/**
+	 * The tags applied to the channel.
+	 */
+	get tags(): string[] {
+		return this[rawDataSymbol].tags;
 	}
 
 	/**

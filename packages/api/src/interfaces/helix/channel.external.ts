@@ -11,6 +11,7 @@ export interface HelixChannelData {
 	game_name: string;
 	title: string;
 	delay: number;
+	tags: string[];
 }
 
 /** @private */

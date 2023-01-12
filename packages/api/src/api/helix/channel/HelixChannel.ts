@@ -89,4 +89,11 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 	get delay(): number {
 		return this[rawDataSymbol].delay;
 	}
+
+	/**
+	 * The tags applied to the channel.
+	 */
+	get tags(): string[] {
+		return this[rawDataSymbol].tags;
+	}
 }

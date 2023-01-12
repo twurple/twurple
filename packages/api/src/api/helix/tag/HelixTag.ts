@@ -3,6 +3,8 @@ import { type HelixTagData } from '../../../interfaces/helix/tag.external';
 
 /**
  * A stream tag.
+ *
+ * @deprecated
  */
 @rtfm<HelixTag>('api', 'HelixTag', 'id')
 export class HelixTag extends DataObject<HelixTagData> {
