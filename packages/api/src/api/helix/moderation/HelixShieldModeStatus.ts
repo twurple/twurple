@@ -6,8 +6,6 @@ import type { HelixUser } from '../user/HelixUser';
 
 /**
  * Information about the Shield Mode status of a channel.
- *
- * @beta
  */
 @rtfm('api', 'HelixShieldModeStatus')
 export class HelixShieldModeStatus extends DataObject<HelixShieldModeStatusData> {

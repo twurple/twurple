@@ -451,8 +451,6 @@ export class HelixModerationApi extends BaseApi {
 	 * @param broadcaster The broadcaster whose Shield Mode activation status you want to get.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * This user must match the user associated with the user OAuth token.
-	 *
-	 * @beta
 	 */
 	async getShieldModeStatus(
 		broadcaster: UserIdResolvable,
@@ -476,8 +474,6 @@ export class HelixModerationApi extends BaseApi {
 	 * @param moderator A user that has permission to update Shield Mode status in the broadcaster's channel.
 	 * This user must match the user associated with the user OAuth token.
 	 * @param activate Whether or not to activate Shield Mode on the broadcaster's channel.
-	 *
-	 * @beta
 	 */
 	async updateShieldModeStatus(
 		broadcaster: UserIdResolvable,

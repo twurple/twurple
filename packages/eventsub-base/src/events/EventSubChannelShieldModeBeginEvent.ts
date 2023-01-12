@@ -5,8 +5,6 @@ import type { EventSubChannelShieldModeBeginEventData } from './EventSubChannelS
 
 /**
  * An EventSub event representing Shield Mode being activated on a broadcaster's channel.
- *
- * @beta
  */
 @rtfm('eventsub-base', 'EventSubChannelShieldModeBeginEvent')
 export class EventSubChannelShieldModeBeginEvent extends DataObject<EventSubChannelShieldModeBeginEventData> {
