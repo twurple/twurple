@@ -32,6 +32,8 @@ export class HelixTagApi extends BaseApi {
 	 * @param pagination
 	 *
 	 * @expandParams
+	 *
+	 * @deprecated
 	 */
 	async getAllStreamTags(pagination?: HelixForwardPagination): Promise<HelixPaginatedResult<HelixTag>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixTagData>>({
