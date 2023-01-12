@@ -400,8 +400,6 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param broadcaster The user for which to get notifications for when Shield Mode is activated in their channel.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.
-	 *
-	 * @beta
 	 */
 	async subscribeToChannelShieldModeBeginEvents(
 		broadcaster: UserIdResolvable,
@@ -429,8 +427,6 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param broadcaster The user for which to get notifications for when Shield Mode is deactivated in their channel.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.
-	 *
-	 * @beta
 	 */
 	async subscribeToChannelShieldModeEndEvents(
 		broadcaster: UserIdResolvable,

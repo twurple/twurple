@@ -562,8 +562,6 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param broadcaster The broadcaster you want to listen to Shield Mode activation events for.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param transport The transport options.
-	 *
-	 * @beta
 	 */
 	async subscribeToChannelShieldModeBeginEvents(
 		broadcaster: UserIdResolvable,
@@ -585,8 +583,6 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param broadcaster The broadcaster you want to listen to Shield Mode deactivation events for.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param transport The transport options.
-	 *
-	 * @beta
 	 */
 	async subscribeToChannelShieldModeEndEvents(
 		broadcaster: UserIdResolvable,
