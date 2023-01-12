@@ -570,7 +570,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.shield_mode.begin',
-			'beta',
+			'1',
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			'moderator:read:shield_mode'
@@ -591,7 +591,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.shield_mode.end',
-			'beta',
+			'1',
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			'moderator:read:shield_mode'
