@@ -360,6 +360,8 @@ export class ApiClient {
 
 	/**
 	 * The Helix tag API methods.
+	 *
+	 * @deprecated
 	 */
 	@CachedGetter()
 	get tags(): HelixTagApi {

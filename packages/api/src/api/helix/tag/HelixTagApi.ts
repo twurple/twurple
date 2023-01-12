@@ -23,6 +23,8 @@ import { HelixTag } from './HelixTag';
  *
  * @meta category helix
  * @meta categorizedTitle Tags
+ *
+ * @deprecated
  */
 @rtfm('api', 'HelixTagApi')
 export class HelixTagApi extends BaseApi {
@@ -62,6 +64,8 @@ export class HelixTagApi extends BaseApi {
 	 * Retrieves a set of stream tags by IDs.
 	 *
 	 * @param ids The IDs of the stream tags.
+	 *
+	 * @deprecated
 	 */
 	async getStreamTagsByIds(ids: string[]): Promise<HelixTag[]> {
 		if (!ids.length) {
@@ -80,6 +84,8 @@ export class HelixTagApi extends BaseApi {
 	 * Retrieves a single stream tag by ID.
 	 *
 	 * @param id The ID of the stream tag.
+	 *
+	 * @deprecated
 	 */
 	async getStreamTagById(id: string): Promise<HelixTag | null> {
 		const tags = await this.getStreamTagsByIds([id]);
