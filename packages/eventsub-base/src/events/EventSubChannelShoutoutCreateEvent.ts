@@ -5,6 +5,8 @@ import { type EventSubChannelShoutoutCreateEventData } from './EventSubChannelSh
 
 /**
  * An EventSub event representing a broadcaster shouting out another broadcaster.
+ *
+ * @beta
  */
 @rtfm<EventSubChannelShoutoutCreateEvent>(
 	'eventsub-base',
