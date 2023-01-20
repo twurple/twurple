@@ -25,7 +25,6 @@ import { HelixCharityCampaignDonation } from './HelixCharityCampaignDonation';
  * const charityCampaign = await api.charity.getCharityCampaign('125328655');
  * ```
  *
- * @beta
  * @meta category helix
  * @meta categorizedTitle Charity Campaigns
  */
@@ -35,7 +34,6 @@ export class HelixCharityApi extends BaseApi {
 	 * Gets information about the charity campaign that a broadcaster is running.
 	 * Returns null if the specified broadcaster has no active charity campaign.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster to get charity campaign information about.
 	 */
 	async getCharityCampaign(broadcaster: UserIdResolvable): Promise<HelixCharityCampaign> {
@@ -53,7 +51,6 @@ export class HelixCharityApi extends BaseApi {
 	/**
 	 * Gets the list of donations that users have made to the broadcaster’s active charity campaign.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster to get charity campaign donation information about.
 	 * @param pagination
 	 *

@@ -10,7 +10,7 @@ import { EventSubSubscription } from './EventSubSubscription';
  */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelCharityCampaignProgressSubscription extends EventSubSubscription<EventSubChannelCharityCampaignProgressEvent> {
-	/** @protected */ readonly _cliName = 'charity-campaign-progress';
+	/** @protected */ readonly _cliName = 'charity-progress';
 
 	constructor(
 		handler: (data: EventSubChannelCharityCampaignProgressEvent) => void,

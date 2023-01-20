@@ -441,7 +441,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a charity campaign starting in a channel.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
 	 * @param transport The transport option.
 	 */
@@ -461,7 +460,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a charity campaign ending in a channel.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
 	 * @param transport The transport option.
 	 */
@@ -481,7 +479,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a user donating to a charity campaign in a channel.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
 	 * @param transport The transport option.
 	 */
@@ -501,7 +498,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a charity campaign progressing in a channel.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
 	 * @param transport The transport option.
 	 */

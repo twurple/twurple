@@ -303,7 +303,6 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Subscribes to events that represent a charity campaign starting in a channel.
 	 *
-	 * @beta
 	 * @param user The user for which to get notifications about charity campaigns starting.
 	 * @param handler The function that will be called for any new notifications.
 	 */
@@ -319,7 +318,6 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Subscribes to events that represent a charity campaign ending in a channel.
 	 *
-	 * @beta
 	 * @param user The user for which to get notifications about charity campaigns ending.
 	 * @param handler The function that will be called for any new notifications.
 	 */
@@ -335,7 +333,6 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Subscribes to events that represent a donation to a charity campaign in a channel.
 	 *
-	 * @beta
 	 * @param user The user for which to get notifications about charity campaign donations.
 	 * @param handler The function that will be called for any new notifications.
 	 */
@@ -351,7 +348,6 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Subscribes to events that represent progress in a charity campaign in a channel.
 	 *
-	 * @beta
 	 * @param user The user for which to get notifications about charity campaign progress.
 	 * @param handler The function that will be called for any new notifications.
 	 */
