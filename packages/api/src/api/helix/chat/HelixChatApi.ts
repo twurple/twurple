@@ -5,6 +5,7 @@ import { extractUserId, rtfm } from '@twurple/common';
 import {
 	createChatColorUpdateQuery,
 	createChatSettingsUpdateBody,
+	createShoutoutQuery,
 	type HelixChannelEmoteData,
 	type HelixChatBadgeSetData,
 	type HelixChatChatterData,
@@ -303,6 +304,27 @@ export class HelixChatApi extends BaseApi {
 			userId: extractUserId(user),
 			scopes: ['user:manage:chat_color'],
 			query: createChatColorUpdateQuery(user, color)
+		});
+	}
+
+	/**
+	 * Sends a shoutout to the specified broadcaster.
+	 * The broadcaster may send a shoutout once every 2 minutes. They may send the same broadcaster a shoutout once every 60 minutes.
+	 *
+	 * @beta
+	 * @param from The ID of the broadcaster that’s sending the shoutout.
+	 * @param to The ID of the broadcaster that’s receiving the shoutout.
+	 * @param moderator The ID of the broadcaster or a user that is one of the broadcaster’s moderators.
+	 * This ID must match the user ID in the access token.
+	 */
+	async shoutoutUser(from: UserIdResolvable, to: UserIdResolvable, moderator: UserIdResolvable): Promise<void> {
+		await this._client.callApi({
+			type: 'helix',
+			url: 'chat/shoutouts',
+			method: 'POST',
+			userId: extractUserId(moderator),
+			scopes: ['moderator:manage:shoutouts'],
+			query: createShoutoutQuery(from, to, moderator)
 		});
 	}
 }

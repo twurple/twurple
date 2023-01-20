@@ -26,6 +26,8 @@ import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChan
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
+import type { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';
+import type { EventSubChannelShoutoutReceiveEvent } from './events/EventSubChannelShoutoutReceiveEvent';
 import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChannelSubscriptionEndEvent';
 import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
@@ -542,6 +544,34 @@ export interface EventSubListener {
 	onChannelHypeTrainEnd: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainEndEvent) => void
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a broadcaster shouting out another broadcaster.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster for which you want to listen to outgoing shoutout events.
+	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelShoutoutCreate: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelShoutoutCreateEvent) => void
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a broadcaster being shouted out by another broadcaster.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster for which you want to listen to incoming shoutout events.
+	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelShoutoutReceive: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelShoutoutReceiveEvent) => void
 	) => EventSubSubscription;
 
 	/**

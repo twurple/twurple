@@ -31,6 +31,8 @@ export { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRe
 export { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 export { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 export { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
+export { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';
+export { EventSubChannelShoutoutReceiveEvent } from './events/EventSubChannelShoutoutReceiveEvent';
 export { EventSubChannelSubscriptionEndEvent } from './events/EventSubChannelSubscriptionEndEvent';
 export type { EventSubChannelSubscriptionEndEventTier } from './events/EventSubChannelSubscriptionEndEvent.external';
 export { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';

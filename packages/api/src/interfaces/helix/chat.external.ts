@@ -147,3 +147,12 @@ export function createChatColorUpdateQuery(user: UserIdResolvable, color: HelixC
 		color
 	};
 }
+
+/** @private */
+export function createShoutoutQuery(from: UserIdResolvable, to: UserIdResolvable, moderator: UserIdResolvable) {
+	return {
+		from_broadcaster_id: extractUserId(from),
+		to_broadcaster_id: extractUserId(to),
+		moderator_id: extractUserId(moderator)
+	};
+}
