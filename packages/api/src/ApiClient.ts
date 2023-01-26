@@ -230,8 +230,6 @@ export class ApiClient {
 
 	/**
 	 * The Helix charity API methods.
-	 *
-	 * @beta
 	 */
 	@CachedGetter()
 	get charity(): HelixCharityApi {

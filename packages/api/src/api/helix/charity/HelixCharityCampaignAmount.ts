@@ -3,8 +3,6 @@ import { type HelixCharityCampaignAmountData } from '../../../interfaces/helix/c
 
 /**
  * An object representing monetary amount and currency information for charity donations/goals.
- *
- * @beta
  */
 @rtfm('api', 'HelixCharityCampaignAmount')
 export class HelixCharityCampaignAmount extends DataObject<HelixCharityCampaignAmountData> {

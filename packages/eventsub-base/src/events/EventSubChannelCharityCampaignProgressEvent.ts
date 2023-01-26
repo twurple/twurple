@@ -6,8 +6,6 @@ import { type EventSubChannelCharityCampaignProgressEventData } from './EventSub
 
 /**
  * An EventSub event representing progress of a charity campaign in a channel.
- *
- * @beta
  */
 @rtfm<EventSubChannelCharityCampaignProgressEvent>('eventsub-base', 'EventSubChannelCharityCampaignProgressEvent', 'id')
 export class EventSubChannelCharityCampaignProgressEvent extends DataObject<EventSubChannelCharityCampaignProgressEventData> {

@@ -6,8 +6,6 @@ import { type EventSubChannelCharityDonationEventData } from './EventSubChannelC
 
 /**
  * An EventSub event representing a donation to a charity campaign in a channel.
- *
- * @beta
  */
 @rtfm<EventSubChannelCharityDonationEvent>('eventsub-base', 'EventSubChannelCharityDonationEvent', 'broadcasterId')
 export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChannelCharityDonationEventData> {
