@@ -22,7 +22,7 @@ export class HelixSchedule extends DataObject<HelixScheduleData> {
 	 * The segments of the schedule.
 	 */
 	get segments(): HelixScheduleSegment[] {
-		return this[rawDataSymbol].segments.map(data => new HelixScheduleSegment(data, this._client));
+		return this[rawDataSymbol].segments?.map(data => new HelixScheduleSegment(data, this._client)) ?? [];
 	}
 
 	/**

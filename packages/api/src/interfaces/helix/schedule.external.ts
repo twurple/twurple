@@ -31,7 +31,7 @@ export interface HelixScheduleSegmentData {
 
 /** @private */
 export interface HelixScheduleData {
-	segments: HelixScheduleSegmentData[];
+	segments: HelixScheduleSegmentData[] | null;
 	broadcaster_id: string;
 	broadcaster_name: string;
 	broadcaster_login: string;
