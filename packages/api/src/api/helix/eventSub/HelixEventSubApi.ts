@@ -1158,6 +1158,52 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a broadcaster shouting out another broadcaster.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster for which you want to listen to outgoing shoutout events.
+	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelShoutoutCreateEvents(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.shoutout.create',
+			'beta',
+			createEventSubModeratorCondition(broadcaster, moderator),
+			transport,
+			broadcaster,
+			['moderator:read:shoutouts', 'moderator:manage:shoutouts']
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a broadcaster being shouting out by another broadcaster.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster for which you want to listen to incoming shoutout events.
+	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelShoutoutReceiveEvents(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.shoutout.receive',
+			'beta',
+			createEventSubModeratorCondition(broadcaster, moderator),
+			transport,
+			broadcaster,
+			['moderator:read:shoutouts', 'moderator:manage:shoutouts']
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.

@@ -37,6 +37,8 @@ import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChan
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
+import type { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';
+import type { EventSubChannelShoutoutReceiveEvent } from './events/EventSubChannelShoutoutReceiveEvent';
 import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChannelSubscriptionEndEvent';
 import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
@@ -79,6 +81,8 @@ import { EventSubChannelRewardRemoveSubscription } from './subscriptions/EventSu
 import { EventSubChannelRewardUpdateSubscription } from './subscriptions/EventSubChannelRewardUpdateSubscription';
 import { EventSubChannelShieldModeBeginSubscription } from './subscriptions/EventSubChannelShieldModeBeginSubscription';
 import { EventSubChannelShieldModeEndSubscription } from './subscriptions/EventSubChannelShieldModeEndSubscription';
+import { EventSubChannelShoutoutCreateSubscription } from './subscriptions/EventSubChannelShoutoutCreateSubscription';
+import { EventSubChannelShoutoutReceiveSubscription } from './subscriptions/EventSubChannelShoutoutReceiveSubscription';
 import { EventSubChannelSubscriptionEndSubscription } from './subscriptions/EventSubChannelSubscriptionEndSubscription';
 import { EventSubChannelSubscriptionGiftSubscription } from './subscriptions/EventSubChannelSubscriptionGiftSubscription';
 import { EventSubChannelSubscriptionMessageSubscription } from './subscriptions/EventSubChannelSubscriptionMessageSubscription';
@@ -862,6 +866,62 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainEndEvents');
 
 		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a broadcaster shouting out another broadcaster.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster for which you want to listen to outgoing shoutout events.
+	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelShoutoutCreate(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelShoutoutCreateEvent) => void
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelShoutoutCreateEvents'
+		);
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShoutoutCreateEvents');
+
+		return this._genericSubscribe(
+			EventSubChannelShoutoutCreateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a broadcaster being shouted out by another broadcaster.
+	 *
+	 * @beta
+	 * @param broadcaster The broadcaster for which you want to listen to incoming shoutout events.
+	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelShoutoutReceive(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelShoutoutReceiveEvent) => void
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelShoutoutReceiveEvents'
+		);
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShoutoutReceiveEvents');
+
+		return this._genericSubscribe(
+			EventSubChannelShoutoutReceiveSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId
+		);
 	}
 
 	/**
