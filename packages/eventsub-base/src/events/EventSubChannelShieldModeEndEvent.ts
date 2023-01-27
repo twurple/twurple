@@ -5,8 +5,6 @@ import type { EventSubChannelShieldModeEndEventData } from './EventSubChannelShi
 
 /**
  * An EventSub event representing Shield Mode being deactivated on a broadcaster's channel.
- *
- * @beta
  */
 @rtfm('eventsub-base', 'EventSubChannelShieldModeEndEvent')
 export class EventSubChannelShieldModeEndEvent extends DataObject<EventSubChannelShieldModeEndEventData> {

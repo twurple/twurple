@@ -17,6 +17,7 @@ export interface HelixStreamData {
 	community_ids: string[];
 	type: HelixStreamType;
 	title: string;
+	tags: string[];
 	viewer_count: number;
 	started_at: string;
 	language: string;

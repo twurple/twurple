@@ -462,7 +462,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a charity campaign starting in a channel.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
 	 * @param transport The transport option.
 	 */
@@ -472,7 +471,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.charity_campaign.start',
-			'beta',
+			'1',
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
@@ -483,7 +482,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a charity campaign ending in a channel.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
 	 * @param transport The transport option.
 	 */
@@ -493,7 +491,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.charity_campaign.stop',
-			'beta',
+			'1',
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
@@ -504,7 +502,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a user donating to a charity campaign in a channel.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
 	 * @param transport The transport option.
 	 */
@@ -514,7 +511,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.charity_campaign.donate',
-			'beta',
+			'1',
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
@@ -525,7 +522,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a charity campaign progressing in a channel.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
 	 * @param transport The transport option.
 	 */
@@ -535,7 +531,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.charity_campaign.progress',
-			'beta',
+			'1',
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,
@@ -589,8 +585,6 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param broadcaster The broadcaster you want to listen to Shield Mode activation events for.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param transport The transport options.
-	 *
-	 * @beta
 	 */
 	async subscribeToChannelShieldModeBeginEvents(
 		broadcaster: UserIdResolvable,
@@ -599,7 +593,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.shield_mode.begin',
-			'beta',
+			'1',
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			broadcaster,
@@ -613,8 +607,6 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param broadcaster The broadcaster you want to listen to Shield Mode deactivation events for.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param transport The transport options.
-	 *
-	 * @beta
 	 */
 	async subscribeToChannelShieldModeEndEvents(
 		broadcaster: UserIdResolvable,
@@ -623,7 +615,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.shield_mode.end',
-			'beta',
+			'1',
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			broadcaster,

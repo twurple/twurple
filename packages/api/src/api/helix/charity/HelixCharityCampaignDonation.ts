@@ -7,8 +7,6 @@ import { HelixCharityCampaignAmount } from './HelixCharityCampaignAmount';
 
 /**
  * A donation to a charity campaign in a Twitch channel.
- *
- * @beta
  */
 @rtfm('api', 'HelixCharityCampaignDonation')
 export class HelixCharityCampaignDonation extends DataObject<HelixCharityCampaignDonationData> {

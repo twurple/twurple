@@ -180,8 +180,6 @@ export class BaseApiClient {
 
 	/**
 	 * The Helix charity API methods.
-	 *
-	 * @beta
 	 */
 	@CachedGetter()
 	get charity(): HelixCharityApi {
@@ -310,6 +308,8 @@ export class BaseApiClient {
 
 	/**
 	 * The Helix tag API methods.
+	 *
+	 * @deprecated
 	 */
 	@CachedGetter()
 	get tags(): HelixTagApi {

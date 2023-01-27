@@ -11,6 +11,7 @@ export interface HelixChannelData {
 	game_name: string;
 	title: string;
 	delay: number;
+	tags: string[];
 }
 
 /** @private */
@@ -35,7 +36,8 @@ export function createChannelUpdateBody(data: HelixChannelUpdate) {
 		game_id: data.gameId,
 		broadcaster_language: data.language,
 		title: data.title,
-		delay: data.delay?.toString()
+		delay: data.delay?.toString(),
+		tags: data.tags
 	};
 }
 

@@ -3,8 +3,6 @@ import { type EventSubChannelCharityAmountData } from './EventSubChannelCharityA
 
 /**
  * An object representing monetary amount and currency information for charity donations/goals.
- *
- * @beta
  */
 @rtfm('eventsub-base', 'EventSubChannelCharityAmount')
 export class EventSubChannelCharityAmount extends DataObject<EventSubChannelCharityAmountData> {

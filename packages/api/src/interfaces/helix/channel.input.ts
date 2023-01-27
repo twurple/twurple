@@ -23,4 +23,12 @@ export interface HelixChannelUpdate {
 	 * Only works if you're a Twitch partner.
 	 */
 	delay?: number;
+
+	/**
+	 * A list of channel-defined tags to apply to the channel. To remove all tags from the channel, set tags to an empty array.
+	 *
+	 * A channel may specify a maximum of 10 tags. Each tag is limited to a maximum of 25 characters and may not be an empty string
+	 * or contain spaces or special characters. Tags are case insensitive.
+	 */
+	tags?: string[];
 }

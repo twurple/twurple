@@ -41,7 +41,7 @@ export class HelixPaginatedScheduleSegmentRequest extends HelixPaginatedRequest<
 		const origData = (await super._fetchData(additionalOptions)) as unknown as HelixScheduleResponse;
 
 		return {
-			data: origData.data.segments,
+			data: origData.data.segments ?? [],
 			pagination: origData.pagination
 		};
 	}

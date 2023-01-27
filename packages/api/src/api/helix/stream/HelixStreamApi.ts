@@ -264,6 +264,8 @@ export class HelixStreamApi extends BaseApi {
 	 * Retrieves the tags of a stream.
 	 *
 	 * @param broadcaster The broadcaster of the stream.
+	 *
+	 * @deprecated
 	 */
 	async getStreamTags(broadcaster: UserIdResolvable): Promise<HelixTag[]> {
 		const result = await this._client.callApi<HelixResponse<HelixTagData>>({
@@ -280,6 +282,8 @@ export class HelixStreamApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster of the stream.
 	 * @param tagIds The tags to set. If not given, removes all tags.
+	 *
+	 * @deprecated
 	 */
 	async replaceStreamTags(broadcaster: UserIdResolvable, tagIds?: string[]): Promise<void> {
 		await this._client.callApi({

@@ -135,6 +135,8 @@ export class HelixStream extends DataObject<HelixStreamData> {
 
 	/**
 	 * The IDs of the tags of the stream.
+	 *
+	 * @deprecated
 	 */
 	get tagIds(): string[] {
 		return this[rawDataSymbol].tag_ids ?? [];
@@ -142,9 +144,18 @@ export class HelixStream extends DataObject<HelixStreamData> {
 
 	/**
 	 * Retrieves the tags of the stream.
+	 *
+	 * @deprecated
 	 */
 	async getTags(): Promise<HelixTag[]> {
 		return await this._client.tags.getStreamTagsByIds(this[rawDataSymbol].tag_ids ?? []);
+	}
+
+	/**
+	 * The tags applied to the stream.
+	 */
+	get tags(): string[] {
+		return this[rawDataSymbol].tags;
 	}
 
 	/**

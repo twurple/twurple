@@ -158,7 +158,6 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent a charity campaign starting in a channel.
 	 *
-	 * @beta
 	 * @param user The user for which to get notifications about charity campaigns starting.
 	 * @param handler The function that will be called for any new notifications.
 	 */
@@ -170,7 +169,6 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent a charity campaign ending in a channel.
 	 *
-	 * @beta
 	 * @param user The user for which to get notifications about charity campaigns ending.
 	 * @param handler The function that will be called for any new notifications.
 	 */
@@ -182,7 +180,6 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent a donation to a charity campaign in a channel.
 	 *
-	 * @beta
 	 * @param user The user for which to get notifications about charity campaign donations.
 	 * @param handler The function that will be called for any new notifications.
 	 */
@@ -194,7 +191,6 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent progress in a charity campaign in a channel.
 	 *
-	 * @beta
 	 * @param user The user for which to get notifications about charity campaign progress.
 	 * @param handler The function that will be called for any new notifications.
 	 */
@@ -228,8 +224,6 @@ export interface EventSubListener {
 	 * @param broadcaster The user for which to get notifications for when Shield Mode is activated in their channel.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.
-	 *
-	 * @beta
 	 */
 	onChannelShieldModeBegin: (
 		broadcaster: UserIdResolvable,
@@ -243,8 +237,6 @@ export interface EventSubListener {
 	 * @param broadcaster The user for which to get notifications for when Shield Mode is deactivated in their channel.
 	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.
-	 *
-	 * @beta
 	 */
 	onChannelShieldModeEnd: (
 		broadcaster: UserIdResolvable,

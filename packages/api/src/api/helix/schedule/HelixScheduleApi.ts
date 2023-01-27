@@ -96,7 +96,7 @@ export class HelixScheduleApi extends BaseApi {
 			query: createGetByIdsQuery(broadcaster, ids)
 		});
 
-		return result.data.segments.map(data => new HelixScheduleSegment(data, this._client));
+		return result.data.segments?.map(data => new HelixScheduleSegment(data, this._client)) ?? [];
 	}
 
 	/**
@@ -165,7 +165,7 @@ export class HelixScheduleApi extends BaseApi {
 			jsonBody: createScheduleSegmentBody(data)
 		});
 
-		return new HelixScheduleSegment(result.data.segments[0], this._client);
+		return new HelixScheduleSegment(result.data.segments![0], this._client);
 	}
 
 	/**
@@ -192,7 +192,7 @@ export class HelixScheduleApi extends BaseApi {
 			jsonBody: createScheduleSegmentUpdateBody(data)
 		});
 
-		return new HelixScheduleSegment(result.data.segments[0], this._client);
+		return new HelixScheduleSegment(result.data.segments![0], this._client);
 	}
 
 	/**
