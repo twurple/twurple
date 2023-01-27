@@ -1,6 +1,6 @@
 {
   "name": "@twurple/eventsub",
-  "version": "5.3.3",
+  "version": "5.3.4",
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +34,7 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@twurple/eventsub-http": "5.3.3"
+    "@twurple/eventsub-http": "5.3.4"
   },
   "files": [
     "LICENSE",
