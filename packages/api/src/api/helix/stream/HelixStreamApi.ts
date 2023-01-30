@@ -124,7 +124,7 @@ export class HelixStreamApi extends BaseApi {
 			url: 'streams',
 			type: 'helix',
 			userId,
-			query: createStreamQuery({ userName: userId })
+			query: createStreamQuery({ userId: userId })
 		});
 
 		return mapNullable(result.data[0], data => new HelixStream(data, this._client));
