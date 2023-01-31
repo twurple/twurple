@@ -1,4 +1,4 @@
-import { flatten } from '@d-fischer/shared-utils';
+import { flatten, mapNullable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
@@ -119,9 +119,15 @@ export class HelixStreamApi extends BaseApi {
 	 * @param user The user ID to retrieve the stream for.
 	 */
 	async getStreamByUserId(user: UserIdResolvable): Promise<HelixStream | null> {
-		const result = await this.getStreamsByUserIds([user]);
+		const userId = extractUserId(user);
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamData>>({
+			url: 'streams',
+			type: 'helix',
+			userId,
+			query: createStreamQuery({ userId: userId })
+		});
 
-		return result[0] ?? null;
+		return mapNullable(result.data[0], data => new HelixStream(data, this._client));
 	}
 
 	/**
