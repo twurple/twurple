@@ -18,6 +18,7 @@ import { HelixChannelPointsApi } from '../api/helix/channelPoints/HelixChannelPo
 import { HelixCharityApi } from '../api/helix/charity/HelixCharityApi';
 import { HelixChatApi } from '../api/helix/chat/HelixChatApi';
 import { HelixClipApi } from '../api/helix/clip/HelixClipApi';
+import { HelixEntitlementApi } from '../api/helix/entitlements/HelixEntitlementApi';
 import { HelixEventSubApi } from '../api/helix/eventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from '../api/helix/extensions/HelixExtensionsApi';
 import { HelixGameApi } from '../api/helix/game/HelixGameApi';
@@ -200,6 +201,14 @@ export class BaseApiClient {
 	@CachedGetter()
 	get clips(): HelixClipApi {
 		return new HelixClipApi(this);
+	}
+
+	/**
+	 * The Helix entitlement API methods.
+	 */
+	@CachedGetter()
+	get entitlements(): HelixEntitlementApi {
+		return new HelixEntitlementApi(this);
 	}
 
 	/**

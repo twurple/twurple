@@ -42,3 +42,23 @@ export interface HelixPaginatedEventSubSubscriptionsResult
 	 */
 	maxTotalCost: number;
 }
+
+/**
+ * Filters for EventSub drop entitlement grant events.
+ */
+export interface HelixEventSubDropEntitlementGrantFilter {
+	/**
+	 * The ID of the organization that owns the categories/games to get events for.
+	 */
+	organizationId: string;
+
+	/**
+	 * The ID of the category/game to get events for.
+	 */
+	categoryId?: string;
+
+	/**
+	 * The ID of the campaign to get events for.
+	 */
+	campaignId?: string;
+}

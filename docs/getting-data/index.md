@@ -15,7 +15,7 @@ should use for which use case.
 | Manage custom rewards & redemptions           | Yes                      | No                                                     |
 | Get available emotes & badges                 | Yes                      | No                                                     |
 | Get & create clips                            | Yes                      | No                                                     |
-| Manage drops                                  | No (supported by Twitch) | No                                                     |
+| Manage drops                                  | Yes                      | No                                                     |
 | Manage extensions                             | Yes                      | No                                                     |
 | Get category info                             | Yes                      | No                                                     |
 | Manage polls & predictions                    | Yes                      | No                                                     |
@@ -72,6 +72,6 @@ should use for which use case.
 | Extension transactions            | No                           | No                        | Yes                       |
 | Hype Trains                       | No                           | No                        | Yes                       |
 | Authorization grant/revoke        | No                           | No                        | Yes                       |
-| Drops                             | No                           | No                        | No (supported by Twitch)  |
+| Drops                             | No                           | No                        | Yes                       |
 | Charity campaigns & donations     | No                           | No                        | Yes                       |
 | Shield mode begin/end             | No                           | No                        | Yes                       |

@@ -67,6 +67,17 @@ export { HelixClipApi } from './api/helix/clip/HelixClipApi';
 export { HelixClip } from './api/helix/clip/HelixClip';
 export type { HelixPaginatedClipFilter, HelixClipFilter, HelixClipCreateParams } from './interfaces/helix/clip.input';
 
+export { HelixEntitlementApi } from './api/helix/entitlements/HelixEntitlementApi';
+export { HelixDropsEntitlement } from './api/helix/entitlements/HelixDropsEntitlement';
+export type {
+	HelixDropsEntitlementFulfillmentStatus,
+	HelixDropsEntitlementUpdateStatus
+} from './interfaces/helix/entitlement.external';
+export type {
+	HelixDropsEntitlementFilter,
+	HelixDropsEntitlementPaginatedFilter
+} from './interfaces/helix/entitlement.input';
+
 export { HelixEventSubApi } from './api/helix/eventSub/HelixEventSubApi';
 export { HelixEventSubSubscription } from './api/helix/eventSub/HelixEventSubSubscription';
 export { HelixPaginatedEventSubSubscriptionsRequest } from './api/helix/eventSub/HelixPaginatedEventSubSubscriptionsRequest';
@@ -75,7 +86,8 @@ export type {
 	HelixEventSubTransportOptions,
 	HelixEventSubWebSocketTransportOptions,
 	HelixEventSubWebHookTransportOptions,
-	HelixPaginatedEventSubSubscriptionsResult
+	HelixPaginatedEventSubSubscriptionsResult,
+	HelixEventSubDropEntitlementGrantFilter
 } from './interfaces/helix/eventSub.input';
 
 export { HelixExtensionsApi } from './api/helix/extensions/HelixExtensionsApi';

@@ -4,6 +4,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type {
 	ApiClient,
+	HelixEventSubDropEntitlementGrantFilter,
 	HelixEventSubSubscription,
 	HelixEventSubTransportOptions,
 	UserIdResolvable
@@ -45,6 +46,7 @@ import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChan
 import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent';
 import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
 import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';
@@ -89,6 +91,7 @@ import { EventSubChannelSubscriptionMessageSubscription } from './subscriptions/
 import { EventSubChannelSubscriptionSubscription } from './subscriptions/EventSubChannelSubscriptionSubscription';
 import { EventSubChannelUnbanSubscription } from './subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelUpdateSubscription } from './subscriptions/EventSubChannelUpdateSubscription';
+import { EventSubDropEntitlementGrantSubscription } from './subscriptions/EventSubDropEntitlementGrantSubscription';
 import { EventSubExtensionBitsTransactionCreateSubscription } from './subscriptions/EventSubExtensionBitsTransactionCreateSubscription';
 import { EventSubStreamOfflineSubscription } from './subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './subscriptions/EventSubStreamOnlineSubscription';
@@ -914,6 +917,20 @@ export abstract class EventSubBase extends EventEmitter {
 			broadcasterId,
 			moderatorId
 		);
+	}
+	/**
+	 * Subscribes to events that represent a drop entitlement being granted.
+	 *
+	 * @beta
+	 *
+	 * @param filter The filter to apply for the events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onDropEntitlementGrant(
+		filter: HelixEventSubDropEntitlementGrantFilter,
+		handler: (event: EventSubDropEntitlementGrantEvent) => void
+	): EventSubSubscription {
+		return this._genericSubscribe(EventSubDropEntitlementGrantSubscription, handler, this, filter);
 	}
 
 	/**

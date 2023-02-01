@@ -1,3 +1,4 @@
+import { type HelixEventSubDropEntitlementGrantFilter } from '@twurple/api';
 import type { UserIdResolvable } from '@twurple/common';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
@@ -34,6 +35,7 @@ import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChan
 import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent';
 import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
 import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';
@@ -556,6 +558,7 @@ export interface EventSubListener {
 	 * Subscribes to events that represent a broadcaster being shouted out by another broadcaster.
 	 *
 	 * @beta
+	 *
 	 * @param broadcaster The broadcaster for which you want to listen to incoming shoutout events.
 	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.
@@ -564,6 +567,19 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubChannelShoutoutReceiveEvent) => void
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a drop entitlement being granted.
+	 *
+	 * @beta
+	 *
+	 * @param filter The filter to apply for the events.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onDropEntitlementGrant: (
+		filter: HelixEventSubDropEntitlementGrantFilter,
+		handler: (event: EventSubDropEntitlementGrantEvent) => void
 	) => EventSubSubscription;
 
 	/**

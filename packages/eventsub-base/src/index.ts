@@ -43,6 +43,7 @@ export { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChanne
 export type { EventSubChannelSubscriptionMessageEventTier } from './events/EventSubChannelSubscriptionMessageEvent.external';
 export { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
 export { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+export { EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 export { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
 export { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
 export { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEvent';

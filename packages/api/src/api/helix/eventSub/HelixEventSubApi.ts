@@ -4,6 +4,7 @@ import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import {
 	createEventSubBroadcasterCondition,
+	createEventSubDropEntitlementGrantCondition,
 	createEventSubModeratorCondition,
 	createEventSubRewardCondition,
 	type HelixEventSubSubscriptionData,
@@ -11,6 +12,7 @@ import {
 	type HelixPaginatedEventSubSubscriptionsResponse
 } from '../../../interfaces/helix/eventSub.external';
 import {
+	type HelixEventSubDropEntitlementGrantFilter,
 	type HelixEventSubTransportOptions,
 	type HelixPaginatedEventSubSubscriptionsResult
 } from '../../../interfaces/helix/eventSub.input';
@@ -1271,6 +1273,27 @@ export class HelixEventSubApi extends BaseApi {
 			transport,
 			user,
 			withEmail ? ['user:read:email'] : undefined
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a drop entitlement being granted.
+	 *
+	 * @beta
+	 * @expandParams
+	 *
+	 * @param filter
+	 * @param transport The transport options.
+	 */
+	async subscribeToDropEntitlementGrantEvents(
+		filter: HelixEventSubDropEntitlementGrantFilter,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'drop.entitlement.grant',
+			'1',
+			createEventSubDropEntitlementGrantCondition(filter),
+			transport
 		);
 	}
 
