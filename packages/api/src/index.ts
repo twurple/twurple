@@ -204,9 +204,6 @@ export type { HelixPaginatedVideoFilter, HelixVideoFilter } from './interfaces/h
 
 export { HelixWhisperApi } from './api/helix/whisper/HelixWhisperApi';
 
-export { UnsupportedApi } from './api/unsupported/UnsupportedApi';
-export { ChattersList } from './api/unsupported/ChattersList';
-
 export { ConfigError } from './errors/ConfigError';
 export { StreamNotLiveError } from './errors/StreamNotLiveError';
 

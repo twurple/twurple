@@ -38,7 +38,6 @@ import { HelixTeamApi } from '../api/helix/team/HelixTeamApi';
 import { HelixUserApi } from '../api/helix/user/HelixUserApi';
 import { HelixVideoApi } from '../api/helix/video/HelixVideoApi';
 import { HelixWhisperApi } from '../api/helix/whisper/HelixWhisperApi';
-import { UnsupportedApi } from '../api/unsupported/UnsupportedApi';
 
 import { type ApiConfig, type TwitchApiCallOptionsInternal } from './ApiClient';
 import { type ContextApiCallOptions } from './ContextApiCallOptions';
@@ -355,14 +354,6 @@ export class BaseApiClient {
 	@CachedGetter()
 	get whispers(): HelixWhisperApi {
 		return new HelixWhisperApi(this);
-	}
-
-	/**
-	 * Various API methods that are not officially supported by Twitch.
-	 */
-	@CachedGetter()
-	get unsupported(): UnsupportedApi {
-		return new UnsupportedApi(this);
 	}
 
 	/**
