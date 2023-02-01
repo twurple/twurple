@@ -22,7 +22,6 @@ export interface HelixStreamData {
 	started_at: string;
 	language: string;
 	thumbnail_url: string;
-	tag_ids: string[] | null;
 	is_mature: boolean;
 }
 

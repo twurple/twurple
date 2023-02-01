@@ -33,7 +33,6 @@ import { HelixScheduleApi } from '../api/helix/schedule/HelixScheduleApi';
 import { HelixSearchApi } from '../api/helix/search/HelixSearchApi';
 import { HelixStreamApi } from '../api/helix/stream/HelixStreamApi';
 import { HelixSubscriptionApi } from '../api/helix/subscriptions/HelixSubscriptionApi';
-import { HelixTagApi } from '../api/helix/tag/HelixTagApi';
 import { HelixTeamApi } from '../api/helix/team/HelixTeamApi';
 import { HelixUserApi } from '../api/helix/user/HelixUserApi';
 import { HelixVideoApi } from '../api/helix/video/HelixVideoApi';
@@ -312,16 +311,6 @@ export class BaseApiClient {
 	@CachedGetter()
 	get subscriptions(): HelixSubscriptionApi {
 		return new HelixSubscriptionApi(this);
-	}
-
-	/**
-	 * The Helix tag API methods.
-	 *
-	 * @deprecated
-	 */
-	@CachedGetter()
-	get tags(): HelixTagApi {
-		return new HelixTagApi(this);
 	}
 
 	/**

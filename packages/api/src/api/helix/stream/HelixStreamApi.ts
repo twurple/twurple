@@ -16,14 +16,12 @@ import {
 	type HelixStreamMarkerData
 } from '../../../interfaces/helix/stream.external';
 import { type HelixPaginatedStreamFilter, type HelixStreamFilter } from '../../../interfaces/helix/stream.input';
-import { type HelixTagData } from '../../../interfaces/helix/tag.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../HelixPaginatedResult';
 import { createPaginatedResult } from '../HelixPaginatedResult';
 import type { HelixForwardPagination, HelixPagination } from '../HelixPagination';
 import { createPaginationQuery } from '../HelixPagination';
-import { HelixTag } from '../tag/HelixTag';
 import { HelixStream } from './HelixStream';
 import { HelixStreamMarker } from './HelixStreamMarker';
 import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
@@ -258,42 +256,6 @@ export class HelixStreamApi extends BaseApi {
 
 			throw e;
 		}
-	}
-
-	/**
-	 * Retrieves the tags of a stream.
-	 *
-	 * @param broadcaster The broadcaster of the stream.
-	 *
-	 * @deprecated
-	 */
-	async getStreamTags(broadcaster: UserIdResolvable): Promise<HelixTag[]> {
-		const result = await this._client.callApi<HelixResponse<HelixTagData>>({
-			type: 'helix',
-			url: 'streams/tags',
-			query: createBroadcasterQuery(broadcaster)
-		});
-
-		return result.data.map(data => new HelixTag(data));
-	}
-
-	/**
-	 * Replaces the tags of a stream.
-	 *
-	 * @param broadcaster The broadcaster of the stream.
-	 * @param tagIds The tags to set. If not given, removes all tags.
-	 *
-	 * @deprecated
-	 */
-	async replaceStreamTags(broadcaster: UserIdResolvable, tagIds?: string[]): Promise<void> {
-		await this._client.callApi({
-			type: 'helix',
-			url: 'streams/tags',
-			scopes: ['channel:manage:broadcast'],
-			method: 'PUT',
-			query: createBroadcasterQuery(broadcaster),
-			jsonBody: createSingleKeyQuery('tag_ids', tagIds)
-		});
 	}
 
 	/**

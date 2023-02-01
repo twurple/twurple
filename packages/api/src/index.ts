@@ -165,9 +165,6 @@ export { HelixSubscription } from './api/helix/subscriptions/HelixSubscription';
 export { HelixUserSubscription } from './api/helix/subscriptions/HelixUserSubscription';
 export type { HelixPaginatedSubscriptionsResult } from './interfaces/helix/subscription.input';
 
-export { HelixTagApi } from './api/helix/tag/HelixTagApi';
-export { HelixTag } from './api/helix/tag/HelixTag';
-
 export { HelixTeamApi } from './api/helix/team/HelixTeamApi';
 export { HelixTeam } from './api/helix/team/HelixTeam';
 export { HelixTeamWithUsers } from './api/helix/team/HelixTeamWithUsers';

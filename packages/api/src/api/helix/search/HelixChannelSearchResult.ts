@@ -3,7 +3,6 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixChannelSearchResultData } from '../../../interfaces/helix/search.external';
 import type { HelixGame } from '../game/HelixGame';
-import type { HelixTag } from '../tag/HelixTag';
 import type { HelixUser } from '../user/HelixUser';
 
 /**
@@ -82,24 +81,6 @@ export class HelixChannelSearchResult extends DataObject<HelixChannelSearchResul
 	 */
 	get isLive(): boolean {
 		return this[rawDataSymbol].is_live;
-	}
-
-	/**
-	 * The IDs of the tags set on the channel.
-	 *
-	 * @deprecated
-	 */
-	get tagIds(): string[] {
-		return this[rawDataSymbol].tag_ids;
-	}
-
-	/**
-	 * Retrieves the tags of the channel.
-	 *
-	 * @deprecated
-	 */
-	async getTags(): Promise<HelixTag[]> {
-		return await this._client.tags.getStreamTagsByIds(this[rawDataSymbol].tag_ids);
 	}
 
 	/**

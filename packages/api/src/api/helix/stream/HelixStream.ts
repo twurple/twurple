@@ -3,7 +3,6 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import { type BaseApiClient } from '../../../client/BaseApiClient';
 import { type HelixStreamData, type HelixStreamType } from '../../../interfaces/helix/stream.external';
 import type { HelixGame } from '../game/HelixGame';
-import type { HelixTag } from '../tag/HelixTag';
 import type { HelixUser } from '../user/HelixUser';
 
 /**
@@ -131,24 +130,6 @@ export class HelixStream extends DataObject<HelixStreamData> {
 		return this[rawDataSymbol].thumbnail_url
 			.replace('{width}', width.toString())
 			.replace('{height}', height.toString());
-	}
-
-	/**
-	 * The IDs of the tags of the stream.
-	 *
-	 * @deprecated
-	 */
-	get tagIds(): string[] {
-		return this[rawDataSymbol].tag_ids ?? [];
-	}
-
-	/**
-	 * Retrieves the tags of the stream.
-	 *
-	 * @deprecated
-	 */
-	async getTags(): Promise<HelixTag[]> {
-		return await this._client.tags.getStreamTagsByIds(this[rawDataSymbol].tag_ids ?? []);
 	}
 
 	/**

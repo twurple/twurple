@@ -9,7 +9,6 @@ export interface HelixChannelSearchResultData {
 	game_id: string;
 	game_name: string;
 	is_live: boolean;
-	tag_ids: string[];
 	tags: string[];
 	thumbnail_url: string;
 	title: string;
