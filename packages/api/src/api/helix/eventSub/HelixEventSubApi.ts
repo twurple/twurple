@@ -221,6 +221,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param transport The transport of the subscription.
 	 * @param user The user to create the subscription in context of.
 	 * @param requiredScopeSet The scope set required by the subscription. Will only be checked for applicable transports.
+	 * @param isBatched Whether to enable batching for the subscription. Is only supported for select topics.
 	 */
 	async createSubscription(
 		type: string,
@@ -228,12 +229,22 @@ export class HelixEventSubApi extends BaseApi {
 		condition: Record<string, unknown>,
 		transport: HelixEventSubTransportOptions,
 		user?: UserIdResolvable,
-		requiredScopeSet?: string[]
+		requiredScopeSet?: string[],
+		isBatched?: boolean
 	): Promise<HelixEventSubSubscription> {
 		const usesAppAuth = transport.method === 'webhook';
 		const scopes = usesAppAuth ? undefined : requiredScopeSet;
 		if (!usesAppAuth && !user) {
 			throw new Error(`Transport ${transport.method} can only handle subscriptions with user context`);
+		}
+		const jsonBody: Record<string, unknown> = {
+			type,
+			version,
+			condition,
+			transport
+		};
+		if (isBatched) {
+			jsonBody.is_batching_enabled = true;
 		}
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixEventSubSubscriptionData>>({
 			type: 'helix',
@@ -242,12 +253,7 @@ export class HelixEventSubApi extends BaseApi {
 			scopes,
 			userId: mapOptional(user, extractUserId),
 			forceType: usesAppAuth ? 'app' : 'user',
-			jsonBody: {
-				type,
-				version,
-				condition,
-				transport
-			}
+			jsonBody
 		});
 
 		return new HelixEventSubSubscription(result.data[0], this._client);
@@ -1293,7 +1299,10 @@ export class HelixEventSubApi extends BaseApi {
 			'drop.entitlement.grant',
 			'1',
 			createEventSubDropEntitlementGrantCondition(filter),
-			transport
+			transport,
+			undefined,
+			undefined,
+			true
 		);
 	}
 

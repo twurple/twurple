@@ -12,7 +12,16 @@ export interface EventSubSubscriptionBody {
 }
 
 /** @private */
-export interface EventSubNotificationPayload {
+export interface EventSubSingleNotificationPayload {
 	subscription: EventSubSubscriptionBody;
 	event: Record<string, unknown>;
 }
+
+/** @private */
+export interface EventSubBatchNotificationPayload {
+	subscription: EventSubSubscriptionBody;
+	events: Array<Record<string, unknown>>;
+}
+
+/** @private */
+export type EventSubNotificationPayload = EventSubSingleNotificationPayload | EventSubBatchNotificationPayload;

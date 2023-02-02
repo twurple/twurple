@@ -212,7 +212,14 @@ To silence this warning without enabling this check (and thus to keep it off eve
 				} else {
 					this._seenEventIds.add(messageId);
 					setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
-					subscription._handleData((data as EventSubNotificationPayload).event);
+					const payload = data as EventSubNotificationPayload;
+					if ('events' in payload) {
+						for (const event of payload.events) {
+							subscription._handleData(event);
+						}
+					} else {
+						subscription._handleData(payload.event);
+					}
 				}
 				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(202);

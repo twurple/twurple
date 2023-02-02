@@ -116,7 +116,14 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 						this._logger.error(`Notification from unknown event received: ${id}`);
 						break;
 					}
-					subscription._handleData((payload as EventSubNotificationPayload).event);
+					const notificationPayload = payload as EventSubNotificationPayload;
+					if ('events' in notificationPayload) {
+						for (const event of notificationPayload.events) {
+							subscription._handleData(event);
+						}
+					} else {
+						subscription._handleData(notificationPayload.event);
+					}
 					break;
 				}
 				case 'revocation': {
