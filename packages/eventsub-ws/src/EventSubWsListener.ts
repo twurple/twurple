@@ -119,7 +119,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 					const notificationPayload = payload as EventSubNotificationPayload;
 					if ('events' in notificationPayload) {
 						for (const event of notificationPayload.events) {
-							subscription._handleData(event);
+							subscription._handleData(event.data);
 						}
 					} else {
 						subscription._handleData(notificationPayload.event);

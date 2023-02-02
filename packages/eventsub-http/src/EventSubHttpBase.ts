@@ -205,20 +205,16 @@ To silence this warning without enabling this check (and thus to keep it off eve
 				res.end(verificationBody.challenge);
 				this._logger.debug(`Successfully subscribed to event: ${id}`);
 			} else if (type === 'notification') {
-				if (this._seenEventIds.has(messageId)) {
-					this._logger.debug(`Duplicate notification prevented for event: ${id}`);
-				} else if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
-					this._logger.debug(`Old notification prevented for event: ${id}`);
+				if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
+					this._logger.debug(`Old notification(s) prevented for event: ${id}`);
 				} else {
-					this._seenEventIds.add(messageId);
-					setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
 					const payload = data as EventSubNotificationPayload;
 					if ('events' in payload) {
 						for (const event of payload.events) {
-							subscription._handleData(event);
+							this._handleSingleEventPayload(subscription, event.data, event.id);
 						}
 					} else {
-						subscription._handleData(payload.event);
+						this._handleSingleEventPayload(subscription, payload.event, messageId);
 					}
 				}
 				res.setHeader('Content-Type', 'text/plain');
@@ -312,6 +308,20 @@ To silence this warning without enabling this check (and thus to keep it off eve
 		subscription: EventSubSubscription
 	): HelixEventSubSubscription | undefined {
 		return this._twitchSubscriptions.get(subscription.id);
+	}
+
+	private _handleSingleEventPayload(
+		subscription: EventSubSubscription,
+		payload: Record<string, unknown>,
+		messageId: string
+	) {
+		if (this._seenEventIds.has(messageId)) {
+			this._logger.debug(`Duplicate notification prevented for event: ${subscription.id}`);
+			return;
+		}
+		this._seenEventIds.add(messageId);
+		setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
+		subscription._handleData(payload);
 	}
 
 	private _verifyData(

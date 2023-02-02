@@ -18,9 +18,15 @@ export interface EventSubSingleNotificationPayload {
 }
 
 /** @private */
+export interface EventSubBatchNotificationEntry {
+	id: string;
+	data: Record<string, unknown>;
+}
+
+/** @private */
 export interface EventSubBatchNotificationPayload {
 	subscription: EventSubSubscriptionBody;
-	events: Array<Record<string, unknown>>;
+	events: EventSubBatchNotificationEntry[];
 }
 
 /** @private */
