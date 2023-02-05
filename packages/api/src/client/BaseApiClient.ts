@@ -1,6 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { Logger } from '@d-fischer/logger';
-import type { RateLimiter } from '@d-fischer/rate-limiter';
+import type { RateLimiter, RateLimiterStats } from '@d-fischer/rate-limiter';
+import { ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';
 import {
 	callTwitchApi,
 	callTwitchApiRaw,
@@ -24,7 +25,6 @@ import { HelixEventSubApi } from '../api/helix/eventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from '../api/helix/extensions/HelixExtensionsApi';
 import { HelixGameApi } from '../api/helix/game/HelixGameApi';
 import { HelixGoalApi } from '../api/helix/goals/HelixGoalApi';
-import { HelixRateLimiter } from '../api/helix/HelixRateLimiter';
 import { HelixHypeTrainApi } from '../api/helix/hypeTrain/HelixHypeTrainApi';
 import { HelixModerationApi } from '../api/helix/moderation/HelixModerationApi';
 import { HelixPollApi } from '../api/helix/poll/HelixPollApi';
@@ -347,33 +347,11 @@ export class BaseApiClient {
 	}
 
 	/**
-	 * The last known rate limit for the Helix API.
+	 * Statistics on the rate limiter for the Helix API.
 	 */
-	get lastKnownLimit(): number | null {
-		if (this._rateLimiter instanceof HelixRateLimiter) {
-			return this._rateLimiter.lastKnownLimit;
-		}
-
-		return null;
-	}
-
-	/**
-	 * The last known remaining requests for the Helix API.
-	 */
-	get lastKnownRemainingRequests(): number | null {
-		if (this._rateLimiter instanceof HelixRateLimiter) {
-			return this._rateLimiter.lastKnownRemainingRequests;
-		}
-
-		return null;
-	}
-
-	/**
-	 * The last known rate limit reset date for the Helix API.
-	 */
-	get lastKnownResetDate(): Date | null {
-		if (this._rateLimiter instanceof HelixRateLimiter) {
-			return this._rateLimiter.lastKnownResetDate;
+	get rateLimiterStats(): RateLimiterStats | null {
+		if (this._rateLimiter instanceof ResponseBasedRateLimiter) {
+			return this._rateLimiter.stats;
 		}
 
 		return null;
