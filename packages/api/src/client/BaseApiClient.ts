@@ -12,6 +12,7 @@ import {
 import type { AccessTokenMaybeWithUserId, AuthProvider, TokenInfoData } from '@twurple/auth';
 import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
 import { HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
+import * as retry from 'retry';
 import { HelixBitsApi } from '../api/helix/bits/HelixBitsApi';
 import { HelixChannelApi } from '../api/helix/channel/HelixChannelApi';
 import { HelixChannelPointsApi } from '../api/helix/channelPoints/HelixChannelPointsApi';
@@ -442,21 +443,41 @@ export class BaseApiClient {
 		if (options.jsonBody) {
 			this._logger.trace(`Request body: ${JSON.stringify(options.jsonBody)}`);
 		}
-		const response =
-			type === 'helix'
-				? await this._rateLimiter.request({
-						options,
-						clientId,
-						accessToken,
-						authorizationType,
-						fetchOptions
-				  })
-				: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
+		const op = retry.operation({
+			retries: 3,
+			minTimeout: 500,
+			factor: 2
+		});
 
-		this._logger.debug(
-			`Called ${type} API: ${options.method ?? 'GET'} ${options.url} - result: ${response.status}`
-		);
+		const result = await new Promise<Response>((resolve, reject) => {
+			op.attempt(async () => {
+				try {
+					const response =
+						type === 'helix'
+							? await this._rateLimiter.request({
+									options,
+									clientId,
+									accessToken,
+									authorizationType,
+									fetchOptions
+							  })
+							: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
 
-		return response;
+					if (!response.ok && response.status >= 500 && response.status < 600) {
+						await handleTwitchApiResponseError(response, options);
+					}
+					resolve(response);
+				} catch (e) {
+					if (op.retry(e as Error)) {
+						return;
+					}
+					reject(op.mainError());
+				}
+			});
+		});
+
+		this._logger.debug(`Called ${type} API: ${options.method ?? 'GET'} ${options.url} - result: ${result.status}`);
+
+		return result;
 	}
 }

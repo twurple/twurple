@@ -40,10 +40,12 @@
     "@d-fischer/shared-utils": "^3.4.0",
     "@twurple/api-call": "6.0.0-pre.6",
     "@twurple/common": "6.0.0-pre.6",
+    "retry": "^0.13.1",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "6.0.0-pre.6"
+    "@twurple/auth": "6.0.0-pre.6",
+    "@types/retry": "^0.12.2"
   },
   "peerDependencies": {
     "@twurple/auth": "6.0.0-pre.6"
