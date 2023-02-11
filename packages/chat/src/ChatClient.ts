@@ -634,6 +634,13 @@ export class ChatClient extends EventEmitter {
 			manuallyAcknowledgeJoins: true
 		});
 
+		this._ircClient.onDisconnect(() => {
+			this._messageRateLimiter.clear();
+			this._messageRateLimiter.pause();
+			this._joinRateLimiter.clear();
+			this._joinRateLimiter.pause();
+		});
+
 		this._ircClient.registerMessageType(TwitchPrivateMessage);
 
 		this._chatLogger = createLogger({
@@ -710,6 +717,9 @@ export class ChatClient extends EventEmitter {
 			doRequest: executeJoinRequest
 		});
 
+		this._messageRateLimiter.pause();
+		this._joinRateLimiter.pause();
+
 		this._ircClient.addCapability(TwitchTagsCapability);
 		this._ircClient.addCapability(TwitchCommandsCapability);
 		if (config.requestMembershipEvents) {
@@ -718,6 +728,8 @@ export class ChatClient extends EventEmitter {
 
 		this._ircClient.onRegister(async () => {
 			this.emit(this.onAuthenticationSuccess);
+			this._messageRateLimiter.resume();
+			this._joinRateLimiter.resume();
 			this._authVerified = true;
 			this._authRetryTimer = undefined;
 			this._authRetryCount = 0;
