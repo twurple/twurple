@@ -24,6 +24,10 @@ export class EventSubChannelBanSubscription extends EventSubSubscription<EventSu
 		return `channel.ban.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelBanEventData): EventSubChannelBanEvent {
 		return new EventSubChannelBanEvent(data, this._client._apiClient);
 	}

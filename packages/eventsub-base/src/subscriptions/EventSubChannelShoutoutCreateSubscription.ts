@@ -25,6 +25,10 @@ export class EventSubChannelShoutoutCreateSubscription extends EventSubSubscript
 		return `channel.shoutout.create.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelShoutoutCreateEventData): EventSubChannelShoutoutCreateEvent {
 		return new EventSubChannelShoutoutCreateEvent(data, this._client._apiClient);
 	}

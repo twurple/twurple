@@ -24,6 +24,10 @@ export class EventSubChannelCharityDonationSubscription extends EventSubSubscrip
 		return `channel.charity_campaign.donate.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelCharityDonationEventData): EventSubChannelCharityDonationEvent {
 		return new EventSubChannelCharityDonationEvent(data, this._client._apiClient);
 	}

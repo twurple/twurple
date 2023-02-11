@@ -24,6 +24,10 @@ export class EventSubStreamOnlineSubscription extends EventSubSubscription<Event
 		return `stream.online.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubStreamOnlineEventData): EventSubStreamOnlineEvent {
 		return new EventSubStreamOnlineEvent(data, this._client._apiClient);
 	}

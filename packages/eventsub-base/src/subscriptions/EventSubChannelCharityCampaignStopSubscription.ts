@@ -24,6 +24,10 @@ export class EventSubChannelCharityCampaignStopSubscription extends EventSubSubs
 		return `channel.charity_campaign.stop.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(
 		data: EventSubChannelCharityCampaignStopEventData
 	): EventSubChannelCharityCampaignStopEvent {

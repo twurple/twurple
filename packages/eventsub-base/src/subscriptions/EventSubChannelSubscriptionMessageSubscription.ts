@@ -24,6 +24,10 @@ export class EventSubChannelSubscriptionMessageSubscription extends EventSubSubs
 		return `channel.subscription.message.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(
 		data: EventSubChannelSubscriptionMessageEventData
 	): EventSubChannelSubscriptionMessageEvent {

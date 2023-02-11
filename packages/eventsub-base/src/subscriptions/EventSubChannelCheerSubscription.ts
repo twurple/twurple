@@ -24,6 +24,10 @@ export class EventSubChannelCheerSubscription extends EventSubSubscription<Event
 		return `channel.cheer.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelCheerEventData): EventSubChannelCheerEvent {
 		return new EventSubChannelCheerEvent(data, this._client._apiClient);
 	}

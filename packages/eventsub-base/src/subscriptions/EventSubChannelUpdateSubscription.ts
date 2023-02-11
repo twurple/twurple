@@ -24,6 +24,10 @@ export class EventSubChannelUpdateSubscription extends EventSubSubscription<Even
 		return `channel.update.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelUpdateEventData): EventSubChannelUpdateEvent {
 		return new EventSubChannelUpdateEvent(data, this._client._apiClient);
 	}

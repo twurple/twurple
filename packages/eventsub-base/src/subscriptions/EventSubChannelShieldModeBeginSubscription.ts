@@ -25,6 +25,10 @@ export class EventSubChannelShieldModeBeginSubscription extends EventSubSubscrip
 		return `channel.shield_mode.begin.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelShieldModeBeginEventData): EventSubChannelShieldModeBeginEvent {
 		return new EventSubChannelShieldModeBeginEvent(data, this._client._apiClient);
 	}

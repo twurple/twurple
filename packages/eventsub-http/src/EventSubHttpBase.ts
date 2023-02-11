@@ -51,6 +51,8 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	/** @private */ @Enumerable(false) readonly _secret: string;
 	/** @private */ readonly _strictHostCheck: boolean;
 
+	protected _readyToSubscribe = false;
+
 	/**
 	 * Fires when a subscription is successfully verified or fails to verify.
 	 *
@@ -105,6 +107,11 @@ To silence this warning without enabling this check (and thus to keep it off eve
 		return `twitch event trigger ${subscription._cliName} -F ${await this._buildHookUrl(
 			subscription.id
 		)} -s ${this._createSecretForSubscription(subscription)}`;
+	}
+
+	/** @private */
+	_isReadyToSubscribe(): boolean {
+		return this._readyToSubscribe;
 	}
 
 	protected abstract getHostName(): Promise<string>;

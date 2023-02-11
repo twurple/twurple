@@ -159,8 +159,6 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	readonly onSubscriptionDeleteFailure = this.registerEvent<[subscription: EventSubSubscription, error: Error]>();
 
-	protected _readyToSubscribe = false;
-
 	constructor(config: EventSubBaseConfig) {
 		super();
 
@@ -992,7 +990,14 @@ export abstract class EventSubBase extends EventEmitter {
 	/** @private */
 	abstract _getCliTestCommandForSubscription(subscription: EventSubSubscription): Promise<string>;
 
-	protected _getCorrectSubscriptionByTwitchId(id: string): EventSubSubscription | undefined {
+	/** @private */
+	abstract _isReadyToSubscribe(subscription: EventSubSubscription): boolean;
+
+	/**
+	 * @param id
+	 * @protected
+	 */
+	_getCorrectSubscriptionByTwitchId(id: string): EventSubSubscription | undefined {
 		return this._subscriptionsByTwitchId.get(id);
 	}
 
@@ -1000,19 +1005,19 @@ export abstract class EventSubBase extends EventEmitter {
 		subscription: EventSubSubscription
 	): HelixEventSubSubscription | undefined;
 
-	private _genericSubscribe<T, Args extends unknown[]>(
+	protected _genericSubscribe<T, Args extends unknown[]>(
 		clazz: new (handler: (obj: T) => void, client: EventSubBase, ...args: Args) => EventSubSubscription<T>,
 		handler: (obj: T) => void,
 		client: EventSubBase,
 		...params: Args
 	): EventSubSubscription {
-		const subscription = new clazz(handler, client, ...params);
-		if (this._readyToSubscribe) {
-			subscription.start(this._findTwitchSubscriptionToContinue(subscription as EventSubSubscription));
+		const subscription = new clazz(handler, client, ...params) as EventSubSubscription;
+		if (this._isReadyToSubscribe(subscription)) {
+			subscription.start(this._findTwitchSubscriptionToContinue(subscription));
 		}
-		this._subscriptions.set(subscription.id, subscription as EventSubSubscription);
+		this._subscriptions.set(subscription.id, subscription);
 
-		return subscription as EventSubSubscription;
+		return subscription;
 	}
 
 	private _extractUserIdWithNumericWarning(user: UserIdResolvable, methodName: string) {

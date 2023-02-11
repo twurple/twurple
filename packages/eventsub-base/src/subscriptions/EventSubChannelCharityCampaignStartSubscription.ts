@@ -24,6 +24,10 @@ export class EventSubChannelCharityCampaignStartSubscription extends EventSubSub
 		return `channel.charity_campaign.start.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(
 		data: EventSubChannelCharityCampaignStartEventData
 	): EventSubChannelCharityCampaignStartEvent {

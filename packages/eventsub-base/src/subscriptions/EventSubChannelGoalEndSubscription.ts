@@ -24,6 +24,10 @@ export class EventSubChannelGoalEndSubscription extends EventSubSubscription<Eve
 		return `channel.goal.end.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelGoalEndEventData): EventSubChannelGoalEndEvent {
 		return new EventSubChannelGoalEndEvent(data, this._client._apiClient);
 	}

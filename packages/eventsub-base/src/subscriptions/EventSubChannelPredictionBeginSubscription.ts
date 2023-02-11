@@ -24,6 +24,10 @@ export class EventSubChannelPredictionBeginSubscription extends EventSubSubscrip
 		return `channel.prediction.begin.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelPredictionBeginEventData): EventSubChannelPredictionBeginEvent {
 		return new EventSubChannelPredictionBeginEvent(data, this._client._apiClient);
 	}

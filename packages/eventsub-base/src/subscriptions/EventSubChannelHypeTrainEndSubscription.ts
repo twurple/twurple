@@ -24,6 +24,10 @@ export class EventSubChannelHypeTrainEndSubscription extends EventSubSubscriptio
 		return `channel.hype_train.end.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelHypeTrainEndEventData): EventSubChannelHypeTrainEndEvent {
 		return new EventSubChannelHypeTrainEndEvent(data, this._client._apiClient);
 	}

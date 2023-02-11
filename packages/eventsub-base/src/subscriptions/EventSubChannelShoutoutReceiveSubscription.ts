@@ -25,6 +25,10 @@ export class EventSubChannelShoutoutReceiveSubscription extends EventSubSubscrip
 		return `channel.shoutout.receive.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelShoutoutReceiveEventData): EventSubChannelShoutoutReceiveEvent {
 		return new EventSubChannelShoutoutReceiveEvent(data, this._client._apiClient);
 	}

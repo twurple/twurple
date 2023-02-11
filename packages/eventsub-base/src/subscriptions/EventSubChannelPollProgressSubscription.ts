@@ -24,6 +24,10 @@ export class EventSubChannelPollProgressSubscription extends EventSubSubscriptio
 		return `channel.poll.progress.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelPollProgressEventData): EventSubChannelPollProgressEvent {
 		return new EventSubChannelPollProgressEvent(data, this._client._apiClient);
 	}

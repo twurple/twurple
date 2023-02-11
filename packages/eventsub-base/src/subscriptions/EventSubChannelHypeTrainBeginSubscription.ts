@@ -24,6 +24,10 @@ export class EventSubChannelHypeTrainBeginSubscription extends EventSubSubscript
 		return `channel.hype_train.begin.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelHypeTrainBeginEventData): EventSubChannelHypeTrainBeginEvent {
 		return new EventSubChannelHypeTrainBeginEvent(data, this._client._apiClient);
 	}

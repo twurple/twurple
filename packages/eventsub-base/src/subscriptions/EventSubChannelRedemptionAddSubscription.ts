@@ -28,6 +28,10 @@ export class EventSubChannelRedemptionAddSubscription extends EventSubSubscripti
 		return `channel.channel_points_custom_reward_redemption.add.${this._userId}.${this._rewardId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelRedemptionAddEventData): EventSubChannelRedemptionAddEvent {
 		return new EventSubChannelRedemptionAddEvent(data, this._client._apiClient);
 	}

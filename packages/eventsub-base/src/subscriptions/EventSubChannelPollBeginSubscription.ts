@@ -24,6 +24,10 @@ export class EventSubChannelPollBeginSubscription extends EventSubSubscription<E
 		return `channel.poll.begin.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelPollBeginEventData): EventSubChannelPollBeginEvent {
 		return new EventSubChannelPollBeginEvent(data, this._client._apiClient);
 	}

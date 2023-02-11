@@ -25,6 +25,10 @@ export class EventSubChannelShieldModeEndSubscription extends EventSubSubscripti
 		return `channel.shield_mode.end.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelShieldModeEndEventData): EventSubChannelShieldModeEndEvent {
 		return new EventSubChannelShieldModeEndEvent(data, this._client._apiClient);
 	}

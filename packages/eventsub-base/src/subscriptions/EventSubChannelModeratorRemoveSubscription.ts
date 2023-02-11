@@ -24,6 +24,10 @@ export class EventSubChannelModeratorRemoveSubscription extends EventSubSubscrip
 		return `channel.moderator.remove.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelModeratorEventData): EventSubChannelModeratorEvent {
 		return new EventSubChannelModeratorEvent(data, this._client._apiClient);
 	}

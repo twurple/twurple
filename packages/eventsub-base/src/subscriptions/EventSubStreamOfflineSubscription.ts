@@ -24,6 +24,10 @@ export class EventSubStreamOfflineSubscription extends EventSubSubscription<Even
 		return `stream.offline.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubStreamOfflineEventData): EventSubStreamOfflineEvent {
 		return new EventSubStreamOfflineEvent(data, this._client._apiClient);
 	}

@@ -24,6 +24,10 @@ export class EventSubChannelHypeTrainProgressSubscription extends EventSubSubscr
 		return `channel.hype_train.progress.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelHypeTrainProgressEventData): EventSubChannelHypeTrainProgressEvent {
 		return new EventSubChannelHypeTrainProgressEvent(data, this._client._apiClient);
 	}

@@ -24,6 +24,10 @@ export class EventSubChannelGoalProgressSubscription extends EventSubSubscriptio
 		return `channel.goal.progress.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelGoalProgressEventData): EventSubChannelGoalProgressEvent {
 		return new EventSubChannelGoalProgressEvent(data, this._client._apiClient);
 	}

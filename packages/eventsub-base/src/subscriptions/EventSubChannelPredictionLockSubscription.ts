@@ -24,6 +24,10 @@ export class EventSubChannelPredictionLockSubscription extends EventSubSubscript
 		return `channel.prediction.lock.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelPredictionLockEventData): EventSubChannelPredictionLockEvent {
 		return new EventSubChannelPredictionLockEvent(data, this._client._apiClient);
 	}

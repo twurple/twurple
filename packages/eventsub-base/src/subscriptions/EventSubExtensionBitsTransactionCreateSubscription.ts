@@ -11,6 +11,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubExtensionBitsTransactionCreateSubscription extends EventSubSubscription<EventSubExtensionBitsTransactionCreateEvent> {
 	/** @protected */ readonly _cliName = 'transaction';
+	readonly authUserId = null;
 
 	constructor(
 		handler: (data: EventSubExtensionBitsTransactionCreateEvent) => void,

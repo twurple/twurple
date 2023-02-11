@@ -28,6 +28,10 @@ export class EventSubChannelRewardRemoveSubscription extends EventSubSubscriptio
 		return `channel.channel_points_custom_reward.remove.${this._userId}.${this._rewardId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelRewardEventData): EventSubChannelRewardEvent {
 		return new EventSubChannelRewardEvent(data, this._client._apiClient);
 	}

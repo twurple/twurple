@@ -24,6 +24,10 @@ export class EventSubChannelFollowSubscription extends EventSubSubscription<Even
 		return `channel.follow.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelFollowEventData): EventSubChannelFollowEvent {
 		return new EventSubChannelFollowEvent(data, this._client._apiClient);
 	}

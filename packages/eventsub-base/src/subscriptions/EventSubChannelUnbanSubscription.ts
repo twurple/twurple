@@ -24,6 +24,10 @@ export class EventSubChannelUnbanSubscription extends EventSubSubscription<Event
 		return `channel.unban.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelUnbanEventData): EventSubChannelUnbanEvent {
 		return new EventSubChannelUnbanEvent(data, this._client._apiClient);
 	}

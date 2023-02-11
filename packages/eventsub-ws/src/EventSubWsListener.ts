@@ -1,18 +1,13 @@
-import { type Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
-import { Enumerable } from '@d-fischer/shared-utils';
 import { type HelixEventSubWebSocketTransportOptions, HellFreezesOverError } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import {
 	EventSubBase,
 	type EventSubBaseConfig,
 	type EventSubListener,
-	type EventSubNotificationPayload
+	type EventSubSubscription
 } from '@twurple/eventsub-base';
-import {
-	type EventSubReconnectPayload,
-	type EventSubWelcomePayload,
-	type EventSubWsPacket
-} from './EventSubWsPacket.external';
+import { EventSubWsSocket } from './EventSubWsSocket';
+import { type LoggerOptions } from '@d-fischer/logger';
 
 /**
  * Configuration for an EventSub WebSocket listener.
@@ -37,14 +32,10 @@ export interface EventSubWsConfig extends EventSubBaseConfig {
  */
 @rtfm('eventsub-ws', 'EventSubWsListener')
 export class EventSubWsListener extends EventSubBase implements EventSubListener {
-	@Enumerable(false) private readonly _connection: PersistentConnection<Connection>;
-	@Enumerable(false) private _sessionId?: string;
+	private readonly _sockets = new Map<string, EventSubWsSocket>();
 	private readonly _initialUrl: string;
-
-	private _reconnectInProgress: boolean = false;
-	private _reconnectUrl?: string;
-	private _keepaliveTimeout: number | null;
-	private _keepaliveTimer: NodeJS.Timer | null;
+	private _accepting = false;
+	private readonly _loggerOptions?: Partial<LoggerOptions>;
 
 	/**
 	 * Creates a new EventSub HTTP listener.
@@ -57,107 +48,29 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		super(config);
 
 		this._initialUrl = config.url ?? 'wss://eventsub-beta.wss.twitch.tv/ws';
-		this._keepaliveTimeout = null;
-		this._keepaliveTimer = null;
-
-		this._connection = new PersistentConnection(
-			WebSocketConnection,
-			() => ({
-				url: this._reconnectUrl ?? this._initialUrl
-			}),
-			{
-				overlapManualReconnect: true
-			}
-		);
-
-		this._connection.onDisconnect(() => {
-			this._readyToSubscribe = false;
-			this._clearKeepaliveTimer();
-			this._keepaliveTimeout = null;
-		});
-		this._connection.onReceive(data => {
-			this._logger.debug(`Received data: ${data.trim()}`);
-			const { metadata, payload } = JSON.parse(data) as EventSubWsPacket;
-			switch (metadata.message_type) {
-				case 'session_welcome': {
-					this._logger.info(
-						this._reconnectInProgress ? 'Reconnect: new connection established' : 'Connection established'
-					);
-					this._sessionId = (payload as EventSubWelcomePayload).session.id;
-					this._readyToSubscribe = true;
-					if (!this._reconnectInProgress) {
-						for (const sub of this._subscriptions.values()) {
-							sub.start();
-						}
-					}
-					this._initializeKeepaliveTimeout(
-						(payload as EventSubWelcomePayload).session.keepalive_timeout_seconds!
-					);
-					this._reconnectInProgress = false;
-					this._connection.acknowledgeSuccessfulReconnect();
-					break;
-				}
-				case 'session_keepalive': {
-					this._restartKeepaliveTimer();
-					break;
-				}
-				case 'session_reconnect': {
-					this._logger.info('Reconnect message received; initiating new connection');
-					this._reconnectInProgress = true;
-					this._reconnectUrl = (payload as EventSubReconnectPayload).session.reconnect_url!;
-					this._connection.reconnect();
-					break;
-				}
-				case 'notification': {
-					this._restartKeepaliveTimer();
-					const id = (payload as EventSubNotificationPayload).subscription.id;
-					const subscription = this._getCorrectSubscriptionByTwitchId(id);
-					if (!subscription) {
-						this._logger.error(`Notification from unknown event received: ${id}`);
-						break;
-					}
-					const notificationPayload = payload as EventSubNotificationPayload;
-					if ('events' in notificationPayload) {
-						for (const event of notificationPayload.events) {
-							subscription._handleData(event.data);
-						}
-					} else {
-						subscription._handleData(notificationPayload.event);
-					}
-					break;
-				}
-				case 'revocation': {
-					const id = (payload as EventSubNotificationPayload).subscription.id;
-					const subscription = this._getCorrectSubscriptionByTwitchId(id);
-					if (!subscription) {
-						this._logger.error(`Revocation from unknown event received: ${id}`);
-						break;
-					}
-					this._dropSubscription(subscription.id);
-					this._dropTwitchSubscription(subscription.id);
-					this.emit(this.onRevoke, subscription);
-					this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
-					break;
-				}
-				default: {
-					this._logger.warn(`Unknown message type encountered: ${metadata.message_type}`);
-				}
-			}
-		});
+		this._loggerOptions = config.logger;
 	}
 
 	/**
 	 * Starts the WebSocket listener.
 	 */
 	start(): void {
-		this._connection.connect();
+		this._accepting = true;
+		const userSocketsToCreate = new Set<string>([...this._subscriptions.values()].map(sub => sub.authUserId!));
+		for (const userId of userSocketsToCreate) {
+			this._createSocketForUser(userId);
+		}
 	}
 
 	/**
 	 * Stops the WebSocket listener.
 	 */
 	stop(): void {
-		this._connection.disconnect();
+		this._accepting = false;
+		for (const socket of this._sockets.values()) {
+			socket.stop();
+		}
+		this._sockets.clear();
 	}
 
 	/** @private */
@@ -166,43 +79,75 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	}
 
 	/** @private */
-	async _getTransportOptionsForSubscription(): Promise<HelixEventSubWebSocketTransportOptions> {
-		if (!this._sessionId) {
-			throw new HellFreezesOverError('Listener is not connected or does not have a session ID yet');
+	_isReadyToSubscribe(subscription: EventSubSubscription): boolean {
+		const authUserId = subscription.authUserId;
+		if (!authUserId) {
+			throw new Error('Can not create a WebSocket subscription for a topic without user authentication');
+		}
+		const socket = this._sockets.get(authUserId);
+
+		return socket?.readyToSubscribe ?? false;
+	}
+
+	/** @private */
+	async _getTransportOptionsForSubscription(
+		subscription: EventSubSubscription
+	): Promise<HelixEventSubWebSocketTransportOptions> {
+		const authUserId = subscription.authUserId;
+		if (!authUserId) {
+			throw new Error('Can not create a WebSocket subscription for a topic without user authentication');
+		}
+		const socket = this._sockets.get(authUserId);
+		if (!socket?.sessionId) {
+			throw new HellFreezesOverError(
+				`Socket for user ${authUserId} is not connected or does not have a session ID yet`
+			);
 		}
 		return {
 			method: 'websocket',
 			// eslint-disable-next-line @typescript-eslint/naming-convention
-			session_id: this._sessionId
+			session_id: socket.sessionId
 		};
+	}
+
+	/** @private */
+	_getSubscriptionsForUser(userId: string): EventSubSubscription[] {
+		return [...this._subscriptions.values()].filter(sub => sub.authUserId === userId);
+	}
+
+	/** @private */
+	_handleSubscriptionRevoke(subscription: EventSubSubscription): void {
+		this.emit(this.onRevoke, subscription);
+	}
+
+	protected _genericSubscribe<T, Args extends unknown[]>(
+		clazz: new (handler: (obj: T) => void, client: EventSubBase, ...args: Args) => EventSubSubscription<T>,
+		handler: (obj: T) => void,
+		client: EventSubBase,
+		...params: Args
+	): EventSubSubscription {
+		const subscription = super._genericSubscribe(clazz, handler, client, ...params);
+		const authUserId = subscription.authUserId;
+		if (!authUserId) {
+			throw new HellFreezesOverError('WS subscription created without user ID');
+		}
+		if (!this._accepting) {
+			return subscription;
+		}
+		if (!this._sockets.has(authUserId)) {
+			this._createSocketForUser(authUserId);
+		}
+
+		return subscription;
 	}
 
 	protected _findTwitchSubscriptionToContinue(): undefined {
 		return undefined;
 	}
 
-	private _initializeKeepaliveTimeout(timeoutInSeconds: number): void {
-		this._keepaliveTimeout = timeoutInSeconds;
-		this._restartKeepaliveTimer();
-	}
-
-	private _clearKeepaliveTimer(): void {
-		if (this._keepaliveTimer) {
-			clearTimeout(this._keepaliveTimer);
-			this._keepaliveTimer = null;
-		}
-	}
-
-	private _restartKeepaliveTimer(): void {
-		this._clearKeepaliveTimer();
-		if (this._keepaliveTimeout) {
-			// 1200 instead of 1000 to allow for a little more leeway than Twitch wants to give us
-			this._keepaliveTimer = setTimeout(() => this._handleKeepaliveTimeout(), this._keepaliveTimeout * 1200);
-		}
-	}
-
-	private _handleKeepaliveTimeout() {
-		this._keepaliveTimer = null;
-		this._connection.assumeExternalDisconnect();
+	private _createSocketForUser(authUserId: string) {
+		const socket = new EventSubWsSocket(this, authUserId, this._initialUrl, this._loggerOptions);
+		this._sockets.set(authUserId, socket);
+		socket.start();
 	}
 }

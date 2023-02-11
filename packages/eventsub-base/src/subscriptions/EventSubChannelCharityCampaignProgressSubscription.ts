@@ -24,6 +24,10 @@ export class EventSubChannelCharityCampaignProgressSubscription extends EventSub
 		return `channel.charity_campaign.progress.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(
 		data: EventSubChannelCharityCampaignProgressEventData
 	): EventSubChannelCharityCampaignProgressEvent {

@@ -24,6 +24,10 @@ export class EventSubUserUpdateSubscription extends EventSubSubscription<EventSu
 		return `user.update.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubUserUpdateEventData): EventSubUserUpdateEvent {
 		return new EventSubUserUpdateEvent(data, this._client._apiClient);
 	}

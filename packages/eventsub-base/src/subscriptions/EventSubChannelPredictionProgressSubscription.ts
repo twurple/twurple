@@ -24,6 +24,10 @@ export class EventSubChannelPredictionProgressSubscription extends EventSubSubsc
 		return `channel.prediction.progress.${this._userId}`;
 	}
 
+	get authUserId(): string | null {
+		return this._userId;
+	}
+
 	protected transformData(data: EventSubChannelPredictionProgressEventData): EventSubChannelPredictionProgressEvent {
 		return new EventSubChannelPredictionProgressEvent(data, this._client._apiClient);
 	}

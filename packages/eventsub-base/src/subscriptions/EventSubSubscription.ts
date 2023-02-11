@@ -104,6 +104,9 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	/** @private */
 	abstract get id(): string;
 
+	/** @private */
+	abstract get authUserId(): string | null;
+
 	protected abstract _subscribe(): Promise<HelixEventSubSubscription>;
 
 	protected abstract transformData(response: unknown): T;
