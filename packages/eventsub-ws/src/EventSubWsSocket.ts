@@ -1,13 +1,13 @@
+import { type Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
+import { createLogger, type Logger, type LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { type Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection/lib/browser';
+import { type EventSubNotificationPayload } from '@twurple/eventsub-base';
+import { type EventSubWsListener } from './EventSubWsListener';
 import {
 	type EventSubReconnectPayload,
 	type EventSubWelcomePayload,
 	type EventSubWsPacket
 } from './EventSubWsPacket.external';
-import { type EventSubNotificationPayload } from '@twurple/eventsub-base';
-import { type EventSubWsListener } from './EventSubWsListener';
-import { createLogger, type Logger, type LoggerOptions } from '@d-fischer/logger';
 
 /** @private */
 export class EventSubWsSocket {
