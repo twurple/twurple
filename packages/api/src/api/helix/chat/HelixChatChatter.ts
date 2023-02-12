@@ -6,8 +6,6 @@ import { type HelixUser } from '../user/HelixUser';
 
 /**
  * A user connected to a Twitch channel's chat session.
- *
- * @beta
  */
 @rtfm('api', 'HelixChatChatter')
 export class HelixChatChatter extends DataObject<HelixChatChatterData> {
