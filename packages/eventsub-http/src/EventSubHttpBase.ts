@@ -39,6 +39,14 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 	 * Whether to ignore packets that are not sent with a Host header matching the configured host name.
 	 */
 	strictHostCheck?: boolean;
+
+	/**
+	 * Whether to use the legacy way of augmenting your EventSub secret in subscriptions.
+	 *
+	 * Enabling this is only provided for compatibility/migration purposes.
+	 * You should switch it off at your earliest convenience.
+	 */
+	legacySecrets?: boolean;
 }
 
 /**
@@ -50,6 +58,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 
 	/** @private */ @Enumerable(false) readonly _secret: string;
 	/** @private */ readonly _strictHostCheck: boolean;
+	/** @private */ readonly _legacySecrets: boolean;
 
 	protected _readyToSubscribe = false;
 
@@ -68,9 +77,21 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		if (!config.secret || config.secret === 'thisShouldBeARandomlyGeneratedFixedString') {
 			throw new Error('Please generate a secret and pass it to the constructor!');
 		}
+		if (config.secret.length > 100) {
+			throw new Error('Your secret can not be longer than 100 characters');
+		}
 		super(config);
 		this._secret = config.secret;
 		this._strictHostCheck = config.strictHostCheck ?? true;
+		if (config.legacySecrets === undefined) {
+			this._logger.warn(`In version 6.0, the automatic augmentation of EventSub secrets was disabled by default.
+If you have been using a lower version before, your subscriptions will not work unless you remove all your subscriptions and subscribe to them again.
+A new option named \`legacySecrets\` was introduced in order to enable you to migrate your subscriptions at a later date.
+You should still migrate this as soon as possible, as in the next major version this switch will go away.
+To silence this warning and keep using the new way of using your EventSub secret, please add \`legacySecrets: false\` to your EventSub configuration.
+To use your legacy subscriptions without having to clean them up and resubscribing, please add \`legacySecrets: true\` to your EventSub configuration.`);
+		}
+		this._legacySecrets = config.legacySecrets ?? false;
 	}
 
 	/** @private */
@@ -341,6 +362,10 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	}
 
 	private _createSecretForSubscription(subscription: EventSubSubscription) {
-		return `${subscription.id}.${this._secret}`.slice(-100);
+		if (this._legacySecrets) {
+			return `${subscription.id}.${this._secret}`.slice(-100);
+		}
+
+		return this._secret;
 	}
 }
