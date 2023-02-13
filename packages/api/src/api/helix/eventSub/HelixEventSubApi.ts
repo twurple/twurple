@@ -1171,7 +1171,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.shoutout.create',
-			'beta',
+			'1',
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			broadcaster,
@@ -1193,7 +1193,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.shoutout.receive',
-			'beta',
+			'1',
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			broadcaster,
