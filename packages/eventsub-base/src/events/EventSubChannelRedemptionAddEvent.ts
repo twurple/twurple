@@ -144,7 +144,7 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	/**
 	 * The time when the user redeemed the reward.
 	 */
-	get redeemedAt(): Date {
+	get redemptionDate(): Date {
 		return new Date(this[rawDataSymbol].redeemed_at);
 	}
 
