@@ -151,17 +151,17 @@ Similarly, replace the `channelId` for the clip with just `channel`.
 There's not that much to say about these (most were just to align more to the documentation or for consistency),
 so I'll just list them:
 
-| Old                                            | New                                                     |
-|------------------------------------------------|---------------------------------------------------------|
-| `PubSubListener`                               | {@link PubSubHandler}                                   |
-| `HelixChannelApi#getChannelInfo`               | {@link HelixChannelApi#getChannelInfoById}              |
-| `HelixCustomReward#autoApproved`               | {@link HelixCustomReward#autoFulfill}                   |
-| `HelixBanUser#broadcasterId`                   | *removed* (you needed this ID for fetching anyway)      |
-| `HelixBanUser#endDate`                         | {@link HelixBanUser#expiryDate}                         |
-| `HelixUser#views`                              | *removed* (removed by Twitch)                           |
-| `PubSubSubscriptionMessage#giftDuration`       | {@link PubSubSubscriptionMessage#duration}              |
-| `ApiClient#lastKnown*`                         | {@link ApiClient#rateLimiterStats}                      |
-| `EventSubChannelRedemptionAddEvent#redeemedAt` | {@link EventSubChannelRedemptionAddEvent#redemptionDate |
+| Old                                            | New                                                      |
+|------------------------------------------------|----------------------------------------------------------|
+| `PubSubListener`                               | {@link PubSubHandler}                                    |
+| `HelixChannelApi#getChannelInfo`               | {@link HelixChannelApi#getChannelInfoById}               |
+| `HelixCustomReward#autoApproved`               | {@link HelixCustomReward#autoFulfill}                    |
+| `HelixBanUser#broadcasterId`                   | *removed* (you needed this ID for fetching anyway)       |
+| `HelixBanUser#endDate`                         | {@link HelixBanUser#expiryDate}                          |
+| `HelixUser#views`                              | *removed* (removed by Twitch)                            |
+| `PubSubSubscriptionMessage#giftDuration`       | {@link PubSubSubscriptionMessage#duration}               |
+| `ApiClient#lastKnown*`                         | {@link ApiClient#rateLimiterStats}                       |
+| `EventSubChannelRedemptionAddEvent#redeemedAt` | {@link EventSubChannelRedemptionAddEvent#redemptionDate} |
 
 ## Make sure your EventSub HTTP host name configuration is correct (or configure the listener accordingly)
 
