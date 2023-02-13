@@ -70,15 +70,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		}
 		super(config);
 		this._secret = config.secret;
-
-		if (config.strictHostCheck === undefined) {
-			this._logger
-				.warn(`A new option named \`strictHostCheck\` was introduced in order to ignore access to your handler by wide-range vulnerability scanners (and thus dropping all the log messages caused by them).
-Its default value is \`false\` for now, but will change to \`true\` in the next major release.
-To enable this check and silence this warning, please add \`strictHostCheck: true\` to your EventSub configuration.
-To silence this warning without enabling this check (and thus to keep it off even after a major release), please add \`strictHostCheck: false\` to your EventSub configuration.`);
-		}
-		this._strictHostCheck = config.strictHostCheck ?? false;
+		this._strictHostCheck = config.strictHostCheck ?? true;
 	}
 
 	/** @private */
