@@ -311,7 +311,6 @@ export class HelixChatApi extends BaseApi {
 	 * Sends a shoutout to the specified broadcaster.
 	 * The broadcaster may send a shoutout once every 2 minutes. They may send the same broadcaster a shoutout once every 60 minutes.
 	 *
-	 * @beta
 	 * @param from The ID of the broadcaster that’s sending the shoutout.
 	 * @param to The ID of the broadcaster that’s receiving the shoutout.
 	 * @param moderator The ID of the broadcaster or a user that is one of the broadcaster’s moderators.

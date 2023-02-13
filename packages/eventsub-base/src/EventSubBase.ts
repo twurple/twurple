@@ -864,7 +864,6 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Subscribes to events that represent a broadcaster shouting out another broadcaster.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster for which you want to listen to outgoing shoutout events.
 	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.
@@ -892,7 +891,6 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Subscribes to events that represent a broadcaster being shouted out by another broadcaster.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster for which you want to listen to incoming shoutout events.
 	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.

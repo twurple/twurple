@@ -1160,7 +1160,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a broadcaster shouting out another broadcaster.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster for which you want to listen to outgoing shoutout events.
 	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
 	 * @param transport The transport options.
@@ -1172,7 +1171,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.shoutout.create',
-			'beta',
+			'1',
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			broadcaster,
@@ -1183,7 +1182,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a broadcaster being shouting out by another broadcaster.
 	 *
-	 * @beta
 	 * @param broadcaster The broadcaster for which you want to listen to incoming shoutout events.
 	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
 	 * @param transport The transport options.
@@ -1195,7 +1193,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.shoutout.receive',
-			'beta',
+			'1',
 			createEventSubModeratorCondition(broadcaster, moderator),
 			transport,
 			broadcaster,
