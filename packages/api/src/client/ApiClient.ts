@@ -98,6 +98,8 @@ export class ApiClient extends BaseApiClient {
 	 * to ensure that all requests are executed in the given user's context.
 	 *
 	 * Please note that requests which require scope authorization ignore this context.
+	 *
+	 * The return value of your callback will be propagated to the return value of this method.
 	 */
 	async asUser<T>(user: UserIdResolvable, runner: (ctx: BaseApiClient) => Promise<T>): Promise<T> {
 		const ctx = new UserContextApiClient(this._config, this._logger, this._rateLimiter, extractUserId(user));

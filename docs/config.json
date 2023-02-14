@@ -53,6 +53,22 @@
 							"file": "auth/providers/extensions.md"
 						}
 					]
+				},
+				{
+					"name": "concepts",
+					"title": "Concepts",
+					"articles": [
+						{
+							"name": "context-switching",
+							"title": "Context switching",
+							"file": "auth/concepts/context-switching.md"
+						},
+						{
+							"name": "intents",
+							"title": "Intents",
+							"file": "auth/concepts/intents.md"
+						}
+					]
 				}
 			]
 		},

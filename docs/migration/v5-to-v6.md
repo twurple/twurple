@@ -125,7 +125,7 @@ If you want the old behavior back, use the `portfinder` package directly.
 ## Switch from the old badges API
 
 There were two different badges APIs, one of which (`apiClient.badges`) is obsolete now.
-Please use the very similar methods withing {@link HelixChatApi} instead.
+Please use the very similar methods within {@link HelixChatApi} instead.
 
 ## Switch from the old chatters API
 
