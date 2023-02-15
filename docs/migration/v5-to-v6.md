@@ -84,6 +84,11 @@ You can also add intents to a user after the fact:
 authProvider.addIntentsToUser('125328655', ['chat']);
 ```
 
+### Custom {@link AuthProvider} implementations
+
+If you wrote your own provider, please refer to the {@link AuthProvider} reference page to reimplement it from scratch.
+There is no straightforward migration strategy here.
+
 ## Rename subscription methods in EventSub packages
 
 In the `eventsub-http` and `eventsub-ws` packages, the naming convention for the subscription methods has been changed.
