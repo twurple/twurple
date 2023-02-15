@@ -133,12 +133,16 @@ export async function getValidTokenFromProviderForUser(
 	logger?: Logger
 ): Promise<{ accessToken: AccessToken; tokenInfo: TokenInfo }> {
 	let lastTokenError: InvalidTokenError | null = null;
+	let foundUser = false;
 
 	try {
 		const accessToken = await provider.getAccessTokenForUser(userId, scopes);
-		// check validity
-		const tokenInfo = await getTokenInfo(accessToken.accessToken);
-		return { accessToken, tokenInfo };
+		if (accessToken) {
+			foundUser = true;
+			// check validity
+			const tokenInfo = await getTokenInfo(accessToken.accessToken);
+			return { accessToken, tokenInfo };
+		}
 	} catch (e: unknown) {
 		if (e instanceof InvalidTokenError) {
 			lastTokenError = e;
@@ -147,20 +151,21 @@ export async function getValidTokenFromProviderForUser(
 		}
 	}
 
-	logger?.warn('No valid token available; trying to refresh');
+	if (foundUser) {
+		logger?.warn('No valid token available; trying to refresh');
+		if (provider.refreshAccessTokenForUser) {
+			try {
+				const newToken = await provider.refreshAccessTokenForUser(userId);
 
-	if (provider.refreshAccessTokenForUser) {
-		try {
-			const newToken = await provider.refreshAccessTokenForUser(userId);
-
-			// check validity
-			const tokenInfo = await getTokenInfo(newToken.accessToken);
-			return { accessToken: newToken, tokenInfo };
-		} catch (e: unknown) {
-			if (e instanceof InvalidTokenError) {
-				lastTokenError = e;
-			} else {
-				logger?.error(`Refreshing the access token failed: ${(e as Error).message}`);
+				// check validity
+				const tokenInfo = await getTokenInfo(newToken.accessToken);
+				return { accessToken: newToken, tokenInfo };
+			} catch (e: unknown) {
+				if (e instanceof InvalidTokenError) {
+					lastTokenError = e;
+				} else {
+					logger?.error(`Refreshing the access token failed: ${(e as Error).message}`);
+				}
 			}
 		}
 	}
@@ -176,18 +181,22 @@ export async function getValidTokenFromProviderForIntent(
 	logger?: Logger
 ): Promise<{ accessToken: AccessToken; tokenInfo: TokenInfo }> {
 	let lastTokenError: InvalidTokenError | null = null;
+	let foundUser = false;
 
-	try {
-		if (!provider.getAccessTokenForIntent) {
-			throw new InvalidTokenTypeError(
-				`This call requires an AuthProvider that supports intents.
+	if (!provider.getAccessTokenForIntent) {
+		throw new InvalidTokenTypeError(
+			`This call requires an AuthProvider that supports intents.
 Please provide an auth provider that does, such as \`RefreshingAuthProvider\`.`
-			);
-		}
+		);
+	}
+	try {
 		const accessToken = await provider.getAccessTokenForIntent(intent, scopes);
-		// check validity
-		const tokenInfo = await getTokenInfo(accessToken.accessToken);
-		return { accessToken, tokenInfo };
+		if (accessToken) {
+			foundUser = true;
+			// check validity
+			const tokenInfo = await getTokenInfo(accessToken.accessToken);
+			return { accessToken, tokenInfo };
+		}
 	} catch (e: unknown) {
 		if (e instanceof InvalidTokenError) {
 			lastTokenError = e;
@@ -196,20 +205,21 @@ Please provide an auth provider that does, such as \`RefreshingAuthProvider\`.`
 		}
 	}
 
-	logger?.warn('No valid token available; trying to refresh');
+	if (foundUser) {
+		logger?.warn('No valid token available; trying to refresh');
+		if (provider.refreshAccessTokenForIntent) {
+			try {
+				const newToken = await provider.refreshAccessTokenForIntent(intent);
 
-	if (provider.refreshAccessTokenForIntent) {
-		try {
-			const newToken = await provider.refreshAccessTokenForIntent(intent);
-
-			// check validity
-			const tokenInfo = await getTokenInfo(newToken.accessToken);
-			return { accessToken: newToken, tokenInfo };
-		} catch (e: unknown) {
-			if (e instanceof InvalidTokenError) {
-				lastTokenError = e;
-			} else {
-				logger?.error(`Refreshing the access token failed: ${(e as Error).message}`);
+				// check validity
+				const tokenInfo = await getTokenInfo(newToken.accessToken);
+				return { accessToken: newToken, tokenInfo };
+			} catch (e: unknown) {
+				if (e instanceof InvalidTokenError) {
+					lastTokenError = e;
+				} else {
+					logger?.error(`Refreshing the access token failed: ${(e as Error).message}`);
+				}
 			}
 		}
 	}

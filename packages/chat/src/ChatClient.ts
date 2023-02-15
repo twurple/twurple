@@ -11,13 +11,7 @@ import { delay, Enumerable, fibWithLimit, resolveConfigValue } from '@d-fischer/
 import type { EventBinder } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
-import {
-	accessTokenIsExpired,
-	getTokenInfo,
-	InvalidTokenError,
-	InvalidTokenTypeError,
-	UnknownIntentError
-} from '@twurple/auth';
+import { accessTokenIsExpired, getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
 import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
@@ -1308,6 +1302,9 @@ export class ChatClient extends EventEmitter {
 		for (const intent of this._authIntents) {
 			try {
 				this._authToken = await this._authProvider.getAccessTokenForIntent!(intent, scopes);
+				if (!this._authToken) {
+					continue;
+				}
 				foundSomeIntent = true;
 				const token = await getTokenInfo(this._authToken.accessToken);
 				if (!token.userName) {
@@ -1318,9 +1315,6 @@ export class ChatClient extends EventEmitter {
 				this._ircClient.changeNick(token.userName);
 				return `oauth:${this._authToken.accessToken}`;
 			} catch (e: unknown) {
-				if (e instanceof UnknownIntentError) {
-					continue;
-				}
 				if (e instanceof InvalidTokenError) {
 					lastTokenError = e;
 				} else {

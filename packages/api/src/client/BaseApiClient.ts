@@ -135,6 +135,12 @@ export class BaseApiClient {
 
 			const accessToken = await authProvider.getAccessTokenForUser(options.userId, options.scopes);
 
+			if (!accessToken) {
+				throw new Error(
+					`Tried to make an API call with a scope for user ID ${options.userId} but no token was found`
+				);
+			}
+
 			if (accessTokenIsExpired(accessToken) && authProvider.refreshAccessTokenForUser) {
 				const newAccessToken = await authProvider.refreshAccessTokenForUser(options.userId);
 				return await this._callApiUsingInitialToken(options, newAccessToken);

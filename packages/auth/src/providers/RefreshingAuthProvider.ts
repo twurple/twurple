@@ -1,6 +1,6 @@
 import type { MakeOptional } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
+import { extractUserId, HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
 import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
 import { InvalidTokenError } from '../errors/InvalidTokenError';
@@ -148,7 +148,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 */
 	async refreshAccessTokenForIntent(intent: string): Promise<AccessTokenWithUserId> {
 		if (!this._intentToUserId.has(intent)) {
-			throw new Error(`Undefined intent: ${intent}`);
+			throw new UnknownIntentError(intent);
 		}
 
 		const userId = this._intentToUserId.get(intent)!;
@@ -184,11 +184,11 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 * @param user The user to get an access token for.
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId> {
+	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId | null> {
 		const fetcher = this._userTokenFetchers.get(extractUserId(user));
 
 		if (!fetcher) {
-			throw new Error('Trying to get token for user that was not added to the provider');
+			return null;
 		}
 
 		return await fetcher.fetch(scopes);
@@ -200,14 +200,20 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 * @param intent The intent to fetch a token for.
 	 * @param scopes The requested scopes.
 	 */
-	async getAccessTokenForIntent(intent: string, scopes?: string[]): Promise<AccessTokenWithUserId> {
+	async getAccessTokenForIntent(intent: string, scopes?: string[]): Promise<AccessTokenWithUserId | null> {
 		if (!this._intentToUserId.has(intent)) {
-			throw new UnknownIntentError(intent);
+			return null;
 		}
 
 		const userId = this._intentToUserId.get(intent)!;
 
 		const newToken = await this.getAccessTokenForUser(userId, scopes);
+
+		if (!newToken) {
+			throw new HellFreezesOverError(
+				`Found intent ${intent} corresponding to user ID ${userId} but no token was found`
+			);
+		}
 
 		return {
 			...newToken,
@@ -226,6 +232,11 @@ export class RefreshingAuthProvider implements AuthProvider {
 			const userId = extractUserId(user);
 			if (this._userAccessTokens.has(userId)) {
 				const token = await this.getAccessTokenForUser(userId);
+				if (!token) {
+					throw new HellFreezesOverError(
+						`Token for user ID ${userId} exists but nothing was returned by getAccessTokenForUser`
+					);
+				}
 				return {
 					...token,
 					userId

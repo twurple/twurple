@@ -41,7 +41,7 @@ export interface AuthProvider {
 	 *
 	 * @param scopes The requested scope(s).
 	 */
-	getAccessTokenForUser: (user: UserIdResolvable, scopes?: string[]) => Promise<AccessTokenWithUserId>;
+	getAccessTokenForUser: (user: UserIdResolvable, scopes?: string[]) => Promise<AccessTokenWithUserId | null>;
 
 	/**
 	 * Fetches a token for a user identified by the given intent defined by the provider.
@@ -58,7 +58,7 @@ export interface AuthProvider {
 	 * @param intent The intent to fetch a token for.
 	 * @param scopes The requested scopes.
 	 */
-	getAccessTokenForIntent?: (intent: string, scopes?: string[]) => Promise<AccessTokenWithUserId>;
+	getAccessTokenForIntent?: (intent: string, scopes?: string[]) => Promise<AccessTokenWithUserId | null>;
 
 	/**
 	 * Fetches an app token.
