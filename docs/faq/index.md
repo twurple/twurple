@@ -2,16 +2,14 @@
 
 Twitch uses the IRC protocol as foundation for its chat. In this protocol, after connection,
 you must tell the server your name and (optionally) authenticate before you can send messages to channels.
-The IRC specification calls this process "registration".
 
-The base library we use for the `ChatClient` is an IRC library that has terminology very close to the IRC specification.
-This means that `connect()` will finish before the registration step,
+The `connect()` method will finish before that authentication step,
 which in turn means that you can't join channels or send messages yet.
 
-Instead, you should use the `onRegister` event to send messages.
+Instead, you should use the `onAuthenticationSuccess` event to send messages.
 
 ```ts
-chatClient.onRegister(() => {
+chatClient.onAuthenticationSuccess(() => {
 	chatClient.say('someone', 'Hello, I\'m now connected!');
 })
 ```
