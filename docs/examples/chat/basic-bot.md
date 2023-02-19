@@ -138,7 +138,7 @@ const authProvider = new RefreshingAuthProvider(
 	}
 );
 
-authProvider.addUser('125328655', {
+await authProvider.addUserForToken({
 	accessToken,
 	refreshToken
 }, ['chat']);
@@ -206,7 +206,7 @@ const authProvider = new RefreshingAuthProvider(
 		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8')
 	}
 );
-authProvider.addUser('125328655', {
+await authProvider.addUserForToken({
 	accessToken,
 	refreshToken
 }, ['chat']);

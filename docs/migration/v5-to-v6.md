@@ -34,7 +34,7 @@ you can manage all your users using just one of each.
 
 ### {@link RefreshingAuthProvider}
 
-You can just use the `addUser` method to add your users to the provider.
+You can just use the `addUserForToken` method to add your users to the provider.
 It will also take care of app tokens using the supplied client ID and secret.
 
 ```ts diff -5,8 +6,11
@@ -48,6 +48,13 @@ const authProvider = new RefreshingAuthProvider(
 	tokenData,
 );
 
+authProvider.addUserForToken(tokenData);
+```
+
+Alternatively, if you already know the ID of the user you're adding,
+you can use `addUser` instead as a minor optimization:
+
+```ts
 authProvider.addUser('125328655', tokenData);
 ```
 
@@ -72,10 +79,10 @@ Now you might be asking, what are intents?
 You can set intents on every user in an auth provider.
 A user can have more than one intent, but an intent can only be used for one user.
 
-To use them with the {@link RefreshingAuthProvider}, just add another parameter to `addUser`:
+To use them with the {@link RefreshingAuthProvider}, just add another parameter to `addUser` or `addUserForToken`:
 
 ```ts
-authProvider.addUser('125328655', tokenData, ['chat']);
+authProvider.addUserForToken(tokenData, ['chat']);
 ```
 
 You can also add intents to a user after the fact:

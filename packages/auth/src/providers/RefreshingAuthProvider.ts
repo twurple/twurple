@@ -4,8 +4,9 @@ import { extractUserId, HellFreezesOverError, rtfm, type UserIdResolvable } from
 import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
 import { InvalidTokenError } from '../errors/InvalidTokenError';
+import { InvalidTokenTypeError } from '../errors/InvalidTokenTypeError';
 import { UnknownIntentError } from '../errors/UnknownIntentError';
-import { compareScopeSets, getAppToken, loadAndCompareTokenInfo, refreshUserToken } from '../helpers';
+import { compareScopeSets, getAppToken, getTokenInfo, loadAndCompareTokenInfo, refreshUserToken } from '../helpers';
 import { TokenFetcher } from '../TokenFetcher';
 import { type AuthProvider } from './AuthProvider';
 
@@ -72,7 +73,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 	}
 
 	/**
-	 * Adds a user to the provider.
+	 * Adds the given user with their corresponding token to the provider.
 	 *
 	 * @param user The user to add.
 	 * @param initialToken The token for the user.
@@ -90,13 +91,47 @@ export class RefreshingAuthProvider implements AuthProvider {
 			...initialToken,
 			userId
 		});
-		this._userTokenFetchers.set(
-			userId,
-			new TokenFetcher(async scopes => await this._fetchUserToken(userId, scopes))
-		);
+		if (!this._userTokenFetchers.has(userId)) {
+			this._userTokenFetchers.set(
+				userId,
+				new TokenFetcher(async scopes => await this._fetchUserToken(userId, scopes))
+			);
+		}
 		if (intents) {
 			this.addIntentsToUser(user, intents);
 		}
+	}
+
+	/**
+	 * Figures out the user associated to the given token and adds them to the provider.
+	 *
+	 * If you already know the ID of the user you're adding,
+	 * consider using {@link RefreshingAuthProvider#addUser} instead.
+	 *
+	 * @param initialToken The token for the user.
+	 * @param intents The intents to add to the user.
+	 *
+	 * Any intents that were already set before will be overwritten to point to this user instead.
+	 */
+	async addUserForToken(initialToken: MakeOptional<AccessToken, 'scope'>, intents?: string[]): Promise<string> {
+		const tokenInfo = await getTokenInfo(initialToken.accessToken);
+		const { userId } = tokenInfo;
+		if (!userId) {
+			throw new InvalidTokenTypeError(
+				'Could not determine a user ID for your token; you might be trying to disguise an app token as a user token.'
+			);
+		}
+
+		const token = initialToken.scope
+			? initialToken
+			: {
+					...initialToken,
+					scope: tokenInfo.scopes
+			  };
+
+		this.addUser(userId, token, intents);
+
+		return userId;
 	}
 
 	/**

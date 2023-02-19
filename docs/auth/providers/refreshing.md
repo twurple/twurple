@@ -39,5 +39,11 @@ const authProvider = new RefreshingAuthProvider(
 	}
 );
 
+await authProvider.addUserForToken(tokenData);
+```
+
+If you already know the ID of the user you're adding, you can save a few internal requests by doing:
+
+```ts
 authProvider.addUser('125328655', tokenData);
 ```
