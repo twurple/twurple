@@ -113,13 +113,13 @@ Now you have a working bot! Until you have to restart it a few hours later...
 
 Fortunately, with the access token in step 2, we also got a refresh token! *(You wrote that down, didn't you?)*
 
-With that, you can create another type of auth provider that supports multi-user operation (via the `addUser` method)
+With that, you can create another type of auth provider that supports multi-user operation (via the `addUserForToken` method)
 and automatically refreshes all tokens stored in it.
 
 For the chat client to figure out which user to connect as, you need to specify which one you want to use for chat.
 
 The feature managing this is called **intents**.
-You can give a user a specific set of intents by passing them to the `addUser` function as the third parameter.
+You can give a user a specific set of intents by passing them to the `addUserForToken` function as the second parameter.
 The chat client looks for the `chat` intent by default.
 
 Just replace the initialization line with this (but keep the `clientId` and `accessToken` constants):
@@ -170,7 +170,7 @@ save them back into the same file. (We're adding the user ID to the file name dy
 // add to imports
 import { promises as fs } from 'fs';
 
-// replace the constructor line
+// replace the constructor lines
 const tokenData = JSON.parse(await fs.readFile('./tokens.125328655.json', 'UTF-8'));
 const authProvider = new RefreshingAuthProvider(
 	{
@@ -179,6 +179,8 @@ const authProvider = new RefreshingAuthProvider(
 		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8')
 	}
 );
+
+authProvider.addUserForToken(tokenData, ['chat']);
 ```
 
 ## 8. ???
@@ -206,10 +208,8 @@ const authProvider = new RefreshingAuthProvider(
 		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8')
 	}
 );
-await authProvider.addUserForToken({
-	accessToken,
-	refreshToken
-}, ['chat']);
+
+await authProvider.addUserForToken(tokenData, ['chat']);
 
 const chatClient = new ChatClient({ authProvider, channels: ['satisfiedpear'] });
 await chatClient.connect();
