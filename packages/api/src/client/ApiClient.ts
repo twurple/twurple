@@ -106,4 +106,34 @@ export class ApiClient extends BaseApiClient {
 
 		return await runner(ctx);
 	}
+
+	/**
+	 * Creates a contextualized ApiClient that can be used to call the API in the context of a given intent.
+	 *
+	 * @param intents A list of intents. The first one that is found in your auth provider will be used.
+	 * @param runner The callback to execute.
+	 *
+	 * A parameter is passed that should be used in place of the normal `ApiClient`
+	 * to ensure that all requests are executed in the given user's context.
+	 *
+	 * Please note that requests which require scope authorization ignore this context.
+	 *
+	 * The return value of your callback will be propagated to the return value of this method.
+	 */
+	async asIntent<T>(intents: string[], runner: (ctx: BaseApiClient) => Promise<T>): Promise<T> {
+		if (!this._authProvider.getAccessTokenForIntent) {
+			throw new Error('Trying to use intents with an auth provider that does not support them');
+		}
+
+		for (const intent of intents) {
+			const user = await this._authProvider.getAccessTokenForIntent(intent);
+			if (user) {
+				const ctx = new UserContextApiClient(this._config, this._logger, this._rateLimiter, user.userId);
+
+				return await runner(ctx);
+			}
+		}
+
+		throw new Error(`Intents [${intents.join(', ')}] not found in auth provider`);
+	}
 }
