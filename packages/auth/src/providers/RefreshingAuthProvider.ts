@@ -144,6 +144,9 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 */
 	addIntentsToUser(user: UserIdResolvable, intents: string[]): void {
 		const userId = extractUserId(user);
+		if (!this._userAccessTokens.has(userId)) {
+			throw new Error('Trying to add intents to a user that was not added to this provider');
+		}
 		for (const intent of intents) {
 			this._intentToUserId.set(intent, userId);
 		}
