@@ -1,6 +1,6 @@
 {
   "name": "@twurple/chat",
-  "version": "6.0.0",
+  "version": "6.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -39,16 +39,16 @@
     "@d-fischer/rate-limiter": "^0.7.1",
     "@d-fischer/shared-utils": "^3.4.0",
     "@d-fischer/typed-event-emitter": "^3.3.0",
-    "@twurple/common": "6.0.0",
+    "@twurple/common": "6.0.1",
     "ircv3": "^0.31.3",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "6.0.0",
+    "@twurple/auth": "6.0.1",
     "@types/jest": "^29.2.3"
   },
   "peerDependencies": {
-    "@twurple/auth": "6.0.0"
+    "@twurple/auth": "6.0.1"
   },
   "files": [
     "LICENSE",
