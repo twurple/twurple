@@ -4,6 +4,8 @@ import { type PubSubBitsBadgeUnlockMessage } from './PubSubBitsBadgeUnlockMessag
 import { type PubSubBitsBadgeUnlockMessageData } from './PubSubBitsBadgeUnlockMessage.external';
 import { type PubSubBitsMessage } from './PubSubBitsMessage';
 import { type PubSubBitsMessageData } from './PubSubBitsMessage.external';
+import { type PubSubChannelRoleChangeMessage } from './PubSubChannelRoleChangeMessage';
+import { type PubSubChannelRoleChangeMessageData } from './PubSubChannelRoleChangeMessage.external';
 import { type PubSubChannelTermsActionMessage } from './PubSubChannelTermsActionMessage';
 import { type PubSubChannelTermsActionMessageData } from './PubSubChannelTermsActionMessage.external';
 import { type PubSubChatModActionMessage } from './PubSubChatModActionMessage';
@@ -19,7 +21,10 @@ import { type PubSubWhisperMessage } from './PubSubWhisperMessage';
 import { type PubSubWhisperMessageData } from './PubSubWhisperMessage.external';
 
 /** @private */
-export type PubSubModActionMessageData = PubSubChatModActionMessageData | PubSubChannelTermsActionMessageData;
+export type PubSubModActionMessageData =
+	| PubSubChatModActionMessageData
+	| PubSubChannelTermsActionMessageData
+	| PubSubChannelRoleChangeMessageData;
 
 /** @private */
 export type PubSubMessageData =
@@ -34,7 +39,10 @@ export type PubSubMessageData =
 	| unknown;
 
 /** @private */
-export type PubSubModActionMessage = PubSubChatModActionMessage | PubSubChannelTermsActionMessage;
+export type PubSubModActionMessage =
+	| PubSubChatModActionMessage
+	| PubSubChannelTermsActionMessage
+	| PubSubChannelRoleChangeMessage;
 
 /** @private */
 export type PubSubMessage =

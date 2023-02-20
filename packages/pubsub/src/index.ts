@@ -23,6 +23,8 @@ export type { PubSubMessage } from './messages/PubSubMessage';
 export { PubSubAutoModQueueMessage } from './messages/PubSubAutoModQueueMessage';
 export { PubSubBitsMessage } from './messages/PubSubBitsMessage';
 export { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
+export { PubSubChannelRoleChangeMessage } from './messages/PubSubChannelRoleChangeMessage';
+export { type PubSubChannelRoleChangeType } from './messages/PubSubChannelRoleChangeMessage.external';
 export { PubSubChannelTermsActionMessage } from './messages/PubSubChannelTermsActionMessage';
 export { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
 export { PubSubCustomMessage } from './messages/PubSubCustomMessage';

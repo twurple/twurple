@@ -10,6 +10,7 @@ import { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMe
 import { type PubSubBitsBadgeUnlockMessageData } from './messages/PubSubBitsBadgeUnlockMessage.external';
 import { PubSubBitsMessage } from './messages/PubSubBitsMessage';
 import { type PubSubBitsMessageData } from './messages/PubSubBitsMessage.external';
+import { PubSubChannelRoleChangeMessage } from './messages/PubSubChannelRoleChangeMessage';
 import { PubSubChannelTermsActionMessage } from './messages/PubSubChannelTermsActionMessage';
 import { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
 import { PubSubCustomMessage } from './messages/PubSubCustomMessage';
@@ -326,6 +327,12 @@ export class PubSubClient extends EventEmitter {
 					}
 					case 'channel_terms_action': {
 						return new PubSubChannelTermsActionMessage(data, args[0]);
+					}
+					case 'moderator_added':
+					case 'moderator_removed':
+					case 'vip_added':
+					case 'vip_removed': {
+						return new PubSubChannelRoleChangeMessage(data, args[0]);
 					}
 					default: {
 						this._logger
