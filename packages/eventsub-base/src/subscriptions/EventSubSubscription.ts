@@ -126,5 +126,6 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 			await this._client._apiClient.eventSub.deleteSubscription(this._twitchSubscriptionData.id);
 		}
 		this._client._dropTwitchSubscription(this.id);
+		this._client._notifySubscriptionDeleteSuccess(this as EventSubSubscription);
 	}
 }

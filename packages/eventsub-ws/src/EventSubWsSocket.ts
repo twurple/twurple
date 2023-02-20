@@ -47,7 +47,11 @@ export class EventSubWsSocket {
 			}
 		);
 
-		this._connection.onDisconnect(() => {
+		this._connection.onConnect(() => {
+			this._listener._notifySocketConnect(this);
+		});
+		this._connection.onDisconnect((_, e) => {
+			this._listener._notifySocketDisconnect(this, e);
 			this._readyToSubscribe = false;
 			this._clearKeepaliveTimer();
 			this._keepaliveTimeout = null;
@@ -137,6 +141,10 @@ export class EventSubWsSocket {
 
 	get sessionId(): string | undefined {
 		return this._sessionId;
+	}
+
+	get userId(): string {
+		return this._userId;
 	}
 
 	private _initializeKeepaliveTimeout(timeoutInSeconds: number): void {

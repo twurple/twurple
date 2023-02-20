@@ -140,6 +140,15 @@ export abstract class EventSubBase extends EventEmitter {
 	readonly onRevoke = this.registerEvent<[subscription: EventSubSubscription]>();
 
 	/**
+	 * Fires when the client successfully created a subscription.
+	 *
+	 * @eventListener
+	 *
+	 * @param subscription The subscription that was successfully created.
+	 */
+	readonly onSubscriptionCreateSuccess = this.registerEvent<[subscription: EventSubSubscription]>();
+
+	/**
 	 * Fires when the client fails to create a subscription.
 	 *
 	 * @eventListener
@@ -150,11 +159,20 @@ export abstract class EventSubBase extends EventEmitter {
 	readonly onSubscriptionCreateFailure = this.registerEvent<[subscription: EventSubSubscription, error: Error]>();
 
 	/**
+	 * Fires when the client successfully deleted a subscription.
+	 *
+	 * @eventListener
+	 *
+	 * @param subscription The subscription that was successfully deleted.
+	 */
+	readonly onSubscriptionDeleteSuccess = this.registerEvent<[subscription: EventSubSubscription]>();
+
+	/**
 	 * Fires when the client fails to delete a subscription.
 	 *
 	 * @eventListener
 	 *
-	 * @param subscription The subscription that was not successfully created.
+	 * @param subscription The subscription that was not successfully deleted.
 	 * @param error The error that was thrown.
 	 */
 	readonly onSubscriptionDeleteFailure = this.registerEvent<[subscription: EventSubSubscription, error: Error]>();
@@ -187,11 +205,17 @@ export abstract class EventSubBase extends EventEmitter {
 	_registerTwitchSubscription(subscription: EventSubSubscription, data: HelixEventSubSubscription): void {
 		this._twitchSubscriptions.set(subscription.id, data);
 		this._subscriptionsByTwitchId.set(data.id, subscription);
+		this.emit(this.onSubscriptionCreateSuccess, subscription);
 	}
 
 	/** @private */
 	_notifySubscriptionCreateError(subscription: EventSubSubscription, error: Error): void {
 		this.emit(this.onSubscriptionCreateFailure, subscription, error);
+	}
+
+	/** @private */
+	_notifySubscriptionDeleteSuccess(subscription: EventSubSubscription): void {
+		this.emit(this.onSubscriptionDeleteSuccess, subscription);
 	}
 
 	/** @private */

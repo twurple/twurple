@@ -1,3 +1,4 @@
+import { type LoggerOptions } from '@d-fischer/logger';
 import { type HelixEventSubWebSocketTransportOptions, HellFreezesOverError } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import {
@@ -7,7 +8,6 @@ import {
 	type EventSubSubscription
 } from '@twurple/eventsub-base';
 import { EventSubWsSocket } from './EventSubWsSocket';
-import { type LoggerOptions } from '@d-fischer/logger';
 
 /**
  * Configuration for an EventSub WebSocket listener.
@@ -36,6 +36,21 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	private readonly _initialUrl: string;
 	private _accepting = false;
 	private readonly _loggerOptions?: Partial<LoggerOptions>;
+
+	/**
+	 * Fires when a user socket has established a connection with the EventSub server.
+	 *
+	 * @param userId The ID of the user.
+	 */
+	readonly onUserSocketConnect = this.registerEvent<[userId: string]>();
+
+	/**
+	 * Fires when a user socket has disconnected from the EventSub server.
+	 *
+	 * @param userId The ID of the user.
+	 * @param error The error that caused the disconnection, or `undefined` for a clean disconnect.
+	 */
+	readonly onUserSocketDisconnect = this.registerEvent<[userId: string, error?: Error]>();
 
 	/**
 	 * Creates a new EventSub HTTP listener.
@@ -118,6 +133,16 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	/** @private */
 	_handleSubscriptionRevoke(subscription: EventSubSubscription): void {
 		this.emit(this.onRevoke, subscription);
+	}
+
+	/** @private */
+	_notifySocketConnect(socket: EventSubWsSocket): void {
+		this.emit(this.onUserSocketConnect, socket.userId);
+	}
+
+	/** @private */
+	_notifySocketDisconnect(socket: EventSubWsSocket, error?: Error): void {
+		this.emit(this.onUserSocketDisconnect, socket.userId, error);
 	}
 
 	protected _genericSubscribe<T, Args extends unknown[]>(
