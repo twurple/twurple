@@ -34,7 +34,7 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/logger": "^4.0.0",
+    "@d-fischer/logger": "^4.2.1",
     "@d-fischer/raw-body": "^2.4.3",
     "@d-fischer/shared-utils": "^3.4.0",
     "@d-fischer/typed-event-emitter": "^3.3.0",

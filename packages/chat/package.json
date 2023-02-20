@@ -35,12 +35,12 @@
   "dependencies": {
     "@d-fischer/cache-decorators": "^3.0.0",
     "@d-fischer/deprecate": "^2.0.2",
-    "@d-fischer/logger": "^4.0.0",
-    "@d-fischer/rate-limiter": "^0.7.1",
+    "@d-fischer/logger": "^4.2.1",
+    "@d-fischer/rate-limiter": "^0.7.2",
     "@d-fischer/shared-utils": "^3.4.0",
     "@d-fischer/typed-event-emitter": "^3.3.0",
     "@twurple/common": "6.0.1",
-    "ircv3": "^0.31.3",
+    "ircv3": "^0.31.5",
     "tslib": "^2.0.3"
   },
   "devDependencies": {

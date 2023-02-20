@@ -35,8 +35,8 @@
   "dependencies": {
     "@d-fischer/cache-decorators": "^3.0.0",
     "@d-fischer/detect-node": "^3.0.1",
-    "@d-fischer/logger": "^4.0.0",
-    "@d-fischer/rate-limiter": "^0.7.1",
+    "@d-fischer/logger": "^4.2.1",
+    "@d-fischer/rate-limiter": "^0.7.2",
     "@d-fischer/shared-utils": "^3.4.0",
     "@twurple/api-call": "6.0.1",
     "@twurple/common": "6.0.1",
