@@ -754,6 +754,10 @@ export class ChatClient extends EventEmitter {
 			}
 		});
 
+		this._ircClient.onAction((channel, user, text, msg) => {
+			this.emit(this.onAction, channel, user, text, msg);
+		});
+
 		this.addInternalListener(this._onJoinResult, (channel, _, error) => {
 			if (error) {
 				this.emit(this.onJoinFailure, channel, error);
