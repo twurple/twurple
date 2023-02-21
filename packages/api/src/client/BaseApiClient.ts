@@ -7,7 +7,8 @@ import {
 	callTwitchApiRaw,
 	handleTwitchApiResponseError,
 	HttpStatusCodeError,
-	transformTwitchApiResponse
+	transformTwitchApiResponse,
+	type TwitchApiCallOptions
 } from '@twurple/api-call';
 
 import type { AccessTokenMaybeWithUserId, AuthProvider, TokenInfoData } from '@twurple/auth';
@@ -129,20 +130,24 @@ export class BaseApiClient {
 		}
 
 		if (forceUser) {
-			if (!options.userId) {
+			const contextUserId = options.canOverrideScopedUserContext
+				? this._getUserIdFromRequestContext(options)
+				: options.userId;
+
+			if (!contextUserId) {
 				throw new Error('Tried to make an API call with a scope but no context user ID');
 			}
 
-			const accessToken = await authProvider.getAccessTokenForUser(options.userId, options.scopes);
+			const accessToken = await authProvider.getAccessTokenForUser(contextUserId, options.scopes);
 
 			if (!accessToken) {
 				throw new Error(
-					`Tried to make an API call with a scope for user ID ${options.userId} but no token was found`
+					`Tried to make an API call with a scope for user ID ${contextUserId} but no token was found`
 				);
 			}
 
 			if (accessTokenIsExpired(accessToken) && authProvider.refreshAccessTokenForUser) {
-				const newAccessToken = await authProvider.refreshAccessTokenForUser(options.userId);
+				const newAccessToken = await authProvider.refreshAccessTokenForUser(contextUserId);
 				return await this._callApiUsingInitialToken(options, newAccessToken);
 			}
 
@@ -373,7 +378,7 @@ export class BaseApiClient {
 	}
 
 	private async _callApiUsingInitialToken<T = unknown>(
-		options: ContextApiCallOptions,
+		options: TwitchApiCallOptions,
 		accessToken: AccessTokenMaybeWithUserId
 	): Promise<T> {
 		const { authProvider } = this._config;
@@ -415,7 +420,7 @@ export class BaseApiClient {
 	}
 
 	private async _callApiInternal(
-		options: ContextApiCallOptions,
+		options: TwitchApiCallOptions,
 		clientId?: string,
 		accessToken?: string,
 		authorizationType?: string

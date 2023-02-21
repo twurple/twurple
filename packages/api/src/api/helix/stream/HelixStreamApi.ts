@@ -148,7 +148,8 @@ export class HelixStreamApi extends BaseApi {
 				...createPaginationQuery(pagination)
 			},
 			userId: extractUserId(user),
-			scopes: ['user:read:broadcast']
+			scopes: ['user:read:broadcast'],
+			canOverrideScopedUserContext: true
 		});
 
 		return {
@@ -170,7 +171,8 @@ export class HelixStreamApi extends BaseApi {
 				url: 'streams/markers',
 				query: createUserQuery(user),
 				userId: extractUserId(user),
-				scopes: ['user:read:broadcast']
+				scopes: ['user:read:broadcast'],
+				canOverrideScopedUserContext: true
 			},
 			this._client,
 			data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client)
@@ -199,7 +201,8 @@ export class HelixStreamApi extends BaseApi {
 				...createPaginationQuery(pagination)
 			},
 			userId: extractUserId(user),
-			scopes: ['user:read:broadcast']
+			scopes: ['user:read:broadcast'],
+			canOverrideScopedUserContext: true
 		});
 
 		return {
@@ -223,7 +226,8 @@ export class HelixStreamApi extends BaseApi {
 				url: 'streams/markers',
 				query: createVideoQuery(videoId),
 				userId: extractUserId(user),
-				scopes: ['user:read:broadcast']
+				scopes: ['user:read:broadcast'],
+				canOverrideScopedUserContext: true
 			},
 			this._client,
 			data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client)
@@ -244,7 +248,9 @@ export class HelixStreamApi extends BaseApi {
 				url: 'streams/markers',
 				method: 'POST',
 				type: 'helix',
+				userId: extractUserId(broadcaster),
 				scopes: ['channel:manage:broadcast'],
+				canOverrideScopedUserContext: true,
 				jsonBody: createStreamMarkerBody(broadcaster, description)
 			});
 

@@ -1,7 +1,7 @@
 import { type TwitchApiCallOptions } from '@twurple/api-call';
 
 /**
- * The definition of an API call intended to be called in the context of a specific user ID or of the app..
+ * The definition of an API call intended to be called in the context of a specific user ID or of the app.
  *
  * @inheritDoc
  */
@@ -15,4 +15,9 @@ export interface ContextApiCallOptions extends TwitchApiCallOptions {
 	 * The ID of the user to use as the context of the API call.
 	 */
 	userId?: string;
+
+	/**
+	 * Whether user context can be overridden using `asUser` or `asIntent` even though scopes are set.
+	 */
+	canOverrideScopedUserContext?: boolean;
 }
