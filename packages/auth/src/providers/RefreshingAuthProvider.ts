@@ -10,6 +10,10 @@ import { compareScopeSets, getAppToken, getTokenInfo, loadAndCompareTokenInfo, r
 import { TokenFetcher } from '../TokenFetcher';
 import { type AuthProvider } from './AuthProvider';
 
+type OnRefreshCallbackWithUserId = (userId: string, token: AccessToken) => void;
+type OnRefreshCallbackWithoutUserId = (token: AccessToken) => void;
+type OnRefreshCallback = OnRefreshCallbackWithUserId | OnRefreshCallbackWithoutUserId;
+
 /**
  * Configuration for the {@link RefreshingAuthProvider}.
  */
@@ -29,7 +33,7 @@ export interface RefreshConfig {
 	 *
 	 * @param token The token data.
 	 */
-	onRefresh?: (userId: string, token: AccessToken) => void;
+	onRefresh?: OnRefreshCallback;
 
 	/**
 	 * The scopes to be implied by the provider's app access token.
@@ -56,7 +60,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 	@Enumerable(false) private readonly _appTokenFetcher;
 	private readonly _appImpliedScopes: string[];
 
-	private readonly _onRefresh?: (userId: string, token: AccessToken) => void;
+	private readonly _onRefresh?: OnRefreshCallback;
 
 	/**
 	 * Creates a new auth provider based on the given one that can automatically
@@ -171,7 +175,17 @@ export class RefreshingAuthProvider implements AuthProvider {
 			userId
 		});
 
-		this._onRefresh?.(userId, tokenData);
+		if (this._onRefresh) {
+			if (this._onRefresh.length < 2) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					'DEPRECATION WARNING: please update your onRefresh callback to take a user ID as first parameter'
+				);
+				(this._onRefresh as OnRefreshCallbackWithoutUserId)(tokenData);
+			} else {
+				(this._onRefresh as OnRefreshCallbackWithUserId)(userId, tokenData);
+			}
+		}
 
 		return {
 			...tokenData,
