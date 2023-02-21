@@ -15,6 +15,11 @@ export interface Options extends Omit<BaseOptions, 'identity'> {
 	 * For more information, see the {@link AuthProvider} documentation.
 	 */
 	authProvider: AuthProvider;
+
+	/**
+	 * The intents to use with the auth provider. Will always additionally check the "chat" intent last.
+	 */
+	authIntents?: string[];
 }
 
 /**
@@ -27,18 +32,27 @@ export class DecoratedClient extends BaseClient {
 	 * @param opts The tmi.js options, with the auth provider replacing the identity option.
 	 */
 	constructor(opts: Options) {
-		const { authProvider, ...tmiOpts } = opts;
+		const { authProvider, authIntents = [], ...tmiOpts } = opts;
 		super({
 			...tmiOpts,
 			identity: {
 				// need this because we can't get a username dynamically, but need something to not default to justinfan
 				username: 'dummy',
 				password: async () => {
-					const { accessToken } = await getValidTokenFromProviderForIntent(authProvider, 'chat', [
-						'chat:read',
-						'chat:edit'
-					]);
-					return accessToken.accessToken;
+					let lastTokenError: Error | undefined = undefined;
+					for (const intent of [...authIntents, 'chat']) {
+						try {
+							const { accessToken } = await getValidTokenFromProviderForIntent(authProvider, intent, [
+								'chat:read',
+								'chat:edit'
+							]);
+							return accessToken.accessToken;
+						} catch (e) {
+							lastTokenError = e as Error;
+						}
+					}
+
+					throw new Error('Could not find a token for any given intent', { cause: lastTokenError });
 				}
 			}
 		});
