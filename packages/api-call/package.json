@@ -1,6 +1,6 @@
 {
   "name": "@twurple/api-call",
-  "version": "6.0.2",
+  "version": "6.0.3",
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +34,7 @@
     "@d-fischer/cross-fetch": "^4.0.2",
     "@d-fischer/qs": "^7.0.2",
     "@d-fischer/shared-utils": "^3.4.0",
-    "@twurple/common": "6.0.2",
+    "@twurple/common": "6.0.3",
     "@types/node-fetch": "^2.5.7",
     "tslib": "^2.0.3"
   },
