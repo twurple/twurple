@@ -554,6 +554,14 @@ export class ChatClient extends EventEmitter {
 	readonly onAuthenticationFailure: EventBinder<[text: string, retryCount: number]> = this.registerEvent();
 
 	/**
+	 * Fires when fetching a token fails.
+	 *
+	 * @eventListener
+	 * @param error The error that was thrown.
+	 */
+	readonly onTokenFetchFailure = this.registerEvent<[error: Error]>();
+
+	/**
 	 * Fires when sending a message fails.
 	 *
 	 * @eventListener
@@ -746,6 +754,11 @@ export class ChatClient extends EventEmitter {
 					})
 				);
 			}
+		});
+
+		this._ircClient.onPasswordError(e => {
+			this._chatLogger.error(`Error fetching a token for connecting to the server: ${e.message}`);
+			this.emit(this.onTokenFetchFailure, e);
 		});
 
 		this._ircClient.onPrivmsg((channel, user, text, msg) => {
