@@ -295,7 +295,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a stream going live.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to online events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToStreamOnlineEvents(
 		broadcaster: UserIdResolvable,
@@ -314,7 +314,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a stream going offline.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to online events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToStreamOfflineEvents(
 		broadcaster: UserIdResolvable,
@@ -333,7 +333,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a channel updating their metadata.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to update events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelUpdateEvents(
 		broadcaster: UserIdResolvable,
@@ -351,8 +351,11 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a user following a channel.
 	 *
-	 * @param broadcaster  The broadcaster you want to listen to follow events for.
-	 * @param transport The transport options
+	 * @deprecated This can not be used by clients that didn't have an active subscription on Feb 17th, 2023.
+	 * Use {@link HelixEventSubApi#subscribeToChannelFollowEventsV2} instead.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to follow events for.
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelFollowEvents(
 		broadcaster: UserIdResolvable,
@@ -368,10 +371,32 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a user following a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to follow events for.
+	 * @param moderator A user that has permission to read followers in the broadcaster's channel.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelFollowEventsV2(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		transport: HelixEventSubTransportOptions
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.follow',
+			'2',
+			createEventSubModeratorCondition(broadcaster, moderator),
+			transport,
+			moderator,
+			['moderator:read:followers']
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a user subscribing to a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to subscribe events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelSubscriptionEvents(
 		broadcaster: UserIdResolvable,
@@ -391,7 +416,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a user gifting another user a subscription to a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to subscription gift events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelSubscriptionGiftEvents(
 		broadcaster: UserIdResolvable,
@@ -411,7 +436,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a user's subscription to a channel being announced.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to subscription message events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelSubscriptionMessageEvents(
 		broadcaster: UserIdResolvable,
@@ -431,7 +456,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a user's subscription to a channel ending.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to subscription end events for.
-	 * @param transport The transport options
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelSubscriptionEndEvents(
 		broadcaster: UserIdResolvable,
@@ -471,7 +496,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a charity campaign starting in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
-	 * @param transport The transport option.
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelCharityCampaignStartEvents(
 		broadcaster: UserIdResolvable,
@@ -491,7 +516,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a charity campaign ending in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
-	 * @param transport The transport option.
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelCharityCampaignStopEvents(
 		broadcaster: UserIdResolvable,
@@ -511,7 +536,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a user donating to a charity campaign in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
-	 * @param transport The transport option.
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelCharityDonationEvents(
 		broadcaster: UserIdResolvable,
@@ -531,7 +556,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a charity campaign progressing in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to charity donation events for.
-	 * @param transport The transport option.
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelCharityCampaignProgressEvents(
 		broadcaster: UserIdResolvable,
@@ -551,7 +576,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a user being banned in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to ban events for.
-	 * @param transport The transport option.
+	 * @param transport The transport options.
 	 */
 	async subscribeToChannelBanEvents(
 		broadcaster: UserIdResolvable,
