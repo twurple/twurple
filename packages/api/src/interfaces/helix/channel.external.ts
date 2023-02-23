@@ -32,7 +32,7 @@ export interface HelixChannelReferenceData {
 }
 
 /** @private */
-export interface HelixChannelFollowedChannelData {
+export interface HelixFollowedChannelData {
 	broadcaster_id: string;
 	broadcaster_login: string;
 	broadcaster_name: string;

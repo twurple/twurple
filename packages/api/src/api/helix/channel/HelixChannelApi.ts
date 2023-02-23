@@ -11,7 +11,7 @@ import {
 	createChannelVipUpdateQuery,
 	type HelixChannelData,
 	type HelixChannelEditorData,
-	type HelixChannelFollowedChannelData,
+	type HelixFollowedChannelData,
 	type HelixChannelFollowerData
 } from '../../../interfaces/helix/channel.external';
 import { type HelixChannelUpdate } from '../../../interfaces/helix/channel.input';
@@ -32,7 +32,7 @@ import { createPaginationQuery } from '../HelixPagination';
 import { HelixUserRelation } from '../relations/HelixUserRelation';
 import { HelixChannel } from './HelixChannel';
 import { HelixChannelEditor } from './HelixChannelEditor';
-import { HelixChannelFollowedChannel } from './HelixChannelFollowedChannel';
+import { HelixFollowedChannel } from './HelixFollowedChannel';
 import { HelixChannelFollower } from './HelixChannelFollower';
 
 /**
@@ -248,7 +248,9 @@ export class HelixChannelApi extends BaseApi {
 	/**
 	 * Gets a list of users that follow the specified broadcaster. You can also use this endpoint to see whether a specific user follows the broadcaster.
 	 *
-	 * @param broadcaster The broadcaster that's getting a list of followers. This ID must match the user ID in the access token.
+	 * @param broadcaster The broadcaster that's getting a list of followers.
+	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
+	 * This user must match the user associated with the user OAuth token.
 	 * @param user An optional user to determine if this user follows the broadcaster.
 	 * If specified, the response contains this user if they follow the broadcaster.
 	 * If not specified, the response contains all users that follow the broadcaster.
@@ -258,6 +260,7 @@ export class HelixChannelApi extends BaseApi {
 	 */
 	async getChannelFollowers(
 		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
 		user?: UserIdResolvable,
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixChannelFollower>> {
@@ -265,7 +268,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/followers',
 			method: 'GET',
-			userId: extractUserId(broadcaster),
+			userId: extractUserId(moderator),
 			scopes: ['moderator:read:followers'],
 			query: {
 				...createChannelFollowerQuery(broadcaster, user),
@@ -290,8 +293,8 @@ export class HelixChannelApi extends BaseApi {
 		user: UserIdResolvable,
 		broadcaster?: UserIdResolvable,
 		pagination?: HelixForwardPagination
-	): Promise<HelixPaginatedResult<HelixChannelFollowedChannel>> {
-		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixChannelFollowedChannelData>>({
+	): Promise<HelixPaginatedResult<HelixFollowedChannel>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowedChannelData>>({
 			type: 'helix',
 			url: 'channels/followed',
 			method: 'GET',
@@ -303,6 +306,6 @@ export class HelixChannelApi extends BaseApi {
 			}
 		});
 
-		return createPaginatedResultWithTotal(result, HelixChannelFollowedChannel, this._client);
+		return createPaginatedResultWithTotal(result, HelixFollowedChannel, this._client);
 	}
 }

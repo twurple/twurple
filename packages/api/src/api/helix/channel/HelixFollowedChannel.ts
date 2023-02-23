@@ -1,18 +1,18 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { BaseApiClient } from '../../../client/BaseApiClient';
-import type { HelixChannelFollowedChannelData } from '../../../interfaces/helix/channel.external';
+import type { HelixFollowedChannelData } from '../../../interfaces/helix/channel.external';
 import type { HelixUser } from '../user/HelixUser';
 
 /**
  * Represents a broadcaster that a user follows.
  */
-@rtfm<HelixChannelFollowedChannel>('api', 'HelixChannelFollowedChannel', 'broadcasterId')
-export class HelixChannelFollowedChannel extends DataObject<HelixChannelFollowedChannelData> {
+@rtfm<HelixFollowedChannel>('api', 'HelixFollowedChannel', 'broadcasterId')
+export class HelixFollowedChannel extends DataObject<HelixFollowedChannelData> {
 	@Enumerable(false) private readonly _client: BaseApiClient;
 
 	/** @private */
-	constructor(data: HelixChannelFollowedChannelData, client: BaseApiClient) {
+	constructor(data: HelixFollowedChannelData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}
