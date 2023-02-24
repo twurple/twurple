@@ -52,6 +52,7 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 /**
  * @private
  * @hideProtected
+ * @inheritDoc
  */
 export abstract class EventSubHttpBase extends EventSubBase {
 	@Enumerable(false) private readonly _seenEventIds = new Set<string>();
