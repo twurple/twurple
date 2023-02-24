@@ -8,6 +8,7 @@ import { InvalidTokenTypeError } from '../errors/InvalidTokenTypeError';
 import { UnknownIntentError } from '../errors/UnknownIntentError';
 import { compareScopeSets, getAppToken, getTokenInfo, loadAndCompareTokenInfo, refreshUserToken } from '../helpers';
 import { TokenFetcher } from '../TokenFetcher';
+import { type TokenInfo } from '../TokenInfo';
 import { type AuthProvider } from './AuthProvider';
 
 type OnRefreshCallbackWithUserId = (userId: string, token: AccessToken) => void;
@@ -117,25 +118,55 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 *
 	 * Any intents that were already set before will be overwritten to point to this user instead.
 	 */
-	async addUserForToken(initialToken: MakeOptional<AccessToken, 'scope'>, intents?: string[]): Promise<string> {
-		const tokenInfo = await getTokenInfo(initialToken.accessToken);
-		const { userId } = tokenInfo;
-		if (!userId) {
+	async addUserForToken(
+		initialToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>,
+		intents?: string[]
+	): Promise<string> {
+		let tokenWithInfo: [MakeOptional<AccessToken, 'accessToken' | 'scope'>, TokenInfo] | null = null;
+		if (initialToken.accessToken && !accessTokenIsExpired(initialToken)) {
+			try {
+				const tokenInfo = await getTokenInfo(initialToken.accessToken);
+				tokenWithInfo = [initialToken, tokenInfo];
+			} catch (e) {
+				if (!(e instanceof InvalidTokenError)) {
+					throw e;
+				}
+			}
+		}
+
+		if (!tokenWithInfo) {
+			if (!initialToken.refreshToken) {
+				throw new InvalidTokenError();
+			}
+
+			const refreshedToken = await refreshUserToken(
+				this._clientId,
+				this._clientSecret,
+				initialToken.refreshToken
+			);
+			const tokenInfo = await getTokenInfo(refreshedToken.accessToken);
+			this._callOnRefresh(tokenInfo.userId!, refreshedToken);
+			tokenWithInfo = [refreshedToken, tokenInfo];
+		}
+
+		const [tokenToAdd, tokenInfo] = tokenWithInfo;
+
+		if (!tokenInfo.userId) {
 			throw new InvalidTokenTypeError(
 				'Could not determine a user ID for your token; you might be trying to disguise an app token as a user token.'
 			);
 		}
 
-		const token = initialToken.scope
-			? initialToken
+		const token = tokenToAdd.scope
+			? tokenToAdd
 			: {
-					...initialToken,
+					...tokenToAdd,
 					scope: tokenInfo.scopes
 			  };
 
-		this.addUser(userId, token, intents);
+		this.addUser(tokenInfo.userId, token, intents);
 
-		return userId;
+		return tokenInfo.userId;
 	}
 
 	/**
@@ -175,17 +206,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 			userId
 		});
 
-		if (this._onRefresh) {
-			if (this._onRefresh.length < 2) {
-				// eslint-disable-next-line no-console
-				console.warn(
-					'DEPRECATION WARNING: please update your onRefresh callback to take a user ID as first parameter'
-				);
-				(this._onRefresh as OnRefreshCallbackWithoutUserId)(tokenData);
-			} else {
-				(this._onRefresh as OnRefreshCallbackWithUserId)(userId, tokenData);
-			}
-		}
+		this._callOnRefresh(userId, tokenData);
 
 		return {
 			...tokenData,
@@ -309,6 +330,20 @@ export class RefreshingAuthProvider implements AuthProvider {
 			this._appAccessToken = undefined;
 		}
 		return await this._appTokenFetcher.fetch(this._appImpliedScopes);
+	}
+
+	private _callOnRefresh(userId: string, tokenData: AccessToken) {
+		if (this._onRefresh) {
+			if (this._onRefresh.length < 2) {
+				// eslint-disable-next-line no-console
+				console.warn(
+					'DEPRECATION WARNING: please update your onRefresh callback to take a user ID as first parameter'
+				);
+				(this._onRefresh as OnRefreshCallbackWithoutUserId)(tokenData);
+			} else {
+				(this._onRefresh as OnRefreshCallbackWithUserId)(userId, tokenData);
+			}
+		}
 	}
 
 	private async _fetchUserToken(userId: string, scopeSets: string[][]): Promise<AccessTokenWithUserId> {
