@@ -1,3 +1,4 @@
+import { mapOptional } from '@d-fischer/shared-utils';
 import { type CommercialLength, extractUserId, type UserIdResolvable } from '@twurple/common';
 import { type HelixChannelUpdate } from './channel.input';
 
@@ -31,6 +32,22 @@ export interface HelixChannelReferenceData {
 }
 
 /** @private */
+export interface HelixFollowedChannelData {
+	broadcaster_id: string;
+	broadcaster_login: string;
+	broadcaster_name: string;
+	followed_at: string;
+}
+
+/** @private */
+export interface HelixChannelFollowerData {
+	user_id: string;
+	user_login: string;
+	user_name: string;
+	followed_at: string;
+}
+
+/** @private */
 export function createChannelUpdateBody(data: HelixChannelUpdate) {
 	return {
 		game_id: data.gameId,
@@ -53,6 +70,22 @@ export function createChannelCommercialBody(broadcaster: UserIdResolvable, lengt
 export function createChannelVipUpdateQuery(broadcaster: UserIdResolvable, user: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
+		user_id: extractUserId(user)
+	};
+}
+
+/** @private */
+export function createChannelFollowerQuery(broadcaster: UserIdResolvable, user: UserIdResolvable | undefined) {
+	return {
+		broadcaster_id: extractUserId(broadcaster),
+		user_id: mapOptional(user, extractUserId)
+	};
+}
+
+/** @private */
+export function createChannelFollowedChannelQuery(broadcaster: UserIdResolvable | undefined, user: UserIdResolvable) {
+	return {
+		broadcaster_id: mapOptional(broadcaster, extractUserId),
 		user_id: extractUserId(user)
 	};
 }

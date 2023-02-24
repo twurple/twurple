@@ -1,14 +1,18 @@
 import { mapNullable } from '@d-fischer/shared-utils';
-import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
+import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { CommercialLength, UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import {
 	createChannelCommercialBody,
+	createChannelFollowedChannelQuery,
+	createChannelFollowerQuery,
 	createChannelUpdateBody,
 	createChannelVipUpdateQuery,
 	type HelixChannelData,
-	type HelixChannelEditorData
+	type HelixChannelEditorData,
+	type HelixFollowedChannelData,
+	type HelixChannelFollowerData
 } from '../../../interfaces/helix/channel.external';
 import { type HelixChannelUpdate } from '../../../interfaces/helix/channel.input';
 import {
@@ -18,13 +22,18 @@ import {
 } from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
-import type { HelixPaginatedResult } from '../HelixPaginatedResult';
-import { createPaginatedResult } from '../HelixPaginatedResult';
+import {
+	createPaginatedResult,
+	createPaginatedResultWithTotal,
+	type HelixPaginatedResult
+} from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { createPaginationQuery } from '../HelixPagination';
 import { HelixUserRelation } from '../relations/HelixUserRelation';
 import { HelixChannel } from './HelixChannel';
 import { HelixChannelEditor } from './HelixChannelEditor';
+import { HelixFollowedChannel } from './HelixFollowedChannel';
+import { HelixChannelFollower } from './HelixChannelFollower';
 
 /**
  * The Helix API methods that deal with channels.
@@ -234,5 +243,69 @@ export class HelixChannelApi extends BaseApi {
 			scopes: ['channel:manage:vips'],
 			query: createChannelVipUpdateQuery(broadcaster, user)
 		});
+	}
+
+	/**
+	 * Gets a list of users that follow the specified broadcaster. You can also use this endpoint to see whether a specific user follows the broadcaster.
+	 *
+	 * @param broadcaster The broadcaster for whom you are getting a list of followers.
+	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
+	 * This user must match the user associated with the user OAuth token.
+	 * @param user An optional user to determine if this user follows the broadcaster.
+	 * If specified, the response contains this user if they follow the broadcaster.
+	 * If not specified, the response contains all users that follow the broadcaster.
+	 * @param pagination
+	 *
+	 * @expandParams
+	 */
+	async getChannelFollowers(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		user?: UserIdResolvable,
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResult<HelixChannelFollower>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixChannelFollowerData>>({
+			type: 'helix',
+			url: 'channels/followers',
+			method: 'GET',
+			userId: extractUserId(moderator),
+			scopes: ['moderator:read:followers'],
+			query: {
+				...createChannelFollowerQuery(broadcaster, user),
+				...createPaginationQuery(pagination)
+			}
+		});
+
+		return createPaginatedResultWithTotal(result, HelixChannelFollower, this._client);
+	}
+
+	/**
+	 * Gets a list of broadcasters that the specified user follows. You can also use this endpoint to see whether the user follows a specific broadcaster.
+	 *
+	 * @param user The user that's getting a list of followed channels. This ID must match the user ID in the access token.
+	 * @param broadcaster An optional broadcaster to determine if the user follows this broadcaster.
+	 * If specified, the response contains this broadcaster if the user follows them.
+	 * If not specified, the response contains all broadcasters that the user follows.
+	 * @param pagination
+	 * @returns
+	 */
+	async getFollowedChannels(
+		user: UserIdResolvable,
+		broadcaster?: UserIdResolvable,
+		pagination?: HelixForwardPagination
+	): Promise<HelixPaginatedResult<HelixFollowedChannel>> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowedChannelData>>({
+			type: 'helix',
+			url: 'channels/followed',
+			method: 'GET',
+			userId: extractUserId(user),
+			scopes: ['user:read:follows'],
+			query: {
+				...createChannelFollowedChannelQuery(broadcaster, user),
+				...createPaginationQuery(pagination)
+			}
+		});
+
+		return createPaginatedResultWithTotal(result, HelixFollowedChannel, this._client);
 	}
 }
