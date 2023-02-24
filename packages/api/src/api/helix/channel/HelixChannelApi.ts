@@ -248,7 +248,7 @@ export class HelixChannelApi extends BaseApi {
 	/**
 	 * Gets a list of users that follow the specified broadcaster. You can also use this endpoint to see whether a specific user follows the broadcaster.
 	 *
-	 * @param broadcaster The broadcaster that's getting a list of followers.
+	 * @param broadcaster The broadcaster for whom you are getting a list of followers.
 	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
 	 * This user must match the user associated with the user OAuth token.
 	 * @param user An optional user to determine if this user follows the broadcaster.
