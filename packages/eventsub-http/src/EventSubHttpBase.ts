@@ -77,8 +77,8 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		if (!config.secret || config.secret === 'thisShouldBeARandomlyGeneratedFixedString') {
 			throw new Error('Please generate a secret and pass it to the constructor!');
 		}
-		if (config.secret.length > 100) {
-			throw new Error('Your secret can not be longer than 100 characters');
+		if (config.secret.length < 10 || config.secret.length > 100) {
+			throw new Error('Your secret must be between 10 and 100 characters long');
 		}
 		super(config);
 		this._secret = config.secret;

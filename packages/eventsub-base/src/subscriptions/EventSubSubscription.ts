@@ -117,7 +117,11 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 				this._twitchSubscriptionData = data;
 				this._client._registerTwitchSubscription(this as EventSubSubscription, data);
 			},
-			e => this._client._notifySubscriptionCreateError(this as EventSubSubscription, e)
+			e => {
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				this._client._logger.error(`Subscription ${this.id} failed to subscribe: ${(e as Error).message ?? e}`);
+				this._client._notifySubscriptionCreateError(this as EventSubSubscription, e);
+			}
 		);
 	}
 
