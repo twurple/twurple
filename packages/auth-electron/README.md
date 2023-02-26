@@ -30,8 +30,8 @@ const clientId = 'abc123';
 const redirectUri = 'http://foo.bar/login';
 
 const authProvider = new ElectronAuthProvider({
-    clientId,
-    redirectUri
+	clientId,
+	redirectUri
 });
 
 const client = new ApiClient({

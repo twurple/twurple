@@ -35,6 +35,14 @@ export interface EventSubHttpListenerConfig extends EventSubHttpBaseConfig {
 /**
  * An HTTP listener for the Twitch EventSub event distribution mechanism.
  *
+ * :::warning{title="Where are the event methods?"}
+ *
+ * Currently, there is a problem with the documentation generator.
+ *
+ * The event methods documented at {@link EventSubListener} are also in this class.
+ *
+ * :::
+ *
  * @hideProtected
  * @inheritDoc
  *

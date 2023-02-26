@@ -15,8 +15,8 @@ const clientId = 'YOUR_CLIENT_ID';
 const redirectUri = 'http://foo.bar/login';
 
 const authProvider = new ElectronAuthProvider({
-    clientId,
-    redirectUri
+	clientId,
+	redirectUri
 });
 ```
 

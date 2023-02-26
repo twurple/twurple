@@ -33,6 +33,14 @@ export interface EventSubMiddlewareConfig extends EventSubHttpBaseConfig {
  *
  * You can find an extensive example on how to use this class in the [documentation](/docs/getting-data/eventsub/express).
  *
+ * :::warning{title="Where are the event methods?"}
+ *
+ * Currently, there is a problem with the documentation generator.
+ *
+ * The event methods documented at {@link EventSubListener} are also in this class.
+ *
+ * :::
+ *
  * @hideProtected
  * @inheritDoc
  *

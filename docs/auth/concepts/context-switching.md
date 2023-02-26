@@ -23,10 +23,12 @@ You can override this behavior using the {@link ApiClient#asUser} method:
 ```ts
 // ctx will have the same methods as a regular ApiClient, so you can use any of its methods
 const badgeNames = await apiClient.asUser(userId, async ctx => {
-    // would normally get called using an app access token, but is overridden to use the given user token
-    const badges = await ctx.chat.getGlobalBadges();
+	// would normally get called using an app access token, but is overridden to use the given user token
+	const badges = await ctx.chat.getGlobalBadges();
 
 	// return value is available as the return value of `asUser` (so this will carry over to `badgeNames`)
 	return badges.map(badge => badge.id);
 });
 ```
+
+Alternatively, you can use [intents](/docs/auth/concepts/intents) using the {@link ApiClient#asIntent} method.

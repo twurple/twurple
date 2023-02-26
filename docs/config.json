@@ -86,6 +86,11 @@
 							"name": "calling-api",
 							"title": "Calling the Twitch API",
 							"file": "getting-data/api/calling-api.md"
+						},
+						{
+							"name": "choosing-user",
+							"title": "Choosing the correct user",
+							"file": "getting-data/api/choosing-user.md"
 						}
 					]
 				},

@@ -22,17 +22,17 @@ declare const app: any;
 declare const apiClient: ApiClient;
 // ---cut---
 const middleware = new EventSubMiddleware({
-  apiClient,
-  hostName: 'example.com',
-  pathPrefix: '/twitch',
-  secret: 'secretHere'
+	apiClient,
+	hostName: 'example.com',
+	pathPrefix: '/twitch',
+	secret: 'secretHere'
 });
 
 middleware.apply(app);
 app.listen(3000, async () => {
-  await middleware.markAsReady();
-  middleware.onChannelFollow('125328655', event => {
-    console.log(`${event.userDisplayName} just followed ${event.broadcasterDisplayName}!`);
-  });
+	await middleware.markAsReady();
+	middleware.onChannelFollow('125328655', event => {
+		console.log(`${event.userDisplayName} just followed ${event.broadcasterDisplayName}!`);
+	});
 });
 ```

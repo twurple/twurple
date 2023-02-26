@@ -17,18 +17,18 @@ declare const chatClient: ChatClient;
 const giftCounts = new Map<string | undefined, number>();
 
 chatClient.onCommunitySub((channel, user, subInfo) => {
-  const previousGiftCount = giftCounts.get(user) ?? 0;
-  giftCounts.set(user, previousGiftCount + subInfo.count);
-  chatClient.say(channel, `Thanks ${user} for gifting ${subInfo.count} subs to the community!`);
+	const previousGiftCount = giftCounts.get(user) ?? 0;
+	giftCounts.set(user, previousGiftCount + subInfo.count);
+	chatClient.say(channel, `Thanks ${user} for gifting ${subInfo.count} subs to the community!`);
 });
 
 chatClient.onSubGift((channel, recipient, subInfo) => {
-  const user = subInfo.gifter;
-  const previousGiftCount = giftCounts.get(user) ?? 0;
-  if (previousGiftCount > 0) {
-    giftCounts.set(user, previousGiftCount - 1);
-  } else {
-    chatClient.say(channel, `Thanks ${user} for gifting a sub to ${recipient}!`);
-  }
+	const user = subInfo.gifter;
+	const previousGiftCount = giftCounts.get(user) ?? 0;
+	if (previousGiftCount > 0) {
+		giftCounts.set(user, previousGiftCount - 1);
+	} else {
+		chatClient.say(channel, `Thanks ${user} for gifting a sub to ${recipient}!`);
+	}
 });
 ```
