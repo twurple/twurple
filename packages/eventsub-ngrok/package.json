@@ -33,7 +33,6 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/portfinder": "^1.0.28",
     "@d-fischer/shared-utils": "^3.4.0",
     "ngrok": "^4.2.2",
     "tslib": "^2.0.3"
