@@ -154,8 +154,11 @@ export class BaseApiClient {
 			return await this._callApiUsingInitialToken(options, accessToken);
 		}
 
-		const contextUserId = this._getUserIdFromRequestContext(options) ?? options.userId;
-		const accessToken = await authProvider.getAnyAccessToken(contextUserId);
+		const requestContextUserId = this._getUserIdFromRequestContext(options);
+		const accessToken =
+			requestContextUserId === null
+				? await authProvider.getAnyAccessToken()
+				: await authProvider.getAnyAccessToken(requestContextUserId ?? options.userId);
 
 		if (accessTokenIsExpired(accessToken) && accessToken.userId && authProvider.refreshAccessTokenForUser) {
 			const newAccessToken = await authProvider.refreshAccessTokenForUser(accessToken.userId);
@@ -373,7 +376,8 @@ export class BaseApiClient {
 		return this._config.authProvider;
 	}
 
-	protected _getUserIdFromRequestContext(options: ContextApiCallOptions): string | undefined {
+	// null means app access, undefined means none specified
+	protected _getUserIdFromRequestContext(options: ContextApiCallOptions): string | null | undefined {
 		return options.userId;
 	}
 

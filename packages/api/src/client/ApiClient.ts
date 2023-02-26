@@ -8,6 +8,7 @@ import { HelixRateLimiter } from '../api/helix/HelixRateLimiter';
 import { ConfigError } from '../errors/ConfigError';
 import { BaseApiClient } from './BaseApiClient';
 import { type ContextApiCallOptions } from './ContextApiCallOptions';
+import { NoContextApiClient } from './NoContextApiClient';
 import { UserContextApiClient } from './UserContextApiClient';
 
 /**
@@ -135,5 +136,27 @@ export class ApiClient extends BaseApiClient {
 		}
 
 		throw new Error(`Intents [${intents.join(', ')}] not found in auth provider`);
+	}
+
+	/**
+	 * Creates a contextualized ApiClient that can be used to call the API without the context of any user.
+	 *
+	 * This usually means that an app access token is used.
+	 *
+	 * @beta
+	 *
+	 * @param runner The callback to execute.
+	 *
+	 * A parameter is passed that should be used in place of the normal `ApiClient`
+	 * to ensure that all requests are executed without user context.
+	 *
+	 * Please note that requests which require scope authorization ignore this context erasure.
+	 *
+	 * The return value of your callback will be propagated to the return value of this method.
+	 */
+	async withoutUser<T>(runner: (ctx: BaseApiClient) => Promise<T>): Promise<T> {
+		const ctx = new NoContextApiClient(this._config, this._logger, this._rateLimiter);
+
+		return await runner(ctx);
 	}
 }
