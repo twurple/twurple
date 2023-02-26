@@ -7,7 +7,7 @@ import { TokenFetcher } from '../TokenFetcher';
 import { type AuthProvider } from './AuthProvider';
 
 /**
- * An auth provider that retrieve tokens using client credentials.
+ * An auth provider that gets tokens using client credentials.
  */
 @rtfm<AppTokenAuthProvider>('auth', 'AppTokenAuthProvider', 'clientId')
 export class AppTokenAuthProvider implements AuthProvider {

@@ -52,7 +52,7 @@ export class EventSubExtensionBitsTransactionCreateEvent extends DataObject<Even
 	}
 
 	/**
-	 * Retrieves more information about the subscribing user.
+	 * Gets more information about the subscribing user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
@@ -80,7 +80,7 @@ export class EventSubExtensionBitsTransactionCreateEvent extends DataObject<Even
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));

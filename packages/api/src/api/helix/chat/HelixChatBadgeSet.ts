@@ -25,7 +25,7 @@ export class HelixChatBadgeSet extends DataObject<HelixChatBadgeSetData> {
 	}
 
 	/**
-	 * Retrieves a specific version of the badge.
+	 * Gets a specific version of the badge.
 	 *
 	 * @param versionId The ID of the version.
 	 */

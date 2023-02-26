@@ -41,7 +41,7 @@ export class EventSubChannelSubscriptionEndEvent extends DataObject<EventSubChan
 	}
 
 	/**
-	 * Retrieves more information about the user whose subscription is ending.
+	 * Gets more information about the user whose subscription is ending.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
@@ -69,7 +69,7 @@ export class EventSubChannelSubscriptionEndEvent extends DataObject<EventSubChan
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));

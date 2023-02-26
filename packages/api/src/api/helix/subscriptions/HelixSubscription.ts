@@ -34,7 +34,7 @@ export class HelixSubscription extends HelixUserSubscription {
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
@@ -62,7 +62,7 @@ export class HelixSubscription extends HelixUserSubscription {
 	}
 
 	/**
-	 * Retrieves more information about the gifter.
+	 * Gets more information about the gifter.
 	 */
 	async getGifter(): Promise<HelixUser | null> {
 		return this[rawDataSymbol].is_gift
@@ -92,7 +92,7 @@ export class HelixSubscription extends HelixUserSubscription {
 	}
 
 	/**
-	 * Retrieves more information about the subscribed user.
+	 * Gets more information about the subscribed user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

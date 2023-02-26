@@ -43,7 +43,7 @@ import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
 @rtfm('api', 'HelixStreamApi')
 export class HelixStreamApi extends BaseApi {
 	/**
-	 * Retrieves a list of streams.
+	 * Gets a list of streams.
 	 *
 	 * @param filter
 	 * @expandParams
@@ -79,9 +79,9 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current streams for the given usernames.
+	 * Gets the current streams for the given usernames.
 	 *
-	 * @param users The username to retrieve the streams for.
+	 * @param users The username to get the streams for.
 	 */
 	async getStreamsByUserNames(users: UserNameResolvable[]): Promise<HelixStream[]> {
 		const result = await this.getStreams({ userName: users.map(extractUserName) });
@@ -90,9 +90,9 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current stream for the given username.
+	 * Gets the current stream for the given username.
 	 *
-	 * @param user The username to retrieve the stream for.
+	 * @param user The username to get the stream for.
 	 */
 	async getStreamByUserName(user: UserNameResolvable): Promise<HelixStream | null> {
 		const result = await this.getStreamsByUserNames([user]);
@@ -101,9 +101,9 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current streams for the given user IDs.
+	 * Gets the current streams for the given user IDs.
 	 *
-	 * @param users The user IDs to retrieve the streams for.
+	 * @param users The user IDs to get the streams for.
 	 */
 	async getStreamsByUserIds(users: UserIdResolvable[]): Promise<HelixStream[]> {
 		const result = await this.getStreams({ userId: users.map(extractUserId) });
@@ -112,9 +112,9 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current stream for the given user ID.
+	 * Gets the current stream for the given user ID.
 	 *
-	 * @param user The user ID to retrieve the stream for.
+	 * @param user The user ID to get the stream for.
 	 */
 	async getStreamByUserId(user: UserIdResolvable): Promise<HelixStream | null> {
 		const userId = extractUserId(user);
@@ -129,7 +129,7 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of all stream markers for a user.
+	 * Gets a list of all stream markers for a user.
 	 *
 	 * @param user The user to list the stream markers for.
 	 * @param pagination
@@ -180,7 +180,7 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of all stream markers for a video.
+	 * Gets a list of all stream markers for a video.
 	 *
 	 * @param user The user the video belongs to.
 	 * @param videoId The video to list the stream markers for.
@@ -265,9 +265,9 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the stream key of a stream.
+	 * Gets the stream key of a stream.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the stream key for.
+	 * @param broadcaster The broadcaster to get the stream key for.
 	 */
 	async getStreamKey(broadcaster: UserIdResolvable): Promise<string> {
 		const result = await this._client.callApi<HelixResponse<HelixGetStreamKeyData>>({
@@ -281,7 +281,7 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the streams that are currently live and are followed by the given user.
+	 * Gets the streams that are currently live and are followed by the given user.
 	 *
 	 * @param user The user to check followed streams for.
 	 * @param pagination

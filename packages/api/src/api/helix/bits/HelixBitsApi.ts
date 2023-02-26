@@ -30,9 +30,9 @@ import { HelixCheermoteList } from './HelixCheermoteList';
 @rtfm('api', 'HelixBitsApi')
 export class HelixBitsApi extends BaseApi {
 	/**
-	 * Retrieves a bits leaderboard of your channel.
+	 * Gets a bits leaderboard of your channel.
 	 *
-	 * @param broadcaster The user to retrieve the leaderboard of.
+	 * @param broadcaster The user to get the leaderboard of.
 	 * @param params
 	 * @expandParams
 	 */
@@ -52,11 +52,11 @@ export class HelixBitsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves all available cheermotes.
+	 * Gets all available cheermotes.
 	 *
 	 * @param broadcaster The broadcaster to include custom cheermotes of.
 	 *
-	 * If not given, only retrieves global cheermotes.
+	 * If not given, only get global cheermotes.
 	 */
 	async getCheermotes(broadcaster?: UserIdResolvable): Promise<HelixCheermoteList> {
 		const result = await this._client.callApi<HelixResponse<HelixCheermoteData>>({

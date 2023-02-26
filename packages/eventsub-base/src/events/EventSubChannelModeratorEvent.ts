@@ -38,7 +38,7 @@ export class EventSubChannelModeratorEvent extends DataObject<EventSubChannelMod
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
@@ -66,7 +66,7 @@ export class EventSubChannelModeratorEvent extends DataObject<EventSubChannelMod
 	}
 
 	/**
-	 * Retrieves more information about the user.
+	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

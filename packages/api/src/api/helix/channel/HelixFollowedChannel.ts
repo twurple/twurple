@@ -39,7 +39,7 @@ export class HelixFollowedChannel extends DataObject<HelixFollowedChannelData> {
 	}
 
 	/**
-	 * Retrieves additional information about the broadcaster.
+	 * Gets additional information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));

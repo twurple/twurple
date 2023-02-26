@@ -37,7 +37,7 @@ export class EventSubChannelHypeTrainContribution extends DataObject<EventSubCha
 	}
 
 	/**
-	 * Retrieves more information about the contributor.
+	 * Gets more information about the contributor.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

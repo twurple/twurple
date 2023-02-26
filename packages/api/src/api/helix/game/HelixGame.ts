@@ -62,7 +62,7 @@ export class HelixGame extends DataObject<HelixGameData> {
 	}
 
 	/**
-	 * Retrieves streams that are currently playing the game.
+	 * Gets streams that are currently playing the game.
 	 *
 	 * @param pagination
 	 * @expandParams

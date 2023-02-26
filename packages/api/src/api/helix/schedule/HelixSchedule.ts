@@ -47,7 +47,7 @@ export class HelixSchedule extends DataObject<HelixScheduleData> {
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));

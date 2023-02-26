@@ -45,10 +45,10 @@ import { HelixCustomRewardRedemption } from './HelixCustomRewardRedemption';
 @rtfm('api', 'HelixChannelPointsApi')
 export class HelixChannelPointsApi extends BaseApi {
 	/**
-	 * Retrieves all custom rewards for the given broadcaster.
+	 * Gets all custom rewards for the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the rewards for.
-	 * @param onlyManageable Whether to only retrieve rewards that can be managed by the API.
+	 * @param broadcaster The broadcaster to get the rewards for.
+	 * @param onlyManageable Whether to only get rewards that can be managed by the API.
 	 */
 	async getCustomRewards(broadcaster: UserIdResolvable, onlyManageable?: boolean): Promise<HelixCustomReward[]> {
 		const result = await this._client.callApi<HelixResponse<HelixCustomRewardData>>({
@@ -63,9 +63,9 @@ export class HelixChannelPointsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves custom rewards by IDs.
+	 * Gets custom rewards by IDs.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the rewards for.
+	 * @param broadcaster The broadcaster to get the rewards for.
 	 * @param rewardIds The IDs of the rewards.
 	 */
 	async getCustomRewardsByIds(broadcaster: UserIdResolvable, rewardIds: string[]): Promise<HelixCustomReward[]> {
@@ -84,9 +84,9 @@ export class HelixChannelPointsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a custom reward by ID.
+	 * Gets a custom reward by ID.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the reward for.
+	 * @param broadcaster The broadcaster to get the reward for.
 	 * @param rewardId The ID of the reward.
 	 */
 	async getCustomRewardById(broadcaster: UserIdResolvable, rewardId: string): Promise<HelixCustomReward | null> {
@@ -162,9 +162,9 @@ export class HelixChannelPointsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves custom reward redemptions by IDs.
+	 * Gets custom reward redemptions by IDs.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the redemptions for.
+	 * @param broadcaster The broadcaster to get the redemptions for.
 	 * @param rewardId The ID of the reward.
 	 * @param redemptionIds The IDs of the redemptions.
 	 */
@@ -188,9 +188,9 @@ export class HelixChannelPointsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a custom reward redemption by ID.
+	 * Gets a custom reward redemption by ID.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the redemption for.
+	 * @param broadcaster The broadcaster to get the redemption for.
 	 * @param rewardId The ID of the reward.
 	 * @param redemptionId The ID of the redemption.
 	 */
@@ -204,11 +204,11 @@ export class HelixChannelPointsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves custom reward redemptions for the given broadcaster.
+	 * Gets custom reward redemptions for the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the redemptions for.
+	 * @param broadcaster The broadcaster to get the redemptions for.
 	 * @param rewardId The ID of the reward.
-	 * @param status The status of the redemptions to retrieve.
+	 * @param status The status of the redemptions to get.
 	 * @param filter
 	 *
 	 * @expandParams
@@ -236,9 +236,9 @@ export class HelixChannelPointsApi extends BaseApi {
 	/**
 	 * Creates a paginator for custom reward redemptions for the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the redemptions for.
+	 * @param broadcaster The broadcaster to get the redemptions for.
 	 * @param rewardId The ID of the reward.
-	 * @param status The status of the redemptions to retrieve.
+	 * @param status The status of the redemptions to get.
 	 * @param filter
 	 *
 	 * @expandParams
@@ -265,7 +265,7 @@ export class HelixChannelPointsApi extends BaseApi {
 	/**
 	 * Updates the status of the given redemptions by IDs.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the redemptions for.
+	 * @param broadcaster The broadcaster to update the redemptions for.
 	 * @param rewardId The ID of the reward.
 	 * @param redemptionIds The IDs of the redemptions to update.
 	 * @param status The status to set for the redemptions.

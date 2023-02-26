@@ -51,7 +51,7 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
@@ -79,7 +79,7 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	}
 
 	/**
-	 * Retrieves more information about the user.
+	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
@@ -130,7 +130,7 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	}
 
 	/**
-	 * Retrieves more info about the reward that was redeemed.
+	 * Gets more info about the reward that was redeemed.
 	 */
 	async getReward(): Promise<HelixCustomReward> {
 		return checkRelationAssertion(

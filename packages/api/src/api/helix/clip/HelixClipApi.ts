@@ -38,7 +38,7 @@ import { HelixClip } from './HelixClip';
 @rtfm('api', 'HelixClipApi')
 export class HelixClipApi extends BaseApi {
 	/**
-	 * Retrieves clips for the specified broadcaster in descending order of views.
+	 * Gets clips for the specified broadcaster in descending order of views.
 	 *
 	 * @param broadcaster The broadcaster to fetch clips for.
 	 * @param filter
@@ -78,7 +78,7 @@ export class HelixClipApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves clips for the specified game in descending order of views.
+	 * Gets clips for the specified game in descending order of views.
 	 *
 	 * @param gameId The game ID.
 	 * @param filter
@@ -116,7 +116,7 @@ export class HelixClipApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the clips identified by the given IDs.
+	 * Gets the clips identified by the given IDs.
 	 *
 	 * @param ids The clip IDs.
 	 */
@@ -130,7 +130,7 @@ export class HelixClipApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the clip identified by the given ID.
+	 * Gets the clip identified by the given ID.
 	 *
 	 * @param id The clip ID.
 	 */

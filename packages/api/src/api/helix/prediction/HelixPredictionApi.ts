@@ -35,9 +35,9 @@ import { HelixPrediction } from './HelixPrediction';
 @rtfm('api', 'HelixPredictionApi')
 export class HelixPredictionApi extends BaseApi {
 	/**
-	 * Retrieves a list of predictions for the given broadcaster.
+	 * Gets a list of predictions for the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve predictions for.
+	 * @param broadcaster The broadcaster to get predictions for.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -63,7 +63,7 @@ export class HelixPredictionApi extends BaseApi {
 	/**
 	 * Creates a paginator for predictions for the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve predictions for.
+	 * @param broadcaster The broadcaster to get predictions for.
 	 */
 	getPredictionsPaginated(
 		broadcaster: UserIdResolvable
@@ -82,9 +82,9 @@ export class HelixPredictionApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves predictions by IDs.
+	 * Gets predictions by IDs.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the predictions for.
+	 * @param broadcaster The broadcaster to get the predictions for.
 	 * @param ids The IDs of the predictions.
 	 */
 	async getPredictionsByIds(broadcaster: UserIdResolvable, ids: string[]): Promise<HelixPrediction[]> {
@@ -104,9 +104,9 @@ export class HelixPredictionApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a prediction by ID.
+	 * Gets a prediction by ID.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the prediction for.
+	 * @param broadcaster The broadcaster to get the prediction for.
 	 * @param id The ID of the prediction.
 	 */
 	async getPredictionById(broadcaster: UserIdResolvable, id: string): Promise<HelixPrediction | null> {

@@ -26,7 +26,7 @@ function createAccessTokenFromData(data: AccessTokenData): AccessToken {
 }
 
 /**
- * Retrieves an access token with your client credentials and an authorization code.
+ * Gets an access token with your client credentials and an authorization code.
  *
  * @param clientId The client ID of your application.
  * @param clientSecret The client secret of your application.
@@ -52,7 +52,7 @@ export async function exchangeCode(
 }
 
 /**
- * Retrieves an app access token with your client credentials.
+ * Gets an app access token with your client credentials.
  *
  * @param clientId The client ID of your application.
  * @param clientSecret The client secret of your application.
@@ -106,7 +106,7 @@ export async function revokeToken(clientId: string, accessToken: string): Promis
 }
 
 /**
- * Retrieves information about an access token.
+ * Gets information about an access token.
  *
  * @param accessToken The access token to get the information of.
  * @param clientId The client ID of your application.

@@ -53,7 +53,7 @@ import { HelixFollowedChannel } from './HelixFollowedChannel';
 @rtfm('api', 'HelixChannelApi')
 export class HelixChannelApi extends BaseApi {
 	/**
-	 * Retrieves the channel data for the given user.
+	 * Gets the channel data for the given user.
 	 *
 	 * @param user The user you want to get channel info for.
 	 */
@@ -70,7 +70,7 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the channel data for the given users.
+	 * Gets the channel data for the given users.
 	 *
 	 * @param users The users you want to get channel info for.
 	 */
@@ -121,7 +121,7 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of users who have editor permissions on your channel.
+	 * Gets a list of users who have editor permissions on your channel.
 	 *
 	 * @param broadcaster The broadcaster to retreive the editors for.
 	 */
@@ -138,7 +138,7 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of VIPs in a channel.
+	 * Gets a list of VIPs in a channel.
 	 *
 	 * @param broadcaster The owner of the channel to get VIPs for.
 	 * @param pagination

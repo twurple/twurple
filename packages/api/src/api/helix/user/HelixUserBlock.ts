@@ -39,7 +39,7 @@ export class HelixUserBlock extends DataObject<HelixUserBlockData> {
 	}
 
 	/**
-	 * Retrieves additional information about the blocked user.
+	 * Gets additional information about the blocked user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

@@ -55,7 +55,7 @@ export class HelixEmoteFromSet extends HelixEmote {
 	}
 
 	/**
-	 * Retrieves more info about the user that owns the emote, or null if the emote is not owned by a user.
+	 * Gets more info about the user that owns the emote, or null if the emote is not owned by a user.
 	 */
 	async getOwner(): Promise<HelixUser | null> {
 		switch (this[rawDataSymbol].owner_id) {

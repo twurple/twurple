@@ -41,7 +41,7 @@ export class EventSubChannelSubscriptionGiftEvent extends DataObject<EventSubCha
 	}
 
 	/**
-	 * Retrieves more information about the gifting user.
+	 * Gets more information about the gifting user.
 	 */
 	async getGifter(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
@@ -69,7 +69,7 @@ export class EventSubChannelSubscriptionGiftEvent extends DataObject<EventSubCha
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));

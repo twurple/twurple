@@ -38,7 +38,7 @@ export class EventSubUserAuthorizationGrantEvent extends DataObject<EventSubUser
 	}
 
 	/**
-	 * Retrieves more information about the user.
+	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

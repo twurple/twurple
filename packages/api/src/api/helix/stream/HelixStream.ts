@@ -47,7 +47,7 @@ export class HelixStream extends DataObject<HelixStreamData> {
 	}
 
 	/**
-	 * Retrieves information about the user broadcasting the stream.
+	 * Gets information about the user broadcasting the stream.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
@@ -68,7 +68,7 @@ export class HelixStream extends DataObject<HelixStreamData> {
 	}
 
 	/**
-	 * Retrieves information about the game that is being played on the stream.
+	 * Gets information about the game that is being played on the stream.
 	 *
 	 * Returns null if the stream doesn't currently have a game.
 	 */

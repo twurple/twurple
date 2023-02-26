@@ -55,7 +55,7 @@ export type TwitchBotLevel = 'none' | 'known' | 'verified';
  */
 export interface ChatClientOptions {
 	/**
-	 * The authentication provider to use for retrieving the chat credentials.
+	 * The authentication provider to use for getting the chat credentials.
 	 *
 	 * If you don't pass this, the chat client will connect anonymously.
 	 */

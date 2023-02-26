@@ -24,9 +24,9 @@ import { HelixTeamWithUsers } from './HelixTeamWithUsers';
 @rtfm('api', 'HelixTeamApi')
 export class HelixTeamApi extends BaseApi {
 	/**
-	 * Retrieves a list of all teams a broadcaster is a member of.
+	 * Gets a list of all teams a broadcaster is a member of.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the teams of.
+	 * @param broadcaster The broadcaster to get the teams of.
 	 */
 	async getTeamsForBroadcaster(broadcaster: UserIdResolvable): Promise<HelixTeam[]> {
 		const result = await this._client.callApi<Partial<HelixResponse<HelixTeamData>>>({
@@ -40,7 +40,7 @@ export class HelixTeamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a team by ID.
+	 * Gets a team by ID.
 	 *
 	 * Returns null if there is no team with the given ID.
 	 *
@@ -67,7 +67,7 @@ export class HelixTeamApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a team by name.
+	 * Gets a team by name.
 	 *
 	 * Returns null if there is no team with the given name.
 	 *

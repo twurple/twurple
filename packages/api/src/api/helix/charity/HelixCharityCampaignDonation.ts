@@ -47,7 +47,7 @@ export class HelixCharityCampaignDonation extends DataObject<HelixCharityCampaig
 	}
 
 	/**
-	 * Retrieves more information about the donating user.
+	 * Gets more information about the donating user.
 	 */
 	async getDonor(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

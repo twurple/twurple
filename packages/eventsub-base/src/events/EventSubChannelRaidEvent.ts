@@ -38,7 +38,7 @@ export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEven
 	}
 
 	/**
-	 * Retrieves more information about the raiding broadcaster.
+	 * Gets more information about the raiding broadcaster.
 	 */
 	async getRaidingBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(
@@ -68,7 +68,7 @@ export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEven
 	}
 
 	/**
-	 * Retrieves more information about the raided broadcaster.
+	 * Gets more information about the raided broadcaster.
 	 */
 	async getRaidedBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].to_broadcaster_user_id));

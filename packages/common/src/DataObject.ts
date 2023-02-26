@@ -4,9 +4,9 @@ import { klona } from 'klona';
 export const rawDataSymbol: unique symbol = Symbol('twurpleRawData');
 
 /**
- * Retrieves the raw data of a data object.
+ * Gets the raw data of a data object.
  *
- * @param obj The data object to retrieve the raw data of.
+ * @param obj The data object to get the raw data of.
  */
 export function getRawData<DataType>(obj: DataObject<DataType>): DataType {
 	return klona(obj[rawDataSymbol]);

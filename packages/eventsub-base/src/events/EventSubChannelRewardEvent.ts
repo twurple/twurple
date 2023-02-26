@@ -48,7 +48,7 @@ export class EventSubChannelRewardEvent extends DataObject<EventSubChannelReward
 	}
 
 	/**
-	 * Retrieves more information about the reward's broadcaster.
+	 * Gets more information about the reward's broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));

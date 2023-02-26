@@ -42,7 +42,7 @@ export class EventSubUserAuthorizationRevokeEvent extends DataObject<EventSubUse
 	}
 
 	/**
-	 * Retrieves more information about the user.
+	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
 		if (this[rawDataSymbol].user_login == null) {

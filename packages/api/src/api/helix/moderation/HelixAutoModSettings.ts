@@ -7,7 +7,7 @@ import { type HelixAutoModSettingsData } from '../../../interfaces/helix/moderat
 @rtfm<HelixAutoModSettings>('api', 'HelixAutoModSettings', 'broadcasterId')
 export class HelixAutoModSettings extends DataObject<HelixAutoModSettingsData> {
 	/**
-	 * The ID of the broadcaster for which the AutoMod settings are retrieved.
+	 * The ID of the broadcaster for which the AutoMod settings were fetched.
 	 */
 	get broadcasterId(): string {
 		return this[rawDataSymbol].broadcaster_id;

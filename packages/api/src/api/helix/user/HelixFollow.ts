@@ -39,7 +39,7 @@ export class HelixFollow extends DataObject<HelixFollowData> {
 	}
 
 	/**
-	 * Retrieves the data of the following user.
+	 * Gets the data of the following user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].from_id));
@@ -67,7 +67,7 @@ export class HelixFollow extends DataObject<HelixFollowData> {
 	}
 
 	/**
-	 * Retrieves the data of the followed broadcaster.
+	 * Gets the data of the followed broadcaster.
 	 */
 	async getFollowedUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].to_id));

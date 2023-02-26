@@ -65,7 +65,7 @@ export class HelixHypeTrainEvent extends DataObject<HelixEventData<HelixHypeTrai
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster where the Hype Train event was triggered.
+	 * Gets more information about the broadcaster where the Hype Train event was triggered.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(

@@ -35,7 +35,7 @@ import { HelixUserSubscription } from './HelixUserSubscription';
 @rtfm('api', 'HelixSubscriptionApi')
 export class HelixSubscriptionApi extends BaseApi {
 	/**
-	 * Retrieves a list of all subscriptions to a given broadcaster.
+	 * Gets a list of all subscriptions to a given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to list subscriptions to.
 	 * @param pagination
@@ -73,7 +73,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the subset of the given user list that is subscribed to the given broadcaster.
+	 * Gets the subset of the given user list that is subscribed to the given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to find subscriptions to.
 	 * @param users The users that should be checked for subscriptions.
@@ -94,7 +94,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the subscription data for a given user to a given broadcaster.
+	 * Gets the subscription data for a given user to a given broadcaster.
 	 *
 	 * This checks with the authorization of a broadcaster.
 	 * If you only have the authorization of a user, check {@link HelixSubscriptionApi#checkUserSubscription}}.

@@ -67,7 +67,7 @@ export class HelixScheduleSegment extends DataObject<HelixScheduleSegmentData> {
 	}
 
 	/**
-	 * Retrieves more information about the category the segment is scheduled for, or null if no category is specified.
+	 * Gets more information about the category the segment is scheduled for, or null if no category is specified.
 	 */
 	async getCategory(): Promise<HelixGame | null> {
 		const categoryId = this[rawDataSymbol].category?.id;

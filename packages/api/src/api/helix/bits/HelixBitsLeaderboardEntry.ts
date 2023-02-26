@@ -53,7 +53,7 @@ export class HelixBitsLeaderboardEntry extends DataObject<HelixBitsLeaderboardEn
 	}
 
 	/**
-	 * Retrieves the user of entry on the leaderboard.
+	 * Gets the user of entry on the leaderboard.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

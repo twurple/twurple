@@ -35,7 +35,7 @@ export class HelixPaginatedEventSubSubscriptionsRequest extends HelixPaginatedRe
 	}
 
 	/**
-	 * Retrieves and returns the total cost of EventSub subscriptions.
+	 * Gets the total cost of EventSub subscriptions.
 	 */
 	async getTotalCost(): Promise<number> {
 		const data =
@@ -45,7 +45,7 @@ export class HelixPaginatedEventSubSubscriptionsRequest extends HelixPaginatedRe
 	}
 
 	/**
-	 * Retrieves and returns the cost limit of EventSub subscriptions.
+	 * Gets the cost limit of EventSub subscriptions.
 	 */
 	async getMaxTotalCost(): Promise<number> {
 		const data =

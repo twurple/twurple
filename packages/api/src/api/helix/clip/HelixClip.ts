@@ -52,7 +52,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	}
 
 	/**
-	 * Retrieves information about the broadcaster of the stream where the clip was created.
+	 * Gets information about the broadcaster of the stream where the clip was created.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
@@ -73,7 +73,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	}
 
 	/**
-	 * Retrieves information about the creator of the clip.
+	 * Gets information about the creator of the clip.
 	 */
 	async getCreator(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].creator_id));
@@ -87,7 +87,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	}
 
 	/**
-	 * Retrieves information about the video the clip is taken from.
+	 * Gets information about the video the clip is taken from.
 	 */
 	async getVideo(): Promise<HelixVideo> {
 		return checkRelationAssertion(await this._client.videos.getVideoById(this[rawDataSymbol].video_id));
@@ -101,7 +101,7 @@ export class HelixClip extends DataObject<HelixClipData> {
 	}
 
 	/**
-	 * Retrieves information about the game that was being played when the clip was created.
+	 * Gets information about the game that was being played when the clip was created.
 	 */
 	async getGame(): Promise<HelixGame | null> {
 		return this[rawDataSymbol].game_id

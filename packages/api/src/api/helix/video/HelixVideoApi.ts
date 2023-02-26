@@ -30,7 +30,7 @@ export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
 @rtfm('api', 'HelixVideoApi')
 export class HelixVideoApi extends BaseApi {
 	/**
-	 * Retrieves the video data for the given list of video IDs.
+	 * Gets the video data for the given list of video IDs.
 	 *
 	 * @param ids The video IDs you want to look up.
 	 */
@@ -41,7 +41,7 @@ export class HelixVideoApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the video data for the given video ID.
+	 * Gets the video data for the given video ID.
 	 *
 	 * @param id The video ID you want to look up.
 	 */
@@ -51,9 +51,9 @@ export class HelixVideoApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the videos of the given user.
+	 * Gets the videos of the given user.
 	 *
-	 * @param user The user you want to retrieve videos from.
+	 * @param user The user you want to get videos from.
 	 * @param filter
 	 *
 	 * @expandParams
@@ -69,7 +69,7 @@ export class HelixVideoApi extends BaseApi {
 	/**
 	 * Creates a paginator for videos of the given user.
 	 *
-	 * @param user The user you want to retrieve videos from.
+	 * @param user The user you want to get videos from.
 	 * @param filter
 	 *
 	 * @expandParams
@@ -83,9 +83,9 @@ export class HelixVideoApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the videos of the given game.
+	 * Gets the videos of the given game.
 	 *
-	 * @param gameId The game you want to retrieve videos from.
+	 * @param gameId The game you want to get videos from.
 	 * @param filter
 	 *
 	 * @expandParams
@@ -100,7 +100,7 @@ export class HelixVideoApi extends BaseApi {
 	/**
 	 * Creates a paginator for videos of the given game.
 	 *
-	 * @param gameId The game you want to retrieve videos from.
+	 * @param gameId The game you want to get videos from.
 	 * @param filter
 	 *
 	 * @expandParams

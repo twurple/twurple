@@ -52,7 +52,7 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 	}
 
 	/**
-	 * Retrieves information about the user who created the video.
+	 * Gets information about the user who created the video.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

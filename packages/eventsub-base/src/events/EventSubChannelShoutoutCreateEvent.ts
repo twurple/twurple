@@ -42,7 +42,7 @@ export class EventSubChannelShoutoutCreateEvent extends DataObject<EventSubChann
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster who sent the shoutout.
+	 * Gets more information about the broadcaster who sent the shoutout.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
@@ -70,7 +70,7 @@ export class EventSubChannelShoutoutCreateEvent extends DataObject<EventSubChann
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster who was shoutout out.
+	 * Gets more information about the broadcaster who was shoutout out.
 	 */
 	async getShoutedOutBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].to_broadcaster_user_id));

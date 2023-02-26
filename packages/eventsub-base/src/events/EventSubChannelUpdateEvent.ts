@@ -38,7 +38,7 @@ export class EventSubChannelUpdateEvent extends DataObject<EventSubChannelUpdate
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
@@ -73,7 +73,7 @@ export class EventSubChannelUpdateEvent extends DataObject<EventSubChannelUpdate
 	}
 
 	/**
-	 * Retrieves more information about the game that is currently being played on the channel.
+	 * Gets more information about the game that is currently being played on the channel.
 	 */
 	async getGame(): Promise<HelixGame | null> {
 		return this[rawDataSymbol].category_id

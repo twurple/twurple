@@ -38,7 +38,7 @@ export class EventSubChannelCheerEvent extends DataObject<EventSubChannelCheerEv
 	}
 
 	/**
-	 * Retrieves more information about the user.
+	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
 		return await mapNullable(this[rawDataSymbol].user_id, async v => await this._client.users.getUserById(v));
@@ -66,7 +66,7 @@ export class EventSubChannelCheerEvent extends DataObject<EventSubChannelCheerEv
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));

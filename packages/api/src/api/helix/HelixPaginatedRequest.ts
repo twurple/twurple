@@ -45,16 +45,16 @@ export class HelixPaginatedRequest<D, T> {
 	}
 
 	/**
-	 * The last retrieved page of data associated to the requested resource.
+	 * The last fetched page of data associated to the requested resource.
 	 *
-	 * Only works with {@link HelixPaginatedRequest#getNext}} and not with any other methods of data retrieval.
+	 * Only works with {@link HelixPaginatedRequest#getNext}} and not with any other methods of data fetching.
 	 */
 	get current(): D[] | undefined {
 		return this._currentData?.data;
 	}
 
 	/**
-	 * Retrieves and returns the next available page of data associated to the requested resource, or an empty array if there are no more available pages.
+	 * Gets the next available page of data associated to the requested resource, or an empty array if there are no more available pages.
 	 */
 	async getNext(): Promise<T[]> {
 		if (this._isFinished) {
@@ -74,7 +74,7 @@ export class HelixPaginatedRequest<D, T> {
 	}
 
 	/**
-	 * Retrieves and returns all data associated to the requested resource.
+	 * Gets all data associated to the requested resource.
 	 *
 	 * Be aware that this makes multiple calls to the Twitch API. Due to this, you might be more suspectible to rate limits.
 	 *
@@ -96,7 +96,7 @@ export class HelixPaginatedRequest<D, T> {
 	}
 
 	/**
-	 * Retrieves the current cursor.
+	 * Gets the current cursor.
 	 *
 	 * Only useful if you want to make manual requests to the API.
 	 */

@@ -40,7 +40,7 @@ import { HelixScheduleSegment } from './HelixScheduleSegment';
  */
 export class HelixScheduleApi extends BaseApi {
 	/**
-	 * Retrieves the schedule for a given broadcaster.
+	 * Gets the schedule for a given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to get the schedule of.
 	 * @param filter
@@ -83,7 +83,7 @@ export class HelixScheduleApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a set of schedule segments by IDs.
+	 * Gets a set of schedule segments by IDs.
 	 *
 	 * @param broadcaster The broadcaster to get schedule segments of.
 	 * @param ids The IDs of the schedule segments.
@@ -100,7 +100,7 @@ export class HelixScheduleApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a single schedule segment by ID.
+	 * Gets a single schedule segment by ID.
 	 *
 	 * @param broadcaster The broadcaster to get a schedule segment of.
 	 * @param id The ID of the schedule segment.
@@ -112,7 +112,7 @@ export class HelixScheduleApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the schedule for a given broadcaster in iCal format.
+	 * Gets the schedule for a given broadcaster in iCal format.
 	 *
 	 * @param broadcaster The broadcaster to get the schedule for.
 	 */

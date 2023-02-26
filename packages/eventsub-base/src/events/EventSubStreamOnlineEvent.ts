@@ -41,14 +41,14 @@ export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEv
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
 	/**
-	 * Retrieves more information about the stream.
+	 * Gets more information about the stream.
 	 *
 	 * This may sometimes return null, as the Helix API might be behind due to caching on Twitch's side.
 	 */

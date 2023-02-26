@@ -38,7 +38,7 @@ export class EventSubDropEntitlementGrantEvent extends DataObject<EventSubDropEn
 	}
 
 	/**
-	 * Retrieves more information about the category/game.
+	 * Gets more information about the category/game.
 	 */
 	async getCategory(): Promise<HelixGame> {
 		return checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].category_id));
@@ -73,7 +73,7 @@ export class EventSubDropEntitlementGrantEvent extends DataObject<EventSubDropEn
 	}
 
 	/**
-	 * Retrieves more information about the entitled user.
+	 * Gets more information about the entitled user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

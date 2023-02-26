@@ -56,9 +56,9 @@ import { HelixShieldModeStatus } from './HelixShieldModeStatus';
 @rtfm('api', 'HelixModerationApi')
 export class HelixModerationApi extends BaseApi {
 	/**
-	 * Retrieves a list of banned users in a given channel.
+	 * Gets a list of banned users in a given channel.
 	 *
-	 * @param channel The channel to retrieve the banned users from.
+	 * @param channel The channel to get the banned users from.
 	 * @param filter Additional filters for the result set.
 	 *
 	 * @expandParams
@@ -81,7 +81,7 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Creates a paginator for banned users in a given channel.
 	 *
-	 * @param channel The channel to retrieve the banned users from.
+	 * @param channel The channel to get the banned users from.
 	 */
 	getBannedUsersPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixBanData, HelixBan> {
 		return new HelixPaginatedRequest(
@@ -111,9 +111,9 @@ export class HelixModerationApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of moderators in a given channel.
+	 * Gets a list of moderators in a given channel.
 	 *
-	 * @param channel The channel to retrieve moderators from.
+	 * @param channel The channel to get moderators from.
 	 * @param filter Additional filters for the result set.
 	 *
 	 * @expandParams
@@ -139,7 +139,7 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Creates a paginator for moderators in a given channel.
 	 *
-	 * @param channel The channel to retrieve moderators from.
+	 * @param channel The channel to get moderators from.
 	 */
 	getModeratorsPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixModeratorData, HelixModerator> {
 		return new HelixPaginatedRequest(
@@ -245,11 +245,11 @@ export class HelixModerationApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the AutoMod settings for a broadcaster.
+	 * Gets the AutoMod settings for a broadcaster.
 	 *
-	 * @param broadcaster The broadcaster for which the AutoMod settings are retrieved.
+	 * @param broadcaster The broadcaster to get the AutoMod settings for.
 	 * @param moderator A user that has permission to moderate the broadcaster's chat room.
-	 * This user must match the user associated with the user OAuth token.
+	 * The token of this user will be used to get the settings.
 	 */
 	async getAutoModSettings(
 		broadcaster: UserIdResolvable,
@@ -271,7 +271,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster for which the AutoMod settings are updated.
 	 * @param moderator A user that has permission to moderate the broadcaster's chat room.
-	 * This user must match the user associated with the user OAuth token.
+	 * The token of this user will be used to update the settings.
 	 * @param data The updated AutoMod settings that replace the current AutoMod settings.
 	 */
 	async updateAutoModSettings(
@@ -297,7 +297,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster in whose channel the user will be banned/timed out.
 	 * @param moderator A user that has permission to ban/timeout users in the broadcaster's chat room.
-	 * This user must match the user associated with the user OAuth token.
+	 * The token of this user will be used to ban the user.
 	 * @param data
 	 *
 	 * @expandParams
@@ -327,7 +327,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster in whose channel the user will be unbanned/removed from timeout.
 	 * @param moderator A user that has permission to unban/remove timeout users in the broadcaster's chat room.
-	 * This user must match the user associated with the user OAuth token.
+	 * The token of this user will be used to unban the user.
 	 * @param user The user who will be unbanned/removed from timeout.
 	 */
 	async unbanUser(broadcaster: UserIdResolvable, moderator: UserIdResolvable, user: UserIdResolvable): Promise<void> {
@@ -347,9 +347,9 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Gets the broadcaster’s list of non-private, blocked words or phrases.
 	 *
-	 * @param broadcaster The broadcaster for whose channel blocked terms will be retrieved.
-	 * @param moderator A user that has permission to retrieve blocked terms for the broadcaster's channel.
-	 * This user must match the user associated with the user OAuth token.
+	 * @param broadcaster The broadcaster to get their channel's blocked terms for.
+	 * @param moderator A user that has permission to get blocked terms for the broadcaster's channel.
+	 * The token of this user will be used to get the blocked terms.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -380,7 +380,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster in whose channel the term will be blocked.
 	 * @param moderator A user that has permission to block terms in the broadcaster's channel.
-	 * This user must match the user associated with the user OAuth token.
+	 * The token of this user will be used to add the blocked term.
 	 * @param text The word or phrase to block from being used in the broadcaster's channel.
 	 *
 	 * @returns Information about the term that has been blocked.
@@ -410,7 +410,7 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster in whose channel the term will be unblocked.
 	 * @param moderator A user that has permission to unblock terms in the broadcaster's channel.
-	 * This user must match the user associated with the user OAuth token.
+	 * The token of this user will be used to remove the blocked term.
 	 * @param id The ID of the term that should be unblocked.
 	 */
 	async removeBlockedTerm(broadcaster: UserIdResolvable, moderator: UserIdResolvable, id: string): Promise<void> {
@@ -459,8 +459,8 @@ export class HelixModerationApi extends BaseApi {
 	 * Gets the broadcaster's Shield Mode activation status.
 	 *
 	 * @param broadcaster The broadcaster whose Shield Mode activation status you want to get.
-	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
-	 * This user must match the user associated with the user OAuth token.
+	 * @param moderator A user that has permission to read the Shield Mode status in the broadcaster's channel.
+	 * The token of this user will be used to get the Shield Mode status.
 	 */
 	async getShieldModeStatus(
 		broadcaster: UserIdResolvable,
@@ -483,8 +483,8 @@ export class HelixModerationApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster whose Shield Mode you want to activate or deactivate.
 	 * @param moderator A user that has permission to update Shield Mode status in the broadcaster's channel.
-	 * This user must match the user associated with the user OAuth token.
-	 * @param activate Whether or not to activate Shield Mode on the broadcaster's channel.
+	 * The token of this user will be used to change the Shield Mode status.
+	 * @param activate The desired Shield Mode status on the broadcaster's channel.
 	 */
 	async updateShieldModeStatus(
 		broadcaster: UserIdResolvable,

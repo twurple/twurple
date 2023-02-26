@@ -32,7 +32,7 @@ export class HelixChannelEditor extends DataObject<HelixChannelEditorData> {
 	}
 
 	/**
-	 * Retrieves additional information about the user.
+	 * Gets additional information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

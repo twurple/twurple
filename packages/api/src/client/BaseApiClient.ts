@@ -69,7 +69,7 @@ export class BaseApiClient {
 	}
 
 	/**
-	 * Retrieves information about your access token.
+	 * Gets information about your access token.
 	 */
 	async getTokenInfo(): Promise<TokenInfo> {
 		try {

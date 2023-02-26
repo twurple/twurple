@@ -46,7 +46,7 @@ export class HelixShieldModeStatus extends DataObject<HelixShieldModeStatusData>
 	}
 
 	/**
-	 * Retrieves more information about the moderator that last activated Shield Mode.
+	 * Gets more information about the moderator that last activated Shield Mode.
 	 */
 	async getModerator(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_id));

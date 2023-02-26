@@ -37,7 +37,7 @@ export class HelixPaginatedSubscriptionsRequest extends HelixPaginatedRequestWit
 	}
 
 	/**
-	 * Retrieves and returns the total sub points of the broadcaster.
+	 * Gets the total sub points of the broadcaster.
 	 */
 	async getPoints(): Promise<number> {
 		const data =

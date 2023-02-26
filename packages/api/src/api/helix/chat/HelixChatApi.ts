@@ -53,7 +53,7 @@ export class HelixChatApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster whose list of chatters you want to get.
 	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
-	 * This user must match the user associated with the user OAuth token.
+	 * The token of this user will be used to fetch the chatters.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -78,7 +78,7 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves all global badges.
+	 * Gets all global badges.
 	 */
 	async getGlobalBadges(): Promise<HelixChatBadgeSet[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChatBadgeSetData>>({
@@ -90,9 +90,9 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves all badges specific to the given broadcaster.
+	 * Gets all badges specific to the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve badges for.
+	 * @param broadcaster The broadcaster to get badges for.
 	 */
 	async getChannelBadges(broadcaster: UserIdResolvable): Promise<HelixChatBadgeSet[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChatBadgeSetData>>({
@@ -106,7 +106,7 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves all global emotes.
+	 * Gets all global emotes.
 	 */
 	async getGlobalEmotes(): Promise<HelixEmote[]> {
 		const result = await this._client.callApi<HelixResponse<HelixEmoteData>>({
@@ -118,9 +118,9 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves all emotes specific to the given broadcaster.
+	 * Gets all emotes specific to the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve emotes for.
+	 * @param broadcaster The broadcaster to get emotes for.
 	 */
 	async getChannelEmotes(broadcaster: UserIdResolvable): Promise<HelixChannelEmote[]> {
 		const result = await this._client.callApi<HelixResponse<HelixChannelEmoteData>>({
@@ -134,9 +134,9 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves all emotes from a list of emote sets.
+	 * Gets all emotes from a list of emote sets.
 	 *
-	 * @param setIds The IDs of the emote sets to retrieve emotes from.
+	 * @param setIds The IDs of the emote sets to get emotes from.
 	 */
 	async getEmotesFromSets(setIds: string[]): Promise<HelixEmoteFromSet[]> {
 		const result = await this._client.callApi<HelixResponse<HelixEmoteFromSetData>>({
@@ -149,7 +149,7 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the settings of a broadcaster's chat.
+	 * Gets the settings of a broadcaster's chat.
 	 *
 	 * @param broadcaster The broadcaster the chat belongs to.
 	 */
@@ -165,7 +165,7 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the settings of a broadcaster's chat, including the delay settings.
+	 * Gets the settings of a broadcaster's chat, including the delay settings.
 	 *
 	 * @param broadcaster The broadcaster the chat belongs to.
 	 * @param moderator The moderator the request is on behalf of.
@@ -248,7 +248,7 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the chat colors for a list of users.
+	 * Gets the chat colors for a list of users.
 	 *
 	 * Returns a Map with user IDs as keys and their colors as values.
 	 * The value is a color hex code, or `null` if the user did not set a color,
@@ -267,7 +267,7 @@ export class HelixChatApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the chat color for a user.
+	 * Gets the chat color for a user.
 	 *
 	 * Returns the color as hex code, `null` if the user did not set a color, or `undefined` if the user is unknown.
 	 *

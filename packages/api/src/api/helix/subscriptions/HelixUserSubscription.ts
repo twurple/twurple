@@ -39,7 +39,7 @@ export class HelixUserSubscription extends DataObject<HelixUserSubscriptionData>
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser | null> {
 		return await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id);

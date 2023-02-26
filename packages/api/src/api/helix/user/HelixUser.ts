@@ -90,21 +90,21 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	}
 
 	/**
-	 * Retrieves the channel's stream data.
+	 * Gets the channel's stream data.
 	 */
 	async getStream(): Promise<HelixStream | null> {
 		return await this._client.streams.getStreamByUserId(this);
 	}
 
 	/**
-	 * Retrieves a list of broadcasters the user follows.
+	 * Gets a list of broadcasters the user follows.
 	 */
 	async getFollows(): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
 		return await this._client.users.getFollows({ user: this });
 	}
 
 	/**
-	 * Retrieves the follow data of the given user to the broadcaster.
+	 * Gets the follow data of the given user to the broadcaster.
 	 *
 	 * @param user The user to check the follow from.
 	 */
@@ -113,7 +113,7 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	}
 
 	/**
-	 * Retrieves the follow data of the user to the given broadcaster.
+	 * Gets the follow data of the user to the given broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to check the follow to.
 	 */
@@ -140,7 +140,7 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	}
 
 	/**
-	 * Retrieves the subscription data for the user to the given broadcaster, or `null` if the user is not subscribed.
+	 * Gets the subscription data for the user to the given broadcaster, or `null` if the user is not subscribed.
 	 *
 	 * @param broadcaster The broadcaster you want to get the subscription data for.
 	 */

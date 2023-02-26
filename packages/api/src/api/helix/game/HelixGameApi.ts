@@ -29,7 +29,7 @@ type HelixGameFilterType = 'id' | 'name' | 'igdb_id';
 @rtfm('api', 'HelixGameApi')
 export class HelixGameApi extends BaseApi {
 	/**
-	 * Retrieves the game data for the given list of game IDs.
+	 * Gets the game data for the given list of game IDs.
 	 *
 	 * @param ids The game IDs you want to look up.
 	 */
@@ -38,7 +38,7 @@ export class HelixGameApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the game data for the given list of game names.
+	 * Gets the game data for the given list of game names.
 	 *
 	 * @param names The game names you want to look up.
 	 */
@@ -47,7 +47,7 @@ export class HelixGameApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the game data for the given list of IGDB IDs.
+	 * Gets the game data for the given list of IGDB IDs.
 	 *
 	 * @param igdbIds The IGDB IDs you want to look up.
 	 */
@@ -56,7 +56,7 @@ export class HelixGameApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the game data for the given game ID.
+	 * Gets the game data for the given game ID.
 	 *
 	 * @param id The game ID you want to look up.
 	 */
@@ -66,7 +66,7 @@ export class HelixGameApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the game data for the given game name.
+	 * Gets the game data for the given game name.
 	 *
 	 * @param name The game name you want to look up.
 	 */
@@ -76,7 +76,7 @@ export class HelixGameApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the game data for the given IGDB ID.
+	 * Gets the game data for the given IGDB ID.
 	 *
 	 * @param igdbId The IGDB ID you want to look up.
 	 */
@@ -86,7 +86,7 @@ export class HelixGameApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of the most viewed games at the moment.
+	 * Gets a list of the most viewed games at the moment.
 	 *
 	 * @param pagination
 	 *

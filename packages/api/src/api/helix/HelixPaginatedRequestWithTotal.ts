@@ -13,7 +13,7 @@ export class HelixPaginatedRequestWithTotal<D, T> extends HelixPaginatedRequest<
 	protected declare _currentData?: HelixPaginatedResponseWithTotal<D>;
 
 	/**
-	 * Retrieves and returns the total number of entities existing in the queried result set.
+	 * Gets the total number of entities existing in the queried result set.
 	 */
 	async getTotalCount(): Promise<number> {
 		const data =

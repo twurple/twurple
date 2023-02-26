@@ -40,7 +40,7 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster of the channel.
+	 * Gets more information about the broadcaster of the channel.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
@@ -68,7 +68,7 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 	}
 
 	/**
-	 * Retrieves information about the game that is being played on the stream.
+	 * Gets information about the game that is being played on the stream.
 	 */
 	async getGame(): Promise<HelixGame | null> {
 		return this[rawDataSymbol].game_id

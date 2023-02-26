@@ -38,7 +38,7 @@ import { HelixDropsEntitlement } from './HelixDropsEntitlement';
 @rtfm('api', 'HelixEntitlementApi')
 export class HelixEntitlementApi extends BaseApi {
 	/**
-	 * Retrieves the drops entitlements for the given filter.
+	 * Gets the drops entitlements for the given filter.
 	 *
 	 * @beta
 	 * @expandParams
@@ -90,7 +90,7 @@ export class HelixEntitlementApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the drops entitlements for the given IDs.
+	 * Gets the drops entitlements for the given IDs.
 	 *
 	 * @beta
 	 *
@@ -109,7 +109,7 @@ export class HelixEntitlementApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the drops entitlement for the given ID.
+	 * Gets the drops entitlement for the given ID.
 	 *
 	 * @beta
 	 *

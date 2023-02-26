@@ -50,7 +50,7 @@ export class HelixDropsEntitlement extends DataObject<HelixDropsEntitlementData>
 	}
 
 	/**
-	 * Retrieves more information about the entitled user.
+	 * Gets more information about the entitled user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
@@ -64,7 +64,7 @@ export class HelixDropsEntitlement extends DataObject<HelixDropsEntitlementData>
 	}
 
 	/**
-	 * Retrieves more information about the game the entitlement was granted for.
+	 * Gets more information about the game the entitlement was granted for.
 	 */
 	async getGame(): Promise<HelixGame> {
 		return checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].game_id));

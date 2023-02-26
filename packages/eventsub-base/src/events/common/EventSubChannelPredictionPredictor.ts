@@ -38,7 +38,7 @@ export class EventSubChannelPredictionPredictor extends DataObject<EventSubChann
 	}
 
 	/**
-	 * Retrieves more information about the predictor.
+	 * Gets more information about the predictor.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

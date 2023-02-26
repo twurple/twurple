@@ -55,7 +55,7 @@ import { HelixUserBlock } from './HelixUserBlock';
 @rtfm('api', 'HelixUserApi')
 export class HelixUserApi extends BaseApi {
 	/**
-	 * Retrieves the user data for the given list of user IDs.
+	 * Gets the user data for the given list of user IDs.
 	 *
 	 * @param userIds The user IDs you want to look up.
 	 */
@@ -64,7 +64,7 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the user data for the given list of usernames.
+	 * Gets the user data for the given list of usernames.
 	 *
 	 * @param userNames The usernames you want to look up.
 	 */
@@ -73,7 +73,7 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the user data for the given user ID.
+	 * Gets the user data for the given user ID.
 	 *
 	 * @param user The user ID you want to look up.
 	 */
@@ -92,7 +92,7 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the user data for the given username.
+	 * Gets the user data for the given username.
 	 *
 	 * @param userName The username you want to look up.
 	 */
@@ -102,9 +102,9 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the user data of the given authenticated user.
+	 * Gets the user data of the given authenticated user.
 	 *
-	 * @param user The user to retrieve data for.
+	 * @param user The user to get data for.
 	 * @param withEmail Whether you need the user's email address.
 	 */
 	async getAuthenticatedUser(user: UserIdResolvable, withEmail: boolean = false): Promise<HelixPrivilegedUser> {
@@ -146,7 +146,7 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of follow relations.
+	 * Gets a list of follow relations.
 	 *
 	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
 	 * or {@link HelixChannelApi#getFollowedChannels} instead.
@@ -195,10 +195,10 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the follow relation bewteen a given user and a given broadcaster.
+	 * Gets the follow relation bewteen a given user and a given broadcaster.
 	 *
-	 * @param user The user to retrieve the follow relation for.
-	 * @param broadcaster The broadcaster to retrieve the follow relation for.
+	 * @param user The user to get the follow relation for.
+	 * @param broadcaster The broadcaster to get the follow relation for.
 	 */
 	async getFollowFromUserToBroadcaster(
 		user: UserIdResolvable,
@@ -220,9 +220,9 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of users blocked by the given user.
+	 * Gets a list of users blocked by the given user.
 	 *
-	 * @param user The user to retrieve blocks for.
+	 * @param user The user to get blocks for.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -248,7 +248,7 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Creates a paginator for users blocked by the given user.
 	 *
-	 * @param user The user to retrieve blocks for.
+	 * @param user The user to get blocks for.
 	 */
 	getBlocksPaginated(user: UserIdResolvable): HelixPaginatedRequest<HelixUserBlockData, HelixUserBlock> {
 		return new HelixPaginatedRequest(
@@ -305,7 +305,7 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of all extensions for the given authenticated user.
+	 * Gets a list of all extensions for the given authenticated user.
 	 *
 	 * @param broadcaster The broadcaster to get the list of extensions for.
 	 * @param withInactive Whether to include inactive extensions.
@@ -325,7 +325,7 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of all installed extensions for the given user.
+	 * Gets a list of all installed extensions for the given user.
 	 *
 	 * @param user The user to get the installed extensions for.
 	 * @param withDev Whether to include extensions that are in development.

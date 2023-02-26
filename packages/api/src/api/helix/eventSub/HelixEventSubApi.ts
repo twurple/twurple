@@ -48,7 +48,7 @@ import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEven
 @rtfm('api', 'HelixEventSubApi')
 export class HelixEventSubApi extends BaseApi {
 	/**
-	 * Retrieves the current EventSub subscriptions for the current client.
+	 * Gets the current EventSub subscriptions for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
@@ -80,11 +80,11 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current EventSub subscriptions with the given status for the current client.
+	 * Gets the current EventSub subscriptions with the given status for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
-	 * @param status The status of the subscriptions to retrieve.
+	 * @param status The status of the subscriptions to get.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -114,7 +114,7 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
-	 * @param status The status of the subscriptions to retrieve.
+	 * @param status The status of the subscriptions to get.
 	 */
 	getSubscriptionsForStatusPaginated(
 		status: HelixEventSubSubscriptionStatus
@@ -123,11 +123,11 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves the current EventSub subscriptions with the given type for the current client.
+	 * Gets the current EventSub subscriptions with the given type for the current client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
-	 * @param type The type of the subscriptions to retrieve.
+	 * @param type The type of the subscriptions to get.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -157,18 +157,18 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
-	 * @param type The type of the subscriptions to retrieve.
+	 * @param type The type of the subscriptions to get.
 	 */
 	getSubscriptionsForTypePaginated(type: string): HelixPaginatedEventSubSubscriptionsRequest {
 		return new HelixPaginatedEventSubSubscriptionsRequest({ type }, undefined, this._client);
 	}
 
 	/**
-	 * Retrieves the current EventSub subscriptions for the current user and client.
+	 * Gets the current EventSub subscriptions for the current user and client.
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
-	 * @param user The user to retrieve subscriptions for.
+	 * @param user The user to get subscriptions for.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -199,7 +199,7 @@ export class HelixEventSubApi extends BaseApi {
 	 *
 	 * Requires an app access token to work; does not work with user tokens.
 	 *
-	 * @param user The user to retrieve subscriptions for.
+	 * @param user The user to get subscriptions for.
 	 */
 	getSubscriptionsForUserPaginated(user: UserIdResolvable): HelixPaginatedEventSubSubscriptionsRequest {
 		const userId = extractUserId(user);

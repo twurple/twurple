@@ -42,10 +42,10 @@ import { HelixExtensionTransaction } from './HelixExtensionTransaction';
 @rtfm('api', 'HelixExtensionsApi')
 export class HelixExtensionsApi extends BaseApi {
 	/**
-	 * Retrieves a released extension by ID.
+	 * Gets a released extension by ID.
 	 *
 	 * @param extensionId The ID of the extension.
-	 * @param version The version of the extension. If not given, retrieves the latest version.
+	 * @param version The version of the extension. If not given, gets the latest version.
 	 */
 	async getReleasedExtension(extensionId: string, version?: string): Promise<HelixExtension> {
 		const result = await this._client.callApi<HelixResponse<HelixExtensionData>>({
@@ -58,7 +58,7 @@ export class HelixExtensionsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of channels that are currently live and have the given extension installed.
+	 * Gets a list of channels that are currently live and have the given extension installed.
 	 *
 	 * @param extensionId The ID of the extension.
 	 * @param pagination
@@ -100,7 +100,7 @@ export class HelixExtensionsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves an extension's Bits products.
+	 * Gets an extension's Bits products.
 	 *
 	 * This only works if the provided token belongs to an extension's client ID,
 	 * and will return the products for that extension.
@@ -139,9 +139,9 @@ export class HelixExtensionsApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a list of transactions for the given extension.
+	 * Gets a list of transactions for the given extension.
 	 *
-	 * @param extensionId The ID of the extension to retrieve transactions for.
+	 * @param extensionId The ID of the extension to get transactions for.
 	 * @param filter Additional filters.
 	 */
 	async getExtensionTransactions(
@@ -163,7 +163,7 @@ export class HelixExtensionsApi extends BaseApi {
 	/**
 	 * Creates a paginator for transactions for the given extension.
 	 *
-	 * @param extensionId The ID of the extension to retrieve transactions for.
+	 * @param extensionId The ID of the extension to get transactions for.
 	 * @param filter Additional filters.
 	 */
 	getExtensionTransactionsPaginated(

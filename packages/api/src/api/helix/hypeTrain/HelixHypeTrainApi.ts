@@ -31,7 +31,7 @@ import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
  */
 export class HelixHypeTrainApi extends BaseApi {
 	/**
-	 * Retrieves the events of the current or latest Hype Train for the specified broadcaster.
+	 * Gets the events of the current or latest Hype Train for the specified broadcaster.
 	 *
 	 * @param broadcaster The broadcaster to fetch Hype Train events for.
 	 * @param pagination

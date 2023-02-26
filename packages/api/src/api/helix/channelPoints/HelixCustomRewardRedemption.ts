@@ -50,7 +50,7 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster where the reward was redeemed.
+	 * Gets more information about the broadcaster where the reward was redeemed.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
@@ -78,7 +78,7 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	}
 
 	/**
-	 * Retrieves more information about the user that redeemed the reward.
+	 * Gets more information about the user that redeemed the reward.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
@@ -141,7 +141,7 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	}
 
 	/**
-	 * Retrieves more info about the reward that was redeemed.
+	 * Gets more info about the reward that was redeemed.
 	 */
 	async getReward(): Promise<HelixCustomReward> {
 		return checkRelationAssertion(

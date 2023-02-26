@@ -8,7 +8,7 @@ export type HelixBitsLeaderboardPeriod = 'day' | 'week' | 'month' | 'year' | 'al
  */
 export interface HelixBitsLeaderboardQuery {
 	/**
-	 * The number of leaderboard entries you want to retrieve.
+	 * The number of leaderboard entries you want to get.
 	 */
 	count?: number;
 
@@ -20,7 +20,7 @@ export interface HelixBitsLeaderboardQuery {
 	period?: HelixBitsLeaderboardPeriod;
 
 	/**
-	 * The time to retrieve the bits leaderboard for.
+	 * The time to get the bits leaderboard for.
 	 */
 	startDate?: Date;
 

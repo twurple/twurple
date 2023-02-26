@@ -54,7 +54,7 @@ export class StaticAuthProvider implements AuthProvider {
 	}
 
 	/**
-	 * Retrieves the static access token.
+	 * Gets the static access token.
 	 *
 	 * If the current access token does not have the requested scopes, this method throws.
 	 * This makes supplying an access token with the correct scopes from the beginning necessary.
@@ -67,7 +67,7 @@ export class StaticAuthProvider implements AuthProvider {
 	}
 
 	/**
-	 * Retrieves the static access token.
+	 * Gets the static access token.
 	 *
 	 * If the current access token does not have the requested scopes, this method throws.
 	 * This makes supplying an access token with the correct scopes from the beginning necessary.
@@ -80,7 +80,7 @@ export class StaticAuthProvider implements AuthProvider {
 	}
 
 	/**
-	 * Retrieves the static access token.
+	 * Gets the static access token.
 	 */
 	async getAnyAccessToken(): Promise<AccessTokenMaybeWithUserId> {
 		return await this._getAccessToken();

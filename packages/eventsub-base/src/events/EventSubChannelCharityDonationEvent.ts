@@ -46,7 +46,7 @@ export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChan
 	}
 
 	/**
-	 * Retrieves more information about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
@@ -74,7 +74,7 @@ export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChan
 	}
 
 	/**
-	 * Retrieves more information about the donating user.
+	 * Gets more information about the donating user.
 	 */
 	async getDonor(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

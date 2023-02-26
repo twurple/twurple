@@ -30,9 +30,9 @@ import { HelixPoll } from './HelixPoll';
 @rtfm('api', 'HelixPollApi')
 export class HelixPollApi extends BaseApi {
 	/**
-	 * Retrieves a list of polls for the given broadcaster.
+	 * Gets a list of polls for the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve polls for.
+	 * @param broadcaster The broadcaster to get polls for.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -58,7 +58,7 @@ export class HelixPollApi extends BaseApi {
 	/**
 	 * Creates a paginator for polls for the given broadcaster.
 	 *
-	 * @param broadcaster The broadcaster to retrieve polls for.
+	 * @param broadcaster The broadcaster to get polls for.
 	 */
 	getPollsPaginated(broadcaster: UserIdResolvable): HelixPaginatedRequest<HelixPollData, HelixPoll> {
 		return new HelixPaginatedRequest(
@@ -75,9 +75,9 @@ export class HelixPollApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves polls by IDs.
+	 * Gets polls by IDs.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the polls for.
+	 * @param broadcaster The broadcaster to get the polls for.
 	 * @param ids The IDs of the polls.
 	 */
 	async getPollsByIds(broadcaster: UserIdResolvable, ids: string[]): Promise<HelixPoll[]> {
@@ -97,9 +97,9 @@ export class HelixPollApi extends BaseApi {
 	}
 
 	/**
-	 * Retrieves a poll by ID.
+	 * Gets a poll by ID.
 	 *
-	 * @param broadcaster The broadcaster to retrieve the poll for.
+	 * @param broadcaster The broadcaster to get the poll for.
 	 * @param id The ID of the poll.
 	 */
 	async getPollById(broadcaster: UserIdResolvable, id: string): Promise<HelixPoll | null> {
