@@ -116,6 +116,14 @@ a few methods now require you to additionally pass a user to them:
 | Users    | {@link HelixUserApi#updateActiveExtensionsForAuthenticatedUser} (renamed from `updateMyActiveExtensions`) |
 | Videos   | {@link HelixVideoApi#deleteVideosByIds}                                                                   |
 
+## Make sure that not too many of your calls use the app token
+
+Now that authentication works on a basic level,
+you should probably read the page on [choosing the correct user for your requests](/docs/getting-data/api/choosing-user).
+
+The methods listed there should probably use a user context override (as documented on the bottom of that page)
+whenever possible, otherwise you might quickly exhaust the rate limit for your app token.
+
 ## Rename subscription methods in EventSub packages
 
 In the `eventsub-http` and `eventsub-ws` packages, the naming convention for the subscription methods has been changed.
