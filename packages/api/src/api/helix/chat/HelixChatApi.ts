@@ -22,6 +22,7 @@ import {
 } from '../../../interfaces/helix/chat.input';
 import { createModeratorActionQuery, createSingleKeyQuery } from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
+import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import { createPaginatedResultWithTotal, type HelixPaginatedResultWithTotal } from '../HelixPaginatedResult';
 import { createPaginationQuery, type HelixForwardPagination } from '../HelixPagination';
 import { HelixChannelEmote } from './HelixChannelEmote';
@@ -75,6 +76,31 @@ export class HelixChatApi extends BaseApi {
 		});
 
 		return createPaginatedResultWithTotal(result, HelixChatChatter, this._client);
+	}
+
+	/**
+	 * Creates a paginator for users that are connected to the broadcaster’s chat session.
+	 *
+	 * @param broadcaster The broadcaster whose list of chatters you want to get.
+	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
+	 * The token of this user will be used to fetch the chatters.
+	 *
+	 * @expandParams
+	 */
+	getChattersPaginated(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable
+	): HelixPaginatedRequestWithTotal<HelixChatChatterData, HelixChatChatter> {
+		return new HelixPaginatedRequestWithTotal<HelixChatChatterData, HelixChatChatter>(
+			{
+				url: 'chat/chatters',
+				userId: extractUserId(moderator),
+				scopes: ['moderator:read:chatters'],
+				query: createModeratorActionQuery(broadcaster, moderator)
+			},
+			this._client,
+			data => new HelixChatChatter(data, this._client)
+		);
 	}
 
 	/**
