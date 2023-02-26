@@ -115,14 +115,16 @@ export class HelixVideoApi extends BaseApi {
 	/**
 	 * Deletes videos by its IDs.
 	 *
+	 * @param broadcaster The broadcaster to delete the videos for.
 	 * @param ids The IDs of the videos to delete.
 	 */
-	async deleteVideosByIds(ids: string[]): Promise<void> {
+	async deleteVideosByIds(broadcaster: UserIdResolvable, ids: string[]): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
 			url: 'videos',
 			method: 'DELETE',
 			scopes: ['channel:manage:videos'],
+			userId: extractUserId(broadcaster),
 			query: {
 				id: ids
 			}

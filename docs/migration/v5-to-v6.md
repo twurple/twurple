@@ -22,9 +22,12 @@ The respective deprecated counterparts have been removed.
 
 Make sure that all Twurple packages are up-to-date and on the same version.
 
-On a unix-like system with the `jq` utility installed, you can use this handy one-liner for that:
+On a unix-like system with the `jq` utility installed, you can use one of these handy one-liners for that:
 
+	# for yarn
 	jq -r '.dependencies | keys[] | select(. | startswith("@twurple/"))' package.json | xargs yarn add
+	# for npm
+	jq -r '.dependencies | keys[] | select(. | startswith("@twurple/"))' package.json | xargs printf '%s@latest\n' | xargs npm install --save
 
 ## Update any `AuthProvider` usage
 
@@ -96,6 +99,23 @@ authProvider.addIntentsToUser('125328655', ['chat']);
 If you wrote your own provider, please refer to the {@link AuthProvider} reference page to reimplement it from scratch.
 There is no straightforward migration strategy here.
 
+## Update API calls that now require a broadcaster ID to determine the token to use
+
+In order for the {@link ApiClient} to properly determine the user to execute requests as,
+a few methods now require you to additionally pass a user to them:
+
+| Category | Method                                                                                                    |
+|----------|-----------------------------------------------------------------------------------------------------------|
+| Bits     | {@link HelixBitsApi#getLeaderboard}                                                                       |
+| Users    | {@link HelixUserApi#getAuthenticatedUser} (renamed from `getMe`)                                          |
+| Users    | {@link HelixUserApi#updateAuthenticatedUser} (renamed from `updateUser`)                                  |
+| Users    | {@link HelixUserApi#updateAuthenticatedUser} (renamed from `updateUser`)                                  |
+| Users    | {@link HelixUserApi#createBlock}                                                                          |
+| Users    | {@link HelixUserApi#deleteBlock}                                                                          |
+| Users    | {@link HelixUserApi#getExtensionsForAuthenticatedUser} (renamed from `getMyExtensions`)                   |
+| Users    | {@link HelixUserApi#updateActiveExtensionsForAuthenticatedUser} (renamed from `updateMyActiveExtensions`) |
+| Videos   | {@link HelixVideoApi#deleteVideosByIds}                                                                   |
+
 ## Rename subscription methods in EventSub packages
 
 In the `eventsub-http` and `eventsub-ws` packages, the naming convention for the subscription methods has been changed.
@@ -163,17 +183,21 @@ Similarly, replace the `channelId` for the clip with just `channel`.
 There's not that much to say about these (most were just to align more to the documentation or for consistency),
 so I'll just list them:
 
-| Old                                            | New                                                      |
-|------------------------------------------------|----------------------------------------------------------|
-| `PubSubListener`                               | {@link PubSubHandler}                                    |
-| `HelixChannelApi#getChannelInfo`               | {@link HelixChannelApi#getChannelInfoById}               |
-| `HelixCustomReward#autoApproved`               | {@link HelixCustomReward#autoFulfill}                    |
-| `HelixBanUser#broadcasterId`                   | *removed* (you needed this ID for fetching anyway)       |
-| `HelixBanUser#endDate`                         | {@link HelixBanUser#expiryDate}                          |
-| `HelixUser#views`                              | *removed* (removed by Twitch)                            |
-| `PubSubSubscriptionMessage#giftDuration`       | {@link PubSubSubscriptionMessage#duration}               |
-| `ApiClient#lastKnown*`                         | {@link ApiClient#rateLimiterStats}                       |
-| `EventSubChannelRedemptionAddEvent#redeemedAt` | {@link EventSubChannelRedemptionAddEvent#redemptionDate} |
+| Old                                            | New                                                             |
+|------------------------------------------------|-----------------------------------------------------------------|
+| `ApiClient#lastKnown*`                         | {@link ApiClient#rateLimiterStats}                              |
+| `EventSubChannelRedemptionAddEvent#redeemedAt` | {@link EventSubChannelRedemptionAddEvent#redemptionDate}        |
+| `HelixBanUser#broadcasterId`                   | *removed* (you needed this ID for fetching anyway)              |
+| `HelixBanUser#endDate`                         | {@link HelixBanUser#expiryDate}                                 |
+| `HelixChannelApi#getChannelInfo`               | {@link HelixChannelApi#getChannelInfoById}                      |
+| `HelixCustomReward#autoApproved`               | {@link HelixCustomReward#autoFulfill}                           |
+| `HelixUser#views`                              | *removed* (removed by Twitch)                                   |
+| `HelixUserApi#getMe`                           | {@link HelixUserApi#getAuthenticatedUser}                       |
+| `HelixUserApi#getMyExtensions`                 | {@link HelixUserApi#getExtensionsForAuthenticatedUser}          |
+| `HelixUserApi#updateMyActiveExtensions`        | {@link HelixUserApi#updateActiveExtensionsForAuthenticatedUser} |
+| `HelixUserApi#updateUser`                      | {@link HelixUserApi#updateAuthenticatedUser}                    |
+| `PubSubListener`                               | {@link PubSubHandler}                                           |
+| `PubSubSubscriptionMessage#giftDuration`       | {@link PubSubSubscriptionMessage#duration}                      |
 
 ## Make sure your EventSub HTTP host name configuration is correct (or configure the listener accordingly)
 
