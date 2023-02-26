@@ -75,7 +75,7 @@ export function createChannelVipUpdateQuery(broadcaster: UserIdResolvable, user:
 }
 
 /** @private */
-export function createChannelFollowerQuery(broadcaster: UserIdResolvable, user: UserIdResolvable | undefined) {
+export function createChannelFollowerQuery(broadcaster: UserIdResolvable, user?: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
 		user_id: mapOptional(user, extractUserId)
@@ -83,7 +83,7 @@ export function createChannelFollowerQuery(broadcaster: UserIdResolvable, user: 
 }
 
 /** @private */
-export function createChannelFollowedChannelQuery(broadcaster: UserIdResolvable | undefined, user: UserIdResolvable) {
+export function createFollowedChannelQuery(user: UserIdResolvable, broadcaster?: UserIdResolvable) {
 	return {
 		broadcaster_id: mapOptional(broadcaster, extractUserId),
 		user_id: extractUserId(user)

@@ -148,6 +148,9 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Retrieves a list of follow relations.
 	 *
+	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
+	 * or {@link HelixChannelApi#getFollowedChannels} instead.
+	 *
 	 * @param filter
 	 *
 	 * @expandParams
@@ -169,6 +172,9 @@ export class HelixUserApi extends BaseApi {
 
 	/**
 	 * Creates a paginator for follow relations.
+	 *
+	 * @deprecated Use {@link HelixChannelApi#getChannelFollowersPaginated}
+	 * or {@link HelixChannelApi#getFollowedChannelsPaginated} instead.
 	 *
 	 * @param filter
 	 *

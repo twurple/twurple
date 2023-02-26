@@ -5,14 +5,14 @@ import type { CommercialLength, UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import {
 	createChannelCommercialBody,
-	createChannelFollowedChannelQuery,
 	createChannelFollowerQuery,
 	createChannelUpdateBody,
 	createChannelVipUpdateQuery,
+	createFollowedChannelQuery,
 	type HelixChannelData,
 	type HelixChannelEditorData,
-	type HelixFollowedChannelData,
-	type HelixChannelFollowerData
+	type HelixChannelFollowerData,
+	type HelixFollowedChannelData
 } from '../../../interfaces/helix/channel.external';
 import { type HelixChannelUpdate } from '../../../interfaces/helix/channel.input';
 import {
@@ -22,6 +22,7 @@ import {
 } from '../../../interfaces/helix/generic.external';
 import { BaseApi } from '../../BaseApi';
 import { HelixPaginatedRequest } from '../HelixPaginatedRequest';
+import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTotal';
 import {
 	createPaginatedResult,
 	createPaginatedResultWithTotal,
@@ -32,8 +33,8 @@ import { createPaginationQuery } from '../HelixPagination';
 import { HelixUserRelation } from '../relations/HelixUserRelation';
 import { HelixChannel } from './HelixChannel';
 import { HelixChannelEditor } from './HelixChannelEditor';
-import { HelixFollowedChannel } from './HelixFollowedChannel';
 import { HelixChannelFollower } from './HelixChannelFollower';
+import { HelixFollowedChannel } from './HelixFollowedChannel';
 
 /**
  * The Helix API methods that deal with channels.
@@ -246,11 +247,12 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
-	 * Gets a list of users that follow the specified broadcaster. You can also use this endpoint to see whether a specific user follows the broadcaster.
+	 * Gets a list of users that follow the specified broadcaster.
+	 * You can also use this endpoint to see whether a specific user follows the broadcaster.
 	 *
-	 * @param broadcaster The broadcaster for whom you are getting a list of followers.
+	 * @param broadcaster The broadcaster you want to get a list of followers for.
 	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
-	 * This user must match the user associated with the user OAuth token.
+	 * The token of this user will be used to fetch the followers.
 	 * @param user An optional user to determine if this user follows the broadcaster.
 	 * If specified, the response contains this user if they follow the broadcaster.
 	 * If not specified, the response contains all users that follow the broadcaster.
@@ -280,6 +282,32 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
+	 * Creates a paginator for users that follow the specified broadcaster.
+	 *
+	 * @param broadcaster The broadcaster for whom you are getting a list of followers.
+	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
+	 * The token of this user will be used to fetch the followers.
+	 *
+	 * @expandParams
+	 */
+	getChannelFollowersPaginated(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable
+	): HelixPaginatedRequestWithTotal<HelixChannelFollowerData, HelixChannelFollower> {
+		return new HelixPaginatedRequestWithTotal<HelixChannelFollowerData, HelixChannelFollower>(
+			{
+				url: 'channels/followers',
+				method: 'GET',
+				userId: extractUserId(moderator),
+				scopes: ['moderator:read:followers'],
+				query: createChannelFollowerQuery(broadcaster)
+			},
+			this._client,
+			data => new HelixChannelFollower(data, this._client)
+		);
+	}
+
+	/**
 	 * Gets a list of broadcasters that the specified user follows. You can also use this endpoint to see whether the user follows a specific broadcaster.
 	 *
 	 * @param user The user that's getting a list of followed channels. This ID must match the user ID in the access token.
@@ -301,11 +329,38 @@ export class HelixChannelApi extends BaseApi {
 			userId: extractUserId(user),
 			scopes: ['user:read:follows'],
 			query: {
-				...createChannelFollowedChannelQuery(broadcaster, user),
+				...createFollowedChannelQuery(user, broadcaster),
 				...createPaginationQuery(pagination)
 			}
 		});
 
 		return createPaginatedResultWithTotal(result, HelixFollowedChannel, this._client);
+	}
+
+	/**
+	 * Creates a paginator for broadcasters that the specified user follows.
+	 *
+	 * @param user The user that's getting a list of followed channels.
+	 * The token of this user will be used to get the list of followed channels.
+	 * @param broadcaster An optional broadcaster to determine if the user follows this broadcaster.
+	 * If specified, the response contains this broadcaster if the user follows them.
+	 * If not specified, the response contains all broadcasters that the user follows.
+	 * @returns
+	 */
+	getFollowedChannelsPaginated(
+		user: UserIdResolvable,
+		broadcaster?: UserIdResolvable
+	): HelixPaginatedRequestWithTotal<HelixFollowedChannelData, HelixFollowedChannel> {
+		return new HelixPaginatedRequestWithTotal<HelixFollowedChannelData, HelixFollowedChannel>(
+			{
+				url: 'channels/followed',
+				method: 'GET',
+				userId: extractUserId(user),
+				scopes: ['user:read:follows'],
+				query: createFollowedChannelQuery(user, broadcaster)
+			},
+			this._client,
+			data => new HelixFollowedChannel(data, this._client)
+		);
 	}
 }
