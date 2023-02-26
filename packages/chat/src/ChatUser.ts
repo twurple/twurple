@@ -126,4 +126,11 @@ export class ChatUser {
 	get isVip(): boolean {
 		return this.badges.has('vip');
 	}
+
+	/**
+	 * Whether the user is an artist of the channel.
+	 */
+	get isArtist(): boolean {
+		return this.badges.has('artist-badge');
+	}
 }
