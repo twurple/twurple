@@ -21,31 +21,59 @@ export class EventSubChannelShoutoutCreateEvent extends DataObject<EventSubChann
 	}
 
 	/**
-	 * The ID of the broadcaster who sent the shoutout.
+	 * The ID of the broadcaster from whose channel the shoutout was sent.
 	 */
 	get broadcasterId(): string {
 		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
-	 * The name of the broadcaster who sent the shoutout.
+	 * The name of the broadcaster from whose channel the shoutout was sent.
 	 */
 	get broadcasterName(): string {
 		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
-	 * The display name of the broadcaster who sent the shoutout.
+	 * The display name of the broadcaster from whose channel the shoutout was sent.
 	 */
 	get broadcasterDisplayName(): string {
 		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
-	 * Gets more information about the broadcaster who sent the shoutout.
+	 * Gets more information about the broadcaster from whose channel the shoutout was sent.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
+	}
+
+	/**
+	 * The ID of the moderator who sent the shoutout.
+	 */
+	get moderatorId(): string {
+		return this[rawDataSymbol].moderator_user_id;
+	}
+
+	/**
+	 * The name of the moderator who sent the shoutout.
+	 */
+	get moderatorName(): string {
+		return this[rawDataSymbol].moderator_user_login;
+	}
+
+	/**
+	 * The display name of the moderator who sent the shoutout.
+	 */
+	get moderatorDisplayName(): string {
+		return this[rawDataSymbol].moderator_user_name;
+	}
+
+	/**
+	 * Gets more information about the moderator who sent the shoutout.
+	 */
+	async getModerator(): Promise<HelixUser> {
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 
 	/**
