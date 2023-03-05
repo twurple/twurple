@@ -8,8 +8,8 @@ export function createBotCommand(
 	return new (class extends BotCommand {
 		name = commandName;
 
-		execute(params: string[], context: BotCommandContext) {
-			return handler(params, context);
+		async execute(params: string[], context: BotCommandContext) {
+			await handler(params, context);
 		}
 	})();
 }
