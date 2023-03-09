@@ -75,3 +75,4 @@ should use for which use case.
 | Drops                             | No                           | No                        | Yes                       |
 | Charity campaigns & donations     | No                           | No                        | Yes                       |
 | Shield mode begin/end             | No                           | No                        | Yes                       |
+| Unban request approve/deny        | No                           | Yes                       | No                        |
