@@ -24,6 +24,7 @@ import { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
 import { type PubSubRedemptionMessageData } from './messages/PubSubRedemptionMessage.external';
 import { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
 import { type PubSubSubscriptionMessageData } from './messages/PubSubSubscriptionMessage.external';
+import { PubSubUnbanRequestMessage } from './messages/PubSubUnbanRequestMessage';
 import { PubSubUserModerationNotificationMessage } from './messages/PubSubUserModerationNotificationMessage';
 import { type PubSubUserModerationNotificationMessageData } from './messages/PubSubUserModerationNotificationMessage.external';
 import { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
@@ -327,6 +328,10 @@ export class PubSubClient extends EventEmitter {
 					}
 					case 'channel_terms_action': {
 						return new PubSubChannelTermsActionMessage(data, args[0]);
+					}
+					case 'approve_unban_request':
+					case 'deny_unban_request': {
+						return new PubSubUnbanRequestMessage(data, args[0]);
 					}
 					case 'moderator_added':
 					case 'moderator_removed':

@@ -30,6 +30,8 @@ export { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessag
 export { PubSubCustomMessage } from './messages/PubSubCustomMessage';
 export { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
 export { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
+export { PubSubUnbanRequestMessage } from './messages/PubSubUnbanRequestMessage';
+export { type PubSubUnbanRequestType } from './messages/PubSubUnbanRequestMessage.external';
 export { PubSubUserModerationNotificationMessage } from './messages/PubSubUserModerationNotificationMessage';
 export { PubSubWhisperMessage } from './messages/PubSubWhisperMessage';
 
