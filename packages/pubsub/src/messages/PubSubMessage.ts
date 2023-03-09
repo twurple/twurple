@@ -15,6 +15,8 @@ import { type PubSubRedemptionMessage } from './PubSubRedemptionMessage';
 import { type PubSubRedemptionMessageData } from './PubSubRedemptionMessage.external';
 import { type PubSubSubscriptionMessage } from './PubSubSubscriptionMessage';
 import { type PubSubSubscriptionMessageData } from './PubSubSubscriptionMessage.external';
+import { type PubSubUnbanRequestMessage } from './PubSubUnbanRequestMessage';
+import { type PubSubUnbanRequestMessageData } from './PubSubUnbanRequestMessage.external';
 import { type PubSubUserModerationNotificationMessage } from './PubSubUserModerationNotificationMessage';
 import { type PubSubUserModerationNotificationMessageData } from './PubSubUserModerationNotificationMessage.external';
 import { type PubSubWhisperMessage } from './PubSubWhisperMessage';
@@ -24,7 +26,8 @@ import { type PubSubWhisperMessageData } from './PubSubWhisperMessage.external';
 export type PubSubModActionMessageData =
 	| PubSubChatModActionMessageData
 	| PubSubChannelTermsActionMessageData
-	| PubSubChannelRoleChangeMessageData;
+	| PubSubChannelRoleChangeMessageData
+	| PubSubUnbanRequestMessageData;
 
 /** @private */
 export type PubSubMessageData =
@@ -42,7 +45,8 @@ export type PubSubMessageData =
 export type PubSubModActionMessage =
 	| PubSubChatModActionMessage
 	| PubSubChannelTermsActionMessage
-	| PubSubChannelRoleChangeMessage;
+	| PubSubChannelRoleChangeMessage
+	| PubSubUnbanRequestMessage;
 
 /** @private */
 export type PubSubMessage =
