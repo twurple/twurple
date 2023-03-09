@@ -180,7 +180,7 @@ const authProvider = new RefreshingAuthProvider(
 	}
 );
 
-authProvider.addUserForToken(tokenData, ['chat']);
+await authProvider.addUserForToken(tokenData, ['chat']);
 ```
 
 ## 8. ???

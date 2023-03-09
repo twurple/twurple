@@ -51,7 +51,7 @@ const authProvider = new RefreshingAuthProvider(
 	tokenData,
 );
 
-authProvider.addUserForToken(tokenData);
+await authProvider.addUserForToken(tokenData);
 ```
 
 Alternatively, if you already know the ID of the user you're adding,
@@ -85,7 +85,7 @@ A user can have more than one intent, but an intent can only be used for one use
 To use them with the {@link RefreshingAuthProvider}, just add another parameter to `addUser` or `addUserForToken`:
 
 ```ts
-authProvider.addUserForToken(tokenData, ['chat']);
+await authProvider.addUserForToken(tokenData, ['chat']);
 ```
 
 You can also add intents to a user after the fact:

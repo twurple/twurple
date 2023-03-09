@@ -12,7 +12,7 @@ You can also include it in your own {@link AuthProvider} implementation.
 Assignment of intents to a user can be done when adding a user to the provider, using the second parameter:
 
 ```ts
-authProvider.addUserForToken(tokenData, ['chat']);
+await authProvider.addUserForToken(tokenData, ['chat']);
 ```
 
 This will add the `chat` intent to that user, assigning it to be used by {@link ChatClient} by default.
@@ -37,7 +37,7 @@ Then, if the streamer opts to use the custom bot feature,
 just assign the custom bot account to an intent including the streamer's ID:
 
 ```ts
-authProvider.addUserForToken(customBotTokenData, [`chatBotFor:${streamerUserId}`]);
+await authProvider.addUserForToken(customBotTokenData, [`chatBotFor:${streamerUserId}`]);
 ```
 
 Now, for each of your "premium user" processes, you can configure {@link ChatClient}
