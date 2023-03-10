@@ -11,7 +11,13 @@ import { delay, Enumerable, fibWithLimit, resolveConfigValue } from '@d-fischer/
 import type { EventBinder } from '@d-fischer/typed-event-emitter';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
-import { accessTokenIsExpired, getTokenInfo, InvalidTokenError, InvalidTokenTypeError } from '@twurple/auth';
+import {
+	accessTokenIsExpired,
+	getTokenInfo,
+	InvalidTokenError,
+	InvalidTokenTypeError,
+	RefreshingAuthProvider
+} from '@twurple/auth';
 import { rtfm } from '@twurple/common';
 import type { WebSocketConnectionOptions } from 'ircv3';
 import { IrcClient, MessageTypes } from 'ircv3';
@@ -1376,7 +1382,12 @@ export class ChatClient extends EventEmitter {
 			new Error(
 				foundSomeIntent
 					? 'Could not retrieve a valid token'
-					: `None of the queried intents (${this._authIntents.join(', ')}) are known by the auth provider`
+					: `None of the queried intents (${this._authIntents.join(', ')}) are known by the auth provider${
+							this._authProvider instanceof RefreshingAuthProvider
+								? '.\nPlease add one of these to the user you want to connect with using the ' +
+								  '`addIntentToUser` method or the additional parameter to `addUser` or `addUserForToken`.'
+								: ''
+					  }`
 			)
 		);
 	}
