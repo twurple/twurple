@@ -14,7 +14,7 @@ export type PubSubLowTrustUserBanEvasionEvaluationType =
 	| '';
 
 /**
- * User types that apply to the suspicious user.
+ * User types (if any) that apply to the suspicious user.
  */
 export type PubSubLowTrustUserType =
 	| 'UNKNOWN_TYPE'

@@ -83,9 +83,9 @@ export class PubSubLowTrustUserTreatmentMessage extends DataObject<PubSubLowTrus
 	}
 
 	/**
-	 * The ban evasion likelihood value that as been applied to the user automatically by Twitch.
+	 * A ban evasion likelihood value that as been applied to the user automatically by Twitch.
 	 *
-	 * Can be an empty string.
+	 * Can be an empty string if Twitch did not apply any evasion value.
 	 */
 	get banEvasionEvaluation(): PubSubLowTrustUserBanEvasionEvaluationType {
 		return this[rawDataSymbol].data.ban_evasion_evaluation;
@@ -97,8 +97,7 @@ export class PubSubLowTrustUserTreatmentMessage extends DataObject<PubSubLowTrus
 	 * Will be `null` if {@link PubSubLowTrustUserTreatmentMessage#banEvasionEvaluation} is empty.
 	 */
 	get evaluationDate(): Date | null {
-		// PubSub sends `0001-01-01T00:00:00.000Z` string
-		// if the field is not applicable
+		// PubSub sends `0001-01-01T00:00:00.000Z` string if the field is not applicable
 		const date = this[rawDataSymbol].data.evaluated_at
 			? new Date(this[rawDataSymbol].data.evaluated_at)
 			: undefined;

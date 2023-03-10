@@ -22,7 +22,7 @@ export class PubSubLowTrustUserChatMessage extends DataObject<PubSubLowTrustUser
 	}
 
 	/**
-	 * Unique ID for this low-trust chat message.
+	 * The unique ID of this low-trust event.
 	 */
 	get lowTrustId(): string {
 		return this[rawDataSymbol].data.low_trust_user.low_trust_id;
@@ -94,7 +94,7 @@ export class PubSubLowTrustUserChatMessage extends DataObject<PubSubLowTrustUser
 	/**
 	 * The ban evasion likelihood value that as been applied to the user automatically by Twitch.
 	 *
-	 * Can be an empty string.
+	 * Can be an empty string if Twitch did not apply any evasion value.
 	 */
 	get banEvasionEvaluation(): PubSubLowTrustUserBanEvasionEvaluationType {
 		return this[rawDataSymbol].data.low_trust_user.ban_evasion_evaluation;
@@ -103,11 +103,10 @@ export class PubSubLowTrustUserChatMessage extends DataObject<PubSubLowTrustUser
 	/**
 	 * The date for the first time the suspicious user was automatically evaluated by Twitch.
 	 *
-	 * Will be `null` if {@link PubSubLowTrustUserTreatmentMessage#banEvasionEvaluation} is empty.
+	 * Will be `null` if {@link PubSubLowTrustUserChatMessage#banEvasionEvaluation} is empty.
 	 */
 	get evaluationDate(): Date | null {
-		// PubSub sends `0001-01-01T00:00:00.000Z` string
-		// if the field is not applicable
+		// PubSub sends `0001-01-01T00:00:00.000Z` string if the field is not applicable
 		const date = this[rawDataSymbol].data.low_trust_user.evaluated_at
 			? new Date(this[rawDataSymbol].data.low_trust_user.evaluated_at)
 			: undefined;
