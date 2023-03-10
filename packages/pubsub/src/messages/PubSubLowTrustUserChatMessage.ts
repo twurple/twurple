@@ -22,7 +22,7 @@ export class PubSubLowTrustUserChatMessage extends DataObject<PubSubLowTrustUser
 	}
 
 	/**
-	 * Unique ID for this low trust chat message.
+	 * Unique ID for this low-trust chat message.
 	 */
 	get lowTrustId(): string {
 		return this[rawDataSymbol].data.low_trust_user.low_trust_id;
@@ -118,8 +118,8 @@ export class PubSubLowTrustUserChatMessage extends DataObject<PubSubLowTrustUser
 	/**
 	 * A list of channel IDs where the suspicious user is also banned.
 	 */
-	get sharedBanChannelIds(): string[] | null {
-		return this[rawDataSymbol].data.low_trust_user.shared_ban_channel_ids;
+	get sharedBanChannelIds(): string[] {
+		return this[rawDataSymbol].data.low_trust_user.shared_ban_channel_ids ?? [];
 	}
 
 	/**
