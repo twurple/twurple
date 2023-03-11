@@ -29,21 +29,21 @@ export class PubSubLowTrustUserTreatmentMessage extends DataObject<PubSubLowTrus
 	/**
 	 * The user ID of the moderator.
 	 */
-	get userId(): string {
+	get moderatorId(): string {
 		return this[rawDataSymbol].data.updated_by.id;
 	}
 
 	/**
 	 * The name of the moderator.
 	 */
-	get userName(): string {
+	get moderatorName(): string {
 		return this[rawDataSymbol].data.updated_by.login;
 	}
 
 	/**
 	 * The display name of the moderator.
 	 */
-	get userDisplayName(): string {
+	get moderatorDisplayName(): string {
 		return this[rawDataSymbol].data.updated_by.display_name;
 	}
 
@@ -57,14 +57,14 @@ export class PubSubLowTrustUserTreatmentMessage extends DataObject<PubSubLowTrus
 	/**
 	 * The user ID of the suspicious user
 	 */
-	get targetUserId(): string {
+	get userId(): string {
 		return this[rawDataSymbol].data.target_user_id;
 	}
 
 	/**
 	 * The name of the suspicious user.
 	 */
-	get targetUserName(): string {
+	get userName(): string {
 		return this[rawDataSymbol].data.target_user;
 	}
 

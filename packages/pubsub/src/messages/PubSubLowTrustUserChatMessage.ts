@@ -31,21 +31,21 @@ export class PubSubLowTrustUserChatMessage extends DataObject<PubSubLowTrustUser
 	/**
 	 * The user ID of the moderator.
 	 */
-	get userId(): string {
+	get moderatorId(): string {
 		return this[rawDataSymbol].data.low_trust_user.updated_by.id;
 	}
 
 	/**
 	 * The name of the moderator.
 	 */
-	get userName(): string {
+	get moderatorName(): string {
 		return this[rawDataSymbol].data.low_trust_user.updated_by.login;
 	}
 
 	/**
 	 * The display name of the moderator.
 	 */
-	get userDisplayName(): string {
+	get moderatorDisplayName(): string {
 		return this[rawDataSymbol].data.low_trust_user.updated_by.display_name;
 	}
 
@@ -59,21 +59,21 @@ export class PubSubLowTrustUserChatMessage extends DataObject<PubSubLowTrustUser
 	/**
 	 * The user ID of the suspicious user.
 	 */
-	get senderUserId(): string {
+	get userId(): string {
 		return this[rawDataSymbol].data.low_trust_user.sender.user_id;
 	}
 
 	/**
 	 * The name of the suspicious user.
 	 */
-	get senderUserName(): string {
+	get userName(): string {
 		return this[rawDataSymbol].data.low_trust_user.sender.login;
 	}
 
 	/**
 	 * The display name of the suspicious user.
 	 */
-	get senderDisplayName(): string {
+	get userDisplayName(): string {
 		return this[rawDataSymbol].data.low_trust_user.sender.display_name;
 	}
 
