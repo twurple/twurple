@@ -106,14 +106,16 @@ export class HelixPrediction extends DataObject<HelixPredictionData> {
 	 * The ID of the winning outcome, or null if the prediction is currently running or was canceled.
 	 */
 	get winningOutcomeId(): string | null {
-		return this[rawDataSymbol].winning_outcome_id;
+		// can apparently be empty string
+		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+		return this[rawDataSymbol].winning_outcome_id || null;
 	}
 
 	/**
 	 * The winning outcome, or null if the prediction is currently running or was canceled.
 	 */
 	get winningOutcome(): HelixPredictionOutcome | null {
-		if (this[rawDataSymbol].winning_outcome_id === null) {
+		if (!this[rawDataSymbol].winning_outcome_id) {
 			return null;
 		}
 
