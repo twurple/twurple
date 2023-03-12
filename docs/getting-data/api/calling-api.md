@@ -23,25 +23,35 @@ On the {@link ApiClient} instance, the API methods are namespaced into the diffe
 
 All API methods are `async` and thus must be `await`ed. Here's a quick example:
 
-```typescript
-async function isStreamLive(userName: string) {
+```ts
+async function isSubscribedTo(userName: string, broadcasterName: string) {
 	const user = await apiClient.users.getUserByName(userName);
 	if (!user) {
 		return false;
 	}
-	return await apiClient.streams.getStreamByUserId(user.id) !== null;
+	const broadcaster = await apiClient.users.getUserByName(broadcasterName);
+	if (!broadcaster) {
+		return false;
+	}
+	const subscription = await apiClient.subscriptions.getSubscriptionForUser(broadcaster, user);
+	
+	return subscription !== null;
 }
 ```
 
-We make extensive use of convenience methods that fetch related resources, so this can also be written a bit easier:
+We make extensive use of shortcut methods that fetch related resources, so this can also be written a bit easier:
 
-```typescript
-async function isStreamLive(userName: string) {
+```ts
+async function isSubscribedTo(userName: string, broadcasterName: string) {
 	const user = await apiClient.users.getUserByName(userName);
 	if (!user) {
 		return false;
 	}
-	return await user.getStream() !== null;
+	const broadcaster = await apiClient.users.getUserByName(broadcasterName);
+	if (!broadcaster) {
+		return false;
+	}
+	return await user.isSubscribedTo(broadcaster);
 }
 ```
 
@@ -49,7 +59,7 @@ In Helix, some resources are paginated using a cursor. To faciliate easy paginat
 
 - Using `getNext()`:
 
-```typescript
+```ts
 async function getAllClipsForBroadcaster(userId: string) {
 	const request = apiClient.clips.getClipsForBroadcasterPaginated(userId);
 	let page: HelixClip[];
@@ -65,7 +75,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 
 - Using `getAll()`:
 
-```typescript
+```ts
 async function getAllClipsForBroadcaster(userId: string) {
 	const request = apiClient.clips.getClipsForBroadcasterPaginated(userId);
 
@@ -75,7 +85,7 @@ async function getAllClipsForBroadcaster(userId: string) {
 
 - Using a [`for await ... of`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of) loop:
 
-```typescript
+```ts
 async function findClipFromBroadcasterWithTitle(userId: string, searchTerm: string) {
 	for await (const clip of apiClient.clips.getClipsForBroadcasterPaginated(userId)) {
 		if (clip.title.includes(searchTerm)) {
