@@ -105,6 +105,9 @@ export class RefreshingAuthProvider implements AuthProvider {
 		intents?: string[]
 	): void {
 		const userId = extractUserId(user);
+		if (!initialToken.refreshToken) {
+			throw new Error(`Trying to add user ${userId} without refresh token`);
+		}
 		this._userAccessTokens.set(userId, {
 			...initialToken,
 			userId
