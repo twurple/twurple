@@ -98,6 +98,8 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 
 	/**
 	 * Gets a list of broadcasters the user follows.
+	 *
+	 * @deprecated Use {@link HelixChannelApi#getFollowedChannels} instead.
 	 */
 	async getFollows(): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
 		return await this._client.users.getFollows({ user: this });
@@ -105,6 +107,9 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 
 	/**
 	 * Gets the follow data of the given user to the broadcaster.
+	 *
+	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
+	 * or {@link HelixChannelApi#getFollowedChannels} instead.
 	 *
 	 * @param user The user to check the follow from.
 	 */
@@ -115,6 +120,9 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	/**
 	 * Gets the follow data of the user to the given broadcaster.
 	 *
+	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
+	 * or {@link HelixChannelApi#getFollowedChannels} instead.
+	 *
 	 * @param broadcaster The broadcaster to check the follow to.
 	 */
 	async getFollowTo(broadcaster: UserIdResolvable): Promise<HelixFollow | null> {
@@ -124,6 +132,9 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	/**
 	 * Checks whether the user is following the given broadcaster.
 	 *
+	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
+	 * or {@link HelixChannelApi#getFollowedChannels} instead.
+	 *
 	 * @param broadcaster The broadcaster to check the user's follow to.
 	 */
 	async follows(broadcaster: UserIdResolvable): Promise<boolean> {
@@ -132,6 +143,9 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 
 	/**
 	 * Checks whether the given user is following the broadcaster.
+	 *
+	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
+	 * or {@link HelixChannelApi#getFollowedChannels} instead.
 	 *
 	 * @param user The user to check the broadcaster's follow from.
 	 */

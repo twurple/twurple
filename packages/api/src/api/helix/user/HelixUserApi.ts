@@ -197,6 +197,9 @@ export class HelixUserApi extends BaseApi {
 	/**
 	 * Gets the follow relation bewteen a given user and a given broadcaster.
 	 *
+	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
+	 * or {@link HelixChannelApi#getFollowedChannels} instead.
+	 *
 	 * @param user The user to get the follow relation for.
 	 * @param broadcaster The broadcaster to get the follow relation for.
 	 */
@@ -211,6 +214,9 @@ export class HelixUserApi extends BaseApi {
 
 	/**
 	 * Checks whether the given user follows the given broadcaster.
+	 *
+	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
+	 * or {@link HelixChannelApi#getFollowedChannels} instead.
 	 *
 	 * @param user The user to check the follow for.
 	 * @param broadcaster The broadcaster to check the follow for.
