@@ -11,6 +11,10 @@ import { type PubSubChannelTermsActionMessageData } from './PubSubChannelTermsAc
 import { type PubSubChatModActionMessage } from './PubSubChatModActionMessage';
 import { type PubSubChatModActionMessageData } from './PubSubChatModActionMessage.external';
 import { type PubSubCustomMessage } from './PubSubCustomMessage';
+import { type PubSubLowTrustUserTreatmentMessage } from './PubSubLowTrustUserTreatmentMessage';
+import { type PubSubLowTrustUserTreatmentMessageData } from './PubSubLowTrustUserTreatmentMessage.external';
+import { type PubSubLowTrustUserChatMessage } from './PubSubLowTrustUserChatMessage';
+import { type PubSubLowTrustUserChatMessageData } from './PubSubLowTrustUserChatMessage.external';
 import { type PubSubRedemptionMessage } from './PubSubRedemptionMessage';
 import { type PubSubRedemptionMessageData } from './PubSubRedemptionMessage.external';
 import { type PubSubSubscriptionMessage } from './PubSubSubscriptionMessage';
@@ -21,6 +25,9 @@ import { type PubSubUserModerationNotificationMessage } from './PubSubUserModera
 import { type PubSubUserModerationNotificationMessageData } from './PubSubUserModerationNotificationMessage.external';
 import { type PubSubWhisperMessage } from './PubSubWhisperMessage';
 import { type PubSubWhisperMessageData } from './PubSubWhisperMessage.external';
+
+/** @private */
+export type PubSubLowTrustUserMessageData = PubSubLowTrustUserTreatmentMessageData | PubSubLowTrustUserChatMessageData;
 
 /** @private */
 export type PubSubModActionMessageData =
@@ -34,12 +41,15 @@ export type PubSubMessageData =
 	| PubSubAutoModQueueMessageData
 	| PubSubBitsMessageData
 	| PubSubBitsBadgeUnlockMessageData
+	| PubSubLowTrustUserMessageData
 	| PubSubModActionMessageData
 	| PubSubRedemptionMessageData
 	| PubSubSubscriptionMessageData
 	| PubSubUserModerationNotificationMessageData
 	| PubSubWhisperMessageData
 	| unknown;
+
+export type PubSubLowTrustUserMessage = PubSubLowTrustUserTreatmentMessage | PubSubLowTrustUserChatMessage;
 
 /** @private */
 export type PubSubModActionMessage =
@@ -53,6 +63,7 @@ export type PubSubMessage =
 	| PubSubAutoModQueueMessage
 	| PubSubBitsMessage
 	| PubSubBitsBadgeUnlockMessage
+	| PubSubLowTrustUserMessage
 	| PubSubModActionMessage
 	| PubSubRedemptionMessage
 	| PubSubSubscriptionMessage

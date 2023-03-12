@@ -14,7 +14,11 @@ import { PubSubChannelRoleChangeMessage } from './messages/PubSubChannelRoleChan
 import { PubSubChannelTermsActionMessage } from './messages/PubSubChannelTermsActionMessage';
 import { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
 import { PubSubCustomMessage } from './messages/PubSubCustomMessage';
+import { PubSubLowTrustUserChatMessage } from './messages/PubSubLowTrustUserChatMessage';
+import { PubSubLowTrustUserTreatmentMessage } from './messages/PubSubLowTrustUserTreatmentMessage';
 import {
+	type PubSubLowTrustUserMessage,
+	type PubSubLowTrustUserMessageData,
 	type PubSubMessage,
 	type PubSubMessageData,
 	type PubSubModActionMessage,
@@ -144,6 +148,21 @@ export class PubSubClient extends EventEmitter {
 		callback: (message: PubSubBitsBadgeUnlockMessage) => void
 	): PubSubHandler<never> {
 		return this._addHandler('channel-bits-badge-unlocks', callback, user, 'bits:read');
+	}
+
+	/**
+	 * Adds a handler to low-trust users events to the client.
+	 *
+	 * @param channel The channel the event will be subscribed for.
+	 * @param user The user the event will be subscribed for.
+	 * @param callback A function to be called when a low-trust user event is sent to the user.
+	 */
+	onLowTrustUser(
+		channel: UserIdResolvable,
+		user: UserIdResolvable,
+		callback: (message: PubSubLowTrustUserMessage) => void
+	): PubSubHandler<never> {
+		return this._addHandler('low-trust-users', callback, channel, 'channel:moderate', extractUserId(user));
 	}
 
 	/**
@@ -343,6 +362,24 @@ export class PubSubClient extends EventEmitter {
 						this._logger
 							.error(`Unknown moderator action received; please open an issue with the following info (redact IDs and names if you want):
 Type: ${(data as PubSubModActionMessageData).type}
+Data: ${JSON.stringify(data, undefined, 2)}`);
+						return undefined;
+					}
+				}
+			}
+			case 'low-trust-users': {
+				const data = messageData as PubSubLowTrustUserMessageData;
+				switch (data.type) {
+					case 'low_trust_user_new_message': {
+						return new PubSubLowTrustUserChatMessage(data);
+					}
+					case 'low_trust_user_treatment_update': {
+						return new PubSubLowTrustUserTreatmentMessage(data);
+					}
+					default: {
+						this._logger
+							.error(`Unknown low-trust users event received; please open an issue with the following info (redact IDs and names if you want):
+Type: ${(data as PubSubLowTrustUserMessageData).type}
 Data: ${JSON.stringify(data, undefined, 2)}`);
 						return undefined;
 					}

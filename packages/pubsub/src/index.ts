@@ -19,7 +19,7 @@ export type {
 	PubSubUnlistenPacket
 } from './PubSubPacket.external';
 
-export type { PubSubMessage } from './messages/PubSubMessage';
+export type { PubSubMessage, PubSubLowTrustUserMessage } from './messages/PubSubMessage';
 export { PubSubAutoModQueueMessage } from './messages/PubSubAutoModQueueMessage';
 export { PubSubBitsMessage } from './messages/PubSubBitsMessage';
 export { PubSubBitsBadgeUnlockMessage } from './messages/PubSubBitsBadgeUnlockMessage';
@@ -28,6 +28,17 @@ export { type PubSubChannelRoleChangeType } from './messages/PubSubChannelRoleCh
 export { PubSubChannelTermsActionMessage } from './messages/PubSubChannelTermsActionMessage';
 export { PubSubChatModActionMessage } from './messages/PubSubChatModActionMessage';
 export { PubSubCustomMessage } from './messages/PubSubCustomMessage';
+export {
+	type PubSubLowTrustUserTreatmentType,
+	type PubSubLowTrustUserBanEvasionEvaluationType,
+	type PubSubLowTrustUserType
+} from './messages/common/PubSubLowTrustUserContentBase.external';
+export { PubSubLowTrustUserTreatmentMessage } from './messages/PubSubLowTrustUserTreatmentMessage';
+export {
+	type PubSubLowTrustUserTreatmentChatMessageContentFragmentEmoteData,
+	type PubSubLowTrustUserChatMessageContentFragmentData
+} from './messages/PubSubLowTrustUserChatMessage.external';
+export { PubSubLowTrustUserChatMessage } from './messages/PubSubLowTrustUserChatMessage';
 export { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
 export { PubSubSubscriptionMessage } from './messages/PubSubSubscriptionMessage';
 export { PubSubUnbanRequestMessage } from './messages/PubSubUnbanRequestMessage';
