@@ -32,7 +32,7 @@ export type {
 	ChatSubUpgradeInfo
 } from './userNotices/ChatSubInfo';
 
-export type { ChatSayMessageAttributes } from './ChatMessageAttributes';
+export { extractMessageId, type ChatSayMessageAttributes } from './ChatMessageAttributes';
 
 export { ChatUser } from './ChatUser';
 

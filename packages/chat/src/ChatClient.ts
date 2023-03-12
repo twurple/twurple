@@ -1220,7 +1220,7 @@ export class ChatClient extends EventEmitter {
 	}
 
 	/**
-	 * Sends a message to a channel.
+	 * Sends a regular chat message to a channel.
 	 *
 	 * @param channel The channel to send the message to.
 	 * @param text The message to send.

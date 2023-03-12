@@ -1,4 +1,4 @@
-import type { BotCommandContext } from './BotCommandContext';
+import { type BotCommandContext } from './BotCommandContext';
 
 export interface BotCommandMatch {
 	command: BotCommand;

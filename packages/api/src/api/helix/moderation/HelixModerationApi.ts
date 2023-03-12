@@ -142,7 +142,7 @@ export class HelixModerationApi extends BaseApi {
 	 * @param channel The channel to get moderators from.
 	 */
 	getModeratorsPaginated(channel: UserIdResolvable): HelixPaginatedRequest<HelixModeratorData, HelixModerator> {
-		return new HelixPaginatedRequest(
+		return new HelixPaginatedRequest<HelixModeratorData, HelixModerator>(
 			{
 				url: 'moderation/moderators',
 				userId: extractUserId(channel),

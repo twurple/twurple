@@ -26,9 +26,12 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
+    "@d-fischer/logger": "^4.2.1",
     "@d-fischer/shared-utils": "^3.4.0",
+    "@twurple/api": "6.0.8",
     "@twurple/auth": "6.0.8",
     "@twurple/chat": "6.0.8",
+    "@twurple/common": "6.0.8",
     "tslib": "^2.0.3"
   },
   "files": [
