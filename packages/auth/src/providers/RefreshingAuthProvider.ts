@@ -3,6 +3,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { extractUserId, HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
 import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
+import { IntermediateUserRemovalError } from '../errors/IntermediateUserRemovalError';
 import { InvalidTokenError } from '../errors/InvalidTokenError';
 import { InvalidTokenTypeError } from '../errors/InvalidTokenTypeError';
 import { UnknownIntentError } from '../errors/UnknownIntentError';
@@ -30,11 +31,21 @@ export interface RefreshConfig {
 	clientSecret: string;
 
 	/**
-	 * A callback that is called whenever the auth provider refreshes the token, e.g. to save the new data in your database.
+	 * A callback that is called whenever the auth provider refreshes the token,
+	 * e.g. to save the new data in your database.
 	 *
+	 * @param userId The ID of the user.
 	 * @param token The token data.
 	 */
 	onRefresh?: OnRefreshCallback;
+
+	/**
+	 * A callback that is called whenever the auth provider fails to refresh the token,
+	 * e.g. to notify the user or remove them from your database.
+	 *
+	 * @param userId The ID of the user.
+	 */
+	onRefreshFailure?: (userId: string) => void;
 
 	/**
 	 * The scopes to be implied by the provider's app access token.
@@ -56,12 +67,14 @@ export class RefreshingAuthProvider implements AuthProvider {
 	>();
 	@Enumerable(false) private readonly _userTokenFetchers = new Map<string, TokenFetcher<AccessTokenWithUserId>>();
 	private readonly _intentToUserId = new Map<string, string>();
+	private readonly _userIdToIntents = new Map<string, Set<string>>();
 
 	@Enumerable(false) private _appAccessToken?: AccessToken;
 	@Enumerable(false) private readonly _appTokenFetcher;
 	private readonly _appImpliedScopes: string[];
 
 	private readonly _onRefresh?: OnRefreshCallback;
+	private readonly _onRefreshFailure?: (userId: string) => void;
 
 	/**
 	 * Creates a new auth provider based on the given one that can automatically
@@ -92,6 +105,9 @@ export class RefreshingAuthProvider implements AuthProvider {
 		intents?: string[]
 	): void {
 		const userId = extractUserId(user);
+		if (!initialToken.refreshToken) {
+			throw new Error(`Trying to add user ${userId} without refresh token`);
+		}
 		this._userAccessTokens.set(userId, {
 			...initialToken,
 			userId
@@ -170,6 +186,28 @@ export class RefreshingAuthProvider implements AuthProvider {
 	}
 
 	/**
+	 * Removes a user from the provider.
+	 *
+	 * This also makes all intents this user was assigned to unusable.
+	 *
+	 * @param user The user to remove.
+	 */
+	removeUser(user: UserIdResolvable): void {
+		const userId = extractUserId(user);
+
+		if (this._userIdToIntents.has(userId)) {
+			const intents = this._userIdToIntents.get(userId)!;
+			for (const intent of intents) {
+				this._intentToUserId.delete(intent);
+			}
+			this._userIdToIntents.delete(userId);
+		}
+
+		this._userAccessTokens.delete(userId);
+		this._userTokenFetchers.delete(userId);
+	}
+
+	/**
 	 * Adds intents to a user.
 	 *
 	 * Any intents that were already set before will be overwritten to point to this user instead.
@@ -183,8 +221,26 @@ export class RefreshingAuthProvider implements AuthProvider {
 			throw new Error('Trying to add intents to a user that was not added to this provider');
 		}
 		for (const intent of intents) {
+			if (this._intentToUserId.has(intent)) {
+				this._userIdToIntents.get(this._intentToUserId.get(intent)!)!.delete(intent);
+			}
 			this._intentToUserId.set(intent, userId);
+			if (this._userIdToIntents.has(userId)) {
+				this._userIdToIntents.get(userId)!.add(intent);
+			} else {
+				this._userIdToIntents.set(userId, new Set<string>([intent]));
+			}
 		}
+	}
+
+	/**
+	 * Gets all intents assigned to the given user.
+	 *
+	 * @param user The user to get intents of.
+	 */
+	getIntentsForUser(user: UserIdResolvable): string[] {
+		const userId = extractUserId(user);
+		return this._userIdToIntents.has(userId) ? Array.from(this._userIdToIntents.get(userId)!) : [];
 	}
 
 	/**
@@ -200,12 +256,13 @@ export class RefreshingAuthProvider implements AuthProvider {
 			throw new Error('Trying to refresh token for user that was not added to the provider');
 		}
 
-		const tokenData = await refreshUserToken(this.clientId, this._clientSecret, previousTokenData.refreshToken!);
+		const tokenData = await this._refreshUserTokenWithCallback(userId, previousTokenData.refreshToken!);
+		this._checkIntermediateUserRemoval(userId);
+
 		this._userAccessTokens.set(userId, {
 			...tokenData,
 			userId
 		});
-
 		this._callOnRefresh(userId, tokenData);
 
 		return {
@@ -332,6 +389,12 @@ export class RefreshingAuthProvider implements AuthProvider {
 		return await this._appTokenFetcher.fetch(this._appImpliedScopes);
 	}
 
+	private _checkIntermediateUserRemoval(userId: string) {
+		if (!this._userTokenFetchers.has(userId)) {
+			throw new IntermediateUserRemovalError(userId);
+		}
+	}
+
 	private _callOnRefresh(userId: string, tokenData: AccessToken) {
 		if (this._onRefresh) {
 			if (this._onRefresh.length < 2) {
@@ -373,6 +436,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 					...(previousToken as AccessTokenWithUserId),
 					scope
 				};
+				this._checkIntermediateUserRemoval(userId);
 				this._userAccessTokens.set(userId, newToken);
 				return newToken;
 			} catch (e) {
@@ -383,9 +447,19 @@ export class RefreshingAuthProvider implements AuthProvider {
 			}
 		}
 
+		this._checkIntermediateUserRemoval(userId);
 		const refreshedToken = await this.refreshAccessTokenForUser(userId);
 		compareScopeSets(refreshedToken.scope, scopeSets);
 		return refreshedToken;
+	}
+
+	private async _refreshUserTokenWithCallback(userId: string, refreshToken: string): Promise<AccessToken> {
+		try {
+			return await refreshUserToken(this.clientId, this._clientSecret, refreshToken);
+		} catch (e) {
+			this._onRefreshFailure?.(userId);
+			throw e;
+		}
 	}
 
 	private async _fetchAppToken(scopeSets: string[][]): Promise<AccessToken> {

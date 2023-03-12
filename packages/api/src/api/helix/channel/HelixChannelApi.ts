@@ -26,7 +26,8 @@ import { HelixPaginatedRequestWithTotal } from '../HelixPaginatedRequestWithTota
 import {
 	createPaginatedResult,
 	createPaginatedResultWithTotal,
-	type HelixPaginatedResult
+	type HelixPaginatedResult,
+	type HelixPaginatedResultWithTotal
 } from '../HelixPaginatedResult';
 import type { HelixForwardPagination } from '../HelixPagination';
 import { createPaginationQuery } from '../HelixPagination';
@@ -265,7 +266,7 @@ export class HelixChannelApi extends BaseApi {
 		moderator: UserIdResolvable,
 		user?: UserIdResolvable,
 		pagination?: HelixForwardPagination
-	): Promise<HelixPaginatedResult<HelixChannelFollower>> {
+	): Promise<HelixPaginatedResultWithTotal<HelixChannelFollower>> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixChannelFollowerData>>({
 			type: 'helix',
 			url: 'channels/followers',

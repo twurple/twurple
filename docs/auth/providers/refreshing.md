@@ -1,15 +1,23 @@
 For auto refreshing to work reliably, you need to persist your current access/refresh token pair and the token expiry
 timestamp in some way.
 
+:::warning{title="Don't use files in production"}
+
 This example uses files to make it easily understandable, but you should probably use a database or similar,
 especially if you need to fetch data for more than one user.
 
-It also assumes that you created a file named `tokens.125328655.json` with some data in it (the number represents a user ID):
+The complete object structure you want to reflect in your database is {@link AccessToken}.
+
+:::
+
+Created a file named `tokens.{USERID}.json`
+(the `{USERID}` placeholder stands for the ID of the user the token was created for, without the braces)
+with the following structure of data in it (also replace the placeholders here with your tokens):
 
 ```json
 {
-	"accessToken": "INITIAL_ACCESS_TOKEN",
-	"refreshToken": "INITIAL_REFRESH_TOKEN",
+	"accessToken": "{INITIAL_ACCESS_TOKEN}",
+	"refreshToken": "{INITIAL_REFRESH_TOKEN}",
 	"expiresIn": 0,
 	"obtainmentTimestamp": 0
 }
@@ -46,4 +54,23 @@ If you already know the ID of the user you're adding, you can save a few interna
 
 ```ts
 authProvider.addUser('125328655', tokenData);
+```
+
+## Getting the initial token using an OAuth code
+
+If you received an OAuth authorization code from Twitch's Authorization Code Flow,
+you can use that to directly get a suitable {@link AccessToken} object using the `exchangeToken` function:
+
+```ts twoslash
+// @module: esnext
+// @target: ES2017
+declare const req: { query: Record<string, string> };
+declare const clientId: string;
+declare const clientSecret: string;
+// ---cut---
+import { exchangeCode } from '@twurple/auth';
+
+const code = req.query.code; // get it from wherever
+const redirectUri = 'http://localhost'; // must match one of the URLs in the dev console exactly
+const tokenData = await exchangeCode(clientId, clientSecret, code, redirectUri);
 ```
