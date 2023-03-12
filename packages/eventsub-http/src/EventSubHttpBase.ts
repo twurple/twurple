@@ -37,13 +37,22 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 
 	/**
 	 * Whether to ignore packets that are not sent with a Host header matching the configured host name.
+	 *
+	 * Enabled by default. Set this to `false` to disable it.
 	 */
 	strictHostCheck?: boolean;
 
 	/**
+	 * Whether to add additional helper routes such as the test route at the root.
+	 *
+	 * Enabled by default. Set this to `false` to disable it.
+	 */
+	helperRoutes?: boolean;
+
+	/**
 	 * Whether to use the legacy way of augmenting your EventSub secret in subscriptions.
 	 *
-	 * Enabling this is only provided for compatibility/migration purposes.
+	 * This setting is only provided for compatibility/migration purposes.
 	 * You should switch it off at your earliest convenience.
 	 */
 	legacySecrets?: boolean;
@@ -57,9 +66,10 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 export abstract class EventSubHttpBase extends EventSubBase {
 	@Enumerable(false) private readonly _seenEventIds = new Set<string>();
 
-	/** @private */ @Enumerable(false) readonly _secret: string;
-	/** @private */ readonly _strictHostCheck: boolean;
-	/** @private */ readonly _legacySecrets: boolean;
+	@Enumerable(false) private readonly _secret: string;
+	private readonly _strictHostCheck: boolean;
+	protected readonly _helperRoutes: boolean;
+	private readonly _legacySecrets: boolean;
 
 	protected _readyToSubscribe = false;
 
@@ -84,6 +94,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		super(config);
 		this._secret = config.secret;
 		this._strictHostCheck = config.strictHostCheck ?? true;
+		this._helperRoutes = config.helperRoutes ?? true;
 		if (config.legacySecrets === undefined) {
 			this._logger.warn(`In version 6.0, the automatic augmentation of EventSub secrets was disabled by default.
 If you have been using a lower version before, your subscriptions will not work unless you remove all your subscriptions and subscribe to them again.

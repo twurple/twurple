@@ -97,11 +97,15 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 		if (requestPathPrefix) {
 			this._server.post(`${requestPathPrefix}/event/:id`, requestHandler);
 			this._server.post(`${requestPathPrefix}/:id`, dropLegacyHandler);
-			this._server.get(`${requestPathPrefix}`, healthHandler);
+			if (this._helperRoutes) {
+				this._server.get(`${requestPathPrefix}`, healthHandler);
+			}
 		} else {
 			this._server.post('/event/:id', requestHandler);
 			this._server.post('/:id', dropLegacyHandler);
-			this._server.get('/', healthHandler);
+			if (this._helperRoutes) {
+				this._server.get('/', healthHandler);
+			}
 		}
 
 		const adapterListenerPort = this._adapter.listenerPort;
