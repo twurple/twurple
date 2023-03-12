@@ -80,11 +80,15 @@ export class EventSubMiddleware extends EventSubHttpBase {
 		if (requestPathPrefix) {
 			router.post(`${requestPathPrefix}/event/:id`, requestHandler);
 			router.post(`${requestPathPrefix}/:id`, dropLegacyHandler);
-			router.get(`${requestPathPrefix}`, healthHandler);
+			if (this._helperRoutes) {
+				router.get(`${requestPathPrefix}`, healthHandler);
+			}
 		} else {
 			router.post('event/:id', requestHandler);
 			router.post(':id', dropLegacyHandler);
-			router.get('/', healthHandler);
+			if (this._helperRoutes) {
+				router.get('/', healthHandler);
+			}
 		}
 	}
 
