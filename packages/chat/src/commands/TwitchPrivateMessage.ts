@@ -1,8 +1,9 @@
-import type { BaseCheermoteList, CheermoteFormat, ParsedMessageCheerPart, ParsedMessagePart } from '@twurple/common';
-import { fillTextPositions, rtfm } from '@twurple/common';
-import { decodeCtcp, MessageTypes } from 'ircv3';
+import type { BaseCheermoteList, CheermoteFormat, ParsedMessagePart } from '@twurple/common';
+import { parseChatMessage, rtfm } from '@twurple/common';
+import { MessageTypes } from 'ircv3';
 import { ChatUser } from '../ChatUser';
-import { parseEmoteOffsets, parseEmotePositions } from '../utils/emoteUtil';
+import { parseEmoteOffsets } from '../utils/emoteUtil';
+import { getMessageText } from '../utils/messageUtil';
 
 /**
  * An IRC PRIVMSG, with easy accessors for commonly used data from its tags.
@@ -75,44 +76,33 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 
 	/**
 	 * Parses the message, separating text from emote usages.
+	 *
+	 * @deprecated Use {@link parseChatMessage} instead.
 	 */
 	parseEmotes(): ParsedMessagePart[] {
-		let messageText = this.params.content;
-		const ctcp = decodeCtcp(messageText);
-		if (ctcp && ctcp.command === 'ACTION') {
-			messageText = ctcp.params;
-		}
+		const messageText = getMessageText(this.params.content);
 
-		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
-
-		return fillTextPositions(messageText, foundEmotes);
+		return parseChatMessage(messageText, this.emoteOffsets) as ParsedMessagePart[];
 	}
 
 	/**
 	 * Parses the message, separating text from emote usages and cheers.
 	 *
+	 * @deprecated Use {@link parseChatMessage} instead.
+	 *
 	 * @param cheermotes A list of cheermotes.
 	 * @param cheermoteFormat The format to show the cheermotes in.
 	 */
 	parseEmotesAndBits(cheermotes: BaseCheermoteList<unknown>, cheermoteFormat: CheermoteFormat): ParsedMessagePart[] {
-		const messageText = this.params.content;
-		const foundCheermotes = cheermotes.parseMessage(messageText, cheermoteFormat);
-		const foundEmotesAndCheermotes: ParsedMessagePart[] = [
-			...parseEmotePositions(messageText, this.emoteOffsets),
-			...foundCheermotes.map(
-				(cheermote): ParsedMessageCheerPart => ({
-					type: 'cheer',
-					position: cheermote.position,
-					length: cheermote.length,
-					name: cheermote.name,
-					amount: cheermote.amount,
-					displayInfo: cheermote.displayInfo
-				})
-			)
-		];
+		const messageText = getMessageText(this.params.content);
 
-		foundEmotesAndCheermotes.sort((a, b) => a.position - b.position);
-
-		return fillTextPositions(messageText, foundEmotesAndCheermotes);
+		return parseChatMessage(messageText, this.emoteOffsets, cheermotes.getPossibleNames()).map(part =>
+			part.type === 'cheer'
+				? {
+						...part,
+						displayInfo: cheermotes.getCheermoteDisplayInfo(part.name, part.amount, cheermoteFormat)
+				  }
+				: part
+		);
 	}
 }

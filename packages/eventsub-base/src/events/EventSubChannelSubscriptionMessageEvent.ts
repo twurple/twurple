@@ -1,9 +1,8 @@
-import { Enumerable, utf8Substring } from '@d-fischer/shared-utils';
+import { Enumerable, groupBy } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import type { ParsedMessageEmotePart, ParsedMessagePart } from '@twurple/common';
-import { ChatEmote, checkRelationAssertion, DataObject, fillTextPositions, rawDataSymbol, rtfm } from '@twurple/common';
+import type { ParsedMessagePart } from '@twurple/common';
+import { checkRelationAssertion, DataObject, parseChatMessage, rawDataSymbol, rtfm } from '@twurple/common';
 import {
-	type EventSubChannelSubscriptionMessageEmoteData,
 	type EventSubChannelSubscriptionMessageEventData,
 	type EventSubChannelSubscriptionMessageEventTier
 } from './EventSubChannelSubscriptionMessageEvent.external';
@@ -117,24 +116,13 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 	 */
 	parseEmotes(): ParsedMessagePart[] {
 		const messageText = this[rawDataSymbol].message.text;
-		const emoteParts: ParsedMessageEmotePart[] = this[rawDataSymbol].message.emotes.map(
-			({ begin, end, id }: EventSubChannelSubscriptionMessageEmoteData) => {
-				const name = utf8Substring(messageText, begin, end + 1);
-
-				return {
-					type: 'emote',
-					position: begin,
-					length: end - begin + 1,
-					id,
-					name,
-					displayInfo: new ChatEmote({
-						code: name,
-						id
-					})
-				};
-			}
+		const emoteOffsets = new Map<string, string[]>(
+			Object.entries(groupBy(this[rawDataSymbol].message.emotes, 'id')).map(([id, ranges]) => [
+				id,
+				ranges.map(({ begin, end }) => `${begin}-${end}`)
+			])
 		);
 
-		return fillTextPositions(messageText, emoteParts);
+		return parseChatMessage(messageText, emoteOffsets) as ParsedMessagePart[];
 	}
 }

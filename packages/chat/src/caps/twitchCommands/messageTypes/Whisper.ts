@@ -1,9 +1,10 @@
 import type { ParsedMessagePart } from '@twurple/common';
-import { fillTextPositions } from '@twurple/common';
+import { parseChatMessage } from '@twurple/common';
 import type { MessageParam } from 'ircv3';
 import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 import { ChatUser } from '../../../ChatUser';
-import { parseEmoteOffsets, parseEmotePositions } from '../../../utils/emoteUtil';
+import { parseEmoteOffsets } from '../../../utils/emoteUtil';
+import { getMessageText } from '../../../utils/messageUtil';
 
 /** @private */
 @MessageType('WHISPER')
@@ -26,9 +27,8 @@ export class Whisper extends Message<Whisper> {
 	}
 
 	parseEmotes(): ParsedMessagePart[] {
-		const messageText = this.params.message;
-		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
+		const messageText = getMessageText(this.params.message);
 
-		return fillTextPositions(messageText, foundEmotes);
+		return parseChatMessage(messageText, this.emoteOffsets) as ParsedMessagePart[];
 	}
 }

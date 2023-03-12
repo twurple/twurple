@@ -1,9 +1,10 @@
 import type { ParsedMessagePart } from '@twurple/common';
-import { fillTextPositions } from '@twurple/common';
+import { parseChatMessage } from '@twurple/common';
 import type { MessageParam } from 'ircv3';
 import { Message, MessageParamDefinition, MessageType } from 'ircv3';
 import { ChatUser } from '../../../ChatUser';
-import { parseEmoteOffsets, parseEmotePositions } from '../../../utils/emoteUtil';
+import { parseEmoteOffsets } from '../../../utils/emoteUtil';
+import { getMessageText } from '../../../utils/messageUtil';
 
 @MessageType('USERNOTICE')
 export class UserNotice extends Message<UserNotice> {
@@ -40,14 +41,8 @@ export class UserNotice extends Message<UserNotice> {
 	}
 
 	parseEmotes(): ParsedMessagePart[] {
-		const messageText = this.params.message;
+		const messageText = getMessageText(this.params.message);
 
-		if (!messageText) {
-			return [];
-		}
-
-		const foundEmotes: ParsedMessagePart[] = parseEmotePositions(messageText, this.emoteOffsets);
-
-		return fillTextPositions(messageText, foundEmotes);
+		return parseChatMessage(messageText, this.emoteOffsets) as ParsedMessagePart[];
 	}
 }

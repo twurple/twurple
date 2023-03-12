@@ -1,5 +1,5 @@
 import type { Message, MessageConstructor } from 'ircv3';
-import { MessageTypes, parseMessage } from 'ircv3';
+import { decodeCtcp, MessageTypes, parseMessage } from 'ircv3';
 import { ClearChat } from '../caps/twitchCommands/messageTypes/ClearChat';
 import { Reconnect } from '../caps/twitchCommands/messageTypes/Reconnect';
 import { RoomState } from '../caps/twitchCommands/messageTypes/RoomState';
@@ -74,4 +74,13 @@ export function splitOnSpaces(text: string, maxMsgLength: number): string[] {
 	}
 
 	return res;
+}
+
+export function getMessageText(message: string): string {
+	const ctcp = decodeCtcp(message);
+	if (ctcp && ctcp.command === 'ACTION') {
+		return ctcp.params;
+	}
+
+	return message;
 }
