@@ -1,4 +1,8 @@
-/** @private */
+/**
+ * Parses an emote offset string into a map that maps emote IDs to their position ranges.
+ *
+ * @param emotes The emote offset string.
+ */
 export function parseEmoteOffsets(emotes?: string): Map<string, string[]> {
 	if (!emotes) {
 		return new Map<string, string[]>();
