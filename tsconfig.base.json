@@ -16,5 +16,5 @@
 		"isolatedModules": true,
 		"declarationMap": true
 	},
-	"exclude": ["node_modules", "lib", "es", "__tests__"]
+	"exclude": ["node_modules", "lib", "es"]
 }
