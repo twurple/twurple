@@ -113,9 +113,9 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 		this._server
 			.listen(listenerPort)
 			.then(async () => {
-				this._readyToSubscribe = true;
 				this._logger.info(`Listening on port ${listenerPort}`);
 				await this._resumeExistingSubscriptions();
+				this._readyToSubscribe = true;
 			})
 			.catch(e => {
 				this._logger.crit(`Could not listen on port ${listenerPort}: ${(e as Error).message}`);
