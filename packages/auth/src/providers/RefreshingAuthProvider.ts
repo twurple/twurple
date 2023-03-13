@@ -186,6 +186,15 @@ export class RefreshingAuthProvider implements AuthProvider {
 	}
 
 	/**
+	 * Checks whether a user was added to the provider.
+	 *
+	 * @param user The user to check.
+	 */
+	hasUser(user: UserIdResolvable): boolean {
+		return this._userTokenFetchers.has(extractUserId(user));
+	}
+
+	/**
 	 * Removes a user from the provider.
 	 *
 	 * This also makes all intents this user was assigned to unusable.
@@ -241,6 +250,23 @@ export class RefreshingAuthProvider implements AuthProvider {
 	getIntentsForUser(user: UserIdResolvable): string[] {
 		const userId = extractUserId(user);
 		return this._userIdToIntents.has(userId) ? Array.from(this._userIdToIntents.get(userId)!) : [];
+	}
+
+	/**
+	 * Removes all given intents from any user who they might be assigned to.
+	 *
+	 * Intents that have not been assigned are silently ignored.
+	 *
+	 * @param intents The intents to remove.
+	 */
+	removeIntents(intents: string[]): void {
+		for (const intent of intents) {
+			if (this._intentToUserId.has(intent)) {
+				const userId = this._intentToUserId.get(intent)!;
+				this._userIdToIntents.get(userId)?.delete(intent);
+				this._intentToUserId.delete(intent);
+			}
+		}
 	}
 
 	/**
