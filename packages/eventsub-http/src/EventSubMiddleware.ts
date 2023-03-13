@@ -94,8 +94,8 @@ export class EventSubMiddleware extends EventSubHttpBase {
 	 * The express app should be started before this.
 	 */
 	async markAsReady(): Promise<void> {
-		this._readyToSubscribe = true;
 		await this._resumeExistingSubscriptions();
+		this._readyToSubscribe = true;
 	}
 
 	protected async getHostName(): Promise<string> {
