@@ -151,15 +151,19 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 		return this._client._legacySecrets;
 	}
 
+	/**
+	 * The user ID the subscription is supposed to be authenticated as.
+	 *
+	 * Is only null for subscriptions that don't relate to a user, like extension transactions or user authorizations.
+	 */
+	abstract get authUserId(): string | null;
+
 	protected async _getTransportOptions(): Promise<HelixEventSubTransportOptions> {
 		return await this._client._getTransportOptionsForSubscription(this as EventSubSubscription);
 	}
 
 	/** @private */
 	abstract get id(): string;
-
-	/** @private */
-	abstract get authUserId(): string | null;
 
 	protected abstract _subscribe(): Promise<HelixEventSubSubscription>;
 
