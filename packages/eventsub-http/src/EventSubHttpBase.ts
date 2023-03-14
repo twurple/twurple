@@ -54,8 +54,12 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 	 *
 	 * This setting is only provided for compatibility/migration purposes.
 	 * You should switch it off at your earliest convenience.
+	 *
+	 * You can set this to the string 'migrate' to migrate your subscription to the new secrets.
+	 * This will treat all existing subscriptions as legacy and all new subscriptions as non-legacy,
+	 * then you may migrate the existing subscriptions using `.migrate()`.
 	 */
-	legacySecrets?: boolean;
+	legacySecrets?: boolean | 'migrate';
 }
 
 /**
@@ -69,7 +73,6 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	@Enumerable(false) private readonly _secret: string;
 	private readonly _strictHostCheck: boolean;
 	protected readonly _helperRoutes: boolean;
-	private readonly _legacySecrets: boolean;
 
 	protected _readyToSubscribe = false;
 
@@ -97,10 +100,16 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		this._helperRoutes = config.helperRoutes ?? true;
 		if (config.legacySecrets === undefined) {
 			this._logger.warn(`In version 6.0, the automatic augmentation of EventSub secrets was disabled by default.
-If you have been using a lower version before, your subscriptions will not work unless you remove all your subscriptions and subscribe to them again.
-A new option named \`legacySecrets\` was introduced in order to enable you to migrate your subscriptions at a later date.
-You should still migrate this as soon as possible, as in the next major version this switch will go away.
-To silence this warning and keep using the new way of using your EventSub secret, please add \`legacySecrets: false\` to your EventSub configuration.
+If you have been using a lower version before, your subscriptions will fail to verify now.
+A new option named \`legacySecrets\` was introduced in order to enable you to migrate your subscriptions.
+You should still migrate this as soon as possible, as in the next major version this switch will go away, and then you will have to remove all your subscriptions and subscribe to them again.
+
+To make Twurple migrate the subscriptions smoothly, please add \`legacySecrets: 'migrate'\` to your EventSub configuration.
+This will treat all pre-existing subscriptions as legacy and all new subscriptions as modern.
+You can then call \`.restart()\` on your pre-existing subscriptions to make them use modern secrets.
+After restarting all these subscriptions, before you restart again, set it to \`false\`.
+
+To silence this warning (if you're done migrating or if you're a new user), please add \`legacySecrets: false\` to your EventSub configuration.
 To use your legacy subscriptions without having to clean them up and resubscribing, please add \`legacySecrets: true\` to your EventSub configuration.`);
 		}
 		this._legacySecrets = config.legacySecrets ?? false;
@@ -374,7 +383,7 @@ To use your legacy subscriptions without having to clean them up and resubscribi
 	}
 
 	private _createSecretForSubscription(subscription: EventSubSubscription) {
-		if (this._legacySecrets) {
+		if (subscription.usesLegacySecret) {
 			return `${subscription.id}.${this._secret}`.slice(-100);
 		}
 
