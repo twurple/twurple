@@ -185,6 +185,16 @@ export class ChatClient extends EventEmitter {
 	private readonly _ircClient: IrcClient;
 
 	/**
+	 * Fires when the client successfully connects to the chat server.
+	 */
+	readonly onConnect = this.registerEvent<[]>();
+
+	/**
+	 * Fires when the client disconnects from the chat server.
+	 */
+	readonly onDisconnect = this.registerEvent<[manually: boolean, reason?: Error]>();
+
+	/**
 	 * Fires when a user is timed out from a channel.
 	 *
 	 * @eventListener
@@ -642,11 +652,12 @@ export class ChatClient extends EventEmitter {
 			manuallyAcknowledgeJoins: true
 		});
 
-		this._ircClient.onDisconnect(() => {
+		this._ircClient.onDisconnect((manually: boolean, reason?: Error) => {
 			this._messageRateLimiter.clear();
 			this._messageRateLimiter.pause();
 			this._joinRateLimiter.clear();
 			this._joinRateLimiter.pause();
+			this.emit(this.onDisconnect, manually, reason);
 		});
 
 		this._ircClient.registerMessageType(TwitchPrivateMessage);
@@ -733,6 +744,10 @@ export class ChatClient extends EventEmitter {
 		if (config.requestMembershipEvents) {
 			this._ircClient.addCapability(TwitchMembershipCapability);
 		}
+
+		this._ircClient.onConnect(() => {
+			this.emit(this.onConnect);
+		});
 
 		this._ircClient.onRegister(async () => {
 			this.emit(this.onAuthenticationSuccess);
@@ -1210,6 +1225,20 @@ export class ChatClient extends EventEmitter {
 	 */
 	get irc(): IrcClient {
 		return this._ircClient;
+	}
+
+	/**
+	 * Whether the chat client is currently connected.
+	 */
+	get isConnected(): boolean {
+		return this._ircClient.isConnected;
+	}
+
+	/**
+	 * Whether the chat client is currently connecting.
+	 */
+	get isConnecting(): boolean {
+		return this._ircClient.isConnecting;
 	}
 
 	/**
