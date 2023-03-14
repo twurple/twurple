@@ -20,14 +20,14 @@ which will start the listener in order to receive events from Twitch.
 ```ts twoslash
 // @module: esnext
 // @target: ES2017
-import { ClientCredentialsAuthProvider } from '@twurple/auth';
+import { AppTokenAuthProvider } from '@twurple/auth';
 import { ApiClient } from '@twurple/api';
 import { DirectConnectionAdapter, EventSubHttpListener } from '@twurple/eventsub-http';
 
 const clientId = 'YOUR_CLIENT_ID';
 const clientSecret = 'YOUR_CLIENT_SECRET';
 
-const authProvider = new ClientCredentialsAuthProvider(clientId, clientSecret);
+const authProvider = new AppTokenAuthProvider(clientId, clientSecret);
 const apiClient = new ApiClient({ authProvider });
 
 const adapter = new DirectConnectionAdapter({
