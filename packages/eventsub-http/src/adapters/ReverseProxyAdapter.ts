@@ -6,12 +6,12 @@ import { ConnectionAdapter } from './ConnectionAdapter';
  * The configuration of the reverse proxy connection adapter.
  *
  * @inheritDoc
- *
- * @meta category adapters
  */
 export interface ReverseProxyAdapterConfig {
 	/**
 	 * The port the server should listen to.
+	 *
+	 * If not given, defaults to 8080.
 	 */
 	port?: number;
 
@@ -41,6 +41,8 @@ export interface ReverseProxyAdapterConfig {
  * A WebHook connection adapter that supports a reverse proxy in front of the listener.
  *
  * @hideProtected
+ *
+ * @meta category adapters
  */
 @rtfm('eventsub-http', 'ReverseProxyAdapter')
 export class ReverseProxyAdapter extends ConnectionAdapter {
