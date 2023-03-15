@@ -26,6 +26,7 @@ const listener = new EventSubHttpListener({
 	apiClient,
 	adapter: new ReverseProxyAdapter({
 		hostName: 'example.com', // The host name the server is available from
+		port: 3000 // The port to listen on, defaults to 8080
 	}),
 	secret: 'thisShouldBeARandomlyGeneratedFixedString'
 });
