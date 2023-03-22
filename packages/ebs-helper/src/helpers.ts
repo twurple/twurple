@@ -205,8 +205,8 @@ async function setAnyConfigurationSegment(
 	config: EbsCallConfig,
 	segment: HelixExtensionConfigurationSegmentName,
 	broadcaster?: UserIdResolvable,
-	version?: string,
-	content?: string
+	content?: string,
+	version?: string
 ): Promise<void> {
 	const jwt = createExternalJwt(config);
 
@@ -214,7 +214,7 @@ async function setAnyConfigurationSegment(
 		{
 			url: 'extensions/configurations',
 			method: 'PUT',
-			jsonBody: createConfigurationSegmentBody(config, segment, broadcaster, version, content)
+			jsonBody: createConfigurationSegmentBody(config, segment, broadcaster, content, version)
 		},
 		config.clientId,
 		jwt
