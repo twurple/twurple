@@ -16,6 +16,8 @@ import {
 	createConfigurationSegmentBody,
 	createConfigurationSegmentQuery,
 	createExtensionRequiredConfigurationBody,
+	createPubSubGlobalMessageBody,
+	createPubSubGlobalMessageJwtData,
 	createPubSubMessageBody,
 	createPubSubMessageJwtData,
 	getExtensionQuery,
@@ -338,7 +340,20 @@ async function sendAnyExtensionPubSubMessage(
  * @expandParams
  */
 export async function sendExtensionPubSubGlobalMessage(config: EbsCallConfig, message: string): Promise<void> {
-	await sendAnyExtensionPubSubMessage(config, ['global'], message);
+	const jwt = createExternalJwt({
+		...config,
+		additionalData: createPubSubGlobalMessageJwtData()
+	});
+
+	await callTwitchApi(
+		{
+			url: 'extensions/pubsub',
+			method: 'POST',
+			jsonBody: createPubSubGlobalMessageBody(message)
+		},
+		config.clientId,
+		jwt
+	);
 }
 
 /**
