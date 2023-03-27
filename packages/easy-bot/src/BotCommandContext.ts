@@ -38,8 +38,8 @@ export class BotCommandContext {
 	enableUniqueChat = async (): Promise<void> => await this._bot.enableUniqueChatById(this.channelId);
 	disableUniqueChat = async (): Promise<void> => await this._bot.disableUniqueChatById(this.channelId);
 	enableSlow = async (delayBetweenMessages: number = 30): Promise<void> =>
-		await this._bot.enableSlowById(this.channelId, delayBetweenMessages);
-	disableSlow = async (): Promise<void> => await this._bot.disableSlowById(this.channelId);
+		await this._bot.enableSlowModeById(this.channelId, delayBetweenMessages);
+	disableSlow = async (): Promise<void> => await this._bot.disableSlowModeById(this.channelId);
 	enableSubsOnly = async (): Promise<void> => await this._bot.enableSubsOnlyById(this.channelId);
 	disableSubsOnly = async (): Promise<void> => await this._bot.disableSubsOnlyById(this.channelId);
 	addVip = async (): Promise<void> => await this._bot.addVipByIds(this.channelId, this.userId);

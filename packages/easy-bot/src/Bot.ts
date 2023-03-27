@@ -1,5 +1,6 @@
 import { LogLevel } from '@d-fischer/logger';
 import { Enumerable, type ResolvableValue } from '@d-fischer/shared-utils';
+import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import {
 	ApiClient,
 	type HelixChatAnnouncementColor,
@@ -19,6 +20,30 @@ import {
 import { type CommercialLength, HellFreezesOverError, type UserIdResolvable } from '@twurple/common';
 import { type BotCommand, type BotCommandMatch } from './BotCommand';
 import { BotCommandContext } from './BotCommandContext';
+import { AnnouncementEvent } from './events/AnnouncementEvent';
+import { BanEvent } from './events/BanEvent';
+import { BitsBadgeUpgradeEvent } from './events/BitsBadgeUpgradeEvent';
+import { ChatClearEvent } from './events/ChatClearEvent';
+import { CommunityPayForwardEvent } from './events/CommunityPayForwardEvent';
+import { CommunitySubEvent } from './events/CommunitySubEvent';
+import { EmoteOnlyToggleEvent } from './events/EmoteOnlyToggleEvent';
+import { FollowersOnlyToggleEvent } from './events/FollowersOnlyToggleEvent';
+import { GiftPaidUpgradeEvent } from './events/GiftPaidUpgradeEvent';
+import { JoinEvent } from './events/JoinEvent';
+import { JoinFailureEvent } from './events/JoinFailureEvent';
+import { LeaveEvent } from './events/LeaveEvent';
+import { MessageEvent } from './events/MessageEvent';
+import { MessageRemoveEvent } from './events/MessageRemoveEvent';
+import { PrimePaidUpgradeEvent } from './events/PrimePaidUpgradeEvent';
+import { RaidCancelEvent } from './events/RaidCancelEvent';
+import { RaidEvent } from './events/RaidEvent';
+import { SlowModeToggleEvent } from './events/SlowModeToggleEvent';
+import { StandardPayForwardEvent } from './events/StandardPayForwardEvent';
+import { SubEvent } from './events/SubEvent';
+import { SubGiftEvent } from './events/SubGiftEvent';
+import { SubsOnlyToggleEvent } from './events/SubsOnlyToggleEvent';
+import { UniqueChatToggleEvent } from './events/UniqueChatToggleEvent';
+import { WhisperEvent } from './events/WhisperEvent';
 
 export type BotAuthMethod = 'bot' | 'broadcaster';
 
@@ -61,6 +86,11 @@ export interface BotConfig {
 	commands?: BotCommand[];
 
 	/**
+	 * Whether to receive `onMessage` events for message that were already handled as a command.
+	 */
+	emitCommandMessageEvents?: boolean;
+
+	/**
 	 * The prefix for all commands.
 	 *
 	 * Defaults to `!`.
@@ -83,7 +113,7 @@ export type ChatUserColor = HelixChatUserColor;
 /**
  * Twitch chatbots made easy.
  */
-export class Bot {
+export class Bot extends EventEmitter {
 	/**
 	 * Direct access to the underlying API client. Use at your own risk.
 	 */
@@ -100,6 +130,289 @@ export class Bot {
 
 	private readonly _commands = new Map<string, BotCommand>();
 	private _botUserIdPromise: Promise<string> | null = null;
+
+	// region events
+	/**
+	 * Fires when the client successfully connects to the chat server.
+	 *
+	 * @eventListener
+	 */
+	readonly onConnect = this.registerEvent<[]>();
+
+	/**
+	 * Fires when the client disconnects from the chat server.
+	 *
+	 * @eventListener
+	 * @param manually Whether the disconnect was requested by the user.
+	 * @param reason The error that caused the disconnect, or `undefined` if there was no error.
+	 */
+	readonly onDisconnect = this.registerEvent<[manually: boolean, reason?: Error]>();
+
+	/**
+	 * Fires when a user is timed out from a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onTimeout = this.registerEvent<[event: BanEvent]>();
+
+	/**
+	 * Fires when a user is permanently banned from a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onBan = this.registerEvent<[event: BanEvent]>();
+
+	/**
+	 * Fires when a user upgrades their bits badge in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onBitsBadgeUpgrade = this.registerEvent<[event: BitsBadgeUpgradeEvent]>();
+
+	/**
+	 * Fires when the chat of a channel is cleared.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onChatClear = this.registerEvent<[event: ChatClearEvent]>();
+
+	/**
+	 * Fires when emote-only mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onEmoteOnlyToggle = this.registerEvent<[event: EmoteOnlyToggleEvent]>();
+
+	/**
+	 * Fires when followers-only mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onFollowersOnlyToggle = this.registerEvent<[event: FollowersOnlyToggleEvent]>();
+
+	/**
+	 * Fires when a user joins a channel.
+	 *
+	 * The join/leave events are cached by the Twitch chat server and will be batched and sent every 30-60 seconds.
+	 *
+	 * Please note that if you have not enabled the `requestMembershipEvents` option
+	 * or the channel has more than 1000 connected chatters, this will only react to your own joins.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onJoin = this.registerEvent<[event: JoinEvent]>();
+
+	/**
+	 * Fires when you fail to join a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onJoinFailure = this.registerEvent<[event: JoinFailureEvent]>();
+
+	/**
+	 * Fires when a user leaves ("parts") a channel.
+	 *
+	 * The join/leave events are cached by the Twitch chat server and will be batched and sent every 30-60 seconds.
+	 *
+	 * Please note that if you have not enabled the `requestMembershipEvents` option
+	 * or the channel has more than 1000 connected chatters, this will only react to your own leaves.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onLeave = this.registerEvent<[event: LeaveEvent]>();
+
+	/**
+	 * Fires when a single message is removed from a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onMessageRemove = this.registerEvent<[event: MessageRemoveEvent]>();
+
+	/**
+	 * Fires when R9K mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onUniqueChatToggle = this.registerEvent<[event: UniqueChatToggleEvent]>();
+
+	/**
+	 * Fires when a user raids a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onRaid = this.registerEvent<[event: RaidEvent]>();
+
+	/**
+	 * Fires when a user cancels a raid.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onRaidCancel = this.registerEvent<[event: RaidCancelEvent]>();
+
+	/**
+	 * Fires when slow mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onSlowModeToggle = this.registerEvent<[event: SlowModeToggleEvent]>();
+
+	/**
+	 * Fires when sub only mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onSubsOnlyToggle = this.registerEvent<[event: SubsOnlyToggleEvent]>();
+
+	/**
+	 * Fires when a user subscribes to a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onSub = this.registerEvent<[event: SubEvent]>();
+
+	/**
+	 * Fires when a user resubscribes to a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onResub = this.registerEvent<[event: SubEvent]>();
+
+	/**
+	 * Fires when a user gifts a subscription to a channel to another user.
+	 *
+	 * Community subs also fire multiple `onSubGift` events.
+	 * To prevent alert spam, check the [example on how to handle sub gift spam](/docs/examples/chat/sub-gift-spam).
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onSubGift = this.registerEvent<[event: SubGiftEvent]>();
+
+	/**
+	 * Fires when a user gifts random subscriptions to the community of a channel.
+	 *
+	 * Community subs also fire multiple `onSubGift` events.
+	 * To prevent alert spam, check the [example on how to handle sub gift spam](/docs/examples/chat/sub-gift-spam).
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onCommunitySub = this.registerEvent<[event: CommunitySubEvent]>();
+
+	/**
+	 * Fires when a user upgrades their Prime subscription to a paid subscription in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onPrimePaidUpgrade = this.registerEvent<[event: PrimePaidUpgradeEvent]>();
+
+	/**
+	 * Fires when a user upgrades their gift subscription to a paid subscription in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onGiftPaidUpgrade = this.registerEvent<[event: GiftPaidUpgradeEvent]>();
+
+	/**
+	 * Fires when a user pays forward a subscription that was gifted to them to a specific user.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onStandardPayForward = this.registerEvent<[event: StandardPayForwardEvent]>();
+
+	/**
+	 * Fires when a user pays forward a subscription that was gifted to them to the community.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onCommunityPayForward = this.registerEvent<[event: CommunityPayForwardEvent]>();
+
+	/**
+	 * Fires when a user sends an announcement (/announce) to a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onAnnouncement = this.registerEvent<[event: AnnouncementEvent]>();
+
+	/**
+	 * Fires when receiving a whisper from another user.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onWhisper = this.registerEvent<[event: WhisperEvent]>();
+
+	/**
+	 * Fires when authentication succeeds.
+	 *
+	 * @eventListener
+	 */
+	readonly onAuthenticationSuccess = this.registerEvent<[]>();
+
+	/**
+	 * Fires when authentication fails.
+	 *
+	 * @eventListener
+	 * @param channel The channel that a command without sufficient permissions was executed on.
+	 * @param text The message text.
+	 */
+	readonly onAuthenticationFailure = this.registerEvent<[text: string, retryCount: number]>();
+
+	/**
+	 * Fires when fetching a token fails.
+	 *
+	 * @eventListener
+	 * @param error The error that was thrown.
+	 */
+	readonly onTokenFetchFailure = this.registerEvent<[error: Error]>();
+
+	/**
+	 * Fires when sending a message fails.
+	 *
+	 * @eventListener
+	 * @param channel The channel that rejected the message.
+	 * @param reason The reason for the failure, e.g. you're banned (msg_banned)
+	 */
+	readonly onMessageFailed = this.registerEvent<[channel: string, reason: string]>();
+
+	/**
+	 * Fires when a user sends a message to a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onMessage = this.registerEvent<[event: MessageEvent]>();
+
+	/**
+	 * Fires when a user sends an action (/me) to a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onAction = this.registerEvent<[event: MessageEvent]>();
+	// endregion
 
 	/**
 	 * @deprecated Use the constructor directly instead.
@@ -122,12 +435,24 @@ export class Bot {
 	 * @param config The configuration for the bot.
 	 */
 	constructor(_unused: AuthProvider | null | undefined, config: BotConfig) {
-		const { auth, authProvider, authMethod, channel, channels, debug, commands, prefix } = config;
+		const {
+			auth,
+			authProvider,
+			authMethod,
+			channel: configChannel,
+			channels,
+			debug,
+			commands,
+			emitCommandMessageEvents,
+			prefix
+		} = config;
 		if (!auth && !authProvider) {
 			throw new Error('You should pass an auth provider using the `authProvider` configuration option');
 		}
 
-		const resolvableChannels = channel ? [channel] : channels;
+		super();
+
+		const resolvableChannels = configChannel ? [configChannel] : channels;
 
 		if (!resolvableChannels) {
 			throw new Error("didn't pass channel nor channels option, exiting");
@@ -150,16 +475,99 @@ export class Bot {
 			channels: resolvableChannels
 		});
 
-		this.chat.onMessage(async (currentChannel, user, message, msg) => {
+		this.chat.onMessage(async (channel, user, text, msg) => {
 			const match = this._findMatch(msg);
 			if (match !== null) {
 				await match.command.execute(match.params, new BotCommandContext(this, msg));
 			}
+			if (match === null || emitCommandMessageEvents) {
+				this.emit(this.onMessage, new MessageEvent(channel, user, text, false, msg, this));
+			}
 		});
+
+		// region event redirection
+		this.chat.onConnect(() => this.emit(this.onConnect));
+		this.chat.onDisconnect((manually, reason) => this.emit(this.onDisconnect, manually, reason));
+		this.chat.onAuthenticationSuccess(() => this.emit(this.onAuthenticationSuccess));
+		this.chat.onAuthenticationFailure((text, retryCount) =>
+			this.emit(this.onAuthenticationFailure, text, retryCount)
+		);
+		this.chat.onTokenFetchFailure(error => this.emit(this.onTokenFetchFailure, error));
+		this.chat.onMessageFailed((channel, text) => this.emit(this.onMessageFailed, channel, text));
+
+		this.chat.onTimeout((channel, user, duration, msg) =>
+			this.emit(this.onTimeout, new BanEvent(channel, user, duration, msg, this))
+		);
+		this.chat.onBan((channel, user, msg) => this.emit(this.onBan, new BanEvent(channel, user, null, msg, this)));
+		this.chat.onBitsBadgeUpgrade((channel, user, upgradeInfo, msg) =>
+			this.emit(this.onBitsBadgeUpgrade, new BitsBadgeUpgradeEvent(channel, user, upgradeInfo, msg, this))
+		);
+		this.chat.onChatClear((channel, msg) => this.emit(this.onChatClear, new ChatClearEvent(channel, msg, this)));
+		this.chat.onEmoteOnly((channel, enabled) =>
+			this.emit(this.onEmoteOnlyToggle, new EmoteOnlyToggleEvent(channel, enabled, this))
+		);
+		this.chat.onFollowersOnly((channel, enabled, delay) =>
+			this.emit(this.onFollowersOnlyToggle, new FollowersOnlyToggleEvent(channel, enabled, delay, this))
+		);
+		this.chat.onJoin((channel, user) => this.emit(this.onJoin, new JoinEvent(channel, user, this)));
+		this.chat.onJoinFailure((channel, reason) =>
+			this.emit(this.onJoinFailure, new JoinFailureEvent(channel, reason, this))
+		);
+		this.chat.onPart((channel, user) => this.emit(this.onLeave, new LeaveEvent(channel, user, this)));
+		this.chat.onMessageRemove((channel, messageId, msg) =>
+			this.emit(this.onMessageRemove, new MessageRemoveEvent(channel, messageId, msg, this))
+		);
+		this.chat.onR9k((channel, enabled) =>
+			this.emit(this.onUniqueChatToggle, new UniqueChatToggleEvent(channel, enabled, this))
+		);
+		this.chat.onRaid((channel, user, raidInfo, msg) =>
+			this.emit(this.onRaid, new RaidEvent(channel, user, raidInfo, msg, this))
+		);
+		this.chat.onRaidCancel((channel, msg) => this.emit(this.onRaidCancel, new RaidCancelEvent(channel, msg, this)));
+		this.chat.onSlow((channel, enabled, delay) =>
+			this.emit(this.onSlowModeToggle, new SlowModeToggleEvent(channel, enabled, delay, this))
+		);
+		this.chat.onSubsOnly((channel, enabled) =>
+			this.emit(this.onSubsOnlyToggle, new SubsOnlyToggleEvent(channel, enabled, this))
+		);
+		this.chat.onSub((channel, user, subInfo, msg) =>
+			this.emit(this.onSub, new SubEvent(channel, user, subInfo, msg, this))
+		);
+		this.chat.onResub((channel, user, subInfo, msg) =>
+			this.emit(this.onResub, new SubEvent(channel, user, subInfo, msg, this))
+		);
+		this.chat.onSubGift((channel, user, subInfo, msg) =>
+			this.emit(this.onSubGift, new SubGiftEvent(channel, user, subInfo, msg, this))
+		);
+		this.chat.onCommunitySub((channel, user, subInfo, msg) =>
+			this.emit(this.onCommunitySub, new CommunitySubEvent(channel, subInfo, msg, this))
+		);
+		this.chat.onPrimePaidUpgrade((channel, user, subInfo, msg) =>
+			this.emit(this.onPrimePaidUpgrade, new PrimePaidUpgradeEvent(channel, user, subInfo, msg, this))
+		);
+		this.chat.onGiftPaidUpgrade((channel, user, subInfo, msg) =>
+			this.emit(this.onGiftPaidUpgrade, new GiftPaidUpgradeEvent(channel, user, subInfo, msg, this))
+		);
+		this.chat.onStandardPayForward((channel, user, forwardInfo, msg) =>
+			this.emit(this.onStandardPayForward, new StandardPayForwardEvent(channel, user, forwardInfo, msg, this))
+		);
+		this.chat.onCommunityPayForward((channel, user, forwardInfo, msg) =>
+			this.emit(this.onCommunityPayForward, new CommunityPayForwardEvent(channel, user, forwardInfo, msg, this))
+		);
+		this.chat.onAnnouncement((channel, user, announcementInfo, msg) =>
+			this.emit(this.onAnnouncement, new AnnouncementEvent(channel, user, announcementInfo, msg, this))
+		);
+
+		this.chat.onWhisper((user, text, msg) => this.emit(this.onWhisper, new WhisperEvent(user, text, msg, this)));
+		this.chat.onAction((channel, user, text, msg) =>
+			this.emit(this.onAction, new MessageEvent(channel, user, text, true, msg, this))
+		);
+		// endregion
 
 		void this.chat.connect();
 	}
 
+	// region chat management commands
 	/**
 	 * Sends an announcement to a channel.
 	 *
@@ -210,6 +618,28 @@ export class Bot {
 			user,
 			reason
 		});
+	}
+
+	/**
+	 * Unban a user from a channel.
+	 *
+	 * @param channelName The name of the channel to unban the user from.
+	 * @param userName The name of the user to unban.
+	 */
+	async unban(channelName: string, userName: string): Promise<void> {
+		const channelId = await this._resolveUserId(channelName);
+		const userId = await this._resolveUserId(userName);
+		await this.unbanByIds(channelId, userId);
+	}
+
+	/**
+	 * Unbans a user from a channel using the channel and user IDs.
+	 *
+	 * @param channel The channel to unban the user from.
+	 * @param user The user to unban.
+	 */
+	async unbanByIds(channel: UserIdResolvable, user: UserIdResolvable): Promise<void> {
+		await this.api.moderation.unbanUser(channel, await this._getPreferredUserIdForModAction(channel), user);
 	}
 
 	async clear(channelName: string): Promise<void> {
@@ -336,24 +766,24 @@ export class Bot {
 		});
 	}
 
-	async enableSlow(channelName: string, delayBetweenMessages: number = 0): Promise<void> {
+	async enableSlowMode(channelName: string, delayBetweenMessages: number = 0): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
-		await this.enableSlowById(channelId, delayBetweenMessages);
+		await this.enableSlowModeById(channelId, delayBetweenMessages);
 	}
 
-	async enableSlowById(channel: UserIdResolvable, delayBetweenMessages: number = 0): Promise<void> {
+	async enableSlowModeById(channel: UserIdResolvable, delayBetweenMessages: number = 0): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			slowModeEnabled: true,
 			slowModeDelay: delayBetweenMessages
 		});
 	}
 
-	async disableSlow(channelName: string): Promise<void> {
+	async disableSlowMode(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
-		await this.disableSlowById(channelId);
+		await this.disableSlowModeById(channelId);
 	}
 
-	async disableSlowById(channel: UserIdResolvable): Promise<void> {
+	async disableSlowModeById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			slowModeEnabled: false
 		});
@@ -438,6 +868,40 @@ export class Bot {
 		await this.api.channels.removeVip(channel, user);
 	}
 
+	// endregion
+
+	// region getter commands
+	async getMods(channelName: string): Promise<HelixModerator[]> {
+		const channelId = await this._resolveUserId(channelName);
+
+		return await this.getModsById(channelId);
+	}
+
+	async getModsById(channel: UserIdResolvable): Promise<HelixModerator[]> {
+		return await this.api.moderation.getModeratorsPaginated(channel).getAll();
+	}
+
+	async getVips(channelName: string): Promise<HelixUserRelation[]> {
+		const channelId = await this._resolveUserId(channelName);
+
+		return await this.getVipsById(channelId);
+	}
+
+	async getVipsById(channel: UserIdResolvable): Promise<HelixUserRelation[]> {
+		return await this.api.channels.getVipsPaginated(channel).getAll();
+	}
+
+	// endregion
+
+	// region chat messaging
+	async join(channel: string): Promise<void> {
+		await this.chat.join(channel);
+	}
+
+	leave(channel: string): void {
+		this.chat.part(channel);
+	}
+
 	/**
 	 * Sends a reply to another chat message to a channel.
 	 *
@@ -470,26 +934,17 @@ export class Bot {
 		await this.chat.action(channelName, text);
 	}
 
-	async getMods(channelName: string): Promise<HelixModerator[]> {
-		const channelId = await this._resolveUserId(channelName);
-
-		return await this.getModsById(channelId);
+	async whisper(targetName: string, text: string): Promise<void> {
+		await this.whisperById(await this._resolveUserId(targetName), text);
 	}
 
-	async getModsById(channel: UserIdResolvable): Promise<HelixModerator[]> {
-		return await this.api.moderation.getModeratorsPaginated(channel).getAll();
+	async whisperById(target: UserIdResolvable, text: string): Promise<void> {
+		await this.api.whispers.sendWhisper(await this._getBotUserId(), target, text);
 	}
 
-	async getVips(channelName: string): Promise<HelixUserRelation[]> {
-		const channelId = await this._resolveUserId(channelName);
+	// endregion
 
-		return await this.getVipsById(channelId);
-	}
-
-	async getVipsById(channel: UserIdResolvable): Promise<HelixUserRelation[]> {
-		return await this.api.channels.getVipsPaginated(channel).getAll();
-	}
-
+	// region internals
 	private _findMatch(msg: PrivateMessage): BotCommandMatch | null {
 		const line = msg.params.content.trim().replace(/  +/g, ' ');
 		for (const command of this._commands.values()) {
@@ -544,4 +999,6 @@ export class Bot {
 	): Promise<void> {
 		await this.api.chat.updateSettings(channel, await this._getPreferredUserIdForModAction(channel), settings);
 	}
+
+	// endregion
 }

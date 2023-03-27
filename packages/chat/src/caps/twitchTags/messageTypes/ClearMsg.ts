@@ -23,6 +23,10 @@ export class ClearMsg extends Message<ClearMsg> {
 		return this._tags.get('login')!;
 	}
 
+	get channelId(): string {
+		return this._tags.get('room-id')!;
+	}
+
 	get targetMessageId(): string {
 		return this._tags.get('target-msg-id')!;
 	}

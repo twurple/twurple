@@ -28,6 +28,7 @@
   "dependencies": {
     "@d-fischer/logger": "^4.2.1",
     "@d-fischer/shared-utils": "^3.4.0",
+    "@d-fischer/typed-event-emitter": "^3.3.0",
     "@twurple/api": "6.1.0-pre.2",
     "@twurple/auth": "6.1.0-pre.2",
     "@twurple/chat": "6.1.0-pre.2",
