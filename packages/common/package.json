@@ -1,6 +1,6 @@
 {
   "name": "@twurple/common",
-  "version": "6.1.0-pre.2",
+  "version": "6.1.0-pre.3",
   "publishConfig": {
     "access": "public"
   },
