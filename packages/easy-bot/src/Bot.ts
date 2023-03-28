@@ -569,7 +569,7 @@ export class Bot extends EventEmitter {
 
 	// region chat management commands
 	/**
-	 * Sends an announcement to a channel.
+	 * Sends an announcement to the given channel.
 	 *
 	 * @param channelName The name of the channel to send the announcement to.
 	 * @param text The text to send.
@@ -580,7 +580,7 @@ export class Bot extends EventEmitter {
 	}
 
 	/**
-	 * Sends an announcement to a channel using its ID.
+	 * Sends an announcement to the given channel using its ID.
 	 *
 	 * @param channel The channel to send the announcement to.
 	 * @param text The text to send.
@@ -594,7 +594,7 @@ export class Bot extends EventEmitter {
 	}
 
 	/**
-	 * Bans a user from a channel.
+	 * Bans a user from the given channel.
 	 *
 	 * @param channelName The name of the channel to ban the user from.
 	 * @param userName The name of the user to ban.
@@ -607,7 +607,7 @@ export class Bot extends EventEmitter {
 	}
 
 	/**
-	 * Bans a user from a channel using the channel and user IDs.
+	 * Bans a user from the given channel using the channel and user IDs.
 	 *
 	 * @param channel The channel to ban the user from.
 	 * @param user The user to ban.
@@ -621,7 +621,7 @@ export class Bot extends EventEmitter {
 	}
 
 	/**
-	 * Unban a user from a channel.
+	 * Unban a user from the given channel.
 	 *
 	 * @param channelName The name of the channel to unban the user from.
 	 * @param userName The name of the user to unban.
@@ -633,7 +633,7 @@ export class Bot extends EventEmitter {
 	}
 
 	/**
-	 * Unbans a user from a channel using the channel and user IDs.
+	 * Unbans a user from the given channel using the channel and user IDs.
 	 *
 	 * @param channel The channel to unban the user from.
 	 * @param user The user to unban.
@@ -642,33 +642,78 @@ export class Bot extends EventEmitter {
 		await this.api.moderation.unbanUser(channel, await this._getPreferredUserIdForModAction(channel), user);
 	}
 
+	/**
+	 * Removes all messages from the given channel.
+	 *
+	 * @param channelName The name of the channel to remove all messages from.
+	 */
 	async clear(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.clearById(channelId);
 	}
 
+	/**
+	 * Removes all messages from the given channel using its ID.
+	 *
+	 * @param channel The channel to remove all messages from.
+	 */
 	async clearById(channel: UserIdResolvable): Promise<void> {
 		await this.api.moderation.deleteChatMessages(channel, await this._getPreferredUserIdForModAction(channel));
 	}
 
+	/**
+	 * Changes the bot's username color.
+	 *
+	 * @param color The hexadecimal code (prefixed with #) or color name to use for your username.
+	 *
+	 * Please note that only Twitch Turbo or Prime users can use hexadecimal codes for arbitrary colors.
+	 *
+	 * If you have neither of those, you can only choose from the following color names:
+	 *
+	 * blue, blue_violet, cadet_blue, chocolate, coral, dodger_blue, firebrick, golden_rod, green, hot_pink, orange_red, red, sea_green, spring_green, yellow_green
+	 */
 	async changeColor(color: ChatUserColor): Promise<void> {
 		await this.api.chat.setColorForUser(await this._getBotUserId(), color);
 	}
 
+	/**
+	 * Runs a commercial break on the given channel.
+	 *
+	 * @param channelName The name of the channel to run the commercial break on.
+	 * @param length The duration of the commercial break.
+	 */
 	async runCommercial(channelName: string, length: CommercialLength = 30): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.runCommercialById(channelId, length);
 	}
 
+	/**
+	 * Runs a commercial break on the given channel using its ID.
+	 *
+	 * @param channel The channel to run the commercial break on.
+	 * @param length The duration of the commercial break.
+	 */
 	async runCommercialById(channel: UserIdResolvable, length: CommercialLength = 30): Promise<void> {
 		await this.api.channels.startChannelCommercial(channel, length);
 	}
 
+	/**
+	 * Deletes a message from the given channel.
+	 *
+	 * @param channelName The name of the channel to delete the message from.
+	 * @param message The message (as message ID or message object) to delete.
+	 */
 	async deleteMessage(channelName: string, message: string | PrivateMessage): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.deleteMessageById(channelId, message);
 	}
 
+	/**
+	 * Deletes a message from the given channel using the channel ID.
+	 *
+	 * @param channel The channel to delete the message from.
+	 * @param message The message (as message ID or message object) to delete.
+	 */
 	async deleteMessageById(channel: UserIdResolvable, message: string | PrivateMessage): Promise<void> {
 		await this.api.moderation.deleteChatMessages(
 			channel,
@@ -677,33 +722,65 @@ export class Bot extends EventEmitter {
 		);
 	}
 
+	/**
+	 * Enables emote-only mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to enable emote-only mode in.
+	 */
 	async enableEmoteOnly(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.enableEmoteOnlyById(channelId);
 	}
 
+	/**
+	 * Enables emote-only mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to enable emote-only mode in.
+	 */
 	async enableEmoteOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			emoteOnlyModeEnabled: true
 		});
 	}
 
+	/**
+	 * Disables emote-only mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to disable emote-only mode in.
+	 */
 	async disableEmoteOnly(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.disableEmoteOnlyById(channelId);
 	}
 
+	/**
+	 * Disables emote-only mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to disable emote-only mode in.
+	 */
 	async disableEmoteOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			emoteOnlyModeEnabled: false
 		});
 	}
 
+	/**
+	 * Enables followers-only mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to enable followers-only mode in.
+	 * @param minFollowTime The time (in minutes) a user needs to be following before being able to send messages.
+	 */
 	async enableFollowersOnly(channelName: string, minFollowTime: number = 0): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.enableFollowersOnlyById(channelId, minFollowTime);
 	}
 
+	/**
+	 * Enables followers-only mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to enable followers-only mode in.
+	 * @param minFollowTime The time (in minutes) a user needs to be following before being able to send messages.
+	 */
 	async enableFollowersOnlyById(channel: UserIdResolvable, minFollowTime: number = 0): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			followerOnlyModeEnabled: true,
@@ -711,17 +788,33 @@ export class Bot extends EventEmitter {
 		});
 	}
 
+	/**
+	 * Disables followers-only mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to disable followers-only mode in.
+	 */
 	async disableFollowersOnly(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.disableFollowersOnlyById(channelId);
 	}
 
+	/**
+	 * Disables followers-only mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to disable followers-only mode in.
+	 */
 	async disableFollowersOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			followerOnlyModeEnabled: false
 		});
 	}
 
+	/**
+	 * Gives a user moderator rights in the given channel.
+	 *
+	 * @param channelName The name of the channel to give the user moderator rights in.
+	 * @param userName The name of the user to give moderator rights to.
+	 */
 	async mod(channelName: string, userName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		const userId = await this._resolveUserId(userName);
@@ -729,10 +822,22 @@ export class Bot extends EventEmitter {
 		await this.modByIds(channelId, userId);
 	}
 
+	/**
+	 * Gives a user moderator rights in the given channel using the channel and user IDs.
+	 *
+	 * @param channel The channel to give the user moderator rights in.
+	 * @param user The user to give moderator rights to.
+	 */
 	async modByIds(channel: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this.api.moderation.addModerator(channel, user);
 	}
 
+	/**
+	 * Takes moderator rights from a user in the given channel.
+	 *
+	 * @param channelName The name of the channel to remove the user's moderator rights in.
+	 * @param userName The name of the user to take moderator rights from.
+	 */
 	async unmod(channelName: string, userName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		const userId = await this._resolveUserId(userName);
@@ -740,37 +845,75 @@ export class Bot extends EventEmitter {
 		await this.unmodByIds(channelId, userId);
 	}
 
+	/**
+	 * Takes moderator rights from a user in the given channel using the channel and user IDs.
+	 *
+	 * @param channel The channel to remove the user's moderator rights in.
+	 * @param user The user to take moderator rights from.
+	 */
 	async unmodByIds(channel: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this.api.moderation.removeModerator(channel, user);
 	}
 
+	/**
+	 * Enables unique chat mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to enable unique chat mode in.
+	 */
 	async enableUniqueChat(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.enableUniqueChatById(channelId);
 	}
 
+	/**
+	 * Enables unique chat mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to enable unique chat mode in.
+	 */
 	async enableUniqueChatById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			uniqueChatModeEnabled: true
 		});
 	}
 
+	/**
+	 * Disables unique chat mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to disable unique chat mode in.
+	 */
 	async disableUniqueChat(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.disableUniqueChatById(channelId);
 	}
 
+	/**
+	 * Disables unique chat mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to disable unique chat mode in.
+	 */
 	async disableUniqueChatById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			uniqueChatModeEnabled: false
 		});
 	}
 
+	/**
+	 * Enables slow mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to enable slow mode in.
+	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
+	 */
 	async enableSlowMode(channelName: string, delayBetweenMessages: number = 0): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.enableSlowModeById(channelId, delayBetweenMessages);
 	}
 
+	/**
+	 * Enables slow mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to enable slow mode in.
+	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
+	 */
 	async enableSlowModeById(channel: UserIdResolvable, delayBetweenMessages: number = 0): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			slowModeEnabled: true,
@@ -778,39 +921,77 @@ export class Bot extends EventEmitter {
 		});
 	}
 
+	/**
+	 * Disables slow mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to disable slow mode in.
+	 */
 	async disableSlowMode(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.disableSlowModeById(channelId);
 	}
 
+	/**
+	 * Disables slow mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to disable slow mode in.
+	 */
 	async disableSlowModeById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			slowModeEnabled: false
 		});
 	}
 
+	/**
+	 * Enables subscribers-only mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to enable subscribers-only mode in.
+	 */
 	async enableSubsOnly(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.enableSubsOnlyById(channelId);
 	}
 
+	/**
+	 * Enables subscribers-only mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to enable subscribers-only mode in.
+	 */
 	async enableSubsOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			subscriberOnlyModeEnabled: true
 		});
 	}
 
+	/**
+	 * Disables subscribers-only mode in the given channel.
+	 *
+	 * @param channelName The name of the channel to disable subscribers-only mode in.
+	 */
 	async disableSubsOnly(channelName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.disableSubsOnlyById(channelId);
 	}
 
+	/**
+	 * Disables subscribers-only mode in the given channel using its ID.
+	 *
+	 * @param channel The channel to disable subscribers-only mode in.
+	 */
 	async disableSubsOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			subscriberOnlyModeEnabled: false
 		});
 	}
 
+	/**
+	 * Times out a user in the given channel and removes all their messages.
+	 *
+	 * @param channelName The name of the channel to time out the user in.
+	 * @param userName The name of the user to time out.
+	 * @param duration The time (in seconds) until the user can send messages again. Defaults to 1 minute.
+	 * @param reason The reason for the timeout.
+	 */
 	async timeout(channelName: string, userName: string, duration: number = 60, reason: string = ''): Promise<void> {
 		if (!Number.isInteger(duration) || duration < 1 || duration > 1209600) {
 			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
@@ -821,6 +1002,14 @@ export class Bot extends EventEmitter {
 		await this.timeoutByIds(channelId, userId, duration, reason);
 	}
 
+	/**
+	 * Times out a user in the given channel and removes all their messages using the channel and user IDs.
+	 *
+	 * @param channel The channel to time out the user in.
+	 * @param user The user to time out.
+	 * @param duration The time (in seconds) until the user can send messages again. Defaults to 1 minute.
+	 * @param reason The reason for the timeout.
+	 */
 	async timeoutByIds(
 		channel: UserIdResolvable,
 		user: UserIdResolvable,
@@ -838,14 +1027,34 @@ export class Bot extends EventEmitter {
 		});
 	}
 
+	/**
+	 * Removes all messages of a user from the given channel.
+	 *
+	 * @param channelName The name of the channel to purge the user's messages from.
+	 * @param userName The name of the user to purge.
+	 * @param reason The reason for the purge.
+	 */
 	async purge(channelName: string, userName: string, reason: string = ''): Promise<void> {
 		await this.timeout(channelName, userName, 1, reason);
 	}
 
+	/**
+	 * Removes all messages of a user from the given channel using the channel and user IDs.
+	 *
+	 * @param channel The channel to purge the user's messages from.
+	 * @param user The user to purge.
+	 * @param reason The reason for the purge.
+	 */
 	async purgeByIds(channel: UserIdResolvable, user: UserIdResolvable, reason: string = ''): Promise<void> {
 		await this.timeoutByIds(channel, user, 1, reason);
 	}
 
+	/**
+	 * Gives a user VIP status in the given channel.
+	 *
+	 * @param channelName The name of the channel to give the user VIP status in.
+	 * @param userName The name of the user to give VIP status.
+	 */
 	async addVip(channelName: string, userName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		const userId = await this._resolveUserId(userName);
@@ -853,10 +1062,22 @@ export class Bot extends EventEmitter {
 		await this.addVipByIds(channelId, userId);
 	}
 
+	/**
+	 * Gives a user VIP status in the given channel using the channel and user IDs.
+	 *
+	 * @param channel The channel to give the user VIP status in.
+	 * @param user The user to give VIP status.
+	 */
 	async addVipByIds(channel: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this.api.channels.addVip(channel, user);
 	}
 
+	/**
+	 * Takes VIP status from a user in the given channel.
+	 *
+	 * @param channelName The name of the channel to take the user's VIP status in.
+	 * @param userName The name of the user to take VIP status from.
+	 */
 	async removeVip(channelName: string, userName: string): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		const userId = await this._resolveUserId(userName);
@@ -864,46 +1085,80 @@ export class Bot extends EventEmitter {
 		await this.removeVipByIds(channelId, userId);
 	}
 
+	/**
+	 * Takes VIP status from a user in the given channel using the channel and user IDs.
+	 *
+	 * @param channel The channel to take the user's VIP status in.
+	 * @param user The user to take VIP status from.
+	 */
 	async removeVipByIds(channel: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this.api.channels.removeVip(channel, user);
 	}
-
 	// endregion
 
 	// region getter commands
+	/**
+	 * Retrieves a list of moderators in the given channel.
+	 *
+	 * @param channelName The name of the channel to retrieve the moderators of.
+	 */
 	async getMods(channelName: string): Promise<HelixModerator[]> {
 		const channelId = await this._resolveUserId(channelName);
 
 		return await this.getModsById(channelId);
 	}
 
+	/**
+	 * Retrieves a list of moderators in the given channel using its ID.
+	 *
+	 * @param channel The channel to retrieve the moderators of.
+	 */
 	async getModsById(channel: UserIdResolvable): Promise<HelixModerator[]> {
 		return await this.api.moderation.getModeratorsPaginated(channel).getAll();
 	}
 
+	/**
+	 * Retrieves a list of VIPs in the given channel.
+	 *
+	 * @param channelName The name of the channel to retrieve the VIPs of.
+	 */
 	async getVips(channelName: string): Promise<HelixUserRelation[]> {
 		const channelId = await this._resolveUserId(channelName);
 
 		return await this.getVipsById(channelId);
 	}
 
+	/**
+	 * Retrieves a list of VIPs in the given channel using its ID.
+	 *
+	 * @param channel The channel to retrieve the VIPs of.
+	 */
 	async getVipsById(channel: UserIdResolvable): Promise<HelixUserRelation[]> {
 		return await this.api.channels.getVipsPaginated(channel).getAll();
 	}
-
 	// endregion
 
 	// region chat messaging
-	async join(channel: string): Promise<void> {
-		await this.chat.join(channel);
-	}
-
-	leave(channel: string): void {
-		this.chat.part(channel);
+	/**
+	 * Joins a channel.
+	 *
+	 * @param channelName The name of the channel to join.
+	 */
+	async join(channelName: string): Promise<void> {
+		await this.chat.join(channelName);
 	}
 
 	/**
-	 * Sends a reply to another chat message to a channel.
+	 * Leaves a channel.
+	 *
+	 * @param channelName The name of the channel to leave.
+	 */
+	leave(channelName: string): void {
+		this.chat.part(channelName);
+	}
+
+	/**
+	 * Sends a reply to another chat message to the given channel.
 	 *
 	 * @param channel The channel to send the message to.
 	 * @param text The text to send.
@@ -914,7 +1169,7 @@ export class Bot extends EventEmitter {
 	}
 
 	/**
-	 * Sends a regular chat message to a channel.
+	 * Sends a regular chat message to the given channel.
 	 *
 	 * @param channel The channel to send the message to.
 	 * @param text The text to send.
@@ -925,7 +1180,7 @@ export class Bot extends EventEmitter {
 	}
 
 	/**
-	 * Sends an action (/me) to a channel.
+	 * Sends an action (/me) to the given channel.
 	 *
 	 * @param channelName The name of the channel to send the action to.
 	 * @param text The text to send.
@@ -934,14 +1189,25 @@ export class Bot extends EventEmitter {
 		await this.chat.action(channelName, text);
 	}
 
+	/**
+	 * Sends a whisper message to the given user.
+	 *
+	 * @param targetName The name of the user to send the whisper message to.
+	 * @param text The text to send.
+	 */
 	async whisper(targetName: string, text: string): Promise<void> {
 		await this.whisperById(await this._resolveUserId(targetName), text);
 	}
 
+	/**
+	 * Sends a whisper message to the given user using their ID.
+	 *
+	 * @param target The user to send the whisper message to.
+	 * @param text The text to send.
+	 */
 	async whisperById(target: UserIdResolvable, text: string): Promise<void> {
 		await this.api.whispers.sendWhisper(await this._getBotUserId(), target, text);
 	}
-
 	// endregion
 
 	// region internals
