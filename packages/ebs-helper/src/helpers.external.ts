@@ -56,15 +56,15 @@ export function createConfigurationSegmentBody(
 	config: EbsCallConfig,
 	segment: 'global' | 'broadcaster' | 'developer',
 	broadcaster?: UserIdResolvable,
-	version?: string,
-	content?: string
+	content?: string,
+	version?: string
 ) {
 	return {
 		extension_id: config.clientId,
 		segment,
 		broadcaster_id: mapOptional(broadcaster, extractUserId),
-		version,
-		content
+		content,
+		version
 	};
 }
 

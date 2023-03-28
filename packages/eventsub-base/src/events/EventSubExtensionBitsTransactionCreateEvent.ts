@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import { type EventSubExtensionBitsTransactionCreateEventData } from './EventSubExtensionBitsTransactionCreateEvent.external';
 
 /**
- * An EventSub event representing a channel subscription.
+ * An EventSub event representing a bits transaction in an extension.
  */
 @rtfm<EventSubExtensionBitsTransactionCreateEvent>('eventsub-base', 'EventSubExtensionBitsTransactionCreateEvent', 'id')
 export class EventSubExtensionBitsTransactionCreateEvent extends DataObject<EventSubExtensionBitsTransactionCreateEventData> {
