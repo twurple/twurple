@@ -1,6 +1,6 @@
 import { type BotCommandContext } from './BotCommandContext';
 
-/** @internal */
+/** @private */
 export interface BotCommandMatch {
 	command: BotCommand;
 	params: string[];
