@@ -112,6 +112,8 @@ export type ChatUserColor = HelixChatUserColor;
 
 /**
  * Twitch chatbots made easy.
+ *
+ * @meta category main
  */
 export class Bot extends EventEmitter {
 	/**
@@ -903,7 +905,7 @@ export class Bot extends EventEmitter {
 	 * @param channelName The name of the channel to enable slow mode in.
 	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
 	 */
-	async enableSlowMode(channelName: string, delayBetweenMessages: number = 0): Promise<void> {
+	async enableSlowMode(channelName: string, delayBetweenMessages: number = 30): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.enableSlowModeById(channelId, delayBetweenMessages);
 	}
@@ -914,7 +916,7 @@ export class Bot extends EventEmitter {
 	 * @param channel The channel to enable slow mode in.
 	 * @param delayBetweenMessages The time (in seconds) a user needs to wait between messages.
 	 */
-	async enableSlowModeById(channel: UserIdResolvable, delayBetweenMessages: number = 0): Promise<void> {
+	async enableSlowModeById(channel: UserIdResolvable, delayBetweenMessages: number = 30): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			slowModeEnabled: true,
 			slowModeDelay: delayBetweenMessages
@@ -1211,6 +1213,7 @@ export class Bot extends EventEmitter {
 	// endregion
 
 	// region internals
+	/** @internal */
 	private _findMatch(msg: PrivateMessage): BotCommandMatch | null {
 		const line = msg.params.content.trim().replace(/  +/g, ' ');
 		for (const command of this._commands.values()) {
@@ -1225,6 +1228,7 @@ export class Bot extends EventEmitter {
 		return null;
 	}
 
+	/** @internal */
 	private async _getBotUserId(): Promise<string> {
 		if (this._botUserIdPromise) {
 			return await this._botUserIdPromise;
@@ -1240,6 +1244,7 @@ export class Bot extends EventEmitter {
 			}));
 	}
 
+	/** @internal */
 	private async _getPreferredUserIdForModAction(broadcaster: UserIdResolvable): Promise<UserIdResolvable> {
 		if (this._authMethod === 'bot') {
 			return await this._getBotUserId();
@@ -1248,6 +1253,7 @@ export class Bot extends EventEmitter {
 		return broadcaster;
 	}
 
+	/** @internal */
 	private async _resolveUserId(userNameOrChannel: string): Promise<string> {
 		const userName = toUserName(userNameOrChannel);
 		const user = await this.api.users.getUserByName(userName);
@@ -1259,6 +1265,7 @@ export class Bot extends EventEmitter {
 		return user.id;
 	}
 
+	/** @internal */
 	private async _updateChannelSettings(
 		channel: UserIdResolvable,
 		settings: HelixUpdateChatSettingsParams

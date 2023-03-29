@@ -1,4 +1,4 @@
-Twurple is a set of libraries that aims to cover all of the existing Twitch APIs.
+Twurple is a set of libraries that aims to cover all existing Twitch APIs.
 
 - Query the Helix API
 - Build a chat bot

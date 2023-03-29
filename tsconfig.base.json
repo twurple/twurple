@@ -14,7 +14,8 @@
 		"experimentalDecorators": true,
 		"downlevelIteration": true,
 		"isolatedModules": true,
-		"declarationMap": true
+		"declarationMap": true,
+		"stripInternal": true
 	},
 	"exclude": ["node_modules", "lib", "es"]
 }

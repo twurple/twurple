@@ -232,6 +232,18 @@
 				}
 			]
 		},
+		"easy-bot": {
+			"categories": [
+				{
+					"name": "main",
+					"title": "Core functionality"
+				},
+				{
+					"name": "events",
+					"title": "Events"
+				}
+			]
+		},
 		"eventsub-http": {
 			"categories": [
 				{

@@ -4,7 +4,7 @@
 [![npm version](https://img.shields.io/npm/v/@twurple/auth.svg?style=flat)](https://www.npmjs.com/package/@twurple/auth)
 ![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)
 
-A set of libraries that aims to cover all of the existing Twitch APIs.
+A set of libraries that aims to cover all existing Twitch APIs.
 
 - Query the Helix API
 - Build a chat bot
