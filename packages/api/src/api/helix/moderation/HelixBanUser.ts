@@ -57,7 +57,7 @@ export class HelixBanUser extends DataObject<HelixCommonBanUserData> {
 	}
 
 	/**
-	 * Fetches more info about the user that was banned or put in a timeout.
+	 * Gets more information about the user that was banned or put in a timeout.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));

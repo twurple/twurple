@@ -141,7 +141,7 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 	}
 
 	/**
-	 * Gets more info about the reward that was redeemed.
+	 * Gets more information about the reward that was redeemed.
 	 */
 	async getReward(): Promise<HelixCustomReward> {
 		return checkRelationAssertion(
