@@ -37,7 +37,7 @@ export class RaidCancelEvent {
 	}
 
 	/**
-	 * Gets more info about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._bot.api.users.getUserById(this.broadcasterId));

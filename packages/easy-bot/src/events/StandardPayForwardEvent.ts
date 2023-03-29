@@ -42,7 +42,7 @@ export class StandardPayForwardEvent {
 	}
 
 	/**
-	 * Gets more info about the broadcaster.
+	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._bot.api.users.getUserById(this.broadcasterId));
@@ -112,7 +112,7 @@ export class StandardPayForwardEvent {
 	}
 
 	/**
-	 * Gets more info about the user who sent the original gift, or `null` if they were anonymous.
+	 * Gets more information about the user who sent the original gift, or `null` if they were anonymous.
 	 */
 	async getOriginalGifter(): Promise<HelixUser | null> {
 		const id = this.originalGifterId;
