@@ -23,7 +23,7 @@ export interface HelixModeratorFilter extends HelixForwardPagination {
 	/**
 	 * A user ID or a list thereof.
 	 */
-	userId: string | string[];
+	userId?: string | string[];
 }
 
 export interface HelixCheckAutoModStatusData {
