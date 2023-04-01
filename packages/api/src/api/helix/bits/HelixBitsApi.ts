@@ -20,7 +20,7 @@ import { HelixCheermoteList } from './HelixCheermoteList';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const leaderboard = await api.bits.getLeaderboard({ period: 'day' });
  * ```
  *

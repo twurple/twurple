@@ -46,7 +46,7 @@ import { HelixShieldModeStatus } from './HelixShieldModeStatus';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const { data: users } = await api.moderation.getBannedUsers('61369223');
  * ```
  *

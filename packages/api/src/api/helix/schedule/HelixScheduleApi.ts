@@ -31,7 +31,7 @@ import { HelixScheduleSegment } from './HelixScheduleSegment';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const { data: schedule } = await api.helix.schedule.getSchedule('61369223');
  * ```
  *

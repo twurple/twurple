@@ -28,7 +28,7 @@ import { HelixClip } from './HelixClip';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const clipId = await api.clips.createClip({ channelId: '125328655' });
  * ```
  *

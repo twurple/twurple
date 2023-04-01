@@ -19,7 +19,7 @@ type HelixGameFilterType = 'id' | 'name' | 'igdb_id';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const game = await api.games.getGameByName('Hearthstone');
  * ```
  *

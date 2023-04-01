@@ -25,7 +25,7 @@ import { HelixChannelSearchResult } from './HelixChannelSearchResult';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const channels = await api.search.searchChannels('pear');
  * ```
  *

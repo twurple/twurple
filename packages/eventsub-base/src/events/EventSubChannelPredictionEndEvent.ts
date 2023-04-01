@@ -101,7 +101,7 @@ export class EventSubChannelPredictionEndEvent extends DataObject<EventSubChanne
 	 * The winning outcome, or null if the prediction was canceled.
 	 */
 	get winningOutcome(): EventSubChannelPredictionOutcome | null {
-		if (this[rawDataSymbol].winning_outcome_id === null) {
+		if (!this[rawDataSymbol].winning_outcome_id) {
 			return null;
 		}
 
