@@ -21,7 +21,7 @@ import { HelixCharityCampaignDonation } from './HelixCharityCampaignDonation';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const charityCampaign = await api.charity.getCharityCampaign('125328655');
  * ```
  *

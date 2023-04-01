@@ -13,7 +13,7 @@ import { HelixGoal } from './HelixGoal';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const { data: goals } = await api.helix.goals.getGoals('61369223');
  *
  * @meta category helix

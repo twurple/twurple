@@ -20,7 +20,7 @@ import { HelixPoll } from './HelixPoll';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const { data: polls } = await api.helix.polls.getPolls('61369223');
  * ```
  *

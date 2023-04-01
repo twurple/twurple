@@ -10,7 +10,7 @@ import { BaseApi } from '../../BaseApi';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * await api.whispers.sendWhisper('61369223', '86753099', 'Howdy, partner!');
  * ```
  *

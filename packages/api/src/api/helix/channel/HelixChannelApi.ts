@@ -44,7 +44,7 @@ import { HelixFollowedChannel } from './HelixFollowedChannel';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const channel = await api.channels.getChannelInfoById('125328655');
  * ```
  *

@@ -25,7 +25,7 @@ import { HelixUserSubscription } from './HelixUserSubscription';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const subscription = await api.subscriptions.getSubscriptionForUser('61369223', '125328655');
  * ```
  *
