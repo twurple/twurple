@@ -94,7 +94,9 @@ export class EventSubChannelPredictionEndEvent extends DataObject<EventSubChanne
 	 * The ID of the winning outcome, or null if the prediction was canceled.
 	 */
 	get winningOutcomeId(): string | null {
-		return this[rawDataSymbol].winning_outcome_id;
+		// can apparently be empty string
+		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+		return this[rawDataSymbol].winning_outcome_id || null;
 	}
 
 	/**
