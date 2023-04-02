@@ -115,6 +115,11 @@ export class HelixStream extends DataObject<HelixStreamData> {
 
 	/**
 	 * The URL of the thumbnail of the stream.
+	 *
+	 * This URL includes the placeholders `{width}` and `{height}`
+	 * which you must replace with the desired dimensions of the thumbnail (in pixels).
+	 *
+	 * You can also use {@link HelixStream#getThumbnailUrl} to do this replacement.
 	 */
 	get thumbnailUrl(): string {
 		return this[rawDataSymbol].thumbnail_url;

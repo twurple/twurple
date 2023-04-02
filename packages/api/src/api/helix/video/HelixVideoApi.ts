@@ -20,7 +20,7 @@ export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const { data: videos } = await api.videos.getVideosByUser('125328655');
  * ```
  *

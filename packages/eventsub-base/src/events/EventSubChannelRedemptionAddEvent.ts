@@ -130,7 +130,7 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	}
 
 	/**
-	 * Gets more info about the reward that was redeemed.
+	 * Gets more information about the reward that was redeemed.
 	 */
 	async getReward(): Promise<HelixCustomReward> {
 		return checkRelationAssertion(

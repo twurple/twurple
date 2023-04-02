@@ -78,17 +78,23 @@ app.listen(3000);
 This can have different reasons:
 
 - If you run a reverse proxy in front of the listener, make sure it forwards the requests properly.
-  The listener expects the `pathPrefix` to be stripped from the received URL.  
-  Consult your reverse proxy's logs and [set up logging for the listener](/docs/getting-data/logging/configuration) as well. 
+  The listener expects the `pathPrefix` to be stripped from the received URL.
+  Consult your reverse proxy's logs
+  and [set up logging for the listener](/docs/getting-data/logging/configuration) as well.
 - Make sure your SSL is set up properly.
   In particular, you need to make sure you're using a trusted certificate (self-signed won't work)
-  and that you're passing the full certificate chain.  
+  and that you're passing the full certificate chain.
   A good way to test your SSL setup is [the Qualys SSL Labs test](https://www.ssllabs.com/ssltest).
   It will make sure you find all trust and chain issues.
+- Middleman services like CloudFlare are known to cause issues with inbound traffic from Twitch.
+  Disable any of these and try again.
 
 ## EventSub: What does the error message `subscription missing proper authorization` mean?
 
-EventSub uses app tokens to create subscriptions. App tokens can't have any scopes.  
+If you're using `@twurple/eventsub-ws`, your user token just doesn't have the
+[necessary scopes](https://dev.twitch.tv/docs/eventsub/eventsub-subscription-types) for the subscription.
+
+`@twurple/eventsub-http` on the other hand uses app tokens to create subscriptions. App tokens can't have any scopes.  
 However, that doesn't mean that authorization isn't necessary at all.
 Twitch will check with its internal systems whether the user ever authorized the necessary scope for the topic
 and give you the mentioned error message when it fails to find this authorization.

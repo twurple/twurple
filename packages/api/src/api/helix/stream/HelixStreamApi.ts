@@ -33,7 +33,7 @@ import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const stream = await api.streams.getStreamByUserId('125328655');
  * ```
  *

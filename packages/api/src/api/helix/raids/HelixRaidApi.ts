@@ -13,7 +13,7 @@ import { HelixRaid } from './HelixRaid';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const raid = await api.raids.startRaid('125328655', '61369223');
  * ```
  *

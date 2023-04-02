@@ -32,7 +32,7 @@ import { HelixExtensionTransaction } from './HelixExtensionTransaction';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const transactions = await api.extionsions.getExtensionTransactions('abcd');
  * ```
  *

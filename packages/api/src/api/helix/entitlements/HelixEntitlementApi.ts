@@ -26,7 +26,7 @@ import { HelixDropsEntitlement } from './HelixDropsEntitlement';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const clipId = await api.entitlements.getDropsEntitlements();
  * ```
  *
