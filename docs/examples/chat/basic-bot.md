@@ -47,11 +47,11 @@ Write down the `access_token` and `refresh_token` properties of the response bod
 
 ## 3. Create an `AuthProvider` instance
 
-Now you can finally start writing code! First, import all the classes you're going to need from `@twurple/auth` and `@twurple/chat`.
+Now you can finally start writing code! First, import all the classes you're going to need from `@twurple/auth` and `@twurple/easy-bot`.
 
 ```ts
 import { StaticAuthProvider } from '@twurple/auth';
-import { ChatClient } from '@twurple/chat';
+import { Bot, createBotCommand } from '@twurple/easy-bot';
 ```
 
 All the following code needs to be inside this function (or at least called from inside it) so we can use `await` and still avoid race conditions.
@@ -66,44 +66,52 @@ const authProvider = new StaticAuthProvider(clientId, accessToken);
 
 ## 4. Connect to chat
 
-Using the `AuthProvider` instance we just created, we can easily create a `ChatClient` instance and connect to the chat server.
+Using the `AuthProvider` instance we just created, we can easily create a `Bot` instance.
+It will automatically connect to the chat server.
 The given channels will automatically be joined after connecting.
 
 ```ts
-const chatClient = new ChatClient({ authProvider, channels: ['satisfiedpear'] });
-await chatClient.connect();
+const bot = new Bot({ authProvider, channels: ['satisfiedpear'] });
 ```
 
 Now you can run your code and see your bot sitting in your channel. But we want it to do something!
 
 ## 5. Listen and react to events
 
-Fortunately, reacting to things is easy. To listen to chat messages, just use the `onMessage` method. As an example, we implement a few basic commands here:
+The `Bot` configuration makes it easy to react to chat commands.
+With the following change to the constructor, we can add two basic commands:
 
 ```ts
-chatClient.onMessage((channel, user, text) => {
-	if (text === '!ping') {
-		chatClient.say(channel, 'Pong!');
-	} else if (text === '!dice') {
-		const diceRoll = Math.floor(Math.random() * 6) + 1;
-		chatClient.say(channel, `@${user} rolled a ${diceRoll}`)
-	}
+const bot = new Bot({
+	authProvider,
+	channels: ['satisfiedpear'],
+	commands: [
+		createBotCommand('dice', (params, { reply }) => {
+			const diceRoll = Math.floor(Math.random() * 6) + 1;
+			reply(`You rolled a ${diceRoll}`);
+		}),
+		createBotCommand('slap', (params, { userName, say }) => {
+			say(`${userName} slaps ${params.join(' ')} around a bit with a large trout`);
+		})
+	]
 });
 ```
 
-Handling subscriptions is also pretty easy.
+These commands can now be accessed using `!dice` and `!slap AnotherUser` in the joined channel(s).
+
+Handling subscriptions (and lots of other events) is also pretty easy.
 
 ```ts
-chatClient.onSub((channel, user) => {
-	chatClient.say(channel, `Thanks to @${user} for subscribing to the channel!`);
+bot.onSub(({ broadcasterName, userName }) => {
+	bot.say(broadcasterName, `Thanks to @${userName} for subscribing to the channel!`);
 });
 
-chatClient.onResub((channel, user, subInfo) => {
-	chatClient.say(channel, `Thanks to @${user} for subscribing to the channel for a total of ${subInfo.months} months!`);
+bot.onResub(({ broadcasterName, userName, months }) => {
+	bot.say(broadcasterName, `Thanks to @${userName} for subscribing to the channel for a total of ${months} months!`);
 });
 
-chatClient.onSubGift((channel, user, subInfo) => {
-	chatClient.say(channel, `Thanks to ${subInfo.gifter} for gifting a subscription to ${user}!`);
+bot.onSubGift(({ broadcasterName, gifterName, userName }) => {
+	bot.say(broadcasterName, `Thanks to @${gifterName} for gifting a subscription to @${userName}!`);
 });
 ```
 
@@ -116,11 +124,11 @@ Fortunately, with the access token in step 2, we also got a refresh token! *(You
 With that, you can create another type of auth provider that supports multi-user operation (via the `addUserForToken` method)
 and automatically refreshes all tokens stored in it.
 
-For the chat client to figure out which user to connect as, you need to specify which one you want to use for chat.
+For the bot to figure out which user to connect as, you need to specify which one you want to use for chat.
 
 The feature managing this is called **intents**.
 You can give a user a specific set of intents by passing them to the `addUserForToken` function as the second parameter.
-The chat client looks for the `chat` intent by default.
+The bot looks for the `chat` intent by default.
 
 Just replace the initialization line with this (but keep the `clientId` and `accessToken` constants):
 
@@ -189,13 +197,13 @@ We're done! Your bot should now connect to chat and react to a few basic command
 
 ## 9. Profit!
 
-Now you can implement a more elaborated command system, add more events to react to, and much more! All events are documented in the {@link ChatClient} class. And don't forget to have fun!
+Now you can implement a more elaborate command system, add more events to react to, and much more! All events are documented in the {@link Bot} class. And don't forget to have fun!
 
 For reference, here's the full code that _should_ be the result of everything we just did:
 
 ```ts
 import { RefreshingAuthProvider } from '@twurple/auth';
-import { ChatClient } from '@twurple/chat';
+import { Bot, createBotCommand } from '@twurple/easy-bot';
 import { promises as fs } from 'fs';
 
 const clientId = 'uo6dggojyb8d6soh92zknwmi5ej1q2';
@@ -211,25 +219,27 @@ const authProvider = new RefreshingAuthProvider(
 
 await authProvider.addUserForToken(tokenData, ['chat']);
 
-const chatClient = new ChatClient({ authProvider, channels: ['satisfiedpear'] });
-await chatClient.connect();
-
-chatClient.onMessage((channel, user, text) => {
-	if (text === '!ping') {
-		chatClient.say(channel, 'Pong!');
-	} else if (text === '!dice') {
-		const diceRoll = Math.floor(Math.random() * 6) + 1;
-		chatClient.say(channel, `@${user} rolled a ${diceRoll}`)
-	}
+const bot = new Bot({
+	authProvider,
+	channels: ['satisfiedpear'],
+	commands: [
+		createBotCommand('dice', (params, { reply }) => {
+			const diceRoll = Math.floor(Math.random() * 6) + 1;
+			reply(`You rolled a ${diceRoll}`);
+		}),
+		createBotCommand('slap', (params, { userName, say }) => {
+			say(`${userName} slaps ${params.join(' ')} around a bit with a large trout`);
+		})
+	]
 });
 
-chatClient.onSub((channel, user) => {
-	chatClient.say(channel, `Thanks to @${user} for subscribing to the channel!`);
+bot.onSub(({ broadcasterName, userName }) => {
+	bot.say(broadcasterName, `Thanks to @${userName} for subscribing to the channel!`);
 });
-chatClient.onResub((channel, user, subInfo) => {
-	chatClient.say(channel, `Thanks to @${user} for subscribing to the channel for a total of ${subInfo.months} months!`);
+bot.onResub(({ broadcasterName, userName, months }) => {
+	bot.say(broadcasterName, `Thanks to @${userName} for subscribing to the channel for a total of ${months} months!`);
 });
-chatClient.onSubGift((channel, user, subInfo) => {
-	chatClient.say(channel, `Thanks to ${subInfo.gifter} for gifting a subscription to ${user}!`);
+bot.onSubGift(({ broadcasterName, gifterName, userName }) => {
+	bot.say(broadcasterName, `Thanks to @${gifterName} for gifting a subscription to @${userName}!`);
 });
 ```
