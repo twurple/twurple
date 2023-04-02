@@ -313,7 +313,7 @@ async function sendAnyExtensionPubSubMessage(
 	config: EbsCallConfig,
 	targets: string[],
 	message: string,
-	broadcaster?: UserIdResolvable
+	broadcaster: UserIdResolvable
 ): Promise<void> {
 	const jwt = createExternalJwt({
 		...config,

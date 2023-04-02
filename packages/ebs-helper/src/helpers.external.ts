@@ -97,15 +97,15 @@ export function createPubSubGlobalMessageBody(message: string) {
 }
 
 /** @private */
-export function createPubSubMessageJwtData(broadcaster: UserIdResolvable | undefined, targets: string[]) {
-	return { channel_id: mapOptional(broadcaster, extractUserId), pubsub_perms: { send: targets } };
+export function createPubSubMessageJwtData(broadcaster: UserIdResolvable, targets: string[]) {
+	return { channel_id: extractUserId(broadcaster), pubsub_perms: { send: targets } };
 }
 
 /** @private */
-export function createPubSubMessageBody(targets: string[], broadcaster: UserIdResolvable | undefined, message: string) {
+export function createPubSubMessageBody(targets: string[], broadcaster: UserIdResolvable, message: string) {
 	return {
 		target: targets,
-		broadcaster_id: mapOptional(broadcaster, extractUserId),
+		broadcaster_id: extractUserId(broadcaster),
 		message
 	};
 }
