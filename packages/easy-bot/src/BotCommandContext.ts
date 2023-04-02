@@ -58,6 +58,13 @@ export class BotCommandContext {
 	}
 
 	/**
+	 * The display name of the user who sent the message.
+	 */
+	get userDisplayName(): string {
+		return this.msg.userInfo.displayName;
+	}
+
+	/**
 	 * The name of the user who sent the message.
 	 *
 	 * @deprecated Use {@link BotCommandContext#userName} instead.
