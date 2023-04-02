@@ -248,6 +248,26 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
+	 * Gets the total number of users that follow the specified broadcaster.
+	 *
+	 * @param broadcaster The broadcaster you want to get the number of followers of.
+	 */
+	async getChannelFollowerCount(broadcaster: UserIdResolvable): Promise<number> {
+		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<never>>({
+			type: 'helix',
+			url: 'channels/followers',
+			method: 'GET',
+			userId: extractUserId(broadcaster),
+			query: {
+				...createChannelFollowerQuery(broadcaster),
+				...createPaginationQuery({ limit: 1 })
+			}
+		});
+
+		return result.total;
+	}
+
+	/**
 	 * Gets a list of users that follow the specified broadcaster.
 	 * You can also use this endpoint to see whether a specific user follows the broadcaster.
 	 *
