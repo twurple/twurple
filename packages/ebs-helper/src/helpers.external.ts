@@ -83,15 +83,29 @@ export function createChatMessageBody(config: EbsCallConfig, extensionVersion: s
 }
 
 /** @private */
-export function createPubSubMessageJwtData(broadcaster: UserIdResolvable | undefined, targets: string[]) {
-	return { channel_id: mapOptional(broadcaster, extractUserId), pubsub_perms: { send: targets } };
+export function createPubSubGlobalMessageJwtData() {
+	return { channel_id: 'all', pubsub_perms: { send: ['global'] } };
 }
 
 /** @private */
-export function createPubSubMessageBody(targets: string[], broadcaster: UserIdResolvable | undefined, message: string) {
+export function createPubSubGlobalMessageBody(message: string) {
+	return {
+		is_global_broadcast: true,
+		target: ['global'],
+		message
+	};
+}
+
+/** @private */
+export function createPubSubMessageJwtData(broadcaster: UserIdResolvable, targets: string[]) {
+	return { channel_id: extractUserId(broadcaster), pubsub_perms: { send: targets } };
+}
+
+/** @private */
+export function createPubSubMessageBody(targets: string[], broadcaster: UserIdResolvable, message: string) {
 	return {
 		target: targets,
-		broadcaster_id: mapOptional(broadcaster, extractUserId),
+		broadcaster_id: extractUserId(broadcaster),
 		message
 	};
 }

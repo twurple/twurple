@@ -1,6 +1,6 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
 import { type HelixAutoModSettings } from '../../api/helix/moderation/HelixAutoModSettings';
-import { type HelixBanFilter, type HelixBanUserRequest } from './moderation.input';
+import { type HelixBanFilter, type HelixBanUserRequest, type HelixModeratorFilter } from './moderation.input';
 
 /** @private */
 export interface HelixAutoModSettingsData {
@@ -74,7 +74,10 @@ export interface HelixShieldModeStatusData {
 }
 
 /** @private */
-export function createModerationUserListQuery(channel: UserIdResolvable, filter?: HelixBanFilter) {
+export function createModerationUserListQuery(
+	channel: UserIdResolvable,
+	filter?: HelixModeratorFilter | HelixBanFilter
+) {
 	return {
 		broadcaster_id: extractUserId(channel),
 		user_id: filter?.userId
