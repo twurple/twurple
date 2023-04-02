@@ -38,7 +38,7 @@ import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEven
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * await api.eventSub.subscribeToUserFollowsTo('125328655', { callbackUrl: 'https://example.com' });
  * ```
  *

@@ -25,7 +25,7 @@ import { HelixPrediction } from './HelixPrediction';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const { data: predictions } = await api.helix.predictions.getPredictions('61369223');
  * ```
  *

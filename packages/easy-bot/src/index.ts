@@ -1,9 +1,9 @@
 export { Bot } from './Bot';
-export type { BotAuthMethod, BotConfig, ChatAnnouncementColor } from './Bot';
+export { type BotAuthMethod, type BotConfig, type ChatAnnouncementColor } from './Bot';
 export { BotCommand } from './BotCommand';
-export type { BotCommandMatch } from './BotCommand';
+export { type BotCommandMatch } from './BotCommand';
 export { BotCommandContext } from './BotCommandContext';
-export { createBotCommand } from './helper';
+export { createBotCommand, type CreateBotCommandOptions } from './helper';
 
 export { AnnouncementEvent } from './events/AnnouncementEvent';
 export { BanEvent } from './events/BanEvent';

@@ -479,7 +479,7 @@ export class Bot extends EventEmitter {
 
 		this.chat.onMessage(async (channel, user, text, msg) => {
 			const match = this._findMatch(msg);
-			if (match !== null) {
+			if (match?.command.canExecute(msg.channelId!, msg.userInfo.userId)) {
 				await match.command.execute(match.params, new BotCommandContext(this, msg));
 			}
 			if (match === null || emitCommandMessageEvents) {

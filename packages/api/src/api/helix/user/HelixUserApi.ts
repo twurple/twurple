@@ -45,7 +45,7 @@ import { HelixUserBlock } from './HelixUserBlock';
  *
  * ## Example
  * ```ts
- * const api = new ApiClient(new StaticAuthProvider(clientId, accessToken));
+ * const api = new ApiClient({ authProvider });
  * const user = await api.users.getUserById('125328655');
  * ```
  *

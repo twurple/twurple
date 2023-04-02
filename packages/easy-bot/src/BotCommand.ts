@@ -45,6 +45,11 @@ export abstract class BotCommand {
 		return null;
 	}
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	canExecute(channelId: string, userId: string): boolean {
+		return true;
+	}
+
 	/**
 	 * Handles the command execution.
 	 *
