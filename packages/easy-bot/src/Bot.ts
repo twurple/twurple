@@ -566,7 +566,7 @@ export class Bot extends EventEmitter {
 		);
 		// endregion
 
-		void this.chat.connect();
+		this.chat.connect();
 	}
 
 	// region chat management commands
