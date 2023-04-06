@@ -55,6 +55,10 @@ export interface HelixChatBadgeVersionData {
 	image_url_1x: string;
 	image_url_2x: string;
 	image_url_4x: string;
+	title: string;
+	description: string;
+	click_action: string | null;
+	click_url: string | null;
 }
 
 /** @private */
