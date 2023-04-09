@@ -50,14 +50,15 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 * Whether the message represents a redemption of a custom channel points reward.
 	 */
 	get isRedemption(): boolean {
-		return this._tags.has('custom-reward-id');
+		return Boolean(this._tags.get('custom-reward-id'));
 	}
 
 	/**
 	 * The ID of the redeemed reward, or `null` if the message does not represent a redemption.
 	 */
 	get rewardId(): string | null {
-		return this._tags.get('custom-reward-id') ?? null;
+		// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
+		return this._tags.get('custom-reward-id') || null;
 	}
 
 	/**
