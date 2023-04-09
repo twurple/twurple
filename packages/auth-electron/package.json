@@ -40,7 +40,7 @@
   },
   "peerDependencies": {
     "@twurple/auth": "6.1.0",
-    "electron": ">=9.0.0 <22.0.0"
+    "electron": ">=9.0.0 <25.0.0"
   },
   "files": [
     "LICENSE",
