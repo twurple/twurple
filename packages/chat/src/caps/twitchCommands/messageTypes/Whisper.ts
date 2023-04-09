@@ -13,8 +13,7 @@ export class Whisper extends Message<Whisper> {
 	target!: MessageParam;
 
 	@MessageParamDefinition({
-		trailing: true,
-		optional: true
+		trailing: true
 	})
 	message!: MessageParam;
 
