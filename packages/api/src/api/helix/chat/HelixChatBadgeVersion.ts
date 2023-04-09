@@ -22,4 +22,32 @@ export class HelixChatBadgeVersion extends DataObject<HelixChatBadgeVersionData>
 	getImageUrl(scale: HelixChatBadgeScale): string {
 		return this[rawDataSymbol][`image_url_${scale}x` as const];
 	}
+
+	/**
+	 * The title of the badge.
+	 */
+	get title(): string {
+		return this[rawDataSymbol].title;
+	}
+
+	/**
+	 * The description of the badge.
+	 */
+	get description(): string {
+		return this[rawDataSymbol].description;
+	}
+
+	/**
+	 * The action to take when clicking on the badge. Set to `null` if no action is specified.
+	 */
+	get clickAction(): string | null {
+		return this[rawDataSymbol].click_action;
+	}
+
+	/**
+	 * The URL to navigate to when clicking on the badge. Set to `null` if no URL is specified.
+	 */
+	get clickUrl(): string | null {
+		return this[rawDataSymbol].click_url;
+	}
 }
