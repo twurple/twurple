@@ -17,6 +17,15 @@ so subscriptions can be safely resumed without interruption.
 At last, you call the `.start()` method on the listener,
 which will start the listener in order to receive events from Twitch.
 
+:::warning{title="Auth provider usage"}
+
+This example uses the `AppTokenAuthProvider` for ease of demonstration.
+
+For a real world app that includes user token usage, the `RefreshingAuthProvider` class can also manage app tokens,
+so you don't need to make an additional provider just for EventSub.
+
+:::
+
 ```ts twoslash
 // @module: esnext
 // @target: ES2017
@@ -57,8 +66,12 @@ as authenticated topics are limited to one user. Instead of an app token, you ha
 The setup is similar to HTTP, except you don't need an adapter nor a secret,
 and you create a {@link EventSubWsListener} instead.
 
+:::warning{title="Auth provider usage"}
+
 For ease of demonstration, the following example uses a static token, but you should investigate
 [the other auth providers](/docs/auth/).
+
+:::
 
 ```ts twoslash
 // @module: esnext
