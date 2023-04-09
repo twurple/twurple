@@ -76,6 +76,48 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	}
 
 	/**
+	 * Whether the message is a reply to another message.
+	 */
+	get isReply(): boolean {
+		return this._tags.has('reply-parent-msg-id');
+	}
+
+	/**
+	 * The ID of the message that this message is a reply to, or `null` if it's not a reply.
+	 */
+	get parentMessageId(): string | null {
+		return this._tags.get('reply-parent-msg-id') ?? null;
+	}
+
+	/**
+	 * The text of the message that this message is a reply to, or `null` if it's not a reply.
+	 */
+	get parentMessageText(): string | null {
+		return this._tags.get('reply-parent-msg-body') ?? null;
+	}
+
+	/**
+	 * The ID of the user that wrote the message that this message is a reply to, or `null` if it's not a reply.
+	 */
+	get parentMessageUserId(): string | null {
+		return this._tags.get('reply-parent-user-id') ?? null;
+	}
+
+	/**
+	 * The name of the user that wrote the message that this message is a reply to, or `null` if it's not a reply.
+	 */
+	get parentMessageUserName(): string | null {
+		return this._tags.get('reply-parent-user-login') ?? null;
+	}
+
+	/**
+	 * The display name of the user that wrote the message that this message is a reply to, or `null` if it's not a reply.
+	 */
+	get parentMessageUserDisplayName(): string | null {
+		return this._tags.get('reply-parent-display-name') ?? null;
+	}
+
+	/**
 	 * The number of bits cheered with the message.
 	 */
 	get bits(): number {
