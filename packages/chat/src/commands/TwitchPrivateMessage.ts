@@ -54,6 +54,20 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	}
 
 	/**
+	 * The ID of the redeemed reward, or `null` if the message does not represent a redemption.
+	 */
+	get rewardId(): string | null {
+		return this._tags.get('custom-reward-id') ?? null;
+	}
+
+	/**
+	 * Whether the message is the first message of the chatter who sent it.
+	 */
+	get isFirst(): boolean {
+		return this._tags.get('first-msg') === '1';
+	}
+
+	/**
 	 * Whether the message is highlighted by using channel points.
 	 */
 	get isHighlight(): boolean {
