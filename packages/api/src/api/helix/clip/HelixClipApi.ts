@@ -29,7 +29,7 @@ import { HelixClip } from './HelixClip';
  * ## Example
  * ```ts
  * const api = new ApiClient({ authProvider });
- * const clipId = await api.clips.createClip({ channelId: '125328655' });
+ * const clipId = await api.clips.createClip({ channel: '125328655' });
  * ```
  *
  * @meta category helix
