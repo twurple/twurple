@@ -1308,7 +1308,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a drop entitlement being granted.
 	 *
-	 * @beta
 	 * @expandParams
 	 *
 	 * @param filter

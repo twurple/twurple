@@ -30,8 +30,6 @@ import { HelixDropsEntitlement } from './HelixDropsEntitlement';
  * const clipId = await api.entitlements.getDropsEntitlements();
  * ```
  *
- * @beta
- *
  * @meta category helix
  * @meta categorizedTitle Entitlements (Drops)
  */
@@ -40,7 +38,6 @@ export class HelixEntitlementApi extends BaseApi {
 	/**
 	 * Gets the drops entitlements for the given filter.
 	 *
-	 * @beta
 	 * @expandParams
 	 *
 	 * @param filter
@@ -67,7 +64,6 @@ export class HelixEntitlementApi extends BaseApi {
 	/**
 	 * Creates a paginator for drops entitlements for the given filter.
 	 *
-	 * @beta
 	 * @expandParams
 	 *
 	 * @param filter
@@ -92,8 +88,6 @@ export class HelixEntitlementApi extends BaseApi {
 	/**
 	 * Gets the drops entitlements for the given IDs.
 	 *
-	 * @beta
-	 *
 	 * @param ids The IDs to fetch.
 	 */
 	async getDropsEntitlementsByIds(ids: string[]): Promise<HelixDropsEntitlement[]> {
@@ -111,8 +105,6 @@ export class HelixEntitlementApi extends BaseApi {
 	/**
 	 * Gets the drops entitlement for the given ID.
 	 *
-	 * @beta
-	 *
 	 * @param id The ID to fetch.
 	 */
 	async getDropsEntitlementById(id: string): Promise<HelixDropsEntitlement | null> {
@@ -125,8 +117,6 @@ export class HelixEntitlementApi extends BaseApi {
 	 * Updates the status of a list of drops entitlements.
 	 *
 	 * Returns a map that associates each given ID with its update status.
-	 *
-	 * @beta
 	 *
 	 * @param ids The IDs of the entitlements.
 	 * @param fulfillmentStatus The fulfillment status to set the entitlements to.

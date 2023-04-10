@@ -569,8 +569,6 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent a drop entitlement being granted.
 	 *
-	 * @beta
-	 *
 	 * @param filter The filter to apply for the events.
 	 * @param handler The function that will be called for any new notifications.
 	 */

@@ -143,8 +143,6 @@ export class ApiClient extends BaseApiClient {
 	 *
 	 * This usually means that an app access token is used.
 	 *
-	 * @beta
-	 *
 	 * @param runner The callback to execute.
 	 *
 	 * A parameter is passed that should be used in place of the normal `ApiClient`
