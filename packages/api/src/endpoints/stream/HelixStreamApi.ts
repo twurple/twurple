@@ -1,4 +1,4 @@
-import { flatten, mapNullable } from '@d-fischer/shared-utils';
+import { Enumerable, flatten, mapNullable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
@@ -16,6 +16,7 @@ import {
 	type HelixStreamMarkerData
 } from '../../interfaces/endpoints/stream.external';
 import { type HelixPaginatedStreamFilter, type HelixStreamFilter } from '../../interfaces/endpoints/stream.input';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
 import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
@@ -42,6 +43,26 @@ import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
  */
 @rtfm('api', 'HelixStreamApi')
 export class HelixStreamApi extends BaseApi {
+	@Enumerable(false) private readonly _getStreamByUserIdBatcher = new HelixRequestBatcher(
+		{
+			url: 'streams'
+		},
+		'user_id',
+		'user_id',
+		this._client,
+		(data: HelixStreamData) => new HelixStream(data, this._client)
+	);
+
+	@Enumerable(false) private readonly _getStreamByUserNameBatcher = new HelixRequestBatcher(
+		{
+			url: 'streams'
+		},
+		'user_login',
+		'user_login',
+		this._client,
+		(data: HelixStreamData) => new HelixStream(data, this._client)
+	);
+
 	/**
 	 * Gets a list of streams.
 	 *
@@ -101,6 +122,15 @@ export class HelixStreamApi extends BaseApi {
 	}
 
 	/**
+	 * Gets the current stream for the given username, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param user The username to get the stream for.
+	 */
+	async getStreamByUserNameBatched(user: UserNameResolvable): Promise<HelixStream | null> {
+		return await this._getStreamByUserNameBatcher.request(extractUserName(user));
+	}
+
+	/**
 	 * Gets the current streams for the given user IDs.
 	 *
 	 * @param users The user IDs to get the streams for.
@@ -126,6 +156,15 @@ export class HelixStreamApi extends BaseApi {
 		});
 
 		return mapNullable(result.data[0], data => new HelixStream(data, this._client));
+	}
+
+	/**
+	 * Gets the current stream for the given user ID, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param user The user ID to get the stream for.
+	 */
+	async getStreamByUserIdBatched(user: UserIdResolvable): Promise<HelixStream | null> {
+		return await this._getStreamByUserIdBatcher.request(extractUserId(user));
 	}
 
 	/**

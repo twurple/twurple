@@ -1,4 +1,4 @@
-import { mapOptional } from '@d-fischer/shared-utils';
+import { Enumerable, mapOptional } from '@d-fischer/shared-utils';
 import { type HelixPaginatedResponse, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm } from '@twurple/common';
 import {
@@ -13,6 +13,7 @@ import {
 	type HelixDropsEntitlementFilter,
 	type HelixDropsEntitlementPaginatedFilter
 } from '../../interfaces/endpoints/entitlement.input';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
 import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
@@ -35,6 +36,16 @@ import { HelixDropsEntitlement } from './HelixDropsEntitlement';
  */
 @rtfm('api', 'HelixEntitlementApi')
 export class HelixEntitlementApi extends BaseApi {
+	@Enumerable(false) private readonly _getDropsEntitlementByIdBatcher = new HelixRequestBatcher(
+		{
+			url: 'entitlements/drops'
+		},
+		'id',
+		'id',
+		this._client,
+		(data: HelixDropsEntitlementData) => new HelixDropsEntitlement(data, this._client)
+	);
+
 	/**
 	 * Gets the drops entitlements for the given filter.
 	 *
@@ -111,6 +122,15 @@ export class HelixEntitlementApi extends BaseApi {
 		const result = await this.getDropsEntitlementsByIds([id]);
 
 		return result[0] ?? null;
+	}
+
+	/**
+	 * Gets the drops entitlement for the given ID, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param id The ID to fetch.
+	 */
+	async getDropsEntitlementByIdBatched(id: string): Promise<HelixDropsEntitlement | null> {
+		return await this._getDropsEntitlementByIdBatcher.request(id);
 	}
 
 	/**

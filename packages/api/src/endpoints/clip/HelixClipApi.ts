@@ -1,3 +1,4 @@
+import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
@@ -14,6 +15,7 @@ import {
 	type HelixPaginatedClipFilter,
 	type HelixPaginatedClipIdFilter
 } from '../../interfaces/endpoints/clip.input';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
 import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
@@ -37,6 +39,16 @@ import { HelixClip } from './HelixClip';
  */
 @rtfm('api', 'HelixClipApi')
 export class HelixClipApi extends BaseApi {
+	@Enumerable(false) private readonly _getClipByIdBatcher = new HelixRequestBatcher(
+		{
+			url: 'clips'
+		},
+		'id',
+		'id',
+		this._client,
+		(data: HelixClipData) => new HelixClip(data, this._client)
+	);
+
 	/**
 	 * Gets clips for the specified broadcaster in descending order of views.
 	 *
@@ -137,6 +149,15 @@ export class HelixClipApi extends BaseApi {
 	async getClipById(id: string): Promise<HelixClip | null> {
 		const clips = await this.getClipsByIds([id]);
 		return clips.length ? clips[0] : null;
+	}
+
+	/**
+	 * Gets the clip identified by the given ID, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param id The clip ID.
+	 */
+	async getClipByIdBatched(id: string): Promise<HelixClip | null> {
+		return await this._getClipByIdBatcher.request(id);
 	}
 
 	/**

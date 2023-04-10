@@ -1,4 +1,4 @@
-import { mapNullable } from '@d-fischer/shared-utils';
+import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { CommercialLength, UserIdResolvable } from '@twurple/common';
@@ -21,6 +21,7 @@ import {
 	type HelixUserRelationData
 } from '../../interfaces/endpoints/generic.external';
 import { HelixUserRelation } from '../../relations/HelixUserRelation';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
 import {
@@ -53,6 +54,16 @@ import { HelixFollowedChannel } from './HelixFollowedChannel';
  */
 @rtfm('api', 'HelixChannelApi')
 export class HelixChannelApi extends BaseApi {
+	@Enumerable(false) private readonly _getChannelByIdBatcher = new HelixRequestBatcher(
+		{
+			url: 'channels'
+		},
+		'broadcaster_id',
+		'broadcaster_id',
+		this._client,
+		(data: HelixChannelData) => new HelixChannel(data, this._client)
+	);
+
 	/**
 	 * Gets the channel data for the given user.
 	 *
@@ -68,6 +79,15 @@ export class HelixChannelApi extends BaseApi {
 		});
 
 		return mapNullable(result.data[0], data => new HelixChannel(data, this._client));
+	}
+
+	/**
+	 * Gets the channel data for the given user, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param user The user you want to get channel info for.
+	 */
+	async getChannelInfoByIdBatched(user: UserIdResolvable): Promise<HelixChannel | null> {
+		return await this._getChannelByIdBatcher.request(extractUserId(user));
 	}
 
 	/**

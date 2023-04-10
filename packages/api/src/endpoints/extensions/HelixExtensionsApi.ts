@@ -111,6 +111,7 @@ export class HelixExtensionsApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixExtensionBitsProductData>>({
 			type: 'helix',
 			url: 'bits/extensions',
+			forceType: 'app',
 			query: createSingleKeyQuery('should_include_all', includeDisabled?.toString())
 		});
 
@@ -132,6 +133,7 @@ export class HelixExtensionsApi extends BaseApi {
 			type: 'helix',
 			url: 'bits/extensions',
 			method: 'PUT',
+			forceType: 'app',
 			jsonBody: createExtensionProductBody(data)
 		});
 
@@ -151,6 +153,7 @@ export class HelixExtensionsApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixExtensionTransactionData>>({
 			type: 'helix',
 			url: 'extensions/transactions',
+			forceType: 'app',
 			query: {
 				...createExtensionTransactionQuery(extensionId, filter),
 				...createPaginationQuery(filter)
@@ -173,6 +176,7 @@ export class HelixExtensionsApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'extensions/transactions',
+				forceType: 'app',
 				query: createExtensionTransactionQuery(extensionId, filter)
 			},
 			this._client,

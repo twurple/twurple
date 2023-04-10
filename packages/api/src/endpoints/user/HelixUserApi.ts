@@ -1,4 +1,4 @@
-import { mapNullable } from '@d-fischer/shared-utils';
+import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
@@ -24,6 +24,7 @@ import {
 	type HelixUserExtensionData
 } from '../../interfaces/endpoints/userExtension.external';
 import { type HelixUserExtensionUpdatePayload } from '../../interfaces/endpoints/userExtension.input';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
 import type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
@@ -54,6 +55,26 @@ import { HelixUserBlock } from './HelixUserBlock';
  */
 @rtfm('api', 'HelixUserApi')
 export class HelixUserApi extends BaseApi {
+	@Enumerable(false) private readonly _getUserByIdBatcher = new HelixRequestBatcher(
+		{
+			url: 'users'
+		},
+		'id',
+		'id',
+		this._client,
+		(data: HelixUserData) => new HelixUser(data, this._client)
+	);
+
+	@Enumerable(false) private readonly _getUserByNameBatcher = new HelixRequestBatcher(
+		{
+			url: 'users'
+		},
+		'login',
+		'login',
+		this._client,
+		(data: HelixUserData) => new HelixUser(data, this._client)
+	);
+
 	/**
 	 * Gets the user data for the given list of user IDs.
 	 *
@@ -92,6 +113,15 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
+	 * Gets the user data for the given user ID, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param user The user ID you want to look up.
+	 */
+	async getUserByIdBatched(user: UserIdResolvable): Promise<HelixUser | null> {
+		return await this._getUserByIdBatcher.request(extractUserId(user));
+	}
+
+	/**
 	 * Gets the user data for the given username.
 	 *
 	 * @param userName The username you want to look up.
@@ -99,6 +129,15 @@ export class HelixUserApi extends BaseApi {
 	async getUserByName(userName: UserNameResolvable): Promise<HelixUser | null> {
 		const users = await this._getUsers('login', [extractUserName(userName)]);
 		return users.length ? users[0] : null;
+	}
+
+	/**
+	 * Gets the user data for the given username, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param user The username you want to look up.
+	 */
+	async getUserByNameBatched(user: UserNameResolvable): Promise<HelixUser | null> {
+		return await this._getUserByNameBatcher.request(extractUserName(user));
 	}
 
 	/**

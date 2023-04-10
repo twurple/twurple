@@ -1,8 +1,10 @@
+import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import type { UserIdResolvable } from '@twurple/common';
 import { extractUserId, rtfm } from '@twurple/common';
 import { type HelixVideoData } from '../../interfaces/endpoints/video.external';
 import { type HelixPaginatedVideoFilter, type HelixVideoFilter } from '../../interfaces/endpoints/video.input';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
 import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
@@ -29,6 +31,16 @@ export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
  */
 @rtfm('api', 'HelixVideoApi')
 export class HelixVideoApi extends BaseApi {
+	@Enumerable(false) private readonly _getVideoByIdBatcher = new HelixRequestBatcher(
+		{
+			url: 'videos'
+		},
+		'id',
+		'id',
+		this._client,
+		(data: HelixVideoData) => new HelixVideo(data, this._client)
+	);
+
 	/**
 	 * Gets the video data for the given list of video IDs.
 	 *
@@ -48,6 +60,15 @@ export class HelixVideoApi extends BaseApi {
 	async getVideoById(id: string): Promise<HelixVideo | null> {
 		const videos = await this.getVideosByIds([id]);
 		return videos.length ? videos[0] : null;
+	}
+
+	/**
+	 * Gets the video data for the given video ID, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param id The video ID you want to look up.
+	 */
+	async getVideoByIdBatched(id: string): Promise<HelixVideo | null> {
+		return await this._getVideoByIdBatcher.request(id);
 	}
 
 	/**

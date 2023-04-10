@@ -1,6 +1,8 @@
+import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
 import { type HelixGameData } from '../../interfaces/endpoints/game.external';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
 import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
@@ -28,6 +30,36 @@ type HelixGameFilterType = 'id' | 'name' | 'igdb_id';
  */
 @rtfm('api', 'HelixGameApi')
 export class HelixGameApi extends BaseApi {
+	@Enumerable(false) private readonly _getGameByIdBatcher = new HelixRequestBatcher(
+		{
+			url: 'games'
+		},
+		'id',
+		'id',
+		this._client,
+		(data: HelixGameData) => new HelixGame(data, this._client)
+	);
+
+	@Enumerable(false) private readonly _getGameByNameBatcher = new HelixRequestBatcher(
+		{
+			url: 'games'
+		},
+		'name',
+		'name',
+		this._client,
+		(data: HelixGameData) => new HelixGame(data, this._client)
+	);
+
+	@Enumerable(false) private readonly _getGameByIgdbIdBatcher = new HelixRequestBatcher(
+		{
+			url: 'games'
+		},
+		'igdb_id',
+		'igdb_id',
+		this._client,
+		(data: HelixGameData) => new HelixGame(data, this._client)
+	);
+
 	/**
 	 * Gets the game data for the given list of game IDs.
 	 *
@@ -83,6 +115,33 @@ export class HelixGameApi extends BaseApi {
 	async getGameByIgdbId(igdbId: string): Promise<HelixGame | null> {
 		const games = await this._getGames('igdb_id', [igdbId]);
 		return games[0] ?? null;
+	}
+
+	/**
+	 * Gets the game data for the given game ID, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param id The game ID you want to look up.
+	 */
+	async getGameByIdBatched(id: string): Promise<HelixGame | null> {
+		return await this._getGameByIdBatcher.request(id);
+	}
+
+	/**
+	 * Gets the game data for the given game name, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param name The game name you want to look up.
+	 */
+	async getGameByNameBatched(name: string): Promise<HelixGame | null> {
+		return await this._getGameByNameBatcher.request(name);
+	}
+
+	/**
+	 * Gets the game data for the given IGDB ID, batching multiple calls into fewer requests as the API allows.
+	 *
+	 * @param igdbId The IGDB ID you want to look up.
+	 */
+	async getGameByIgdbIdBatched(igdbId: string): Promise<HelixGame | null> {
+		return await this._getGameByIgdbIdBatcher.request(igdbId);
 	}
 
 	/**
