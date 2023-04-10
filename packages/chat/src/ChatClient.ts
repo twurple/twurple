@@ -308,13 +308,24 @@ export class ChatClient extends EventEmitter {
 	readonly onMessageRemove = this.registerEvent<[channel: string, messageId: string, msg: ClearMsg]>();
 
 	/**
-	 * Fires when R9K mode is toggled in a channel.
+	 * Fires when unique chat mode is toggled in a channel.
+	 *
+	 * @deprecated Use {@link ChatClient#onUniqueChat} instead.
 	 *
 	 * @eventListener
-	 * @param channel The channel where R9K mode is being toggled.
-	 * @param enabled Whether R9K mode is being enabled. If false, it's being disabled.
+	 * @param channel The channel where unique chat mode is being toggled.
+	 * @param enabled Whether unique chat mode is being enabled. If false, it's being disabled.
 	 */
 	readonly onR9k = this.registerEvent<[channel: string, enabled: boolean]>();
+
+	/**
+	 * Fires when unique chat mode is toggled in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where unique chat mode is being toggled.
+	 * @param enabled Whether unique chat mode is being enabled. If false, it's being disabled.
+	 */
+	readonly onUniqueChat = this.registerEvent<[channel: string, enabled: boolean]>();
 
 	/**
 	 * Fires when a user raids a channel.
@@ -1095,11 +1106,13 @@ export class ChatClient extends EventEmitter {
 
 					// r9k
 					case 'r9k_on': {
+						this.emit(this.onUniqueChat, channel, true);
 						this.emit(this.onR9k, channel, true);
 						break;
 					}
 
 					case 'r9k_off': {
+						this.emit(this.onUniqueChat, channel, false);
 						this.emit(this.onR9k, channel, false);
 						break;
 					}

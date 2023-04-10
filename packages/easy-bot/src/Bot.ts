@@ -519,7 +519,7 @@ export class Bot extends EventEmitter {
 		this.chat.onMessageRemove((channel, messageId, msg) =>
 			this.emit(this.onMessageRemove, new MessageRemoveEvent(channel, messageId, msg, this))
 		);
-		this.chat.onR9k((channel, enabled) =>
+		this.chat.onUniqueChat((channel, enabled) =>
 			this.emit(this.onUniqueChatToggle, new UniqueChatToggleEvent(channel, enabled, this))
 		);
 		this.chat.onRaid((channel, user, raidInfo, msg) =>
