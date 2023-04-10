@@ -2,6 +2,7 @@ import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { Logger } from '@d-fischer/logger';
 import type { RateLimiter, RateLimiterStats } from '@d-fischer/rate-limiter';
 import { ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';
+import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import {
 	callTwitchApi,
 	callTwitchApiRaw,
@@ -39,6 +40,7 @@ import { HelixTeamApi } from '../api/helix/team/HelixTeamApi';
 import { HelixUserApi } from '../api/helix/user/HelixUserApi';
 import { HelixVideoApi } from '../api/helix/video/HelixVideoApi';
 import { HelixWhisperApi } from '../api/helix/whisper/HelixWhisperApi';
+import { ApiReportedRequest } from '../reporting/ApiReportedRequest';
 
 import { type ApiConfig, type TwitchApiCallOptionsInternal } from './ApiClient';
 import { type ContextApiCallOptions } from './ContextApiCallOptions';
@@ -46,13 +48,16 @@ import { type ContextApiCallOptions } from './ContextApiCallOptions';
 /** @private */
 @Cacheable
 @rtfm('api', 'ApiClient')
-export class BaseApiClient {
+export class BaseApiClient extends EventEmitter {
 	protected readonly _config: ApiConfig;
 	protected readonly _logger: Logger;
 	protected readonly _rateLimiter: RateLimiter<TwitchApiCallOptionsInternal, Response>;
 
+	readonly onRequest = this.registerEvent<[request: ApiReportedRequest]>();
+
 	/** @private */
 	constructor(config: ApiConfig, logger: Logger, rateLimiter: RateLimiter<TwitchApiCallOptionsInternal, Response>) {
+		super();
 		this._config = config;
 		this._logger = logger;
 		this._rateLimiter = rateLimiter;
@@ -417,6 +422,8 @@ export class BaseApiClient {
 				}
 			}
 		}
+
+		this.emit(this.onRequest, new ApiReportedRequest(options, response.status, accessToken.userId ?? null));
 
 		await handleTwitchApiResponseError(response, options);
 

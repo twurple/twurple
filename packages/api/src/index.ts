@@ -204,6 +204,8 @@ export { HelixWhisperApi } from './api/helix/whisper/HelixWhisperApi';
 export { ConfigError } from './errors/ConfigError';
 export { StreamNotLiveError } from './errors/StreamNotLiveError';
 
+export { ApiReportedRequest } from './reporting/ApiReportedRequest';
+
 export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '@twurple/api-call';
 export { ChatEmote, extractUserId, extractUserName, HelixExtension, HellFreezesOverError } from '@twurple/common';
 export type {
