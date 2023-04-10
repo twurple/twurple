@@ -118,7 +118,7 @@ export class BaseApiClient extends EventEmitter {
 						);
 					}
 					const accessToken = await authProvider.getAppAccessToken();
-					return await this._callApiUsingInitialToken(options, accessToken);
+					return await this._callApiUsingInitialToken<T>(options, accessToken);
 				}
 				case 'user': {
 					forceUser = true;
@@ -153,10 +153,10 @@ export class BaseApiClient extends EventEmitter {
 
 			if (accessTokenIsExpired(accessToken) && authProvider.refreshAccessTokenForUser) {
 				const newAccessToken = await authProvider.refreshAccessTokenForUser(contextUserId);
-				return await this._callApiUsingInitialToken(options, newAccessToken);
+				return await this._callApiUsingInitialToken<T>(options, newAccessToken, true);
 			}
 
-			return await this._callApiUsingInitialToken(options, accessToken);
+			return await this._callApiUsingInitialToken<T>(options, accessToken);
 		}
 
 		const requestContextUserId = this._getUserIdFromRequestContext(options);
@@ -167,7 +167,7 @@ export class BaseApiClient extends EventEmitter {
 
 		if (accessTokenIsExpired(accessToken) && accessToken.userId && authProvider.refreshAccessTokenForUser) {
 			const newAccessToken = await authProvider.refreshAccessTokenForUser(accessToken.userId);
-			return await this._callApiUsingInitialToken(options, newAccessToken);
+			return await this._callApiUsingInitialToken<T>(options, newAccessToken, true);
 		}
 
 		return await this._callApiUsingInitialToken<T>(options, accessToken);
@@ -388,7 +388,8 @@ export class BaseApiClient extends EventEmitter {
 
 	private async _callApiUsingInitialToken<T = unknown>(
 		options: TwitchApiCallOptions,
-		accessToken: AccessTokenMaybeWithUserId
+		accessToken: AccessTokenMaybeWithUserId,
+		wasRefreshed = false
 	): Promise<T> {
 		const { authProvider } = this._config;
 
@@ -399,7 +400,7 @@ export class BaseApiClient extends EventEmitter {
 			accessToken.accessToken,
 			authorizationType
 		);
-		if (response.status === 401) {
+		if (response.status === 401 && !wasRefreshed) {
 			if (accessToken.userId) {
 				if (authProvider.refreshAccessTokenForUser) {
 					const token = await authProvider.refreshAccessTokenForUser(accessToken.userId);
