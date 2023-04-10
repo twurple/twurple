@@ -34,7 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/logger": "^4.2.1",
-    "@d-fischer/shared-utils": "^3.4.0",
+    "@d-fischer/shared-utils": "3.6.1",
     "@twurple/api-call": "6.1.1",
     "@twurple/common": "6.1.1",
     "tslib": "^2.0.3"

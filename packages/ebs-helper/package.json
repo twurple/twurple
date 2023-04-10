@@ -33,7 +33,7 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/shared-utils": "^3.4.0",
+    "@d-fischer/shared-utils": "3.6.1",
     "@twurple/api-call": "6.1.1",
     "@twurple/common": "6.1.1",
     "jsonwebtoken": "^8.5.1",

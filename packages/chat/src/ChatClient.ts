@@ -7,7 +7,7 @@ import {
 	TimedPassthruRateLimiter
 } from '@d-fischer/rate-limiter';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import { delay, Enumerable, fibWithLimit, resolveConfigValue } from '@d-fischer/shared-utils';
+import { delay, Enumerable, fibWithLimit, promiseWithResolvers, resolveConfigValue } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
 import {
@@ -684,30 +684,32 @@ export class ChatClient extends EventEmitter {
 			}
 		};
 
-		const executeJoinRequest = async (channel: string) =>
-			await new Promise<void>((resolve, reject) => {
-				// eslint-disable-next-line @typescript-eslint/init-declarations
-				let timer: NodeJS.Timer;
-				const e = this.addInternalListener(this._onJoinResult, (chan, state, error) => {
-					if (chan === channel) {
-						clearTimeout(timer);
-						if (error) {
-							reject(error);
-						} else {
-							resolve();
-						}
-						this.removeListener(e);
+		const executeJoinRequest = async (channel: string) => {
+			const { promise, resolve, reject } = promiseWithResolvers();
+
+			// eslint-disable-next-line @typescript-eslint/init-declarations
+			let timer: NodeJS.Timer;
+			const e = this.addInternalListener(this._onJoinResult, (chan, state, error) => {
+				if (chan === channel) {
+					clearTimeout(timer);
+					if (error) {
+						// TODO
+						reject(error as unknown as Error);
+					} else {
+						resolve();
 					}
-				});
-				timer = setTimeout(() => {
 					this.removeListener(e);
-					this.emit(this._onJoinResult, channel, undefined, 'twurple_timeout');
-					reject(
-						new Error(`Did not receive a reply to join ${channel} in time; assuming that the join failed`)
-					);
-				}, 10000);
-				this._ircClient.join(channel);
+				}
 			});
+			timer = setTimeout(() => {
+				this.removeListener(e);
+				this.emit(this._onJoinResult, channel, undefined, 'twurple_timeout');
+				reject(new Error(`Did not receive a reply to join ${channel} in time; assuming that the join failed`));
+			}, 10000);
+
+			this._ircClient.join(channel);
+			await promise;
+		};
 
 		if (config.isAlwaysMod) {
 			this._messageRateLimiter = new TimeBasedRateLimiter({

@@ -1,3 +1,4 @@
+import { promiseWithResolvers } from '@d-fischer/shared-utils';
 import type { AccessToken } from './AccessToken';
 
 export class TokenFetcher<T extends AccessToken = AccessToken> {
@@ -24,7 +25,9 @@ export class TokenFetcher<T extends AccessToken = AccessToken> {
 				this._queuedScopeSets = [scopes];
 			}
 
-			this._queuePromise ??= new Promise<T>((resolve, reject) => {
+			if (!this._queuePromise) {
+				const { promise, resolve, reject } = promiseWithResolvers<T>();
+				this._queuePromise = promise;
 				this._queueExecutor = async () => {
 					if (!this._queuePromise) {
 						return;
@@ -37,31 +40,31 @@ export class TokenFetcher<T extends AccessToken = AccessToken> {
 					try {
 						resolve(await this._executor(this._newTokenScopeSets));
 					} catch (e) {
-						reject(e);
+						reject(e as Error);
 					} finally {
 						this._newTokenPromise = null;
 						this._newTokenScopeSets = [];
 						(this._queueExecutor as (() => void) | null)?.();
 					}
 				};
-			});
+			}
 
 			return await this._queuePromise;
 		}
 
 		this._newTokenScopeSets = scopes?.length ? [scopes] : [];
-		this._newTokenPromise = new Promise<T>(async (resolve, reject) => {
-			try {
-				resolve(await this._executor(this._newTokenScopeSets));
-			} catch (e) {
-				reject(e);
-			} finally {
-				this._newTokenPromise = null;
-				this._newTokenScopeSets = [];
-				this._queueExecutor?.();
-			}
-		});
+		const { promise, resolve, reject } = promiseWithResolvers<T>();
+		this._newTokenPromise = promise;
+		try {
+			resolve(await this._executor(this._newTokenScopeSets));
+		} catch (e) {
+			reject(e as Error);
+		} finally {
+			this._newTokenPromise = null;
+			this._newTokenScopeSets = [];
+			this._queueExecutor?.();
+		}
 
-		return await this._newTokenPromise;
+		return await promise;
 	}
 }

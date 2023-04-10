@@ -1,6 +1,7 @@
 /// <reference lib="dom" />
 
 import { parse, stringify } from '@d-fischer/qs';
+import { promiseWithResolvers } from '@d-fischer/shared-utils';
 import type { AccessToken } from '@twurple/auth';
 import {
 	type AccessTokenMaybeWithUserId,
@@ -82,106 +83,106 @@ export class ElectronAuthProvider implements AuthProvider {
 	}
 
 	private async _fetch(scopeSets: string[][]): Promise<AccessToken> {
-		return await new Promise<AccessToken>((resolve, reject) => {
-			if (this._accessToken && scopeSets.every(scopes => scopes.some(scope => this._currentScopes.has(scope)))) {
-				resolve(this._accessToken);
-				return;
-			}
+		if (this._accessToken && scopeSets.every(scopes => scopes.some(scope => this._currentScopes.has(scope)))) {
+			return this._accessToken;
+		}
 
-			const scopesToRequest = new Set(this._currentScopes);
-			for (const scopes of scopeSets) {
-				if (scopes.length && scopes.every(scope => !scopesToRequest.has(scope))) {
-					scopesToRequest.add(scopes[0]);
-				}
+		const { promise, resolve, reject } = promiseWithResolvers<AccessToken>();
+		const scopesToRequest = new Set(this._currentScopes);
+		for (const scopes of scopeSets) {
+			if (scopes.length && scopes.every(scope => !scopesToRequest.has(scope))) {
+				scopesToRequest.add(scopes[0]);
 			}
-			const queryParams = createAuthorizeParams(this.clientId, this._redirectUri, Array.from(scopesToRequest));
-			if (this._allowUserChange) {
-				queryParams.force_verify = true;
+		}
+		const queryParams = createAuthorizeParams(this.clientId, this._redirectUri, Array.from(scopesToRequest));
+		if (this._allowUserChange) {
+			queryParams.force_verify = true;
+		}
+		const authUrl = `https://id.twitch.tv/oauth2/authorize${stringify(queryParams, { addQueryPrefix: true })}`;
+		const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
+			width: 800,
+			height: 600,
+			show: false,
+			modal: true,
+			webPreferences: {
+				nodeIntegration: false
 			}
-			const authUrl = `https://id.twitch.tv/oauth2/authorize${stringify(queryParams, { addQueryPrefix: true })}`;
-			const defaultBrowserWindowOptions: BrowserWindowConstructorOptions = {
-				width: 800,
-				height: 600,
-				show: false,
-				modal: true,
-				webPreferences: {
-					nodeIntegration: false
-				}
-			};
-			let done = false;
-			const authWindow =
-				this._options.window ??
-				new BrowserWindow(Object.assign(defaultBrowserWindowOptions, this._options.windowOptions));
+		};
+		let done = false;
+		const authWindow =
+			this._options.window ??
+			new BrowserWindow(Object.assign(defaultBrowserWindowOptions, this._options.windowOptions));
 
-			authWindow.webContents.once('did-finish-load', () => authWindow.show());
+		authWindow.webContents.once('did-finish-load', () => authWindow.show());
 
-			authWindow.on('closed', () => {
-				if (!done) {
-					reject(new WindowClosedError());
+		authWindow.on('closed', () => {
+			if (!done) {
+				reject(new WindowClosedError());
+			}
+		});
+
+		if (this._options.escapeToClose) {
+			authWindow.webContents.on('before-input-event', (_, input) => {
+				switch (input.key) {
+					case 'Esc':
+					case 'Escape':
+						authWindow.close();
+						break;
+
+					default:
+						break;
 				}
 			});
+		}
 
-			if (this._options.escapeToClose) {
-				authWindow.webContents.on('before-input-event', (_, input) => {
-					switch (input.key) {
-						case 'Esc':
-						case 'Escape':
-							authWindow.close();
-							break;
+		authWindow.webContents.session.webRequest.onBeforeRequest(
+			{ urls: [this._redirectUri] },
+			(details, callback) => {
+				const url = new URL(details.url);
+				const match = url.origin + url.pathname;
 
-						default:
-							break;
+				// sometimes, electron seems to intercept too much... we catch this here
+				if (match !== this._redirectUri) {
+					// the trailing slash might be too much in the pathname
+					if (url.pathname !== '/' || url.origin !== this._redirectUri) {
+						callback({});
+						return;
 					}
-				});
-			}
-
-			authWindow.webContents.session.webRequest.onBeforeRequest(
-				{ urls: [this._redirectUri] },
-				(details, callback) => {
-					const url = new URL(details.url);
-					const match = url.origin + url.pathname;
-
-					// sometimes, electron seems to intercept too much... we catch this here
-					if (match !== this._redirectUri) {
-						// the trailing slash might be too much in the pathname
-						if (url.pathname !== '/' || url.origin !== this._redirectUri) {
-							callback({});
-							return;
-						}
-					}
-					// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-					const params: Record<string, string> = url.hash ? parse(url.hash.slice(1)) : url.searchParams;
-
-					if (params.error || params.access_token) {
-						done = true;
-
-						if (this._options.closeOnLogin) {
-							authWindow.destroy();
-						}
-					}
-
-					if (params.error) {
-						reject(new Error(`Error received from Twitch: ${params.error}`));
-					} else if (params.access_token) {
-						const accessToken = params.access_token;
-						this._currentScopes = scopesToRequest;
-						this._accessToken = {
-							accessToken,
-							scope: Array.from(this._currentScopes),
-							refreshToken: null,
-							expiresIn: null,
-							obtainmentTimestamp: Date.now()
-						};
-						this._allowUserChange = false;
-						resolve(this._accessToken);
-					}
-
-					callback({ cancel: true });
 				}
-			);
+				// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+				const params: Record<string, string> = url.hash ? parse(url.hash.slice(1)) : url.searchParams;
 
-			// do this last so there is no race condition
-			void authWindow.loadURL(authUrl);
-		});
+				if (params.error || params.access_token) {
+					done = true;
+
+					if (this._options.closeOnLogin) {
+						authWindow.destroy();
+					}
+				}
+
+				if (params.error) {
+					reject(new Error(`Error received from Twitch: ${params.error}`));
+				} else if (params.access_token) {
+					const accessToken = params.access_token;
+					this._currentScopes = scopesToRequest;
+					this._accessToken = {
+						accessToken,
+						scope: Array.from(this._currentScopes),
+						refreshToken: null,
+						expiresIn: null,
+						obtainmentTimestamp: Date.now()
+					};
+					this._allowUserChange = false;
+					resolve(this._accessToken);
+				}
+
+				callback({ cancel: true });
+			}
+		);
+
+		// do this last so there is no race condition
+		void authWindow.loadURL(authUrl);
+
+		return await promise;
 	}
 }

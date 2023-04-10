@@ -2,6 +2,7 @@ import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import type { Logger } from '@d-fischer/logger';
 import type { RateLimiter, RateLimiterStats } from '@d-fischer/rate-limiter';
 import { ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';
+import { promiseWithResolvers } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import {
 	callTwitchApi,
@@ -450,33 +451,33 @@ export class BaseApiClient extends EventEmitter {
 			factor: 2
 		});
 
-		const result = await new Promise<Response>((resolve, reject) => {
-			op.attempt(async () => {
-				try {
-					const response =
-						type === 'helix'
-							? await this._rateLimiter.request({
-									options,
-									clientId,
-									accessToken,
-									authorizationType,
-									fetchOptions
-							  })
-							: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
+		const { promise, resolve, reject } = promiseWithResolvers<Response>();
+		op.attempt(async () => {
+			try {
+				const response =
+					type === 'helix'
+						? await this._rateLimiter.request({
+								options,
+								clientId,
+								accessToken,
+								authorizationType,
+								fetchOptions
+						  })
+						: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
 
-					if (!response.ok && response.status >= 500 && response.status < 600) {
-						await handleTwitchApiResponseError(response, options);
-					}
-					resolve(response);
-				} catch (e) {
-					if (op.retry(e as Error)) {
-						return;
-					}
-					reject(op.mainError());
+				if (!response.ok && response.status >= 500 && response.status < 600) {
+					await handleTwitchApiResponseError(response, options);
 				}
-			});
+				resolve(response);
+			} catch (e) {
+				if (op.retry(e as Error)) {
+					return;
+				}
+				reject(op.mainError()!);
+			}
 		});
 
+		const result = await promise;
 		this._logger.debug(`Called ${type} API: ${options.method ?? 'GET'} ${options.url} - result: ${result.status}`);
 
 		return result;

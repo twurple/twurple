@@ -3,7 +3,7 @@ import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection
 import type { Logger, LoggerOptions } from '@d-fischer/logger';
 import { createLogger } from '@d-fischer/logger';
 import type { ResolvableValue } from '@d-fischer/shared-utils';
-import { Enumerable } from '@d-fischer/shared-utils';
+import { Enumerable, promiseWithResolvers } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AuthProvider } from '@twurple/auth';
 import { getValidTokenFromProviderForUser } from '@twurple/auth';
@@ -364,24 +364,24 @@ export class BasicPubSubClient extends EventEmitter {
 	}
 
 	private async _sendNonced<T extends PubSubNoncedOutgoingPacket>(packet: T) {
-		await new Promise<void>((resolve, reject) => {
-			const nonce = Math.random().toString(16).slice(2);
+		const { promise, resolve, reject } = promiseWithResolvers();
+		const nonce = Math.random().toString(16).slice(2);
 
-			const responseListener = this._onResponse((recvNonce, error) => {
-				if (recvNonce === nonce) {
-					if (error) {
-						reject(new Error(`Error sending nonced ${packet.type} packet: ${error}`));
-					} else {
-						resolve();
-					}
-					responseListener.unbind();
+		const responseListener = this._onResponse((recvNonce, error) => {
+			if (recvNonce === nonce) {
+				if (error) {
+					reject(new Error(`Error sending nonced ${packet.type} packet: ${error}`));
+				} else {
+					resolve();
 				}
-			});
-
-			packet.nonce = nonce;
-
-			this._sendPacket(packet);
+				responseListener.unbind();
+			}
 		});
+
+		packet.nonce = nonce;
+		this._sendPacket(packet);
+
+		await promise;
 	}
 
 	private _receiveMessage(dataStr: string) {
