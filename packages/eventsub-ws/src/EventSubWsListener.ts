@@ -62,7 +62,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	constructor(config: EventSubWsConfig) {
 		super(config);
 
-		this._initialUrl = config.url ?? 'wss://eventsub-beta.wss.twitch.tv/ws';
+		this._initialUrl = config.url ?? 'wss://eventsub.wss.twitch.tv/ws';
 		this._loggerOptions = config.logger;
 	}
 
