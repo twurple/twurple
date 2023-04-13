@@ -69,6 +69,15 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	}
 
 	/**
+	 * Whether the message is sent by a returning chatter.
+	 *
+	 * Twitch defines this as a new viewer who has chatted at least twice in the last 30 days.
+	 */
+	get isReturningChatter(): boolean {
+		return this._tags.get('returning-chatter') === '1';
+	}
+
+	/**
 	 * Whether the message is highlighted by using channel points.
 	 */
 	get isHighlight(): boolean {

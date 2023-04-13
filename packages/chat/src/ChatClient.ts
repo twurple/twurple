@@ -6,8 +6,14 @@ import {
 	TimeBasedRateLimiter,
 	TimedPassthruRateLimiter
 } from '@d-fischer/rate-limiter';
-import type { ResolvableValue } from '@d-fischer/shared-utils';
-import { delay, Enumerable, fibWithLimit, promiseWithResolvers, resolveConfigValue } from '@d-fischer/shared-utils';
+import {
+	delay,
+	Enumerable,
+	fibWithLimit,
+	promiseWithResolvers,
+	type ResolvableValue,
+	resolveConfigValue
+} from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import type { AccessToken, AuthProvider } from '@twurple/auth';
 import {
