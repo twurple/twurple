@@ -16,7 +16,7 @@ import { HelixPoll } from './HelixPoll';
 /**
  * The Helix API methods that deal with polls.
  *
- * Can be accessed using `client.helix.polls` on an {@link ApiClient} instance.
+ * Can be accessed using `client.polls` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

@@ -27,7 +27,7 @@ import { HelixScheduleSegment } from './HelixScheduleSegment';
 /**
  * The Helix API methods that deal with schedules.
  *
- * Can be accessed using `client.helix.schedule` on an {@link ApiClient} instance.
+ * Can be accessed using `client.schedule` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts

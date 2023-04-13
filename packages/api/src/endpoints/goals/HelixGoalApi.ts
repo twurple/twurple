@@ -9,7 +9,7 @@ import { HelixGoal } from './HelixGoal';
 /**
  * The Helix API methods that deal with creator goals.
  *
- * Can be accessed using `client.helix.goals` on an {@link ApiClient} instance.
+ * Can be accessed using `client.goals` on an {@link ApiClient} instance.
  *
  * ## Example
  * ```ts
