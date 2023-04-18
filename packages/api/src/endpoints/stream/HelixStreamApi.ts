@@ -331,12 +331,14 @@ export class HelixStreamApi extends BaseApi {
 		user: UserIdResolvable,
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixStream>> {
+		const userId = extractUserId(user);
 		const result = await this._client.callApi<HelixPaginatedResult<HelixStreamData>>({
 			type: 'helix',
 			url: 'streams/followed',
+			userId,
 			scopes: ['user:read:follows'],
 			query: {
-				...createSingleKeyQuery('user_id', extractUserId(user)),
+				...createSingleKeyQuery('user_id', userId),
 				...createPaginationQuery(pagination)
 			}
 		});
@@ -350,11 +352,13 @@ export class HelixStreamApi extends BaseApi {
 	 * @param user The user to check followed streams for.
 	 */
 	getFollowedStreamsPaginated(user: UserIdResolvable): HelixPaginatedRequest<HelixStreamData, HelixStream> {
+		const userId = extractUserId(user);
 		return new HelixPaginatedRequest(
 			{
 				url: 'streams/followed',
+				userId,
 				scopes: ['user:read:follows'],
-				query: createSingleKeyQuery('user_id', extractUserId(user))
+				query: createSingleKeyQuery('user_id', userId)
 			},
 			this._client,
 			data => new HelixStream(data, this._client)
