@@ -33,7 +33,7 @@
   "dependencies": {
     "@d-fischer/cross-fetch": "^4.0.2",
     "@d-fischer/qs": "^7.0.2",
-    "@d-fischer/shared-utils": "3.6.1",
+    "@d-fischer/shared-utils": "^3.6.1",
     "@twurple/common": "6.2.0-pre.0",
     "@types/node-fetch": "^2.5.7",
     "tslib": "^2.0.3"

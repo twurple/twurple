@@ -128,6 +128,13 @@ export interface ChatClientOptions {
 	channels?: ResolvableValue<string[]>;
 
 	/**
+	 * Whether to rejoin the channels the client had joined when a reconnect occurs.
+	 *
+	 * This means that the `channels` option will only be resolved on the initial connection.
+	 */
+	rejoinChannelsOnReconnect?: boolean;
+
+	/**
 	 * Whether you're guaranteed to be a mod in all joined channels.
 	 *
 	 * This raises the rate limit and lifts the one-second-between-messages rule,
@@ -658,7 +665,8 @@ export class ChatClient extends EventEmitter {
 				...config.logger
 			},
 			nonConformingCommands: ['004'],
-			manuallyAcknowledgeJoins: true
+			manuallyAcknowledgeJoins: true,
+			rejoinChannelsOnReconnect: config.rejoinChannelsOnReconnect
 		});
 
 		this._ircClient.onDisconnect((manually: boolean, reason?: Error) => {
