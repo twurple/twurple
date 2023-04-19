@@ -382,6 +382,11 @@ export class BaseApiClient extends EventEmitter {
 		return this._config.authProvider;
 	}
 
+	/** @internal */
+	get _batchDelay(): number {
+		return this._config.batchDelay ?? 0;
+	}
+
 	// null means app access, undefined means none specified
 	protected _getUserIdFromRequestContext(options: ContextApiCallOptions): string | null | undefined {
 		return options.userId;

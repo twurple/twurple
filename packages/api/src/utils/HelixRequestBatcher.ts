@@ -14,10 +14,9 @@ export class HelixRequestBatcher<D, T> {
 	@Enumerable(false) private readonly _client: BaseApiClient;
 	private readonly _requestedIds: string[] = [];
 	private readonly _requestResolversById = new Map<string, Array<RequestResolver<T | null>>>();
-	private _waitTimer: ReturnType<typeof setTimeout> | null = null;
 
-	// TODO make configurable
-	private readonly _delay = 0;
+	private readonly _delay: number;
+	private _waitTimer: ReturnType<typeof setTimeout> | null = null;
 
 	constructor(
 		private readonly _callOptions: Omit<ContextApiCallOptions, 'type'>,
@@ -28,6 +27,7 @@ export class HelixRequestBatcher<D, T> {
 		private readonly _limitPerRequest: number = 100
 	) {
 		this._client = client;
+		this._delay = client._batchDelay;
 	}
 
 	async request(id: string): Promise<T | null> {
@@ -68,14 +68,25 @@ export class HelixRequestBatcher<D, T> {
 						resolver.resolve(null);
 					}
 				}
-			}
-		} catch (e) {
-			for (const id of ids) {
-				for (const resolver of this._requestResolversById.get(id) ?? []) {
-					resolver.reject(e as Error);
-				}
 				this._requestResolversById.delete(id);
 			}
+		} catch (e) {
+			await Promise.all(
+				ids.map(async id => {
+					try {
+						const result = await this._doRequest([id]);
+
+						for (const resolver of this._requestResolversById.get(id) ?? []) {
+							resolver.resolve(result.data.length ? this._mapper(result.data[0]) : null);
+						}
+					} catch (e_) {
+						for (const resolver of this._requestResolversById.get(id) ?? []) {
+							resolver.reject(e_ as Error);
+						}
+					}
+					this._requestResolversById.delete(id);
+				})
+			);
 		}
 	}
 

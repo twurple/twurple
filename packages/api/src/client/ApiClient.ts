@@ -31,6 +31,13 @@ export interface ApiConfig {
 	 * Options to pass to the logger.
 	 */
 	logger?: Partial<LoggerOptions>;
+
+	/**
+	 * The time that should be waited before a batch is executed, in milliseconds.
+	 *
+	 * Defaults to 0 (executes immediately after all synchronous tasks are finished).
+	 */
+	batchDelay?: number;
 }
 
 /**
