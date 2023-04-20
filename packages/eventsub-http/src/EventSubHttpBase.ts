@@ -48,18 +48,6 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 	 * Enabled by default. Set this to `false` to disable it.
 	 */
 	helperRoutes?: boolean;
-
-	/**
-	 * Whether to use the legacy way of augmenting your EventSub secret in subscriptions.
-	 *
-	 * This setting is only provided for compatibility/migration purposes.
-	 * You should switch it off at your earliest convenience.
-	 *
-	 * You can set this to the string 'migrate' to migrate your subscription to the new secrets.
-	 * This will treat all existing subscriptions as legacy and all new subscriptions as non-legacy,
-	 * then you may migrate the existing subscriptions using `.migrate()`.
-	 */
-	legacySecrets?: boolean | 'migrate';
 }
 
 /**
@@ -98,21 +86,6 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		this._secret = config.secret;
 		this._strictHostCheck = config.strictHostCheck ?? true;
 		this._helperRoutes = config.helperRoutes ?? true;
-		if (config.legacySecrets === undefined) {
-			this._logger.warn(`In version 6.0, the automatic augmentation of EventSub secrets was disabled by default.
-If you have been using a lower version before, your subscriptions will fail to verify now.
-A new option named \`legacySecrets\` was introduced in order to enable you to migrate your subscriptions.
-You should still migrate this as soon as possible, as in the next major version this switch will go away, and then you will have to remove all your subscriptions and subscribe to them again.
-
-To make Twurple migrate the subscriptions smoothly, please add \`legacySecrets: 'migrate'\` to your EventSub configuration.
-This will treat all pre-existing subscriptions as legacy and all new subscriptions as modern.
-You can then call \`.migrate()\` on your pre-existing subscriptions to make them use modern secrets.
-After restarting all these subscriptions, before you restart again, set it to \`false\`.
-
-To silence this warning (if you're done migrating or if you're a new user), please add \`legacySecrets: false\` to your EventSub configuration.
-To use your legacy subscriptions without having to clean them up and resubscribing, please add \`legacySecrets: true\` to your EventSub configuration.`);
-		}
-		this._legacySecrets = config.legacySecrets ?? false;
 	}
 
 	/** @private */
@@ -132,15 +105,15 @@ To use your legacy subscriptions without having to clean them up and resubscribi
 		return {
 			method: 'webhook',
 			callback: await this._buildHookUrl(subscription.id),
-			secret: this._createSecretForSubscription(subscription)
+			secret: this._secret
 		};
 	}
 
 	/** @private */
 	async _getCliTestCommandForSubscription(subscription: EventSubSubscription): Promise<string> {
-		return `twitch event trigger ${subscription._cliName} -F ${await this._buildHookUrl(
-			subscription.id
-		)} -s ${this._createSecretForSubscription(subscription)}`;
+		return `twitch event trigger ${subscription._cliName} -F ${await this._buildHookUrl(subscription.id)} -s ${
+			this._secret
+		}`;
 	}
 
 	/** @private */
@@ -220,7 +193,7 @@ To use your legacy subscriptions without having to clean them up and resubscribi
 				return;
 			}
 
-			const verified = this._verifyData(subscription, messageId, timestamp, body, algoAndSignature);
+			const verified = this._verifyData(messageId, timestamp, body, algoAndSignature);
 			const data = JSON.parse(body) as EventSubHttpPayload;
 			if (!verified) {
 				this._logger.warn(`Could not verify action ${type} of event: ${id}`);
@@ -365,28 +338,14 @@ To use your legacy subscriptions without having to clean them up and resubscribi
 		subscription._handleData(payload);
 	}
 
-	private _verifyData(
-		subscription: EventSubSubscription,
-		messageId: string,
-		timestamp: string,
-		body: string,
-		algoAndSignature: string
-	): boolean {
+	private _verifyData(messageId: string, timestamp: string, body: string, algoAndSignature: string): boolean {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 
 		const hash = crypto
-			.createHmac(algorithm, this._createSecretForSubscription(subscription))
+			.createHmac(algorithm, this._secret)
 			.update(messageId + timestamp + body)
 			.digest('hex');
 
 		return hash === signature;
-	}
-
-	private _createSecretForSubscription(subscription: EventSubSubscription) {
-		if (subscription.usesLegacySecret) {
-			return `${subscription.id}.${this._secret}`.slice(-100);
-		}
-
-		return this._secret;
 	}
 }

@@ -130,8 +130,6 @@ export abstract class EventSubBase extends EventEmitter {
 	/** @private */ @Enumerable(false) readonly _apiClient: ApiClient;
 	/** @private */ readonly _logger: Logger;
 
-	/** @private */ _legacySecrets: boolean | 'migrate' = false;
-
 	/**
 	 * Fires when a subscription is revoked.
 	 *
