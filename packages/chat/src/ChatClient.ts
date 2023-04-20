@@ -54,7 +54,7 @@ import type {
 	ChatSubUpgradeInfo
 } from './userNotices/ChatSubInfo';
 import { splitOnSpaces } from './utils/messageUtil';
-import { toChannelName } from './utils/userUtil';
+import { toChannelName, toUserName } from './utils/userUtil';
 
 /**
  * A Twitch bot level, i.e. whether you're connecting as a known or verified bot.
@@ -803,17 +803,17 @@ export class ChatClient extends EventEmitter {
 
 		this._ircClient.onPrivmsg((channel, user, text, msg) => {
 			if (user !== 'jtv') {
-				this.emit(this.onMessage, channel, user, text, msg);
+				this.emit(this.onMessage, toUserName(channel), user, text, msg);
 			}
 		});
 
 		this._ircClient.onAction((channel, user, text, msg) => {
-			this.emit(this.onAction, channel, user, text, msg);
+			this.emit(this.onAction, toUserName(channel), user, text, msg);
 		});
 
 		this.addInternalListener(this._onJoinResult, (channel, _, error) => {
 			if (error) {
-				this.emit(this.onJoinFailure, channel, error);
+				this.emit(this.onJoinFailure, toUserName(channel), error);
 			} else {
 				this._ircClient.acknowledgeJoin(channel);
 			}
@@ -824,18 +824,19 @@ export class ChatClient extends EventEmitter {
 				params: { channel, user },
 				tags
 			} = msg;
+			const broadcasterName = toUserName(channel);
 			if (user) {
 				const duration = tags.get('ban-duration');
 				if (duration === undefined) {
 					// ban
-					this.emit(this.onBan, channel, user, msg);
+					this.emit(this.onBan, broadcasterName, user, msg);
 				} else {
 					// timeout
-					this.emit(this.onTimeout, channel, user, Number(duration), msg);
+					this.emit(this.onTimeout, broadcasterName, user, Number(duration), msg);
 				}
 			} else {
 				// full chat clear
-				this.emit(this.onChatClear, channel, msg);
+				this.emit(this.onChatClear, broadcasterName, msg);
 			}
 		});
 
@@ -844,15 +845,15 @@ export class ChatClient extends EventEmitter {
 				params: { channel },
 				targetMessageId
 			} = msg;
-			this.emit(this.onMessageRemove, channel, targetMessageId, msg);
+			this.emit(this.onMessageRemove, toUserName(channel), targetMessageId, msg);
 		});
 
 		this._ircClient.onTypedMessage(MessageTypes.Commands.ChannelJoin, ({ prefix, params: { channel } }) => {
-			this.emit(this.onJoin, channel, prefix!.nick);
+			this.emit(this.onJoin, toUserName(channel), prefix!.nick);
 		});
 
 		this._ircClient.onTypedMessage(MessageTypes.Commands.ChannelPart, ({ prefix, params: { channel } }) => {
-			this.emit(this.onPart, channel, prefix!.nick);
+			this.emit(this.onPart, toUserName(channel), prefix!.nick);
 		});
 
 		this._ircClient.onTypedMessage(RoomState, ({ params: { channel }, tags }) => {
@@ -864,21 +865,22 @@ export class ChatClient extends EventEmitter {
 			}
 
 			if (!isInitial) {
+				const broadcasterName = toUserName(channel);
 				if (tags.has('slow')) {
 					const slowDelay = Number(tags.get('slow'));
 					if (slowDelay) {
-						this.emit(this.onSlow, channel, true, slowDelay);
+						this.emit(this.onSlow, broadcasterName, true, slowDelay);
 					} else {
-						this.emit(this.onSlow, channel, false);
+						this.emit(this.onSlow, broadcasterName, false);
 					}
 				}
 
 				if (tags.has('followers-only')) {
 					const followDelay = Number(tags.get('followers-only'));
 					if (followDelay === -1) {
-						this.emit(this.onFollowersOnly, channel, false);
+						this.emit(this.onFollowersOnly, broadcasterName, false);
 					} else {
-						this.emit(this.onFollowersOnly, channel, true, followDelay);
+						this.emit(this.onFollowersOnly, broadcasterName, true, followDelay);
 					}
 				}
 			}
@@ -890,6 +892,7 @@ export class ChatClient extends EventEmitter {
 				tags
 			} = userNotice;
 			const messageType = tags.get('msg-id')!;
+			const broadcasterName = toUserName(channel);
 
 			switch (messageType) {
 				case 'sub':
@@ -929,7 +932,7 @@ export class ChatClient extends EventEmitter {
 							};
 						}
 					}
-					this.emit(event, channel, tags.get('login')!, subInfo, userNotice);
+					this.emit(event, broadcasterName, tags.get('login')!, subInfo, userNotice);
 					break;
 				}
 				case 'subgift': {
@@ -949,7 +952,13 @@ export class ChatClient extends EventEmitter {
 						isPrime: plan === 'Prime',
 						months: Number(tags.get('msg-param-months'))
 					};
-					this.emit(this.onSubGift, channel, tags.get('msg-param-recipient-user-name')!, subInfo, userNotice);
+					this.emit(
+						this.onSubGift,
+						broadcasterName,
+						tags.get('msg-param-recipient-user-name')!,
+						subInfo,
+						userNotice
+					);
 					break;
 				}
 				case 'submysterygift': {
@@ -963,7 +972,7 @@ export class ChatClient extends EventEmitter {
 						count: Number(tags.get('msg-param-mass-gift-count')!),
 						plan: tags.get('msg-param-sub-plan')!
 					};
-					this.emit(this.onCommunitySub, channel, tags.get('login')!, communitySubInfo, userNotice);
+					this.emit(this.onCommunitySub, broadcasterName, tags.get('login')!, communitySubInfo, userNotice);
 					break;
 				}
 				case 'primepaidupgrade': {
@@ -972,7 +981,7 @@ export class ChatClient extends EventEmitter {
 						displayName: tags.get('display-name')!,
 						plan: tags.get('msg-param-sub-plan')!
 					};
-					this.emit(this.onPrimePaidUpgrade, channel, tags.get('login')!, upgradeInfo, userNotice);
+					this.emit(this.onPrimePaidUpgrade, broadcasterName, tags.get('login')!, upgradeInfo, userNotice);
 					break;
 				}
 				case 'giftpaidupgrade': {
@@ -982,7 +991,7 @@ export class ChatClient extends EventEmitter {
 						gifter: tags.get('msg-param-sender-login')!,
 						gifterDisplayName: tags.get('msg-param-sender-name')!
 					};
-					this.emit(this.onGiftPaidUpgrade, channel, tags.get('login')!, upgradeInfo, userNotice);
+					this.emit(this.onGiftPaidUpgrade, broadcasterName, tags.get('login')!, upgradeInfo, userNotice);
 					break;
 				}
 				case 'standardpayforward': {
@@ -997,7 +1006,7 @@ export class ChatClient extends EventEmitter {
 						recipientUserId: tags.get('msg-param-recipient-id')!,
 						recipientDisplayName: tags.get('msg-param-recipient-display-name')!
 					};
-					this.emit(this.onStandardPayForward, channel, tags.get('login')!, forwardInfo, userNotice);
+					this.emit(this.onStandardPayForward, broadcasterName, tags.get('login')!, forwardInfo, userNotice);
 					break;
 				}
 				case 'communitypayforward': {
@@ -1010,7 +1019,7 @@ export class ChatClient extends EventEmitter {
 							? undefined
 							: tags.get('msg-param-prior-gifter-display-name')!
 					};
-					this.emit(this.onCommunityPayForward, channel, tags.get('login')!, forwardInfo, userNotice);
+					this.emit(this.onCommunityPayForward, broadcasterName, tags.get('login')!, forwardInfo, userNotice);
 					break;
 				}
 				case 'primecommunitygiftreceived': {
@@ -1021,7 +1030,7 @@ export class ChatClient extends EventEmitter {
 					};
 					this.emit(
 						this.onPrimeCommunityGift,
-						channel,
+						broadcasterName,
 						tags.get('msg-param-recipient')!,
 						giftInfo,
 						userNotice
@@ -1033,11 +1042,11 @@ export class ChatClient extends EventEmitter {
 						displayName: tags.get('msg-param-displayName')!,
 						viewerCount: Number(tags.get('msg-param-viewerCount'))
 					};
-					this.emit(this.onRaid, channel, tags.get('login')!, raidInfo, userNotice);
+					this.emit(this.onRaid, broadcasterName, tags.get('login')!, raidInfo, userNotice);
 					break;
 				}
 				case 'unraid': {
-					this.emit(this.onRaidCancel, channel, userNotice);
+					this.emit(this.onRaidCancel, broadcasterName, userNotice);
 					break;
 				}
 				case 'ritual': {
@@ -1045,7 +1054,7 @@ export class ChatClient extends EventEmitter {
 						ritualName: tags.get('msg-param-ritual-name')!,
 						message
 					};
-					this.emit(this.onRitual, channel, tags.get('login')!, ritualInfo, userNotice);
+					this.emit(this.onRitual, broadcasterName, tags.get('login')!, ritualInfo, userNotice);
 					break;
 				}
 				case 'bitsbadgetier': {
@@ -1053,7 +1062,13 @@ export class ChatClient extends EventEmitter {
 						displayName: tags.get('display-name')!,
 						threshold: Number(tags.get('msg-param-threshold'))
 					};
-					this.emit(this.onBitsBadgeUpgrade, channel, tags.get('login')!, badgeUpgradeInfo, userNotice);
+					this.emit(
+						this.onBitsBadgeUpgrade,
+						broadcasterName,
+						tags.get('login')!,
+						badgeUpgradeInfo,
+						userNotice
+					);
 					break;
 				}
 				case 'extendsub': {
@@ -1064,7 +1079,7 @@ export class ChatClient extends EventEmitter {
 						months: Number(tags.get('msg-param-cumulative-months')),
 						endMonth: Number(tags.get('msg-param-sub-benefit-end-month'))
 					};
-					this.emit(this.onSubExtend, channel, tags.get('login')!, extendInfo, userNotice);
+					this.emit(this.onSubExtend, broadcasterName, tags.get('login')!, extendInfo, userNotice);
 					break;
 				}
 				case 'rewardgift': {
@@ -1076,14 +1091,14 @@ export class ChatClient extends EventEmitter {
 						gifterGiftCount: Number(tags.get('msg-param-total-reward-count')),
 						triggerType: tags.get('msg-param-trigger-type')!
 					};
-					this.emit(this.onRewardGift, channel, tags.get('login')!, rewardGiftInfo, userNotice);
+					this.emit(this.onRewardGift, broadcasterName, tags.get('login')!, rewardGiftInfo, userNotice);
 					break;
 				}
 				case 'announcement': {
 					const announcementInfo: ChatAnnouncementInfo = {
 						color: tags.get('msg-param-color')!
 					};
-					this.emit(this.onAnnouncement, channel, tags.get('login')!, announcementInfo, userNotice);
+					this.emit(this.onAnnouncement, broadcasterName, tags.get('login')!, announcementInfo, userNotice);
 					break;
 				}
 				default: {
@@ -1099,17 +1114,18 @@ export class ChatClient extends EventEmitter {
 		this._ircClient.onTypedMessage(
 			MessageTypes.Commands.Notice,
 			async ({ params: { target: channel, content }, tags }) => {
+				const broadcasterName = toUserName(channel);
 				const messageType = tags.get('msg-id');
 
 				switch (messageType) {
 					// emote only
 					case 'emote_only_on': {
-						this.emit(this.onEmoteOnly, channel, true);
+						this.emit(this.onEmoteOnly, broadcasterName, true);
 						break;
 					}
 
 					case 'emote_only_off': {
-						this.emit(this.onEmoteOnly, channel, false);
+						this.emit(this.onEmoteOnly, broadcasterName, false);
 						break;
 					}
 
@@ -1122,25 +1138,25 @@ export class ChatClient extends EventEmitter {
 
 					// r9k
 					case 'r9k_on': {
-						this.emit(this.onUniqueChat, channel, true);
-						this.emit(this.onR9k, channel, true);
+						this.emit(this.onUniqueChat, broadcasterName, true);
+						this.emit(this.onR9k, broadcasterName, true);
 						break;
 					}
 
 					case 'r9k_off': {
-						this.emit(this.onUniqueChat, channel, false);
-						this.emit(this.onR9k, channel, false);
+						this.emit(this.onUniqueChat, broadcasterName, false);
+						this.emit(this.onR9k, broadcasterName, false);
 						break;
 					}
 
 					// subs only
 					case 'subs_on': {
-						this.emit(this.onSubsOnly, channel, true);
+						this.emit(this.onSubsOnly, broadcasterName, true);
 						break;
 					}
 
 					case 'subs_off': {
-						this.emit(this.onSubsOnly, channel, false);
+						this.emit(this.onSubsOnly, broadcasterName, false);
 						break;
 					}
 
@@ -1169,12 +1185,12 @@ export class ChatClient extends EventEmitter {
 					}
 
 					case 'no_permission': {
-						this.emit(this.onNoPermission, channel, content);
+						this.emit(this.onNoPermission, broadcasterName, content);
 						break;
 					}
 
 					case 'msg_ratelimit': {
-						this.emit(this.onMessageRatelimit, channel, content);
+						this.emit(this.onMessageRatelimit, broadcasterName, content);
 						break;
 					}
 
@@ -1190,7 +1206,7 @@ export class ChatClient extends EventEmitter {
 					case 'msg_timedout':
 					case 'msg_rejected_mandatory':
 					case 'msg_channel_blocked': {
-						this.emit(this.onMessageFailed, channel, messageType);
+						this.emit(this.onMessageFailed, broadcasterName, messageType);
 						break;
 					}
 
