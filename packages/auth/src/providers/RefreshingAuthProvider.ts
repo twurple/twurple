@@ -1,5 +1,6 @@
 import type { MakeOptional } from '@d-fischer/shared-utils';
 import { Enumerable } from '@d-fischer/shared-utils';
+import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import { extractUserId, HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
 import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
@@ -11,10 +12,6 @@ import { compareScopeSets, getAppToken, getTokenInfo, loadAndCompareTokenInfo, r
 import { TokenFetcher } from '../TokenFetcher';
 import { type TokenInfo } from '../TokenInfo';
 import { type AuthProvider } from './AuthProvider';
-
-type OnRefreshCallbackWithUserId = (userId: string, token: AccessToken) => void;
-type OnRefreshCallbackWithoutUserId = (token: AccessToken) => void;
-type OnRefreshCallback = OnRefreshCallbackWithUserId | OnRefreshCallbackWithoutUserId;
 
 /**
  * Configuration for the {@link RefreshingAuthProvider}.
@@ -31,23 +28,6 @@ export interface RefreshConfig {
 	clientSecret: string;
 
 	/**
-	 * A callback that is called whenever the auth provider refreshes the token,
-	 * e.g. to save the new data in your database.
-	 *
-	 * @param userId The ID of the user.
-	 * @param token The token data.
-	 */
-	onRefresh?: OnRefreshCallback;
-
-	/**
-	 * A callback that is called whenever the auth provider fails to refresh the token,
-	 * e.g. to notify the user or remove them from your database.
-	 *
-	 * @param userId The ID of the user.
-	 */
-	onRefreshFailure?: (userId: string) => void;
-
-	/**
 	 * The scopes to be implied by the provider's app access token.
 	 */
 	appImpliedScopes?: string[];
@@ -58,7 +38,7 @@ export interface RefreshConfig {
  * automatically refreshing the access token whenever necessary.
  */
 @rtfm<RefreshingAuthProvider>('auth', 'RefreshingAuthProvider', 'clientId')
-export class RefreshingAuthProvider implements AuthProvider {
+export class RefreshingAuthProvider extends EventEmitter implements AuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;
 	@Enumerable(false) private readonly _userAccessTokens = new Map<
@@ -73,8 +53,20 @@ export class RefreshingAuthProvider implements AuthProvider {
 	@Enumerable(false) private readonly _appTokenFetcher;
 	private readonly _appImpliedScopes: string[];
 
-	private readonly _onRefresh?: OnRefreshCallback;
-	private readonly _onRefreshFailure?: (userId: string) => void;
+	/**
+	 * Fires when a user token is refreshed.
+	 *
+	 * @param userId The ID of the user whose token wasn't successfully refreshed.
+	 * @param token The refreshed token data.
+	 */
+	readonly onRefresh = this.registerEvent<[userId: string, token: AccessToken]>();
+
+	/**
+	 * Fires when a user token fails to refresh.
+	 *
+	 * @param userId The ID of the user whose token wasn't successfully refreshed.
+	 */
+	readonly onRefreshFailure = this.registerEvent<[userId: string]>();
 
 	/**
 	 * Creates a new auth provider based on the given one that can automatically
@@ -83,9 +75,10 @@ export class RefreshingAuthProvider implements AuthProvider {
 	 * @param refreshConfig The information necessary to automatically refresh an access token.
 	 */
 	constructor(refreshConfig: RefreshConfig) {
+		super();
+
 		this._clientId = refreshConfig.clientId;
 		this._clientSecret = refreshConfig.clientSecret;
-		this._onRefresh = refreshConfig.onRefresh;
 		this._appImpliedScopes = refreshConfig.appImpliedScopes ?? [];
 		this._appTokenFetcher = new TokenFetcher(async scopes => await this._fetchAppToken(scopes));
 	}
@@ -161,7 +154,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 				initialToken.refreshToken
 			);
 			const tokenInfo = await getTokenInfo(refreshedToken.accessToken);
-			this._callOnRefresh(tokenInfo.userId!, refreshedToken);
+			this.emit(this.onRefresh, tokenInfo.userId!, refreshedToken);
 			tokenWithInfo = [refreshedToken, tokenInfo];
 		}
 
@@ -289,7 +282,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 			...tokenData,
 			userId
 		});
-		this._callOnRefresh(userId, tokenData);
+		this.emit(this.onRefresh, userId, tokenData);
 
 		return {
 			...tokenData,
@@ -421,20 +414,6 @@ export class RefreshingAuthProvider implements AuthProvider {
 		}
 	}
 
-	private _callOnRefresh(userId: string, tokenData: AccessToken) {
-		if (this._onRefresh) {
-			if (this._onRefresh.length < 2) {
-				// eslint-disable-next-line no-console
-				console.warn(
-					'DEPRECATION WARNING: please update your onRefresh callback to take a user ID as first parameter'
-				);
-				(this._onRefresh as OnRefreshCallbackWithoutUserId)(tokenData);
-			} else {
-				(this._onRefresh as OnRefreshCallbackWithUserId)(userId, tokenData);
-			}
-		}
-	}
-
 	private async _fetchUserToken(userId: string, scopeSets: string[][]): Promise<AccessTokenWithUserId> {
 		const previousToken = this._userAccessTokens.get(userId);
 
@@ -483,7 +462,7 @@ export class RefreshingAuthProvider implements AuthProvider {
 		try {
 			return await refreshUserToken(this.clientId, this._clientSecret, refreshToken);
 		} catch (e) {
-			this._onRefreshFailure?.(userId);
+			this.emit(this.onRefreshFailure, userId);
 			throw e;
 		}
 	}
