@@ -106,7 +106,7 @@ You should still migrate this as soon as possible, as in the next major version 
 
 To make Twurple migrate the subscriptions smoothly, please add \`legacySecrets: 'migrate'\` to your EventSub configuration.
 This will treat all pre-existing subscriptions as legacy and all new subscriptions as modern.
-You can then call \`.restart()\` on your pre-existing subscriptions to make them use modern secrets.
+You can then call \`.migrate()\` on your pre-existing subscriptions to make them use modern secrets.
 After restarting all these subscriptions, before you restart again, set it to \`false\`.
 
 To silence this warning (if you're done migrating or if you're a new user), please add \`legacySecrets: false\` to your EventSub configuration.
