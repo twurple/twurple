@@ -1,6 +1,4 @@
-import { utf8Length } from '@d-fischer/shared-utils';
 import { DataObject } from '../DataObject';
-import { findCheermotePositions } from './messagePartParser';
 
 /**
  * The details on how a cheermote should be displayed.
@@ -109,72 +107,4 @@ export abstract class BaseCheermoteList<DataType> extends DataObject<DataType> {
 	 * Gets all possible cheermote names.
 	 */
 	abstract getPossibleNames(): string[];
-
-	/**
-	 * Parses all the cheermotes out of a message.
-	 *
-	 * @deprecated Use {@link parseChatMessage} instead.
-	 *
-	 * @param message The message.
-	 * @param format The format to show the cheermotes in.
-	 */
-	parseMessage(message: string, format: CheermoteFormat): MessageCheermote[] {
-		const result: MessageCheermote[] = [];
-
-		const names = this.getPossibleNames();
-		const re = new RegExp('(?<=^|\\s)([a-z]+(?:\\d+[a-z]+)*)(\\d+)(?=\\s|$)', 'gi');
-		let match: RegExpExecArray | null = null;
-		while ((match = re.exec(message))) {
-			const name = match[1].toLowerCase();
-			if (names.includes(name)) {
-				const amount = Number(match[2]);
-				result.push({
-					name,
-					amount,
-					position: utf8Length(message.slice(0, match.index)),
-					length: match[0].length,
-					displayInfo: this.getCheermoteDisplayInfo(name, amount, format)
-				});
-			}
-		}
-
-		return result;
-	}
-
-	/**
-	 * Transforms all the cheermotes in a message and returns an array of all the message parts.
-	 *
-	 * @deprecated Use {@link parseChatMessage} instead.
-	 *
-	 * @param message The message.
-	 * @param format The format to show the cheermotes in.
-	 * @param transformer A function that transforms a message part into an arbitrary structure.
-	 */
-	transformCheerMessage<T>(
-		message: string,
-		format: CheermoteFormat,
-		transformer: (displayInfo: MessageCheermote) => string | T
-	): Array<string | T> {
-		const result: Array<string | T> = [];
-
-		let currentPosition = 0;
-		for (const foundCheermote of findCheermotePositions(message, this.getPossibleNames())) {
-			if (currentPosition < foundCheermote.position) {
-				result.push(message.substring(currentPosition, foundCheermote.position));
-			}
-			result.push(
-				transformer({
-					...foundCheermote,
-					displayInfo: this.getCheermoteDisplayInfo(foundCheermote.name, foundCheermote.amount, format)
-				})
-			);
-			currentPosition = foundCheermote.position + foundCheermote.length;
-		}
-
-		if (currentPosition < message.length) {
-			result.push(message.slice(currentPosition));
-		}
-
-		return result;
-	}
 }

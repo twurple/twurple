@@ -16,20 +16,17 @@ export class EventSubChannelFollowSubscription extends EventSubSubscription<Even
 		handler: (data: EventSubChannelFollowEvent) => void,
 		client: EventSubBase,
 		private readonly _userId: string,
-		private readonly _moderatorId?: string
+		private readonly _moderatorId: string
 	) {
 		super(handler, client);
 	}
 
 	get id(): string {
-		if (this._moderatorId) {
-			return `channel.follow.${this._userId}.${this._moderatorId}`;
-		}
-		return `channel.follow.${this._userId}`;
+		return `channel.follow.${this._userId}.${this._moderatorId}`;
 	}
 
 	get authUserId(): string | null {
-		return this._moderatorId ?? this._userId;
+		return this._moderatorId;
 	}
 
 	protected transformData(data: EventSubChannelFollowEventData): EventSubChannelFollowEvent {
@@ -37,14 +34,10 @@ export class EventSubChannelFollowSubscription extends EventSubSubscription<Even
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		const transport = await this._getTransportOptions();
-		if (this._moderatorId) {
-			return await this._client._apiClient.eventSub.subscribeToChannelFollowEventsV2(
-				this._userId,
-				this._moderatorId,
-				transport
-			);
-		}
-		return await this._client._apiClient.eventSub.subscribeToChannelFollowEvents(this._userId, transport);
+		return await this._client._apiClient.eventSub.subscribeToChannelFollowEvents(
+			this._userId,
+			this._moderatorId,
+			await this._getTransportOptions()
+		);
 	}
 }

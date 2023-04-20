@@ -95,10 +95,12 @@ export interface EventSubListener {
 	 * Subscribes to events that represent a user following a channel.
 	 *
 	 * @param user The user for which to get notifications about their followers.
+	 * @param moderator A user that has permission to read followers in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onChannelFollow: (
 		user: UserIdResolvable,
+		moderator: UserIdResolvable,
 		handler: (event: EventSubChannelFollowEvent) => void
 	) => EventSubSubscription;
 

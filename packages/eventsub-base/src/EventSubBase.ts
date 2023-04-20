@@ -268,16 +268,6 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Subscribes to events that represent a user following a channel.
 	 *
-	 * @deprecated This signature can not be used by clients that didn't have an active subscription on Feb 17th, 2023.
-	 * Please specify a moderator as the second parameter.
-	 *
-	 * @param user The user for which to get notifications about their followers.
-	 * @param handler The function that will be called for any new notifications.
-	 */
-	onChannelFollow(user: UserIdResolvable, handler: (event: EventSubChannelFollowEvent) => void): EventSubSubscription;
-	/**
-	 * Subscribes to events that represent a user following a channel.
-	 *
 	 * @param user The user for which to get notifications about their followers.
 	 * @param moderator A user that has permission to read followers in the broadcaster's channel.
 	 * @param handler The function that will be called for any new notifications.
@@ -286,25 +276,10 @@ export abstract class EventSubBase extends EventEmitter {
 		user: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (event: EventSubChannelFollowEvent) => void
-	): EventSubSubscription;
-	onChannelFollow(
-		user: UserIdResolvable,
-		moderatorOrHandler: UserIdResolvable | ((event: EventSubChannelFollowEvent) => void),
-		handler?: (event: EventSubChannelFollowEvent) => void
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelFollowEvents');
-
-		if (handler) {
-			const moderatorId = extractUserId(moderatorOrHandler as UserIdResolvable);
-			return this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId, moderatorId);
-		} else {
-			return this._genericSubscribe(
-				EventSubChannelFollowSubscription,
-				moderatorOrHandler as (event: EventSubChannelFollowEvent) => void,
-				this,
-				userId
-			);
-		}
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelFollowEvents');
+		return this._genericSubscribe(EventSubChannelFollowSubscription, handler, this, userId, moderatorId);
 	}
 
 	/**

@@ -351,33 +351,11 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Subscribe to events that represent a user following a channel.
 	 *
-	 * @deprecated This can not be used by clients that didn't have an active subscription on Feb 17th, 2023.
-	 * Use {@link HelixEventSubApi#subscribeToChannelFollowEventsV2} instead.
-	 *
-	 * @param broadcaster The broadcaster you want to listen to follow events for.
-	 * @param transport The transport options.
-	 */
-	async subscribeToChannelFollowEvents(
-		broadcaster: UserIdResolvable,
-		transport: HelixEventSubTransportOptions
-	): Promise<HelixEventSubSubscription> {
-		return await this.createSubscription(
-			'channel.follow',
-			'1',
-			createEventSubBroadcasterCondition(broadcaster),
-			transport,
-			broadcaster
-		);
-	}
-
-	/**
-	 * Subscribe to events that represent a user following a channel.
-	 *
 	 * @param broadcaster The broadcaster you want to listen to follow events for.
 	 * @param moderator A user that has permission to read followers in the broadcaster's channel.
 	 * @param transport The transport options.
 	 */
-	async subscribeToChannelFollowEventsV2(
+	async subscribeToChannelFollowEvents(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		transport: HelixEventSubTransportOptions

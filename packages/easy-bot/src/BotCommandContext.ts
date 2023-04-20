@@ -26,24 +26,6 @@ export class BotCommandContext {
 	}
 
 	/**
-	 * The ID of the channel.
-	 *
-	 * @deprecated Use {@link BotCommandContext#broadcasterId} instead.
-	 */
-	get channelId(): string {
-		return this.msg.channelId!;
-	}
-
-	/**
-	 * The name of the channel, starting with a `#`.
-	 *
-	 * @deprecated Use {@link BotCommandContext#broadcasterName} instead.
-	 */
-	get channel(): string {
-		return this.msg.params.target;
-	}
-
-	/**
 	 * The ID of the user who sent the message.
 	 */
 	get userId(): string {
@@ -62,15 +44,6 @@ export class BotCommandContext {
 	 */
 	get userDisplayName(): string {
 		return this.msg.userInfo.displayName;
-	}
-
-	/**
-	 * The name of the user who sent the message.
-	 *
-	 * @deprecated Use {@link BotCommandContext#userName} instead.
-	 */
-	get user(): string {
-		return this.msg.userInfo.userName;
 	}
 
 	/**

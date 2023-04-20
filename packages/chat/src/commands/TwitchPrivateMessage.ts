@@ -1,9 +1,7 @@
-import type { BaseCheermoteList, CheermoteFormat, ParsedMessagePart } from '@twurple/common';
-import { parseChatMessage, rtfm } from '@twurple/common';
+import { rtfm } from '@twurple/common';
 import { MessageTypes } from 'ircv3';
 import { ChatUser } from '../ChatUser';
 import { parseEmoteOffsets } from '../utils/emoteUtil';
-import { getMessageText } from '../utils/messageUtil';
 
 /**
  * An IRC PRIVMSG, with easy accessors for commonly used data from its tags.
@@ -138,37 +136,5 @@ export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
 	 */
 	get emoteOffsets(): Map<string, string[]> {
 		return parseEmoteOffsets(this._tags.get('emotes'));
-	}
-
-	/**
-	 * Parses the message, separating text from emote usages.
-	 *
-	 * @deprecated Use {@link parseChatMessage} instead.
-	 */
-	parseEmotes(): ParsedMessagePart[] {
-		const messageText = getMessageText(this.params.content);
-
-		return parseChatMessage(messageText, this.emoteOffsets) as ParsedMessagePart[];
-	}
-
-	/**
-	 * Parses the message, separating text from emote usages and cheers.
-	 *
-	 * @deprecated Use {@link parseChatMessage} instead.
-	 *
-	 * @param cheermotes A list of cheermotes.
-	 * @param cheermoteFormat The format to show the cheermotes in.
-	 */
-	parseEmotesAndBits(cheermotes: BaseCheermoteList<unknown>, cheermoteFormat: CheermoteFormat): ParsedMessagePart[] {
-		const messageText = getMessageText(this.params.content);
-
-		return parseChatMessage(messageText, this.emoteOffsets, cheermotes.getPossibleNames()).map(part =>
-			part.type === 'cheer'
-				? {
-						...part,
-						displayInfo: cheermotes.getCheermoteDisplayInfo(part.name, part.amount, cheermoteFormat)
-				  }
-				: part
-		);
 	}
 }
