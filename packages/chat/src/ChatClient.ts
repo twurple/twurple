@@ -1230,10 +1230,8 @@ export class ChatClient extends EventEmitter {
 
 	/**
 	 * Connects to the chat server.
-	 *
-	 * This method doesn't actually do anything async, so you can ignore the promise it returns.
 	 */
-	async connect(): Promise<void> {
+	connect(): void {
 		if (!this._authProvider) {
 			this._ircClient.changeNick(ChatClient._generateJustinfanNick());
 		}
@@ -1356,12 +1354,10 @@ export class ChatClient extends EventEmitter {
 
 	/**
 	 * Reconnects to the chat server.
-	 *
-	 * This method doesn't actually do anything async, so you can ignore the promise it returns.
 	 */
-	async reconnect(): Promise<void> {
+	reconnect(): void {
 		this.quit();
-		await this.connect();
+		this.connect();
 	}
 
 	private async _getAuthToken(): Promise<string | undefined> {
