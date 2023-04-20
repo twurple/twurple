@@ -52,14 +52,9 @@ export type BotAuthMethod = 'bot' | 'broadcaster';
  */
 export interface BotConfig {
 	/**
-	 * @deprecated Use `authProvider` instead.
-	 */
-	auth?: AuthProvider;
-
-	/**
 	 * The {@link AuthProvider} instance to use for authenticating the bot and its users.
 	 */
-	authProvider?: AuthProvider;
+	authProvider: AuthProvider;
 
 	/**
 	 * Whether to enable debug logs.
@@ -417,28 +412,12 @@ export class Bot extends EventEmitter {
 	// endregion
 
 	/**
-	 * @deprecated Use the constructor directly instead.
-	 *
-	 * @expandParams
-	 *
-	 * @param config
-	 */
-	static async create(config: BotConfig): Promise<Bot> {
-		if (!config.auth && !config.authProvider) {
-			throw new Error('You have to pass an auth provider using the `authProvider` configuration option');
-		}
-		return new this(null, config);
-	}
-
-	/**
 	 * Creates a new bot.
 	 *
-	 * @param _unused An unused parameter that will be removed in the next version. You can safely pass `null` here.
 	 * @param config The configuration for the bot.
 	 */
-	constructor(_unused: AuthProvider | null | undefined, config: BotConfig) {
+	constructor(config: BotConfig) {
 		const {
-			auth,
 			authProvider,
 			authMethod,
 			channel: configChannel,
@@ -448,10 +427,6 @@ export class Bot extends EventEmitter {
 			emitCommandMessageEvents,
 			prefix
 		} = config;
-		if (!auth && !authProvider) {
-			throw new Error('You should pass an auth provider using the `authProvider` configuration option');
-		}
-
 		super();
 
 		const resolvableChannels = configChannel ? [configChannel] : channels;
@@ -460,7 +435,7 @@ export class Bot extends EventEmitter {
 			throw new Error("didn't pass channel nor channels option, exiting");
 		}
 
-		this._authProvider = authProvider ?? auth!;
+		this._authProvider = authProvider;
 		this._prefix = prefix ?? '!';
 		this._authMethod = authMethod ?? 'bot';
 
