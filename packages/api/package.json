@@ -1,6 +1,6 @@
 {
   "name": "@twurple/api",
-  "version": "6.2.0-pre.1",
+  "version": "6.2.0",
   "publishConfig": {
     "access": "public"
   },
@@ -39,17 +39,17 @@
     "@d-fischer/rate-limiter": "^0.7.2",
     "@d-fischer/shared-utils": "^3.6.1",
     "@d-fischer/typed-event-emitter": "^3.3.1",
-    "@twurple/api-call": "6.2.0-pre.1",
-    "@twurple/common": "6.2.0-pre.1",
+    "@twurple/api-call": "6.2.0",
+    "@twurple/common": "6.2.0",
     "retry": "^0.13.1",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "6.2.0-pre.1",
+    "@twurple/auth": "6.2.0",
     "@types/retry": "^0.12.2"
   },
   "peerDependencies": {
-    "@twurple/auth": "6.2.0-pre.1"
+    "@twurple/auth": "6.2.0"
   },
   "files": [
     "LICENSE",
