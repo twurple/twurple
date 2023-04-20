@@ -35,7 +35,7 @@ export interface HelixUpdateChatSettingsParams {
 	emoteOnlyModeEnabled?: boolean;
 
 	/**
-	 * Whether unique chat mode (formerly known as r9k) should be enabled.
+	 * Whether unique chat mode should be enabled.
 	 */
 	uniqueChatModeEnabled?: boolean;
 

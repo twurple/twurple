@@ -236,7 +236,7 @@ export class Bot extends EventEmitter {
 	readonly onMessageRemove = this.registerEvent<[event: MessageRemoveEvent]>();
 
 	/**
-	 * Fires when R9K mode is toggled in a channel.
+	 * Fires when unique chat mode is toggled in a channel.
 	 *
 	 * @eventListener
 	 * @param event The event object.

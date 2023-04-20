@@ -61,7 +61,7 @@ export class HelixChatSettings extends DataObject<HelixChatSettingsData> {
 	}
 
 	/**
-	 * Whether unique chat mode (formerly known as r9k) is enabled.
+	 * Whether unique chat mode is enabled.
 	 */
 	get uniqueChatModeEnabled(): boolean {
 		return this[rawDataSymbol].unique_chat_mode;

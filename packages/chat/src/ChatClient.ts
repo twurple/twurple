@@ -323,17 +323,6 @@ export class ChatClient extends EventEmitter {
 	/**
 	 * Fires when unique chat mode is toggled in a channel.
 	 *
-	 * @deprecated Use {@link ChatClient#onUniqueChat} instead.
-	 *
-	 * @eventListener
-	 * @param channel The channel where unique chat mode is being toggled.
-	 * @param enabled Whether unique chat mode is being enabled. If false, it's being disabled.
-	 */
-	readonly onR9k = this.registerEvent<[channel: string, enabled: boolean]>();
-
-	/**
-	 * Fires when unique chat mode is toggled in a channel.
-	 *
 	 * @eventListener
 	 * @param channel The channel where unique chat mode is being toggled.
 	 * @param enabled Whether unique chat mode is being enabled. If false, it's being disabled.
@@ -1136,16 +1125,14 @@ export class ChatClient extends EventEmitter {
 						break;
 					}
 
-					// r9k
+					// unique chat
 					case 'r9k_on': {
 						this.emit(this.onUniqueChat, broadcasterName, true);
-						this.emit(this.onR9k, broadcasterName, true);
 						break;
 					}
 
 					case 'r9k_off': {
 						this.emit(this.onUniqueChat, broadcasterName, false);
-						this.emit(this.onR9k, broadcasterName, false);
 						break;
 					}
 
