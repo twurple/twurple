@@ -12,7 +12,6 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	private _verified: boolean = false;
 	private _twitchSubscriptionData?: HelixEventSubSubscription;
 	/** @protected */ abstract readonly _cliName: string;
-	private _startedFromExistingTwitchSub = false;
 
 	/** @private */
 	protected constructor(protected _handler: (obj: T) => void, protected _client: EventSubBase) {}
@@ -50,7 +49,6 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	start(resumeFrom?: HelixEventSubSubscription): void {
 		if (resumeFrom) {
 			if (resumeFrom.status === 'enabled') {
-				this._startedFromExistingTwitchSub = true;
 				this._twitchSubscriptionData = resumeFrom;
 				this._client._logger.debug(`Successfully resumed subscription for event: ${this.id}`);
 				return;
@@ -64,7 +62,6 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 		} else {
 			this._subscribeAndSave();
 		}
-		this._startedFromExistingTwitchSub = false;
 	}
 
 	/**
@@ -76,7 +73,6 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 		}
 		this._unsubscribe().then(
 			() => {
-				this._startedFromExistingTwitchSub = false;
 				this._verified = false;
 				this._twitchSubscriptionData = undefined;
 			},
