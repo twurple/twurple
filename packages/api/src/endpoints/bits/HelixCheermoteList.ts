@@ -1,7 +1,7 @@
 import { indexBy } from '@d-fischer/shared-utils';
-import type { CheermoteDisplayInfo, CheermoteFormat } from '@twurple/common';
-import { BaseCheermoteList, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
+import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
 import { type HelixCheermoteData } from '../../interfaces/endpoints/bits.external';
+import { type CheermoteDisplayInfo, type CheermoteFormat } from './CheermoteDisplayInfo';
 
 /**
  * A list of cheermotes you can use globally or in a specific channel, depending on how you fetched the list.
@@ -9,7 +9,7 @@ import { type HelixCheermoteData } from '../../interfaces/endpoints/bits.externa
  * @inheritDoc
  */
 @rtfm('api', 'HelixCheermoteList')
-export class HelixCheermoteList extends BaseCheermoteList<Record<string, HelixCheermoteData>> {
+export class HelixCheermoteList extends DataObject<Record<string, HelixCheermoteData>> {
 	/** @private */
 	constructor(data: HelixCheermoteData[]) {
 		super(indexBy(data, action => action.prefix.toLowerCase()));

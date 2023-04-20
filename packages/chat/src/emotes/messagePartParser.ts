@@ -1,11 +1,5 @@
 import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
-import { type BasicMessageCheermote } from './BaseCheermoteList';
-import { ChatEmote } from './ChatEmote';
-import {
-	type BasicParsedMessageCheerPart,
-	type BasicParsedMessagePart,
-	type ParsedMessageEmotePart
-} from './ParsedMessagePart';
+import { type ParsedMessageCheerPart, type ParsedMessageEmotePart, type ParsedMessagePart } from './ParsedMessagePart';
 
 /**
  * Transforms the parts of the given text that are marked as emotes.
@@ -27,11 +21,7 @@ export function parseEmotePositions(text: string, emoteOffsets: Map<string, stri
 					position: start,
 					length: end - start + 1,
 					id: emote,
-					name,
-					displayInfo: new ChatEmote({
-						code: name,
-						id: emote
-					})
+					name
 				};
 			})
 		)
@@ -44,8 +34,8 @@ export function parseEmotePositions(text: string, emoteOffsets: Map<string, stri
  * @param text The message text.
  * @param names The names of the cheermotes to find.
  */
-export function findCheermotePositions(text: string, names: string[]): BasicMessageCheermote[] {
-	const result: BasicMessageCheermote[] = [];
+export function findCheermotePositions(text: string, names: string[]): ParsedMessageCheerPart[] {
+	const result: ParsedMessageCheerPart[] = [];
 
 	const re = new RegExp('(?<=^|\\s)([a-z]+(?:\\d+[a-z]+)*)(\\d+)(?=\\s|$)', 'gi');
 	let match: RegExpExecArray | null = null;
@@ -54,6 +44,7 @@ export function findCheermotePositions(text: string, names: string[]): BasicMess
 		if (names.includes(name)) {
 			const amount = Number(match[2]);
 			result.push({
+				type: 'cheer',
 				name,
 				amount,
 				position: utf8Length(text.slice(0, match.index)),
@@ -71,7 +62,7 @@ export function findCheermotePositions(text: string, names: string[]): BasicMess
  * @param text The message text.
  * @param otherPositions The parsed non-text parts of the message.
  */
-export function fillTextPositions(text: string, otherPositions: BasicParsedMessagePart[]): BasicParsedMessagePart[] {
+export function fillTextPositions(text: string, otherPositions: ParsedMessagePart[]): ParsedMessagePart[] {
 	const messageLength = utf8Length(text);
 	if (!otherPositions.length) {
 		return [
@@ -84,7 +75,7 @@ export function fillTextPositions(text: string, otherPositions: BasicParsedMessa
 		];
 	}
 
-	const result: BasicParsedMessagePart[] = [];
+	const result: ParsedMessagePart[] = [];
 	let currentPosition = 0;
 
 	for (const token of otherPositions) {
@@ -123,23 +114,15 @@ export function parseChatMessage(
 	text: string,
 	emoteOffsets: Map<string, string[]>,
 	cheermoteNames?: string[]
-): BasicParsedMessagePart[] {
+): ParsedMessagePart[] {
 	if (!text) {
 		return [];
 	}
 
-	const foundParts: BasicParsedMessagePart[] = parseEmotePositions(text, emoteOffsets);
+	const foundParts: ParsedMessagePart[] = parseEmotePositions(text, emoteOffsets);
 
 	if (cheermoteNames) {
-		foundParts.push(
-			...findCheermotePositions(text, cheermoteNames).map(
-				(cm): BasicParsedMessageCheerPart => ({
-					type: 'cheer',
-					...cm
-				})
-			)
-		);
-
+		foundParts.push(...findCheermotePositions(text, cheermoteNames));
 		foundParts.sort((a, b) => a.position - b.position);
 	}
 

@@ -1,5 +1,9 @@
 import { type HelixResponse } from '@twurple/api-call';
-import { type CheermoteBackground, type CheermoteScale, type CheermoteState } from '@twurple/common';
+import {
+	type CheermoteBackground,
+	type CheermoteScale,
+	type CheermoteState
+} from '../../endpoints/bits/CheermoteDisplayInfo';
 import { type HelixBitsLeaderboardQuery } from './bits.input';
 import { type HelixDateRangeData } from './generic.external';
 

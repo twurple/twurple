@@ -221,13 +221,9 @@ export type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from './util
 export type { HelixForwardPagination, HelixPagination } from './utils/pagination/HelixPagination';
 
 export type { HelixResponse, HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '@twurple/api-call';
-export { ChatEmote, extractUserId, extractUserName, HelixExtension, HellFreezesOverError } from '@twurple/common';
+export { extractUserId, extractUserName, HelixExtension, HellFreezesOverError } from '@twurple/common';
 export type {
-	CheermoteBackground,
-	CheermoteDisplayInfo,
 	CommercialLength,
-	CheermoteScale,
-	CheermoteState,
 	HelixExtensionSubscriptionsSupportLevel,
 	HelixExtensionState,
 	HelixExtensionIconSize,

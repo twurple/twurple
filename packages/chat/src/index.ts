@@ -38,6 +38,19 @@ export { ChatUser } from './ChatUser';
 
 export { LogLevel } from '@d-fischer/logger';
 
-export { parseTwitchMessage } from './utils/messageUtil';
+export {
+	findCheermotePositions,
+	fillTextPositions,
+	parseChatMessage,
+	parseEmotePositions
+} from './emotes/messagePartParser';
+export {
+	type ParsedMessagePart,
+	type ParsedMessageEmotePart,
+	type ParsedMessageCheerPart,
+	type ParsedMessageTextPart
+} from './emotes/ParsedMessagePart';
+
+export { parseTwitchMessage, extractMessageText } from './utils/messageUtil';
 export { parseEmoteOffsets } from './utils/emoteUtil';
 export { toChannelName, toUserName } from './utils/userUtil';

@@ -1,4 +1,3 @@
-import { ChatEmote } from '../ChatEmote';
 import { parseChatMessage } from '../messagePartParser';
 
 describe('Message part parser', () => {
@@ -31,11 +30,7 @@ describe('Message part parser', () => {
 				id: '25',
 				name: 'Kappa',
 				position: 25,
-				length: 5,
-				displayInfo: new ChatEmote({
-					id: '25',
-					code: 'Kappa'
-				})
+				length: 5
 			},
 			{
 				type: 'text',
@@ -76,11 +71,7 @@ describe('Message part parser', () => {
 				id: '305954156',
 				name: 'PogChamp',
 				position: 23,
-				length: 8,
-				displayInfo: new ChatEmote({
-					id: '305954156',
-					code: 'PogChamp'
-				})
+				length: 8
 			},
 			{
 				type: 'text',
@@ -128,11 +119,7 @@ describe('Message part parser', () => {
 				id: '305954156',
 				name: 'PogChamp',
 				position: 27,
-				length: 8,
-				displayInfo: new ChatEmote({
-					id: '305954156',
-					code: 'PogChamp'
-				})
+				length: 8
 			},
 			{
 				type: 'text',

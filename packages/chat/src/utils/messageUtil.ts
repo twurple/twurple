@@ -46,6 +46,11 @@ function getTwitchMessageTypes(): Map<string, MessageConstructor> {
 	]));
 }
 
+/**
+ * Parses a raw message from Twitch into a message object.
+ *
+ * @param rawLine The raw message line.
+ */
 export function parseTwitchMessage(rawLine: string): Message {
 	return parseMessage(rawLine, undefined, getTwitchMessageTypes(), true);
 }
@@ -80,7 +85,14 @@ export function splitOnSpaces(text: string, maxMsgLength: number): string[] {
 	return res;
 }
 
-export function getMessageText(message: string): string {
+/**
+ * Extracts the text to show from a message parameter.
+ *
+ * @param message The message parameter to extract the text from.
+ *
+ * You would usually get this using `msg.params.message` on a message object.
+ */
+export function extractMessageText(message: string): string {
 	const ctcp = decodeCtcp(message);
 	if (ctcp && ctcp.command === 'ACTION') {
 		return ctcp.params;

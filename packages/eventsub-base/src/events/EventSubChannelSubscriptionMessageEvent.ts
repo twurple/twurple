@@ -1,7 +1,6 @@
 import { Enumerable, groupBy } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import type { ParsedMessagePart } from '@twurple/common';
-import { checkRelationAssertion, DataObject, parseChatMessage, rawDataSymbol, rtfm } from '@twurple/common';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelSubscriptionMessageEventData,
 	type EventSubChannelSubscriptionMessageEventTier
@@ -112,17 +111,14 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 	}
 
 	/**
-	 * Parses the message to split emotes from text.
+	 * The offsets of emote usages in the message.
 	 */
-	parseEmotes(): ParsedMessagePart[] {
-		const messageText = this[rawDataSymbol].message.text;
-		const emoteOffsets = new Map<string, string[]>(
+	get emoteOffsets(): Map<string, string[]> {
+		return new Map<string, string[]>(
 			Object.entries(groupBy(this[rawDataSymbol].message.emotes, 'id')).map(([id, ranges]) => [
 				id,
 				ranges.map(({ begin, end }) => `${begin}-${end}`)
 			])
 		);
-
-		return parseChatMessage(messageText, emoteOffsets) as ParsedMessagePart[];
 	}
 }
