@@ -580,35 +580,25 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent a Bits transaction in an extension.
 	 *
-	 * @param clientId The Client ID of the extension for which to get notifications for about Bits transactions.
 	 * @param handler  The function that will be called for any new notifications.
 	 */
 	onExtensionBitsTransactionCreate: (
-		clientId: string,
 		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void
 	) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user granting authorization to an application.
 	 *
-	 * @param clientId The Client ID for which to get notifications about authorization grants.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	onUserAuthorizationGrant: (
-		clientId: string,
-		handler: (data: EventSubUserAuthorizationGrantEvent) => void
-	) => EventSubSubscription;
+	onUserAuthorizationGrant: (handler: (data: EventSubUserAuthorizationGrantEvent) => void) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user revoking authorization from an application.
 	 *
-	 * @param clientId The Client ID for which to get notifications about authorization revocations.
 	 * @param handler The function that will be called for any new notifications.
 	 */
-	onUserAuthorizationRevoke: (
-		clientId: string,
-		handler: (data: EventSubUserAuthorizationRevokeEvent) => void
-	) => EventSubSubscription;
+	onUserAuthorizationRevoke: (handler: (data: EventSubUserAuthorizationRevokeEvent) => void) => EventSubSubscription;
 
 	/**
 	 * Subscribes to events that represent a user updating their account details.
