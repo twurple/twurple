@@ -1,11 +1,16 @@
-import type { MessageParam } from 'ircv3';
-import { Message, MessageParamDefinition, MessageType } from 'ircv3';
+import { Message, type MessageInternalConfig, type MessageInternalContents } from 'ircv3';
+
+interface UserStateFields {
+	channel: string;
+}
 
 /** @private */
-@MessageType('USERSTATE')
-export class UserState extends Message<UserState> {
-	@MessageParamDefinition({
-		type: 'channel'
-	})
-	type!: MessageParam;
+export class UserState extends Message<UserStateFields> {
+	static readonly COMMAND = 'USERSTATE';
+
+	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
+		super(command, contents, config, {
+			channel: { type: 'channel' }
+		});
+	}
 }

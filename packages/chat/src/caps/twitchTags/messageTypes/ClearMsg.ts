@@ -1,18 +1,19 @@
-import type { MessageParam } from 'ircv3';
-import { Message, MessageParamDefinition } from 'ircv3';
+import { Message, type MessageInternalConfig, type MessageInternalContents } from 'ircv3';
 
-export class ClearMsg extends Message<ClearMsg> {
+interface ClearMsgFields {
+	channel: string;
+	text: string;
+}
+
+export interface ClearMsg extends ClearMsgFields {}
+export class ClearMsg extends Message<ClearMsgFields> {
 	static readonly COMMAND = 'CLEARMSG';
-
-	@MessageParamDefinition({
-		type: 'channel'
-	})
-	channel!: MessageParam;
-
-	@MessageParamDefinition({
-		trailing: true
-	})
-	message!: MessageParam;
+	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
+		super(command, contents, config, {
+			channel: { type: 'channel' },
+			text: { trailing: true }
+		});
+	}
 
 	get date(): Date {
 		const timestamp = this._tags.get('tmi-sent-ts')!;

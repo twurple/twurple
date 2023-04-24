@@ -63,7 +63,7 @@ export class MessageRemoveEvent {
 	 * The text of the deleted message.
 	 */
 	get originalText(): string {
-		return this._msg.params.message;
+		return this._msg.text;
 	}
 
 	/**

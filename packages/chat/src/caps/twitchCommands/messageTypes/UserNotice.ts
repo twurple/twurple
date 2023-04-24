@@ -1,20 +1,22 @@
-import type { MessageParam } from 'ircv3';
-import { Message, MessageParamDefinition, MessageType } from 'ircv3';
+import type { MessageInternalConfig, MessageInternalContents } from 'ircv3';
+import { Message } from 'ircv3';
 import { ChatUser } from '../../../ChatUser';
 import { parseEmoteOffsets } from '../../../utils/emoteUtil';
 
-@MessageType('USERNOTICE')
-export class UserNotice extends Message<UserNotice> {
-	@MessageParamDefinition({
-		type: 'channel'
-	})
-	channel!: MessageParam;
+interface UserNoticeFields {
+	channel: string;
+	text?: string;
+}
 
-	@MessageParamDefinition({
-		trailing: true,
-		optional: true
-	})
-	message!: MessageParam;
+export interface UserNotice extends UserNoticeFields {}
+export class UserNotice extends Message<UserNoticeFields> {
+	static readonly COMMAND = 'USERNOTICE';
+	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
+		super(command, contents, config, {
+			channel: { type: 'channel' },
+			text: { trailing: true, optional: true }
+		});
+	}
 
 	get id(): string {
 		return this._tags.get('id')!;

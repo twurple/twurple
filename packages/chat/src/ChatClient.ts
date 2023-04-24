@@ -809,10 +809,7 @@ export class ChatClient extends EventEmitter {
 		});
 
 		this._ircClient.onTypedMessage(ClearChat, msg => {
-			const {
-				params: { channel, user },
-				tags
-			} = msg;
+			const { channel, user, tags } = msg;
 			const broadcasterName = toUserName(channel);
 			if (user) {
 				const duration = tags.get('ban-duration');
@@ -830,22 +827,19 @@ export class ChatClient extends EventEmitter {
 		});
 
 		this._ircClient.onTypedMessage(ClearMsg, msg => {
-			const {
-				params: { channel },
-				targetMessageId
-			} = msg;
+			const { channel, targetMessageId } = msg;
 			this.emit(this.onMessageRemove, toUserName(channel), targetMessageId, msg);
 		});
 
-		this._ircClient.onTypedMessage(MessageTypes.Commands.ChannelJoin, ({ prefix, params: { channel } }) => {
+		this._ircClient.onTypedMessage(MessageTypes.Commands.ChannelJoin, ({ prefix, channel }) => {
 			this.emit(this.onJoin, toUserName(channel), prefix!.nick);
 		});
 
-		this._ircClient.onTypedMessage(MessageTypes.Commands.ChannelPart, ({ prefix, params: { channel } }) => {
+		this._ircClient.onTypedMessage(MessageTypes.Commands.ChannelPart, ({ prefix, channel }) => {
 			this.emit(this.onPart, toUserName(channel), prefix!.nick);
 		});
 
-		this._ircClient.onTypedMessage(RoomState, ({ params: { channel }, tags }) => {
+		this._ircClient.onTypedMessage(RoomState, ({ channel, tags }) => {
 			let isInitial = false;
 			if (tags.has('subs-only') && tags.has('slow')) {
 				// this is the full state - so we just successfully joined
@@ -876,10 +870,7 @@ export class ChatClient extends EventEmitter {
 		});
 
 		this._ircClient.onTypedMessage(UserNotice, userNotice => {
-			const {
-				params: { channel, message },
-				tags
-			} = userNotice;
+			const { channel, text: message, tags } = userNotice;
 			const messageType = tags.get('msg-id')!;
 			const broadcasterName = toUserName(channel);
 
@@ -1097,138 +1088,135 @@ export class ChatClient extends EventEmitter {
 		});
 
 		this._ircClient.onTypedMessage(Whisper, whisper => {
-			this.emit(this.onWhisper, whisper.prefix!.nick, whisper.params.message, whisper);
+			this.emit(this.onWhisper, whisper.prefix!.nick, whisper.text, whisper);
 		});
 
-		this._ircClient.onTypedMessage(
-			MessageTypes.Commands.Notice,
-			async ({ params: { target: channel, content }, tags }) => {
-				const broadcasterName = toUserName(channel);
-				const messageType = tags.get('msg-id');
+		this._ircClient.onTypedMessage(MessageTypes.Commands.Notice, async ({ target: channel, text, tags }) => {
+			const broadcasterName = toUserName(channel);
+			const messageType = tags.get('msg-id');
 
-				switch (messageType) {
-					// emote only
-					case 'emote_only_on': {
-						this.emit(this.onEmoteOnly, broadcasterName, true);
-						break;
-					}
+			switch (messageType) {
+				// emote only
+				case 'emote_only_on': {
+					this.emit(this.onEmoteOnly, broadcasterName, true);
+					break;
+				}
 
-					case 'emote_only_off': {
-						this.emit(this.onEmoteOnly, broadcasterName, false);
-						break;
-					}
+				case 'emote_only_off': {
+					this.emit(this.onEmoteOnly, broadcasterName, false);
+					break;
+				}
 
-					// join (success is handled when ROOMSTATE comes in)
-					case 'msg_channel_suspended':
-					case 'msg_banned': {
-						this.emit(this._onJoinResult, channel, undefined, messageType);
-						break;
-					}
+				// join (success is handled when ROOMSTATE comes in)
+				case 'msg_channel_suspended':
+				case 'msg_banned': {
+					this.emit(this._onJoinResult, channel, undefined, messageType);
+					break;
+				}
 
-					// unique chat
-					case 'r9k_on': {
-						this.emit(this.onUniqueChat, broadcasterName, true);
-						break;
-					}
+				// unique chat
+				case 'r9k_on': {
+					this.emit(this.onUniqueChat, broadcasterName, true);
+					break;
+				}
 
-					case 'r9k_off': {
-						this.emit(this.onUniqueChat, broadcasterName, false);
-						break;
-					}
+				case 'r9k_off': {
+					this.emit(this.onUniqueChat, broadcasterName, false);
+					break;
+				}
 
-					// subs only
-					case 'subs_on': {
-						this.emit(this.onSubsOnly, broadcasterName, true);
-						break;
-					}
+				// subs only
+				case 'subs_on': {
+					this.emit(this.onSubsOnly, broadcasterName, true);
+					break;
+				}
 
-					case 'subs_off': {
-						this.emit(this.onSubsOnly, broadcasterName, false);
-						break;
-					}
+				case 'subs_off': {
+					this.emit(this.onSubsOnly, broadcasterName, false);
+					break;
+				}
 
-					case 'cmds_available': {
-						// do we really care?
-						break;
-					}
+				case 'cmds_available': {
+					// do we really care?
+					break;
+				}
 
-					// there's other messages that show us the following things...
-					// ...like ROOMSTATE...
-					case 'followers_on':
-					case 'followers_on_zero':
-					case 'followers_off':
-					case 'slow_on':
-					case 'slow_off': {
-						break;
-					}
+				// there's other messages that show us the following things...
+				// ...like ROOMSTATE...
+				case 'followers_on':
+				case 'followers_on_zero':
+				case 'followers_off':
+				case 'slow_on':
+				case 'slow_off': {
+					break;
+				}
 
-					// ...and CLEARCHAT...
-					case 'timeout_success': {
-						break;
-					}
+				// ...and CLEARCHAT...
+				case 'timeout_success': {
+					break;
+				}
 
-					case 'unrecognized_cmd': {
-						break;
-					}
+				case 'unrecognized_cmd': {
+					break;
+				}
 
-					case 'no_permission': {
-						this.emit(this.onNoPermission, broadcasterName, content);
-						break;
-					}
+				case 'no_permission': {
+					this.emit(this.onNoPermission, broadcasterName, text);
+					break;
+				}
 
-					case 'msg_ratelimit': {
-						this.emit(this.onMessageRatelimit, broadcasterName, content);
-						break;
-					}
+				case 'msg_ratelimit': {
+					this.emit(this.onMessageRatelimit, broadcasterName, text);
+					break;
+				}
 
-					case 'msg_duplicate':
-					case 'msg_emoteonly':
-					case 'msg_followersonly':
-					case 'msg_followersonly_followed':
-					case 'msg_followersonly_zero':
-					case 'msg_subsonly':
-					case 'msg_slowmode':
-					case 'msg_r9k':
-					case 'msg_verified_email':
-					case 'msg_timedout':
-					case 'msg_rejected_mandatory':
-					case 'msg_channel_blocked': {
-						this.emit(this.onMessageFailed, broadcasterName, messageType);
-						break;
-					}
+				case 'msg_duplicate':
+				case 'msg_emoteonly':
+				case 'msg_followersonly':
+				case 'msg_followersonly_followed':
+				case 'msg_followersonly_zero':
+				case 'msg_subsonly':
+				case 'msg_slowmode':
+				case 'msg_r9k':
+				case 'msg_verified_email':
+				case 'msg_timedout':
+				case 'msg_rejected_mandatory':
+				case 'msg_channel_blocked': {
+					this.emit(this.onMessageFailed, broadcasterName, messageType);
+					break;
+				}
 
-					case undefined: {
-						// this might be one of these weird authentication error notices that don't have a msg-id...
-						if (
-							content === 'Login authentication failed' ||
-							content === 'Improperly formatted AUTH' ||
-							content === 'Invalid NICK'
-						) {
-							this._authVerified = false;
-							if (!this._authRetryTimer) {
-								this._authRetryTimer = fibWithLimit(120);
-								this._authRetryCount = 0;
-							}
-							const secs = this._authRetryTimer.next().value;
-							const authRetries = ++this._authRetryCount;
-							this.emit(this.onAuthenticationFailure, content, authRetries);
-							if (secs !== 0) {
-								this._chatLogger.info(`Retrying authentication in ${secs} seconds`);
-							}
-							await delay(secs * 1000);
-							this._ircClient.reconnect();
+				case undefined: {
+					// this might be one of these weird authentication error notices that don't have a msg-id...
+					if (
+						text === 'Login authentication failed' ||
+						text === 'Improperly formatted AUTH' ||
+						text === 'Invalid NICK'
+					) {
+						this._authVerified = false;
+						if (!this._authRetryTimer) {
+							this._authRetryTimer = fibWithLimit(120);
+							this._authRetryCount = 0;
 						}
-						break;
-					}
-
-					default: {
-						if (!messageType.startsWith('usage_')) {
-							this._chatLogger.warn(`Unrecognized notice ID: '${messageType}'`);
+						const secs = this._authRetryTimer.next().value;
+						const authRetries = ++this._authRetryCount;
+						this.emit(this.onAuthenticationFailure, text, authRetries);
+						if (secs !== 0) {
+							this._chatLogger.info(`Retrying authentication in ${secs} seconds`);
 						}
+						await delay(secs * 1000);
+						this._ircClient.reconnect();
+					}
+					break;
+				}
+
+				default: {
+					if (!messageType.startsWith('usage_')) {
+						this._chatLogger.warn(`Unrecognized notice ID: '${messageType}'`);
 					}
 				}
 			}
-		);
+		});
 	}
 
 	/**

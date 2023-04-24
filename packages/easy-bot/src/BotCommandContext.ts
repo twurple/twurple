@@ -22,7 +22,7 @@ export class BotCommandContext {
 	 * The name of the broadcaster.
 	 */
 	get broadcasterName(): string {
-		return toUserName(this.msg.params.target);
+		return toUserName(this.msg.target);
 	}
 
 	/**

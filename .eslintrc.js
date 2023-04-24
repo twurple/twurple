@@ -12,6 +12,12 @@ module.exports = {
 				'@typescript-eslint/explicit-module-boundary-types': 'off',
 				'@typescript-eslint/naming-convention': 'off'
 			}
+		},
+		{
+			files: ['packages/chat/src/caps/*/messageTypes/*.ts', 'packages/chat/src/commands/*.ts'],
+			rules: {
+				'@typescript-eslint/no-empty-interface': 'off'
+			}
 		}
 	]
 };

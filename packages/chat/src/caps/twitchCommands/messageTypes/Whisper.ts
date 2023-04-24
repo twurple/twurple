@@ -1,18 +1,24 @@
-import type { MessageParam } from 'ircv3';
-import { Message, MessageParamDefinition, MessageType } from 'ircv3';
+import { Message, type MessageInternalConfig, type MessageInternalContents } from 'ircv3';
 import { ChatUser } from '../../../ChatUser';
 import { parseEmoteOffsets } from '../../../utils/emoteUtil';
 
-/** @private */
-@MessageType('WHISPER')
-export class Whisper extends Message<Whisper> {
-	@MessageParamDefinition()
-	target!: MessageParam;
+interface WhisperFields {
+	target: string;
+	text: string;
+}
 
-	@MessageParamDefinition({
-		trailing: true
-	})
-	message!: MessageParam;
+/** @private */
+export interface Whisper extends WhisperFields {}
+/** @private */
+export class Whisper extends Message<WhisperFields> {
+	static readonly COMMAND = 'WHISPER';
+
+	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
+		super(command, contents, config, {
+			target: {},
+			text: { trailing: true }
+		});
+	}
 
 	get userInfo(): ChatUser {
 		return new ChatUser(this._prefix!.nick, this._tags);

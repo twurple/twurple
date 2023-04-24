@@ -14,5 +14,5 @@ export interface ChatRitualInfo {
 	 *
 	 * With the "new_chatter" ritual, you can choose between a set list of emotes to send.
 	 */
-	message: string;
+	message?: string;
 }

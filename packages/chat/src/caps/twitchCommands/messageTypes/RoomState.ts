@@ -1,10 +1,16 @@
-import type { MessageParam } from 'ircv3';
-import { Message, MessageParamDefinition, MessageType } from 'ircv3';
+import type { MessageInternalConfig, MessageInternalContents } from 'ircv3';
+import { Message } from 'ircv3';
 
-@MessageType('ROOMSTATE')
-export class RoomState extends Message<RoomState> {
-	@MessageParamDefinition({
-		type: 'channel'
-	})
-	channel!: MessageParam;
+interface RoomStateFields {
+	channel: string;
+}
+
+export interface RoomState extends RoomStateFields {}
+export class RoomState extends Message<RoomStateFields> {
+	static readonly COMMAND = 'ROOMSTATE';
+	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
+		super(command, contents, config, {
+			channel: { type: 'channel' }
+		});
+	}
 }
