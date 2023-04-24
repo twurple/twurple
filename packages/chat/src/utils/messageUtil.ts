@@ -8,14 +8,14 @@ import { UserState } from '../caps/twitchCommands/messageTypes/UserState';
 import { Whisper } from '../caps/twitchCommands/messageTypes/Whisper';
 import { ClearMsg } from '../caps/twitchTags/messageTypes/ClearMsg';
 import { GlobalUserState } from '../caps/twitchTags/messageTypes/GlobalUserState';
-import { TwitchPrivateMessage } from '../commands/TwitchPrivateMessage';
+import { ChatMessage } from '../commands/ChatMessage';
 
 let twitchMessageTypesCache: Map<string, MessageConstructor> | null = null;
 
 function getTwitchMessageTypes(): Map<string, MessageConstructor> {
 	return (twitchMessageTypesCache ??= new Map<string, MessageConstructor>([
 		// standard types used by Twitch
-		['PRIVMSG', TwitchPrivateMessage],
+		['PRIVMSG', ChatMessage],
 		['NOTICE', MessageTypes.Commands.Notice],
 		['PING', MessageTypes.Commands.Ping],
 		['PONG', MessageTypes.Commands.Pong],

@@ -4,10 +4,10 @@ import { ChatUser } from '../ChatUser';
 import { parseEmoteOffsets } from '../utils/emoteUtil';
 
 /**
- * An IRC PRIVMSG, with easy accessors for commonly used data from its tags.
+ * A regular chat message.
  */
-@rtfm<TwitchPrivateMessage>('chat', 'TwitchPrivateMessage', 'id')
-export class TwitchPrivateMessage extends MessageTypes.Commands.PrivateMessage {
+@rtfm<ChatMessage>('chat', 'ChatMessage', 'id')
+export class ChatMessage extends MessageTypes.Commands.PrivateMessage {
 	/**
 	 * The ID of the message.
 	 */

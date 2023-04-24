@@ -36,7 +36,7 @@ import { TwitchTagsCapability } from './caps/twitchTags';
 import { ClearMsg } from './caps/twitchTags/messageTypes/ClearMsg';
 import type { ChatSayMessageAttributes } from './ChatMessageAttributes';
 import { extractMessageId } from './ChatMessageAttributes';
-import { TwitchPrivateMessage } from './commands/TwitchPrivateMessage';
+import { ChatMessage } from './commands/ChatMessage';
 import type { ChatAnnouncementInfo } from './userNotices/ChatAnnouncementInfo';
 import type { ChatBitsBadgeUpgradeInfo } from './userNotices/ChatBitsBadgeUpgradeInfo';
 import type { ChatCommunityPayForwardInfo } from './userNotices/ChatCommunityPayForwardInfo';
@@ -602,7 +602,7 @@ export class ChatClient extends EventEmitter {
 	 * @param text The message text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onMessage = this.registerEvent<[channel: string, user: string, text: string, msg: TwitchPrivateMessage]>();
+	readonly onMessage = this.registerEvent<[channel: string, user: string, text: string, msg: ChatMessage]>();
 
 	/**
 	 * Fires when a user sends an action (/me) to a channel.
@@ -613,7 +613,7 @@ export class ChatClient extends EventEmitter {
 	 * @param text The action text.
 	 * @param msg The full message object containing all message and user information.
 	 */
-	readonly onAction = this.registerEvent<[channel: string, user: string, text: string, msg: TwitchPrivateMessage]>();
+	readonly onAction = this.registerEvent<[channel: string, user: string, text: string, msg: ChatMessage]>();
 
 	// internal events to resolve promises and stuff
 	private readonly _onJoinResult =
@@ -666,7 +666,7 @@ export class ChatClient extends EventEmitter {
 			this.emit(this.onDisconnect, manually, reason);
 		});
 
-		this._ircClient.registerMessageType(TwitchPrivateMessage);
+		this._ircClient.registerMessageType(ChatMessage);
 
 		this._chatLogger = createLogger({
 			name: 'twurple:chat:twitch',

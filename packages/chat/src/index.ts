@@ -2,7 +2,7 @@ export { ChatClient } from './ChatClient';
 export type { ChatClientOptions, TwitchBotLevel } from './ChatClient';
 export type { WebSocketConnectionOptions } from '@d-fischer/connection';
 
-export { TwitchPrivateMessage as PrivateMessage } from './commands/TwitchPrivateMessage';
+export { ChatMessage } from './commands/ChatMessage';
 
 export { ClearChat } from './caps/twitchCommands/messageTypes/ClearChat';
 export { Reconnect } from './caps/twitchCommands/messageTypes/Reconnect';
