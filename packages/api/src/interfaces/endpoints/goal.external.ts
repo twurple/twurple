@@ -1,4 +1,9 @@
-export type HelixGoalType = 'follower' | 'subscription' | 'subscription_count' | 'new_subscription_count';
+export type HelixGoalType =
+	| 'follower'
+	| 'subscription'
+	| 'subscription_count'
+	| 'new_subscription'
+	| 'new_subscription_count';
 
 /** @private */
 export interface HelixGoalData {
