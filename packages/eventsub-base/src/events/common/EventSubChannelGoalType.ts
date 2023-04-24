@@ -1,4 +1,9 @@
 /**
- * The type of a channel goal. Can be "follower" or "subscription".
+ * The type of a channel goal.
  */
-export type EventSubChannelGoalType = 'follower' | 'subscription';
+export type EventSubChannelGoalType =
+	| 'follow'
+	| 'subscription'
+	| 'subscription_count'
+	| 'new_subscription'
+	| 'new_subscription_count';
