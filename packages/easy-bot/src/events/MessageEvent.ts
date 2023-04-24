@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { type HelixUser } from '@twurple/api';
-import { type PrivateMessage, toUserName } from '@twurple/chat';
+import { type ChatMessage, toUserName } from '@twurple/chat';
 import { checkRelationAssertion, rtfm } from '@twurple/common';
 import { type Bot } from '../Bot';
 
@@ -15,11 +15,11 @@ export class MessageEvent {
 	/** @internal */ @Enumerable(false) private readonly _userName: string;
 	/** @internal */ @Enumerable(false) private readonly _text: string;
 	/** @internal */ @Enumerable(false) private readonly _isAction: boolean;
-	/** @internal */ @Enumerable(false) private readonly _msg: PrivateMessage;
+	/** @internal */ @Enumerable(false) private readonly _msg: ChatMessage;
 	/** @internal */ @Enumerable(false) private readonly _bot: Bot;
 
 	/** @internal */
-	constructor(channel: string, userName: string, text: string, isAction: boolean, msg: PrivateMessage, bot: Bot) {
+	constructor(channel: string, userName: string, text: string, isAction: boolean, msg: ChatMessage, bot: Bot) {
 		this._broadcasterName = toUserName(channel);
 		this._userName = userName;
 		this._text = text;

@@ -12,9 +12,9 @@ import {
 import { type AuthProvider } from '@twurple/auth';
 import {
 	ChatClient,
+	type ChatMessage,
 	type ChatSayMessageAttributes,
 	extractMessageId,
-	type PrivateMessage,
 	toUserName
 } from '@twurple/chat';
 import { type CommercialLength, HellFreezesOverError, type UserIdResolvable } from '@twurple/common';
@@ -680,7 +680,7 @@ export class Bot extends EventEmitter {
 	 * @param channelName The name of the channel to delete the message from.
 	 * @param message The message (as message ID or message object) to delete.
 	 */
-	async deleteMessage(channelName: string, message: string | PrivateMessage): Promise<void> {
+	async deleteMessage(channelName: string, message: string | ChatMessage): Promise<void> {
 		const channelId = await this._resolveUserId(channelName);
 		await this.deleteMessageById(channelId, message);
 	}
@@ -691,7 +691,7 @@ export class Bot extends EventEmitter {
 	 * @param channel The channel to delete the message from.
 	 * @param message The message (as message ID or message object) to delete.
 	 */
-	async deleteMessageById(channel: UserIdResolvable, message: string | PrivateMessage): Promise<void> {
+	async deleteMessageById(channel: UserIdResolvable, message: string | ChatMessage): Promise<void> {
 		await this.api.moderation.deleteChatMessages(
 			channel,
 			await this._getPreferredUserIdForModAction(channel),
@@ -1141,7 +1141,7 @@ export class Bot extends EventEmitter {
 	 * @param text The text to send.
 	 * @param replyToMessage The message (or ID of the message) to reply to.
 	 */
-	async reply(channel: string, text: string, replyToMessage: string | PrivateMessage): Promise<void> {
+	async reply(channel: string, text: string, replyToMessage: string | ChatMessage): Promise<void> {
 		await this.chat.say(channel, text, { replyTo: replyToMessage });
 	}
 
@@ -1189,7 +1189,7 @@ export class Bot extends EventEmitter {
 
 	// region internals
 	/** @internal */
-	private _findMatch(msg: PrivateMessage): BotCommandMatch | null {
+	private _findMatch(msg: ChatMessage): BotCommandMatch | null {
 		const line = msg.text.trim().replace(/  +/g, ' ');
 		for (const command of this._commands.values()) {
 			const params = command.match(line, this._prefix);

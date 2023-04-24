@@ -1,4 +1,4 @@
-import { type PrivateMessage, toUserName } from '@twurple/chat';
+import { type ChatMessage, toUserName } from '@twurple/chat';
 import { type CommercialLength } from '@twurple/common';
 import { type Bot, type ChatAnnouncementColor } from './Bot';
 
@@ -9,7 +9,7 @@ import { type Bot, type ChatAnnouncementColor } from './Bot';
  */
 export class BotCommandContext {
 	/** @internal **/
-	constructor(private readonly _bot: Bot, public readonly msg: PrivateMessage) {}
+	constructor(private readonly _bot: Bot, public readonly msg: ChatMessage) {}
 
 	/**
 	 * The ID of the broadcaster.
