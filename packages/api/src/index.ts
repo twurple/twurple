@@ -12,6 +12,8 @@ export { type HelixBitsLeaderboardQuery, type HelixBitsLeaderboardPeriod } from 
 export { HelixChannelApi } from './endpoints/channel/HelixChannelApi';
 export { HelixChannel } from './endpoints/channel/HelixChannel';
 export { HelixChannelEditor } from './endpoints/channel/HelixChannelEditor';
+export { HelixChannelFollower } from './endpoints/channel/HelixChannelFollower';
+export { HelixFollowedChannel } from './endpoints/channel/HelixFollowedChannel';
 export { HelixChannelReference } from './endpoints/channel/HelixChannelReference';
 export type { HelixChannelUpdate } from './interfaces/endpoints/channel.input';
 
