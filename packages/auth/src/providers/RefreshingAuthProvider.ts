@@ -8,7 +8,14 @@ import { IntermediateUserRemovalError } from '../errors/IntermediateUserRemovalE
 import { InvalidTokenError } from '../errors/InvalidTokenError';
 import { InvalidTokenTypeError } from '../errors/InvalidTokenTypeError';
 import { UnknownIntentError } from '../errors/UnknownIntentError';
-import { compareScopeSets, getAppToken, getTokenInfo, loadAndCompareTokenInfo, refreshUserToken } from '../helpers';
+import {
+	compareScopeSets,
+	exchangeCode,
+	getAppToken,
+	getTokenInfo,
+	loadAndCompareTokenInfo,
+	refreshUserToken
+} from '../helpers';
 import { TokenFetcher } from '../TokenFetcher';
 import { type TokenInfo } from '../TokenInfo';
 import { type AuthProvider } from './AuthProvider';
@@ -16,7 +23,7 @@ import { type AuthProvider } from './AuthProvider';
 /**
  * Configuration for the {@link RefreshingAuthProvider}.
  */
-export interface RefreshConfig {
+export interface RefreshingAuthProviderConfig {
 	/**
 	 * The client ID of your application.
 	 */
@@ -26,6 +33,13 @@ export interface RefreshConfig {
 	 * The client secret of your application.
 	 */
 	clientSecret: string;
+
+	/**
+	 * A valid redirect URI for your application.
+	 *
+	 * Only required if you use `addUserForCode`.
+	 */
+	redirectUri?: string;
 
 	/**
 	 * The scopes to be implied by the provider's app access token.
@@ -41,6 +55,7 @@ export interface RefreshConfig {
 export class RefreshingAuthProvider extends EventEmitter implements AuthProvider {
 	private readonly _clientId: string;
 	@Enumerable(false) private readonly _clientSecret: string;
+	private readonly _redirectUri?: string;
 	@Enumerable(false) private readonly _userAccessTokens = new Map<
 		string,
 		MakeOptional<AccessTokenWithUserId, 'accessToken' | 'scope'>
@@ -74,11 +89,12 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	 *
 	 * @param refreshConfig The information necessary to automatically refresh an access token.
 	 */
-	constructor(refreshConfig: RefreshConfig) {
+	constructor(refreshConfig: RefreshingAuthProviderConfig) {
 		super();
 
 		this._clientId = refreshConfig.clientId;
 		this._clientSecret = refreshConfig.clientSecret;
+		this._redirectUri = refreshConfig.redirectUri;
 		this._appImpliedScopes = refreshConfig.appImpliedScopes ?? [];
 		this._appTokenFetcher = new TokenFetcher(async scopes => await this._fetchAppToken(scopes));
 	}
@@ -125,7 +141,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	 * @param initialToken The token for the user.
 	 * @param intents The intents to add to the user.
 	 *
-	 * Any intents that were already set before will be overwritten to point to this user instead.
+	 * Any intents that were already set before will be overwritten to point to the associated user instead.
 	 */
 	async addUserForToken(
 		initialToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>,
@@ -176,6 +192,26 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 		this.addUser(tokenInfo.userId, token, intents);
 
 		return tokenInfo.userId;
+	}
+
+	/**
+	 * Gets an OAuth token from the given authorization code and adds the user to the provider.
+	 *
+	 * An authorization code can be obtained using the
+	 * [OAuth Authorization Code flow](https://dev.twitch.tv/docs/authentication/getting-tokens-oauth/#authorization-code-grant-flow).
+	 *
+	 * @param code The authorization code.
+	 * @param intents The intents to add to the user.
+	 *
+	 * Any intents that were already set before will be overwritten to point to the associated user instead.
+	 */
+	async addUserForCode(code: string, intents?: string[]): Promise<string> {
+		if (!this._redirectUri) {
+			throw new Error('This method requires you to pass a `redirectUri` as a configuration property');
+		}
+		const token = await exchangeCode(this._clientId, this._clientSecret, code, this._redirectUri);
+
+		return await this.addUserForToken(token, intents);
 	}
 
 	/**

@@ -23,7 +23,7 @@ export type { TokenInfoData } from './TokenInfo.external';
 export type { AuthProvider } from './providers/AuthProvider';
 export { AppTokenAuthProvider } from './providers/AppTokenAuthProvider';
 export { RefreshingAuthProvider } from './providers/RefreshingAuthProvider';
-export type { RefreshConfig } from './providers/RefreshingAuthProvider';
+export type { RefreshingAuthProviderConfig } from './providers/RefreshingAuthProvider';
 export { StaticAuthProvider } from './providers/StaticAuthProvider';
 
 export { InvalidTokenError } from './errors/InvalidTokenError';
