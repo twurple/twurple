@@ -10,6 +10,5 @@ You can choose between different ways to authenticate:
   (This is mostly useful for quick prototyping and **not suitable for production apps**.)
 - If you want to run something more long-term, you may be interested in [auto-refreshing tokens](/docs/auth/providers/refreshing).
 - If you run an application that doesn't have any for of user login to access user-specific data, you can exclusively use [app tokens](/docs/auth/providers/app-tokens).
-- If you are building an Electron app, you can use our premade [Electron auth provider](/docs/auth/providers/electron).
 - If you are building a Twitch Extension frontend, there's an [Extension auth provider](/docs/auth/providers/extensions) too.
 - If you have special requirements, you can write your own provider by implementing the {@link AuthProvider} interface.
