@@ -15,12 +15,16 @@ export class ExtensionAuthProvider implements AuthProvider {
 		return [];
 	}
 
-	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId> {
-		if (scopes?.length) {
+	async getAccessTokenForUser(
+		user: UserIdResolvable,
+		...scopeSets: Array<string[] | undefined>
+	): Promise<AccessTokenWithUserId> {
+		if (scopeSets.length && scopeSets.some(set => set?.length)) {
 			throw new Error(
-				`Scope ${scopes.join(
-					', '
-				)} requested but direct extension calls do not support scopes. Please use an EBS instead.`
+				`Scopes ${scopeSets
+					.filter((val): val is string[] => Boolean(val))
+					.map(scopes => scopes.join('|'))
+					.join(', ')} requested but direct extension calls do not support scopes. Please use an EBS instead.`
 			);
 		}
 

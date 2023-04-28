@@ -186,7 +186,7 @@ export async function getValidTokenFromProviderForIntent(
 	if (!provider.getAccessTokenForIntent) {
 		throw new InvalidTokenTypeError(
 			`This call requires an AuthProvider that supports intents.
-Please provide an auth provider that does, such as \`RefreshingAuthProvider\`.`
+Please use an auth provider that does, such as \`RefreshingAuthProvider\`.`
 		);
 	}
 	try {
@@ -291,7 +291,7 @@ export async function loadAndCompareTokenInfo(
 	token: string,
 	userId?: string,
 	loadedScopes?: string[],
-	requestedScopeSets?: string[][]
+	requestedScopeSets?: Array<string[] | undefined>
 ): Promise<[string[] | undefined, string]> {
 	if (requestedScopeSets?.length || !userId) {
 		const userInfo = await getTokenInfo(token, clientId);
@@ -301,7 +301,10 @@ export async function loadAndCompareTokenInfo(
 
 		const scopesToCompare = loadedScopes ?? userInfo.scopes;
 		if (requestedScopeSets) {
-			compareScopeSets(scopesToCompare, requestedScopeSets);
+			compareScopeSets(
+				scopesToCompare,
+				requestedScopeSets.filter((val): val is string[] => Boolean(val))
+			);
 		}
 
 		return [scopesToCompare, userInfo.userId];

@@ -71,7 +71,7 @@ export class BaseApiClient extends EventEmitter {
 	 * @param scopes The scopes to request.
 	 */
 	async requestScopesForUser(user: UserIdResolvable, scopes: string[]): Promise<void> {
-		await this._config.authProvider.getAccessTokenForUser(user, scopes);
+		await this._config.authProvider.getAccessTokenForUser(user, ...scopes.map(scope => [scope]));
 	}
 
 	/**

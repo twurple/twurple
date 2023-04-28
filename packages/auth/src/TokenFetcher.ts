@@ -13,16 +13,17 @@ export class TokenFetcher<T extends AccessToken = AccessToken> {
 		this._executor = executor;
 	}
 
-	async fetch(scopes?: string[]): Promise<T> {
+	async fetch(...scopeSets: Array<string[] | undefined>): Promise<T> {
+		const filteredScopeSets = scopeSets.filter((val): val is string[] => Boolean(val));
 		if (this._newTokenPromise) {
-			if (!scopes?.length) {
+			if (!filteredScopeSets.length) {
 				return await this._newTokenPromise;
 			}
 
 			if (this._queueExecutor) {
-				this._queuedScopeSets.push(scopes);
+				this._queuedScopeSets.push(...filteredScopeSets);
 			} else {
-				this._queuedScopeSets = [scopes];
+				this._queuedScopeSets = [...filteredScopeSets];
 			}
 
 			if (!this._queuePromise) {
@@ -52,7 +53,7 @@ export class TokenFetcher<T extends AccessToken = AccessToken> {
 			return await this._queuePromise;
 		}
 
-		this._newTokenScopeSets = scopes?.length ? [scopes] : [];
+		this._newTokenScopeSets = [...filteredScopeSets];
 		const { promise, resolve, reject } = promiseWithResolvers<T>();
 		this._newTokenPromise = promise;
 		try {

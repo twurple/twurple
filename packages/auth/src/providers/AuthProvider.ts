@@ -39,9 +39,17 @@ export interface AuthProvider {
 	 * scopes are requested - the cached token should be valid for that -
 	 * unless you know exactly what you're doing.
 	 *
-	 * @param scopes The requested scope(s).
+	 * @param scopeSets The requested scopes.
+	 *
+	 * Each given parameter is an array of scopes, of which you should pick one to actually request.
+	 *
+	 * The recommendation is to pick the first one
+	 * unless the provider already has one of the requested scopes for the given user.
 	 */
-	getAccessTokenForUser: (user: UserIdResolvable, scopes?: string[]) => Promise<AccessTokenWithUserId | null>;
+	getAccessTokenForUser: (
+		user: UserIdResolvable,
+		...scopeSets: Array<string[] | undefined>
+	) => Promise<AccessTokenWithUserId | null>;
 
 	/**
 	 * Fetches a token for a user identified by the given intent defined by the provider.
@@ -56,9 +64,17 @@ export interface AuthProvider {
 	 * as it accesses its connection credentials using an intent.
 	 *
 	 * @param intent The intent to fetch a token for.
-	 * @param scopes The requested scopes.
+	 * @param scopeSets The requested scopes.
+	 *
+	 * Each given parameter is an array of scopes, of which you should pick one to actually request.
+	 *
+	 * The recommendation is to pick the first one
+	 * unless the provider already has one of the requested scopes for the resolved user.
 	 */
-	getAccessTokenForIntent?: (intent: string, scopes?: string[]) => Promise<AccessTokenWithUserId | null>;
+	getAccessTokenForIntent?: (
+		intent: string,
+		...scopeSets: Array<string[] | undefined>
+	) => Promise<AccessTokenWithUserId | null>;
 
 	/**
 	 * Fetches an app token.

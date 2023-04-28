@@ -59,11 +59,14 @@ export class StaticAuthProvider implements AuthProvider {
 	 * If the current access token does not have the requested scopes, this method throws.
 	 * This makes supplying an access token with the correct scopes from the beginning necessary.
 	 *
-	 * @param intent Ignored.
-	 * @param scopes The requested scopes.
+	 * @param user Ignored.
+	 * @param scopeSets The requested scopes.
 	 */
-	async getAccessTokenForIntent(intent: string, scopes?: string[]): Promise<AccessTokenWithUserId> {
-		return await this._getAccessToken(scopes);
+	async getAccessTokenForUser(
+		user: UserIdResolvable,
+		...scopeSets: Array<string[] | undefined>
+	): Promise<AccessTokenWithUserId> {
+		return await this._getAccessToken(scopeSets);
 	}
 
 	/**
@@ -72,11 +75,14 @@ export class StaticAuthProvider implements AuthProvider {
 	 * If the current access token does not have the requested scopes, this method throws.
 	 * This makes supplying an access token with the correct scopes from the beginning necessary.
 	 *
-	 * @param user Ignored.
-	 * @param scopes The requested scopes.
+	 * @param intent Ignored.
+	 * @param scopeSets The requested scopes.
 	 */
-	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId> {
-		return await this._getAccessToken(scopes);
+	async getAccessTokenForIntent(
+		intent: string,
+		...scopeSets: Array<string[] | undefined>
+	): Promise<AccessTokenWithUserId> {
+		return await this._getAccessToken(scopeSets);
 	}
 
 	/**
@@ -93,13 +99,13 @@ export class StaticAuthProvider implements AuthProvider {
 		return this._scopes ?? [];
 	}
 
-	private async _getAccessToken(requestedScopes?: string[]): Promise<AccessTokenWithUserId> {
+	private async _getAccessToken(requestedScopeSets?: Array<string[] | undefined>): Promise<AccessTokenWithUserId> {
 		const [scopes, userId] = await loadAndCompareTokenInfo(
 			this._clientId,
 			this._accessToken.accessToken,
 			this._userId,
 			this._scopes,
-			requestedScopes ? [requestedScopes] : []
+			requestedScopeSets
 		);
 
 		this._scopes = scopes;

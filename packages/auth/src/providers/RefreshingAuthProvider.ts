@@ -367,32 +367,38 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	 * Gets an access token for the given user.
 	 *
 	 * @param user The user to get an access token for.
-	 * @param scopes The requested scopes.
+	 * @param scopeSets The requested scopes.
 	 */
-	async getAccessTokenForUser(user: UserIdResolvable, scopes?: string[]): Promise<AccessTokenWithUserId | null> {
+	async getAccessTokenForUser(
+		user: UserIdResolvable,
+		...scopeSets: Array<string[] | undefined>
+	): Promise<AccessTokenWithUserId | null> {
 		const fetcher = this._userTokenFetchers.get(extractUserId(user));
 
 		if (!fetcher) {
 			return null;
 		}
 
-		return await fetcher.fetch(scopes);
+		return await fetcher.fetch(...scopeSets);
 	}
 
 	/**
 	 * Fetches a token for a user identified by the given intent.
 	 *
 	 * @param intent The intent to fetch a token for.
-	 * @param scopes The requested scopes.
+	 * @param scopeSets The requested scopes.
 	 */
-	async getAccessTokenForIntent(intent: string, scopes?: string[]): Promise<AccessTokenWithUserId | null> {
+	async getAccessTokenForIntent(
+		intent: string,
+		...scopeSets: Array<string[] | undefined>
+	): Promise<AccessTokenWithUserId | null> {
 		if (!this._intentToUserId.has(intent)) {
 			return null;
 		}
 
 		const userId = this._intentToUserId.get(intent)!;
 
-		const newToken = await this.getAccessTokenForUser(userId, scopes);
+		const newToken = await this.getAccessTokenForUser(userId, ...scopeSets);
 
 		if (!newToken) {
 			throw new HellFreezesOverError(

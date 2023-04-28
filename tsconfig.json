@@ -10,9 +10,6 @@
 			"path": "./packages/auth"
 		},
 		{
-			"path": "./packages/auth-electron"
-		},
-		{
 			"path": "./packages/auth-ext"
 		},
 		{
