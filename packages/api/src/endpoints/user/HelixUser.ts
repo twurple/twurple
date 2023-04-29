@@ -5,7 +5,7 @@ import { type BaseApiClient } from '../../client/BaseApiClient';
 import { type HelixBroadcasterType, type HelixUserData } from '../../interfaces/endpoints/user.external';
 import type { HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
 import type { HelixStream } from '../stream/HelixStream';
-import type { HelixSubscription } from '../subscriptions/HelixSubscription';
+import { type HelixUserSubscription } from '../subscriptions/HelixUserSubscription';
 import type { HelixFollow } from './HelixFollow';
 
 /**
@@ -156,18 +156,48 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	/**
 	 * Gets the subscription data for the user to the given broadcaster, or `null` if the user is not subscribed.
 	 *
+	 * This requires user authentication.
+	 * For broadcaster authentication, you can use `getSubscriber` while switching `this` and the parameter.
+	 *
 	 * @param broadcaster The broadcaster you want to get the subscription data for.
 	 */
-	async getSubscriptionTo(broadcaster: UserIdResolvable): Promise<HelixSubscription | null> {
-		return await this._client.subscriptions.getSubscriptionForUser(broadcaster, this);
+	async getSubscriptionTo(broadcaster: UserIdResolvable): Promise<HelixUserSubscription | null> {
+		return await this._client.subscriptions.checkUserSubscription(this, broadcaster);
 	}
 
 	/**
 	 * Checks whether the user is subscribed to the given broadcaster.
 	 *
+	 * This requires user authentication.
+	 * For broadcaster authentication, you can use `hasSubscriber` while switching `this` and the parameter.
+	 *
 	 * @param broadcaster The broadcaster you want to check the subscription for.
 	 */
 	async isSubscribedTo(broadcaster: UserIdResolvable): Promise<boolean> {
 		return (await this.getSubscriptionTo(broadcaster)) !== null;
+	}
+
+	/**
+	 * Gets the subscription data for the given user to the broadcaster, or `null` if the user is not subscribed.
+	 *
+	 * This requires broadcaster authentication.
+	 * For user authentication, you can use `getSubscriptionTo` while switching `this` and the parameter.
+	 *
+	 * @param user The user you want to get the subscription data for.
+	 */
+	async getSubscriber(user: UserIdResolvable): Promise<HelixUserSubscription | null> {
+		return await this._client.subscriptions.getSubscriptionForUser(this, user);
+	}
+
+	/**
+	 * Checks whether the given user is subscribed to the broadcaster.
+	 *
+	 * This requires broadcaster authentication.
+	 * For user authentication, you can use `isSubscribedTo` while switching `this` and the parameter.
+	 *
+	 * @param user The user you want to check the subscription for.
+	 */
+	async hasSubscriber(user: UserIdResolvable): Promise<boolean> {
+		return (await this.getSubscriber(user)) !== null;
 	}
 }
