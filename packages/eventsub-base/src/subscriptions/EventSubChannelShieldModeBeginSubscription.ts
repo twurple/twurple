@@ -34,10 +34,13 @@ export class EventSubChannelShieldModeBeginSubscription extends EventSubSubscrip
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelShieldModeBeginEvents(
-			this._userId,
+		return await this._client._apiClient.asUser(
 			this._moderatorId,
-			await this._getTransportOptions()
+			async ctx =>
+				await ctx.eventSub.subscribeToChannelShieldModeBeginEvents(
+					this._userId,
+					await this._getTransportOptions()
+				)
 		);
 	}
 }

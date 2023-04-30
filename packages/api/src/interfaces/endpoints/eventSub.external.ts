@@ -77,10 +77,10 @@ export function createEventSubRewardCondition(broadcaster: UserIdResolvable, rew
 }
 
 /** @private */
-export function createEventSubModeratorCondition(broadcaster: UserIdResolvable, moderator: UserIdResolvable) {
+export function createEventSubModeratorCondition(broadcasterId: string, moderatorId: string) {
 	return {
-		broadcaster_user_id: extractUserId(broadcaster),
-		moderator_user_id: extractUserId(moderator)
+		broadcaster_user_id: broadcasterId,
+		moderator_user_id: moderatorId
 	};
 }
 

@@ -10,4 +10,9 @@ export class BaseApi {
 	constructor(client: BaseApiClient) {
 		this._client = client;
 	}
+
+	/** @internal */
+	protected _getUserContextIdWithDefault(userId: string): string {
+		return this._client._getUserIdFromRequestContext(userId) ?? userId;
+	}
 }

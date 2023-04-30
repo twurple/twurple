@@ -55,25 +55,28 @@ export class HelixChatApi extends BaseApi {
 	/**
 	 * Gets the list of users that are connected to the broadcaster’s chat session.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster whose list of chatters you want to get.
-	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
-	 * The token of this user will be used to fetch the chatters.
 	 * @param pagination
 	 *
 	 * @expandParams
 	 */
 	async getChatters(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResultWithTotal<HelixChatChatter>> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixPaginatedResultWithTotal<HelixChatChatterData>>({
 			type: 'helix',
 			url: 'chat/chatters',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
+			canOverrideScopedUserContext: true,
 			scopes: ['moderator:read:chatters'],
 			query: {
-				...createModeratorActionQuery(broadcaster, moderator),
+				...this._createModeratorActionQuery(broadcasterId),
 				...createPaginationQuery(pagination)
 			}
 		});
@@ -84,22 +87,25 @@ export class HelixChatApi extends BaseApi {
 	/**
 	 * Creates a paginator for users that are connected to the broadcaster’s chat session.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster whose list of chatters you want to get.
-	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
-	 * The token of this user will be used to fetch the chatters.
 	 *
 	 * @expandParams
 	 */
 	getChattersPaginated(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable
+		broadcaster: UserIdResolvable
 	): HelixPaginatedRequestWithTotal<HelixChatChatterData, HelixChatChatter> {
+		const broadcasterId = extractUserId(broadcaster);
 		return new HelixPaginatedRequestWithTotal<HelixChatChatterData, HelixChatChatter>(
 			{
 				url: 'chat/chatters',
-				userId: extractUserId(moderator),
+				userId: broadcasterId,
+				canOverrideScopedUserContext: true,
 				scopes: ['moderator:read:chatters'],
-				query: createModeratorActionQuery(broadcaster, moderator)
+				query: this._createModeratorActionQuery(broadcasterId)
 			},
 			this._client,
 			data => new HelixChatChatter(data, this._client)
@@ -196,22 +202,21 @@ export class HelixChatApi extends BaseApi {
 	/**
 	 * Gets the settings of a broadcaster's chat, including the delay settings.
 	 *
-	 * @param broadcaster The broadcaster the chat belongs to.
-	 * @param moderator The moderator the request is on behalf of.
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
 	 *
-	 * This is the user your user token needs to represent.
-	 * You can get your own settings by setting `broadcaster` and `moderator` to the same user.
+	 * @param broadcaster The broadcaster the chat belongs to.
 	 */
-	async getSettingsPrivileged(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable
-	): Promise<HelixPrivilegedChatSettings> {
+	async getSettingsPrivileged(broadcaster: UserIdResolvable): Promise<HelixPrivilegedChatSettings> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedChatSettingsData>>({
 			type: 'helix',
 			url: 'chat/settings',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
+			canOverrideScopedUserContext: true,
 			scopes: ['moderator:read:chat_settings'],
-			query: createModeratorActionQuery(broadcaster, moderator)
+			query: this._createModeratorActionQuery(broadcasterId)
 		});
 
 		return new HelixPrivilegedChatSettings(result.data[0]);
@@ -220,27 +225,28 @@ export class HelixChatApi extends BaseApi {
 	/**
 	 * Updates the settings of a broadcaster's chat.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @expandParams
 	 *
 	 * @param broadcaster The broadcaster the chat belongs to.
-	 * @param moderator The moderator the request is on behalf of.
-	 *
-	 * This is the user your user token needs to represent.
-	 * You can get your own settings by setting `broadcaster` and `moderator` to the same user.
 	 * @param settings The settings to change.
 	 */
 	async updateSettings(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		settings: HelixUpdateChatSettingsParams
 	): Promise<HelixPrivilegedChatSettings> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixPrivilegedChatSettingsData>>({
 			type: 'helix',
 			url: 'chat/settings',
 			method: 'PATCH',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
+			canOverrideScopedUserContext: true,
 			scopes: ['moderator:manage:chat_settings'],
-			query: createModeratorActionQuery(broadcaster, moderator),
+			query: this._createModeratorActionQuery(broadcasterId),
 			jsonBody: createChatSettingsUpdateBody(settings)
 		});
 
@@ -250,25 +256,26 @@ export class HelixChatApi extends BaseApi {
 	/**
 	 * Sends an announcement to a broadcaster's chat.
 	 *
-	 * @param broadcaster The broadcaster the chat belongs to.
-	 * @param moderator The moderator the request is on behalf of.
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
 	 *
-	 * This is the user your user token needs to represent.
-	 * You can send an announcement to your own chat by setting `broadcaster` and `moderator` to the same user.
+	 * @param broadcaster The broadcaster the chat belongs to.
 	 * @param announcement The announcement to send.
 	 */
 	async sendAnnouncement(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		announcement: HelixSendChatAnnouncementParams
 	): Promise<void> {
+		const broadcasterId = extractUserId(broadcaster);
 		await this._client.callApi({
 			type: 'helix',
 			url: 'chat/announcements',
 			method: 'POST',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
+			canOverrideScopedUserContext: true,
 			scopes: ['moderator:manage:announcements'],
-			query: createModeratorActionQuery(broadcaster, moderator),
+			query: this._createModeratorActionQuery(broadcasterId),
 			jsonBody: {
 				message: announcement.message,
 				color: announcement.color
@@ -340,19 +347,27 @@ export class HelixChatApi extends BaseApi {
 	 * Sends a shoutout to the specified broadcaster.
 	 * The broadcaster may send a shoutout once every 2 minutes. They may send the same broadcaster a shoutout once every 60 minutes.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param from The ID of the broadcaster that’s sending the shoutout.
 	 * @param to The ID of the broadcaster that’s receiving the shoutout.
-	 * @param moderator The ID of the broadcaster or a user that is one of the broadcaster’s moderators.
-	 * This ID must match the user ID in the access token.
 	 */
-	async shoutoutUser(from: UserIdResolvable, to: UserIdResolvable, moderator: UserIdResolvable): Promise<void> {
+	async shoutoutUser(from: UserIdResolvable, to: UserIdResolvable): Promise<void> {
+		const fromId = extractUserId(from);
 		await this._client.callApi({
 			type: 'helix',
 			url: 'chat/shoutouts',
 			method: 'POST',
-			userId: extractUserId(moderator),
+			userId: fromId,
+			canOverrideScopedUserContext: true,
 			scopes: ['moderator:manage:shoutouts'],
-			query: createShoutoutQuery(from, to, moderator)
+			query: createShoutoutQuery(from, to, this._getUserContextIdWithDefault(fromId))
 		});
+	}
+
+	private _createModeratorActionQuery(broadcasterId: string) {
+		return createModeratorActionQuery(broadcasterId, this._getUserContextIdWithDefault(broadcasterId));
 	}
 }

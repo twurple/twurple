@@ -16,7 +16,8 @@ export class UserContextApiClient extends BaseApiClient {
 		super(config, logger, rateLimiter);
 	}
 
-	protected _getUserIdFromRequestContext(): string | undefined {
+	/** @internal */
+	_getUserIdFromRequestContext(): string | undefined {
 		return this._userId;
 	}
 }

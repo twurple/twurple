@@ -4,7 +4,8 @@ import { BaseApiClient } from './BaseApiClient';
 /** @private */
 @rtfm('api', 'ApiClient')
 export class NoContextApiClient extends BaseApiClient {
-	protected _getUserIdFromRequestContext(): null {
+	/** @internal */
+	_getUserIdFromRequestContext(): null {
 		return null;
 	}
 }

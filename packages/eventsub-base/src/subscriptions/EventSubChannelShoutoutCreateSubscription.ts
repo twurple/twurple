@@ -5,9 +5,7 @@ import { type EventSubChannelShoutoutCreateEventData } from '../events/EventSubC
 import { type EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @private */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelShoutoutCreateSubscription extends EventSubSubscription<EventSubChannelShoutoutCreateEvent> {
 	/** @protected */ readonly _cliName = 'shoutout-create';
@@ -34,10 +32,13 @@ export class EventSubChannelShoutoutCreateSubscription extends EventSubSubscript
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelShoutoutCreateEvents(
-			this._userId,
+		return await this._client._apiClient.asUser(
 			this._moderatorId,
-			await this._getTransportOptions()
+			async ctx =>
+				await ctx.eventSub.subscribeToChannelShoutoutCreateEvents(
+					this._userId,
+					await this._getTransportOptions()
+				)
 		);
 	}
 }

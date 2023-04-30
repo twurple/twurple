@@ -247,20 +247,21 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Gets the AutoMod settings for a broadcaster.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster to get the AutoMod settings for.
-	 * @param moderator A user that has permission to moderate the broadcaster's chat room.
-	 * The token of this user will be used to get the settings.
 	 */
-	async getAutoModSettings(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable
-	): Promise<HelixAutoModSettings[]> {
+	async getAutoModSettings(broadcaster: UserIdResolvable): Promise<HelixAutoModSettings[]> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixAutoModSettingsData>>({
 			type: 'helix',
 			url: 'moderation/automod/settings',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:read:automod_settings'],
-			query: createModeratorActionQuery(broadcaster, moderator)
+			canOverrideScopedUserContext: true,
+			query: this._createModeratorActionQuery(broadcasterId)
 		});
 
 		return result.data.map(data => new HelixAutoModSettings(data));
@@ -269,23 +270,26 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Updates the AutoMod settings for a broadcaster.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster for which the AutoMod settings are updated.
-	 * @param moderator A user that has permission to moderate the broadcaster's chat room.
-	 * The token of this user will be used to update the settings.
 	 * @param data The updated AutoMod settings that replace the current AutoMod settings.
 	 */
 	async updateAutoModSettings(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		data: HelixAutoModSettingsUpdate
 	): Promise<HelixAutoModSettings[]> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixAutoModSettingsData>>({
 			type: 'helix',
 			url: 'moderation/automod/settings',
 			method: 'PUT',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:manage:automod_settings'],
-			query: createModeratorActionQuery(broadcaster, moderator),
+			canOverrideScopedUserContext: true,
+			query: this._createModeratorActionQuery(broadcasterId),
 			jsonBody: createAutoModSettingsBody(data)
 		});
 
@@ -293,29 +297,29 @@ export class HelixModerationApi extends BaseApi {
 	}
 
 	/**
-	 * Bans or times out a user in a channel
+	 * Bans or times out a user in a channel.
+	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
 	 *
 	 * @param broadcaster The broadcaster in whose channel the user will be banned/timed out.
-	 * @param moderator A user that has permission to ban/timeout users in the broadcaster's chat room.
-	 * The token of this user will be used to ban the user.
 	 * @param data
 	 *
 	 * @expandParams
 	 *
 	 * @returns The result data from the ban/timeout request.
 	 */
-	async banUser(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
-		data: HelixBanUserRequest
-	): Promise<HelixBanUser[]> {
+	async banUser(broadcaster: UserIdResolvable, data: HelixBanUserRequest): Promise<HelixBanUser[]> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixBanUserData>>({
 			type: 'helix',
 			url: 'moderation/bans',
 			method: 'POST',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:manage:banned_users'],
-			query: createModeratorActionQuery(broadcaster, moderator),
+			canOverrideScopedUserContext: true,
+			query: this._createModeratorActionQuery(broadcasterId),
 			jsonBody: createBanUserBody(data)
 		});
 
@@ -325,20 +329,24 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Unbans/removes the timeout for a user in a channel.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster in whose channel the user will be unbanned/removed from timeout.
-	 * @param moderator A user that has permission to unban/remove timeout users in the broadcaster's chat room.
-	 * The token of this user will be used to unban the user.
 	 * @param user The user who will be unbanned/removed from timeout.
 	 */
-	async unbanUser(broadcaster: UserIdResolvable, moderator: UserIdResolvable, user: UserIdResolvable): Promise<void> {
+	async unbanUser(broadcaster: UserIdResolvable, user: UserIdResolvable): Promise<void> {
+		const broadcasterId = extractUserId(broadcaster);
 		await this._client.callApi({
 			type: 'helix',
 			url: 'moderation/bans',
 			method: 'DELETE',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:manage:banned_users'],
+			canOverrideScopedUserContext: true,
 			query: {
-				...createModeratorActionQuery(broadcaster, moderator),
+				...this._createModeratorActionQuery(broadcasterId),
 				...createSingleKeyQuery('user_id', extractUserId(user))
 			}
 		});
@@ -347,9 +355,11 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Gets the broadcaster’s list of non-private, blocked words or phrases.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster to get their channel's blocked terms for.
-	 * @param moderator A user that has permission to get blocked terms for the broadcaster's channel.
-	 * The token of this user will be used to get the blocked terms.
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -358,16 +368,17 @@ export class HelixModerationApi extends BaseApi {
 	 */
 	async getBlockedTerms(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResult<HelixBlockedTerm>> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBlockedTermData>>({
 			type: 'helix',
 			url: 'moderation/blocked_terms',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:read:blocked_terms'],
+			canOverrideScopedUserContext: true,
 			query: {
-				...createModeratorActionQuery(broadcaster, moderator),
+				...this._createModeratorActionQuery(broadcasterId),
 				...createPaginationQuery(pagination)
 			}
 		});
@@ -378,25 +389,25 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Adds a blocked term to the broadcaster's channel.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster in whose channel the term will be blocked.
-	 * @param moderator A user that has permission to block terms in the broadcaster's channel.
-	 * The token of this user will be used to add the blocked term.
 	 * @param text The word or phrase to block from being used in the broadcaster's channel.
 	 *
 	 * @returns Information about the term that has been blocked.
 	 */
-	async addBlockedTerm(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
-		text: string
-	): Promise<HelixBlockedTerm[]> {
+	async addBlockedTerm(broadcaster: UserIdResolvable, text: string): Promise<HelixBlockedTerm[]> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixBlockedTermData>>({
 			type: 'helix',
 			url: 'moderation/blocked_terms',
 			method: 'POST',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:manage:blocked_terms'],
-			query: createModeratorActionQuery(broadcaster, moderator),
+			canOverrideScopedUserContext: true,
+			query: this._createModeratorActionQuery(broadcasterId),
 			jsonBody: {
 				text
 			}
@@ -414,14 +425,16 @@ export class HelixModerationApi extends BaseApi {
 	 * @param id The ID of the term that should be unblocked.
 	 */
 	async removeBlockedTerm(broadcaster: UserIdResolvable, moderator: UserIdResolvable, id: string): Promise<void> {
+		const broadcasterId = extractUserId(broadcaster);
 		await this._client.callApi({
 			type: 'helix',
 			url: 'moderation/blocked_terms',
 			method: 'DELETE',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:manage:blocked_terms'],
+			canOverrideScopedUserContext: true,
 			query: {
-				...createModeratorActionQuery(broadcaster, moderator),
+				...this._createModeratorActionQuery(broadcasterId),
 				id
 			}
 		});
@@ -430,26 +443,24 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Removes a single chat message or all chat messages from the broadcaster’s chat room.
 	 *
-	 * @param broadcaster The broadcaster the chat belongs to.
-	 * @param moderator The moderator the request is on behalf of.
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
 	 *
-	 * This is the user your user token needs to represent.
-	 * You can delete messages from your own chat room by setting `broadcaster` and `moderator` to the same user.
+	 * @param broadcaster The broadcaster the chat belongs to.
 	 * @param messageId The ID of the message to remove. If not specified, the request removes all messages in the broadcaster’s chat room.
 	 */
-	async deleteChatMessages(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
-		messageId?: string
-	): Promise<void> {
+	async deleteChatMessages(broadcaster: UserIdResolvable, messageId?: string): Promise<void> {
+		const broadcasterId = extractUserId(broadcaster);
 		await this._client.callApi({
 			type: 'helix',
 			url: 'moderation/chat',
 			method: 'DELETE',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:manage:chat_messages'],
+			canOverrideScopedUserContext: true,
 			query: {
-				...createModeratorActionQuery(broadcaster, moderator),
+				...this._createModeratorActionQuery(broadcasterId),
 				...createSingleKeyQuery('message_id', messageId)
 			}
 		});
@@ -459,20 +470,17 @@ export class HelixModerationApi extends BaseApi {
 	 * Gets the broadcaster's Shield Mode activation status.
 	 *
 	 * @param broadcaster The broadcaster whose Shield Mode activation status you want to get.
-	 * @param moderator A user that has permission to read the Shield Mode status in the broadcaster's channel.
-	 * The token of this user will be used to get the Shield Mode status.
 	 */
-	async getShieldModeStatus(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable
-	): Promise<HelixShieldModeStatus> {
+	async getShieldModeStatus(broadcaster: UserIdResolvable): Promise<HelixShieldModeStatus> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixShieldModeStatusData>>({
 			type: 'helix',
 			url: 'moderation/shield_mode',
 			method: 'GET',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:read:shield_mode', 'moderator:manage:shield_mode'],
-			query: createModeratorActionQuery(broadcaster, moderator)
+			canOverrideScopedUserContext: true,
+			query: this._createModeratorActionQuery(broadcasterId)
 		});
 
 		return new HelixShieldModeStatus(result.data[0], this._client);
@@ -481,26 +489,30 @@ export class HelixModerationApi extends BaseApi {
 	/**
 	 * Activates or deactivates the broadcaster's Shield Mode.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster whose Shield Mode you want to activate or deactivate.
-	 * @param moderator A user that has permission to update Shield Mode status in the broadcaster's channel.
-	 * The token of this user will be used to change the Shield Mode status.
 	 * @param activate The desired Shield Mode status on the broadcaster's channel.
 	 */
-	async updateShieldModeStatus(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
-		activate: boolean
-	): Promise<HelixShieldModeStatus> {
+	async updateShieldModeStatus(broadcaster: UserIdResolvable, activate: boolean): Promise<HelixShieldModeStatus> {
+		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixShieldModeStatusData>>({
 			type: 'helix',
 			url: 'moderation/shield_mode',
 			method: 'PUT',
-			userId: extractUserId(moderator),
+			userId: broadcasterId,
 			scopes: ['moderator:manage:shield_mode'],
-			query: createModeratorActionQuery(broadcaster, moderator),
+			canOverrideScopedUserContext: true,
+			query: this._createModeratorActionQuery(broadcasterId),
 			jsonBody: createUpdateShieldModeStatusBody(activate)
 		});
 
 		return new HelixShieldModeStatus(result.data[0], this._client);
+	}
+
+	private _createModeratorActionQuery(broadcasterId: string) {
+		return createModeratorActionQuery(broadcasterId, this._getUserContextIdWithDefault(broadcasterId));
 	}
 }

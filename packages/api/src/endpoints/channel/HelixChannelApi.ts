@@ -291,9 +291,11 @@ export class HelixChannelApi extends BaseApi {
 	 * Gets a list of users that follow the specified broadcaster.
 	 * You can also use this endpoint to see whether a specific user follows the broadcaster.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster you want to get a list of followers for.
-	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
-	 * The token of this user will be used to fetch the followers.
 	 * @param user An optional user to determine if this user follows the broadcaster.
 	 * If specified, the response contains this user if they follow the broadcaster.
 	 * If not specified, the response contains all users that follow the broadcaster.
@@ -303,7 +305,6 @@ export class HelixChannelApi extends BaseApi {
 	 */
 	async getChannelFollowers(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		user?: UserIdResolvable,
 		pagination?: HelixForwardPagination
 	): Promise<HelixPaginatedResultWithTotal<HelixChannelFollower>> {
@@ -311,7 +312,8 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels/followers',
 			method: 'GET',
-			userId: extractUserId(moderator),
+			userId: extractUserId(broadcaster),
+			canOverrideScopedUserContext: true,
 			scopes: ['moderator:read:followers'],
 			query: {
 				...createChannelFollowerQuery(broadcaster, user),
@@ -325,21 +327,23 @@ export class HelixChannelApi extends BaseApi {
 	/**
 	 * Creates a paginator for users that follow the specified broadcaster.
 	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
 	 * @param broadcaster The broadcaster for whom you are getting a list of followers.
-	 * @param moderator The broadcaster or one of the broadcaster’s moderators.
-	 * The token of this user will be used to fetch the followers.
 	 *
 	 * @expandParams
 	 */
 	getChannelFollowersPaginated(
-		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable
+		broadcaster: UserIdResolvable
 	): HelixPaginatedRequestWithTotal<HelixChannelFollowerData, HelixChannelFollower> {
 		return new HelixPaginatedRequestWithTotal<HelixChannelFollowerData, HelixChannelFollower>(
 			{
 				url: 'channels/followers',
 				method: 'GET',
-				userId: extractUserId(moderator),
+				userId: extractUserId(broadcaster),
+				canOverrideScopedUserContext: true,
 				scopes: ['moderator:read:followers'],
 				query: createChannelFollowerQuery(broadcaster)
 			},
@@ -349,9 +353,11 @@ export class HelixChannelApi extends BaseApi {
 	}
 
 	/**
-	 * Gets a list of broadcasters that the specified user follows. You can also use this endpoint to see whether the user follows a specific broadcaster.
+	 * Gets a list of broadcasters that the specified user follows.
+	 * You can also use this endpoint to see whether the user follows a specific broadcaster.
 	 *
-	 * @param user The user that's getting a list of followed channels. This ID must match the user ID in the access token.
+	 * @param user The user that's getting a list of followed channels.
+	 * This ID must match the user ID in the access token.
 	 * @param broadcaster An optional broadcaster to determine if the user follows this broadcaster.
 	 * If specified, the response contains this broadcaster if the user follows them.
 	 * If not specified, the response contains all broadcasters that the user follows.

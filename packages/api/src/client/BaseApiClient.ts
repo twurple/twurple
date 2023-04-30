@@ -137,7 +137,7 @@ export class BaseApiClient extends EventEmitter {
 
 		if (forceUser) {
 			const contextUserId = options.canOverrideScopedUserContext
-				? this._getUserIdFromRequestContext(options)
+				? this._getUserIdFromRequestContext(options.userId)
 				: options.userId;
 
 			if (!contextUserId) {
@@ -160,7 +160,7 @@ export class BaseApiClient extends EventEmitter {
 			return await this._callApiUsingInitialToken<T>(options, accessToken);
 		}
 
-		const requestContextUserId = this._getUserIdFromRequestContext(options);
+		const requestContextUserId = this._getUserIdFromRequestContext(options.userId);
 		const accessToken =
 			requestContextUserId === null
 				? await authProvider.getAnyAccessToken()
@@ -388,8 +388,9 @@ export class BaseApiClient extends EventEmitter {
 	}
 
 	// null means app access, undefined means none specified
-	protected _getUserIdFromRequestContext(options: ContextApiCallOptions): string | null | undefined {
-		return options.userId;
+	/** @internal */
+	_getUserIdFromRequestContext(contextUserId: string | undefined): string | null | undefined {
+		return contextUserId;
 	}
 
 	private async _callApiUsingInitialToken<T = unknown>(

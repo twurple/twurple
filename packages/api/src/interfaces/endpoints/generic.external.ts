@@ -38,10 +38,10 @@ export function createUserQuery(user: UserIdResolvable) {
 }
 
 /** @private */
-export function createModeratorActionQuery(broadcaster: UserIdResolvable, moderator: UserIdResolvable) {
+export function createModeratorActionQuery(broadcaster: string, moderatorId: string) {
 	return {
-		broadcaster_id: extractUserId(broadcaster),
-		moderator_id: extractUserId(moderator)
+		broadcaster_id: broadcaster,
+		moderator_id: moderatorId
 	};
 }
 

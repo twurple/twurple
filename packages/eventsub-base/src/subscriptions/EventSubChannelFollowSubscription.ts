@@ -5,9 +5,7 @@ import { type EventSubChannelFollowEventData } from '../events/EventSubChannelFo
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @private */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelFollowSubscription extends EventSubSubscription<EventSubChannelFollowEvent> {
 	/** @protected */ readonly _cliName = 'follow';
@@ -34,10 +32,10 @@ export class EventSubChannelFollowSubscription extends EventSubSubscription<Even
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelFollowEvents(
-			this._userId,
+		return await this._client._apiClient.asUser(
 			this._moderatorId,
-			await this._getTransportOptions()
+			async ctx =>
+				await ctx.eventSub.subscribeToChannelFollowEvents(this._userId, await this._getTransportOptions())
 		);
 	}
 }

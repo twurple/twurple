@@ -50,8 +50,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Gets the current EventSub subscriptions for the current client.
 	 *
-	 * Requires an app access token to work; does not work with user tokens.
-	 *
 	 * @param pagination
 	 *
 	 * @expandParams
@@ -72,8 +70,6 @@ export class HelixEventSubApi extends BaseApi {
 
 	/**
 	 * Creates a paginator for the current EventSub subscriptions for the current client.
-	 *
-	 * Requires an app access token to work; does not work with user tokens.
 	 */
 	getSubscriptionsPaginated(): HelixPaginatedEventSubSubscriptionsRequest {
 		return new HelixPaginatedEventSubSubscriptionsRequest({}, undefined, this._client);
@@ -81,8 +77,6 @@ export class HelixEventSubApi extends BaseApi {
 
 	/**
 	 * Gets the current EventSub subscriptions with the given status for the current client.
-	 *
-	 * Requires an app access token to work; does not work with user tokens.
 	 *
 	 * @param status The status of the subscriptions to get.
 	 * @param pagination
@@ -112,8 +106,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Creates a paginator for the current EventSub subscriptions with the given status for the current client.
 	 *
-	 * Requires an app access token to work; does not work with user tokens.
-	 *
 	 * @param status The status of the subscriptions to get.
 	 */
 	getSubscriptionsForStatusPaginated(
@@ -124,8 +116,6 @@ export class HelixEventSubApi extends BaseApi {
 
 	/**
 	 * Gets the current EventSub subscriptions with the given type for the current client.
-	 *
-	 * Requires an app access token to work; does not work with user tokens.
 	 *
 	 * @param type The type of the subscriptions to get.
 	 * @param pagination
@@ -155,8 +145,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Creates a paginator for the current EventSub subscriptions with the given type for the current client.
 	 *
-	 * Requires an app access token to work; does not work with user tokens.
-	 *
 	 * @param type The type of the subscriptions to get.
 	 */
 	getSubscriptionsForTypePaginated(type: string): HelixPaginatedEventSubSubscriptionsRequest {
@@ -165,8 +153,6 @@ export class HelixEventSubApi extends BaseApi {
 
 	/**
 	 * Gets the current EventSub subscriptions for the current user and client.
-	 *
-	 * Requires an app access token to work; does not work with user tokens.
 	 *
 	 * @param user The user to get subscriptions for.
 	 * @param pagination
@@ -197,8 +183,6 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Creates a paginator for the current EventSub subscriptions with the given type for the current client.
 	 *
-	 * Requires an app access token to work; does not work with user tokens.
-	 *
 	 * @param user The user to get subscriptions for.
 	 */
 	getSubscriptionsForUserPaginated(user: UserIdResolvable): HelixPaginatedEventSubSubscriptionsRequest {
@@ -213,7 +197,8 @@ export class HelixEventSubApi extends BaseApi {
 	/**
 	 * Sends an arbitrary request to subscribe to an event.
 	 *
-	 * Requires an app access token to work; does not work with user tokens.
+	 * You can only create WebHook transport subscriptions using app tokens
+	 * and WebSocket transport subscriptions using user tokens.
 	 *
 	 * @param type The type of the event.
 	 * @param version The version of the event.
@@ -221,6 +206,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * @param transport The transport of the subscription.
 	 * @param user The user to create the subscription in context of.
 	 * @param requiredScopeSet The scope set required by the subscription. Will only be checked for applicable transports.
+	 * @param canOverrideScopedUserContext Whether the auth user context can be overridden.
 	 * @param isBatched Whether to enable batching for the subscription. Is only supported for select topics.
 	 */
 	async createSubscription(
@@ -230,6 +216,7 @@ export class HelixEventSubApi extends BaseApi {
 		transport: HelixEventSubTransportOptions,
 		user?: UserIdResolvable,
 		requiredScopeSet?: string[],
+		canOverrideScopedUserContext?: boolean,
 		isBatched?: boolean
 	): Promise<HelixEventSubSubscription> {
 		const usesAppAuth = transport.method === 'webhook';
@@ -352,21 +339,21 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a user following a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to follow events for.
-	 * @param moderator A user that has permission to read followers in the broadcaster's channel.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelFollowEvents(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.follow',
 			'2',
-			createEventSubModeratorCondition(broadcaster, moderator),
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
-			moderator,
-			['moderator:read:followers']
+			broadcasterId,
+			['moderator:read:followers'],
+			true
 		);
 	}
 
@@ -594,21 +581,21 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent Shield Mode being activated in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to Shield Mode activation events for.
-	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelShieldModeBeginEvents(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.shield_mode.begin',
 			'1',
-			createEventSubModeratorCondition(broadcaster, moderator),
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
-			broadcaster,
-			['moderator:read:shield_mode', 'moderator:manage:shield_mode']
+			broadcasterId,
+			['moderator:read:shield_mode', 'moderator:manage:shield_mode'],
+			true
 		);
 	}
 
@@ -616,21 +603,21 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent Shield Mode being deactivated in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to Shield Mode deactivation events for.
-	 * @param moderator A user that has permission to read Shield Mode status in the broadcaster's channel.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelShieldModeEndEvents(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.shield_mode.end',
 			'1',
-			createEventSubModeratorCondition(broadcaster, moderator),
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
-			broadcaster,
-			['moderator:read:shield_mode', 'moderator:manage:shield_mode']
+			broadcasterId,
+			['moderator:read:shield_mode', 'moderator:manage:shield_mode'],
+			true
 		);
 	}
 
@@ -1164,21 +1151,21 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a broadcaster shouting out another broadcaster.
 	 *
 	 * @param broadcaster The broadcaster for which you want to listen to outgoing shoutout events.
-	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelShoutoutCreateEvents(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.shoutout.create',
 			'1',
-			createEventSubModeratorCondition(broadcaster, moderator),
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
-			broadcaster,
-			['moderator:read:shoutouts', 'moderator:manage:shoutouts']
+			broadcasterId,
+			['moderator:read:shoutouts', 'moderator:manage:shoutouts'],
+			true
 		);
 	}
 
@@ -1186,21 +1173,21 @@ export class HelixEventSubApi extends BaseApi {
 	 * Subscribe to events that represent a broadcaster being shouting out by another broadcaster.
 	 *
 	 * @param broadcaster The broadcaster for which you want to listen to incoming shoutout events.
-	 * @param moderator A user that has permission to see or manage shoutout events in the broadcaster's channel.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelShoutoutReceiveEvents(
 		broadcaster: UserIdResolvable,
-		moderator: UserIdResolvable,
 		transport: HelixEventSubTransportOptions
 	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.shoutout.receive',
 			'1',
-			createEventSubModeratorCondition(broadcaster, moderator),
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
-			broadcaster,
-			['moderator:read:shoutouts', 'moderator:manage:shoutouts']
+			broadcasterId,
+			['moderator:read:shoutouts', 'moderator:manage:shoutouts'],
+			true
 		);
 	}
 
@@ -1302,6 +1289,7 @@ export class HelixEventSubApi extends BaseApi {
 			transport,
 			undefined,
 			undefined,
+			false,
 			true
 		);
 	}
