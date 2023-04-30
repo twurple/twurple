@@ -564,10 +564,14 @@ export class Bot extends EventEmitter {
 	 * @param color The color to send the announcement in. If not passed, uses the default channel color.
 	 */
 	async announceById(channel: UserIdResolvable, text: string, color?: ChatAnnouncementColor): Promise<void> {
-		await this.api.chat.sendAnnouncement(channel, await this._getPreferredUserIdForModAction(channel), {
-			message: text,
-			color
-		});
+		await this.api.asUser(
+			await this._getPreferredUserIdForModAction(channel),
+			async ctx =>
+				await ctx.chat.sendAnnouncement(channel, {
+					message: text,
+					color
+				})
+		);
 	}
 
 	/**
@@ -591,10 +595,14 @@ export class Bot extends EventEmitter {
 	 * @param reason The reason for the ban.
 	 */
 	async banByIds(channel: UserIdResolvable, user: UserIdResolvable, reason: string): Promise<void> {
-		await this.api.moderation.banUser(channel, await this._getPreferredUserIdForModAction(channel), {
-			user,
-			reason
-		});
+		await this.api.asUser(
+			await this._getPreferredUserIdForModAction(channel),
+			async ctx =>
+				await ctx.moderation.banUser(channel, {
+					user,
+					reason
+				})
+		);
 	}
 
 	/**
@@ -616,7 +624,10 @@ export class Bot extends EventEmitter {
 	 * @param user The user to unban.
 	 */
 	async unbanByIds(channel: UserIdResolvable, user: UserIdResolvable): Promise<void> {
-		await this.api.moderation.unbanUser(channel, await this._getPreferredUserIdForModAction(channel), user);
+		await this.api.asUser(
+			await this._getPreferredUserIdForModAction(channel),
+			async ctx => await ctx.moderation.unbanUser(channel, user)
+		);
 	}
 
 	/**
@@ -635,7 +646,10 @@ export class Bot extends EventEmitter {
 	 * @param channel The channel to remove all messages from.
 	 */
 	async clearById(channel: UserIdResolvable): Promise<void> {
-		await this.api.moderation.deleteChatMessages(channel, await this._getPreferredUserIdForModAction(channel));
+		await this.api.asUser(
+			await this._getPreferredUserIdForModAction(channel),
+			async ctx => await ctx.moderation.deleteChatMessages(channel)
+		);
 	}
 
 	/**
@@ -692,10 +706,9 @@ export class Bot extends EventEmitter {
 	 * @param message The message (as message ID or message object) to delete.
 	 */
 	async deleteMessageById(channel: UserIdResolvable, message: string | ChatMessage): Promise<void> {
-		await this.api.moderation.deleteChatMessages(
-			channel,
+		await this.api.asUser(
 			await this._getPreferredUserIdForModAction(channel),
-			extractMessageId(message)
+			async ctx => await ctx.moderation.deleteChatMessages(channel, extractMessageId(message))
 		);
 	}
 
@@ -997,11 +1010,15 @@ export class Bot extends EventEmitter {
 			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
 		}
 
-		await this.api.moderation.banUser(channel, await this._getPreferredUserIdForModAction(channel), {
-			user,
-			reason,
-			duration
-		});
+		await this.api.asUser(
+			await this._getPreferredUserIdForModAction(channel),
+			async ctx =>
+				await ctx.moderation.banUser(channel, {
+					user,
+					reason,
+					duration
+				})
+		);
 	}
 
 	/**
@@ -1245,7 +1262,10 @@ export class Bot extends EventEmitter {
 		channel: UserIdResolvable,
 		settings: HelixUpdateChatSettingsParams
 	): Promise<void> {
-		await this.api.chat.updateSettings(channel, await this._getPreferredUserIdForModAction(channel), settings);
+		await this.api.asUser(
+			await this._getPreferredUserIdForModAction(channel),
+			async ctx => await ctx.chat.updateSettings(channel, settings)
+		);
 	}
 
 	// endregion
