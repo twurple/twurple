@@ -4,9 +4,10 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import { type HelixBroadcasterType, type HelixUserData } from '../../interfaces/endpoints/user.external';
 import type { HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
+import { type HelixChannelFollower } from '../channel/HelixChannelFollower';
+import { type HelixFollowedChannel } from '../channel/HelixFollowedChannel';
 import type { HelixStream } from '../stream/HelixStream';
 import { type HelixUserSubscription } from '../subscriptions/HelixUserSubscription';
-import type { HelixFollow } from './HelixFollow';
 
 /**
  * A Twitch user.
@@ -98,59 +99,67 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 
 	/**
 	 * Gets a list of broadcasters the user follows.
-	 *
-	 * @deprecated Use {@link HelixChannelApi#getFollowedChannels} instead.
 	 */
-	async getFollows(): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
-		return await this._client.users.getFollows({ user: this });
+	async getFollowedChannels(): Promise<HelixPaginatedResultWithTotal<HelixFollowedChannel>> {
+		return await this._client.channels.getFollowedChannels(this);
 	}
 
 	/**
-	 * Gets the follow data of the given user to the broadcaster.
+	 * Gets the follow data of the user to the given broadcaster, or `null` if the user doesn't follow the broadcaster.
 	 *
-	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
-	 * or {@link HelixChannelApi#getFollowedChannels} instead.
-	 *
-	 * @param user The user to check the follow from.
-	 */
-	async getFollowFrom(user: UserIdResolvable): Promise<HelixFollow | null> {
-		return await this._client.users.getFollowFromUserToBroadcaster(user, this);
-	}
-
-	/**
-	 * Gets the follow data of the user to the given broadcaster.
-	 *
-	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
-	 * or {@link HelixChannelApi#getFollowedChannels} instead.
+	 * This requires user authentication.
+	 * For broadcaster authentication, you can use `getChannelFollower` while switching `this` and the parameter.
 	 *
 	 * @param broadcaster The broadcaster to check the follow to.
 	 */
-	async getFollowTo(broadcaster: UserIdResolvable): Promise<HelixFollow | null> {
-		return await this._client.users.getFollowFromUserToBroadcaster(this, broadcaster);
+	async getFollowedChannel(broadcaster: UserIdResolvable): Promise<HelixFollowedChannel | null> {
+		const result = await this._client.channels.getFollowedChannels(this, broadcaster);
+
+		return result.data[0] ?? null;
 	}
 
 	/**
 	 * Checks whether the user is following the given broadcaster.
 	 *
-	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
-	 * or {@link HelixChannelApi#getFollowedChannels} instead.
+	 * This requires user authentication.
+	 * For broadcaster authentication, you can use `isFollowedBy` while switching `this` and the parameter.
 	 *
 	 * @param broadcaster The broadcaster to check the user's follow to.
 	 */
 	async follows(broadcaster: UserIdResolvable): Promise<boolean> {
-		return await this._client.users.userFollowsBroadcaster(this, broadcaster);
+		return (await this.getFollowedChannel(broadcaster)) !== null;
+	}
+
+	/**
+	 * Gets a list of users that follow the broadcaster.
+	 */
+	async getChannelFollowers(): Promise<HelixPaginatedResultWithTotal<HelixChannelFollower>> {
+		return await this._client.channels.getChannelFollowers(this);
+	}
+
+	/**
+	 * Gets the follow data of the given user to the broadcaster, or `null` if the user doesn't follow the broadcaster.
+	 *
+	 * This requires broadcaster authentication.
+	 * For user authentication, you can use `getFollowedChannel` while switching `this` and the parameter.
+	 *
+	 * @param user The user to check the follow from.
+	 */
+	async getChannelFollower(user: UserIdResolvable): Promise<HelixChannelFollower | null> {
+		const result = await this._client.channels.getChannelFollowers(this, user);
+		return result.data[0] ?? null;
 	}
 
 	/**
 	 * Checks whether the given user is following the broadcaster.
 	 *
-	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
-	 * or {@link HelixChannelApi#getFollowedChannels} instead.
+	 * This requires broadcaster authentication.
+	 * For user authentication, you can use `follows` while switching `this` and the parameter.
 	 *
 	 * @param user The user to check the broadcaster's follow from.
 	 */
 	async isFollowedBy(user: UserIdResolvable): Promise<boolean> {
-		return await this._client.users.userFollowsBroadcaster(user, this);
+		return (await this.getChannelFollower(user)) !== null;
 	}
 
 	/**

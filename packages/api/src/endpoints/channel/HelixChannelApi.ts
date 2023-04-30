@@ -368,7 +368,7 @@ export class HelixChannelApi extends BaseApi {
 		user: UserIdResolvable,
 		broadcaster?: UserIdResolvable,
 		pagination?: HelixForwardPagination
-	): Promise<HelixPaginatedResult<HelixFollowedChannel>> {
+	): Promise<HelixPaginatedResultWithTotal<HelixFollowedChannel>> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowedChannelData>>({
 			type: 'helix',
 			url: 'channels/followed',
