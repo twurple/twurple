@@ -1,6 +1,3 @@
-import { type UserIdResolvable } from '@twurple/common';
-import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-
 /**
  * User data to update using {@link HelixUserApi#updateAuthenticatedUser}}.
  */
@@ -22,23 +19,3 @@ export interface HelixUserBlockAdditionalInfo {
 	 */
 	reason?: 'spam' | 'harassment' | 'other';
 }
-
-/**
- * Filters for the follower request.
- */
-export interface HelixFollowFilter {
-	/**
-	 * The following user.
-	 */
-	user?: UserIdResolvable;
-
-	/**
-	 * The followed user.
-	 */
-	followedUser?: UserIdResolvable;
-}
-
-/**
- * @inheritDoc
- */
-export interface HelixPaginatedFollowFilter extends HelixFollowFilter, HelixForwardPagination {}

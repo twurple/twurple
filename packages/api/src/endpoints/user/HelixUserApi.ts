@@ -1,5 +1,5 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
-import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
+import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { createBroadcasterQuery } from '@twurple/api-call';
 import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
 import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from '@twurple/common';
@@ -7,18 +7,12 @@ import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.externa
 import {
 	createUserBlockCreateQuery,
 	createUserBlockDeleteQuery,
-	type HelixFollowData,
 	type HelixPrivilegedUserData,
 	type HelixUserBlockData,
 	type HelixUserData,
 	type UserLookupType
 } from '../../interfaces/endpoints/user.external';
-import {
-	type HelixFollowFilter,
-	type HelixPaginatedFollowFilter,
-	type HelixUserBlockAdditionalInfo,
-	type HelixUserUpdate
-} from '../../interfaces/endpoints/user.input';
+import { type HelixUserBlockAdditionalInfo, type HelixUserUpdate } from '../../interfaces/endpoints/user.input';
 import {
 	type HelixInstalledExtensionListData,
 	type HelixUserExtensionData
@@ -26,15 +20,13 @@ import {
 import { type HelixUserExtensionUpdatePayload } from '../../interfaces/endpoints/userExtension.input';
 import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
-import type { HelixPaginatedResult, HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginatedResult, createPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
+import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
+import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
 import type { HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixInstalledExtensionList } from './Extensions/HelixInstalledExtensionList';
 import { HelixUserExtension } from './Extensions/HelixUserExtension';
-import { HelixFollow } from './HelixFollow';
 import { HelixPrivilegedUser } from './HelixPrivilegedUser';
 import { HelixUser } from './HelixUser';
 import { HelixUserBlock } from './HelixUserBlock';
@@ -185,86 +177,6 @@ export class HelixUserApi extends BaseApi {
 	}
 
 	/**
-	 * Gets a list of follow relations.
-	 *
-	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
-	 * or {@link HelixChannelApi#getFollowedChannels} instead.
-	 *
-	 * @param filter
-	 *
-	 * @expandParams
-	 */
-	async getFollows(filter: HelixPaginatedFollowFilter): Promise<HelixPaginatedResultWithTotal<HelixFollow>> {
-		const query = HelixUserApi._makeFollowsQuery(filter);
-		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowData>>({
-			type: 'helix',
-			url: 'users/follows',
-			userId: extractUserId(filter.followedUser ?? filter.user!),
-			query: {
-				...query,
-				...createPaginationQuery(filter)
-			}
-		});
-
-		return createPaginatedResultWithTotal(result, HelixFollow, this._client);
-	}
-
-	/**
-	 * Creates a paginator for follow relations.
-	 *
-	 * @deprecated Use {@link HelixChannelApi#getChannelFollowersPaginated}
-	 * or {@link HelixChannelApi#getFollowedChannelsPaginated} instead.
-	 *
-	 * @param filter
-	 *
-	 * @expandParams
-	 */
-	getFollowsPaginated(filter: HelixFollowFilter): HelixPaginatedRequestWithTotal<HelixFollowData, HelixFollow> {
-		const query = HelixUserApi._makeFollowsQuery(filter);
-
-		return new HelixPaginatedRequestWithTotal(
-			{
-				url: 'users/follows',
-				userId: extractUserId(filter.followedUser ?? filter.user!),
-				query
-			},
-			this._client,
-			data => new HelixFollow(data, this._client)
-		);
-	}
-
-	/**
-	 * Gets the follow relation bewteen a given user and a given broadcaster.
-	 *
-	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
-	 * or {@link HelixChannelApi#getFollowedChannels} instead.
-	 *
-	 * @param user The user to get the follow relation for.
-	 * @param broadcaster The broadcaster to get the follow relation for.
-	 */
-	async getFollowFromUserToBroadcaster(
-		user: UserIdResolvable,
-		broadcaster: UserIdResolvable
-	): Promise<HelixFollow | null> {
-		const { data: result } = await this.getFollows({ user, followedUser: broadcaster });
-
-		return result.length ? result[0] : null;
-	}
-
-	/**
-	 * Checks whether the given user follows the given broadcaster.
-	 *
-	 * @deprecated Use {@link HelixChannelApi#getChannelFollowers}
-	 * or {@link HelixChannelApi#getFollowedChannels} instead.
-	 *
-	 * @param user The user to check the follow for.
-	 * @param broadcaster The broadcaster to check the follow for.
-	 */
-	async userFollowsBroadcaster(user: UserIdResolvable, broadcaster: UserIdResolvable): Promise<boolean> {
-		return (await this.getFollowFromUserToBroadcaster(user, broadcaster)) !== null;
-	}
-
-	/**
 	 * Gets a list of users blocked by the given user.
 	 *
 	 * @param user The user to get blocks for.
@@ -411,25 +323,6 @@ export class HelixUserApi extends BaseApi {
 		});
 
 		return new HelixInstalledExtensionList(result.data);
-	}
-
-	private static _makeFollowsQuery(filter: HelixFollowFilter) {
-		const query: Record<string, string | undefined> = {};
-		let hasUserIdParam = false;
-		if (filter.user) {
-			query.from_id = extractUserId(filter.user);
-			hasUserIdParam = true;
-		}
-		if (filter.followedUser) {
-			query.to_id = extractUserId(filter.followedUser);
-			hasUserIdParam = true;
-		}
-
-		if (!hasUserIdParam) {
-			throw new TypeError('At least one of user and followedUser have to be set');
-		}
-
-		return query;
 	}
 
 	private async _getUsers(lookupType: UserLookupType, param: string[]) {

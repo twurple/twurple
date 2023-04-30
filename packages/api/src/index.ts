@@ -186,12 +186,7 @@ export { HelixFollow } from './endpoints/user/HelixFollow';
 export { HelixPrivilegedUser } from './endpoints/user/HelixPrivilegedUser';
 export { HelixUser } from './endpoints/user/HelixUser';
 export type { HelixBroadcasterType } from './interfaces/endpoints/user.external';
-export type {
-	HelixPaginatedFollowFilter,
-	HelixFollowFilter,
-	HelixUserBlockAdditionalInfo,
-	HelixUserUpdate
-} from './interfaces/endpoints/user.input';
+export type { HelixUserBlockAdditionalInfo, HelixUserUpdate } from './interfaces/endpoints/user.input';
 
 export { HelixBaseExtension } from './endpoints/user/Extensions/HelixBaseExtension';
 export { HelixInstalledExtension } from './endpoints/user/Extensions/HelixInstalledExtension';
