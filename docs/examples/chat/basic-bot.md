@@ -67,11 +67,12 @@ const authProvider = new StaticAuthProvider(clientId, accessToken);
 ## 4. Connect to chat
 
 Using the `AuthProvider` instance we just created, we can easily create a `Bot` instance.
+*(The first parameter is currently unused and will be removed in the next major version.)*
 It will automatically connect to the chat server.
 The given channels will automatically be joined after connecting.
 
 ```ts
-const bot = new Bot({ authProvider, channels: ['satisfiedpear'] });
+const bot = new Bot(null, { authProvider, channels: ['satisfiedpear'] });
 ```
 
 Now you can run your code and see your bot sitting in your channel. But we want it to do something!
@@ -82,7 +83,7 @@ The `Bot` configuration makes it easy to react to chat commands.
 With the following change to the constructor, we can add two basic commands:
 
 ```ts
-const bot = new Bot({
+const bot = new Bot(null, {
 	authProvider,
 	channels: ['satisfiedpear'],
 	commands: [
@@ -219,7 +220,7 @@ const authProvider = new RefreshingAuthProvider(
 
 await authProvider.addUserForToken(tokenData, ['chat']);
 
-const bot = new Bot({
+const bot = new Bot(null, {
 	authProvider,
 	channels: ['satisfiedpear'],
 	commands: [
