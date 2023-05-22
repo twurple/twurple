@@ -1,4 +1,4 @@
-import { sign } from 'jsonwebtoken';
+import { SignJWT, base64url } from 'jose';
 import { createExternalJwtData } from './jwt.external';
 
 /** @private */
@@ -37,9 +37,12 @@ export interface ExternalJwtConfig extends BaseExternalJwtConfig {
  *
  * @expandParams
  */
-export function createExternalJwt(config: ExternalJwtConfig): string {
+export async function createExternalJwt(config: ExternalJwtConfig): Promise<string> {
 	const ttl = config.ttl ?? 60;
 	const dataToSign = createExternalJwtData(config, ttl);
+	const jwt = await new SignJWT(dataToSign)
+		.setProtectedHeader({ alg: 'HS256' })
+		.sign(base64url.decode(config.secret));
 
-	return sign(dataToSign, Buffer.from(config.secret, 'base64'), { algorithm: 'HS256' });
+	return jwt;
 }
