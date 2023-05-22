@@ -1092,18 +1092,17 @@ export class ChatClient extends EventEmitter {
 		});
 
 		this._ircClient.onTypedMessage(MessageTypes.Commands.Notice, async ({ target: channel, text, tags }) => {
-			const broadcasterName = toUserName(channel);
 			const messageType = tags.get('msg-id');
 
 			switch (messageType) {
 				// emote only
 				case 'emote_only_on': {
-					this.emit(this.onEmoteOnly, broadcasterName, true);
+					this.emit(this.onEmoteOnly, toUserName(channel), true);
 					break;
 				}
 
 				case 'emote_only_off': {
-					this.emit(this.onEmoteOnly, broadcasterName, false);
+					this.emit(this.onEmoteOnly, toUserName(channel), false);
 					break;
 				}
 
@@ -1116,23 +1115,23 @@ export class ChatClient extends EventEmitter {
 
 				// unique chat
 				case 'r9k_on': {
-					this.emit(this.onUniqueChat, broadcasterName, true);
+					this.emit(this.onUniqueChat, toUserName(channel), true);
 					break;
 				}
 
 				case 'r9k_off': {
-					this.emit(this.onUniqueChat, broadcasterName, false);
+					this.emit(this.onUniqueChat, toUserName(channel), false);
 					break;
 				}
 
 				// subs only
 				case 'subs_on': {
-					this.emit(this.onSubsOnly, broadcasterName, true);
+					this.emit(this.onSubsOnly, toUserName(channel), true);
 					break;
 				}
 
 				case 'subs_off': {
-					this.emit(this.onSubsOnly, broadcasterName, false);
+					this.emit(this.onSubsOnly, toUserName(channel), false);
 					break;
 				}
 
@@ -1161,12 +1160,12 @@ export class ChatClient extends EventEmitter {
 				}
 
 				case 'no_permission': {
-					this.emit(this.onNoPermission, broadcasterName, text);
+					this.emit(this.onNoPermission, toUserName(channel), text);
 					break;
 				}
 
 				case 'msg_ratelimit': {
-					this.emit(this.onMessageRatelimit, broadcasterName, text);
+					this.emit(this.onMessageRatelimit, toUserName(channel), text);
 					break;
 				}
 
@@ -1182,7 +1181,7 @@ export class ChatClient extends EventEmitter {
 				case 'msg_timedout':
 				case 'msg_rejected_mandatory':
 				case 'msg_channel_blocked': {
-					this.emit(this.onMessageFailed, broadcasterName, messageType);
+					this.emit(this.onMessageFailed, toUserName(channel), messageType);
 					break;
 				}
 
