@@ -34,7 +34,7 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/shared-utils": "^3.6.1",
-    "ngrok": "^4.2.2",
+    "@ngrok/ngrok": "^0.5.1",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
