@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
+import { connect } from '@ngrok/ngrok';
 import { ConnectionAdapter } from '@twurple/eventsub-http';
-import { connect } from 'ngrok';
 
 /**
  * The configuration of the ngrok adapter.
