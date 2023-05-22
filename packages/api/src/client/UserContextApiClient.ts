@@ -1,3 +1,4 @@
+import { type Response } from '@d-fischer/cross-fetch';
 import { type Logger } from '@d-fischer/logger';
 import { type RateLimiter } from '@d-fischer/rate-limiter';
 import { rtfm } from '@twurple/common';

@@ -1,7 +1,3 @@
-/// <reference lib="dom" />
-
-import type { RequestInit as NodeRequestInit } from 'node-fetch';
-
 /**
  * The endpoint to call, i.e. /helix or a custom (potentially unsupported) endpoint.
  */
@@ -51,4 +47,36 @@ export interface TwitchApiCallOptions {
 	auth?: boolean;
 }
 
-export type TwitchApiCallFetchOptions = Omit<RequestInit | NodeRequestInit, 'headers' | 'method' | 'body'>;
+/**
+ * An interface to merge compatible fetch options into.
+ *
+ * :::warning
+ *
+ * You should make sure that this does not include the properties `headers`, `method` or `body`
+ * in order to not conflict with the internally used properties.
+ *
+ * :::
+ *
+ * To make use of the web fetch options, merge them into this like so
+ * (assuming that RequestInit is the global type from the dom lib):
+ *
+ * ```ts
+ * declare module '@twurple/api-call' {
+ *     export interface TwitchApiCallFetchOptions extends Omit<RequestInit, 'headers' | 'method' | 'body'> {}
+ * }
+ * ```
+ *
+ * To make use of the node-fetch options, merge them into this like so:
+ *
+ * ```ts
+ * import type { RequestInit as NodeRequestInit } from 'node-fetch';
+ *
+ * declare module '@twurple/api-call' {
+ *     export interface TwitchApiCallFetchOptions extends Omit<NodeRequestInit, 'headers' | 'method' | 'body'> {}
+ * }
+ * ```
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface TwitchApiCallFetchOptions {
+	/** @private */ _dummy?: never;
+}

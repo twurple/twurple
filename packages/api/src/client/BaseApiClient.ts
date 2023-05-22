@@ -1,4 +1,5 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
+import { type Response } from '@d-fischer/cross-fetch';
 import type { Logger } from '@d-fischer/logger';
 import type { RateLimiter, RateLimiterStats } from '@d-fischer/rate-limiter';
 import { ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';

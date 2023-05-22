@@ -1,3 +1,4 @@
+import { type Response } from '@d-fischer/cross-fetch';
 import { isNode } from '@d-fischer/detect-node';
 import { createLogger, type LoggerOptions } from '@d-fischer/logger';
 import { PartitionedRateLimiter, PartitionedTimeBasedRateLimiter } from '@d-fischer/rate-limiter';
