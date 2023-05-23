@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol } from '@twurple/common';
-import { JsonWebTokenError, verify } from 'jsonwebtoken';
+import { errors, jwtVerify, base64url, type JWTPayload } from 'jose';
 import { type HelixExtensionSecretListData } from './HelixExtensionSecretList.external';
 
 export class HelixExtensionSecretList extends DataObject<HelixExtensionSecretListData> {
@@ -24,12 +24,15 @@ export class HelixExtensionSecretList extends DataObject<HelixExtensionSecretLis
 			.map(secret => secret.content);
 	}
 
-	verifyJwt(token: string): unknown {
+	async verifyJwt(token: string): Promise<JWTPayload> {
 		for (const secret of this.currentSecrets) {
 			try {
-				return verify(token, Buffer.from(secret, 'base64'));
+				const { payload } = await jwtVerify(token, base64url.decode(secret), {
+					algorithms: ['HS256']
+				});
+				return payload;
 			} catch (e) {
-				if (e instanceof JsonWebTokenError && e.message === 'invalid signature') {
+				if (e instanceof errors.JWSSignatureVerificationFailed) {
 					continue;
 				}
 				throw e;

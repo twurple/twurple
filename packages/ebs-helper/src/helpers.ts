@@ -50,7 +50,7 @@ export interface EbsCallConfig extends BaseExternalJwtConfig {
  * @expandParams
  */
 export async function getExtension(config: EbsCallConfig, version?: string): Promise<HelixExtension | null> {
-	const jwt = createExternalJwt(config);
+	const jwt = await createExternalJwt(config);
 
 	const result = await callTwitchApi<HelixResponse<HelixExtensionData>>(
 		{
@@ -72,7 +72,7 @@ export async function getExtension(config: EbsCallConfig, version?: string): Pro
  * @expandParams
  */
 export async function getExtensionSecrets(config: EbsCallConfig): Promise<HelixExtensionSecretList> {
-	const jwt = createExternalJwt(config);
+	const jwt = await createExternalJwt(config);
 
 	const result = await callTwitchApi<HelixResponse<HelixExtensionSecretListData>>(
 		{
@@ -95,7 +95,7 @@ export async function getExtensionSecrets(config: EbsCallConfig): Promise<HelixE
  * @expandParams
  */
 export async function createExtensionSecret(config: EbsCallConfig, delay?: number): Promise<HelixExtensionSecretList> {
-	const jwt = createExternalJwt(config);
+	const jwt = await createExternalJwt(config);
 
 	const result = await callTwitchApi<HelixResponse<HelixExtensionSecretListData>>(
 		{
@@ -126,7 +126,7 @@ export async function setExtensionRequiredConfiguration(
 	version: string,
 	configVersion: string
 ): Promise<void> {
-	const jwt = createExternalJwt(config);
+	const jwt = await createExternalJwt(config);
 
 	await callTwitchApi(
 		{
@@ -145,7 +145,7 @@ async function getAnyConfigurationSegment(
 	segment: HelixExtensionConfigurationSegmentName,
 	broadcaster?: UserIdResolvable
 ): Promise<HelixExtensionConfigurationSegment | null> {
-	const jwt = createExternalJwt(config);
+	const jwt = await createExternalJwt(config);
 
 	const result = await callTwitchApi<HelixResponse<HelixExtensionConfigurationSegmentData>>(
 		{
@@ -210,7 +210,7 @@ async function setAnyConfigurationSegment(
 	content?: string,
 	version?: string
 ): Promise<void> {
-	const jwt = createExternalJwt(config);
+	const jwt = await createExternalJwt(config);
 
 	await callTwitchApi<HelixResponse<HelixExtensionConfigurationSegmentData>>(
 		{
@@ -294,7 +294,7 @@ export async function sendExtensionChatMessage(
 	extensionVersion: string,
 	text: string
 ): Promise<void> {
-	const jwt = createExternalJwt({ ...config, additionalData: createChatMessageJwtData(broadcaster) });
+	const jwt = await createExternalJwt({ ...config, additionalData: createChatMessageJwtData(broadcaster) });
 
 	await callTwitchApi(
 		{
@@ -315,7 +315,7 @@ async function sendAnyExtensionPubSubMessage(
 	message: string,
 	broadcaster: UserIdResolvable
 ): Promise<void> {
-	const jwt = createExternalJwt({
+	const jwt = await createExternalJwt({
 		...config,
 		additionalData: createPubSubMessageJwtData(broadcaster, targets)
 	});
@@ -340,7 +340,7 @@ async function sendAnyExtensionPubSubMessage(
  * @expandParams
  */
 export async function sendExtensionPubSubGlobalMessage(config: EbsCallConfig, message: string): Promise<void> {
-	const jwt = createExternalJwt({
+	const jwt = await createExternalJwt({
 		...config,
 		additionalData: createPubSubGlobalMessageJwtData()
 	});
