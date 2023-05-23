@@ -4,6 +4,7 @@ import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import { extractUserId, HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
 import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
 import { accessTokenIsExpired } from '../AccessToken';
+import { CachedRefreshFailureError } from '../errors/CachedRefreshFailureError';
 import { IntermediateUserRemovalError } from '../errors/IntermediateUserRemovalError';
 import { InvalidTokenError } from '../errors/InvalidTokenError';
 import { InvalidTokenTypeError } from '../errors/InvalidTokenTypeError';
@@ -63,6 +64,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	@Enumerable(false) private readonly _userTokenFetchers = new Map<string, TokenFetcher<AccessTokenWithUserId>>();
 	private readonly _intentToUserId = new Map<string, string>();
 	private readonly _userIdToIntents = new Map<string, Set<string>>();
+	private readonly _cachedRefreshFailures = new Set<string>();
 
 	@Enumerable(false) private _appAccessToken?: AccessToken;
 	@Enumerable(false) private readonly _appTokenFetcher;
@@ -117,6 +119,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 		if (!initialToken.refreshToken) {
 			throw new Error(`Trying to add user ${userId} without refresh token`);
 		}
+		this._cachedRefreshFailures.delete(userId);
 		this._userAccessTokens.set(userId, {
 			...initialToken,
 			userId
@@ -243,6 +246,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 
 		this._userAccessTokens.delete(userId);
 		this._userTokenFetchers.delete(userId);
+		this._cachedRefreshFailures.delete(userId);
 	}
 
 	/**
@@ -305,6 +309,11 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	 */
 	async refreshAccessTokenForUser(user: UserIdResolvable): Promise<AccessTokenWithUserId> {
 		const userId = extractUserId(user);
+
+		if (this._cachedRefreshFailures.has(userId)) {
+			throw new CachedRefreshFailureError(userId);
+		}
+
 		const previousTokenData = this._userAccessTokens.get(userId);
 
 		if (!previousTokenData) {
@@ -373,10 +382,15 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 		user: UserIdResolvable,
 		...scopeSets: Array<string[] | undefined>
 	): Promise<AccessTokenWithUserId | null> {
-		const fetcher = this._userTokenFetchers.get(extractUserId(user));
+		const userId = extractUserId(user);
+		const fetcher = this._userTokenFetchers.get(userId);
 
 		if (!fetcher) {
 			return null;
+		}
+
+		if (this._cachedRefreshFailures.has(userId)) {
+			throw new CachedRefreshFailureError(userId);
 		}
 
 		return await fetcher.fetch(...scopeSets);
@@ -452,6 +466,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 
 	private _checkIntermediateUserRemoval(userId: string) {
 		if (!this._userTokenFetchers.has(userId)) {
+			this._cachedRefreshFailures.delete(userId);
 			throw new IntermediateUserRemovalError(userId);
 		}
 	}
@@ -504,6 +519,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 		try {
 			return await refreshUserToken(this.clientId, this._clientSecret, refreshToken);
 		} catch (e) {
+			this._cachedRefreshFailures.add(userId);
 			this.emit(this.onRefreshFailure, userId);
 			throw e;
 		}
