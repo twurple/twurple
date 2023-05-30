@@ -461,7 +461,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 		if (forceNew) {
 			this._appAccessToken = undefined;
 		}
-		return await this._appTokenFetcher.fetch(this._appImpliedScopes);
+		return await this._appTokenFetcher.fetch(...this._appImpliedScopes.map(scopes => [scopes]));
 	}
 
 	private _checkIntermediateUserRemoval(userId: string) {
