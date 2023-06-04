@@ -53,7 +53,7 @@ export class HelixGoal extends DataObject<HelixGoalData> {
 	}
 
 	/**
-	 * The type of the goal. Can be one of "follower", "subscription", "subscription_count" or "new_subscription_count".
+	 * The type of the goal.
 	 */
 	get type(): HelixGoalType {
 		return this[rawDataSymbol].type;
