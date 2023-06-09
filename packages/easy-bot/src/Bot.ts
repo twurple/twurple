@@ -372,8 +372,10 @@ export class Bot extends EventEmitter {
 	 * Fires when authentication fails.
 	 *
 	 * @eventListener
-	 * @param channel The channel that a command without sufficient permissions was executed on.
 	 * @param text The message text.
+	 * @param retryCount The number of authentication attempts, including this one, that failed in the current attempt to connect.
+	 *
+	 * Resets when authentication succeeds.
 	 */
 	readonly onAuthenticationFailure = this.registerEvent<[text: string, retryCount: number]>();
 
