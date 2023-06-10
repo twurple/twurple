@@ -11,7 +11,7 @@
     "@d-fischer/documen.ts": "^0.16.5",
     "@d-fischer/eslint-config": "^6.1.5",
     "@types/jest": "^27.4.1",
-    "@types/node": "^12.12.47",
+    "@types/node": "^14.18.50",
     "@types/twitch-ext": "^1.24.4",
     "cross-env": "^7.0.3",
     "crowd": "^0.1.7",
@@ -49,5 +49,8 @@
   "lint-staged": {
     "*.{js,ts,css,json,md}": "prettier --write",
     "*.{js,ts}": "eslint --fix"
+  },
+  "dependencies": {
+    "@types/react": "^17"
   }
 }
