@@ -8,9 +8,9 @@ import { type EventSubStreamOfflineEventData } from './EventSubStreamOfflineEven
  */
 @rtfm<EventSubStreamOfflineEvent>('eventsub-base', 'EventSubStreamOfflineEvent', 'broadcasterId')
 export class EventSubStreamOfflineEvent extends DataObject<EventSubStreamOfflineEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubStreamOfflineEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

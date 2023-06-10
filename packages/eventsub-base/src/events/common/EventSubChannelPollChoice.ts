@@ -9,7 +9,7 @@ import { type EventSubChannelPollChoiceData } from './EventSubChannelPollChoice.
  */
 @rtfm<EventSubChannelPollChoice>('eventsub-base', 'EventSubChannelPollChoice', 'id')
 export class EventSubChannelPollChoice extends EventSubChannelPollBeginChoice {
-	/** @private */ declare readonly [rawDataSymbol]: EventSubChannelPollChoiceData;
+	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelPollChoiceData;
 
 	/**
 	 * The number of votes for the choice added by using channel points.

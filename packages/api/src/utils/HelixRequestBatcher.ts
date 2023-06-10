@@ -3,15 +3,16 @@ import { type HelixPaginatedResponse } from '@twurple/api-call';
 import { type BaseApiClient } from '../client/BaseApiClient';
 import { type ContextApiCallOptions } from '../client/ContextApiCallOptions';
 
-/** @private */
+/** @internal */
 interface RequestResolver<T> {
 	resolve: (value: T) => void;
 	reject: (error: Error) => void;
 }
 
-/** @private */
+/** @internal */
 export class HelixRequestBatcher<D, T> {
 	@Enumerable(false) private readonly _client: BaseApiClient;
+
 	private readonly _requestedIds: string[] = [];
 	private readonly _requestResolversById = new Map<string, Array<RequestResolver<T | null>>>();
 

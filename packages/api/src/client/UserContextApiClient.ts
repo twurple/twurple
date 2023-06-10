@@ -8,6 +8,7 @@ import { BaseApiClient } from './BaseApiClient';
 /** @private */
 @rtfm('api', 'ApiClient')
 export class UserContextApiClient extends BaseApiClient {
+	/** @internal */
 	constructor(
 		config: ApiConfig,
 		logger: Logger,

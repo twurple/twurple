@@ -19,10 +19,10 @@ export class HelixPaginatedSubscriptionsRequest extends HelixPaginatedRequestWit
 	HelixSubscriptionData,
 	HelixSubscription
 > {
-	/** @private */
+	/** @internal */
 	protected declare _currentData?: HelixPaginatedSubscriptionsResponse;
 
-	/** @private */
+	/** @internal */
 	constructor(broadcaster: UserIdResolvable, client: BaseApiClient) {
 		super(
 			{

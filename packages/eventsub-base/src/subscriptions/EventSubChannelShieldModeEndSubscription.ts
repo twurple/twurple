@@ -5,7 +5,7 @@ import type { EventSubChannelShieldModeEndEventData } from '../events/EventSubCh
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/** @private */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelShieldModeEndSubscription extends EventSubSubscription<EventSubChannelShieldModeEndEvent> {
 	/** @protected */ readonly _cliName = '';

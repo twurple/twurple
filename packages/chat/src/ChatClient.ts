@@ -158,7 +158,7 @@ export interface ChatClientOptions {
 	authIntents?: string[];
 }
 
-/** @private */
+/** @internal */
 export interface ChatMessageRequest {
 	type: 'say' | 'action';
 	channel: string;
@@ -166,19 +166,12 @@ export interface ChatMessageRequest {
 	tags?: Record<string, string>;
 }
 
-/** @private */
-export interface WhisperRequest {
-	target: string;
-	text: string;
-}
-
 /**
  * An interface to Twitch chat.
  */
 @rtfm('chat', 'ChatClient')
 export class ChatClient extends EventEmitter {
-	/** @private */
-	@Enumerable(false) readonly _authProvider?: AuthProvider;
+	/** @internal */ @Enumerable(false) private readonly _authProvider?: AuthProvider;
 
 	private readonly _useLegacyScopes: boolean;
 	private readonly _readOnly: boolean;

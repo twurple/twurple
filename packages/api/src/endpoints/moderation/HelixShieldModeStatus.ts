@@ -9,9 +9,9 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm('api', 'HelixShieldModeStatus')
 export class HelixShieldModeStatus extends DataObject<HelixShieldModeStatusData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixShieldModeStatusData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

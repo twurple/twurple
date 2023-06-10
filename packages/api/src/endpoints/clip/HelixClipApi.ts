@@ -39,6 +39,7 @@ import { HelixClip } from './HelixClip';
  */
 @rtfm('api', 'HelixClipApi')
 export class HelixClipApi extends BaseApi {
+	/** @internal */
 	@Enumerable(false) private readonly _getClipByIdBatcher = new HelixRequestBatcher(
 		{
 			url: 'clips'

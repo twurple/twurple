@@ -9,7 +9,7 @@ import {
 	type EventSubWsPacket
 } from './EventSubWsPacket.external';
 
-/** @private */
+/** @internal */
 export class EventSubWsSocket {
 	@Enumerable(false) private readonly _connection: PersistentConnection<Connection>;
 	@Enumerable(false) private _sessionId?: string;

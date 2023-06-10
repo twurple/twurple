@@ -8,9 +8,9 @@ import { type EventSubExtensionBitsTransactionCreateEventData } from './EventSub
  */
 @rtfm<EventSubExtensionBitsTransactionCreateEvent>('eventsub-base', 'EventSubExtensionBitsTransactionCreateEvent', 'id')
 export class EventSubExtensionBitsTransactionCreateEvent extends DataObject<EventSubExtensionBitsTransactionCreateEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubExtensionBitsTransactionCreateEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

@@ -14,9 +14,9 @@ import { HelixHypeTrainContribution } from './HelixHypeTrainContribution';
  */
 @rtfm<HelixHypeTrainEvent>('api', 'HelixHypeTrainEvent', 'id')
 export class HelixHypeTrainEvent extends DataObject<HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixEventData<HelixHypeTrainEventData, HelixHypeTrainEventType>, client: BaseApiClient) {
 		super(data);
 		this._client = client;

@@ -29,6 +29,12 @@ export interface HelixDropsEntitlementData {
 }
 
 /** @private */
+export interface HelixDropsEntitlementUpdateData {
+	status: HelixDropsEntitlementUpdateStatus;
+	ids: string[];
+}
+
+/** @internal */
 export function createDropsEntitlementQuery(
 	filters: HelixDropsEntitlementFilter,
 	alwaysApp: boolean
@@ -40,12 +46,7 @@ export function createDropsEntitlementQuery(
 	};
 }
 
-/** @private */
-export interface HelixDropsEntitlementUpdateData {
-	status: HelixDropsEntitlementUpdateStatus;
-	ids: string[];
-}
-
+/** @internal */
 export function createDropsEntitlementUpdateBody(
 	ids: string[],
 	fulfillmentStatus: HelixDropsEntitlementFulfillmentStatus

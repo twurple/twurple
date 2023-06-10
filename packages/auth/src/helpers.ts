@@ -14,7 +14,7 @@ import type { AuthProvider } from './providers/AuthProvider';
 import { TokenInfo } from './TokenInfo';
 import { type TokenInfoData } from './TokenInfo.external';
 
-/** @private */
+/** @internal */
 function createAccessTokenFromData(data: AccessTokenData): AccessToken {
 	return {
 		accessToken: data.access_token,

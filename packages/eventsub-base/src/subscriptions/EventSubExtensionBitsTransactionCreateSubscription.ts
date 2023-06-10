@@ -5,9 +5,7 @@ import { type EventSubExtensionBitsTransactionCreateEventData } from '../events/
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubExtensionBitsTransactionCreateSubscription extends EventSubSubscription<EventSubExtensionBitsTransactionCreateEvent> {
 	/** @protected */ readonly _cliName = 'transaction';

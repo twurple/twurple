@@ -8,10 +8,10 @@ import { rtfm } from '@twurple/common';
 @Cacheable
 @rtfm<ChatUser>('chat', 'ChatUser', 'userId')
 export class ChatUser {
-	@Enumerable(false) private readonly _userData: Map<string, string>;
+	/** @internal */ @Enumerable(false) private readonly _userData: Map<string, string>;
 	private readonly _userName: string;
 
-	/** @private */
+	/** @internal */
 	constructor(userName: string, userData: Map<string, string> | undefined) {
 		this._userName = userName.toLowerCase();
 		this._userData = userData ? new Map<string, string>(userData) : new Map<string, string>();

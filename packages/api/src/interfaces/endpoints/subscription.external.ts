@@ -27,7 +27,7 @@ export interface HelixPaginatedSubscriptionsResponse extends HelixPaginatedRespo
 	points: number;
 }
 
-/** @private */
+/** @internal */
 export function createSubscriptionCheckQuery(broadcaster: UserIdResolvable, user: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),

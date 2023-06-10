@@ -1,4 +1,4 @@
-/** @private */
+/** @internal */
 export interface AccessTokenData {
 	access_token: string;
 	refresh_token: string;

@@ -10,9 +10,9 @@ import { HelixCharityCampaignAmount } from './HelixCharityCampaignAmount';
  */
 @rtfm<HelixCharityCampaign>('api', 'HelixCharityCampaign', 'id')
 export class HelixCharityCampaign extends DataObject<HelixCharityCampaignData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixCharityCampaignData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

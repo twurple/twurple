@@ -8,9 +8,9 @@ import { type EventSubChannelModeratorEventData } from './EventSubChannelModerat
  */
 @rtfm<EventSubChannelModeratorEvent>('eventsub-base', 'EventSubChannelModeratorEvent', 'userId')
 export class EventSubChannelModeratorEvent extends DataObject<EventSubChannelModeratorEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelModeratorEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

@@ -55,10 +55,10 @@ export interface BasicPubSubClientOptions {
  */
 @rtfm('pubsub', 'BasicPubSubClient')
 export class BasicPubSubClient extends EventEmitter {
-	@Enumerable(false) private readonly _logger: Logger;
+	/** @internal */ @Enumerable(false) private readonly _logger: Logger;
 
 	// topic => token
-	@Enumerable(false) private readonly _topics = new Map<string, TokenResolvable>();
+	/** @internal */ @Enumerable(false) private readonly _topics = new Map<string, TokenResolvable>();
 
 	private readonly _connection: Connection;
 

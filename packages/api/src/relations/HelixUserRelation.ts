@@ -9,9 +9,9 @@ import { type HelixUserRelationData } from '../interfaces/endpoints/generic.exte
  */
 @rtfm<HelixUserRelation>('api', 'HelixUserRelation', 'id')
 export class HelixUserRelation extends DataObject<HelixUserRelationData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixUserRelationData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

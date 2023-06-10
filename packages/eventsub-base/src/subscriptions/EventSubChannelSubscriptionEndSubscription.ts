@@ -5,9 +5,7 @@ import { type EventSubChannelSubscriptionEndEventData } from '../events/EventSub
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelSubscriptionEndSubscription extends EventSubSubscription<EventSubChannelSubscriptionEndEvent> {
 	/** @protected */ readonly _cliName = 'unsubscribe';

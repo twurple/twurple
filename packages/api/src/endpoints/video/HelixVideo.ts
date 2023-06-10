@@ -15,9 +15,9 @@ import type { HelixUser } from '../user/HelixUser';
 @Cacheable
 @rtfm<HelixVideo>('api', 'HelixVideo', 'id')
 export class HelixVideo extends DataObject<HelixVideoData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixVideoData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

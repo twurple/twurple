@@ -41,9 +41,7 @@ export interface ApiConfig {
 	batchDelay?: number;
 }
 
-/**
- * @private
- */
+/** @private */
 export interface TwitchApiCallOptionsInternal {
 	options: ContextApiCallOptions;
 	clientId?: string;

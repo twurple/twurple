@@ -1,6 +1,6 @@
 import { type ExternalJwtConfig } from './jwt';
 
-/** @private */
+/** @internal */
 export function createExternalJwtData(config: ExternalJwtConfig, ttl: number) {
 	return {
 		...config.additionalData,

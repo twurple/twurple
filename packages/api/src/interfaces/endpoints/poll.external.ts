@@ -32,7 +32,7 @@ export interface HelixPollData {
 	started_at: string;
 }
 
-/** @private */
+/** @internal */
 export function createPollBody(broadcaster: UserIdResolvable, data: HelixCreatePollData) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -44,7 +44,7 @@ export function createPollBody(broadcaster: UserIdResolvable, data: HelixCreateP
 	};
 }
 
-/** @private */
+/** @internal */
 export function createPollEndBody(broadcaster: UserIdResolvable, id: string, showResult: boolean) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),

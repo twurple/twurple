@@ -9,9 +9,9 @@ import { type HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixBitsLeaderboardEntry>('api', 'HelixBitsLeaderboardEntry', 'userId')
 export class HelixBitsLeaderboardEntry extends DataObject<HelixBitsLeaderboardEntryData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixBitsLeaderboardEntryData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

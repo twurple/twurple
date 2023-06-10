@@ -25,8 +25,8 @@ import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResu
 import type { HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
-import { HelixInstalledExtensionList } from './Extensions/HelixInstalledExtensionList';
-import { HelixUserExtension } from './Extensions/HelixUserExtension';
+import { HelixInstalledExtensionList } from './extensions/HelixInstalledExtensionList';
+import { HelixUserExtension } from './extensions/HelixUserExtension';
 import { HelixPrivilegedUser } from './HelixPrivilegedUser';
 import { HelixUser } from './HelixUser';
 import { HelixUserBlock } from './HelixUserBlock';
@@ -47,6 +47,7 @@ import { HelixUserBlock } from './HelixUserBlock';
  */
 @rtfm('api', 'HelixUserApi')
 export class HelixUserApi extends BaseApi {
+	/** @internal */
 	@Enumerable(false) private readonly _getUserByIdBatcher = new HelixRequestBatcher(
 		{
 			url: 'users'
@@ -57,6 +58,7 @@ export class HelixUserApi extends BaseApi {
 		(data: HelixUserData) => new HelixUser(data, this._client)
 	);
 
+	/** @internal */
 	@Enumerable(false) private readonly _getUserByNameBatcher = new HelixRequestBatcher(
 		{
 			url: 'users'

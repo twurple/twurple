@@ -1,6 +1,6 @@
 import type { TwitchApiCallType } from '../TwitchApiCallOptions';
 
-/** @private */
+/** @internal */
 export function getTwitchApiUrl(url: string, type: TwitchApiCallType): string {
 	switch (type) {
 		case 'helix':

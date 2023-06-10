@@ -11,9 +11,9 @@ import {
  */
 @rtfm<EventSubChannelSubscriptionMessageEvent>('eventsub-base', 'EventSubChannelSubscriptionMessageEvent', 'userId')
 export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSubChannelSubscriptionMessageEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelSubscriptionMessageEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

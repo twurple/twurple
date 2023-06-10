@@ -9,7 +9,7 @@ import {
  */
 @rtfm<PubSubUserModerationNotificationMessage>('pubsub', 'PubSubUserModerationNotificationMessage', 'messageId')
 export class PubSubUserModerationNotificationMessage extends DataObject<PubSubUserModerationNotificationMessageData> {
-	/** @private */
+	/** @internal */
 	constructor(data: PubSubUserModerationNotificationMessageData, private readonly _channelId: string) {
 		super(data);
 	}

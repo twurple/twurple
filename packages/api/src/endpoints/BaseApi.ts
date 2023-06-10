@@ -3,10 +3,9 @@ import { type BaseApiClient } from '../client/BaseApiClient';
 
 /** @private */
 export class BaseApi {
-	/** @private */
-	@Enumerable(false) protected readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) protected readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(client: BaseApiClient) {
 		this._client = client;
 	}

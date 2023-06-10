@@ -49,8 +49,8 @@ export interface PubSubClientConfig extends BasicPubSubClientOptions {
  */
 @rtfm('pubsub', 'PubSubClient')
 export class PubSubClient extends EventEmitter {
-	@Enumerable(false) private readonly _authProvider: AuthProvider;
-	@Enumerable(false) private readonly _basicClient: BasicPubSubClient;
+	/** @internal */ @Enumerable(false) private readonly _authProvider: AuthProvider;
+	/** @internal */ @Enumerable(false) private readonly _basicClient: BasicPubSubClient;
 
 	private readonly _handlers = new Map<string, Array<PubSubHandler<never>>>();
 	private readonly _logger: Logger;

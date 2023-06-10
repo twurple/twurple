@@ -10,7 +10,7 @@ import { HelixUserSubscription } from './HelixUserSubscription';
  */
 @rtfm<HelixSubscription>('api', 'HelixSubscription', 'userId')
 export class HelixSubscription extends HelixUserSubscription {
-	/** @private */ declare readonly [rawDataSymbol]: HelixSubscriptionData;
+	/** @internal */ declare readonly [rawDataSymbol]: HelixSubscriptionData;
 
 	/**
 	 * The user ID of the broadcaster.

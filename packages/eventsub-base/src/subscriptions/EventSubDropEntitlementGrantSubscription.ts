@@ -5,9 +5,7 @@ import { type EventSubDropEntitlementGrantEventData } from '../events/EventSubDr
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubDropEntitlementGrantSubscription extends EventSubSubscription<EventSubDropEntitlementGrantEvent> {
 	/** @protected */ readonly _cliName = 'transaction';

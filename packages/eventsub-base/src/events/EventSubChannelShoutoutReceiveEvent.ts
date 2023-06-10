@@ -12,9 +12,9 @@ import { type EventSubChannelShoutoutReceiveEventData } from './EventSubChannelS
 	'shoutingOutBroadcasterId'
 )
 export class EventSubChannelShoutoutReceiveEvent extends DataObject<EventSubChannelShoutoutReceiveEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelShoutoutReceiveEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

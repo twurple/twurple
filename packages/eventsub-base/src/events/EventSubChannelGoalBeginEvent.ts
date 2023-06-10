@@ -9,9 +9,9 @@ import { type EventSubChannelGoalBeginEventData } from './EventSubChannelGoalBeg
  */
 @rtfm<EventSubChannelGoalBeginEvent>('eventsub-base', 'EventSubChannelGoalBeginEvent', 'broadcasterId')
 export class EventSubChannelGoalBeginEvent extends DataObject<EventSubChannelGoalBeginEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelGoalBeginEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

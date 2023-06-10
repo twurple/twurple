@@ -5,9 +5,7 @@ import { type EventSubChannelPredictionLockEventData } from '../events/EventSubC
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelPredictionLockSubscription extends EventSubSubscription<EventSubChannelPredictionLockEvent> {
 	/** @protected */ readonly _cliName = 'prediction-lock';

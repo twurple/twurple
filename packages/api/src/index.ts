@@ -188,10 +188,10 @@ export { HelixUser } from './endpoints/user/HelixUser';
 export type { HelixBroadcasterType } from './interfaces/endpoints/user.external';
 export type { HelixUserBlockAdditionalInfo, HelixUserUpdate } from './interfaces/endpoints/user.input';
 
-export { HelixBaseExtension } from './endpoints/user/Extensions/HelixBaseExtension';
-export { HelixInstalledExtension } from './endpoints/user/Extensions/HelixInstalledExtension';
-export { HelixInstalledExtensionList } from './endpoints/user/Extensions/HelixInstalledExtensionList';
-export { HelixUserExtension } from './endpoints/user/Extensions/HelixUserExtension';
+export { HelixBaseExtension } from './endpoints/user/extensions/HelixBaseExtension';
+export { HelixInstalledExtension } from './endpoints/user/extensions/HelixInstalledExtension';
+export { HelixInstalledExtensionList } from './endpoints/user/extensions/HelixInstalledExtensionList';
+export { HelixUserExtension } from './endpoints/user/extensions/HelixUserExtension';
 export type { HelixExtensionSlotType } from './interfaces/endpoints/userExtension.external';
 export type {
 	HelixUserExtensionUpdatePayload,

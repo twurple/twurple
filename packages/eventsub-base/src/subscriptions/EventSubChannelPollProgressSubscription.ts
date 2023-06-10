@@ -5,9 +5,7 @@ import { type EventSubChannelPollProgressEventData } from '../events/EventSubCha
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelPollProgressSubscription extends EventSubSubscription<EventSubChannelPollProgressEvent> {
 	/** @protected */ readonly _cliName = 'poll-progress';

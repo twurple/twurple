@@ -6,7 +6,7 @@ import { type PubSubChannelTermsActionMessageData } from './PubSubChannelTermsAc
  */
 @rtfm<PubSubChannelTermsActionMessage>('pubsub', 'PubSubChannelTermsActionMessage', 'userId')
 export class PubSubChannelTermsActionMessage extends DataObject<PubSubChannelTermsActionMessageData> {
-	/** @private */
+	/** @internal */
 	constructor(data: PubSubChannelTermsActionMessageData, private readonly _channelId: string) {
 		super(data);
 	}

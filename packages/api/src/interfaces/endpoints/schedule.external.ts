@@ -46,7 +46,7 @@ export interface HelixScheduleResponse {
 	};
 }
 
-/** @private */
+/** @internal */
 export function createScheduleQuery(broadcaster: UserIdResolvable, filter?: HelixScheduleFilter) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -55,7 +55,7 @@ export function createScheduleQuery(broadcaster: UserIdResolvable, filter?: Heli
 	};
 }
 
-/** @private */
+/** @internal */
 export function createScheduleSettingsUpdateQuery(
 	broadcaster: UserIdResolvable,
 	settings: HelixScheduleSettingsUpdate
@@ -76,7 +76,7 @@ export function createScheduleSettingsUpdateQuery(
 	}
 }
 
-/** @private */
+/** @internal */
 export function createScheduleSegmentBody(data: HelixCreateScheduleSegmentData) {
 	return {
 		start_time: data.startDate,
@@ -88,7 +88,7 @@ export function createScheduleSegmentBody(data: HelixCreateScheduleSegmentData) 
 	};
 }
 
-/** @private */
+/** @internal */
 export function createScheduleSegmentModifyQuery(broadcaster: UserIdResolvable, segmentId: string) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -96,7 +96,7 @@ export function createScheduleSegmentModifyQuery(broadcaster: UserIdResolvable, 
 	};
 }
 
-/** @private */
+/** @internal */
 export function createScheduleSegmentUpdateBody(data: HelixUpdateScheduleSegmentData) {
 	return {
 		start_time: data.startDate,

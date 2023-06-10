@@ -8,9 +8,9 @@ import { type EventSubUserAuthorizationRevokeEventData } from './EventSubUserAut
  */
 @rtfm<EventSubUserAuthorizationRevokeEvent>('eventsub-base', 'EventSubUserAuthorizationRevokeEvent', 'userId')
 export class EventSubUserAuthorizationRevokeEvent extends DataObject<EventSubUserAuthorizationRevokeEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubUserAuthorizationRevokeEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

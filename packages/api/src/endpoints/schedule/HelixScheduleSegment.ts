@@ -9,9 +9,9 @@ import type { HelixGame } from '../game/HelixGame';
  */
 @rtfm<HelixScheduleSegment>('api', 'HelixScheduleSegment', 'id')
 export class HelixScheduleSegment extends DataObject<HelixScheduleSegmentData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixScheduleSegmentData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

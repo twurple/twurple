@@ -11,7 +11,7 @@ import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixGame } from './HelixGame';
 
-/** @private */
+/** @internal */
 type HelixGameFilterType = 'id' | 'name' | 'igdb_id';
 
 /**
@@ -30,6 +30,7 @@ type HelixGameFilterType = 'id' | 'name' | 'igdb_id';
  */
 @rtfm('api', 'HelixGameApi')
 export class HelixGameApi extends BaseApi {
+	/** @internal */
 	@Enumerable(false) private readonly _getGameByIdBatcher = new HelixRequestBatcher(
 		{
 			url: 'games'
@@ -40,6 +41,7 @@ export class HelixGameApi extends BaseApi {
 		(data: HelixGameData) => new HelixGame(data, this._client)
 	);
 
+	/** @internal */
 	@Enumerable(false) private readonly _getGameByNameBatcher = new HelixRequestBatcher(
 		{
 			url: 'games'
@@ -50,6 +52,7 @@ export class HelixGameApi extends BaseApi {
 		(data: HelixGameData) => new HelixGame(data, this._client)
 	);
 
+	/** @internal */
 	@Enumerable(false) private readonly _getGameByIgdbIdBatcher = new HelixRequestBatcher(
 		{
 			url: 'games'
@@ -174,6 +177,7 @@ export class HelixGameApi extends BaseApi {
 		);
 	}
 
+	/** @internal */
 	private async _getGames(filterType: HelixGameFilterType, filterValues: string[]): Promise<HelixGame[]> {
 		if (!filterValues.length) {
 			return [];

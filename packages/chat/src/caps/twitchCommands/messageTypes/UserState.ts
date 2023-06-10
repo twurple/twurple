@@ -5,6 +5,8 @@ interface UserStateFields {
 }
 
 /** @private */
+export interface UserState extends UserStateFields {}
+/** @private */
 export class UserState extends Message<UserStateFields> {
 	static readonly COMMAND = 'USERSTATE';
 

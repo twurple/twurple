@@ -11,9 +11,9 @@ import { HelixStreamMarker } from './HelixStreamMarker';
  */
 @rtfm<HelixStreamMarkerWithVideo>('api', 'HelixStreamMarkerWithVideo', 'id')
 export class HelixStreamMarkerWithVideo extends HelixStreamMarker {
-	/** @private */ declare readonly [rawDataSymbol]: HelixStreamMarkerVideoData;
+	/** @internal */ declare readonly [rawDataSymbol]: HelixStreamMarkerVideoData;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixStreamMarkerVideoData, private readonly _videoId: string, client: BaseApiClient) {
 		super(data, client);
 	}

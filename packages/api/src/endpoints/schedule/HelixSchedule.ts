@@ -10,9 +10,9 @@ import { HelixScheduleSegment } from './HelixScheduleSegment';
  */
 @rtfm<HelixSchedule>('api', 'HelixSchedule', 'broadcasterId')
 export class HelixSchedule extends DataObject<HelixScheduleData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixScheduleData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

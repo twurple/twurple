@@ -7,7 +7,7 @@ import { HelixChatSettings } from './HelixChatSettings';
  */
 @rtfm<HelixPrivilegedChatSettings>('api', 'HelixPrivilegedChatSettings', 'broadcasterId')
 export class HelixPrivilegedChatSettings extends HelixChatSettings {
-	/** @private */ declare readonly [rawDataSymbol]: HelixPrivilegedChatSettingsData;
+	/** @internal */ declare readonly [rawDataSymbol]: HelixPrivilegedChatSettingsData;
 
 	/**
 	 * Whether non-moderator messages are delayed.

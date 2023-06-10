@@ -11,9 +11,9 @@ import { HelixBitsLeaderboardEntry } from './HelixBitsLeaderboardEntry';
 @Cacheable
 @rtfm('api', 'HelixBitsLeaderboard')
 export class HelixBitsLeaderboard extends DataObject<HelixBitsLeaderboardResponse> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixBitsLeaderboardResponse, client: BaseApiClient) {
 		super(data);
 		this._client = client;

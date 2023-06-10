@@ -9,9 +9,9 @@ import type { HelixUserRelation } from '../../relations/HelixUserRelation';
  */
 @rtfm<HelixTeam>('api', 'HelixTeam', 'id')
 export class HelixTeam extends DataObject<HelixTeamData> {
-	/** @private */ @Enumerable(false) protected readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) protected readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixTeamData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

@@ -14,17 +14,12 @@ import { type HelixUserSubscription } from '../subscriptions/HelixUserSubscripti
  */
 @rtfm<HelixUser>('api', 'HelixUser', 'id')
 export class HelixUser extends DataObject<HelixUserData> implements UserIdResolvableType, UserNameResolveableType {
-	/** @private */ @Enumerable(false) protected readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) protected readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixUserData, client: BaseApiClient) {
 		super(data);
 		this._client = client;
-	}
-
-	/** @private */
-	get cacheKey(): string {
-		return this[rawDataSymbol].id;
 	}
 
 	/**

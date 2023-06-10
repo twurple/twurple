@@ -4,7 +4,7 @@ import { ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';
 import { callTwitchApiRaw } from '@twurple/api-call';
 import type { TwitchApiCallOptionsInternal } from '../client/ApiClient';
 
-/** @private */
+/** @internal */
 export class HelixRateLimiter extends ResponseBasedRateLimiter<TwitchApiCallOptionsInternal, Response> {
 	protected async doRequest({
 		options,

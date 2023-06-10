@@ -54,6 +54,7 @@ import { HelixFollowedChannel } from './HelixFollowedChannel';
  */
 @rtfm('api', 'HelixChannelApi')
 export class HelixChannelApi extends BaseApi {
+	/** @internal */
 	@Enumerable(false) private readonly _getChannelByIdBatcher = new HelixRequestBatcher(
 		{
 			url: 'channels'

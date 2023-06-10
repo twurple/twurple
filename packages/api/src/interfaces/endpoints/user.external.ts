@@ -46,7 +46,7 @@ export interface HelixUserBlockData {
 /** @private */
 export type UserLookupType = 'id' | 'login';
 
-/** @private */
+/** @internal */
 export function createUserBlockCreateQuery(target: UserIdResolvable, additionalInfo: HelixUserBlockAdditionalInfo) {
 	return {
 		target_user_id: extractUserId(target),
@@ -55,7 +55,7 @@ export function createUserBlockCreateQuery(target: UserIdResolvable, additionalI
 	};
 }
 
-/** @private */
+/** @internal */
 export function createUserBlockDeleteQuery(target: UserIdResolvable) {
 	return {
 		target_user_id: extractUserId(target)

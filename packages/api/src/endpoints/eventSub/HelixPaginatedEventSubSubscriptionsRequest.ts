@@ -18,10 +18,9 @@ export class HelixPaginatedEventSubSubscriptionsRequest extends HelixPaginatedRe
 	HelixEventSubSubscriptionData,
 	HelixEventSubSubscription
 > {
-	/** @private */
-	protected declare _currentData?: HelixPaginatedEventSubSubscriptionsResponse;
+	/** @internal */ protected declare _currentData?: HelixPaginatedEventSubSubscriptionsResponse;
 
-	/** @private */
+	/** @internal */
 	constructor(query: Record<string, string>, userId: string | undefined, client: BaseApiClient) {
 		super(
 			{

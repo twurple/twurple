@@ -8,9 +8,9 @@ import { type EventSubUserAuthorizationGrantEventData } from './EventSubUserAuth
  */
 @rtfm<EventSubUserAuthorizationGrantEvent>('eventsub-base', 'EventSubUserAuthorizationGrantEvent', 'userId')
 export class EventSubUserAuthorizationGrantEvent extends DataObject<EventSubUserAuthorizationGrantEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubUserAuthorizationGrantEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

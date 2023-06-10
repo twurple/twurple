@@ -5,7 +5,7 @@ import { GlobalUserState } from './messageTypes/GlobalUserState';
 /**
  * This capability mostly just adds tags to existing commands.
  *
- * @private
+ * @internal
  */
 export const TwitchTagsCapability: Capability = {
 	name: 'twitch.tv/tags',

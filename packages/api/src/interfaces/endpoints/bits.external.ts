@@ -54,7 +54,7 @@ export interface HelixCheermoteData {
 	order: number;
 }
 
-/** @private */
+/** @internal */
 export function createBitsLeaderboardQuery(params: HelixBitsLeaderboardQuery = {}) {
 	const { count = 10, period = 'all', startDate, contextUserId } = params;
 	return {

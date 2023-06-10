@@ -11,11 +11,11 @@ import { type Bot } from '../Bot';
  */
 @rtfm<PrimePaidUpgradeEvent>('easy-bot', 'PrimePaidUpgradeEvent', 'userId')
 export class PrimePaidUpgradeEvent {
-	@Enumerable(false) private readonly _broadcasterName: string;
-	@Enumerable(false) private readonly _userName: string;
-	@Enumerable(false) private readonly _info: ChatSubUpgradeInfo;
-	@Enumerable(false) private readonly _msg: UserNotice;
-	@Enumerable(false) private readonly _bot: Bot;
+	/** @internal */ @Enumerable(false) private readonly _broadcasterName: string;
+	/** @internal */ @Enumerable(false) private readonly _userName: string;
+	/** @internal */ @Enumerable(false) private readonly _info: ChatSubUpgradeInfo;
+	/** @internal */ @Enumerable(false) private readonly _msg: UserNotice;
+	/** @internal */ @Enumerable(false) private readonly _bot: Bot;
 
 	constructor(channel: string, userName: string, info: ChatSubUpgradeInfo, msg: UserNotice, bot: Bot) {
 		this._broadcasterName = toUserName(channel);

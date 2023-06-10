@@ -7,9 +7,9 @@ import {
 } from './EventSubChannelHypeTrainContribution.external';
 
 export class EventSubChannelHypeTrainContribution extends DataObject<EventSubChannelHypeTrainContributionData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelHypeTrainContributionData, client: ApiClient) {
 		super(data);
 		this._client = client;

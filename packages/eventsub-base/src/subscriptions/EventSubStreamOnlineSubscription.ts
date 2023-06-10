@@ -5,9 +5,7 @@ import { type EventSubStreamOnlineEventData } from '../events/EventSubStreamOnli
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubStreamOnlineSubscription extends EventSubSubscription<EventSubStreamOnlineEvent> {
 	/** @protected */ readonly _cliName = 'streamup';

@@ -15,7 +15,7 @@ export interface HelixChannelSearchResultData {
 	started_at: string;
 }
 
-/** @private */
+/** @internal */
 export function createSearchChannelsQuery(query: string, filter: HelixChannelSearchFilter) {
 	return {
 		query,

@@ -8,9 +8,9 @@ import type { HelixVideo } from '../video/HelixVideo';
 
 @rtfm<HelixClip>('api', 'HelixClip', 'id')
 export class HelixClip extends DataObject<HelixClipData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixClipData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

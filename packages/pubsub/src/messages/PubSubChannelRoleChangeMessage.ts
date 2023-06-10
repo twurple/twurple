@@ -9,7 +9,7 @@ import {
  */
 @rtfm<PubSubChannelRoleChangeMessage>('pubsub', 'PubSubChannelRoleChangeMessage', 'userId')
 export class PubSubChannelRoleChangeMessage extends DataObject<PubSubChannelRoleChangeMessageData> {
-	/** @private */
+	/** @internal */
 	constructor(data: PubSubChannelRoleChangeMessageData, private readonly _channelId: string) {
 		super(data);
 	}

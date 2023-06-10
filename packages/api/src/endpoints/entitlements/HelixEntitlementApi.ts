@@ -36,7 +36,7 @@ import { HelixDropsEntitlement } from './HelixDropsEntitlement';
  */
 @rtfm('api', 'HelixEntitlementApi')
 export class HelixEntitlementApi extends BaseApi {
-	@Enumerable(false) private readonly _getDropsEntitlementByIdBatcher = new HelixRequestBatcher(
+	/** @internal */ @Enumerable(false) private readonly _getDropsEntitlementByIdBatcher = new HelixRequestBatcher(
 		{
 			url: 'entitlements/drops'
 		},

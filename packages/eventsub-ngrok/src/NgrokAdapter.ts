@@ -16,8 +16,8 @@ export interface NgrokAdapterConfig {
  * A connection adapter that uses ngrok to make local testing easy.
  */
 export class NgrokAdapter extends ConnectionAdapter {
-	@Enumerable(false) private readonly _listenerPort: number;
-	@Enumerable(false) private _hostNamePromise?: Promise<string>;
+	/** @internal */ @Enumerable(false) private readonly _listenerPort: number;
+	/** @internal */ @Enumerable(false) private _hostNamePromise?: Promise<string>;
 
 	/**
 	 * Creates a new instance of the `NgrokAdapter`.

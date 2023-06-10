@@ -5,9 +5,7 @@ import { type EventSubUserUpdateEventData } from '../events/EventSubUserUpdateEv
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubUserUpdateSubscription extends EventSubSubscription<EventSubUserUpdateEvent> {
 	/** @protected */ readonly _cliName = 'user.update';

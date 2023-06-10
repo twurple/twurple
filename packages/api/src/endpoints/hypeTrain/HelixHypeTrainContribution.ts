@@ -12,9 +12,9 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixHypeTrainContribution>('api', 'HelixHypeTrainContribution', 'userId')
 export class HelixHypeTrainContribution extends DataObject<HelixHypeTrainContributionData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixHypeTrainContributionData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

@@ -19,7 +19,7 @@ export class HelixPaginatedScheduleSegmentRequest extends HelixPaginatedRequest<
 	HelixScheduleSegmentData,
 	HelixScheduleSegment
 > {
-	/** @private */
+	/** @internal */
 	constructor(broadcaster: UserIdResolvable, client: BaseApiClient, filter?: HelixScheduleFilter) {
 		super(
 			{
@@ -34,7 +34,7 @@ export class HelixPaginatedScheduleSegmentRequest extends HelixPaginatedRequest<
 
 	// sadly, this hack is necessary to work around the weird data model of schedules
 	// while still keeping the pagination code as generic as possible
-	/** @private */
+	/** @internal */
 	protected async _fetchData(
 		additionalOptions: Partial<TwitchApiCallOptions> = {}
 	): Promise<HelixPaginatedResponse<HelixScheduleSegmentData>> {

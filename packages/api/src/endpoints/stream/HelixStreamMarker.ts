@@ -8,9 +8,9 @@ import { type HelixStreamMarkerData } from '../../interfaces/endpoints/stream.ex
  */
 @rtfm<HelixStreamMarker>('api', 'HelixStreamMarker', 'id')
 export class HelixStreamMarker extends DataObject<HelixStreamMarkerData> {
-	/** @private */ @Enumerable(false) protected readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) protected readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixStreamMarkerData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

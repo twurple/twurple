@@ -12,7 +12,7 @@ import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixVideo } from './HelixVideo';
 
-/** @private */
+/** @internal */
 export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
 
 /**
@@ -31,6 +31,7 @@ export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';
  */
 @rtfm('api', 'HelixVideoApi')
 export class HelixVideoApi extends BaseApi {
+	/** @internal */
 	@Enumerable(false) private readonly _getVideoByIdBatcher = new HelixRequestBatcher(
 		{
 			url: 'videos'
@@ -152,6 +153,7 @@ export class HelixVideoApi extends BaseApi {
 		});
 	}
 
+	/** @internal */
 	private async _getVideos(
 		filterType: HelixVideoFilterType,
 		filterValues: string[],
@@ -173,6 +175,7 @@ export class HelixVideoApi extends BaseApi {
 		return createPaginatedResult(result, HelixVideo, this._client);
 	}
 
+	/** @internal */
 	private _getVideosPaginated(
 		filterType: HelixVideoFilterType,
 		filterValues: string[],
@@ -189,6 +192,7 @@ export class HelixVideoApi extends BaseApi {
 		);
 	}
 
+	/** @internal */
 	private static _makeVideosQuery(
 		filterType: HelixVideoFilterType,
 		filterValues: string[],

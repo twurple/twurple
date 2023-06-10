@@ -86,7 +86,7 @@ export interface HelixCustomRewardData {
 	cooldown_expires_at: string;
 }
 
-/** @private */
+/** @internal */
 export function createCustomRewardsQuery(broadcaster: UserIdResolvable, onlyManageable?: boolean) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -94,7 +94,7 @@ export function createCustomRewardsQuery(broadcaster: UserIdResolvable, onlyMana
 	};
 }
 
-/** @private */
+/** @internal */
 export function createCustomRewardChangeQuery(broadcaster: UserIdResolvable, rewardId: string) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -102,7 +102,7 @@ export function createCustomRewardChangeQuery(broadcaster: UserIdResolvable, rew
 	};
 }
 
-/** @private */
+/** @internal */
 export function createCustomRewardBody(data: HelixCreateCustomRewardData | HelixUpdateCustomRewardData) {
 	const result: Record<string, unknown> = {
 		title: data.title,
@@ -136,7 +136,7 @@ export function createCustomRewardBody(data: HelixCreateCustomRewardData | Helix
 	return result;
 }
 
-/** @private */
+/** @internal */
 export function createRewardRedemptionsByIdsQuery(
 	broadcaster: UserIdResolvable,
 	rewardId: string,
@@ -149,7 +149,7 @@ export function createRewardRedemptionsByIdsQuery(
 	};
 }
 
-/** @private */
+/** @internal */
 export function createRedemptionsForBroadcasterQuery(
 	broadcaster: UserIdResolvable,
 	rewardId: string,

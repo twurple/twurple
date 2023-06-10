@@ -57,7 +57,7 @@ export class BaseApiClient extends EventEmitter {
 
 	readonly onRequest = this.registerEvent<[request: ApiReportedRequest]>();
 
-	/** @private */
+	/** @internal */
 	constructor(config: ApiConfig, logger: Logger, rateLimiter: RateLimiter<TwitchApiCallOptionsInternal, Response>) {
 		super();
 		this._config = config;

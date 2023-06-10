@@ -129,7 +129,7 @@ export interface HelixPrivilegedChatSettingsData extends HelixChatSettingsData {
 	non_moderator_chat_delay_duration: number | null;
 }
 
-/** @private */
+/** @internal */
 export function createChatSettingsUpdateBody(settings: HelixUpdateChatSettingsParams) {
 	return {
 		slow_mode: settings.slowModeEnabled,
@@ -144,7 +144,7 @@ export function createChatSettingsUpdateBody(settings: HelixUpdateChatSettingsPa
 	};
 }
 
-/** @private */
+/** @internal */
 export function createChatColorUpdateQuery(user: UserIdResolvable, color: HelixChatUserColor) {
 	return {
 		user_id: extractUserId(user),
@@ -152,7 +152,7 @@ export function createChatColorUpdateQuery(user: UserIdResolvable, color: HelixC
 	};
 }
 
-/** @private */
+/** @internal */
 export function createShoutoutQuery(from: UserIdResolvable, to: UserIdResolvable, moderatorId: string) {
 	return {
 		from_broadcaster_id: extractUserId(from),

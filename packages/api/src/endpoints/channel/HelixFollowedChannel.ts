@@ -9,9 +9,9 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixFollowedChannel>('api', 'HelixFollowedChannel', 'broadcasterId')
 export class HelixFollowedChannel extends DataObject<HelixFollowedChannelData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixFollowedChannelData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

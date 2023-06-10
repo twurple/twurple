@@ -64,19 +64,19 @@ export interface HelixPaginatedEventSubSubscriptionsResponse
 	max_total_cost: number;
 }
 
-/** @private */
+/** @internal */
 export function createEventSubBroadcasterCondition(broadcaster: UserIdResolvable) {
 	return {
 		broadcaster_user_id: extractUserId(broadcaster)
 	};
 }
 
-/** @private */
+/** @internal */
 export function createEventSubRewardCondition(broadcaster: UserIdResolvable, rewardId: string) {
 	return { broadcaster_user_id: extractUserId(broadcaster), reward_id: rewardId };
 }
 
-/** @private */
+/** @internal */
 export function createEventSubModeratorCondition(broadcasterId: string, moderatorId: string) {
 	return {
 		broadcaster_user_id: broadcasterId,
@@ -84,7 +84,7 @@ export function createEventSubModeratorCondition(broadcasterId: string, moderato
 	};
 }
 
-/** @private */
+/** @internal */
 export function createEventSubDropEntitlementGrantCondition(
 	filter: HelixEventSubDropEntitlementGrantFilter
 ): Record<string, string | undefined> {

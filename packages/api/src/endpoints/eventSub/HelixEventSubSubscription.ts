@@ -12,9 +12,9 @@ import {
  */
 @rtfm<HelixEventSubSubscription>('api', 'HelixEventSubSubscription', 'id')
 export class HelixEventSubSubscription extends DataObject<HelixEventSubSubscriptionData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixEventSubSubscriptionData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

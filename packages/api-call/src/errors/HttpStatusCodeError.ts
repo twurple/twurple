@@ -20,18 +20,30 @@ export class HttpStatusCodeError extends CustomError {
 		);
 	}
 
+	/**
+	 * The HTTP status code of the error.
+	 */
 	get statusCode(): number {
 		return this._statusCode;
 	}
 
+	/**
+	 * The URL that was requested.
+	 */
 	get url(): string {
 		return this._url;
 	}
 
+	/**
+	 * The HTTP method that was used for the request.
+	 */
 	get method(): string {
 		return this._method;
 	}
 
+	/**
+	 * The body that was used for the request, as a string.
+	 */
 	get body(): string {
 		return this._body;
 	}

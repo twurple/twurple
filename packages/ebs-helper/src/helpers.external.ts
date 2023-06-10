@@ -2,7 +2,7 @@ import { mapOptional } from '@d-fischer/shared-utils';
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
 import { type EbsCallConfig } from './helpers';
 
-/** @private */
+/** @internal */
 export function getExtensionQuery(config: EbsCallConfig, version: string | undefined) {
 	return {
 		extension_id: config.clientId,
@@ -10,14 +10,14 @@ export function getExtensionQuery(config: EbsCallConfig, version: string | undef
 	};
 }
 
-/** @private */
+/** @internal */
 export function getExtensionSecretsQuery(config: EbsCallConfig) {
 	return {
 		extension_id: config.clientId
 	};
 }
 
-/** @private */
+/** @internal */
 export function getExtensionSecretCreateQuery(config: EbsCallConfig, delay?: number) {
 	return {
 		extension_id: config.clientId,
@@ -25,7 +25,7 @@ export function getExtensionSecretCreateQuery(config: EbsCallConfig, delay?: num
 	};
 }
 
-/** @private */
+/** @internal */
 export function createExtensionRequiredConfigurationBody(
 	config: EbsCallConfig,
 	version: string,
@@ -38,7 +38,7 @@ export function createExtensionRequiredConfigurationBody(
 	};
 }
 
-/** @private */
+/** @internal */
 export function createConfigurationSegmentQuery(
 	config: EbsCallConfig,
 	segment: 'global' | 'broadcaster' | 'developer',
@@ -51,7 +51,7 @@ export function createConfigurationSegmentQuery(
 	};
 }
 
-/** @private */
+/** @internal */
 export function createConfigurationSegmentBody(
 	config: EbsCallConfig,
 	segment: 'global' | 'broadcaster' | 'developer',
@@ -68,12 +68,12 @@ export function createConfigurationSegmentBody(
 	};
 }
 
-/** @private */
+/** @internal */
 export function createChatMessageJwtData(broadcaster: UserIdResolvable) {
 	return { channel_id: extractUserId(broadcaster) };
 }
 
-/** @private */
+/** @internal */
 export function createChatMessageBody(config: EbsCallConfig, extensionVersion: string, text: string) {
 	return {
 		extension_id: config.clientId,
@@ -82,12 +82,12 @@ export function createChatMessageBody(config: EbsCallConfig, extensionVersion: s
 	};
 }
 
-/** @private */
+/** @internal */
 export function createPubSubGlobalMessageJwtData() {
 	return { channel_id: 'all', pubsub_perms: { send: ['global'] } };
 }
 
-/** @private */
+/** @internal */
 export function createPubSubGlobalMessageBody(message: string) {
 	return {
 		is_global_broadcast: true,
@@ -96,12 +96,12 @@ export function createPubSubGlobalMessageBody(message: string) {
 	};
 }
 
-/** @private */
+/** @internal */
 export function createPubSubMessageJwtData(broadcaster: UserIdResolvable, targets: string[]) {
 	return { channel_id: extractUserId(broadcaster), pubsub_perms: { send: targets } };
 }
 
-/** @private */
+/** @internal */
 export function createPubSubMessageBody(targets: string[], broadcaster: UserIdResolvable, message: string) {
 	return {
 		target: targets,

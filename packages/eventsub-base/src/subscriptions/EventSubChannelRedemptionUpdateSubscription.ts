@@ -5,9 +5,7 @@ import { type EventSubChannelRedemptionUpdateEventData } from '../events/EventSu
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelRedemptionUpdateSubscription extends EventSubSubscription<EventSubChannelRedemptionUpdateEvent> {
 	/** @protected */ readonly _cliName = 'update-redemption';

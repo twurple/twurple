@@ -73,7 +73,7 @@ export interface HelixShieldModeStatusData {
 	last_activated_at: string;
 }
 
-/** @private */
+/** @internal */
 export function createModerationUserListQuery(
 	channel: UserIdResolvable,
 	filter?: HelixModeratorFilter | HelixBanFilter
@@ -84,7 +84,7 @@ export function createModerationUserListQuery(
 	};
 }
 
-/** @private */
+/** @internal */
 export function createModeratorModifyQuery(broadcaster: UserIdResolvable, user: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -92,7 +92,7 @@ export function createModeratorModifyQuery(broadcaster: UserIdResolvable, user: 
 	};
 }
 
-/** @private */
+/** @internal */
 export function createAutoModProcessBody(user: UserIdResolvable, msgId: string, allow: boolean) {
 	return {
 		user_id: extractUserId(user),
@@ -101,7 +101,7 @@ export function createAutoModProcessBody(user: UserIdResolvable, msgId: string, 
 	};
 }
 
-/** @private */
+/** @internal */
 export function createAutoModSettingsBody(data: HelixAutoModSettings) {
 	return {
 		overall_level: data.overallLevel,
@@ -116,7 +116,7 @@ export function createAutoModSettingsBody(data: HelixAutoModSettings) {
 	};
 }
 
-/** @private */
+/** @internal */
 export function createBanUserBody(data: HelixBanUserRequest) {
 	return {
 		data: {
@@ -127,7 +127,7 @@ export function createBanUserBody(data: HelixBanUserRequest) {
 	};
 }
 
-/** @private */
+/** @internal */
 export function createUpdateShieldModeStatusBody(activate: boolean) {
 	return {
 		is_active: activate

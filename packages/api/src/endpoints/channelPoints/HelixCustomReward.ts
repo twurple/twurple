@@ -10,9 +10,9 @@ import type { HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixCustomReward>('api', 'HelixCustomReward', 'id')
 export class HelixCustomReward extends DataObject<HelixCustomRewardData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixCustomRewardData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

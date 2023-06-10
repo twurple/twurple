@@ -9,9 +9,9 @@ import { type EventSubChannelHypeTrainBeginEventData } from './EventSubChannelHy
  */
 @rtfm<EventSubChannelHypeTrainBeginEvent>('eventsub-base', 'EventSubChannelHypeTrainBeginEvent', 'broadcasterId')
 export class EventSubChannelHypeTrainBeginEvent extends DataObject<EventSubChannelHypeTrainBeginEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelHypeTrainBeginEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

@@ -10,9 +10,9 @@ import { HelixBanUser } from './HelixBanUser';
  */
 @rtfm<HelixBan>('api', 'HelixBan', 'userId')
 export class HelixBan extends HelixBanUser {
-	/** @private */ declare readonly [rawDataSymbol]: HelixBanData;
+	/** @internal */ declare readonly [rawDataSymbol]: HelixBanData;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixBanData, client: BaseApiClient) {
 		super(data, data.expires_at || null, client);
 	}

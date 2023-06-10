@@ -1,4 +1,3 @@
-/** @private */
 import { mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type TokenInfoData } from './TokenInfo.external';
@@ -10,7 +9,7 @@ import { type TokenInfoData } from './TokenInfo.external';
 export class TokenInfo extends DataObject<TokenInfoData> {
 	private readonly _obtainmentDate: Date;
 
-	/** @private */
+	/** @internal */
 	constructor(data: TokenInfoData) {
 		super(data);
 		this._obtainmentDate = new Date();

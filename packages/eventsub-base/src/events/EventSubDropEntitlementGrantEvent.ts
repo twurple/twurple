@@ -8,9 +8,9 @@ import { type EventSubDropEntitlementGrantEventData } from './EventSubDropEntitl
  */
 @rtfm<EventSubDropEntitlementGrantEvent>('eventsub-base', 'EventSubDropEntitlementGrantEvent', 'entitlementId')
 export class EventSubDropEntitlementGrantEvent extends DataObject<EventSubDropEntitlementGrantEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubDropEntitlementGrantEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

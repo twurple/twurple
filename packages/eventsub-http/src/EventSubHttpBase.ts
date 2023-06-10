@@ -56,9 +56,9 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
  * @inheritDoc
  */
 export abstract class EventSubHttpBase extends EventSubBase {
-	@Enumerable(false) private readonly _seenEventIds = new Set<string>();
+	/** @internal */ @Enumerable(false) private readonly _seenEventIds = new Set<string>();
+	/** @internal */ @Enumerable(false) private readonly _secret: string;
 
-	@Enumerable(false) private readonly _secret: string;
 	private readonly _strictHostCheck: boolean;
 	protected readonly _helperRoutes: boolean;
 
@@ -86,16 +86,6 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		this._secret = config.secret;
 		this._strictHostCheck = config.strictHostCheck ?? true;
 		this._helperRoutes = config.helperRoutes ?? true;
-	}
-
-	/** @private */
-	async _buildHookUrl(id: string): Promise<string> {
-		const hostName = await this.getHostName();
-
-		// trim slashes on both ends
-		const pathPrefix = (await this.getPathPrefix())?.replace(/^\/|\/$/, '');
-
-		return `https://${hostName}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/event/${id}`;
 	}
 
 	/** @private */
@@ -324,6 +314,17 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		return this._twitchSubscriptions.get(subscription.id);
 	}
 
+	/** @internal */
+	private async _buildHookUrl(id: string): Promise<string> {
+		const hostName = await this.getHostName();
+
+		// trim slashes on both ends
+		const pathPrefix = (await this.getPathPrefix())?.replace(/^\/|\/$/, '');
+
+		return `https://${hostName}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/event/${id}`;
+	}
+
+	/** @internal */
 	private _handleSingleEventPayload(
 		subscription: EventSubSubscription,
 		payload: Record<string, unknown>,
@@ -338,6 +339,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		subscription._handleData(payload);
 	}
 
+	/** @internal */
 	private _verifyData(messageId: string, timestamp: string, body: string, algoAndSignature: string): boolean {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 

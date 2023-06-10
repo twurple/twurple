@@ -12,9 +12,9 @@ import {
  */
 @rtfm<EventSubChannelPredictionEndEvent>('eventsub-base', 'EventSubChannelPredictionEndEvent', 'broadcasterId')
 export class EventSubChannelPredictionEndEvent extends DataObject<EventSubChannelPredictionEndEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelPredictionEndEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

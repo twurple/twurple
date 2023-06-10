@@ -6,7 +6,7 @@ import { type PubSubChatModActionMessageData } from './PubSubChatModActionMessag
  */
 @rtfm<PubSubChatModActionMessage>('pubsub', 'PubSubChatModActionMessage', 'userId')
 export class PubSubChatModActionMessage extends DataObject<PubSubChatModActionMessageData> {
-	/** @private */
+	/** @internal */
 	constructor(data: PubSubChatModActionMessageData, private readonly _channelId: string) {
 		super(data);
 	}

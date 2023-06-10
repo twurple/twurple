@@ -23,18 +23,13 @@ if (!Object.prototype.hasOwnProperty.call(Symbol, 'asyncIterator')) {
  */
 @rtfm('api', 'HelixPaginatedRequest')
 export class HelixPaginatedRequest<D, T> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
-	protected _currentCursor?: string;
+	/** @internal */ protected _currentCursor?: string;
+	/** @internal */ protected _isFinished = false;
+	/** @internal */ protected _currentData?: HelixPaginatedResponse<D>;
 
-	/** @private */
-	protected _isFinished = false;
-
-	/** @private */
-	protected _currentData?: HelixPaginatedResponse<D>;
-
-	/** @private */
+	/** @internal */
 	constructor(
 		private readonly _callOptions: Omit<ContextApiCallOptions, 'type'>,
 		client: BaseApiClient,
@@ -126,7 +121,7 @@ export class HelixPaginatedRequest<D, T> {
 		}
 	}
 
-	/** @private */
+	/** @internal */
 	protected async _fetchData(
 		additionalOptions: Partial<TwitchApiCallOptions> = {}
 	): Promise<HelixPaginatedResponse<D>> {
@@ -143,8 +138,8 @@ export class HelixPaginatedRequest<D, T> {
 		});
 	}
 
-	/** @private */
-	protected _processResult(result: HelixPaginatedResponse<D>): T[] {
+	/** @internal */
+	private _processResult(result: HelixPaginatedResponse<D>): T[] {
 		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
 		if (this._currentCursor === undefined) {
 			this._isFinished = true;

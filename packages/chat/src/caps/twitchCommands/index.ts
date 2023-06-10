@@ -6,7 +6,7 @@ import { UserNotice } from './messageTypes/UserNotice';
 import { UserState } from './messageTypes/UserState';
 import { Whisper } from './messageTypes/Whisper';
 
-/** @private */
+/** @internal */
 export const TwitchCommandsCapability: Capability = {
 	name: 'twitch.tv/commands',
 	messageTypes: [ClearChat, Reconnect, RoomState, UserNotice, UserState, Whisper]

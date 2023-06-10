@@ -5,9 +5,7 @@ import { type EventSubChannelPredictionBeginEventData } from '../events/EventSub
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelPredictionBeginSubscription extends EventSubSubscription<EventSubChannelPredictionBeginEvent> {
 	/** @protected */ readonly _cliName = 'prediction-begin';

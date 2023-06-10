@@ -55,19 +55,22 @@ export interface RefreshingAuthProviderConfig {
 @rtfm<RefreshingAuthProvider>('auth', 'RefreshingAuthProvider', 'clientId')
 export class RefreshingAuthProvider extends EventEmitter implements AuthProvider {
 	private readonly _clientId: string;
-	@Enumerable(false) private readonly _clientSecret: string;
+	/** @internal */ @Enumerable(false) private readonly _clientSecret: string;
 	private readonly _redirectUri?: string;
-	@Enumerable(false) private readonly _userAccessTokens = new Map<
+	/** @internal */ @Enumerable(false) private readonly _userAccessTokens = new Map<
 		string,
 		MakeOptional<AccessTokenWithUserId, 'accessToken' | 'scope'>
 	>();
-	@Enumerable(false) private readonly _userTokenFetchers = new Map<string, TokenFetcher<AccessTokenWithUserId>>();
+	/** @internal */ @Enumerable(false) private readonly _userTokenFetchers = new Map<
+		string,
+		TokenFetcher<AccessTokenWithUserId>
+	>();
 	private readonly _intentToUserId = new Map<string, string>();
 	private readonly _userIdToIntents = new Map<string, Set<string>>();
 	private readonly _cachedRefreshFailures = new Set<string>();
 
-	@Enumerable(false) private _appAccessToken?: AccessToken;
-	@Enumerable(false) private readonly _appTokenFetcher;
+	/** @internal */ @Enumerable(false) private _appAccessToken?: AccessToken;
+	/** @internal */ @Enumerable(false) private readonly _appTokenFetcher;
 	private readonly _appImpliedScopes: string[];
 
 	/**

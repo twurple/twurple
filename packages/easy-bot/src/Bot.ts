@@ -121,7 +121,7 @@ export class Bot extends EventEmitter {
 	 */
 	readonly chat: ChatClient;
 
-	@Enumerable(false) private readonly _authProvider: AuthProvider;
+	/** @internal */ @Enumerable(false) private readonly _authProvider: AuthProvider;
 	private readonly _prefix: string;
 	private readonly _authMethod: BotAuthMethod;
 

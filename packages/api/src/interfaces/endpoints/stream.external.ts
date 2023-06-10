@@ -58,7 +58,7 @@ export interface HelixGetStreamKeyData {
 	stream_key: string;
 }
 
-/** @private */
+/** @internal */
 export function createStreamQuery(filter: HelixStreamFilter) {
 	return {
 		game_id: filter.game,
@@ -69,7 +69,7 @@ export function createStreamQuery(filter: HelixStreamFilter) {
 	};
 }
 
-/** @private */
+/** @internal */
 export function createStreamMarkerBody(broadcaster: UserIdResolvable, description?: string) {
 	return {
 		user_id: extractUserId(broadcaster),
@@ -77,7 +77,7 @@ export function createStreamMarkerBody(broadcaster: UserIdResolvable, descriptio
 	};
 }
 
-/** @private */
+/** @internal */
 export function createVideoQuery(id: string) {
 	return {
 		video_id: id

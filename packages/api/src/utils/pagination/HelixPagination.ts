@@ -25,7 +25,7 @@ export interface HelixPagination extends HelixForwardPagination {
 	before?: string;
 }
 
-/** @private */
+/** @internal */
 export function createPaginationQuery({ after, before, limit }: HelixPagination = {}): Record<
 	string,
 	string | undefined

@@ -13,9 +13,9 @@ import { type HelixUser } from '../user/HelixUser';
  */
 @rtfm('api', 'HelixDropsEntitlement')
 export class HelixDropsEntitlement extends DataObject<HelixDropsEntitlementData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixDropsEntitlementData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

@@ -42,8 +42,8 @@ export interface EventSubHttpListenerConfig extends EventSubHttpBaseConfig {
  */
 @rtfm('eventsub-http', 'EventSubHttpListener')
 export class EventSubHttpListener extends EventSubHttpBase implements EventSubListener {
-	@Enumerable(false) private _server?: Server;
-	private readonly _adapter: ConnectionAdapter;
+	/** @internal */ @Enumerable(false) private _server?: Server;
+	/** @internal */ private readonly _adapter: ConnectionAdapter;
 
 	/**
 	 * Creates a new EventSub HTTP listener.

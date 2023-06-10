@@ -5,9 +5,7 @@ import { type EventSubChannelRaidEventData } from '../events/EventSubChannelRaid
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelRaidSubscription extends EventSubSubscription<EventSubChannelRaidEvent> {
 	/** @protected */ readonly _cliName = 'raid';

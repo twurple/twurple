@@ -13,9 +13,9 @@ import { type EventSubChannelPredictionProgressEventData } from './EventSubChann
 	'broadcasterId'
 )
 export class EventSubChannelPredictionProgressEvent extends DataObject<EventSubChannelPredictionProgressEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelPredictionProgressEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

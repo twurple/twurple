@@ -8,9 +8,9 @@ import { type EventSubChannelRedemptionUpdateEventData } from './EventSubChannel
  */
 @rtfm<EventSubChannelRedemptionUpdateEvent>('eventsub-base', 'EventSubChannelRedemptionUpdateEvent', 'id')
 export class EventSubChannelRedemptionUpdateEvent extends DataObject<EventSubChannelRedemptionUpdateEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelRedemptionUpdateEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

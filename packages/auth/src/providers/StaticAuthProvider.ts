@@ -13,8 +13,8 @@ import type { AuthProvider } from './AuthProvider';
  */
 @rtfm<StaticAuthProvider>('auth', 'StaticAuthProvider', 'clientId')
 export class StaticAuthProvider implements AuthProvider {
-	@Enumerable(false) private readonly _clientId: string;
-	@Enumerable(false) private readonly _accessToken: AccessToken;
+	/** @internal */ @Enumerable(false) private readonly _clientId: string;
+	/** @internal */ @Enumerable(false) private readonly _accessToken: AccessToken;
 	private _userId?: string;
 	private _scopes?: string[];
 

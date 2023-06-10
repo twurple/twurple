@@ -8,9 +8,9 @@ import type { EventSubChannelShieldModeEndEventData } from './EventSubChannelShi
  */
 @rtfm('eventsub-base', 'EventSubChannelShieldModeEndEvent')
 export class EventSubChannelShieldModeEndEvent extends DataObject<EventSubChannelShieldModeEndEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelShieldModeEndEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

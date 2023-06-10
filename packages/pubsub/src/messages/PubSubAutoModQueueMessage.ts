@@ -11,7 +11,7 @@ import {
  */
 @rtfm<PubSubAutoModQueueMessage>('pubsub', 'PubSubAutoModQueueMessage', 'messageId')
 export class PubSubAutoModQueueMessage extends DataObject<PubSubAutoModQueueMessageData> {
-	/** @private */
+	/** @internal */
 	constructor(data: PubSubAutoModQueueMessageData, private readonly _channelId: string) {
 		super(data);
 	}

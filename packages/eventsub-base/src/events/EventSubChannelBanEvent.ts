@@ -8,9 +8,9 @@ import { type EventSubChannelBanEventData } from './EventSubChannelBanEvent.exte
  */
 @rtfm<EventSubChannelBanEvent>('eventsub-base', 'EventSubChannelBanEvent', 'userId')
 export class EventSubChannelBanEvent extends DataObject<EventSubChannelBanEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelBanEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

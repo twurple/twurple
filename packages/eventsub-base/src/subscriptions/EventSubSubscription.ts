@@ -13,7 +13,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	private _twitchSubscriptionData?: HelixEventSubSubscription;
 	/** @protected */ abstract readonly _cliName: string;
 
-	/** @private */
+	/** @internal */
 	protected constructor(protected _handler: (obj: T) => void, protected _client: EventSubBase) {}
 
 	/**

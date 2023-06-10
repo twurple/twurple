@@ -14,9 +14,9 @@ import { type EventSubChannelRedemptionAddEventData } from './EventSubChannelRed
  */
 @rtfm<EventSubChannelRedemptionAddEvent>('eventsub-base', 'EventSubChannelRedemptionAddEvent', 'id')
 export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChannelRedemptionAddEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelRedemptionAddEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

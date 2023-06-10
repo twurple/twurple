@@ -5,9 +5,7 @@ import { type EventSubChannelModeratorEventData } from '../events/EventSubChanne
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelModeratorRemoveSubscription extends EventSubSubscription<EventSubChannelModeratorEvent> {
 	/** @protected */ readonly _cliName = 'remove-moderator';

@@ -33,8 +33,8 @@ export interface DirectConnectionAdapterConfig {
 @rtfm('eventsub-http', 'DirectConnectionAdapter')
 export class DirectConnectionAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
-	@Enumerable(false) private _ssl: EventSubHttpListenerCertificateConfig;
-	@Enumerable(false) private _httpsServer?: https.Server;
+	/** @internal */ @Enumerable(false) private _ssl: EventSubHttpListenerCertificateConfig;
+	/** @internal */ @Enumerable(false) private _httpsServer?: https.Server;
 
 	/**
 	 * Creates a new simple WebHook adapter.

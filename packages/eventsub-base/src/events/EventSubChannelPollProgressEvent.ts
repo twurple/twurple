@@ -9,9 +9,9 @@ import { type EventSubChannelPollProgressEventData } from './EventSubChannelPoll
  */
 @rtfm<EventSubChannelPollProgressEvent>('eventsub-base', 'EventSubChannelPollProgressEvent', 'broadcasterId')
 export class EventSubChannelPollProgressEvent extends DataObject<EventSubChannelPollProgressEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelPollProgressEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

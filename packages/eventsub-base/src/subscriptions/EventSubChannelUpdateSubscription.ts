@@ -5,9 +5,7 @@ import { type EventSubChannelUpdateEventData } from '../events/EventSubChannelUp
 import type { EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/**
- * @private
- */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelUpdateSubscription extends EventSubSubscription<EventSubChannelUpdateEvent> {
 	/** @protected */ readonly _cliName = 'stream-change';

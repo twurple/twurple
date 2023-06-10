@@ -12,9 +12,9 @@ import { type AuthProvider } from './AuthProvider';
 @rtfm<AppTokenAuthProvider>('auth', 'AppTokenAuthProvider', 'clientId')
 export class AppTokenAuthProvider implements AuthProvider {
 	private readonly _clientId: string;
-	@Enumerable(false) private readonly _clientSecret: string;
-	@Enumerable(false) private _token?: AccessToken;
-	@Enumerable(false) private readonly _fetcher: TokenFetcher;
+	/** @internal */ @Enumerable(false) private readonly _clientSecret: string;
+	/** @internal */ @Enumerable(false) private _token?: AccessToken;
+	/** @internal */ @Enumerable(false) private readonly _fetcher: TokenFetcher;
 	private readonly _impliedScopes: string[];
 
 	/**

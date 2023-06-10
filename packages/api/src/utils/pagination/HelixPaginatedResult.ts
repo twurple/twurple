@@ -37,7 +37,7 @@ export interface HelixPaginatedResultWithTotal<T> {
 	total: number;
 }
 
-/** @private */ export function createPaginatedResult<
+/** @internal */ export function createPaginatedResult<
 	I,
 	O extends new (data: I, client: BaseApiClient) => ConstructedType<O>
 >(
@@ -46,11 +46,11 @@ export interface HelixPaginatedResultWithTotal<T> {
 	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	client: BaseApiClient
 ): HelixPaginatedResult<ConstructedType<O>>;
-/** @private */ export function createPaginatedResult<I, O extends new (data: I) => ConstructedType<O>>(
+/** @internal */ export function createPaginatedResult<I, O extends new (data: I) => ConstructedType<O>>(
 	response: HelixPaginatedResponse<I>,
 	type: O
 ): HelixPaginatedResult<ConstructedType<O>>;
-/** @private */ export function createPaginatedResult<
+/** @internal */ export function createPaginatedResult<
 	I,
 	O extends new (data: I, _client?: BaseApiClient) => ConstructedType<O>
 >(response: HelixPaginatedResponse<I>, type: O, client?: BaseApiClient): HelixPaginatedResult<ConstructedType<O>> {
@@ -63,7 +63,7 @@ export interface HelixPaginatedResultWithTotal<T> {
 	};
 }
 
-/** @private */ export function createPaginatedResultWithTotal<
+/** @internal */ export function createPaginatedResultWithTotal<
 	I,
 	O extends new (data: I, client: BaseApiClient) => ConstructedType<O>
 >(
@@ -72,11 +72,11 @@ export interface HelixPaginatedResultWithTotal<T> {
 	// eslint-disable-next-line @typescript-eslint/unified-signatures
 	client: BaseApiClient
 ): HelixPaginatedResultWithTotal<ConstructedType<O>>;
-/** @private */ export function createPaginatedResultWithTotal<I, O extends new (data: I) => ConstructedType<O>>(
+/** @internal */ export function createPaginatedResultWithTotal<I, O extends new (data: I) => ConstructedType<O>>(
 	response: HelixPaginatedResponseWithTotal<I>,
 	type: O
 ): HelixPaginatedResultWithTotal<ConstructedType<O>>;
-/** @private */ export function createPaginatedResultWithTotal<
+/** @internal */ export function createPaginatedResultWithTotal<
 	I,
 	O extends new (data: I, _client?: BaseApiClient) => ConstructedType<O>
 >(

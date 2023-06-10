@@ -15,7 +15,7 @@ export class HelixInstalledExtension extends HelixBaseExtension {
 	private readonly _slotType: HelixExtensionSlotType;
 	private readonly _slotId: string;
 
-	/** @private */
+	/** @internal */
 	constructor(slotType: HelixExtensionSlotType, slotId: string, data: HelixBaseExtensionData) {
 		super(data);
 		this._slotType = slotType;

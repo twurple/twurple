@@ -47,7 +47,7 @@ export interface HelixExtensionTransactionData {
 	product_data: HelixExtensionProductData;
 }
 
-/** @private */
+/** @internal */
 export function createReleasedExtensionFilter(extensionId: string, version: string | undefined) {
 	return {
 		extension_id: extensionId,
@@ -55,7 +55,7 @@ export function createReleasedExtensionFilter(extensionId: string, version: stri
 	};
 }
 
-/** @private */
+/** @internal */
 export function createExtensionProductBody(data: HelixExtensionBitsProductUpdatePayload) {
 	return {
 		sku: data.sku,
@@ -70,7 +70,7 @@ export function createExtensionProductBody(data: HelixExtensionBitsProductUpdate
 	};
 }
 
-/** @private */
+/** @internal */
 export function createExtensionTransactionQuery(extensionId: string, filter: HelixExtensionTransactionsFilter) {
 	return {
 		extension_id: extensionId,

@@ -1,4 +1,4 @@
-/** @private */
+/** @internal */
 export function createExchangeCodeQuery(clientId: string, clientSecret: string, code: string, redirectUri: string) {
 	return {
 		grant_type: 'authorization_code',
@@ -9,7 +9,7 @@ export function createExchangeCodeQuery(clientId: string, clientSecret: string, 
 	};
 }
 
-/** @private */
+/** @internal */
 export function createGetAppTokenQuery(clientId: string, clientSecret: string) {
 	return {
 		grant_type: 'client_credentials',
@@ -18,7 +18,7 @@ export function createGetAppTokenQuery(clientId: string, clientSecret: string) {
 	};
 }
 
-/** @private */
+/** @internal */
 export function createRefreshTokenQuery(clientId: string, clientSecret: string, refreshToken: string) {
 	return {
 		grant_type: 'refresh_token',
@@ -28,7 +28,7 @@ export function createRefreshTokenQuery(clientId: string, clientSecret: string, 
 	};
 }
 
-/** @private */
+/** @internal */
 export function createRevokeTokenQuery(clientId: string, accessToken: string) {
 	return {
 		client_id: clientId,

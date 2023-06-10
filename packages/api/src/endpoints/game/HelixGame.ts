@@ -13,9 +13,9 @@ import type { HelixStream } from '../stream/HelixStream';
  */
 @rtfm<HelixGame>('api', 'HelixGame', 'id')
 export class HelixGame extends DataObject<HelixGameData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixGameData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

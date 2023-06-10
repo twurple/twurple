@@ -86,5 +86,7 @@ export interface HelixPaginatedCustomRewardRedemptionFilter
 	extends HelixCustomRewardRedemptionFilter,
 		HelixForwardPagination {}
 
-/** @private */
+/**
+ * The scale multiplier for a custom reward image.
+ */
 export type HelixCustomRewardImageScale = 1 | 2 | 4;

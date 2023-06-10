@@ -11,10 +11,10 @@ import { type HelixUser } from '../user/HelixUser';
  */
 @rtfm<HelixBanUser>('api', 'HelixBanUser', 'userId')
 export class HelixBanUser extends DataObject<HelixCommonBanUserData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
-	@Enumerable(false) private readonly _expiryTimestamp: string | null;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _expiryTimestamp: string | null;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixCommonBanUserData, expiryTimestamp: string | null, client: BaseApiClient) {
 		super(data);
 		this._expiryTimestamp = expiryTimestamp;

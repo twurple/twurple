@@ -10,7 +10,7 @@ import { type CheermoteDisplayInfo, type CheermoteFormat } from './CheermoteDisp
  */
 @rtfm('api', 'HelixCheermoteList')
 export class HelixCheermoteList extends DataObject<Record<string, HelixCheermoteData>> {
-	/** @private */
+	/** @internal */
 	constructor(data: HelixCheermoteData[]) {
 		super(indexBy(data, action => action.prefix.toLowerCase()));
 	}

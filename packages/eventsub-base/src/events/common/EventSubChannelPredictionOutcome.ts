@@ -10,10 +10,10 @@ import { EventSubChannelPredictionPredictor } from './EventSubChannelPredictionP
  */
 @rtfm<EventSubChannelPredictionOutcome>('eventsub-base', 'EventSubChannelPredictionOutcome', 'id')
 export class EventSubChannelPredictionOutcome extends EventSubChannelPredictionBeginOutcome {
-	/** @private */ declare readonly [rawDataSymbol]: EventSubChannelPredictionOutcomeData;
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelPredictionOutcomeData;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelPredictionOutcomeData, client: ApiClient) {
 		super(data);
 		this._client = client;

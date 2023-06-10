@@ -139,7 +139,7 @@ export async function setExtensionRequiredConfiguration(
 	);
 }
 
-/** @private */
+/** @internal */
 async function getAnyConfigurationSegment(
 	config: EbsCallConfig,
 	segment: HelixExtensionConfigurationSegmentName,
@@ -202,7 +202,7 @@ export async function getExtensionDeveloperConfiguration(
 	return await getAnyConfigurationSegment(config, 'developer', broadcaster);
 }
 
-/** @private */
+/** @internal */
 async function setAnyConfigurationSegment(
 	config: EbsCallConfig,
 	segment: HelixExtensionConfigurationSegmentName,
@@ -308,7 +308,7 @@ export async function sendExtensionChatMessage(
 	);
 }
 
-/** @private */
+/** @internal */
 async function sendAnyExtensionPubSubMessage(
 	config: EbsCallConfig,
 	targets: string[],

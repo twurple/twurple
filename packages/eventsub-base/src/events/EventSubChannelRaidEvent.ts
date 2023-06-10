@@ -8,9 +8,9 @@ import { type EventSubChannelRaidEventData } from './EventSubChannelRaidEvent.ex
  */
 @rtfm<EventSubChannelRaidEvent>('eventsub-base', 'EventSubChannelRaidEvent', 'raidedBroadcasterId')
 export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelRaidEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

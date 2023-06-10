@@ -5,7 +5,7 @@ import { type EventSubChannelShoutoutCreateEventData } from '../events/EventSubC
 import { type EventSubBase } from '../EventSubBase';
 import { EventSubSubscription } from './EventSubSubscription';
 
-/** @private */
+/** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelShoutoutCreateSubscription extends EventSubSubscription<EventSubChannelShoutoutCreateEvent> {
 	/** @protected */ readonly _cliName = 'shoutout-create';

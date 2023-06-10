@@ -9,7 +9,7 @@ import { HelixUser } from './HelixUser';
  */
 @rtfm<HelixPrivilegedUser>('api', 'HelixPrivilegedUser', 'id')
 export class HelixPrivilegedUser extends HelixUser {
-	/** @private */ declare readonly [rawDataSymbol]: HelixPrivilegedUserData;
+	/** @internal */ declare readonly [rawDataSymbol]: HelixPrivilegedUserData;
 
 	/**
 	 * The email address of the user.

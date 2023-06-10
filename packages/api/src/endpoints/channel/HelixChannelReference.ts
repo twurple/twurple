@@ -11,9 +11,9 @@ import type { HelixChannel } from './HelixChannel';
  */
 @rtfm<HelixChannelReference>('api', 'HelixChannelReference', 'id')
 export class HelixChannelReference extends DataObject<HelixChannelReferenceData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixChannelReferenceData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

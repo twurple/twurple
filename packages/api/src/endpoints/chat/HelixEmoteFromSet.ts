@@ -12,8 +12,8 @@ import { HelixEmote } from './HelixEmote';
  */
 @rtfm<HelixEmoteFromSet>('api', 'HelixEmoteFromSet', 'id')
 export class HelixEmoteFromSet extends HelixEmote {
-	/** @private */ declare readonly [rawDataSymbol]: HelixEmoteFromSetData;
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ declare readonly [rawDataSymbol]: HelixEmoteFromSetData;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
 	constructor(data: HelixEmoteFromSetData, client: BaseApiClient) {
 		super(data);

@@ -8,9 +8,9 @@ import { type EventSubUserUpdateEventData } from './EventSubUserUpdateEvent.exte
  */
 @rtfm<EventSubUserUpdateEvent>('eventsub-base', 'EventSubUserUpdateEvent', 'userId')
 export class EventSubUserUpdateEvent extends DataObject<EventSubUserUpdateEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubUserUpdateEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

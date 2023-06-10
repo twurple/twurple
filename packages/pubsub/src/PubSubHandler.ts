@@ -8,9 +8,9 @@ import { type PubSubClient } from './PubSubClient';
  */
 @rtfm<PubSubHandler>('pubsub', 'PubSubHandler', 'userId')
 export class PubSubHandler<T extends PubSubMessage = PubSubMessage> {
-	@Enumerable(false) private readonly _client: PubSubClient;
+	/** @internal */ @Enumerable(false) private readonly _client: PubSubClient;
 
-	/** @private */
+	/** @internal */
 	constructor(
 		private readonly _topic: string,
 		private readonly _userId: string,
@@ -41,7 +41,7 @@ export class PubSubHandler<T extends PubSubMessage = PubSubMessage> {
 		this._client.removeHandler(this);
 	}
 
-	/** @private */
+	/** @internal */
 	call(message: T): void {
 		this._callback(message);
 	}

@@ -47,7 +47,7 @@ export interface HelixChannelFollowerData {
 	followed_at: string;
 }
 
-/** @private */
+/** @internal */
 export function createChannelUpdateBody(data: HelixChannelUpdate) {
 	return {
 		game_id: data.gameId,
@@ -58,7 +58,7 @@ export function createChannelUpdateBody(data: HelixChannelUpdate) {
 	};
 }
 
-/** @private */
+/** @internal */
 export function createChannelCommercialBody(broadcaster: UserIdResolvable, length: CommercialLength) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -66,7 +66,7 @@ export function createChannelCommercialBody(broadcaster: UserIdResolvable, lengt
 	};
 }
 
-/** @private */
+/** @internal */
 export function createChannelVipUpdateQuery(broadcaster: UserIdResolvable, user: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -74,7 +74,7 @@ export function createChannelVipUpdateQuery(broadcaster: UserIdResolvable, user:
 	};
 }
 
-/** @private */
+/** @internal */
 export function createChannelFollowerQuery(broadcaster: UserIdResolvable, user?: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -82,7 +82,7 @@ export function createChannelFollowerQuery(broadcaster: UserIdResolvable, user?:
 	};
 }
 
-/** @private */
+/** @internal */
 export function createFollowedChannelQuery(user: UserIdResolvable, broadcaster?: UserIdResolvable) {
 	return {
 		broadcaster_id: mapOptional(broadcaster, extractUserId),

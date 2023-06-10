@@ -30,7 +30,7 @@ export interface HelixClipCreateResponse {
 	edit_url: string;
 }
 
-/** @private */
+/** @internal */
 export function createClipCreateQuery(channel: UserIdResolvable, createAfterDelay: boolean) {
 	return {
 		broadcaster_id: extractUserId(channel),
@@ -38,7 +38,7 @@ export function createClipCreateQuery(channel: UserIdResolvable, createAfterDela
 	};
 }
 
-/** @private */
+/** @internal */
 export function createClipQuery(params: HelixClipIdFilter) {
 	const { filterType, ids, startDate, endDate } = params;
 	return {

@@ -10,7 +10,7 @@ import { HelixTeam } from './HelixTeam';
  */
 @rtfm<HelixTeamWithUsers>('api', 'HelixTeamWithUsers', 'id')
 export class HelixTeamWithUsers extends HelixTeam {
-	/** @private */ declare readonly [rawDataSymbol]: HelixTeamWithUsersData;
+	/** @internal */ declare readonly [rawDataSymbol]: HelixTeamWithUsersData;
 
 	/**
 	 * The relations to the members of the team.

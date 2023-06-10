@@ -12,7 +12,7 @@ import { HelixBaseExtension } from './HelixBaseExtension';
  */
 @rtfm<HelixUserExtension>('api', 'HelixUserExtension', 'id')
 export class HelixUserExtension extends HelixBaseExtension {
-	/** @private */ declare readonly [rawDataSymbol]: HelixUserExtensionData;
+	/** @internal */ declare readonly [rawDataSymbol]: HelixUserExtensionData;
 
 	/**
 	 * Whether the user has configured the extension to be able to activate it.

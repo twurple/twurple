@@ -10,9 +10,9 @@ import { HelixPollChoice } from './HelixPollChoice';
  */
 @rtfm<HelixPoll>('api', 'HelixPoll', 'id')
 export class HelixPoll extends DataObject<HelixPollData> {
-	@Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: HelixPollData, client: BaseApiClient) {
 		super(data);
 		this._client = client;

@@ -9,9 +9,9 @@ import { type EventSubChannelPredictionLockEventData } from './EventSubChannelPr
  */
 @rtfm<EventSubChannelPredictionLockEvent>('eventsub-base', 'EventSubChannelPredictionLockEvent', 'broadcasterId')
 export class EventSubChannelPredictionLockEvent extends DataObject<EventSubChannelPredictionLockEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubChannelPredictionLockEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

@@ -6,7 +6,7 @@ export interface HelixRaidData {
 	is_mature: boolean;
 }
 
-/** @private */
+/** @internal */
 export function createRaidStartQuery(from: UserIdResolvable, to: UserIdResolvable) {
 	return {
 		from_broadcaster_id: extractUserId(from),

@@ -11,9 +11,9 @@ import {
  */
 @rtfm<EventSubStreamOnlineEvent>('eventsub-base', 'EventSubStreamOnlineEvent', 'broadcasterId')
 export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEventData> {
-	@Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
 
-	/** @private */
+	/** @internal */
 	constructor(data: EventSubStreamOnlineEventData, client: ApiClient) {
 		super(data);
 		this._client = client;

@@ -43,7 +43,7 @@ export interface HelixPredictionData {
 	locked_at: string;
 }
 
-/** @private */
+/** @internal */
 export function createPredictionBody(broadcaster: UserIdResolvable, data: HelixCreatePredictionData) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
@@ -53,7 +53,7 @@ export function createPredictionBody(broadcaster: UserIdResolvable, data: HelixC
 	};
 }
 
-/** @private */
+/** @internal */
 export function createEndPredictionBody(
 	broadcaster: UserIdResolvable,
 	id: string,

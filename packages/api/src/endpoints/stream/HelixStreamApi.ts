@@ -43,6 +43,7 @@ import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
  */
 @rtfm('api', 'HelixStreamApi')
 export class HelixStreamApi extends BaseApi {
+	/** @internal */
 	@Enumerable(false) private readonly _getStreamByUserIdBatcher = new HelixRequestBatcher(
 		{
 			url: 'streams'
@@ -53,6 +54,7 @@ export class HelixStreamApi extends BaseApi {
 		(data: HelixStreamData) => new HelixStream(data, this._client)
 	);
 
+	/** @internal */
 	@Enumerable(false) private readonly _getStreamByUserNameBatcher = new HelixRequestBatcher(
 		{
 			url: 'streams'
