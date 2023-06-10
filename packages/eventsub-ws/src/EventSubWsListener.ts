@@ -159,7 +159,9 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		if (!this._accepting) {
 			return subscription;
 		}
-		if (!this._sockets.has(authUserId)) {
+		if (this._sockets.has(authUserId)) {
+			this._sockets.get(authUserId)!.start();
+		} else {
 			this._createSocketForUser(authUserId);
 		}
 

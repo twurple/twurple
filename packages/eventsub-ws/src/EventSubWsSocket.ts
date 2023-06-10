@@ -55,6 +55,9 @@ export class EventSubWsSocket {
 			this._readyToSubscribe = false;
 			this._clearKeepaliveTimer();
 			this._keepaliveTimeout = null;
+			for (const sub of this._listener._getSubscriptionsForUser(this._userId)) {
+				sub._droppedByTwitch();
+			}
 		});
 		this._connection.onReceive(data => {
 			this._logger.debug(`Received data: ${data.trim()}`);
@@ -67,7 +70,15 @@ export class EventSubWsSocket {
 					this._sessionId = (payload as EventSubWelcomePayload).session.id;
 					this._readyToSubscribe = true;
 					if (!this._reconnectInProgress) {
-						for (const sub of this._listener._getSubscriptionsForUser(this._userId)) {
+						const subs = this._listener._getSubscriptionsForUser(this._userId);
+						if (!subs.length) {
+							this._logger.debug(
+								`Stopping socket for user ${this._userId} because no subscriptions are active`
+							);
+							this.stop();
+							break;
+						}
+						for (const sub of subs) {
 							sub.start();
 						}
 					}
@@ -128,11 +139,15 @@ export class EventSubWsSocket {
 	}
 
 	start(): void {
-		this._connection.connect();
+		if (!this._connection.isConnected && !this._connection.isConnecting) {
+			this._connection.connect();
+		}
 	}
 
 	stop(): void {
-		this._connection.disconnect();
+		if (this._connection.isConnected || this._connection.isConnecting) {
+			this._connection.disconnect();
+		}
 	}
 
 	get readyToSubscribe(): boolean {

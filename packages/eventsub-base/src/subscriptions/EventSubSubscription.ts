@@ -104,6 +104,12 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	 */
 	abstract get authUserId(): string | null;
 
+	/** @private */
+	_droppedByTwitch(): void {
+		this._twitchSubscriptionData = undefined;
+		this._verified = false;
+	}
+
 	protected async _getTransportOptions(): Promise<HelixEventSubTransportOptions> {
 		return await this._client._getTransportOptionsForSubscription(this as EventSubSubscription);
 	}
