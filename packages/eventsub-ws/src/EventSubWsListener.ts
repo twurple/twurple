@@ -135,12 +135,12 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		this.emit(this.onRevoke, subscription);
 	}
 
-	/** @private */
+	/** @internal */
 	_notifySocketConnect(socket: EventSubWsSocket): void {
 		this.emit(this.onUserSocketConnect, socket.userId);
 	}
 
-	/** @private */
+	/** @internal */
 	_notifySocketDisconnect(socket: EventSubWsSocket, error?: Error): void {
 		this.emit(this.onUserSocketDisconnect, socket.userId, error);
 	}
@@ -172,6 +172,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		return undefined;
 	}
 
+	/** @internal */
 	private _createSocketForUser(authUserId: string) {
 		const socket = new EventSubWsSocket(this, authUserId, this._initialUrl, this._loggerOptions);
 		this._sockets.set(authUserId, socket);
