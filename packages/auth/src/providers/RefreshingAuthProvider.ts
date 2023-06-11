@@ -76,7 +76,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	/**
 	 * Fires when a user token is refreshed.
 	 *
-	 * @param userId The ID of the user whose token wasn't successfully refreshed.
+	 * @param userId The ID of the user whose token was successfully refreshed.
 	 * @param token The refreshed token data.
 	 */
 	readonly onRefresh = this.registerEvent<[userId: string, token: AccessToken]>();
