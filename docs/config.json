@@ -193,13 +193,18 @@
 		{
 			"name": "migration",
 			"title": "Migration",
-			"indexTitle": "Migration from v5 to v6",
-			"indexFile": "migration/v5-to-v6.md",
+			"indexTitle": "Migration from v6 to v7",
+			"indexFile": "migration/v6-to-v7.md",
 			"groups": [
 				{
 					"name": "previous-versions",
 					"title": "Previous versions",
 					"articles": [
+						{
+							"name": "v5-to-v6",
+							"title": "Migration from v5 to v6",
+							"file": "migration/v5-to-v6.md"
+						},
 						{
 							"name": "twitchjs-to-v5",
 							"title": "Migration from Twitch.js to v5",
