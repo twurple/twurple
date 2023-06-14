@@ -7,6 +7,7 @@ import type { HelixPaginatedResultWithTotal } from '../../utils/pagination/Helix
 import { type HelixChannelFollower } from '../channel/HelixChannelFollower';
 import { type HelixFollowedChannel } from '../channel/HelixFollowedChannel';
 import type { HelixStream } from '../stream/HelixStream';
+import { type HelixSubscription } from '../subscriptions/HelixSubscription';
 import { type HelixUserSubscription } from '../subscriptions/HelixUserSubscription';
 
 /**
@@ -189,7 +190,7 @@ export class HelixUser extends DataObject<HelixUserData> implements UserIdResolv
 	 *
 	 * @param user The user you want to get the subscription data for.
 	 */
-	async getSubscriber(user: UserIdResolvable): Promise<HelixUserSubscription | null> {
+	async getSubscriber(user: UserIdResolvable): Promise<HelixSubscription | null> {
 		return await this._client.subscriptions.getSubscriptionForUser(this, user);
 	}
 
