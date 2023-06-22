@@ -142,14 +142,14 @@ export class BaseApiClient extends EventEmitter {
 				: options.userId;
 
 			if (!contextUserId) {
-				throw new Error('Tried to make an API call with a scope but no context user ID');
+				throw new Error('Tried to make an API call with a user context but no context user ID');
 			}
 
 			const accessToken = await authProvider.getAccessTokenForUser(contextUserId, options.scopes);
 
 			if (!accessToken) {
 				throw new Error(
-					`Tried to make an API call with a scope for user ID ${contextUserId} but no token was found`
+					`Tried to make an API call with a user context for user ID ${contextUserId} but no token was found`
 				);
 			}
 
