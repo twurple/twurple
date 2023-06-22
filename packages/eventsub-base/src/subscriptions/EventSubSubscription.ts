@@ -50,6 +50,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 		if (resumeFrom) {
 			if (resumeFrom.status === 'enabled') {
 				this._twitchSubscriptionData = resumeFrom;
+				this._verified = true;
 				this._client._logger.debug(`Successfully resumed subscription for event: ${this.id}`);
 				return;
 			}
