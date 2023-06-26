@@ -12,6 +12,7 @@ import {
 import { type AuthProvider } from '@twurple/auth';
 import {
 	ChatClient,
+	type ChatClientOptions,
 	type ChatMessage,
 	type ChatSayMessageAttributes,
 	extractMessageId,
@@ -100,6 +101,11 @@ export interface BotConfig {
 	 * Some methods can only use broadcaster authentication - they will be marked as such.
 	 */
 	authMethod?: BotAuthMethod;
+
+	/**
+	 * Additional options to pass to the constructor of the underlying {@link ChatClient}.
+	 */
+	chatClientOptions?: Omit<ChatClientOptions, 'authProvider' | 'channels'>;
 }
 
 export type ChatAnnouncementColor = HelixChatAnnouncementColor;
@@ -427,7 +433,8 @@ export class Bot extends EventEmitter {
 			debug,
 			commands,
 			emitCommandMessageEvents,
-			prefix
+			prefix,
+			chatClientOptions
 		} = config;
 		super();
 
@@ -449,8 +456,9 @@ export class Bot extends EventEmitter {
 			logger: { minLevel }
 		});
 		this.chat = new ChatClient({
-			authProvider: this._authProvider,
 			logger: { minLevel },
+			...chatClientOptions,
+			authProvider: this._authProvider,
 			channels: resolvableChannels
 		});
 
