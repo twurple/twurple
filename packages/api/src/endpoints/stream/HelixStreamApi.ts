@@ -311,9 +311,11 @@ export class HelixStreamApi extends BaseApi {
 	 * @param broadcaster The broadcaster to get the stream key for.
 	 */
 	async getStreamKey(broadcaster: UserIdResolvable): Promise<string> {
+		const userId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixGetStreamKeyData>>({
 			type: 'helix',
 			url: 'streams/key',
+			userId,
 			scopes: ['channel:read:stream_key'],
 			query: createBroadcasterQuery(broadcaster)
 		});
