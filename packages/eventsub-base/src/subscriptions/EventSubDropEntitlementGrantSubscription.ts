@@ -8,7 +8,7 @@ import { EventSubSubscription } from './EventSubSubscription';
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubDropEntitlementGrantSubscription extends EventSubSubscription<EventSubDropEntitlementGrantEvent> {
-	/** @protected */ readonly _cliName = 'transaction';
+	/** @protected */ readonly _cliName = 'drop';
 	readonly authUserId = null;
 
 	constructor(
