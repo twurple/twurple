@@ -11,7 +11,7 @@
 	"mainBranchName": "main",
 	"versionBranchPrefix": "versions/",
 	"versionFolder": "versions",
-	"defaultVersion": "6.2",
+	"defaultVersion": "7.0",
 	"title": "Twurple",
 	"indexFile": "index.md",
 	"ignoredPackages": ["auth-ext", "eventsub-ngrok"],
