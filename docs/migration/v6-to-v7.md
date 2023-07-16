@@ -97,7 +97,7 @@ Check the documentation of the {@link HelixUser} class for more information.
 
 ## Change event listener options in {@link RefreshingAuthProvider} to method calls
 
-The `onRefresh` and `onRefreshFailure` config options from {@RefreshingAuthProvider} have been removed
+The `onRefresh` and `onRefreshFailure` config options from {@link RefreshingAuthProvider} have been removed
 in favor of event listener methods of the same name. This was done to be in line with all other event listener methods.
 
 ```ts diff -4 +6

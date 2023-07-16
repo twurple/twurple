@@ -26,6 +26,8 @@ export { RefreshingAuthProvider } from './providers/RefreshingAuthProvider';
 export type { RefreshingAuthProviderConfig } from './providers/RefreshingAuthProvider';
 export { StaticAuthProvider } from './providers/StaticAuthProvider';
 
+export { CachedRefreshFailureError } from './errors/CachedRefreshFailureError';
+export { IntermediateUserRemovalError } from './errors/IntermediateUserRemovalError';
 export { InvalidTokenError } from './errors/InvalidTokenError';
 export { InvalidTokenTypeError } from './errors/InvalidTokenTypeError';
 export { UnknownIntentError } from './errors/UnknownIntentError';

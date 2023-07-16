@@ -42,10 +42,11 @@ const tokenData = JSON.parse(await fs.readFile('./tokens.125328655.json', 'UTF-8
 const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
-		clientSecret,
-		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8')
+		clientSecret
 	}
 );
+
+authProvider.onRefresh(async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8'));
 
 await authProvider.addUserForToken(tokenData);
 ```

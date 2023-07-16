@@ -29,7 +29,7 @@
 					"articles": [
 						{
 							"name": "static",
-							"title": "Using a fixed token",
+							"title": "Using a static token",
 							"file": "auth/providers/static.md"
 						},
 						{

@@ -1,5 +1,9 @@
 import { CustomError } from '@twurple/common';
 
+/**
+ * Thrown whenever you try to execute an action in the context of a user
+ * who is already known to have an invalid token saved in its {@link AuthProvider}.
+ */
 export class CachedRefreshFailureError extends CustomError {
 	constructor(public readonly userId: string) {
 		super(`The user context for the user ${userId} has been disabled.

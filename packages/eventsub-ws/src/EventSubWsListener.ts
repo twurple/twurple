@@ -11,6 +11,8 @@ import { EventSubWsSocket } from './EventSubWsSocket';
 
 /**
  * Configuration for an EventSub WebSocket listener.
+ *
+ * @inheritDoc
  */
 export interface EventSubWsConfig extends EventSubBaseConfig {
 	/**
