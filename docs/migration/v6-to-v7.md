@@ -109,6 +109,34 @@ const authProvider = new RefreshingAuthProvider({
 authProvider.onRefresh(async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8'));
 ```
 
+## Update emote & cheermote parsing
+
+The methods `parseEmotes` and `parseEmotesAndBits` were removed from the {@link ChatMessage} class.
+The function {@link parseChatMessage} replaces both of these.
+
+```ts diff -2 +3
+chatClient.onMessage((channel, user, text, msg) => {
+	const parts = msg.parseEmotes();
+	const parts = parseChatMessage(text, msg.emoteOffsets);
+  // more code
+});
+```
+
+The function accepts a cheermote list as an optional third parameter,
+but rather than taking an array of full objects like `parseEmotesAndBits` took, it takes just an array of names.  
+The format parameter was completely removed,
+as the cheermote can be formatted by calling the {@link HelixCheermoteList#getCheermoteDisplayInfo} method
+on the instance you have already fetched for getting the list of names.
+
+```ts diff -3 +4
+chatClient.onMessage(async (channel, user, text, msg) => {
+	const cheermotes = await apiClient.bits.getCheermotes(msg.userInfo.userId);
+	const parts = msg.parseEmotesAndBits(cheermotes, { background, state, scale });
+	const parts = parseChatMessage(text, msg.emoteOffsets, cheermotes.getPossibleNames());
+	// more code
+});
+```
+
 ## Update error handling
 
 When authentication and token refreshing fails, {@link RefreshingAuthProvider} will now cache that failure.
