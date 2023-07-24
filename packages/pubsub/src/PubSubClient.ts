@@ -221,7 +221,7 @@ export class PubSubClient extends EventEmitter {
 	onUserModeration(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
-		callback: (message: PubSubSubscriptionMessage) => void
+		callback: (message: PubSubUserModerationNotificationMessage) => void
 	): PubSubHandler<never> {
 		return this._addHandler('user-moderation-notifications', callback, user, 'chat:read', extractUserId(channel));
 	}
