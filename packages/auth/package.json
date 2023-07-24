@@ -1,6 +1,6 @@
 {
   "name": "@twurple/auth",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "publishConfig": {
     "access": "public"
   },
@@ -36,8 +36,8 @@
     "@d-fischer/logger": "^4.2.1",
     "@d-fischer/shared-utils": "^3.6.1",
     "@d-fischer/typed-event-emitter": "^3.3.1",
-    "@twurple/api-call": "7.0.0",
-    "@twurple/common": "7.0.0",
+    "@twurple/api-call": "7.0.1",
+    "@twurple/common": "7.0.1",
     "tslib": "^2.0.3"
   },
   "files": [
