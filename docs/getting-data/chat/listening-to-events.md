@@ -17,7 +17,7 @@ declare module '@twurple/chat' {
 const followAgeListener = chatClient.onMessage(async (channel: string, user: string, text: string, msg: PrivateMessage) => {
 	if (message === '!followage') {
 		const broadcasterId = msg.channelId!;
-		const { data: [follow] } = await apiClient.channels.getChannelFollowers(broadcasterId, broadcasterId, msg.userInfo.userId);
+		const { data: [follow] } = await apiClient.channels.getChannelFollowers(broadcasterId, msg.userInfo.userId);
 
 		if (follow) {
 			const currentTimestamp = Date.now();
