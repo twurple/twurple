@@ -171,6 +171,7 @@ export { HelixStreamMarkerWithVideo } from './endpoints/stream/HelixStreamMarker
 export type { HelixStreamType } from './interfaces/endpoints/stream.external';
 export type { HelixPaginatedStreamFilter, HelixStreamFilter } from './interfaces/endpoints/stream.input';
 
+export { HelixPaginatedSubscriptionsRequest } from './endpoints/subscriptions/HelixPaginatedSubscriptionsRequest';
 export { HelixSubscriptionApi } from './endpoints/subscriptions/HelixSubscriptionApi';
 export { HelixSubscription } from './endpoints/subscriptions/HelixSubscription';
 export { HelixUserSubscription } from './endpoints/subscriptions/HelixUserSubscription';
