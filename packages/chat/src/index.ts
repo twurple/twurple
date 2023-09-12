@@ -39,6 +39,13 @@ export { ChatUser } from './ChatUser';
 export { LogLevel } from '@d-fischer/logger';
 
 export {
+	buildEmoteImageUrl,
+	type EmoteAnimationSettings,
+	type EmoteBackgroundType,
+	type EmoteSettings,
+	type EmoteSize
+} from './emotes/buildEmoteImageUrl';
+export {
 	findCheermotePositions,
 	fillTextPositions,
 	parseChatMessage,
