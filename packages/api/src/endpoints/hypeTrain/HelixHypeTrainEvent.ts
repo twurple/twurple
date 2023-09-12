@@ -54,7 +54,7 @@ export class HelixHypeTrainEvent extends DataObject<HelixEventData<HelixHypeTrai
 	 * The unique ID of the Hype Train.
 	 */
 	get id(): string {
-		return this[rawDataSymbol].id;
+		return this[rawDataSymbol].event_data.id;
 	}
 
 	/**
