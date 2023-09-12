@@ -13,7 +13,7 @@ export interface EventSubChannelSubscriptionMessageEmoteData {
 /** @private */
 export interface EventSubChannelSubscriptionMessageData {
 	text: string;
-	emotes: EventSubChannelSubscriptionMessageEmoteData[];
+	emotes: EventSubChannelSubscriptionMessageEmoteData[] | null;
 }
 
 /** @private */

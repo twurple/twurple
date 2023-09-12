@@ -115,7 +115,7 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 	 */
 	get emoteOffsets(): Map<string, string[]> {
 		return new Map<string, string[]>(
-			Object.entries(groupBy(this[rawDataSymbol].message.emotes, 'id')).map(([id, ranges]) => [
+			Object.entries(groupBy(this[rawDataSymbol].message.emotes ?? [], 'id')).map(([id, ranges]) => [
 				id,
 				ranges.map(({ begin, end }) => `${begin}-${end}`)
 			])
