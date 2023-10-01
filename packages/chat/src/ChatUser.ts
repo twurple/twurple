@@ -124,7 +124,9 @@ export class ChatUser {
 	 * Whether the user is a VIP in the channel.
 	 */
 	get isVip(): boolean {
-		return this._userData.has('vip');
+		const badgeValue = this._userData.get('vip');
+
+		return badgeValue != null && badgeValue !== '0';
 	}
 
 	/**
