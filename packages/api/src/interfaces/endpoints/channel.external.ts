@@ -13,6 +13,8 @@ export interface HelixChannelData {
 	title: string;
 	delay: number;
 	tags: string[];
+	content_classification_labels: string[];
+	is_branded_content: boolean;
 }
 
 /** @private */
@@ -54,7 +56,9 @@ export function createChannelUpdateBody(data: HelixChannelUpdate) {
 		broadcaster_language: data.language,
 		title: data.title,
 		delay: data.delay?.toString(),
-		tags: data.tags
+		tags: data.tags,
+		content_classification_labels: data.contentClassificationLabels,
+		is_branded_content: data.isBrandedContent
 	};
 }
 

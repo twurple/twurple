@@ -31,4 +31,14 @@ export interface HelixChannelUpdate {
 	 * or contain spaces or special characters. Tags are case insensitive.
 	 */
 	tags?: string[];
+
+	/**
+	 * The content classification labels to apply to the channel.
+	 */
+	contentClassificationLabels?: string[];
+
+	/**
+	 * Whether the channel currently displays branded content.
+	 */
+	isBrandedContent?: boolean;
 }

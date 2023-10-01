@@ -68,6 +68,9 @@ export type {
 	HelixClipCreateParams
 } from './interfaces/endpoints/clip.input';
 
+export { HelixContentClassificationLabelApi } from './endpoints/contentClassificationLabels/HelixContentClassificationLabelApi';
+export { HelixContentClassificationLabel } from './endpoints/contentClassificationLabels/HelixContentClassificationLabel';
+
 export { HelixEntitlementApi } from './endpoints/entitlements/HelixEntitlementApi';
 export { HelixDropsEntitlement } from './endpoints/entitlements/HelixDropsEntitlement';
 export type {

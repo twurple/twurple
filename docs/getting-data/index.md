@@ -46,7 +46,6 @@ should use for which use case.
 | Remove chat messages                          | Yes                      | No                                                     |
 | Set chat modes (e.g. emote/sub/follower only) | Yes                      | No                                                     |
 | Get & manage AutoMod settings                 | Yes                      | No                                                     |
-| Fetch currently playing Soundtrack track      | No (supported by Twitch) | No                                                     |
 | Get current Creator Goals state               | Yes                      | No                                                     |
 | Get list of chatters                          | Yes                      | No                                                     |
 | Get info about charity campaigns              | Yes                      | No                                                     |

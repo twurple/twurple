@@ -98,4 +98,18 @@ export class HelixChannel extends DataObject<HelixChannelData> {
 	get tags(): string[] {
 		return this[rawDataSymbol].tags;
 	}
+
+	/**
+	 * The content classification labels applied to the channel.
+	 */
+	get contentClassificationLabels(): string[] {
+		return this[rawDataSymbol].content_classification_labels;
+	}
+
+	/**
+	 * Whether the channel currently displays branded content (as specified by the broadcaster).
+	 */
+	get isBrandedContent(): boolean {
+		return this[rawDataSymbol].is_branded_content;
+	}
 }

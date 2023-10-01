@@ -6,6 +6,9 @@ import type { HelixGame } from '../game/HelixGame';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixVideo } from '../video/HelixVideo';
 
+/**
+ * A clip from a Twitch stream.
+ */
 @rtfm<HelixClip>('api', 'HelixClip', 'id')
 export class HelixClip extends DataObject<HelixClipData> {
 	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;

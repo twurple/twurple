@@ -24,6 +24,7 @@ import { HelixChannelPointsApi } from '../endpoints/channelPoints/HelixChannelPo
 import { HelixCharityApi } from '../endpoints/charity/HelixCharityApi';
 import { HelixChatApi } from '../endpoints/chat/HelixChatApi';
 import { HelixClipApi } from '../endpoints/clip/HelixClipApi';
+import { HelixContentClassificationLabelApi } from '../endpoints/contentClassificationLabels/HelixContentClassificationLabelApi';
 import { HelixEntitlementApi } from '../endpoints/entitlements/HelixEntitlementApi';
 import { HelixEventSubApi } from '../endpoints/eventSub/HelixEventSubApi';
 import { HelixExtensionsApi } from '../endpoints/extensions/HelixExtensionsApi';
@@ -221,6 +222,14 @@ export class BaseApiClient extends EventEmitter {
 	@CachedGetter()
 	get clips(): HelixClipApi {
 		return new HelixClipApi(this);
+	}
+
+	/**
+	 * The Helix content classification label API methods.
+	 */
+	@CachedGetter()
+	get contentClassificationLabels(): HelixContentClassificationLabelApi {
+		return new HelixContentClassificationLabelApi(this);
 	}
 
 	/**
