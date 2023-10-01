@@ -19,6 +19,7 @@ export interface HelixClipData {
 	thumbnail_url: string;
 	duration: number;
 	vod_offset: number | null;
+	is_featured: boolean;
 }
 
 /** @private */
@@ -40,10 +41,11 @@ export function createClipCreateQuery(channel: UserIdResolvable, createAfterDela
 
 /** @internal */
 export function createClipQuery(params: HelixClipIdFilter) {
-	const { filterType, ids, startDate, endDate } = params;
+	const { filterType, ids, startDate, endDate, isFeatured } = params;
 	return {
 		[filterType]: ids,
 		started_at: startDate,
-		ended_at: endDate
+		ended_at: endDate,
+		is_featured: isFeatured?.toString()
 	};
 }

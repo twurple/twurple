@@ -163,4 +163,11 @@ export class HelixClip extends DataObject<HelixClipData> {
 	get vodOffset(): number | null {
 		return this[rawDataSymbol].vod_offset;
 	}
+
+	/**
+	 * Whether the clip is featured.
+	 */
+	get isFeatured(): boolean {
+		return this[rawDataSymbol].is_featured;
+	}
 }
