@@ -1,7 +1,5 @@
-import type { HelixResponse } from '@twurple/api-call';
-import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { createBroadcasterQuery, type HelixResponse, HttpStatusCodeError } from '@twurple/api-call';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import { type HelixTeamData, type HelixTeamWithUsersData } from '../../interfaces/endpoints/team.external';
 import { BaseApi } from '../BaseApi';
 import { HelixTeam } from './HelixTeam';

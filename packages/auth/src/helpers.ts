@@ -293,6 +293,7 @@ export async function loadAndCompareTokenInfo(
 	loadedScopes?: string[],
 	requestedScopeSets?: Array<string[] | undefined>
 ): Promise<[string[] | undefined, string]> {
+	// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 	if (requestedScopeSets?.length || !userId) {
 		const userInfo = await getTokenInfo(token, clientId);
 		if (!userInfo.userId) {

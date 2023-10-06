@@ -1,6 +1,5 @@
 import { createBroadcasterQuery } from '@twurple/api-call';
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId } from '@twurple/common';
+import { extractUserId, type UserIdResolvable } from '@twurple/common';
 import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external';
 import {
 	createScheduleQuery,

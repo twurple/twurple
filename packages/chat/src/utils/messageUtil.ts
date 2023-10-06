@@ -1,5 +1,4 @@
-import type { Message, MessageConstructor } from 'ircv3';
-import { decodeCtcp, MessageTypes, parseMessage } from 'ircv3';
+import { decodeCtcp, type Message, type MessageConstructor, MessageTypes, parseMessage } from 'ircv3';
 import { ClearChat } from '../caps/twitchCommands/messageTypes/ClearChat';
 import { Reconnect } from '../caps/twitchCommands/messageTypes/Reconnect';
 import { RoomState } from '../caps/twitchCommands/messageTypes/RoomState';

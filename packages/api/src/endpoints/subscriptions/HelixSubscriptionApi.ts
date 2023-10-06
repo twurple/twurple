@@ -1,7 +1,5 @@
-import type { HelixResponse } from '@twurple/api-call';
-import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { createBroadcasterQuery, type HelixResponse, HttpStatusCodeError } from '@twurple/api-call';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import { createChannelUsersCheckQuery } from '../../interfaces/endpoints/generic.external';
 import {
 	createSubscriptionCheckQuery,
@@ -11,8 +9,7 @@ import {
 } from '../../interfaces/endpoints/subscription.external';
 import { type HelixPaginatedSubscriptionsResult } from '../../interfaces/endpoints/subscription.input';
 import { createPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
-import type { HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixPaginatedSubscriptionsRequest } from './HelixPaginatedSubscriptionsRequest';
 import { HelixSubscription } from './HelixSubscription';

@@ -1,7 +1,6 @@
 import { mapOptional } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponseWithTotal } from '@twurple/api-call';
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createEventSubBroadcasterCondition,
 	createEventSubDropEntitlementGrantCondition,
@@ -18,8 +17,7 @@ import {
 } from '../../interfaces/endpoints/eventSub.input';
 import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
 import { createPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
-import type { HelixPagination } from '../../utils/pagination/HelixPagination';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
+import { createPaginationQuery, type HelixPagination } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEventSubSubscriptionsRequest';

@@ -1,7 +1,5 @@
-import type { AuthProvider } from '@twurple/auth';
-import { getValidTokenFromProviderForIntent } from '@twurple/auth';
-import type { Options as BaseOptions } from 'tmi.js';
-import { Client as BaseClient } from 'tmi.js';
+import { type AuthProvider, getValidTokenFromProviderForIntent } from '@twurple/auth';
+import { Client as BaseClient, type Options as BaseOptions } from 'tmi.js';
 
 /**
  * The tmi.js options, with the auth provider replacing the identity option.

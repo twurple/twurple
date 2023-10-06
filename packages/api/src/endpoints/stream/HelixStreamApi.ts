@@ -1,8 +1,11 @@
 import { Enumerable, flatten, mapNullable } from '@d-fischer/shared-utils';
-import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
-import { createBroadcasterQuery, HttpStatusCodeError } from '@twurple/api-call';
-import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
-import { extractUserId, extractUserName, rtfm } from '@twurple/common';
+import {
+	createBroadcasterQuery,
+	type HelixPaginatedResponse,
+	type HelixResponse,
+	HttpStatusCodeError
+} from '@twurple/api-call';
+import { extractUserId, extractUserName, rtfm, type UserIdResolvable, type UserNameResolvable } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import { StreamNotLiveError } from '../../errors/StreamNotLiveError';
 import { createSingleKeyQuery, createUserQuery } from '../../interfaces/endpoints/generic.external';
@@ -18,10 +21,12 @@ import {
 import { type HelixPaginatedStreamFilter, type HelixStreamFilter } from '../../interfaces/endpoints/stream.input';
 import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import type { HelixForwardPagination, HelixPagination } from '../../utils/pagination/HelixPagination';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
+import {
+	createPaginationQuery,
+	type HelixForwardPagination,
+	type HelixPagination
+} from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixStream } from './HelixStream';
 import { HelixStreamMarker } from './HelixStreamMarker';

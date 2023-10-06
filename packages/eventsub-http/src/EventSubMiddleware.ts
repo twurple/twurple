@@ -1,8 +1,7 @@
 import { rtfm } from '@twurple/common';
 import type { IRouter, RequestHandler } from 'express-serve-static-core';
 import { checkHostName } from './checks';
-import type { EventSubHttpBaseConfig } from './EventSubHttpBase';
-import { EventSubHttpBase } from './EventSubHttpBase';
+import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase';
 
 /**
  * The configuration of the EventSub middleware.
@@ -70,9 +69,7 @@ export class EventSubMiddleware extends EventSubHttpBase {
 		let requestPathPrefix: string | undefined = undefined;
 		if (this._usePathPrefixInHandlers) {
 			requestPathPrefix = this._pathPrefix;
-			if (requestPathPrefix) {
-				requestPathPrefix = `/${requestPathPrefix.replace(/^\/|\/$/g, '')}`;
-			}
+			requestPathPrefix &&= `/${requestPathPrefix.replace(/^\/|\/$/g, '')}`;
 		}
 		const requestHandler = this._createHandleRequest() as unknown as RequestHandler;
 		const dropLegacyHandler = this._createDropLegacyRequest() as unknown as RequestHandler;

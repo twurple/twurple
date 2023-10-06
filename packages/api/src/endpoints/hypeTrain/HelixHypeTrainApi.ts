@@ -1,17 +1,13 @@
-import type { HelixPaginatedResponse } from '@twurple/api-call';
-import { createBroadcasterQuery } from '@twurple/api-call';
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId } from '@twurple/common';
+import { createBroadcasterQuery, type HelixPaginatedResponse } from '@twurple/api-call';
+import { extractUserId, type UserIdResolvable } from '@twurple/common';
 import { type HelixEventData } from '../../interfaces/endpoints/generic.external';
 import {
 	type HelixHypeTrainEventData,
 	type HelixHypeTrainEventType
 } from '../../interfaces/endpoints/hypeTrain.external';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import type { HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixHypeTrainEvent } from './HelixHypeTrainEvent';
 

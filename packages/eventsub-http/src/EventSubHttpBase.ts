@@ -1,13 +1,13 @@
 import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixEventSubSubscription, HelixEventSubWebHookTransportOptions } from '@twurple/api';
-import type {
-	EventSubBaseConfig,
-	EventSubNotificationPayload,
-	EventSubSubscription,
-	EventSubSubscriptionBody
+import {
+	EventSubBase,
+	type EventSubBaseConfig,
+	type EventSubNotificationPayload,
+	type EventSubSubscription,
+	type EventSubSubscriptionBody
 } from '@twurple/eventsub-base';
-import { EventSubBase } from '@twurple/eventsub-base';
 import * as crypto from 'crypto';
 import type { Request, RequestHandler } from 'httpanda';
 
@@ -291,7 +291,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 				return false;
 			}
 
-			const host = req.headers.host;
+			const { host } = req.headers;
 			if (host === undefined) {
 				this._logger.debug(`Denied request from ${ip} because its host header is empty`);
 				return true;

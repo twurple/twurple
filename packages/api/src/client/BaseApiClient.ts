@@ -1,8 +1,7 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { type Response } from '@d-fischer/cross-fetch';
 import type { Logger } from '@d-fischer/logger';
-import type { RateLimiter, RateLimiterStats } from '@d-fischer/rate-limiter';
-import { ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';
+import { type RateLimiter, type RateLimiterStats, ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';
 import { promiseWithResolvers } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import {
@@ -14,8 +13,14 @@ import {
 	type TwitchApiCallOptions
 } from '@twurple/api-call';
 
-import type { AccessTokenMaybeWithUserId, AuthProvider, TokenInfoData } from '@twurple/auth';
-import { accessTokenIsExpired, InvalidTokenError, TokenInfo } from '@twurple/auth';
+import {
+	accessTokenIsExpired,
+	type AccessTokenMaybeWithUserId,
+	type AuthProvider,
+	InvalidTokenError,
+	TokenInfo,
+	type TokenInfoData
+} from '@twurple/auth';
 import { HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
 import * as retry from 'retry';
 import { HelixBitsApi } from '../endpoints/bits/HelixBitsApi';
@@ -410,7 +415,7 @@ export class BaseApiClient extends EventEmitter {
 	): Promise<T> {
 		const { authProvider } = this._config;
 
-		const authorizationType = authProvider.authorizationType;
+		const { authorizationType } = authProvider;
 		let response = await this._callApiInternal(
 			options,
 			authProvider.clientId,
@@ -428,16 +433,14 @@ export class BaseApiClient extends EventEmitter {
 						authorizationType
 					);
 				}
-			} else {
-				if (authProvider.getAppAccessToken) {
-					const token = await authProvider.getAppAccessToken(true);
-					response = await this._callApiInternal(
-						options,
-						authProvider.clientId,
-						token.accessToken,
-						authorizationType
-					);
-				}
+			} else if (authProvider.getAppAccessToken) {
+				const token = await authProvider.getAppAccessToken(true);
+				response = await this._callApiInternal(
+					options,
+					authProvider.clientId,
+					token.accessToken,
+					authorizationType
+				);
 			}
 		}
 

@@ -44,11 +44,9 @@ export class NgrokAdapter extends ConnectionAdapter {
 
 	/** @protected */
 	async getHostName(): Promise<string> {
-		if (!this._hostNamePromise) {
-			this._hostNamePromise = connect({ addr: this._listenerPort }).then(url =>
-				url.replace(/^https?:\/\/|\/$/g, '')
-			);
-		}
+		this._hostNamePromise ??= connect({ addr: this._listenerPort }).then(url =>
+			url.replace(/^https?:\/\/|\/$/g, '')
+		);
 
 		return await this._hostNamePromise;
 	}

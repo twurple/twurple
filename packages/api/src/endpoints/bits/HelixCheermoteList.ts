@@ -26,7 +26,7 @@ export class HelixCheermoteList extends DataObject<Record<string, HelixCheermote
 		name = name.toLowerCase();
 		const { background, state, scale } = format;
 
-		const tiers = this[rawDataSymbol][name].tiers;
+		const { tiers } = this[rawDataSymbol][name];
 		const correctTier = tiers.sort((a, b) => b.min_bits - a.min_bits).find(tier => tier.min_bits <= bits);
 
 		if (!correctTier) {

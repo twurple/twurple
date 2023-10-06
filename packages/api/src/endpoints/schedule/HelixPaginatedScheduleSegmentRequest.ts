@@ -1,6 +1,5 @@
 import type { HelixPaginatedResponse, TwitchApiCallOptions } from '@twurple/api-call';
-import type { UserIdResolvable } from '@twurple/common';
-import { rtfm } from '@twurple/common';
+import { rtfm, type UserIdResolvable } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	createScheduleQuery,

@@ -1,9 +1,12 @@
-import type { MakeOptional } from '@d-fischer/shared-utils';
-import { Enumerable } from '@d-fischer/shared-utils';
+import { Enumerable, type MakeOptional } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
 import { extractUserId, HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
-import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
-import { accessTokenIsExpired } from '../AccessToken';
+import {
+	type AccessToken,
+	accessTokenIsExpired,
+	type AccessTokenMaybeWithUserId,
+	type AccessTokenWithUserId
+} from '../AccessToken';
 import { CachedRefreshFailureError } from '../errors/CachedRefreshFailureError';
 import { IntermediateUserRemovalError } from '../errors/IntermediateUserRemovalError';
 import { InvalidTokenError } from '../errors/InvalidTokenError';

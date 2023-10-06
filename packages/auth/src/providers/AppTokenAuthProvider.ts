@@ -1,7 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
-import type { AccessToken } from '../AccessToken';
-import { accessTokenIsExpired } from '../AccessToken';
+import { type AccessToken, accessTokenIsExpired } from '../AccessToken';
 import { getAppToken } from '../helpers';
 import { TokenFetcher } from '../TokenFetcher';
 import { type AuthProvider } from './AuthProvider';

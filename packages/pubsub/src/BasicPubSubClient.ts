@@ -1,16 +1,21 @@
-import type { Connection, WebSocketClientOptions } from '@d-fischer/connection';
-import { PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
-import type { Logger, LoggerOptions } from '@d-fischer/logger';
-import { createLogger } from '@d-fischer/logger';
-import type { ResolvableValue } from '@d-fischer/shared-utils';
-import { Enumerable, promiseWithResolvers } from '@d-fischer/shared-utils';
+import {
+	type Connection,
+	PersistentConnection,
+	type WebSocketClientOptions,
+	WebSocketConnection
+} from '@d-fischer/connection';
+import { createLogger, type Logger, type LoggerOptions } from '@d-fischer/logger';
+import { Enumerable, promiseWithResolvers, type ResolvableValue } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
-import type { AuthProvider } from '@twurple/auth';
-import { getValidTokenFromProviderForUser } from '@twurple/auth';
+import { type AuthProvider, getValidTokenFromProviderForUser } from '@twurple/auth';
 import { HellFreezesOverError, rtfm } from '@twurple/common';
 import type { PubSubMessageData } from './messages/PubSubMessage';
-import type { PubSubIncomingPacket, PubSubNoncedOutgoingPacket, PubSubOutgoingPacket } from './PubSubPacket.external';
-import { createListenPacket } from './PubSubPacket.external';
+import {
+	createListenPacket,
+	type PubSubIncomingPacket,
+	type PubSubNoncedOutgoingPacket,
+	type PubSubOutgoingPacket
+} from './PubSubPacket.external';
 
 /** @private */
 interface StaticTokenResolvable {
@@ -165,12 +170,10 @@ export class BasicPubSubClient extends EventEmitter {
 			this.removeInternalListener();
 			if (manually) {
 				this._logger.info('Disconnected');
+			} else if (reason) {
+				this._logger.error(`Disconnected unexpectedly: ${reason.message}`);
 			} else {
-				if (reason) {
-					this._logger.error(`Disconnected unexpectedly: ${reason.message}`);
-				} else {
-					this._logger.error('Disconnected unexpectedly');
-				}
+				this._logger.error('Disconnected unexpectedly');
 			}
 			this.emit(this.onDisconnect, manually, reason);
 		});

@@ -97,7 +97,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 
 	/** @private */
 	_isReadyToSubscribe(subscription: EventSubSubscription): boolean {
-		const authUserId = subscription.authUserId;
+		const { authUserId } = subscription;
 		if (!authUserId) {
 			throw new Error('Can not create a WebSocket subscription for a topic without user authentication');
 		}
@@ -110,7 +110,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	async _getTransportOptionsForSubscription(
 		subscription: EventSubSubscription
 	): Promise<HelixEventSubWebSocketTransportOptions> {
-		const authUserId = subscription.authUserId;
+		const { authUserId } = subscription;
 		if (!authUserId) {
 			throw new Error('Can not create a WebSocket subscription for a topic without user authentication');
 		}
@@ -154,7 +154,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		...params: Args
 	): EventSubSubscription {
 		const subscription = super._genericSubscribe(clazz, handler, client, ...params);
-		const authUserId = subscription.authUserId;
+		const { authUserId } = subscription;
 		if (!authUserId) {
 			throw new HellFreezesOverError('WS subscription created without user ID');
 		}

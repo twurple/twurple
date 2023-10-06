@@ -1,8 +1,8 @@
-import type { Logger, LoggerOptions } from '@d-fischer/logger';
-import { createLogger, LogLevel } from '@d-fischer/logger';
-import type { RateLimiter, RateLimiterRequestOptions } from '@d-fischer/rate-limiter';
+import { createLogger, type Logger, type LoggerOptions, LogLevel } from '@d-fischer/logger';
 import {
 	PartitionedTimeBasedRateLimiter,
+	type RateLimiter,
+	type RateLimiterRequestOptions,
 	TimeBasedRateLimiter,
 	TimedPassthruRateLimiter
 } from '@d-fischer/rate-limiter';
@@ -15,17 +15,17 @@ import {
 	resolveConfigValue
 } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
-import type { AccessToken, AuthProvider } from '@twurple/auth';
 import {
+	type AccessToken,
 	accessTokenIsExpired,
+	type AuthProvider,
 	getTokenInfo,
 	InvalidTokenError,
 	InvalidTokenTypeError,
 	RefreshingAuthProvider
 } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
-import type { WebSocketConnectionOptions } from 'ircv3';
-import { IrcClient, MessageTypes } from 'ircv3';
+import { IrcClient, MessageTypes, type WebSocketConnectionOptions } from 'ircv3';
 import { TwitchCommandsCapability } from './caps/twitchCommands';
 import { ClearChat } from './caps/twitchCommands/messageTypes/ClearChat';
 import { RoomState } from './caps/twitchCommands/messageTypes/RoomState';
@@ -34,8 +34,7 @@ import { Whisper } from './caps/twitchCommands/messageTypes/Whisper';
 import { TwitchMembershipCapability } from './caps/TwitchMembershipCapability';
 import { TwitchTagsCapability } from './caps/twitchTags';
 import { ClearMsg } from './caps/twitchTags/messageTypes/ClearMsg';
-import type { ChatSayMessageAttributes } from './ChatMessageAttributes';
-import { extractMessageId } from './ChatMessageAttributes';
+import { type ChatSayMessageAttributes, extractMessageId } from './ChatMessageAttributes';
 import { ChatMessage } from './commands/ChatMessage';
 import type { ChatAnnouncementInfo } from './userNotices/ChatAnnouncementInfo';
 import type { ChatBitsBadgeUpgradeInfo } from './userNotices/ChatBitsBadgeUpgradeInfo';

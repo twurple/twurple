@@ -1,8 +1,11 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
-import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from '@twurple/api-call';
-import { createBroadcasterQuery } from '@twurple/api-call';
-import type { CommercialLength, UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import {
+	createBroadcasterQuery,
+	type HelixPaginatedResponse,
+	type HelixPaginatedResponseWithTotal,
+	type HelixResponse
+} from '@twurple/api-call';
+import { type CommercialLength, extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createChannelCommercialBody,
 	createChannelFollowerQuery,
@@ -30,8 +33,7 @@ import {
 	type HelixPaginatedResult,
 	type HelixPaginatedResultWithTotal
 } from '../../utils/pagination/HelixPaginatedResult';
-import type { HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixChannel } from './HelixChannel';
 import { HelixChannelEditor } from './HelixChannelEditor';

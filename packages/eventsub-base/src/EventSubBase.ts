@@ -1,15 +1,14 @@
-import type { Logger, LoggerOptions } from '@d-fischer/logger';
-import { createLogger } from '@d-fischer/logger';
+import { createLogger, type Logger, type LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { EventEmitter } from '@d-fischer/typed-event-emitter';
-import type {
-	ApiClient,
-	HelixEventSubDropEntitlementGrantFilter,
-	HelixEventSubSubscription,
-	HelixEventSubTransportOptions,
-	UserIdResolvable
+import {
+	type ApiClient,
+	extractUserId,
+	type HelixEventSubDropEntitlementGrantFilter,
+	type HelixEventSubSubscription,
+	type HelixEventSubTransportOptions,
+	type UserIdResolvable
 } from '@twurple/api';
-import { extractUserId } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
@@ -961,7 +960,7 @@ export abstract class EventSubBase extends EventEmitter {
 	onExtensionBitsTransactionCreate(
 		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void
 	): EventSubSubscription {
-		const clientId = this._apiClient._authProvider.clientId;
+		const { clientId } = this._apiClient._authProvider;
 		return this._genericSubscribe(EventSubExtensionBitsTransactionCreateSubscription, handler, this, clientId);
 	}
 
@@ -971,7 +970,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onUserAuthorizationGrant(handler: (data: EventSubUserAuthorizationGrantEvent) => void): EventSubSubscription {
-		const clientId = this._apiClient._authProvider.clientId;
+		const { clientId } = this._apiClient._authProvider;
 		return this._genericSubscribe(EventSubUserAuthorizationGrantSubscription, handler, this, clientId);
 	}
 
@@ -981,7 +980,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onUserAuthorizationRevoke(handler: (data: EventSubUserAuthorizationRevokeEvent) => void): EventSubSubscription {
-		const clientId = this._apiClient._authProvider.clientId;
+		const { clientId } = this._apiClient._authProvider;
 		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
 	}
 

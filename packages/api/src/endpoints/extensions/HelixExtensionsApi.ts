@@ -1,6 +1,5 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
-import type { HelixExtensionData } from '@twurple/common';
-import { HelixExtension, rtfm } from '@twurple/common';
+import { HelixExtension, type HelixExtensionData, rtfm } from '@twurple/common';
 import { type HelixChannelReferenceData } from '../../interfaces/endpoints/channel.external';
 import {
 	createExtensionProductBody,
@@ -16,10 +15,8 @@ import {
 } from '../../interfaces/endpoints/extensions.input';
 import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import type { HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixChannelReference } from '../channel/HelixChannelReference';
 import { HelixExtensionBitsProduct } from './HelixExtensionBitsProduct';

@@ -39,17 +39,17 @@ export type UserNameResolvable = string | UserNameResolveableType;
 export function extractUserId(user: UserIdResolvable): string {
 	if (typeof user === 'string') {
 		return user;
-	} else if (typeof user === 'number') {
-		return user.toString(10);
-	} else {
-		return user.id;
 	}
+	if (typeof user === 'number') {
+		return user.toString(10);
+	}
+	return user.id;
 }
 
 /**
- * Extracts the user name from an argument that is possibly an object containing that name.
+ * Extracts the username from an argument that is possibly an object containing that name.
  *
- * @param user The user name or object.
+ * @param user The username or object.
  */
 export function extractUserName(user: UserNameResolvable): string {
 	return typeof user === 'string' ? user : user.name;

@@ -66,7 +66,7 @@ export function createChannelUpdateBody(data: HelixChannelUpdate) {
 export function createChannelCommercialBody(broadcaster: UserIdResolvable, length: CommercialLength) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
-		length: length
+		length
 	};
 }
 

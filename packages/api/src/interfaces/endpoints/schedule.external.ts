@@ -68,12 +68,11 @@ export function createScheduleSettingsUpdateQuery(
 			vacation_end_time: settings.vacation.endDate,
 			timezone: settings.vacation.timezone
 		};
-	} else {
-		return {
-			broadcaster_id: extractUserId(broadcaster),
-			is_vacation_enabled: 'false'
-		};
 	}
+	return {
+		broadcaster_id: extractUserId(broadcaster),
+		is_vacation_enabled: 'false'
+	};
 }
 
 /** @internal */

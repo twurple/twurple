@@ -1,8 +1,6 @@
 import { mapOptional } from '@d-fischer/shared-utils';
-import type { HelixResponse } from '@twurple/api-call';
-import { createBroadcasterQuery } from '@twurple/api-call';
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { createBroadcasterQuery, type HelixResponse } from '@twurple/api-call';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createBitsLeaderboardQuery,
 	type HelixBitsLeaderboardResponse,

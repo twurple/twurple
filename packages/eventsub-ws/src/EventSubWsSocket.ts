@@ -102,7 +102,7 @@ export class EventSubWsSocket {
 				}
 				case 'notification': {
 					this._restartKeepaliveTimer();
-					const id = (payload as EventSubNotificationPayload).subscription.id;
+					const { id } = (payload as EventSubNotificationPayload).subscription;
 					const subscription = this._listener._getCorrectSubscriptionByTwitchId(id);
 					if (!subscription) {
 						this._logger.error(`Notification from unknown event received: ${id}`);
@@ -119,7 +119,7 @@ export class EventSubWsSocket {
 					break;
 				}
 				case 'revocation': {
-					const id = (payload as EventSubNotificationPayload).subscription.id;
+					const { id } = (payload as EventSubNotificationPayload).subscription;
 					const subscription = this._listener._getCorrectSubscriptionByTwitchId(id);
 					if (!subscription) {
 						this._logger.error(`Revocation from unknown event received: ${id}`);

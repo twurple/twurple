@@ -1,5 +1,4 @@
-import type { MessageInternalConfig, MessageInternalContents } from 'ircv3';
-import { Message } from 'ircv3';
+import { Message, type MessageInternalConfig, type MessageInternalContents } from 'ircv3';
 
 interface ClearChatFields {
 	channel: string;

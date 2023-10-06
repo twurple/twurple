@@ -1,5 +1,4 @@
-import type { UserIdResolvable } from '@twurple/common';
-import { extractUserId, rtfm } from '@twurple/common';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import { createWhisperQuery } from '../../interfaces/endpoints/whisper.external';
 import { BaseApi } from '../BaseApi';
 

@@ -1,6 +1,13 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import type { HelixUserType, UserIdResolvable, UserIdResolvableType, UserNameResolveableType } from '@twurple/common';
-import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import {
+	DataObject,
+	type HelixUserType,
+	rawDataSymbol,
+	rtfm,
+	type UserIdResolvable,
+	type UserIdResolvableType,
+	type UserNameResolveableType
+} from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import { type HelixBroadcasterType, type HelixUserData } from '../../interfaces/endpoints/user.external';
 import type { HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';

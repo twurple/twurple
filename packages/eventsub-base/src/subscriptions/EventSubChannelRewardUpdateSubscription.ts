@@ -41,11 +41,10 @@ export class EventSubChannelRewardUpdateSubscription extends EventSubSubscriptio
 				this._rewardId,
 				await this._getTransportOptions()
 			);
-		} else {
-			return await this._client._apiClient.eventSub.subscribeToChannelRewardUpdateEvents(
-				this._userId,
-				await this._getTransportOptions()
-			);
 		}
+		return await this._client._apiClient.eventSub.subscribeToChannelRewardUpdateEvents(
+			this._userId,
+			await this._getTransportOptions()
+		);
 	}
 }

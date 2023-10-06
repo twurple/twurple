@@ -1,13 +1,11 @@
 import { mapNullable } from '@d-fischer/shared-utils';
-import type { HelixResponse } from '@twurple/api-call';
-import { callTwitchApi, createBroadcasterQuery } from '@twurple/api-call';
-import type { HelixExtensionData, UserIdResolvable } from '@twurple/common';
-import { extractUserId, HelixExtension } from '@twurple/common';
-import type {
-	HelixExtensionConfigurationSegmentData,
-	HelixExtensionConfigurationSegmentName
+import { callTwitchApi, createBroadcasterQuery, type HelixResponse } from '@twurple/api-call';
+import { extractUserId, HelixExtension, type HelixExtensionData, type UserIdResolvable } from '@twurple/common';
+import {
+	HelixExtensionConfigurationSegment,
+	type HelixExtensionConfigurationSegmentData,
+	type HelixExtensionConfigurationSegmentName
 } from './classes/HelixExtensionConfigurationSegment';
-import { HelixExtensionConfigurationSegment } from './classes/HelixExtensionConfigurationSegment';
 import { HelixExtensionSecretList } from './classes/HelixExtensionSecretList';
 import { type HelixExtensionSecretListData } from './classes/HelixExtensionSecretList.external';
 import {
@@ -24,8 +22,7 @@ import {
 	getExtensionSecretCreateQuery,
 	getExtensionSecretsQuery
 } from './helpers.external';
-import type { BaseExternalJwtConfig } from './jwt';
-import { createExternalJwt } from './jwt';
+import { type BaseExternalJwtConfig, createExternalJwt } from './jwt';
 
 /**
  * Configuration for an EBS call.

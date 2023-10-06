@@ -31,7 +31,7 @@ export abstract class ConnectionAdapter {
 	 * @protected
 	 */
 	get listenerPort(): number | undefined {
-		return;
+		return undefined;
 	}
 
 	/**

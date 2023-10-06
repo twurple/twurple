@@ -258,9 +258,8 @@ export class PubSubClient extends EventEmitter {
 	): PubSubHandler<never> {
 		if (channel) {
 			return this._addHandler(topic, callback, user, scope, extractUserId(channel));
-		} else {
-			return this._addHandler(topic, callback, user, scope);
 		}
+		return this._addHandler(topic, callback, user, scope);
 	}
 
 	/**

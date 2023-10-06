@@ -85,9 +85,7 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 		let requestPathPrefix: string | undefined = undefined;
 		if (this._adapter.usePathPrefixInHandlers) {
 			requestPathPrefix = this._adapter.pathPrefix;
-			if (requestPathPrefix) {
-				requestPathPrefix = `/${requestPathPrefix.replace(/^\/|\/$/g, '')}`;
-			}
+			requestPathPrefix &&= `/${requestPathPrefix.replace(/^\/|\/$/g, '')}`;
 		}
 
 		const healthHandler = this._createHandleHealthRequest();

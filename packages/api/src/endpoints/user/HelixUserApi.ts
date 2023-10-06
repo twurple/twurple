@@ -1,8 +1,13 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
-import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
-import { createBroadcasterQuery } from '@twurple/api-call';
-import type { UserIdResolvable, UserNameResolvable } from '@twurple/common';
-import { extractUserId, extractUserName, HellFreezesOverError, rtfm } from '@twurple/common';
+import { createBroadcasterQuery, type HelixPaginatedResponse, type HelixResponse } from '@twurple/api-call';
+import {
+	extractUserId,
+	extractUserName,
+	HellFreezesOverError,
+	rtfm,
+	type UserIdResolvable,
+	type UserNameResolvable
+} from '@twurple/common';
 import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
 import {
 	createUserBlockCreateQuery,
@@ -20,10 +25,8 @@ import {
 import { type HelixUserExtensionUpdatePayload } from '../../interfaces/endpoints/userExtension.input';
 import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import type { HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixInstalledExtensionList } from './extensions/HelixInstalledExtensionList';
 import { HelixUserExtension } from './extensions/HelixUserExtension';

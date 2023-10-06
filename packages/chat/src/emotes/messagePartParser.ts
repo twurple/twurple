@@ -70,7 +70,7 @@ export function fillTextPositions(text: string, otherPositions: ParsedMessagePar
 				type: 'text',
 				position: 0,
 				length: messageLength,
-				text: text
+				text
 			}
 		];
 	}
