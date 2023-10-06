@@ -1,7 +1,7 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type PubSubChannelRoleChangeMessageData,
-	type PubSubChannelRoleChangeType
+	type PubSubChannelRoleChangeType,
 } from './PubSubChannelRoleChangeMessage.external';
 
 /**

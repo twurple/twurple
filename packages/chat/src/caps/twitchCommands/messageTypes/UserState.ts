@@ -12,7 +12,7 @@ export class UserState extends Message<UserStateFields> {
 
 	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
 		super(command, contents, config, {
-			channel: { type: 'channel' }
+			channel: { type: 'channel' },
 		});
 	}
 }

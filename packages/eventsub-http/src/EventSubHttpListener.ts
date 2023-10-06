@@ -73,7 +73,7 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 					this._logger.warn(`Access to unknown URL/method attempted: ${req.method!} ${req.url!}`);
 				}
 				defaultOnError(e, req, res, next);
-			}
+			},
 		});
 		// needs to be first in chain but run last, for proper logging of status
 		this._server.use((req, res, next) => {
@@ -137,7 +137,7 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 				this._server = undefined;
 				this._readyToSubscribe = false;
 			},
-			e => this._logger.crit(`Could not stop listener: ${(e as Error).message}`)
+			e => this._logger.crit(`Could not stop listener: ${(e as Error).message}`),
 		);
 	}
 

@@ -140,7 +140,7 @@ export function createChatSettingsUpdateBody(settings: HelixUpdateChatSettingsPa
 		emote_mode: settings.emoteOnlyModeEnabled,
 		unique_chat_mode: settings.uniqueChatModeEnabled,
 		non_moderator_chat_delay: settings.nonModeratorChatDelayEnabled,
-		non_moderator_chat_delay_duration: settings.nonModeratorChatDelay
+		non_moderator_chat_delay_duration: settings.nonModeratorChatDelay,
 	};
 }
 
@@ -148,7 +148,7 @@ export function createChatSettingsUpdateBody(settings: HelixUpdateChatSettingsPa
 export function createChatColorUpdateQuery(user: UserIdResolvable, color: HelixChatUserColor) {
 	return {
 		user_id: extractUserId(user),
-		color
+		color,
 	};
 }
 
@@ -157,6 +157,6 @@ export function createShoutoutQuery(from: UserIdResolvable, to: UserIdResolvable
 	return {
 		from_broadcaster_id: extractUserId(from),
 		to_broadcaster_id: extractUserId(to),
-		moderator_id: moderatorId
+		moderator_id: moderatorId,
 	};
 }

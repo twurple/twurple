@@ -2,7 +2,7 @@ import { rtfm } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixEventSubSubscriptionData,
-	type HelixPaginatedEventSubSubscriptionsResponse
+	type HelixPaginatedEventSubSubscriptionsResponse,
 } from '../../interfaces/endpoints/eventSub.external';
 import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
@@ -26,10 +26,10 @@ export class HelixPaginatedEventSubSubscriptionsRequest extends HelixPaginatedRe
 			{
 				url: 'eventsub/subscriptions',
 				userId,
-				query
+				query,
 			},
 			client,
-			data => new HelixEventSubSubscription(data, client)
+			data => new HelixEventSubSubscription(data, client),
 		);
 	}
 

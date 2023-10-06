@@ -29,7 +29,7 @@ export class ChatUser {
 					return [badge, ''];
 				}
 				return [badge.slice(0, slashIndex), badge.slice(slashIndex + 1)];
-			})
+			}),
 		);
 	}
 

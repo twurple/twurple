@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol } from '@twurple/common';
-import { errors, jwtVerify, base64url, type JWTPayload } from 'jose';
+import { base64url, errors, type JWTPayload, jwtVerify } from 'jose';
 import { type HelixExtensionSecretListData } from './HelixExtensionSecretList.external';
 
 export class HelixExtensionSecretList extends DataObject<HelixExtensionSecretListData> {
@@ -28,7 +28,7 @@ export class HelixExtensionSecretList extends DataObject<HelixExtensionSecretLis
 		for (const secret of this.currentSecrets) {
 			try {
 				const { payload } = await jwtVerify(token, base64url.decode(secret), {
-					algorithms: ['HS256']
+					algorithms: ['HS256'],
 				});
 				return payload;
 			} catch (e) {

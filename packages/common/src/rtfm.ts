@@ -30,7 +30,7 @@ export function rtfm<T>(pkg: PackageName, name: string, idKey?: keyof NoInfer<T>
 			  };
 		Object.defineProperty(clazz.prototype, Symbol.for('nodejs.util.inspect.custom'), {
 			value: fn,
-			enumerable: false
+			enumerable: false,
 		});
 	};
 }

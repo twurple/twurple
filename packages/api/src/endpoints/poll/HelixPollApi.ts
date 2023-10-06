@@ -35,7 +35,7 @@ export class HelixPollApi extends BaseApi {
 	 */
 	async getPolls(
 		broadcaster: UserIdResolvable,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedResult<HelixPoll>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixPollData>>({
 			type: 'helix',
@@ -44,8 +44,8 @@ export class HelixPollApi extends BaseApi {
 			scopes: ['channel:read:polls'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return createPaginatedResult(result, HelixPoll, this._client);
@@ -62,11 +62,11 @@ export class HelixPollApi extends BaseApi {
 				url: 'polls',
 				userId: extractUserId(broadcaster),
 				scopes: ['channel:read:polls'],
-				query: createBroadcasterQuery(broadcaster)
+				query: createBroadcasterQuery(broadcaster),
 			},
 			this._client,
 			data => new HelixPoll(data, this._client),
-			20
+			20,
 		);
 	}
 
@@ -86,7 +86,7 @@ export class HelixPollApi extends BaseApi {
 			url: 'polls',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:read:polls'],
-			query: createGetByIdsQuery(broadcaster, ids)
+			query: createGetByIdsQuery(broadcaster, ids),
 		});
 
 		return result.data.map(data => new HelixPoll(data, this._client));
@@ -118,7 +118,7 @@ export class HelixPollApi extends BaseApi {
 			method: 'POST',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:polls'],
-			jsonBody: createPollBody(broadcaster, data)
+			jsonBody: createPollBody(broadcaster, data),
 		});
 
 		return new HelixPoll(result.data[0], this._client);
@@ -138,7 +138,7 @@ export class HelixPollApi extends BaseApi {
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:polls'],
-			jsonBody: createPollEndBody(broadcaster, id, showResult)
+			jsonBody: createPollEndBody(broadcaster, id, showResult),
 		});
 
 		return new HelixPoll(result.data[0], this._client);

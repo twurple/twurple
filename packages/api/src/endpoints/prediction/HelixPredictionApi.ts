@@ -5,7 +5,7 @@ import {
 	createEndPredictionBody,
 	createPredictionBody,
 	type HelixPredictionData,
-	type HelixPredictionStatus
+	type HelixPredictionStatus,
 } from '../../interfaces/endpoints/prediction.external';
 import { type HelixCreatePredictionData } from '../../interfaces/endpoints/prediction.input';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
@@ -40,7 +40,7 @@ export class HelixPredictionApi extends BaseApi {
 	 */
 	async getPredictions(
 		broadcaster: UserIdResolvable,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedResult<HelixPrediction>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixPredictionData>>({
 			type: 'helix',
@@ -49,8 +49,8 @@ export class HelixPredictionApi extends BaseApi {
 			scopes: ['channel:read:predictions'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return createPaginatedResult(result, HelixPrediction, this._client);
@@ -62,18 +62,18 @@ export class HelixPredictionApi extends BaseApi {
 	 * @param broadcaster The broadcaster to get predictions for.
 	 */
 	getPredictionsPaginated(
-		broadcaster: UserIdResolvable
+		broadcaster: UserIdResolvable,
 	): HelixPaginatedRequest<HelixPredictionData, HelixPrediction> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'predictions',
 				userId: extractUserId(broadcaster),
 				scopes: ['channel:read:predictions'],
-				query: createBroadcasterQuery(broadcaster)
+				query: createBroadcasterQuery(broadcaster),
 			},
 			this._client,
 			data => new HelixPrediction(data, this._client),
-			20
+			20,
 		);
 	}
 
@@ -93,7 +93,7 @@ export class HelixPredictionApi extends BaseApi {
 			url: 'predictions',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:read:predictions'],
-			query: createGetByIdsQuery(broadcaster, ids)
+			query: createGetByIdsQuery(broadcaster, ids),
 		});
 
 		return result.data.map(data => new HelixPrediction(data, this._client));
@@ -125,7 +125,7 @@ export class HelixPredictionApi extends BaseApi {
 			method: 'POST',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:predictions'],
-			jsonBody: createPredictionBody(broadcaster, data)
+			jsonBody: createPredictionBody(broadcaster, data),
 		});
 
 		return new HelixPrediction(result.data[0], this._client);
@@ -166,7 +166,7 @@ export class HelixPredictionApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		id: string,
 		status: HelixPredictionStatus,
-		outcomeId?: string
+		outcomeId?: string,
 	): Promise<HelixPrediction> {
 		const result = await this._client.callApi<HelixResponse<HelixPredictionData>>({
 			type: 'helix',
@@ -174,7 +174,7 @@ export class HelixPredictionApi extends BaseApi {
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:predictions'],
-			jsonBody: createEndPredictionBody(broadcaster, id, status, outcomeId)
+			jsonBody: createEndPredictionBody(broadcaster, id, status, outcomeId),
 		});
 
 		return new HelixPrediction(result.data[0], this._client);

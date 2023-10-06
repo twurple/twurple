@@ -1,7 +1,7 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelPredictionBeginOutcomeData,
-	type EventSubChannelPredictionColor
+	type EventSubChannelPredictionColor,
 } from './EventSubChannelPredictionBeginOutcome.external';
 
 /**

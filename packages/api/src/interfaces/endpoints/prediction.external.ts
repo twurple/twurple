@@ -49,7 +49,7 @@ export function createPredictionBody(broadcaster: UserIdResolvable, data: HelixC
 		broadcaster_id: extractUserId(broadcaster),
 		title: data.title,
 		outcomes: data.outcomes.map(title => ({ title })),
-		prediction_window: data.autoLockAfter
+		prediction_window: data.autoLockAfter,
 	};
 }
 
@@ -58,12 +58,12 @@ export function createEndPredictionBody(
 	broadcaster: UserIdResolvable,
 	id: string,
 	status: HelixPredictionStatus,
-	outcomeId?: string
+	outcomeId?: string,
 ) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
 		id,
 		status,
-		winning_outcome_id: outcomeId
+		winning_outcome_id: outcomeId,
 	};
 }

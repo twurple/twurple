@@ -4,7 +4,7 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createBitsLeaderboardQuery,
 	type HelixBitsLeaderboardResponse,
-	type HelixCheermoteData
+	type HelixCheermoteData,
 } from '../../interfaces/endpoints/bits.external';
 import { type HelixBitsLeaderboardQuery } from '../../interfaces/endpoints/bits.input';
 import { BaseApi } from '../BaseApi';
@@ -36,14 +36,14 @@ export class HelixBitsApi extends BaseApi {
 	 */
 	async getLeaderboard(
 		broadcaster: UserIdResolvable,
-		params: HelixBitsLeaderboardQuery = {}
+		params: HelixBitsLeaderboardQuery = {},
 	): Promise<HelixBitsLeaderboard> {
 		const result = await this._client.callApi<HelixBitsLeaderboardResponse>({
 			type: 'helix',
 			url: 'bits/leaderboard',
 			userId: extractUserId(broadcaster),
 			scopes: ['bits:read'],
-			query: createBitsLeaderboardQuery(params)
+			query: createBitsLeaderboardQuery(params),
 		});
 
 		return new HelixBitsLeaderboard(result, this._client);
@@ -61,7 +61,7 @@ export class HelixBitsApi extends BaseApi {
 			type: 'helix',
 			url: 'bits/cheermotes',
 			userId: mapOptional(broadcaster, extractUserId),
-			query: mapOptional(broadcaster, createBroadcasterQuery)
+			query: mapOptional(broadcaster, createBroadcasterQuery),
 		});
 
 		return new HelixCheermoteList(result.data);

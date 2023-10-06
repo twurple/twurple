@@ -14,7 +14,7 @@ export class EventSubChannelRewardRemoveSubscription extends EventSubSubscriptio
 		handler: (data: EventSubChannelRewardEvent) => void,
 		client: EventSubBase,
 		private readonly _userId: string,
-		private readonly _rewardId?: string
+		private readonly _rewardId?: string,
 	) {
 		super(handler, client);
 	}
@@ -39,12 +39,12 @@ export class EventSubChannelRewardRemoveSubscription extends EventSubSubscriptio
 			return await this._client._apiClient.eventSub.subscribeToChannelRewardRemoveEventsForReward(
 				this._userId,
 				this._rewardId,
-				await this._getTransportOptions()
+				await this._getTransportOptions(),
 			);
 		}
 		return await this._client._apiClient.eventSub.subscribeToChannelRewardRemoveEvents(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

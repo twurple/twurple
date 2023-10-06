@@ -13,7 +13,7 @@ export class UserContextApiClient extends BaseApiClient {
 		config: ApiConfig,
 		logger: Logger,
 		rateLimiter: RateLimiter<TwitchApiCallOptionsInternal, Response>,
-		private readonly _userId: string
+		private readonly _userId: string,
 	) {
 		super(config, logger, rateLimiter);
 	}

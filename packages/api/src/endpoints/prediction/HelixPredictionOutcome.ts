@@ -3,7 +3,7 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixPredictionOutcomeColor,
-	type HelixPredictionOutcomeData
+	type HelixPredictionOutcomeData,
 } from '../../interfaces/endpoints/prediction.external';
 import { HelixPredictor } from './HelixPredictor';
 

@@ -11,7 +11,7 @@ export class ClearChat extends Message<ClearChatFields> {
 	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
 		super(command, contents, config, {
 			channel: { type: 'channel' },
-			user: { trailing: true, optional: true }
+			user: { trailing: true, optional: true },
 		});
 	}
 

@@ -5,7 +5,7 @@ import {
 	type HelixExtensionData,
 	type HelixExtensionIconSize,
 	type HelixExtensionState,
-	type HelixExtensionSubscriptionsSupportLevel
+	type HelixExtensionSubscriptionsSupportLevel,
 } from './HelixExtension.external';
 
 /**

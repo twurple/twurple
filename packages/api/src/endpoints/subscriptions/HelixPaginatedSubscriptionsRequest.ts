@@ -3,7 +3,7 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixPaginatedSubscriptionsResponse,
-	type HelixSubscriptionData
+	type HelixSubscriptionData,
 } from '../../interfaces/endpoints/subscription.external';
 import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
 import { HelixSubscription } from './HelixSubscription';
@@ -29,10 +29,10 @@ export class HelixPaginatedSubscriptionsRequest extends HelixPaginatedRequestWit
 				url: 'subscriptions',
 				scopes: ['channel:read:subscriptions'],
 				userId: extractUserId(broadcaster),
-				query: createBroadcasterQuery(broadcaster)
+				query: createBroadcasterQuery(broadcaster),
 			},
 			client,
-			data => new HelixSubscription(data, client)
+			data => new HelixSubscription(data, client),
 		);
 	}
 

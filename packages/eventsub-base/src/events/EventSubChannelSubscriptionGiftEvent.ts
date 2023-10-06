@@ -3,7 +3,7 @@ import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelSubscriptionGiftEventData,
-	type EventSubChannelSubscriptionGiftEventTier
+	type EventSubChannelSubscriptionGiftEventTier,
 } from './EventSubChannelSubscriptionGiftEvent.external';
 
 /**

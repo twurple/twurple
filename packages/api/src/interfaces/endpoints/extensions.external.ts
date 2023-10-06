@@ -51,7 +51,7 @@ export interface HelixExtensionTransactionData {
 export function createReleasedExtensionFilter(extensionId: string, version: string | undefined) {
 	return {
 		extension_id: extensionId,
-		extension_version: version
+		extension_version: version,
 	};
 }
 
@@ -61,12 +61,12 @@ export function createExtensionProductBody(data: HelixExtensionBitsProductUpdate
 		sku: data.sku,
 		cost: {
 			amount: data.cost,
-			type: 'bits'
+			type: 'bits',
 		},
 		display_name: data.displayName,
 		in_development: data.inDevelopment,
 		expiration: data.expirationDate,
-		is_broadcast: data.broadcast
+		is_broadcast: data.broadcast,
 	};
 }
 
@@ -74,6 +74,6 @@ export function createExtensionProductBody(data: HelixExtensionBitsProductUpdate
 export function createExtensionTransactionQuery(extensionId: string, filter: HelixExtensionTransactionsFilter) {
 	return {
 		extension_id: extensionId,
-		id: filter.transactionIds
+		id: filter.transactionIds,
 	};
 }

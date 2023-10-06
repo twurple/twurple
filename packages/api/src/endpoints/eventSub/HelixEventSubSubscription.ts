@@ -4,7 +4,7 @@ import type { BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixEventSubSubscriptionData,
 	type HelixEventSubSubscriptionStatus,
-	type HelixEventSubTransportData
+	type HelixEventSubTransportData,
 } from '../../interfaces/endpoints/eventSub.external';
 
 /**

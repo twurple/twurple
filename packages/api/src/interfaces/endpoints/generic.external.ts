@@ -25,7 +25,7 @@ export interface HelixEventData<T, EventType extends string = string> {
 /** @internal */
 export function createSingleKeyQuery(
 	key: string,
-	value: string | string[] | undefined
+	value: string | string[] | undefined,
 ): Record<string, string | string[] | undefined> {
 	return { [key]: value };
 }
@@ -33,7 +33,7 @@ export function createSingleKeyQuery(
 /** @internal */
 export function createUserQuery(user: UserIdResolvable) {
 	return {
-		user_id: extractUserId(user)
+		user_id: extractUserId(user),
 	};
 }
 
@@ -41,7 +41,7 @@ export function createUserQuery(user: UserIdResolvable) {
 export function createModeratorActionQuery(broadcaster: string, moderatorId: string) {
 	return {
 		broadcaster_id: broadcaster,
-		moderator_id: moderatorId
+		moderator_id: moderatorId,
 	};
 }
 
@@ -49,7 +49,7 @@ export function createModeratorActionQuery(broadcaster: string, moderatorId: str
 export function createGetByIdsQuery(broadcaster: UserIdResolvable, rewardIds: string[]) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
-		id: rewardIds
+		id: rewardIds,
 	};
 }
 
@@ -57,6 +57,6 @@ export function createGetByIdsQuery(broadcaster: UserIdResolvable, rewardIds: st
 export function createChannelUsersCheckQuery(broadcaster: UserIdResolvable, users: UserIdResolvable[]) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
-		user_id: users.map(extractUserId)
+		user_id: users.map(extractUserId),
 	};
 }

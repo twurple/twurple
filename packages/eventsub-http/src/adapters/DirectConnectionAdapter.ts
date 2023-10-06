@@ -68,7 +68,7 @@ export class DirectConnectionAdapter extends ConnectionAdapter {
 	createHttpServer(): http.Server {
 		return (this._httpsServer = https.createServer({
 			key: this._ssl.key,
-			cert: this._ssl.cert
+			cert: this._ssl.cert,
 		}));
 	}
 

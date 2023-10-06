@@ -1,7 +1,7 @@
 import { rtfm } from '@twurple/common';
 import {
 	type HelixBaseExtensionData,
-	type HelixExtensionSlotType
+	type HelixExtensionSlotType,
 } from '../../../interfaces/endpoints/userExtension.external';
 import { HelixBaseExtension } from './HelixBaseExtension';
 

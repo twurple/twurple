@@ -9,7 +9,7 @@ import { type EventSubChannelShoutoutReceiveEventData } from './EventSubChannelS
 @rtfm<EventSubChannelShoutoutReceiveEvent>(
 	'eventsub-base',
 	'EventSubChannelShoutoutReceiveEvent',
-	'shoutingOutBroadcasterId'
+	'shoutingOutBroadcasterId',
 )
 export class EventSubChannelShoutoutReceiveEvent extends DataObject<EventSubChannelShoutoutReceiveEventData> {
 	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
@@ -74,7 +74,7 @@ export class EventSubChannelShoutoutReceiveEvent extends DataObject<EventSubChan
 	 */
 	async getShoutingOutBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(
-			await this._client.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id)
+			await this._client.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id),
 		);
 	}
 

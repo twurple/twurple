@@ -14,7 +14,7 @@ export class EventSubChannelRedemptionUpdateSubscription extends EventSubSubscri
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void,
 		client: EventSubBase,
 		private readonly _userId: string,
-		private readonly _rewardId?: string
+		private readonly _rewardId?: string,
 	) {
 		super(handler, client);
 	}
@@ -39,12 +39,12 @@ export class EventSubChannelRedemptionUpdateSubscription extends EventSubSubscri
 			return await this._client._apiClient.eventSub.subscribeToChannelRedemptionUpdateEventsForReward(
 				this._userId,
 				this._rewardId,
-				await this._getTransportOptions()
+				await this._getTransportOptions(),
 			);
 		}
 		return await this._client._apiClient.eventSub.subscribeToChannelRedemptionUpdateEvents(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

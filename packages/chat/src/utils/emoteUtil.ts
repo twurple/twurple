@@ -18,6 +18,6 @@ export function parseEmoteOffsets(emotes?: string): Map<string, string[]> {
 				}
 				return [emoteId, placements.split(',')] as [string, string[]];
 			})
-			.filter((e): e is [string, string[]] => e !== null)
+			.filter((e): e is [string, string[]] => e !== null),
 	);
 }

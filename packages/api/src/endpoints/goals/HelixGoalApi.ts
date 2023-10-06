@@ -25,7 +25,7 @@ export class HelixGoalApi extends BaseApi {
 			url: 'goals',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:read:goals'],
-			query: createBroadcasterQuery(broadcaster)
+			query: createBroadcasterQuery(broadcaster),
 		});
 
 		return result.data.map(data => new HelixGoal(data, this._client));

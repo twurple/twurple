@@ -1,7 +1,7 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type PubSubUserModerationNotificationMessageData,
-	type PubSubUserModerationNotificationMessageStatus
+	type PubSubUserModerationNotificationMessageStatus,
 } from './PubSubUserModerationNotificationMessage.external';
 
 /**

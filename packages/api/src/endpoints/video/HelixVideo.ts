@@ -5,7 +5,7 @@ import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixVideoData,
 	type HelixVideoMutedSegmentData,
-	type HelixVideoType
+	type HelixVideoType,
 } from '../../interfaces/endpoints/video.external';
 import type { HelixUser } from '../user/HelixUser';
 
@@ -202,7 +202,7 @@ export class HelixVideo extends DataObject<HelixVideoData> {
 
 		if (duration == null) {
 			return this[rawDataSymbol].muted_segments.some(
-				seg => seg.offset <= offset && offset <= seg.offset + seg.duration
+				seg => seg.offset <= offset && offset <= seg.offset + seg.duration,
 			);
 		}
 

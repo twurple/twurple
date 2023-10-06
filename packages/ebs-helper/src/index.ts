@@ -12,7 +12,7 @@ export {
 	sendExtensionChatMessage,
 	sendExtensionPubSubGlobalMessage,
 	sendExtensionPubSubBroadcastMessage,
-	sendExtensionPubSubWhisperMessage
+	sendExtensionPubSubWhisperMessage,
 } from './helpers';
 export type { EbsCallConfig } from './helpers';
 

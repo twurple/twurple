@@ -13,7 +13,7 @@ export class EventSubStreamOfflineSubscription extends EventSubSubscription<Even
 	constructor(
 		handler: (data: EventSubStreamOfflineEvent) => void,
 		client: EventSubBase,
-		private readonly _userId: string
+		private readonly _userId: string,
 	) {
 		super(handler, client);
 	}
@@ -33,7 +33,7 @@ export class EventSubStreamOfflineSubscription extends EventSubSubscription<Even
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		return await this._client._apiClient.eventSub.subscribeToStreamOfflineEvents(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

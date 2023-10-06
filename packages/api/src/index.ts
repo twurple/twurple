@@ -22,13 +22,13 @@ export { HelixCustomReward } from './endpoints/channelPoints/HelixCustomReward';
 export { HelixCustomRewardRedemption } from './endpoints/channelPoints/HelixCustomRewardRedemption';
 export type {
 	HelixCustomRewardRedemptionStatus,
-	HelixCustomRewardRedemptionTargetStatus
+	HelixCustomRewardRedemptionTargetStatus,
 } from './interfaces/endpoints/channelPoints.external';
 export type {
 	HelixPaginatedCustomRewardRedemptionFilter,
 	HelixCustomRewardRedemptionFilter,
 	HelixUpdateCustomRewardData,
-	HelixCreateCustomRewardData
+	HelixCreateCustomRewardData,
 } from './interfaces/endpoints/channelPoints.input';
 
 export { HelixCharityApi } from './endpoints/charity/HelixCharityApi';
@@ -52,12 +52,12 @@ export type {
 	HelixEmoteFormat,
 	HelixEmoteThemeMode,
 	HelixChatUserColor,
-	HelixChatAnnouncementColor
+	HelixChatAnnouncementColor,
 } from './interfaces/endpoints/chat.external';
 export type {
 	HelixUpdateChatSettingsParams,
 	HelixSendChatAnnouncementParams,
-	HelixChatBadgeScale
+	HelixChatBadgeScale,
 } from './interfaces/endpoints/chat.input';
 
 export { HelixClipApi } from './endpoints/clip/HelixClipApi';
@@ -65,7 +65,7 @@ export { HelixClip } from './endpoints/clip/HelixClip';
 export type {
 	HelixPaginatedClipFilter,
 	HelixClipFilter,
-	HelixClipCreateParams
+	HelixClipCreateParams,
 } from './interfaces/endpoints/clip.input';
 
 export { HelixContentClassificationLabelApi } from './endpoints/contentClassificationLabels/HelixContentClassificationLabelApi';
@@ -75,11 +75,11 @@ export { HelixEntitlementApi } from './endpoints/entitlements/HelixEntitlementAp
 export { HelixDropsEntitlement } from './endpoints/entitlements/HelixDropsEntitlement';
 export type {
 	HelixDropsEntitlementFulfillmentStatus,
-	HelixDropsEntitlementUpdateStatus
+	HelixDropsEntitlementUpdateStatus,
 } from './interfaces/endpoints/entitlement.external';
 export type {
 	HelixDropsEntitlementFilter,
-	HelixDropsEntitlementPaginatedFilter
+	HelixDropsEntitlementPaginatedFilter,
 } from './interfaces/endpoints/entitlement.input';
 
 export { HelixEventSubApi } from './endpoints/eventSub/HelixEventSubApi';
@@ -87,14 +87,14 @@ export { HelixEventSubSubscription } from './endpoints/eventSub/HelixEventSubSub
 export { HelixPaginatedEventSubSubscriptionsRequest } from './endpoints/eventSub/HelixPaginatedEventSubSubscriptionsRequest';
 export type {
 	HelixEventSubTransportData,
-	HelixEventSubSubscriptionStatus
+	HelixEventSubSubscriptionStatus,
 } from './interfaces/endpoints/eventSub.external';
 export type {
 	HelixEventSubTransportOptions,
 	HelixEventSubWebSocketTransportOptions,
 	HelixEventSubWebHookTransportOptions,
 	HelixPaginatedEventSubSubscriptionsResult,
-	HelixEventSubDropEntitlementGrantFilter
+	HelixEventSubDropEntitlementGrantFilter,
 } from './interfaces/endpoints/eventSub.input';
 
 export { HelixExtensionsApi } from './endpoints/extensions/HelixExtensionsApi';
@@ -103,7 +103,7 @@ export { HelixExtensionTransaction } from './endpoints/extensions/HelixExtension
 export type {
 	HelixExtensionBitsProductUpdatePayload,
 	HelixExtensionTransactionsPaginatedFilter,
-	HelixExtensionTransactionsFilter
+	HelixExtensionTransactionsFilter,
 } from './interfaces/endpoints/extensions.input';
 
 export { HelixGameApi } from './endpoints/game/HelixGameApi';
@@ -118,7 +118,7 @@ export { HelixHypeTrainContribution } from './endpoints/hypeTrain/HelixHypeTrain
 export { HelixHypeTrainEvent } from './endpoints/hypeTrain/HelixHypeTrainEvent';
 export type {
 	HelixHypeTrainContributionType,
-	HelixHypeTrainEventType
+	HelixHypeTrainEventType,
 } from './interfaces/endpoints/hypeTrain.external';
 
 export { HelixModerationApi } from './endpoints/moderation/HelixModerationApi';
@@ -130,7 +130,7 @@ export { HelixShieldModeStatus } from './endpoints/moderation/HelixShieldModeSta
 export type {
 	HelixBanFilter,
 	HelixBanUserRequest,
-	HelixModeratorFilter
+	HelixModeratorFilter,
 } from './interfaces/endpoints/moderation.input';
 
 export { HelixPollApi } from './endpoints/poll/HelixPollApi';
@@ -160,7 +160,7 @@ export type {
 	HelixCreateScheduleSegmentData,
 	HelixScheduleSettingsUpdate,
 	HelixPaginatedScheduleFilter,
-	HelixScheduleFilter
+	HelixScheduleFilter,
 } from './interfaces/endpoints/schedule.input';
 
 export { HelixSearchApi } from './endpoints/search/HelixSearchApi';
@@ -201,7 +201,7 @@ export type {
 	HelixUserExtensionUpdatePayload,
 	HelixUserExtensionUpdatePayloadSlot,
 	HelixUserExtensionUpdatePayloadActiveSlot,
-	HelixUserExtensionUpdatePayloadInactiveSlot
+	HelixUserExtensionUpdatePayloadInactiveSlot,
 } from './interfaces/endpoints/userExtension.input';
 
 export { HelixVideoApi } from './endpoints/video/HelixVideoApi';
@@ -231,5 +231,5 @@ export type {
 	HelixExtensionConfigurationLocation,
 	HelixUserType,
 	UserIdResolvable,
-	UserNameResolvable
+	UserNameResolvable,
 } from '@twurple/common';

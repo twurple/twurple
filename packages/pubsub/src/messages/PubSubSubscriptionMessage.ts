@@ -2,7 +2,7 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type PubSubChatMessage } from './PubSubMessage.external';
 import {
 	type PubSubSubscriptionDetail,
-	type PubSubSubscriptionMessageData
+	type PubSubSubscriptionMessageData,
 } from './PubSubSubscriptionMessage.external';
 
 /**

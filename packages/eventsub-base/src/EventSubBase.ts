@@ -7,7 +7,7 @@ import {
 	type HelixEventSubDropEntitlementGrantFilter,
 	type HelixEventSubSubscription,
 	type HelixEventSubTransportOptions,
-	type UserIdResolvable
+	type UserIdResolvable,
 } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
@@ -182,7 +182,7 @@ export abstract class EventSubBase extends EventEmitter {
 		this._apiClient = config.apiClient;
 		this._logger = createLogger({
 			name: 'twurple:eventsub',
-			...config.logger
+			...config.logger,
 		});
 	}
 
@@ -242,7 +242,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onStreamOffline(
 		user: UserIdResolvable,
-		handler: (event: EventSubStreamOfflineEvent) => void
+		handler: (event: EventSubStreamOfflineEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToStreamOfflineEvents');
 
@@ -257,7 +257,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelUpdate(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelUpdateEvent) => void
+		handler: (event: EventSubChannelUpdateEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelUpdateEvents');
 
@@ -274,7 +274,7 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelFollow(
 		user: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (event: EventSubChannelFollowEvent) => void
+		handler: (event: EventSubChannelFollowEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelFollowEvents');
 		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelFollowEvents');
@@ -289,7 +289,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelSubscription(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscriptionEvent) => void
+		handler: (event: EventSubChannelSubscriptionEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionEvents');
 
@@ -304,7 +304,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelSubscriptionGift(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscriptionGiftEvent) => void
+		handler: (event: EventSubChannelSubscriptionGiftEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionGiftEvents');
 
@@ -319,7 +319,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelSubscriptionMessage(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscriptionMessageEvent) => void
+		handler: (event: EventSubChannelSubscriptionMessageEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionMessageEvents');
 
@@ -334,7 +334,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelSubscriptionEnd(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscriptionEndEvent) => void
+		handler: (event: EventSubChannelSubscriptionEndEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelSubscriptionEndEvents');
 
@@ -361,7 +361,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelCharityCampaignStart(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCharityCampaignStartEvent) => void
+		handler: (event: EventSubChannelCharityCampaignStartEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignStartEvents');
 
@@ -376,7 +376,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelCharityCampaignStop(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCharityCampaignStopEvent) => void
+		handler: (event: EventSubChannelCharityCampaignStopEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignStopEvents');
 
@@ -391,7 +391,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelCharityDonation(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCharityDonationEvent) => void
+		handler: (event: EventSubChannelCharityDonationEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityDonationEvents');
 
@@ -406,7 +406,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelCharityCampaignProgress(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void
+		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelCharityCampaignProgressEvents');
 
@@ -447,11 +447,11 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelShieldModeBegin(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (event: EventSubChannelShieldModeBeginEvent) => void
+		handler: (event: EventSubChannelShieldModeBeginEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(
 			broadcaster,
-			'subscribeToChannelShieldModeStartEvents'
+			'subscribeToChannelShieldModeStartEvents',
 		);
 		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShieldModeStartEvents');
 
@@ -460,7 +460,7 @@ export abstract class EventSubBase extends EventEmitter {
 			handler,
 			this,
 			broadcasterId,
-			moderatorId
+			moderatorId,
 		);
 	}
 
@@ -474,11 +474,11 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelShieldModeEnd(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (event: EventSubChannelShieldModeEndEvent) => void
+		handler: (event: EventSubChannelShieldModeEndEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(
 			broadcaster,
-			'subscribeToChannelShieldModeEndEvents'
+			'subscribeToChannelShieldModeEndEvents',
 		);
 		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShieldModeEndEvents');
 
@@ -487,7 +487,7 @@ export abstract class EventSubBase extends EventEmitter {
 			handler,
 			this,
 			broadcasterId,
-			moderatorId
+			moderatorId,
 		);
 	}
 
@@ -499,7 +499,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelModeratorAdd(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelModeratorEvent) => void
+		handler: (event: EventSubChannelModeratorEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelModeratorAddEvents');
 
@@ -514,7 +514,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelModeratorRemove(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelModeratorEvent) => void
+		handler: (event: EventSubChannelModeratorEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelModeratorRemoveEvents');
 
@@ -529,7 +529,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelRaidFrom(
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelRaidEvent) => void
+		handler: (event: EventSubChannelRaidEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRaidEventsFrom');
 
@@ -556,7 +556,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelRewardAdd(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRewardAddEvents');
 
@@ -571,7 +571,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelRewardUpdate(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardUpdateEvents');
 
@@ -588,7 +588,7 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelRewardUpdateForReward(
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardUpdateEvents');
 
@@ -603,7 +603,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelRewardRemove(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardRemoveEvents');
 
@@ -620,7 +620,7 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelRewardRemoveForReward(
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRewardRemoveEventsForReward');
 
@@ -635,7 +635,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelRedemptionAdd(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRedemptionAddEvent) => void
+		handler: (data: EventSubChannelRedemptionAddEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionEvents');
 
@@ -652,7 +652,7 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelRedemptionAddForReward(
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRedemptionAddEvent) => void
+		handler: (data: EventSubChannelRedemptionAddEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRedemptionAddEventsForReward');
 
@@ -667,7 +667,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelRedemptionUpdate(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
+		handler: (data: EventSubChannelRedemptionUpdateEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionUpdateEvents');
 
@@ -684,7 +684,7 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelRedemptionUpdateForReward(
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
+		handler: (data: EventSubChannelRedemptionUpdateEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelRedemptionUpdateEventsForReward');
 
@@ -699,7 +699,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelPollBegin(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPollBeginEvent) => void
+		handler: (data: EventSubChannelPollBeginEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollBeginEvents');
 
@@ -714,7 +714,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelPollProgress(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPollProgressEvent) => void
+		handler: (data: EventSubChannelPollProgressEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollProgressEvents');
 
@@ -729,7 +729,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelPollEnd(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPollEndEvent) => void
+		handler: (data: EventSubChannelPollEndEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPollEndEvents');
 
@@ -744,7 +744,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelPredictionBegin(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPredictionBeginEvent) => void
+		handler: (data: EventSubChannelPredictionBeginEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionBeginEvents');
 
@@ -759,7 +759,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelPredictionProgress(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPredictionProgressEvent) => void
+		handler: (data: EventSubChannelPredictionProgressEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionProgressEvents');
 
@@ -774,7 +774,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelPredictionLock(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPredictionLockEvent) => void
+		handler: (data: EventSubChannelPredictionLockEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionLockEvents');
 
@@ -789,7 +789,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelPredictionEnd(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPredictionEndEvent) => void
+		handler: (data: EventSubChannelPredictionEndEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPredictionEndEvents');
 
@@ -804,7 +804,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelGoalBegin(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelGoalBeginEvent) => void
+		handler: (data: EventSubChannelGoalBeginEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalBeginEvents');
 
@@ -819,7 +819,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelGoalProgress(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelGoalProgressEvent) => void
+		handler: (data: EventSubChannelGoalProgressEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalProgressEvents');
 
@@ -834,7 +834,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelGoalEnd(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelGoalEndEvent) => void
+		handler: (data: EventSubChannelGoalEndEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelGoalEndEvents');
 
@@ -849,7 +849,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelHypeTrainBegin(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelHypeTrainBeginEvent) => void
+		handler: (data: EventSubChannelHypeTrainBeginEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainBeginEvents');
 
@@ -864,7 +864,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelHypeTrainProgress(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelHypeTrainProgressEvent) => void
+		handler: (data: EventSubChannelHypeTrainProgressEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainProgressEvents');
 
@@ -879,7 +879,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onChannelHypeTrainEnd(
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelHypeTrainEndEvent) => void
+		handler: (data: EventSubChannelHypeTrainEndEvent) => void,
 	): EventSubSubscription {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainEndEvents');
 
@@ -896,11 +896,11 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelShoutoutCreate(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (event: EventSubChannelShoutoutCreateEvent) => void
+		handler: (event: EventSubChannelShoutoutCreateEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(
 			broadcaster,
-			'subscribeToChannelShoutoutCreateEvents'
+			'subscribeToChannelShoutoutCreateEvents',
 		);
 		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShoutoutCreateEvents');
 
@@ -909,7 +909,7 @@ export abstract class EventSubBase extends EventEmitter {
 			handler,
 			this,
 			broadcasterId,
-			moderatorId
+			moderatorId,
 		);
 	}
 
@@ -923,11 +923,11 @@ export abstract class EventSubBase extends EventEmitter {
 	onChannelShoutoutReceive(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (event: EventSubChannelShoutoutReceiveEvent) => void
+		handler: (event: EventSubChannelShoutoutReceiveEvent) => void,
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(
 			broadcaster,
-			'subscribeToChannelShoutoutReceiveEvents'
+			'subscribeToChannelShoutoutReceiveEvents',
 		);
 		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'subscribeToChannelShoutoutReceiveEvents');
 
@@ -936,7 +936,7 @@ export abstract class EventSubBase extends EventEmitter {
 			handler,
 			this,
 			broadcasterId,
-			moderatorId
+			moderatorId,
 		);
 	}
 	/**
@@ -947,7 +947,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 */
 	onDropEntitlementGrant(
 		filter: HelixEventSubDropEntitlementGrantFilter,
-		handler: (event: EventSubDropEntitlementGrantEvent) => void
+		handler: (event: EventSubDropEntitlementGrantEvent) => void,
 	): EventSubSubscription {
 		return this._genericSubscribe(EventSubDropEntitlementGrantSubscription, handler, this, filter);
 	}
@@ -958,7 +958,7 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param handler  The function that will be called for any new notifications.
 	 */
 	onExtensionBitsTransactionCreate(
-		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void
+		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void,
 	): EventSubSubscription {
 		const { clientId } = this._apiClient._authProvider;
 		return this._genericSubscribe(EventSubExtensionBitsTransactionCreateSubscription, handler, this, clientId);
@@ -998,7 +998,7 @@ export abstract class EventSubBase extends EventEmitter {
 
 	/** @private */
 	abstract _getTransportOptionsForSubscription(
-		subscription: EventSubSubscription
+		subscription: EventSubSubscription,
 	): Promise<HelixEventSubTransportOptions>;
 
 	/** @private */
@@ -1016,7 +1016,7 @@ export abstract class EventSubBase extends EventEmitter {
 	}
 
 	protected abstract _findTwitchSubscriptionToContinue(
-		subscription: EventSubSubscription
+		subscription: EventSubSubscription,
 	): HelixEventSubSubscription | undefined;
 
 	protected _genericSubscribe<T, Args extends unknown[]>(
@@ -1038,7 +1038,7 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = extractUserId(user);
 		if (!numberRegex.test(userId)) {
 			this._logger.warn(
-				`${methodName}: The given user is a non-numeric string. You might be sending a user name instead of a user ID.`
+				`${methodName}: The given user is a non-numeric string. You might be sending a user name instead of a user ID.`,
 			);
 		}
 

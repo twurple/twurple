@@ -8,7 +8,7 @@ import {
 	createExchangeCodeQuery,
 	createGetAppTokenQuery,
 	createRefreshTokenQuery,
-	createRevokeTokenQuery
+	createRevokeTokenQuery,
 } from './helpers.external';
 import type { AuthProvider } from './providers/AuthProvider';
 import { TokenInfo } from './TokenInfo';
@@ -21,7 +21,7 @@ function createAccessTokenFromData(data: AccessTokenData): AccessToken {
 		refreshToken: data.refresh_token || null,
 		scope: data.scope ?? [],
 		expiresIn: data.expires_in ?? null,
-		obtainmentTimestamp: Date.now()
+		obtainmentTimestamp: Date.now(),
 	};
 }
 
@@ -39,15 +39,15 @@ export async function exchangeCode(
 	clientId: string,
 	clientSecret: string,
 	code: string,
-	redirectUri: string
+	redirectUri: string,
 ): Promise<AccessToken> {
 	return createAccessTokenFromData(
 		await callTwitchApi<AccessTokenData>({
 			type: 'auth',
 			url: 'token',
 			method: 'POST',
-			query: createExchangeCodeQuery(clientId, clientSecret, code, redirectUri)
-		})
+			query: createExchangeCodeQuery(clientId, clientSecret, code, redirectUri),
+		}),
 	);
 }
 
@@ -63,8 +63,8 @@ export async function getAppToken(clientId: string, clientSecret: string): Promi
 			type: 'auth',
 			url: 'token',
 			method: 'POST',
-			query: createGetAppTokenQuery(clientId, clientSecret)
-		})
+			query: createGetAppTokenQuery(clientId, clientSecret),
+		}),
 	);
 }
 
@@ -78,15 +78,15 @@ export async function getAppToken(clientId: string, clientSecret: string): Promi
 export async function refreshUserToken(
 	clientId: string,
 	clientSecret: string,
-	refreshToken: string
+	refreshToken: string,
 ): Promise<AccessToken> {
 	return createAccessTokenFromData(
 		await callTwitchApi<AccessTokenData>({
 			type: 'auth',
 			url: 'token',
 			method: 'POST',
-			query: createRefreshTokenQuery(clientId, clientSecret, refreshToken)
-		})
+			query: createRefreshTokenQuery(clientId, clientSecret, refreshToken),
+		}),
 	);
 }
 
@@ -101,7 +101,7 @@ export async function revokeToken(clientId: string, accessToken: string): Promis
 		type: 'auth',
 		url: 'revoke',
 		method: 'POST',
-		query: createRevokeTokenQuery(clientId, accessToken)
+		query: createRevokeTokenQuery(clientId, accessToken),
 	});
 }
 
@@ -130,7 +130,7 @@ export async function getValidTokenFromProviderForUser(
 	provider: AuthProvider,
 	userId: string,
 	scopes?: string[],
-	logger?: Logger
+	logger?: Logger,
 ): Promise<{ accessToken: AccessToken; tokenInfo: TokenInfo }> {
 	let lastTokenError: InvalidTokenError | null = null;
 	let foundUser = false;
@@ -178,7 +178,7 @@ export async function getValidTokenFromProviderForIntent(
 	provider: AuthProvider,
 	intent: string,
 	scopes?: string[],
-	logger?: Logger
+	logger?: Logger,
 ): Promise<{ accessToken: AccessToken; tokenInfo: TokenInfo }> {
 	let lastTokenError: InvalidTokenError | null = null;
 	let foundUser = false;
@@ -186,7 +186,7 @@ export async function getValidTokenFromProviderForIntent(
 	if (!provider.getAccessTokenForIntent) {
 		throw new InvalidTokenTypeError(
 			`This call requires an AuthProvider that supports intents.
-Please use an auth provider that does, such as \`RefreshingAuthProvider\`.`
+Please use an auth provider that does, such as \`RefreshingAuthProvider\`.`,
 		);
 	}
 	try {
@@ -237,7 +237,7 @@ const scopeEquivalencies = new Map([
 	['user_follows_edit', ['user:edit:follows']],
 	['user_read', ['user:read:email']],
 	['user_subscriptions', ['user:read:subscriptions']],
-	['user:edit:broadcast', ['channel:manage:broadcast', 'channel:manage:extensions']]
+	['user:edit:broadcast', ['channel:manage:broadcast', 'channel:manage:extensions']],
 ]);
 
 /**
@@ -249,7 +249,7 @@ const scopeEquivalencies = new Map([
 export function compareScopes(scopesToCompare: string[], requestedScopes?: string[]): void {
 	if (requestedScopes?.length) {
 		const scopes = new Set<string>(
-			scopesToCompare.flatMap(scope => [scope, ...(scopeEquivalencies.get(scope) ?? [])])
+			scopesToCompare.flatMap(scope => [scope, ...(scopeEquivalencies.get(scope) ?? [])]),
 		);
 
 		if (requestedScopes.every(scope => !scopes.has(scope))) {
@@ -258,7 +258,7 @@ export function compareScopes(scopesToCompare: string[], requestedScopes?: strin
 				`This token does not have any of the requested scopes (${scopesStr}) and can not be upgraded.
 If you need dynamically upgrading scopes, please implement the AuthProvider interface accordingly:
 
-\thttps://twurple.js.org/reference/auth/interfaces/AuthProvider.html`
+\thttps://twurple.js.org/reference/auth/interfaces/AuthProvider.html`,
 			);
 		}
 	}
@@ -291,7 +291,7 @@ export async function loadAndCompareTokenInfo(
 	token: string,
 	userId?: string,
 	loadedScopes?: string[],
-	requestedScopeSets?: Array<string[] | undefined>
+	requestedScopeSets?: Array<string[] | undefined>,
 ): Promise<[string[] | undefined, string]> {
 	// eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
 	if (requestedScopeSets?.length || !userId) {
@@ -304,7 +304,7 @@ export async function loadAndCompareTokenInfo(
 		if (requestedScopeSets) {
 			compareScopeSets(
 				scopesToCompare,
-				requestedScopeSets.filter((val): val is string[] => Boolean(val))
+				requestedScopeSets.filter((val): val is string[] => Boolean(val)),
 			);
 		}
 

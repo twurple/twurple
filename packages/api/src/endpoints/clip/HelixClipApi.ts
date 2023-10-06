@@ -5,14 +5,14 @@ import {
 	createClipCreateQuery,
 	createClipQuery,
 	type HelixClipCreateResponse,
-	type HelixClipData
+	type HelixClipData,
 } from '../../interfaces/endpoints/clip.external';
 import {
 	type HelixClipCreateParams,
 	type HelixClipFilter,
 	type HelixClipIdFilter,
 	type HelixPaginatedClipFilter,
-	type HelixPaginatedClipIdFilter
+	type HelixPaginatedClipIdFilter,
 } from '../../interfaces/endpoints/clip.input';
 import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
@@ -40,12 +40,12 @@ export class HelixClipApi extends BaseApi {
 	/** @internal */
 	@Enumerable(false) private readonly _getClipByIdBatcher = new HelixRequestBatcher(
 		{
-			url: 'clips'
+			url: 'clips',
 		},
 		'id',
 		'id',
 		this._client,
-		(data: HelixClipData) => new HelixClip(data, this._client)
+		(data: HelixClipData) => new HelixClip(data, this._client),
 	);
 
 	/**
@@ -58,13 +58,13 @@ export class HelixClipApi extends BaseApi {
 	 */
 	async getClipsForBroadcaster(
 		broadcaster: UserIdResolvable,
-		filter: HelixPaginatedClipFilter = {}
+		filter: HelixPaginatedClipFilter = {},
 	): Promise<HelixPaginatedResult<HelixClip>> {
 		return await this._getClips({
 			...filter,
 			filterType: 'broadcaster_id',
 			ids: extractUserId(broadcaster),
-			userId: extractUserId(broadcaster)
+			userId: extractUserId(broadcaster),
 		});
 	}
 
@@ -78,13 +78,13 @@ export class HelixClipApi extends BaseApi {
 	 */
 	getClipsForBroadcasterPaginated(
 		broadcaster: UserIdResolvable,
-		filter: HelixClipFilter = {}
+		filter: HelixClipFilter = {},
 	): HelixPaginatedRequest<HelixClipData, HelixClip> {
 		return this._getClipsPaginated({
 			...filter,
 			filterType: 'broadcaster_id',
 			ids: extractUserId(broadcaster),
-			userId: extractUserId(broadcaster)
+			userId: extractUserId(broadcaster),
 		});
 	}
 
@@ -98,12 +98,12 @@ export class HelixClipApi extends BaseApi {
 	 */
 	async getClipsForGame(
 		gameId: string,
-		filter: HelixPaginatedClipFilter = {}
+		filter: HelixPaginatedClipFilter = {},
 	): Promise<HelixPaginatedResult<HelixClip>> {
 		return await this._getClips({
 			...filter,
 			filterType: 'game_id',
-			ids: gameId
+			ids: gameId,
 		});
 	}
 
@@ -117,12 +117,12 @@ export class HelixClipApi extends BaseApi {
 	 */
 	getClipsForGamePaginated(
 		gameId: string,
-		filter: HelixClipFilter = {}
+		filter: HelixClipFilter = {},
 	): HelixPaginatedRequest<HelixClipData, HelixClip> {
 		return this._getClipsPaginated({
 			...filter,
 			filterType: 'game_id',
-			ids: gameId
+			ids: gameId,
 		});
 	}
 
@@ -134,7 +134,7 @@ export class HelixClipApi extends BaseApi {
 	async getClipsByIds(ids: string[]): Promise<HelixClip[]> {
 		const result = await this._getClips({
 			filterType: 'id',
-			ids
+			ids,
 		});
 
 		return result.data;
@@ -176,7 +176,7 @@ export class HelixClipApi extends BaseApi {
 			userId: extractUserId(channel),
 			scopes: ['clips:edit'],
 			canOverrideScopedUserContext: true,
-			query: createClipCreateQuery(channel, createAfterDelay)
+			query: createClipCreateQuery(channel, createAfterDelay),
 		});
 
 		return result.data[0].id;
@@ -193,8 +193,8 @@ export class HelixClipApi extends BaseApi {
 			userId: params.userId,
 			query: {
 				...createClipQuery(params),
-				...createPaginationQuery(params)
-			}
+				...createPaginationQuery(params),
+			},
 		});
 
 		return createPaginatedResult(result, HelixClip, this._client);
@@ -205,10 +205,10 @@ export class HelixClipApi extends BaseApi {
 			{
 				url: 'clips',
 				userId: params.userId,
-				query: createClipQuery(params)
+				query: createClipQuery(params),
 			},
 			this._client,
-			data => new HelixClip(data, this._client)
+			data => new HelixClip(data, this._client),
 		);
 	}
 }

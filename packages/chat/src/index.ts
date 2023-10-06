@@ -29,7 +29,7 @@ export type {
 	ChatSubGiftUpgradeInfo,
 	ChatSubInfo,
 	ChatSubOriginalGiftInfo,
-	ChatSubUpgradeInfo
+	ChatSubUpgradeInfo,
 } from './userNotices/ChatSubInfo';
 
 export { extractMessageId, type ChatSayMessageAttributes } from './ChatMessageAttributes';
@@ -43,19 +43,19 @@ export {
 	type EmoteAnimationSettings,
 	type EmoteBackgroundType,
 	type EmoteSettings,
-	type EmoteSize
+	type EmoteSize,
 } from './emotes/buildEmoteImageUrl';
 export {
 	findCheermotePositions,
 	fillTextPositions,
 	parseChatMessage,
-	parseEmotePositions
+	parseEmotePositions,
 } from './emotes/messagePartParser';
 export {
 	type ParsedMessagePart,
 	type ParsedMessageEmotePart,
 	type ParsedMessageCheerPart,
-	type ParsedMessageTextPart
+	type ParsedMessageTextPart,
 } from './emotes/ParsedMessagePart';
 
 export { parseTwitchMessage, extractMessageText } from './utils/messageUtil';

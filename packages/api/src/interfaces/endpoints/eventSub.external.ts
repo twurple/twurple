@@ -67,7 +67,7 @@ export interface HelixPaginatedEventSubSubscriptionsResponse
 /** @internal */
 export function createEventSubBroadcasterCondition(broadcaster: UserIdResolvable) {
 	return {
-		broadcaster_user_id: extractUserId(broadcaster)
+		broadcaster_user_id: extractUserId(broadcaster),
 	};
 }
 
@@ -80,17 +80,17 @@ export function createEventSubRewardCondition(broadcaster: UserIdResolvable, rew
 export function createEventSubModeratorCondition(broadcasterId: string, moderatorId: string) {
 	return {
 		broadcaster_user_id: broadcasterId,
-		moderator_user_id: moderatorId
+		moderator_user_id: moderatorId,
 	};
 }
 
 /** @internal */
 export function createEventSubDropEntitlementGrantCondition(
-	filter: HelixEventSubDropEntitlementGrantFilter
+	filter: HelixEventSubDropEntitlementGrantFilter,
 ): Record<string, string | undefined> {
 	return {
 		organization_id: filter.organizationId,
 		category_id: filter.categoryId,
-		campaign_id: filter.campaignId
+		campaign_id: filter.campaignId,
 	};
 }

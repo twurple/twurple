@@ -21,9 +21,9 @@ export function parseEmotePositions(text: string, emoteOffsets: Map<string, stri
 					position: start,
 					length: end - start + 1,
 					id: emote,
-					name
+					name,
 				};
-			})
+			}),
 		)
 		.sort((a, b) => a.position - b.position);
 }
@@ -48,7 +48,7 @@ export function findCheermotePositions(text: string, names: string[]): ParsedMes
 				name,
 				amount,
 				position: utf8Length(text.slice(0, match.index)),
-				length: match[0].length
+				length: match[0].length,
 			});
 		}
 	}
@@ -70,8 +70,8 @@ export function fillTextPositions(text: string, otherPositions: ParsedMessagePar
 				type: 'text',
 				position: 0,
 				length: messageLength,
-				text
-			}
+				text,
+			},
 		];
 	}
 
@@ -84,7 +84,7 @@ export function fillTextPositions(text: string, otherPositions: ParsedMessagePar
 				type: 'text',
 				position: currentPosition,
 				length: token.position - currentPosition,
-				text: utf8Substring(text, currentPosition, token.position)
+				text: utf8Substring(text, currentPosition, token.position),
 			});
 		}
 		result.push(token);
@@ -96,7 +96,7 @@ export function fillTextPositions(text: string, otherPositions: ParsedMessagePar
 			type: 'text',
 			position: currentPosition,
 			length: messageLength - currentPosition,
-			text: utf8Substring(text, currentPosition)
+			text: utf8Substring(text, currentPosition),
 		});
 	}
 
@@ -113,7 +113,7 @@ export function fillTextPositions(text: string, otherPositions: ParsedMessagePar
 export function parseChatMessage(
 	text: string,
 	emoteOffsets: Map<string, string[]>,
-	cheermoteNames?: string[]
+	cheermoteNames?: string[],
 ): ParsedMessagePart[] {
 	if (!text) {
 		return [];

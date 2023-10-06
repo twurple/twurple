@@ -3,7 +3,7 @@ import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol } from '@twurple/common';
 import {
 	type EventSubChannelHypeTrainContributionData,
-	type EventSubChannelHypeTrainContributionType
+	type EventSubChannelHypeTrainContributionType,
 } from './EventSubChannelHypeTrainContribution.external';
 
 export class EventSubChannelHypeTrainContribution extends DataObject<EventSubChannelHypeTrainContributionData> {

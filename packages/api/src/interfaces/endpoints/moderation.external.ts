@@ -76,11 +76,11 @@ export interface HelixShieldModeStatusData {
 /** @internal */
 export function createModerationUserListQuery(
 	channel: UserIdResolvable,
-	filter?: HelixModeratorFilter | HelixBanFilter
+	filter?: HelixModeratorFilter | HelixBanFilter,
 ) {
 	return {
 		broadcaster_id: extractUserId(channel),
-		user_id: filter?.userId
+		user_id: filter?.userId,
 	};
 }
 
@@ -88,7 +88,7 @@ export function createModerationUserListQuery(
 export function createModeratorModifyQuery(broadcaster: UserIdResolvable, user: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
-		user_id: extractUserId(user)
+		user_id: extractUserId(user),
 	};
 }
 
@@ -97,7 +97,7 @@ export function createAutoModProcessBody(user: UserIdResolvable, msgId: string, 
 	return {
 		user_id: extractUserId(user),
 		msg_id: msgId,
-		action: allow ? 'ALLOW' : 'DENY'
+		action: allow ? 'ALLOW' : 'DENY',
 	};
 }
 
@@ -112,7 +112,7 @@ export function createAutoModSettingsBody(data: HelixAutoModSettings) {
 		race_ethnicity_or_religion: data.raceEthnicityOrReligion,
 		sex_based_terms: data.sexBasedTerms,
 		sexuality_sex_or_gender: data.sexualitySexOrGender,
-		swearing: data.swearing
+		swearing: data.swearing,
 	};
 }
 
@@ -122,14 +122,14 @@ export function createBanUserBody(data: HelixBanUserRequest) {
 		data: {
 			duration: data.duration,
 			reason: data.reason,
-			user_id: extractUserId(data.user)
-		}
+			user_id: extractUserId(data.user),
+		},
 	};
 }
 
 /** @internal */
 export function createUpdateShieldModeStatusBody(activate: boolean) {
 	return {
-		is_active: activate
+		is_active: activate,
 	};
 }

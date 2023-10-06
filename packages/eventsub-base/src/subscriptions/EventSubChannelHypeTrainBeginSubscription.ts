@@ -13,7 +13,7 @@ export class EventSubChannelHypeTrainBeginSubscription extends EventSubSubscript
 	constructor(
 		handler: (data: EventSubChannelHypeTrainBeginEvent) => void,
 		client: EventSubBase,
-		private readonly _userId: string
+		private readonly _userId: string,
 	) {
 		super(handler, client);
 	}
@@ -33,7 +33,7 @@ export class EventSubChannelHypeTrainBeginSubscription extends EventSubSubscript
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		return await this._client._apiClient.eventSub.subscribeToChannelHypeTrainBeginEvents(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

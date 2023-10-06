@@ -8,7 +8,7 @@ export class ApiReportedRequest {
 	constructor(
 		private readonly _options: TwitchApiCallOptions,
 		private readonly _httpStatus: number,
-		private readonly _resolvedUserId: string | null
+		private readonly _resolvedUserId: string | null,
 	) {}
 
 	/**

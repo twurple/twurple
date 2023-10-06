@@ -5,7 +5,7 @@ import {
 	type AccessToken,
 	accessTokenIsExpired,
 	type AccessTokenMaybeWithUserId,
-	type AccessTokenWithUserId
+	type AccessTokenWithUserId,
 } from '../AccessToken';
 import { CachedRefreshFailureError } from '../errors/CachedRefreshFailureError';
 import { IntermediateUserRemovalError } from '../errors/IntermediateUserRemovalError';
@@ -18,7 +18,7 @@ import {
 	getAppToken,
 	getTokenInfo,
 	loadAndCompareTokenInfo,
-	refreshUserToken
+	refreshUserToken,
 } from '../helpers';
 import { TokenFetcher } from '../TokenFetcher';
 import { type TokenInfo } from '../TokenInfo';
@@ -119,7 +119,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	addUser(
 		user: UserIdResolvable,
 		initialToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>,
-		intents?: string[]
+		intents?: string[],
 	): void {
 		const userId = extractUserId(user);
 		if (!initialToken.refreshToken) {
@@ -128,12 +128,12 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 		this._cachedRefreshFailures.delete(userId);
 		this._userAccessTokens.set(userId, {
 			...initialToken,
-			userId
+			userId,
 		});
 		if (!this._userTokenFetchers.has(userId)) {
 			this._userTokenFetchers.set(
 				userId,
-				new TokenFetcher(async scopes => await this._fetchUserToken(userId, scopes))
+				new TokenFetcher(async scopes => await this._fetchUserToken(userId, scopes)),
 			);
 		}
 		if (intents) {
@@ -154,7 +154,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	 */
 	async addUserForToken(
 		initialToken: MakeOptional<AccessToken, 'accessToken' | 'scope'>,
-		intents?: string[]
+		intents?: string[],
 	): Promise<string> {
 		let tokenWithInfo: [MakeOptional<AccessToken, 'accessToken' | 'scope'>, TokenInfo] | null = null;
 		if (initialToken.accessToken && !accessTokenIsExpired(initialToken)) {
@@ -176,7 +176,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 			const refreshedToken = await refreshUserToken(
 				this._clientId,
 				this._clientSecret,
-				initialToken.refreshToken
+				initialToken.refreshToken,
 			);
 			const tokenInfo = await getTokenInfo(refreshedToken.accessToken);
 			this.emit(this.onRefresh, tokenInfo.userId!, refreshedToken);
@@ -187,7 +187,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 
 		if (!tokenInfo.userId) {
 			throw new InvalidTokenTypeError(
-				'Could not determine a user ID for your token; you might be trying to disguise an app token as a user token.'
+				'Could not determine a user ID for your token; you might be trying to disguise an app token as a user token.',
 			);
 		}
 
@@ -195,7 +195,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 			? tokenToAdd
 			: {
 					...tokenToAdd,
-					scope: tokenInfo.scopes
+					scope: tokenInfo.scopes,
 			  };
 
 		this.addUser(tokenInfo.userId, token, intents);
@@ -331,13 +331,13 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 
 		this._userAccessTokens.set(userId, {
 			...tokenData,
-			userId
+			userId,
 		});
 		this.emit(this.onRefresh, userId, tokenData);
 
 		return {
 			...tokenData,
-			userId
+			userId,
 		};
 	}
 
@@ -422,13 +422,13 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 
 		if (!newToken) {
 			throw new HellFreezesOverError(
-				`Found intent ${intent} corresponding to user ID ${userId} but no token was found`
+				`Found intent ${intent} corresponding to user ID ${userId} but no token was found`,
 			);
 		}
 
 		return {
 			...newToken,
-			userId
+			userId,
 		};
 	}
 
@@ -445,12 +445,12 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 				const token = await this.getAccessTokenForUser(userId);
 				if (!token) {
 					throw new HellFreezesOverError(
-						`Token for user ID ${userId} exists but nothing was returned by getAccessTokenForUser`
+						`Token for user ID ${userId} exists but nothing was returned by getAccessTokenForUser`,
 					);
 				}
 				return {
 					...token,
-					userId
+					userId,
 				};
 			}
 		}
@@ -498,11 +498,11 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 					previousToken.accessToken,
 					userId,
 					previousToken.scope,
-					scopeSets
+					scopeSets,
 				);
 				const newToken: AccessTokenWithUserId = {
 					...(previousToken as AccessTokenWithUserId),
-					scope
+					scope,
 				};
 				this._checkIntermediateUserRemoval(userId);
 				this._userAccessTokens.set(userId, newToken);
@@ -538,15 +538,15 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 					if (scopes.every(scope => !this._appImpliedScopes.includes(scope))) {
 						throw new Error(
 							`One of the scopes ${scopes.join(
-								', '
-							)} requested but only the scope ${this._appImpliedScopes.join(', ')} is implied`
+								', ',
+							)} requested but only the scope ${this._appImpliedScopes.join(', ')} is implied`,
 						);
 					}
 				} else {
 					throw new Error(
 						`One of the scopes ${scopes.join(
-							', '
-						)} requested but the client credentials flow does not support scopes`
+							', ',
+						)} requested but the client credentials flow does not support scopes`,
 					);
 				}
 			}

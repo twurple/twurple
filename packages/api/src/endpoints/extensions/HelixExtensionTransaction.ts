@@ -3,7 +3,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixExtensionProductType,
-	type HelixExtensionTransactionData
+	type HelixExtensionTransactionData,
 } from '../../interfaces/endpoints/extensions.external';
 import type { HelixUser } from '../user/HelixUser';
 

@@ -10,7 +10,7 @@ import { type EventSubChannelPredictionProgressEventData } from './EventSubChann
 @rtfm<EventSubChannelPredictionProgressEvent>(
 	'eventsub-base',
 	'EventSubChannelPredictionProgressEvent',
-	'broadcasterId'
+	'broadcasterId',
 )
 export class EventSubChannelPredictionProgressEvent extends DataObject<EventSubChannelPredictionProgressEventData> {
 	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;

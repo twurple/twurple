@@ -14,7 +14,7 @@ export class EventSubChannelRaidSubscription extends EventSubSubscription<EventS
 		handler: (data: EventSubChannelRaidEvent) => void,
 		client: EventSubBase,
 		private readonly _userId: string,
-		private readonly _direction: 'from' | 'to'
+		private readonly _direction: 'from' | 'to',
 	) {
 		super(handler, client);
 	}
@@ -35,13 +35,13 @@ export class EventSubChannelRaidSubscription extends EventSubSubscription<EventS
 		if (this._direction === 'from') {
 			return await this._client._apiClient.eventSub.subscribeToChannelRaidEventsFrom(
 				this._userId,
-				await this._getTransportOptions()
+				await this._getTransportOptions(),
 			);
 		}
 
 		return await this._client._apiClient.eventSub.subscribeToChannelRaidEventsTo(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

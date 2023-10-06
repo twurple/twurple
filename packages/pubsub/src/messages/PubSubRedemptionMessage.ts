@@ -2,7 +2,7 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type PubSubRedemptionMessageData,
 	type PubSubRedemptionMessageImageData,
-	type PubSubRedemptionStatus
+	type PubSubRedemptionStatus,
 } from './PubSubRedemptionMessage.external';
 
 /**

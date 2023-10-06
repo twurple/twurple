@@ -22,7 +22,7 @@ export type {
 	SubMysteryGiftUserstate,
 	SubUserstate,
 	UserNoticeState,
-	Userstate
+	Userstate,
 } from 'tmi.js';
 
 import { Client } from './client';

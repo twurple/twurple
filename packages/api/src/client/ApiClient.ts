@@ -76,7 +76,7 @@ export class ApiClient extends BaseApiClient {
 			isNode
 				? new PartitionedRateLimiter<TwitchApiCallOptionsInternal, Response>({
 						getPartitionKey: req => req.userId ?? null,
-						createChild: () => new HelixRateLimiter({ logger: rateLimitLoggerOptions })
+						createChild: () => new HelixRateLimiter({ logger: rateLimitLoggerOptions }),
 				  })
 				: new PartitionedTimeBasedRateLimiter({
 						logger: rateLimitLoggerOptions,
@@ -87,11 +87,11 @@ export class ApiClient extends BaseApiClient {
 							clientId,
 							accessToken,
 							authorizationType,
-							fetchOptions
+							fetchOptions,
 						}: TwitchApiCallOptionsInternal) =>
 							await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions),
-						getPartitionKey: req => req.userId ?? null
-				  })
+						getPartitionKey: req => req.userId ?? null,
+				  }),
 		);
 	}
 

@@ -40,7 +40,7 @@ export function createPollBody(broadcaster: UserIdResolvable, data: HelixCreateP
 		choices: data.choices.map(title => ({ title })),
 		duration: data.duration,
 		channel_points_voting_enabled: data.channelPointsPerVote != null,
-		channel_points_per_vote: data.channelPointsPerVote ?? 0
+		channel_points_per_vote: data.channelPointsPerVote ?? 0,
 	};
 }
 
@@ -49,6 +49,6 @@ export function createPollEndBody(broadcaster: UserIdResolvable, id: string, sho
 	return {
 		broadcaster_id: extractUserId(broadcaster),
 		id,
-		status: showResult ? 'TERMINATED' : 'ARCHIVED'
+		status: showResult ? 'TERMINATED' : 'ARCHIVED',
 	};
 }

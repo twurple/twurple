@@ -3,7 +3,7 @@ import {
 	createBroadcasterQuery,
 	type HelixPaginatedResponse,
 	type HelixResponse,
-	HttpStatusCodeError
+	HttpStatusCodeError,
 } from '@twurple/api-call';
 import { extractUserId, extractUserName, rtfm, type UserIdResolvable, type UserNameResolvable } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
@@ -16,7 +16,7 @@ import {
 	type HelixGetStreamKeyData,
 	type HelixStreamData,
 	type HelixStreamGetMarkersResponse,
-	type HelixStreamMarkerData
+	type HelixStreamMarkerData,
 } from '../../interfaces/endpoints/stream.external';
 import { type HelixPaginatedStreamFilter, type HelixStreamFilter } from '../../interfaces/endpoints/stream.input';
 import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
@@ -25,7 +25,7 @@ import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pa
 import {
 	createPaginationQuery,
 	type HelixForwardPagination,
-	type HelixPagination
+	type HelixPagination,
 } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixStream } from './HelixStream';
@@ -51,23 +51,23 @@ export class HelixStreamApi extends BaseApi {
 	/** @internal */
 	@Enumerable(false) private readonly _getStreamByUserIdBatcher = new HelixRequestBatcher(
 		{
-			url: 'streams'
+			url: 'streams',
 		},
 		'user_id',
 		'user_id',
 		this._client,
-		(data: HelixStreamData) => new HelixStream(data, this._client)
+		(data: HelixStreamData) => new HelixStream(data, this._client),
 	);
 
 	/** @internal */
 	@Enumerable(false) private readonly _getStreamByUserNameBatcher = new HelixRequestBatcher(
 		{
-			url: 'streams'
+			url: 'streams',
 		},
 		'user_login',
 		'user_login',
 		this._client,
-		(data: HelixStreamData) => new HelixStream(data, this._client)
+		(data: HelixStreamData) => new HelixStream(data, this._client),
 	);
 
 	/**
@@ -82,8 +82,8 @@ export class HelixStreamApi extends BaseApi {
 			type: 'helix',
 			query: {
 				...createStreamQuery(filter),
-				...createPaginationQuery(filter)
-			}
+				...createPaginationQuery(filter),
+			},
 		});
 
 		return createPaginatedResult(result, HelixStream, this._client);
@@ -99,10 +99,10 @@ export class HelixStreamApi extends BaseApi {
 		return new HelixPaginatedRequest(
 			{
 				url: 'streams',
-				query: createStreamQuery(filter)
+				query: createStreamQuery(filter),
 			},
 			this._client,
-			data => new HelixStream(data, this._client)
+			data => new HelixStream(data, this._client),
 		);
 	}
 
@@ -159,7 +159,7 @@ export class HelixStreamApi extends BaseApi {
 			url: 'streams',
 			type: 'helix',
 			userId,
-			query: createStreamQuery({ userId })
+			query: createStreamQuery({ userId }),
 		});
 
 		return mapNullable(result.data[0], data => new HelixStream(data, this._client));
@@ -184,23 +184,23 @@ export class HelixStreamApi extends BaseApi {
 	 */
 	async getStreamMarkersForUser(
 		user: UserIdResolvable,
-		pagination?: HelixPagination
+		pagination?: HelixPagination,
 	): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamGetMarkersResponse>>({
 			url: 'streams/markers',
 			type: 'helix',
 			query: {
 				...createUserQuery(user),
-				...createPaginationQuery(pagination)
+				...createPaginationQuery(pagination),
 			},
 			userId: extractUserId(user),
 			scopes: ['user:read:broadcast'],
-			canOverrideScopedUserContext: true
+			canOverrideScopedUserContext: true,
 		});
 
 		return {
 			data: flatten(result.data.map(data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client))),
-			cursor: result.pagination?.cursor
+			cursor: result.pagination?.cursor,
 		};
 	}
 
@@ -210,7 +210,7 @@ export class HelixStreamApi extends BaseApi {
 	 * @param user The user to list the stream markers for.
 	 */
 	getStreamMarkersForUserPaginated(
-		user: UserIdResolvable
+		user: UserIdResolvable,
 	): HelixPaginatedRequest<HelixStreamGetMarkersResponse, HelixStreamMarkerWithVideo> {
 		return new HelixPaginatedRequest(
 			{
@@ -218,10 +218,10 @@ export class HelixStreamApi extends BaseApi {
 				query: createUserQuery(user),
 				userId: extractUserId(user),
 				scopes: ['user:read:broadcast'],
-				canOverrideScopedUserContext: true
+				canOverrideScopedUserContext: true,
 			},
 			this._client,
-			data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client)
+			data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client),
 		);
 	}
 
@@ -237,23 +237,23 @@ export class HelixStreamApi extends BaseApi {
 	async getStreamMarkersForVideo(
 		user: UserIdResolvable,
 		videoId: string,
-		pagination?: HelixPagination
+		pagination?: HelixPagination,
 	): Promise<HelixPaginatedResult<HelixStreamMarkerWithVideo>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixStreamGetMarkersResponse>>({
 			url: 'streams/markers',
 			type: 'helix',
 			query: {
 				...createVideoQuery(videoId),
-				...createPaginationQuery(pagination)
+				...createPaginationQuery(pagination),
 			},
 			userId: extractUserId(user),
 			scopes: ['user:read:broadcast'],
-			canOverrideScopedUserContext: true
+			canOverrideScopedUserContext: true,
 		});
 
 		return {
 			data: flatten(result.data.map(data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client))),
-			cursor: result.pagination?.cursor
+			cursor: result.pagination?.cursor,
 		};
 	}
 
@@ -265,7 +265,7 @@ export class HelixStreamApi extends BaseApi {
 	 */
 	getStreamMarkersForVideoPaginated(
 		user: UserIdResolvable,
-		videoId: string
+		videoId: string,
 	): HelixPaginatedRequest<HelixStreamGetMarkersResponse, HelixStreamMarkerWithVideo> {
 		return new HelixPaginatedRequest(
 			{
@@ -273,10 +273,10 @@ export class HelixStreamApi extends BaseApi {
 				query: createVideoQuery(videoId),
 				userId: extractUserId(user),
 				scopes: ['user:read:broadcast'],
-				canOverrideScopedUserContext: true
+				canOverrideScopedUserContext: true,
 			},
 			this._client,
-			data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client)
+			data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client),
 		);
 	}
 
@@ -297,7 +297,7 @@ export class HelixStreamApi extends BaseApi {
 				userId: extractUserId(broadcaster),
 				scopes: ['channel:manage:broadcast'],
 				canOverrideScopedUserContext: true,
-				jsonBody: createStreamMarkerBody(broadcaster, description)
+				jsonBody: createStreamMarkerBody(broadcaster, description),
 			});
 
 			return new HelixStreamMarker(result.data[0], this._client);
@@ -322,7 +322,7 @@ export class HelixStreamApi extends BaseApi {
 			url: 'streams/key',
 			userId,
 			scopes: ['channel:read:stream_key'],
-			query: createBroadcasterQuery(broadcaster)
+			query: createBroadcasterQuery(broadcaster),
 		});
 
 		return result.data[0].stream_key;
@@ -338,7 +338,7 @@ export class HelixStreamApi extends BaseApi {
 	 */
 	async getFollowedStreams(
 		user: UserIdResolvable,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedResult<HelixStream>> {
 		const userId = extractUserId(user);
 		const result = await this._client.callApi<HelixPaginatedResult<HelixStreamData>>({
@@ -348,8 +348,8 @@ export class HelixStreamApi extends BaseApi {
 			scopes: ['user:read:follows'],
 			query: {
 				...createSingleKeyQuery('user_id', userId),
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return createPaginatedResult(result, HelixStream, this._client);
@@ -367,10 +367,10 @@ export class HelixStreamApi extends BaseApi {
 				url: 'streams/followed',
 				userId,
 				scopes: ['user:read:follows'],
-				query: createSingleKeyQuery('user_id', userId)
+				query: createSingleKeyQuery('user_id', userId),
 			},
 			this._client,
-			data => new HelixStream(data, this._client)
+			data => new HelixStream(data, this._client),
 		);
 	}
 
@@ -378,9 +378,9 @@ export class HelixStreamApi extends BaseApi {
 		return data.videos.reduce<HelixStreamMarkerWithVideo[]>(
 			(result, video) => [
 				...result,
-				...video.markers.map(marker => new HelixStreamMarkerWithVideo(marker, video.video_id, client))
+				...video.markers.map(marker => new HelixStreamMarkerWithVideo(marker, video.video_id, client)),
 			],
-			[]
+			[],
 		);
 	}
 }

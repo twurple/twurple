@@ -35,7 +35,7 @@ export interface CreateBotCommandOptions {
 export function createBotCommand(
 	commandName: string,
 	handler: (params: string[], context: BotCommandContext) => void | Promise<void>,
-	options: CreateBotCommandOptions = {}
+	options: CreateBotCommandOptions = {},
 ): BotCommand {
 	return new (class extends BotCommand {
 		name = commandName;
@@ -91,7 +91,7 @@ export function createBotCommand(
 			if (this._options.userCooldown) {
 				this._allowedExecutionPerChannelUser.set(
 					`${context.broadcasterId}:${context.userId}`,
-					now + this._options.userCooldown * 1000
+					now + this._options.userCooldown * 1000,
 				);
 			}
 

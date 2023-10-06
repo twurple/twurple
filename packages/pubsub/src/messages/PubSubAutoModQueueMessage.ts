@@ -3,7 +3,7 @@ import {
 	type PubSubAutoModQueueMessageContentClassification,
 	type PubSubAutoModQueueMessageData,
 	type PubSubAutoModQueueMessageFragment,
-	type PubSubAutoModQueueStatus
+	type PubSubAutoModQueueStatus,
 } from './PubSubAutoModQueueMessage.external';
 
 /**

@@ -22,7 +22,7 @@ import {
 	type PubSubMessage,
 	type PubSubMessageData,
 	type PubSubModActionMessage,
-	type PubSubModActionMessageData
+	type PubSubModActionMessageData,
 } from './messages/PubSubMessage';
 import { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';
 import { type PubSubRedemptionMessageData } from './messages/PubSubRedemptionMessage.external';
@@ -81,7 +81,7 @@ export class PubSubClient extends EventEmitter {
 		this._authProvider = config.authProvider;
 		this._logger = createLogger({
 			name: 'twurple:pubsub',
-			...config.logger
+			...config.logger,
 		});
 		this._basicClient = new BasicPubSubClient(config);
 		this._basicClient.onMessage((topic, messageData) => {
@@ -118,7 +118,7 @@ export class PubSubClient extends EventEmitter {
 	onAutoModQueue(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
-		callback: (message: PubSubAutoModQueueMessage) => void
+		callback: (message: PubSubAutoModQueueMessage) => void,
 	): PubSubHandler<never> {
 		return this._addHandler('automod-queue', callback, user, 'channel:moderate', extractUserId(channel));
 	}
@@ -145,7 +145,7 @@ export class PubSubClient extends EventEmitter {
 	 */
 	onBitsBadgeUnlock(
 		user: UserIdResolvable,
-		callback: (message: PubSubBitsBadgeUnlockMessage) => void
+		callback: (message: PubSubBitsBadgeUnlockMessage) => void,
 	): PubSubHandler<never> {
 		return this._addHandler('channel-bits-badge-unlocks', callback, user, 'bits:read');
 	}
@@ -160,7 +160,7 @@ export class PubSubClient extends EventEmitter {
 	onLowTrustUser(
 		channel: UserIdResolvable,
 		user: UserIdResolvable,
-		callback: (message: PubSubLowTrustUserMessage) => void
+		callback: (message: PubSubLowTrustUserMessage) => void,
 	): PubSubHandler<never> {
 		return this._addHandler('low-trust-users', callback, channel, 'channel:moderate', extractUserId(user));
 	}
@@ -177,7 +177,7 @@ export class PubSubClient extends EventEmitter {
 	onModAction(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
-		callback: (message: PubSubModActionMessage) => void
+		callback: (message: PubSubModActionMessage) => void,
 	): PubSubHandler<never> {
 		return this._addHandler('chat_moderator_actions', callback, user, 'channel:moderate', extractUserId(channel));
 	}
@@ -204,7 +204,7 @@ export class PubSubClient extends EventEmitter {
 	 */
 	onSubscription(
 		user: UserIdResolvable,
-		callback: (message: PubSubSubscriptionMessage) => void
+		callback: (message: PubSubSubscriptionMessage) => void,
 	): PubSubHandler<never> {
 		return this._addHandler('channel-subscribe-events-v1', callback, user, 'channel:read:subscriptions');
 	}
@@ -221,7 +221,7 @@ export class PubSubClient extends EventEmitter {
 	onUserModeration(
 		user: UserIdResolvable,
 		channel: UserIdResolvable,
-		callback: (message: PubSubUserModerationNotificationMessage) => void
+		callback: (message: PubSubUserModerationNotificationMessage) => void,
 	): PubSubHandler<never> {
 		return this._addHandler('user-moderation-notifications', callback, user, 'chat:read', extractUserId(channel));
 	}
@@ -254,7 +254,7 @@ export class PubSubClient extends EventEmitter {
 		topic: string,
 		callback: (message: PubSubCustomMessage) => void,
 		scope?: string,
-		channel?: UserIdResolvable
+		channel?: UserIdResolvable,
 	): PubSubHandler<never> {
 		if (channel) {
 			return this._addHandler(topic, callback, user, scope, extractUserId(channel));
@@ -315,7 +315,7 @@ export class PubSubClient extends EventEmitter {
 				type: 'provider',
 				provider: this._authProvider,
 				scopes: scope ? [scope] : [],
-				userId
+				userId,
 			});
 		}
 		return handler;
@@ -387,7 +387,7 @@ Data: ${JSON.stringify(data, undefined, 2)}`);
 			case 'user-moderation-notifications': {
 				return new PubSubUserModerationNotificationMessage(
 					messageData as PubSubUserModerationNotificationMessageData,
-					args[0]
+					args[0],
 				);
 			}
 			case 'whispers': {

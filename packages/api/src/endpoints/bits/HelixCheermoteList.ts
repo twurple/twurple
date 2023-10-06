@@ -35,7 +35,7 @@ export class HelixCheermoteList extends DataObject<Record<string, HelixCheermote
 
 		return {
 			url: correctTier.images[background][state][scale],
-			color: correctTier.color
+			color: correctTier.color,
 		};
 	}
 

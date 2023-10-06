@@ -13,7 +13,7 @@ export class EventSubChannelCharityCampaignStopSubscription extends EventSubSubs
 	constructor(
 		handler: (data: EventSubChannelCharityCampaignStopEvent) => void,
 		client: EventSubBase,
-		private readonly _userId: string
+		private readonly _userId: string,
 	) {
 		super(handler, client);
 	}
@@ -27,7 +27,7 @@ export class EventSubChannelCharityCampaignStopSubscription extends EventSubSubs
 	}
 
 	protected transformData(
-		data: EventSubChannelCharityCampaignStopEventData
+		data: EventSubChannelCharityCampaignStopEventData,
 	): EventSubChannelCharityCampaignStopEvent {
 		return new EventSubChannelCharityCampaignStopEvent(data, this._client._apiClient);
 	}
@@ -35,7 +35,7 @@ export class EventSubChannelCharityCampaignStopSubscription extends EventSubSubs
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		return await this._client._apiClient.eventSub.subscribeToChannelCharityCampaignStopEvents(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

@@ -7,7 +7,7 @@ import {
 	type HelixChatUserColor,
 	type HelixModerator,
 	type HelixUpdateChatSettingsParams,
-	type HelixUserRelation
+	type HelixUserRelation,
 } from '@twurple/api';
 import { type AuthProvider } from '@twurple/auth';
 import {
@@ -16,7 +16,7 @@ import {
 	type ChatMessage,
 	type ChatSayMessageAttributes,
 	extractMessageId,
-	toUserName
+	toUserName,
 } from '@twurple/chat';
 import { type CommercialLength, HellFreezesOverError, type UserIdResolvable } from '@twurple/common';
 import { type BotCommand, type BotCommandMatch } from './BotCommand';
@@ -434,7 +434,7 @@ export class Bot extends EventEmitter {
 			commands,
 			emitCommandMessageEvents,
 			prefix,
-			chatClientOptions
+			chatClientOptions,
 		} = config;
 		super();
 
@@ -453,13 +453,13 @@ export class Bot extends EventEmitter {
 		const minLevel = debug ? LogLevel.DEBUG : LogLevel.ERROR;
 		this.api = new ApiClient({
 			authProvider: this._authProvider,
-			logger: { minLevel }
+			logger: { minLevel },
 		});
 		this.chat = new ChatClient({
 			logger: { minLevel },
 			...chatClientOptions,
 			authProvider: this._authProvider,
-			channels: resolvableChannels
+			channels: resolvableChannels,
 		});
 
 		this.chat.onMessage(async (channel, user, text, msg) => {
@@ -477,77 +477,77 @@ export class Bot extends EventEmitter {
 		this.chat.onDisconnect((manually, reason) => this.emit(this.onDisconnect, manually, reason));
 		this.chat.onAuthenticationSuccess(() => this.emit(this.onAuthenticationSuccess));
 		this.chat.onAuthenticationFailure((text, retryCount) =>
-			this.emit(this.onAuthenticationFailure, text, retryCount)
+			this.emit(this.onAuthenticationFailure, text, retryCount),
 		);
 		this.chat.onTokenFetchFailure(error => this.emit(this.onTokenFetchFailure, error));
 		this.chat.onMessageFailed((channel, text) => this.emit(this.onMessageFailed, channel, text));
 
 		this.chat.onTimeout((channel, user, duration, msg) =>
-			this.emit(this.onTimeout, new BanEvent(channel, user, duration, msg, this))
+			this.emit(this.onTimeout, new BanEvent(channel, user, duration, msg, this)),
 		);
 		this.chat.onBan((channel, user, msg) => this.emit(this.onBan, new BanEvent(channel, user, null, msg, this)));
 		this.chat.onBitsBadgeUpgrade((channel, user, upgradeInfo, msg) =>
-			this.emit(this.onBitsBadgeUpgrade, new BitsBadgeUpgradeEvent(channel, user, upgradeInfo, msg, this))
+			this.emit(this.onBitsBadgeUpgrade, new BitsBadgeUpgradeEvent(channel, user, upgradeInfo, msg, this)),
 		);
 		this.chat.onChatClear((channel, msg) => this.emit(this.onChatClear, new ChatClearEvent(channel, msg, this)));
 		this.chat.onEmoteOnly((channel, enabled) =>
-			this.emit(this.onEmoteOnlyToggle, new EmoteOnlyToggleEvent(channel, enabled, this))
+			this.emit(this.onEmoteOnlyToggle, new EmoteOnlyToggleEvent(channel, enabled, this)),
 		);
 		this.chat.onFollowersOnly((channel, enabled, delay) =>
-			this.emit(this.onFollowersOnlyToggle, new FollowersOnlyToggleEvent(channel, enabled, delay, this))
+			this.emit(this.onFollowersOnlyToggle, new FollowersOnlyToggleEvent(channel, enabled, delay, this)),
 		);
 		this.chat.onJoin((channel, user) => this.emit(this.onJoin, new JoinEvent(channel, user, this)));
 		this.chat.onJoinFailure((channel, reason) =>
-			this.emit(this.onJoinFailure, new JoinFailureEvent(channel, reason, this))
+			this.emit(this.onJoinFailure, new JoinFailureEvent(channel, reason, this)),
 		);
 		this.chat.onPart((channel, user) => this.emit(this.onLeave, new LeaveEvent(channel, user, this)));
 		this.chat.onMessageRemove((channel, messageId, msg) =>
-			this.emit(this.onMessageRemove, new MessageRemoveEvent(channel, messageId, msg, this))
+			this.emit(this.onMessageRemove, new MessageRemoveEvent(channel, messageId, msg, this)),
 		);
 		this.chat.onUniqueChat((channel, enabled) =>
-			this.emit(this.onUniqueChatToggle, new UniqueChatToggleEvent(channel, enabled, this))
+			this.emit(this.onUniqueChatToggle, new UniqueChatToggleEvent(channel, enabled, this)),
 		);
 		this.chat.onRaid((channel, user, raidInfo, msg) =>
-			this.emit(this.onRaid, new RaidEvent(channel, user, raidInfo, msg, this))
+			this.emit(this.onRaid, new RaidEvent(channel, user, raidInfo, msg, this)),
 		);
 		this.chat.onRaidCancel((channel, msg) => this.emit(this.onRaidCancel, new RaidCancelEvent(channel, msg, this)));
 		this.chat.onSlow((channel, enabled, delay) =>
-			this.emit(this.onSlowModeToggle, new SlowModeToggleEvent(channel, enabled, delay, this))
+			this.emit(this.onSlowModeToggle, new SlowModeToggleEvent(channel, enabled, delay, this)),
 		);
 		this.chat.onSubsOnly((channel, enabled) =>
-			this.emit(this.onSubsOnlyToggle, new SubsOnlyToggleEvent(channel, enabled, this))
+			this.emit(this.onSubsOnlyToggle, new SubsOnlyToggleEvent(channel, enabled, this)),
 		);
 		this.chat.onSub((channel, user, subInfo, msg) =>
-			this.emit(this.onSub, new SubEvent(channel, user, subInfo, msg, this))
+			this.emit(this.onSub, new SubEvent(channel, user, subInfo, msg, this)),
 		);
 		this.chat.onResub((channel, user, subInfo, msg) =>
-			this.emit(this.onResub, new SubEvent(channel, user, subInfo, msg, this))
+			this.emit(this.onResub, new SubEvent(channel, user, subInfo, msg, this)),
 		);
 		this.chat.onSubGift((channel, user, subInfo, msg) =>
-			this.emit(this.onSubGift, new SubGiftEvent(channel, user, subInfo, msg, this))
+			this.emit(this.onSubGift, new SubGiftEvent(channel, user, subInfo, msg, this)),
 		);
 		this.chat.onCommunitySub((channel, user, subInfo, msg) =>
-			this.emit(this.onCommunitySub, new CommunitySubEvent(channel, subInfo, msg, this))
+			this.emit(this.onCommunitySub, new CommunitySubEvent(channel, subInfo, msg, this)),
 		);
 		this.chat.onPrimePaidUpgrade((channel, user, subInfo, msg) =>
-			this.emit(this.onPrimePaidUpgrade, new PrimePaidUpgradeEvent(channel, user, subInfo, msg, this))
+			this.emit(this.onPrimePaidUpgrade, new PrimePaidUpgradeEvent(channel, user, subInfo, msg, this)),
 		);
 		this.chat.onGiftPaidUpgrade((channel, user, subInfo, msg) =>
-			this.emit(this.onGiftPaidUpgrade, new GiftPaidUpgradeEvent(channel, user, subInfo, msg, this))
+			this.emit(this.onGiftPaidUpgrade, new GiftPaidUpgradeEvent(channel, user, subInfo, msg, this)),
 		);
 		this.chat.onStandardPayForward((channel, user, forwardInfo, msg) =>
-			this.emit(this.onStandardPayForward, new StandardPayForwardEvent(channel, user, forwardInfo, msg, this))
+			this.emit(this.onStandardPayForward, new StandardPayForwardEvent(channel, user, forwardInfo, msg, this)),
 		);
 		this.chat.onCommunityPayForward((channel, user, forwardInfo, msg) =>
-			this.emit(this.onCommunityPayForward, new CommunityPayForwardEvent(channel, user, forwardInfo, msg, this))
+			this.emit(this.onCommunityPayForward, new CommunityPayForwardEvent(channel, user, forwardInfo, msg, this)),
 		);
 		this.chat.onAnnouncement((channel, user, announcementInfo, msg) =>
-			this.emit(this.onAnnouncement, new AnnouncementEvent(channel, user, announcementInfo, msg, this))
+			this.emit(this.onAnnouncement, new AnnouncementEvent(channel, user, announcementInfo, msg, this)),
 		);
 
 		this.chat.onWhisper((user, text, msg) => this.emit(this.onWhisper, new WhisperEvent(user, text, msg, this)));
 		this.chat.onAction((channel, user, text, msg) =>
-			this.emit(this.onAction, new MessageEvent(channel, user, text, true, msg, this))
+			this.emit(this.onAction, new MessageEvent(channel, user, text, true, msg, this)),
 		);
 		// endregion
 
@@ -579,8 +579,8 @@ export class Bot extends EventEmitter {
 			async ctx =>
 				await ctx.chat.sendAnnouncement(channel, {
 					message: text,
-					color
-				})
+					color,
+				}),
 		);
 	}
 
@@ -610,8 +610,8 @@ export class Bot extends EventEmitter {
 			async ctx =>
 				await ctx.moderation.banUser(channel, {
 					user,
-					reason
-				})
+					reason,
+				}),
 		);
 	}
 
@@ -636,7 +636,7 @@ export class Bot extends EventEmitter {
 	async unbanByIds(channel: UserIdResolvable, user: UserIdResolvable): Promise<void> {
 		await this.api.asUser(
 			await this._getPreferredUserIdForModAction(channel),
-			async ctx => await ctx.moderation.unbanUser(channel, user)
+			async ctx => await ctx.moderation.unbanUser(channel, user),
 		);
 	}
 
@@ -658,7 +658,7 @@ export class Bot extends EventEmitter {
 	async clearById(channel: UserIdResolvable): Promise<void> {
 		await this.api.asUser(
 			await this._getPreferredUserIdForModAction(channel),
-			async ctx => await ctx.moderation.deleteChatMessages(channel)
+			async ctx => await ctx.moderation.deleteChatMessages(channel),
 		);
 	}
 
@@ -718,7 +718,7 @@ export class Bot extends EventEmitter {
 	async deleteMessageById(channel: UserIdResolvable, message: string | ChatMessage): Promise<void> {
 		await this.api.asUser(
 			await this._getPreferredUserIdForModAction(channel),
-			async ctx => await ctx.moderation.deleteChatMessages(channel, extractMessageId(message))
+			async ctx => await ctx.moderation.deleteChatMessages(channel, extractMessageId(message)),
 		);
 	}
 
@@ -739,7 +739,7 @@ export class Bot extends EventEmitter {
 	 */
 	async enableEmoteOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
-			emoteOnlyModeEnabled: true
+			emoteOnlyModeEnabled: true,
 		});
 	}
 
@@ -760,7 +760,7 @@ export class Bot extends EventEmitter {
 	 */
 	async disableEmoteOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
-			emoteOnlyModeEnabled: false
+			emoteOnlyModeEnabled: false,
 		});
 	}
 
@@ -784,7 +784,7 @@ export class Bot extends EventEmitter {
 	async enableFollowersOnlyById(channel: UserIdResolvable, minFollowTime: number = 0): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			followerOnlyModeEnabled: true,
-			followerOnlyModeDelay: minFollowTime
+			followerOnlyModeDelay: minFollowTime,
 		});
 	}
 
@@ -805,7 +805,7 @@ export class Bot extends EventEmitter {
 	 */
 	async disableFollowersOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
-			followerOnlyModeEnabled: false
+			followerOnlyModeEnabled: false,
 		});
 	}
 
@@ -872,7 +872,7 @@ export class Bot extends EventEmitter {
 	 */
 	async enableUniqueChatById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
-			uniqueChatModeEnabled: true
+			uniqueChatModeEnabled: true,
 		});
 	}
 
@@ -893,7 +893,7 @@ export class Bot extends EventEmitter {
 	 */
 	async disableUniqueChatById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
-			uniqueChatModeEnabled: false
+			uniqueChatModeEnabled: false,
 		});
 	}
 
@@ -917,7 +917,7 @@ export class Bot extends EventEmitter {
 	async enableSlowModeById(channel: UserIdResolvable, delayBetweenMessages: number = 30): Promise<void> {
 		await this._updateChannelSettings(channel, {
 			slowModeEnabled: true,
-			slowModeDelay: delayBetweenMessages
+			slowModeDelay: delayBetweenMessages,
 		});
 	}
 
@@ -938,7 +938,7 @@ export class Bot extends EventEmitter {
 	 */
 	async disableSlowModeById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
-			slowModeEnabled: false
+			slowModeEnabled: false,
 		});
 	}
 
@@ -959,7 +959,7 @@ export class Bot extends EventEmitter {
 	 */
 	async enableSubsOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
-			subscriberOnlyModeEnabled: true
+			subscriberOnlyModeEnabled: true,
 		});
 	}
 
@@ -980,7 +980,7 @@ export class Bot extends EventEmitter {
 	 */
 	async disableSubsOnlyById(channel: UserIdResolvable): Promise<void> {
 		await this._updateChannelSettings(channel, {
-			subscriberOnlyModeEnabled: false
+			subscriberOnlyModeEnabled: false,
 		});
 	}
 
@@ -1014,7 +1014,7 @@ export class Bot extends EventEmitter {
 		channel: UserIdResolvable,
 		user: UserIdResolvable,
 		duration: number = 60,
-		reason: string = ''
+		reason: string = '',
 	): Promise<void> {
 		if (!Number.isInteger(duration) || duration < 1 || duration > 1209600) {
 			throw new Error(`Invalid timeout duration: ${duration}. It must be an integer between 1 and 1209600.`);
@@ -1026,8 +1026,8 @@ export class Bot extends EventEmitter {
 				await ctx.moderation.banUser(channel, {
 					user,
 					reason,
-					duration
-				})
+					duration,
+				}),
 		);
 	}
 
@@ -1223,7 +1223,7 @@ export class Bot extends EventEmitter {
 			if (params !== null) {
 				return {
 					command,
-					params
+					params,
 				};
 			}
 		}
@@ -1270,11 +1270,11 @@ export class Bot extends EventEmitter {
 	/** @internal */
 	private async _updateChannelSettings(
 		channel: UserIdResolvable,
-		settings: HelixUpdateChatSettingsParams
+		settings: HelixUpdateChatSettingsParams,
 	): Promise<void> {
 		await this.api.asUser(
 			await this._getPreferredUserIdForModAction(channel),
-			async ctx => await ctx.chat.updateSettings(channel, settings)
+			async ctx => await ctx.chat.updateSettings(channel, settings),
 		);
 	}
 

@@ -85,15 +85,15 @@ export class AppTokenAuthProvider implements AuthProvider {
 					if (scopes.every(scope => !this._impliedScopes.includes(scope))) {
 						throw new Error(
 							`One of the scopes ${scopes.join(
-								', '
-							)} requested but only the scope ${this._impliedScopes.join(', ')} is implied`
+								', ',
+							)} requested but only the scope ${this._impliedScopes.join(', ')} is implied`,
 						);
 					}
 				} else {
 					throw new Error(
 						`One of the scopes ${scopes.join(
-							', '
-						)} requested but the client credentials flow does not support scopes`
+							', ',
+						)} requested but the client credentials flow does not support scopes`,
 					);
 				}
 			}

@@ -3,7 +3,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixHypeTrainContributionData,
-	type HelixHypeTrainContributionType
+	type HelixHypeTrainContributionType,
 } from '../../interfaces/endpoints/hypeTrain.external';
 import type { HelixUser } from '../user/HelixUser';
 

@@ -38,7 +38,7 @@ export class EventSubChannelPredictionOutcome extends EventSubChannelPredictionB
 	 */
 	get topPredictors(): EventSubChannelPredictionPredictor[] {
 		return this[rawDataSymbol].top_predictors.map(
-			data => new EventSubChannelPredictionPredictor(data, this._client)
+			data => new EventSubChannelPredictionPredictor(data, this._client),
 		);
 	}
 }

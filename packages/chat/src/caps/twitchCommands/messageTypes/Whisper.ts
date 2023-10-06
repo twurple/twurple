@@ -16,7 +16,7 @@ export class Whisper extends Message<WhisperFields> {
 	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
 		super(command, contents, config, {
 			target: {},
-			text: { trailing: true }
+			text: { trailing: true },
 		});
 	}
 

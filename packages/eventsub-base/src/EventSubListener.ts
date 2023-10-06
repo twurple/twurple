@@ -66,7 +66,7 @@ export interface EventSubListener {
 	 */
 	onStreamOnline: (
 		user: UserIdResolvable,
-		handler: (event: EventSubStreamOnlineEvent) => void
+		handler: (event: EventSubStreamOnlineEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -77,7 +77,7 @@ export interface EventSubListener {
 	 */
 	onStreamOffline: (
 		user: UserIdResolvable,
-		handler: (event: EventSubStreamOfflineEvent) => void
+		handler: (event: EventSubStreamOfflineEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -88,7 +88,7 @@ export interface EventSubListener {
 	 */
 	onChannelUpdate: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelUpdateEvent) => void
+		handler: (event: EventSubChannelUpdateEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -101,7 +101,7 @@ export interface EventSubListener {
 	onChannelFollow: (
 		user: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (event: EventSubChannelFollowEvent) => void
+		handler: (event: EventSubChannelFollowEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -112,7 +112,7 @@ export interface EventSubListener {
 	 */
 	onChannelSubscription: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscriptionEvent) => void
+		handler: (event: EventSubChannelSubscriptionEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -123,7 +123,7 @@ export interface EventSubListener {
 	 */
 	onChannelSubscriptionGift: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscriptionGiftEvent) => void
+		handler: (event: EventSubChannelSubscriptionGiftEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -134,7 +134,7 @@ export interface EventSubListener {
 	 */
 	onChannelSubscriptionMessage: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscriptionMessageEvent) => void
+		handler: (event: EventSubChannelSubscriptionMessageEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -145,7 +145,7 @@ export interface EventSubListener {
 	 */
 	onChannelSubscriptionEnd: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelSubscriptionEndEvent) => void
+		handler: (event: EventSubChannelSubscriptionEndEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -156,7 +156,7 @@ export interface EventSubListener {
 	 */
 	onChannelCheer: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCheerEvent) => void
+		handler: (event: EventSubChannelCheerEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -167,7 +167,7 @@ export interface EventSubListener {
 	 */
 	onChannelCharityCampaignStart: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCharityCampaignStartEvent) => void
+		handler: (event: EventSubChannelCharityCampaignStartEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -178,7 +178,7 @@ export interface EventSubListener {
 	 */
 	onChannelCharityCampaignStop: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCharityCampaignStopEvent) => void
+		handler: (event: EventSubChannelCharityCampaignStopEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -189,7 +189,7 @@ export interface EventSubListener {
 	 */
 	onChannelCharityDonation: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCharityDonationEvent) => void
+		handler: (event: EventSubChannelCharityDonationEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -200,7 +200,7 @@ export interface EventSubListener {
 	 */
 	onChannelCharityCampaignProgress: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void
+		handler: (event: EventSubChannelCharityCampaignProgressEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -219,7 +219,7 @@ export interface EventSubListener {
 	 */
 	onChannelUnban: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelUnbanEvent) => void
+		handler: (event: EventSubChannelUnbanEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -232,7 +232,7 @@ export interface EventSubListener {
 	onChannelShieldModeBegin: (
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (event: EventSubChannelShieldModeBeginEvent) => void
+		handler: (event: EventSubChannelShieldModeBeginEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -245,7 +245,7 @@ export interface EventSubListener {
 	onChannelShieldModeEnd: (
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (event: EventSubChannelShieldModeEndEvent) => void
+		handler: (event: EventSubChannelShieldModeEndEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -256,7 +256,7 @@ export interface EventSubListener {
 	 */
 	onChannelModeratorAdd: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelModeratorEvent) => void
+		handler: (event: EventSubChannelModeratorEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -267,7 +267,7 @@ export interface EventSubListener {
 	 */
 	onChannelModeratorRemove: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelModeratorEvent) => void
+		handler: (event: EventSubChannelModeratorEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -278,7 +278,7 @@ export interface EventSubListener {
 	 */
 	onChannelRaidFrom: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelRaidEvent) => void
+		handler: (event: EventSubChannelRaidEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -289,7 +289,7 @@ export interface EventSubListener {
 	 */
 	onChannelRaidTo: (
 		user: UserIdResolvable,
-		handler: (event: EventSubChannelRaidEvent) => void
+		handler: (event: EventSubChannelRaidEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -300,7 +300,7 @@ export interface EventSubListener {
 	 */
 	onChannelRewardAdd: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -311,7 +311,7 @@ export interface EventSubListener {
 	 */
 	onChannelRewardUpdate: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -324,7 +324,7 @@ export interface EventSubListener {
 	onChannelRewardUpdateForReward: (
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -335,7 +335,7 @@ export interface EventSubListener {
 	 */
 	onChannelRewardRemove: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -348,7 +348,7 @@ export interface EventSubListener {
 	onChannelRewardRemoveForReward: (
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRewardEvent) => void
+		handler: (data: EventSubChannelRewardEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -359,7 +359,7 @@ export interface EventSubListener {
 	 */
 	onChannelRedemptionAdd: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRedemptionAddEvent) => void
+		handler: (data: EventSubChannelRedemptionAddEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -372,7 +372,7 @@ export interface EventSubListener {
 	onChannelRedemptionAddForReward: (
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRedemptionAddEvent) => void
+		handler: (data: EventSubChannelRedemptionAddEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -383,7 +383,7 @@ export interface EventSubListener {
 	 */
 	onChannelRedemptionUpdate: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
+		handler: (data: EventSubChannelRedemptionUpdateEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -396,7 +396,7 @@ export interface EventSubListener {
 	onChannelRedemptionUpdateForReward: (
 		user: UserIdResolvable,
 		rewardId: string,
-		handler: (data: EventSubChannelRedemptionUpdateEvent) => void
+		handler: (data: EventSubChannelRedemptionUpdateEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -407,7 +407,7 @@ export interface EventSubListener {
 	 */
 	onChannelPollBegin: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPollBeginEvent) => void
+		handler: (data: EventSubChannelPollBeginEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -418,7 +418,7 @@ export interface EventSubListener {
 	 */
 	onChannelPollProgress: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPollProgressEvent) => void
+		handler: (data: EventSubChannelPollProgressEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -429,7 +429,7 @@ export interface EventSubListener {
 	 */
 	onChannelPollEnd: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPollEndEvent) => void
+		handler: (data: EventSubChannelPollEndEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -440,7 +440,7 @@ export interface EventSubListener {
 	 */
 	onChannelPredictionBegin: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPredictionBeginEvent) => void
+		handler: (data: EventSubChannelPredictionBeginEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -451,7 +451,7 @@ export interface EventSubListener {
 	 */
 	onChannelPredictionProgress: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPredictionProgressEvent) => void
+		handler: (data: EventSubChannelPredictionProgressEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -462,7 +462,7 @@ export interface EventSubListener {
 	 */
 	onChannelPredictionLock: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPredictionLockEvent) => void
+		handler: (data: EventSubChannelPredictionLockEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -473,7 +473,7 @@ export interface EventSubListener {
 	 */
 	onChannelPredictionEnd: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelPredictionEndEvent) => void
+		handler: (data: EventSubChannelPredictionEndEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -484,7 +484,7 @@ export interface EventSubListener {
 	 */
 	onChannelGoalBegin: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelGoalBeginEvent) => void
+		handler: (data: EventSubChannelGoalBeginEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -495,7 +495,7 @@ export interface EventSubListener {
 	 */
 	onChannelGoalProgress: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelGoalProgressEvent) => void
+		handler: (data: EventSubChannelGoalProgressEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -506,7 +506,7 @@ export interface EventSubListener {
 	 */
 	onChannelGoalEnd: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelGoalEndEvent) => void
+		handler: (data: EventSubChannelGoalEndEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -517,7 +517,7 @@ export interface EventSubListener {
 	 */
 	onChannelHypeTrainBegin: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelHypeTrainBeginEvent) => void
+		handler: (data: EventSubChannelHypeTrainBeginEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -528,7 +528,7 @@ export interface EventSubListener {
 	 */
 	onChannelHypeTrainProgress: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelHypeTrainProgressEvent) => void
+		handler: (data: EventSubChannelHypeTrainProgressEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -539,7 +539,7 @@ export interface EventSubListener {
 	 */
 	onChannelHypeTrainEnd: (
 		user: UserIdResolvable,
-		handler: (data: EventSubChannelHypeTrainEndEvent) => void
+		handler: (data: EventSubChannelHypeTrainEndEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -552,7 +552,7 @@ export interface EventSubListener {
 	onChannelShoutoutCreate: (
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (data: EventSubChannelShoutoutCreateEvent) => void
+		handler: (data: EventSubChannelShoutoutCreateEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -565,7 +565,7 @@ export interface EventSubListener {
 	onChannelShoutoutReceive: (
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
-		handler: (data: EventSubChannelShoutoutReceiveEvent) => void
+		handler: (data: EventSubChannelShoutoutReceiveEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -576,7 +576,7 @@ export interface EventSubListener {
 	 */
 	onDropEntitlementGrant: (
 		filter: HelixEventSubDropEntitlementGrantFilter,
-		handler: (event: EventSubDropEntitlementGrantEvent) => void
+		handler: (event: EventSubDropEntitlementGrantEvent) => void,
 	) => EventSubSubscription;
 
 	/**
@@ -585,7 +585,7 @@ export interface EventSubListener {
 	 * @param handler  The function that will be called for any new notifications.
 	 */
 	onExtensionBitsTransactionCreate: (
-		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void
+		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void,
 	) => EventSubSubscription;
 
 	/**

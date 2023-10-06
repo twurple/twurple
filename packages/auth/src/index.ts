@@ -2,7 +2,7 @@ export type {
 	AccessToken,
 	AccessTokenMaybeWithUserId,
 	AccessTokenWithUserId,
-	ExpireableAccessToken
+	ExpireableAccessToken,
 } from './AccessToken';
 export { accessTokenIsExpired, getExpiryDateOfAccessToken } from './AccessToken';
 
@@ -13,7 +13,7 @@ export {
 	getValidTokenFromProviderForUser,
 	getValidTokenFromProviderForIntent,
 	refreshUserToken,
-	revokeToken
+	revokeToken,
 } from './helpers';
 
 export { TokenFetcher } from './TokenFetcher';

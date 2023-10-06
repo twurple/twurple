@@ -6,7 +6,7 @@ import {
 	rtfm,
 	type UserIdResolvable,
 	type UserIdResolvableType,
-	type UserNameResolveableType
+	type UserNameResolveableType,
 } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import { type HelixBroadcasterType, type HelixUserData } from '../../interfaces/endpoints/user.external';

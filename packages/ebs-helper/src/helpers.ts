@@ -4,7 +4,7 @@ import { extractUserId, HelixExtension, type HelixExtensionData, type UserIdReso
 import {
 	HelixExtensionConfigurationSegment,
 	type HelixExtensionConfigurationSegmentData,
-	type HelixExtensionConfigurationSegmentName
+	type HelixExtensionConfigurationSegmentName,
 } from './classes/HelixExtensionConfigurationSegment';
 import { HelixExtensionSecretList } from './classes/HelixExtensionSecretList';
 import { type HelixExtensionSecretListData } from './classes/HelixExtensionSecretList.external';
@@ -20,7 +20,7 @@ import {
 	createPubSubMessageJwtData,
 	getExtensionQuery,
 	getExtensionSecretCreateQuery,
-	getExtensionSecretsQuery
+	getExtensionSecretsQuery,
 } from './helpers.external';
 import { type BaseExternalJwtConfig, createExternalJwt } from './jwt';
 
@@ -52,10 +52,10 @@ export async function getExtension(config: EbsCallConfig, version?: string): Pro
 	const result = await callTwitchApi<HelixResponse<HelixExtensionData>>(
 		{
 			url: 'extensions',
-			query: getExtensionQuery(config, version)
+			query: getExtensionQuery(config, version),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 
 	return mapNullable(result.data[0], data => new HelixExtension(data));
@@ -74,10 +74,10 @@ export async function getExtensionSecrets(config: EbsCallConfig): Promise<HelixE
 	const result = await callTwitchApi<HelixResponse<HelixExtensionSecretListData>>(
 		{
 			url: 'extensions/jwt/secrets',
-			query: getExtensionSecretsQuery(config)
+			query: getExtensionSecretsQuery(config),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 
 	return new HelixExtensionSecretList(result.data[0]);
@@ -98,10 +98,10 @@ export async function createExtensionSecret(config: EbsCallConfig, delay?: numbe
 		{
 			url: 'extensions/jwt/secrets',
 			method: 'POST',
-			query: getExtensionSecretCreateQuery(config, delay)
+			query: getExtensionSecretCreateQuery(config, delay),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 
 	return new HelixExtensionSecretList(result.data[0]);
@@ -121,7 +121,7 @@ export async function setExtensionRequiredConfiguration(
 	config: EbsCallConfig,
 	broadcaster: UserIdResolvable,
 	version: string,
-	configVersion: string
+	configVersion: string,
 ): Promise<void> {
 	const jwt = await createExternalJwt(config);
 
@@ -129,10 +129,10 @@ export async function setExtensionRequiredConfiguration(
 		{
 			url: 'extensions/required_configuration',
 			query: createBroadcasterQuery(broadcaster),
-			jsonBody: createExtensionRequiredConfigurationBody(config, version, configVersion)
+			jsonBody: createExtensionRequiredConfigurationBody(config, version, configVersion),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 }
 
@@ -140,17 +140,17 @@ export async function setExtensionRequiredConfiguration(
 async function getAnyConfigurationSegment(
 	config: EbsCallConfig,
 	segment: HelixExtensionConfigurationSegmentName,
-	broadcaster?: UserIdResolvable
+	broadcaster?: UserIdResolvable,
 ): Promise<HelixExtensionConfigurationSegment | null> {
 	const jwt = await createExternalJwt(config);
 
 	const result = await callTwitchApi<HelixResponse<HelixExtensionConfigurationSegmentData>>(
 		{
 			url: 'extensions/configurations',
-			query: createConfigurationSegmentQuery(config, segment, broadcaster)
+			query: createConfigurationSegmentQuery(config, segment, broadcaster),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 
 	return mapNullable(result.data[0], data => new HelixExtensionConfigurationSegment(data));
@@ -164,7 +164,7 @@ async function getAnyConfigurationSegment(
  * @expandParams
  */
 export async function getExtensionGlobalConfiguration(
-	config: EbsCallConfig
+	config: EbsCallConfig,
 ): Promise<HelixExtensionConfigurationSegment | null> {
 	return await getAnyConfigurationSegment(config, 'global');
 }
@@ -179,7 +179,7 @@ export async function getExtensionGlobalConfiguration(
  */
 export async function getExtensionBroadcasterConfiguration(
 	config: EbsCallConfig,
-	broadcaster: UserIdResolvable
+	broadcaster: UserIdResolvable,
 ): Promise<HelixExtensionConfigurationSegment | null> {
 	return await getAnyConfigurationSegment(config, 'broadcaster', broadcaster);
 }
@@ -194,7 +194,7 @@ export async function getExtensionBroadcasterConfiguration(
  */
 export async function getExtensionDeveloperConfiguration(
 	config: EbsCallConfig,
-	broadcaster: UserIdResolvable
+	broadcaster: UserIdResolvable,
 ): Promise<HelixExtensionConfigurationSegment | null> {
 	return await getAnyConfigurationSegment(config, 'developer', broadcaster);
 }
@@ -205,7 +205,7 @@ async function setAnyConfigurationSegment(
 	segment: HelixExtensionConfigurationSegmentName,
 	broadcaster?: UserIdResolvable,
 	content?: string,
-	version?: string
+	version?: string,
 ): Promise<void> {
 	const jwt = await createExternalJwt(config);
 
@@ -213,10 +213,10 @@ async function setAnyConfigurationSegment(
 		{
 			url: 'extensions/configurations',
 			method: 'PUT',
-			jsonBody: createConfigurationSegmentBody(config, segment, broadcaster, content, version)
+			jsonBody: createConfigurationSegmentBody(config, segment, broadcaster, content, version),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 }
 
@@ -232,7 +232,7 @@ async function setAnyConfigurationSegment(
 export async function setExtensionGlobalConfiguration(
 	config: EbsCallConfig,
 	content: string,
-	version?: string
+	version?: string,
 ): Promise<void> {
 	await setAnyConfigurationSegment(config, 'global', undefined, content, version);
 }
@@ -251,7 +251,7 @@ export async function setExtensionBroadcasterConfiguration(
 	config: EbsCallConfig,
 	broadcaster: UserIdResolvable,
 	content: string,
-	version?: string
+	version?: string,
 ): Promise<void> {
 	await setAnyConfigurationSegment(config, 'broadcaster', broadcaster, content, version);
 }
@@ -270,7 +270,7 @@ export async function setExtensionDeveloperConfiguration(
 	config: EbsCallConfig,
 	broadcaster: UserIdResolvable,
 	content: string,
-	version?: string
+	version?: string,
 ): Promise<void> {
 	await setAnyConfigurationSegment(config, 'developer', broadcaster, content, version);
 }
@@ -289,7 +289,7 @@ export async function sendExtensionChatMessage(
 	config: EbsCallConfig,
 	broadcaster: UserIdResolvable,
 	extensionVersion: string,
-	text: string
+	text: string,
 ): Promise<void> {
 	const jwt = await createExternalJwt({ ...config, additionalData: createChatMessageJwtData(broadcaster) });
 
@@ -298,10 +298,10 @@ export async function sendExtensionChatMessage(
 			url: 'extensions/chat',
 			method: 'POST',
 			query: createBroadcasterQuery(broadcaster),
-			jsonBody: createChatMessageBody(config, extensionVersion, text)
+			jsonBody: createChatMessageBody(config, extensionVersion, text),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 }
 
@@ -310,21 +310,21 @@ async function sendAnyExtensionPubSubMessage(
 	config: EbsCallConfig,
 	targets: string[],
 	message: string,
-	broadcaster: UserIdResolvable
+	broadcaster: UserIdResolvable,
 ): Promise<void> {
 	const jwt = await createExternalJwt({
 		...config,
-		additionalData: createPubSubMessageJwtData(broadcaster, targets)
+		additionalData: createPubSubMessageJwtData(broadcaster, targets),
 	});
 
 	await callTwitchApi(
 		{
 			url: 'extensions/pubsub',
 			method: 'POST',
-			jsonBody: createPubSubMessageBody(targets, broadcaster, message)
+			jsonBody: createPubSubMessageBody(targets, broadcaster, message),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 }
 
@@ -339,17 +339,17 @@ async function sendAnyExtensionPubSubMessage(
 export async function sendExtensionPubSubGlobalMessage(config: EbsCallConfig, message: string): Promise<void> {
 	const jwt = await createExternalJwt({
 		...config,
-		additionalData: createPubSubGlobalMessageJwtData()
+		additionalData: createPubSubGlobalMessageJwtData(),
 	});
 
 	await callTwitchApi(
 		{
 			url: 'extensions/pubsub',
 			method: 'POST',
-			jsonBody: createPubSubGlobalMessageBody(message)
+			jsonBody: createPubSubGlobalMessageBody(message),
 		},
 		config.clientId,
-		jwt
+		jwt,
 	);
 }
 
@@ -365,7 +365,7 @@ export async function sendExtensionPubSubGlobalMessage(config: EbsCallConfig, me
 export async function sendExtensionPubSubBroadcastMessage(
 	config: EbsCallConfig,
 	broadcaster: UserIdResolvable,
-	message: string
+	message: string,
 ): Promise<void> {
 	await sendAnyExtensionPubSubMessage(config, ['broadcast'], message, broadcaster);
 }
@@ -384,13 +384,13 @@ export async function sendExtensionPubSubWhisperMessage(
 	config: EbsCallConfig,
 	broadcaster: UserIdResolvable,
 	targets: UserIdResolvable | UserIdResolvable[],
-	message: string
+	message: string,
 ): Promise<void> {
 	const targetsArray = Array.isArray(targets) ? targets : [targets];
 	await sendAnyExtensionPubSubMessage(
 		config,
 		targetsArray.map(u => `whisper-${extractUserId(u)}`),
 		message,
-		broadcaster
+		broadcaster,
 	);
 }

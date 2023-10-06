@@ -40,7 +40,7 @@ export class StaticAuthProvider implements AuthProvider {
 						refreshToken: null,
 						scope: scopes ?? [],
 						expiresIn: null,
-						obtainmentTimestamp: Date.now()
+						obtainmentTimestamp: Date.now(),
 				  }
 				: accessToken;
 		this._scopes = scopes;
@@ -105,7 +105,7 @@ export class StaticAuthProvider implements AuthProvider {
 			this._accessToken.accessToken,
 			this._userId,
 			this._scopes,
-			requestedScopeSets
+			requestedScopeSets,
 		);
 
 		this._scopes = scopes;

@@ -41,14 +41,14 @@ describe('Auto Text Splitter with Spaces', () => {
 			'n',
 			'n',
 			'e',
-			'l'
+			'l',
 		]);
 	});
 
 	test('Over character limit and should have 2 messages', () => {
 		expect(splitOnSpaces(testString.repeat(35), 500)).toStrictEqual([
 			'This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This',
-			'is a test This is a test'
+			'is a test This is a test',
 		]);
 	});
 
@@ -56,21 +56,21 @@ describe('Auto Text Splitter with Spaces', () => {
 		expect(splitOnSpaces(testString.repeat(70), 500)).toStrictEqual([
 			'This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This',
 			'is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a test This is a',
-			'test This is a test This is a test This is a test'
+			'test This is a test This is a test This is a test',
 		]);
 	});
 
 	test('Over character limit, has no spaces and should have 2 messages', () => {
 		expect(splitOnSpaces(testStringNoSpaces.repeat(40), 250)).toStrictEqual([
 			'ThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisat',
-			'estThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatest'
+			'estThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatestThisisatest',
 		]);
 	});
 
 	test('Real use case with 2 messages', () => {
 		expect(splitOnSpaces(realUseCase, 500)).toStrictEqual([
 			"channel : (es) hola, este es un caso de uso real de alguien que escribe un mensaje realmente largo y, como resultado, tiene que dividirse en muchos mensajes | (pt) olá, este é um caso de uso real de alguém digitando uma mensagem muito longa e tendo que ser dividida em muitas mensagens como resultado | (fr) bonjour c'est un vrai cas d'utilisation de quelqu'un qui tape un très long message et qui doit être divisé en plusieurs messages en conséquence | (ru) привет, это реальный случай, когда кто-то",
-			'набирает очень длинное сообщение, и в результате его приходится разбивать на множество сообщений.'
+			'набирает очень длинное сообщение, и в результате его приходится разбивать на множество сообщений.',
 		]);
 	});
 
@@ -81,7 +81,7 @@ describe('Auto Text Splitter with Spaces', () => {
 	test('In a language written from right to left and split into 2 messages', () => {
 		expect(splitOnSpaces(longStringFromRightToLeft, 500)).toStrictEqual([
 			'مرحبًا ، هذه رسالة طويلة حقًا مكتوبة باللغة العربية وأردت اختبار ما إذا كانت ستنجح بحيث يكون كل شيء منطقيًا وإلا فلن يصلح على الإطلاق. هذا هو آخر شيء أريد أن أفعله. الشيء المهم هو أنها ميزة قوية ستساعد العديد من المطورين هناك. خاصة أنه يقوم بالفصل على أساس المسافات بدلاً من مجرد الشخصيات التي أعتقد أنها أفضل بكثير. مرحبًا ، هذه رسالة طويلة حقًا مكتوبة باللغة العربية وأردت اختبار ما إذا كانت ستنجح بحيث يكون كل شيء منطقيًا وإلا فلن يصلح على الإطلاق. هذا هو آخر شيء أريد أن أفعله الشيء المهم هو أنها',
-			'ميزة قوية ستساعد العديد من المطورين هناك خاصة أنه يقوم بالفصل على أساس المسافات بدلاً من مجرد الشخصيات التي أعتقد أنها أفضل بكثير'
+			'ميزة قوية ستساعد العديد من المطورين هناك خاصة أنه يقوم بالفصل على أساس المسافات بدلاً من مجرد الشخصيات التي أعتقد أنها أفضل بكثير',
 		]);
 	});
 });

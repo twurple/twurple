@@ -65,7 +65,7 @@ export function createStreamQuery(filter: HelixStreamFilter) {
 		language: filter.language,
 		type: filter.type,
 		user_id: filter.userId,
-		user_login: filter.userName
+		user_login: filter.userName,
 	};
 }
 
@@ -73,13 +73,13 @@ export function createStreamQuery(filter: HelixStreamFilter) {
 export function createStreamMarkerBody(broadcaster: UserIdResolvable, description?: string) {
 	return {
 		user_id: extractUserId(broadcaster),
-		description
+		description,
 	};
 }
 
 /** @internal */
 export function createVideoQuery(id: string) {
 	return {
-		video_id: id
+		video_id: id,
 	};
 }

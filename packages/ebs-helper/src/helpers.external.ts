@@ -6,14 +6,14 @@ import { type EbsCallConfig } from './helpers';
 export function getExtensionQuery(config: EbsCallConfig, version: string | undefined) {
 	return {
 		extension_id: config.clientId,
-		extension_version: version
+		extension_version: version,
 	};
 }
 
 /** @internal */
 export function getExtensionSecretsQuery(config: EbsCallConfig) {
 	return {
-		extension_id: config.clientId
+		extension_id: config.clientId,
 	};
 }
 
@@ -21,7 +21,7 @@ export function getExtensionSecretsQuery(config: EbsCallConfig) {
 export function getExtensionSecretCreateQuery(config: EbsCallConfig, delay?: number) {
 	return {
 		extension_id: config.clientId,
-		delay: delay?.toString()
+		delay: delay?.toString(),
 	};
 }
 
@@ -29,12 +29,12 @@ export function getExtensionSecretCreateQuery(config: EbsCallConfig, delay?: num
 export function createExtensionRequiredConfigurationBody(
 	config: EbsCallConfig,
 	version: string,
-	configVersion: string
+	configVersion: string,
 ) {
 	return {
 		extension_id: config.clientId,
 		extension_version: version,
-		required_configuration: configVersion
+		required_configuration: configVersion,
 	};
 }
 
@@ -42,12 +42,12 @@ export function createExtensionRequiredConfigurationBody(
 export function createConfigurationSegmentQuery(
 	config: EbsCallConfig,
 	segment: 'global' | 'broadcaster' | 'developer',
-	broadcaster?: UserIdResolvable
+	broadcaster?: UserIdResolvable,
 ) {
 	return {
 		extension_id: config.clientId,
 		segment,
-		broadcaster_id: mapOptional(broadcaster, extractUserId)
+		broadcaster_id: mapOptional(broadcaster, extractUserId),
 	};
 }
 
@@ -57,14 +57,14 @@ export function createConfigurationSegmentBody(
 	segment: 'global' | 'broadcaster' | 'developer',
 	broadcaster?: UserIdResolvable,
 	content?: string,
-	version?: string
+	version?: string,
 ) {
 	return {
 		extension_id: config.clientId,
 		segment,
 		broadcaster_id: mapOptional(broadcaster, extractUserId),
 		content,
-		version
+		version,
 	};
 }
 
@@ -78,7 +78,7 @@ export function createChatMessageBody(config: EbsCallConfig, extensionVersion: s
 	return {
 		extension_id: config.clientId,
 		extension_version: extensionVersion,
-		text
+		text,
 	};
 }
 
@@ -92,7 +92,7 @@ export function createPubSubGlobalMessageBody(message: string) {
 	return {
 		is_global_broadcast: true,
 		target: ['global'],
-		message
+		message,
 	};
 }
 
@@ -106,6 +106,6 @@ export function createPubSubMessageBody(targets: string[], broadcaster: UserIdRe
 	return {
 		target: targets,
 		broadcaster_id: extractUserId(broadcaster),
-		message
+		message,
 	};
 }

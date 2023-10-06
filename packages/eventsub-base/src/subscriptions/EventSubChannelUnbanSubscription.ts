@@ -13,7 +13,7 @@ export class EventSubChannelUnbanSubscription extends EventSubSubscription<Event
 	constructor(
 		handler: (data: EventSubChannelUnbanEvent) => void,
 		client: EventSubBase,
-		private readonly _userId: string
+		private readonly _userId: string,
 	) {
 		super(handler, client);
 	}
@@ -33,7 +33,7 @@ export class EventSubChannelUnbanSubscription extends EventSubSubscription<Event
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		return await this._client._apiClient.eventSub.subscribeToChannelUnbanEvents(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

@@ -3,7 +3,7 @@ import { rawDataSymbol, rtfm } from '@twurple/common';
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixChannelEmoteData,
-	type HelixChannelEmoteSubscriptionTier
+	type HelixChannelEmoteSubscriptionTier,
 } from '../../interfaces/endpoints/chat.external';
 import { HelixEmote } from './HelixEmote';
 import type { HelixEmoteFromSet } from './HelixEmoteFromSet';

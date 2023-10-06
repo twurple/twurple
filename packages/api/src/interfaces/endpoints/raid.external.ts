@@ -10,6 +10,6 @@ export interface HelixRaidData {
 export function createRaidStartQuery(from: UserIdResolvable, to: UserIdResolvable) {
 	return {
 		from_broadcaster_id: extractUserId(from),
-		to_broadcaster_id: extractUserId(to)
+		to_broadcaster_id: extractUserId(to),
 	};
 }

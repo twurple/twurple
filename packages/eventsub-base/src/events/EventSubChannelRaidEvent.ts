@@ -42,7 +42,7 @@ export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEven
 	 */
 	async getRaidingBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(
-			await this._client.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id)
+			await this._client.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id),
 		);
 	}
 

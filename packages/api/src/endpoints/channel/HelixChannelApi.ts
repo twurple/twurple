@@ -3,7 +3,7 @@ import {
 	createBroadcasterQuery,
 	type HelixPaginatedResponse,
 	type HelixPaginatedResponseWithTotal,
-	type HelixResponse
+	type HelixResponse,
 } from '@twurple/api-call';
 import { type CommercialLength, extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
@@ -15,13 +15,13 @@ import {
 	type HelixChannelData,
 	type HelixChannelEditorData,
 	type HelixChannelFollowerData,
-	type HelixFollowedChannelData
+	type HelixFollowedChannelData,
 } from '../../interfaces/endpoints/channel.external';
 import { type HelixChannelUpdate } from '../../interfaces/endpoints/channel.input';
 import {
 	createChannelUsersCheckQuery,
 	createSingleKeyQuery,
-	type HelixUserRelationData
+	type HelixUserRelationData,
 } from '../../interfaces/endpoints/generic.external';
 import { HelixUserRelation } from '../../relations/HelixUserRelation';
 import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
@@ -31,7 +31,7 @@ import {
 	createPaginatedResult,
 	createPaginatedResultWithTotal,
 	type HelixPaginatedResult,
-	type HelixPaginatedResultWithTotal
+	type HelixPaginatedResultWithTotal,
 } from '../../utils/pagination/HelixPaginatedResult';
 import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
@@ -59,12 +59,12 @@ export class HelixChannelApi extends BaseApi {
 	/** @internal */
 	@Enumerable(false) private readonly _getChannelByIdBatcher = new HelixRequestBatcher(
 		{
-			url: 'channels'
+			url: 'channels',
 		},
 		'broadcaster_id',
 		'broadcaster_id',
 		this._client,
-		(data: HelixChannelData) => new HelixChannel(data, this._client)
+		(data: HelixChannelData) => new HelixChannel(data, this._client),
 	);
 
 	/**
@@ -78,7 +78,7 @@ export class HelixChannelApi extends BaseApi {
 			type: 'helix',
 			url: 'channels',
 			userId,
-			query: createBroadcasterQuery(userId)
+			query: createBroadcasterQuery(userId),
 		});
 
 		return mapNullable(result.data[0], data => new HelixChannel(data, this._client));
@@ -103,7 +103,7 @@ export class HelixChannelApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixChannelData>>({
 			type: 'helix',
 			url: 'channels',
-			query: createSingleKeyQuery('broadcaster_id', userIds)
+			query: createSingleKeyQuery('broadcaster_id', userIds),
 		});
 
 		return result.data.map(data => new HelixChannel(data, this._client));
@@ -123,7 +123,7 @@ export class HelixChannelApi extends BaseApi {
 			userId: extractUserId(user),
 			scopes: ['channel:manage:broadcast'],
 			query: createBroadcasterQuery(user),
-			jsonBody: createChannelUpdateBody(data)
+			jsonBody: createChannelUpdateBody(data),
 		});
 	}
 
@@ -140,7 +140,7 @@ export class HelixChannelApi extends BaseApi {
 			method: 'POST',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:edit:commercial'],
-			jsonBody: createChannelCommercialBody(broadcaster, length)
+			jsonBody: createChannelCommercialBody(broadcaster, length),
 		});
 	}
 
@@ -155,7 +155,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/editors',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:read:editors'],
-			query: createBroadcasterQuery(broadcaster)
+			query: createBroadcasterQuery(broadcaster),
 		});
 
 		return result.data.map(data => new HelixChannelEditor(data, this._client));
@@ -171,7 +171,7 @@ export class HelixChannelApi extends BaseApi {
 	 */
 	async getVips(
 		broadcaster: UserIdResolvable,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedResult<HelixUserRelation>> {
 		const response = await this._client.callApi<HelixPaginatedResponse<HelixUserRelationData>>({
 			type: 'helix',
@@ -180,8 +180,8 @@ export class HelixChannelApi extends BaseApi {
 			scopes: ['channel:read:vips', 'channel:manage:vips'],
 			query: {
 				...createBroadcasterQuery(broadcaster),
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return createPaginatedResult(response, HelixUserRelation, this._client);
@@ -198,10 +198,10 @@ export class HelixChannelApi extends BaseApi {
 				url: 'channels/vips',
 				userId: extractUserId(broadcaster),
 				scopes: ['channel:read:vips', 'channel:manage:vips'],
-				query: createBroadcasterQuery(broadcaster)
+				query: createBroadcasterQuery(broadcaster),
 			},
 			this._client,
-			data => new HelixUserRelation(data, this._client)
+			data => new HelixUserRelation(data, this._client),
 		);
 	}
 
@@ -217,7 +217,7 @@ export class HelixChannelApi extends BaseApi {
 			url: 'channels/vips',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:read:vips', 'channel:manage:vips'],
-			query: createChannelUsersCheckQuery(broadcaster, users)
+			query: createChannelUsersCheckQuery(broadcaster, users),
 		});
 
 		return response.data.map(data => new HelixUserRelation(data, this._client));
@@ -249,7 +249,7 @@ export class HelixChannelApi extends BaseApi {
 			method: 'POST',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:vips'],
-			query: createChannelVipUpdateQuery(broadcaster, user)
+			query: createChannelVipUpdateQuery(broadcaster, user),
 		});
 	}
 
@@ -266,7 +266,7 @@ export class HelixChannelApi extends BaseApi {
 			method: 'DELETE',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:vips'],
-			query: createChannelVipUpdateQuery(broadcaster, user)
+			query: createChannelVipUpdateQuery(broadcaster, user),
 		});
 	}
 
@@ -283,8 +283,8 @@ export class HelixChannelApi extends BaseApi {
 			userId: extractUserId(broadcaster),
 			query: {
 				...createChannelFollowerQuery(broadcaster),
-				...createPaginationQuery({ limit: 1 })
-			}
+				...createPaginationQuery({ limit: 1 }),
+			},
 		});
 
 		return result.total;
@@ -309,7 +309,7 @@ export class HelixChannelApi extends BaseApi {
 	async getChannelFollowers(
 		broadcaster: UserIdResolvable,
 		user?: UserIdResolvable,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedResultWithTotal<HelixChannelFollower>> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixChannelFollowerData>>({
 			type: 'helix',
@@ -320,8 +320,8 @@ export class HelixChannelApi extends BaseApi {
 			scopes: ['moderator:read:followers'],
 			query: {
 				...createChannelFollowerQuery(broadcaster, user),
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return createPaginatedResultWithTotal(result, HelixChannelFollower, this._client);
@@ -339,7 +339,7 @@ export class HelixChannelApi extends BaseApi {
 	 * @expandParams
 	 */
 	getChannelFollowersPaginated(
-		broadcaster: UserIdResolvable
+		broadcaster: UserIdResolvable,
 	): HelixPaginatedRequestWithTotal<HelixChannelFollowerData, HelixChannelFollower> {
 		return new HelixPaginatedRequestWithTotal<HelixChannelFollowerData, HelixChannelFollower>(
 			{
@@ -348,10 +348,10 @@ export class HelixChannelApi extends BaseApi {
 				userId: extractUserId(broadcaster),
 				canOverrideScopedUserContext: true,
 				scopes: ['moderator:read:followers'],
-				query: createChannelFollowerQuery(broadcaster)
+				query: createChannelFollowerQuery(broadcaster),
 			},
 			this._client,
-			data => new HelixChannelFollower(data, this._client)
+			data => new HelixChannelFollower(data, this._client),
 		);
 	}
 
@@ -370,7 +370,7 @@ export class HelixChannelApi extends BaseApi {
 	async getFollowedChannels(
 		user: UserIdResolvable,
 		broadcaster?: UserIdResolvable,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedResultWithTotal<HelixFollowedChannel>> {
 		const result = await this._client.callApi<HelixPaginatedResponseWithTotal<HelixFollowedChannelData>>({
 			type: 'helix',
@@ -380,8 +380,8 @@ export class HelixChannelApi extends BaseApi {
 			scopes: ['user:read:follows'],
 			query: {
 				...createFollowedChannelQuery(user, broadcaster),
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return createPaginatedResultWithTotal(result, HelixFollowedChannel, this._client);
@@ -399,7 +399,7 @@ export class HelixChannelApi extends BaseApi {
 	 */
 	getFollowedChannelsPaginated(
 		user: UserIdResolvable,
-		broadcaster?: UserIdResolvable
+		broadcaster?: UserIdResolvable,
 	): HelixPaginatedRequestWithTotal<HelixFollowedChannelData, HelixFollowedChannel> {
 		return new HelixPaginatedRequestWithTotal<HelixFollowedChannelData, HelixFollowedChannel>(
 			{
@@ -407,10 +407,10 @@ export class HelixChannelApi extends BaseApi {
 				method: 'GET',
 				userId: extractUserId(user),
 				scopes: ['user:read:follows'],
-				query: createFollowedChannelQuery(user, broadcaster)
+				query: createFollowedChannelQuery(user, broadcaster),
 			},
 			this._client,
-			data => new HelixFollowedChannel(data, this._client)
+			data => new HelixFollowedChannel(data, this._client),
 		);
 	}
 }

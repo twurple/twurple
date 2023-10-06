@@ -5,7 +5,7 @@ import {
 	createSubscriptionCheckQuery,
 	type HelixPaginatedSubscriptionsResponse,
 	type HelixSubscriptionData,
-	type HelixUserSubscriptionData
+	type HelixUserSubscriptionData,
 } from '../../interfaces/endpoints/subscription.external';
 import { type HelixPaginatedSubscriptionsResult } from '../../interfaces/endpoints/subscription.input';
 import { createPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
@@ -41,7 +41,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	 */
 	async getSubscriptions(
 		broadcaster: UserIdResolvable,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedSubscriptionsResult> {
 		const result = await this._client.callApi<HelixPaginatedSubscriptionsResponse>({
 			url: 'subscriptions',
@@ -50,13 +50,13 @@ export class HelixSubscriptionApi extends BaseApi {
 			userId: extractUserId(broadcaster),
 			query: {
 				...createBroadcasterQuery(broadcaster),
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return {
 			...createPaginatedResultWithTotal(result, HelixSubscription, this._client),
-			points: result.points
+			points: result.points,
 		};
 	}
 
@@ -77,14 +77,14 @@ export class HelixSubscriptionApi extends BaseApi {
 	 */
 	async getSubscriptionsForUsers(
 		broadcaster: UserIdResolvable,
-		users: UserIdResolvable[]
+		users: UserIdResolvable[],
 	): Promise<HelixSubscription[]> {
 		const result = await this._client.callApi<HelixResponse<HelixSubscriptionData>>({
 			type: 'helix',
 			url: 'subscriptions',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:read:subscriptions'],
-			query: createChannelUsersCheckQuery(broadcaster, users)
+			query: createChannelUsersCheckQuery(broadcaster, users),
 		});
 
 		return result.data.map(data => new HelixSubscription(data, this._client));
@@ -101,7 +101,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	 */
 	async getSubscriptionForUser(
 		broadcaster: UserIdResolvable,
-		user: UserIdResolvable
+		user: UserIdResolvable,
 	): Promise<HelixSubscription | null> {
 		const list = await this.getSubscriptionsForUsers(broadcaster, [user]);
 		return list.length ? list[0] : null;
@@ -118,7 +118,7 @@ export class HelixSubscriptionApi extends BaseApi {
 	 */
 	async checkUserSubscription(
 		user: UserIdResolvable,
-		broadcaster: UserIdResolvable
+		broadcaster: UserIdResolvable,
 	): Promise<HelixUserSubscription | null> {
 		try {
 			const result = await this._client.callApi<HelixResponse<HelixUserSubscriptionData>>({
@@ -126,7 +126,7 @@ export class HelixSubscriptionApi extends BaseApi {
 				url: 'subscriptions/user',
 				userId: extractUserId(user),
 				scopes: ['user:read:subscriptions'],
-				query: createSubscriptionCheckQuery(broadcaster, user)
+				query: createSubscriptionCheckQuery(broadcaster, user),
 			});
 
 			return new HelixUserSubscription(result.data[0], this._client);

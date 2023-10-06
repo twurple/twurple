@@ -4,7 +4,7 @@ import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	createScheduleQuery,
 	type HelixScheduleResponse,
-	type HelixScheduleSegmentData
+	type HelixScheduleSegmentData,
 } from '../../interfaces/endpoints/schedule.external';
 import { type HelixScheduleFilter } from '../../interfaces/endpoints/schedule.input';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
@@ -23,11 +23,11 @@ export class HelixPaginatedScheduleSegmentRequest extends HelixPaginatedRequest<
 		super(
 			{
 				url: 'schedule',
-				query: createScheduleQuery(broadcaster, filter)
+				query: createScheduleQuery(broadcaster, filter),
 			},
 			client,
 			data => new HelixScheduleSegment(data, client),
-			25
+			25,
 		);
 	}
 
@@ -35,13 +35,13 @@ export class HelixPaginatedScheduleSegmentRequest extends HelixPaginatedRequest<
 	// while still keeping the pagination code as generic as possible
 	/** @internal */
 	protected async _fetchData(
-		additionalOptions: Partial<TwitchApiCallOptions> = {}
+		additionalOptions: Partial<TwitchApiCallOptions> = {},
 	): Promise<HelixPaginatedResponse<HelixScheduleSegmentData>> {
 		const origData = (await super._fetchData(additionalOptions)) as unknown as HelixScheduleResponse;
 
 		return {
 			data: origData.data.segments ?? [],
-			pagination: origData.pagination
+			pagination: origData.pagination,
 		};
 	}
 }

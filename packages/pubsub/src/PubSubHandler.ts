@@ -15,7 +15,7 @@ export class PubSubHandler<T extends PubSubMessage = PubSubMessage> {
 		private readonly _topic: string,
 		private readonly _userId: string,
 		private readonly _callback: (message: T) => void,
-		client: PubSubClient
+		client: PubSubClient,
 	) {
 		this._client = client;
 	}

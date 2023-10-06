@@ -13,7 +13,7 @@ export class EventSubChannelSubscriptionMessageSubscription extends EventSubSubs
 	constructor(
 		handler: (data: EventSubChannelSubscriptionMessageEvent) => void,
 		client: EventSubBase,
-		private readonly _userId: string
+		private readonly _userId: string,
 	) {
 		super(handler, client);
 	}
@@ -27,7 +27,7 @@ export class EventSubChannelSubscriptionMessageSubscription extends EventSubSubs
 	}
 
 	protected transformData(
-		data: EventSubChannelSubscriptionMessageEventData
+		data: EventSubChannelSubscriptionMessageEventData,
 	): EventSubChannelSubscriptionMessageEvent {
 		return new EventSubChannelSubscriptionMessageEvent(data, this._client._apiClient);
 	}
@@ -35,7 +35,7 @@ export class EventSubChannelSubscriptionMessageSubscription extends EventSubSubs
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		return await this._client._apiClient.eventSub.subscribeToChannelSubscriptionMessageEvents(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

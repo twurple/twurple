@@ -10,7 +10,7 @@ export class HelixRateLimiter extends ResponseBasedRateLimiter<TwitchApiCallOpti
 		clientId,
 		accessToken,
 		authorizationType,
-		fetchOptions
+		fetchOptions,
 	}: TwitchApiCallOptionsInternal): Promise<Response> {
 		return await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
 	}
@@ -30,7 +30,7 @@ export class HelixRateLimiter extends ResponseBasedRateLimiter<TwitchApiCallOpti
 		return {
 			limit: +headers.get('ratelimit-limit')!,
 			remaining: +headers.get('ratelimit-remaining')!,
-			resetsAt: +headers.get('ratelimit-reset')! * 1000
+			resetsAt: +headers.get('ratelimit-reset')! * 1000,
 		};
 	}
 }

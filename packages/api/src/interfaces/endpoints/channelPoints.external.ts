@@ -2,7 +2,7 @@ import { extractUserId, type UserIdResolvable } from '@twurple/common';
 import {
 	type HelixCreateCustomRewardData,
 	type HelixCustomRewardRedemptionFilter,
-	type HelixUpdateCustomRewardData
+	type HelixUpdateCustomRewardData,
 } from './channelPoints.input';
 
 /**
@@ -90,7 +90,7 @@ export interface HelixCustomRewardData {
 export function createCustomRewardsQuery(broadcaster: UserIdResolvable, onlyManageable?: boolean) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
-		only_manageable_rewards: onlyManageable?.toString()
+		only_manageable_rewards: onlyManageable?.toString(),
 	};
 }
 
@@ -98,7 +98,7 @@ export function createCustomRewardsQuery(broadcaster: UserIdResolvable, onlyMana
 export function createCustomRewardChangeQuery(broadcaster: UserIdResolvable, rewardId: string) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
-		id: rewardId
+		id: rewardId,
 	};
 }
 
@@ -111,7 +111,7 @@ export function createCustomRewardBody(data: HelixCreateCustomRewardData | Helix
 		background_color: data.backgroundColor,
 		is_enabled: data.isEnabled,
 		is_user_input_required: data.userInputRequired,
-		should_redemptions_skip_request_queue: data.autoFulfill
+		should_redemptions_skip_request_queue: data.autoFulfill,
 	};
 
 	if (data.maxRedemptionsPerStream !== undefined) {
@@ -140,12 +140,12 @@ export function createCustomRewardBody(data: HelixCreateCustomRewardData | Helix
 export function createRewardRedemptionsByIdsQuery(
 	broadcaster: UserIdResolvable,
 	rewardId: string,
-	redemptionIds: string[]
+	redemptionIds: string[],
 ) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
 		reward_id: rewardId,
-		id: redemptionIds
+		id: redemptionIds,
 	};
 }
 
@@ -154,12 +154,12 @@ export function createRedemptionsForBroadcasterQuery(
 	broadcaster: UserIdResolvable,
 	rewardId: string,
 	status: HelixCustomRewardRedemptionStatus,
-	filter: HelixCustomRewardRedemptionFilter
+	filter: HelixCustomRewardRedemptionFilter,
 ) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
 		reward_id: rewardId,
 		status,
-		sort: filter.newestFirst ? 'NEWEST' : 'OLDEST'
+		sort: filter.newestFirst ? 'NEWEST' : 'OLDEST',
 	};
 }

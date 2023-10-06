@@ -12,7 +12,7 @@ export type {
 	HelixExtensionState,
 	HelixExtensionIconSize,
 	HelixExtensionSubscriptionsSupportLevel,
-	HelixExtensionData
+	HelixExtensionData,
 } from './extensions/HelixExtension.external';
 
 export { CustomError } from './errors/CustomError';
@@ -23,6 +23,6 @@ export type {
 	UserIdResolvable,
 	UserIdResolvableType,
 	UserNameResolvable,
-	UserNameResolveableType
+	UserNameResolveableType,
 } from './userResolvers';
 export { extractUserId, extractUserName } from './userResolvers';

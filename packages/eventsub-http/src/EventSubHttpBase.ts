@@ -6,7 +6,7 @@ import {
 	type EventSubBaseConfig,
 	type EventSubNotificationPayload,
 	type EventSubSubscription,
-	type EventSubSubscriptionBody
+	type EventSubSubscriptionBody,
 } from '@twurple/eventsub-base';
 import * as crypto from 'crypto';
 import type { Request, RequestHandler } from 'httpanda';
@@ -90,12 +90,12 @@ export abstract class EventSubHttpBase extends EventSubBase {
 
 	/** @private */
 	async _getTransportOptionsForSubscription(
-		subscription: EventSubSubscription
+		subscription: EventSubSubscription,
 	): Promise<HelixEventSubWebHookTransportOptions> {
 		return {
 			method: 'webhook',
 			callback: await this._buildHookUrl(subscription.id),
-			secret: this._secret
+			secret: this._secret,
 		};
 	}
 
@@ -132,7 +132,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 					}
 					return undefined;
 				})
-				.filter(<T>(x?: T): x is T => !!x)
+				.filter(<T>(x?: T): x is T => !!x),
 		);
 
 		for (const [subId, sub] of this._subscriptions) {
@@ -146,7 +146,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 				throw new Error(
 					'The request body was already consumed by something else.\n' +
 						"Please make sure you don't globally apply middlewares that consume the request body, " +
-						'such as express.json() or body-parser.'
+						'such as express.json() or body-parser.',
 				);
 			}
 
@@ -300,7 +300,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 			const expectedHost = await this.getHostName();
 			if (host !== expectedHost) {
 				this._logger.debug(
-					`Denied request from ${ip} because its host header (${host}) doesn't match the expected value (${expectedHost})`
+					`Denied request from ${ip} because its host header (${host}) doesn't match the expected value (${expectedHost})`,
 				);
 				return true;
 			}
@@ -309,7 +309,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	}
 
 	protected _findTwitchSubscriptionToContinue(
-		subscription: EventSubSubscription
+		subscription: EventSubSubscription,
 	): HelixEventSubSubscription | undefined {
 		return this._twitchSubscriptions.get(subscription.id);
 	}
@@ -328,7 +328,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	private _handleSingleEventPayload(
 		subscription: EventSubSubscription,
 		payload: Record<string, unknown>,
-		messageId: string
+		messageId: string,
 	) {
 		if (this._seenEventIds.has(messageId)) {
 			this._logger.debug(`Duplicate notification prevented for event: ${subscription.id}`);

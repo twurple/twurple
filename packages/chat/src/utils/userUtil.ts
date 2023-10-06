@@ -11,7 +11,7 @@ export function toUserName(channel: string): string {
 	const name = channel.replace(/^#/, '').toLowerCase();
 	if (!validNames.test(name)) {
 		throw new Error(
-			`"${name}" is not a valid user or channel name. It must be at most 25 characters long, can only include letters, numbers and underscores, and can not start with an underscore.`
+			`"${name}" is not a valid user or channel name. It must be at most 25 characters long, can only include letters, numbers and underscores, and can not start with an underscore.`,
 		);
 	}
 	return name;

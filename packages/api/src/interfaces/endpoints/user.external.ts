@@ -51,13 +51,13 @@ export function createUserBlockCreateQuery(target: UserIdResolvable, additionalI
 	return {
 		target_user_id: extractUserId(target),
 		source_context: additionalInfo.sourceContext,
-		reason: additionalInfo.reason
+		reason: additionalInfo.reason,
 	};
 }
 
 /** @internal */
 export function createUserBlockDeleteQuery(target: UserIdResolvable) {
 	return {
-		target_user_id: extractUserId(target)
+		target_user_id: extractUserId(target),
 	};
 }

@@ -4,7 +4,7 @@ import type {
 	HelixCustomReward,
 	HelixCustomRewardRedemption,
 	HelixCustomRewardRedemptionTargetStatus,
-	HelixUser
+	HelixUser,
 } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type EventSubChannelRedemptionAddEventData } from './EventSubChannelRedemptionAddEvent.external';
@@ -136,8 +136,8 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 		return checkRelationAssertion(
 			await this._client.channelPoints.getCustomRewardById(
 				this[rawDataSymbol].broadcaster_user_id,
-				this[rawDataSymbol].reward.id
-			)
+				this[rawDataSymbol].reward.id,
+			),
 		);
 	}
 
@@ -158,7 +158,7 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 			this[rawDataSymbol].broadcaster_user_id,
 			this[rawDataSymbol].reward.id,
 			[this[rawDataSymbol].id],
-			newStatus
+			newStatus,
 		);
 
 		return result[0];

@@ -10,7 +10,7 @@ import {
 	handleTwitchApiResponseError,
 	HttpStatusCodeError,
 	transformTwitchApiResponse,
-	type TwitchApiCallOptions
+	type TwitchApiCallOptions,
 } from '@twurple/api-call';
 
 import {
@@ -19,7 +19,7 @@ import {
 	type AuthProvider,
 	InvalidTokenError,
 	TokenInfo,
-	type TokenInfoData
+	type TokenInfoData,
 } from '@twurple/auth';
 import { HellFreezesOverError, rtfm, type UserIdResolvable } from '@twurple/common';
 import * as retry from 'retry';
@@ -111,7 +111,7 @@ export class BaseApiClient extends EventEmitter {
 				authProvider.clientId,
 				undefined,
 				undefined,
-				this._config.fetchOptions
+				this._config.fetchOptions,
 			);
 		}
 
@@ -122,7 +122,7 @@ export class BaseApiClient extends EventEmitter {
 				case 'app': {
 					if (!authProvider.getAppAccessToken) {
 						throw new Error(
-							'Tried to make an API call that requires an app access token but your auth provider does not support that'
+							'Tried to make an API call that requires an app access token but your auth provider does not support that',
 						);
 					}
 					const accessToken = await authProvider.getAppAccessToken();
@@ -155,7 +155,7 @@ export class BaseApiClient extends EventEmitter {
 
 			if (!accessToken) {
 				throw new Error(
-					`Tried to make an API call with a user context for user ID ${contextUserId} but no token was found`
+					`Tried to make an API call with a user context for user ID ${contextUserId} but no token was found`,
 				);
 			}
 
@@ -411,7 +411,7 @@ export class BaseApiClient extends EventEmitter {
 	private async _callApiUsingInitialToken<T = unknown>(
 		options: TwitchApiCallOptions,
 		accessToken: AccessTokenMaybeWithUserId,
-		wasRefreshed = false
+		wasRefreshed = false,
 	): Promise<T> {
 		const { authProvider } = this._config;
 
@@ -420,7 +420,7 @@ export class BaseApiClient extends EventEmitter {
 			options,
 			authProvider.clientId,
 			accessToken.accessToken,
-			authorizationType
+			authorizationType,
 		);
 		if (response.status === 401 && !wasRefreshed) {
 			if (accessToken.userId) {
@@ -430,7 +430,7 @@ export class BaseApiClient extends EventEmitter {
 						options,
 						authProvider.clientId,
 						token.accessToken,
-						authorizationType
+						authorizationType,
 					);
 				}
 			} else if (authProvider.getAppAccessToken) {
@@ -439,7 +439,7 @@ export class BaseApiClient extends EventEmitter {
 					options,
 					authProvider.clientId,
 					token.accessToken,
-					authorizationType
+					authorizationType,
 				);
 			}
 		}
@@ -455,7 +455,7 @@ export class BaseApiClient extends EventEmitter {
 		options: TwitchApiCallOptions,
 		clientId?: string,
 		accessToken?: string,
-		authorizationType?: string
+		authorizationType?: string,
 	) {
 		const { fetchOptions } = this._config;
 		const type = options.type ?? 'helix';
@@ -467,7 +467,7 @@ export class BaseApiClient extends EventEmitter {
 		const op = retry.operation({
 			retries: 3,
 			minTimeout: 500,
-			factor: 2
+			factor: 2,
 		});
 
 		const { promise, resolve, reject } = promiseWithResolvers<Response>();
@@ -480,7 +480,7 @@ export class BaseApiClient extends EventEmitter {
 								clientId,
 								accessToken,
 								authorizationType,
-								fetchOptions
+								fetchOptions,
 						  })
 						: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
 

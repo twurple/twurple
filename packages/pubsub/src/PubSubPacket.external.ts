@@ -68,7 +68,7 @@ export function createListenPacket(topics: string[], accessToken: string | undef
 		type: 'LISTEN',
 		data: {
 			topics,
-			auth_token: accessToken
-		}
+			auth_token: accessToken,
+		},
 	};
 }

@@ -3,7 +3,7 @@ import {
 	type HelixExtensionSlotData,
 	type HelixExtensionSlotType,
 	type HelixInstalledExtensionData,
-	type HelixInstalledExtensionListData
+	type HelixInstalledExtensionListData,
 } from '../../../interfaces/endpoints/userExtension.external';
 import { HelixInstalledExtension } from './HelixInstalledExtension';
 
@@ -35,7 +35,7 @@ export class HelixInstalledExtensionList extends DataObject<HelixInstalledExtens
 		).flatMap(([type, typeEntries]) =>
 			[...Object.entries(typeEntries)]
 				.filter((entry): entry is [HelixExtensionSlotType, HelixInstalledExtensionData] => entry[1].active)
-				.map(([slotId, slotData]) => new HelixInstalledExtension(type, slotId, slotData))
+				.map(([slotId, slotData]) => new HelixInstalledExtension(type, slotId, slotData)),
 		);
 	}
 }

@@ -19,6 +19,6 @@ export interface HelixChannelSearchResultData {
 export function createSearchChannelsQuery(query: string, filter: HelixChannelSearchFilter) {
 	return {
 		query,
-		live_only: filter.liveOnly?.toString()
+		live_only: filter.liveOnly?.toString(),
 	};
 }

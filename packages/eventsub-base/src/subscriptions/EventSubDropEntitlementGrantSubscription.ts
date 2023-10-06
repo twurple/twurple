@@ -14,7 +14,7 @@ export class EventSubDropEntitlementGrantSubscription extends EventSubSubscripti
 	constructor(
 		handler: (data: EventSubDropEntitlementGrantEvent) => void,
 		client: EventSubBase,
-		private readonly _filter: HelixEventSubDropEntitlementGrantFilter
+		private readonly _filter: HelixEventSubDropEntitlementGrantFilter,
 	) {
 		super(handler, client);
 	}
@@ -32,7 +32,7 @@ export class EventSubDropEntitlementGrantSubscription extends EventSubSubscripti
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		return await this._client._apiClient.eventSub.subscribeToDropEntitlementGrantEvents(
 			this._filter,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

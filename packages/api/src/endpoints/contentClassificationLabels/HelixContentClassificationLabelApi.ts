@@ -29,8 +29,8 @@ export class HelixContentClassificationLabelApi extends BaseApi {
 		const result = await this._client.callApi<HelixResponse<HelixContentClassificationLabelData>>({
 			url: 'content_classification_labels',
 			query: {
-				locale
-			}
+				locale,
+			},
 		});
 
 		return result.data.map(data => new HelixContentClassificationLabel(data));

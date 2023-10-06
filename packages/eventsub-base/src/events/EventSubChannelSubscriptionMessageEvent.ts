@@ -3,7 +3,7 @@ import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelSubscriptionMessageEventData,
-	type EventSubChannelSubscriptionMessageEventTier
+	type EventSubChannelSubscriptionMessageEventTier,
 } from './EventSubChannelSubscriptionMessageEvent.external';
 
 /**
@@ -117,8 +117,8 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 		return new Map<string, string[]>(
 			Object.entries(groupBy(this[rawDataSymbol].message.emotes ?? [], 'id')).map(([id, ranges]) => [
 				id,
-				ranges.map(({ begin, end }) => `${begin}-${end}`)
-			])
+				ranges.map(({ begin, end }) => `${begin}-${end}`),
+			]),
 		);
 	}
 }

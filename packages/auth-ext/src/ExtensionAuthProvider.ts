@@ -24,13 +24,15 @@ export class ExtensionAuthProvider implements AuthProvider {
 				`Scopes ${scopeSets
 					.filter((val): val is string[] => Boolean(val))
 					.map(scopes => scopes.join('|'))
-					.join(', ')} requested but direct extension calls do not support scopes. Please use an EBS instead.`
+					.join(
+						', ',
+					)} requested but direct extension calls do not support scopes. Please use an EBS instead.`,
 			);
 		}
 
 		return {
 			...(await this.getAnyAccessToken()),
-			userId: extractUserId(user)
+			userId: extractUserId(user),
 		};
 	}
 
@@ -49,7 +51,7 @@ export class ExtensionAuthProvider implements AuthProvider {
 			refreshToken: null,
 			expiresIn: null,
 			obtainmentTimestamp: Date.now(),
-			scope: []
+			scope: [],
 		};
 	}
 

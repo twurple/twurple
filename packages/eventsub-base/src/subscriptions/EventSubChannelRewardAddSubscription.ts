@@ -13,7 +13,7 @@ export class EventSubChannelRewardAddSubscription extends EventSubSubscription<E
 	constructor(
 		handler: (data: EventSubChannelRewardEvent) => void,
 		client: EventSubBase,
-		private readonly _userId: string
+		private readonly _userId: string,
 	) {
 		super(handler, client);
 	}
@@ -33,7 +33,7 @@ export class EventSubChannelRewardAddSubscription extends EventSubSubscription<E
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		return await this._client._apiClient.eventSub.subscribeToChannelRewardAddEvents(
 			this._userId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

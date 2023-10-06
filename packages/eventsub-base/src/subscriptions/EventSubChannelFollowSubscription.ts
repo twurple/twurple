@@ -14,7 +14,7 @@ export class EventSubChannelFollowSubscription extends EventSubSubscription<Even
 		handler: (data: EventSubChannelFollowEvent) => void,
 		client: EventSubBase,
 		private readonly _userId: string,
-		private readonly _moderatorId: string
+		private readonly _moderatorId: string,
 	) {
 		super(handler, client);
 	}
@@ -35,7 +35,7 @@ export class EventSubChannelFollowSubscription extends EventSubSubscription<Even
 		return await this._client._apiClient.asUser(
 			this._moderatorId,
 			async ctx =>
-				await ctx.eventSub.subscribeToChannelFollowEvents(this._userId, await this._getTransportOptions())
+				await ctx.eventSub.subscribeToChannelFollowEvents(this._userId, await this._getTransportOptions()),
 		);
 	}
 }

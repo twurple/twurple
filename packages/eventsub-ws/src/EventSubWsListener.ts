@@ -5,7 +5,7 @@ import {
 	EventSubBase,
 	type EventSubBaseConfig,
 	type EventSubListener,
-	type EventSubSubscription
+	type EventSubSubscription,
 } from '@twurple/eventsub-base';
 import { EventSubWsSocket } from './EventSubWsSocket';
 
@@ -108,7 +108,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 
 	/** @private */
 	async _getTransportOptionsForSubscription(
-		subscription: EventSubSubscription
+		subscription: EventSubSubscription,
 	): Promise<HelixEventSubWebSocketTransportOptions> {
 		const { authUserId } = subscription;
 		if (!authUserId) {
@@ -117,13 +117,13 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		const socket = this._sockets.get(authUserId);
 		if (!socket?.sessionId) {
 			throw new HellFreezesOverError(
-				`Socket for user ${authUserId} is not connected or does not have a session ID yet`
+				`Socket for user ${authUserId} is not connected or does not have a session ID yet`,
 			);
 		}
 		return {
 			method: 'websocket',
 			// eslint-disable-next-line @typescript-eslint/naming-convention
-			session_id: socket.sessionId
+			session_id: socket.sessionId,
 		};
 	}
 

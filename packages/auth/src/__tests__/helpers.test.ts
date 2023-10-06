@@ -35,7 +35,7 @@ describe('compareScopes', () => {
 		compareScopes(['channel_subscriptions', 'channel:read:subscriptions'], ['channel:read:subscriptions']);
 		compareScopes(
 			['channel_subscriptions', 'channel:read:subscriptions'],
-			['channel_subscriptions', 'channel:read:subscriptions']
+			['channel_subscriptions', 'channel:read:subscriptions'],
 		);
 		compareScopes(['channel_subscriptions', 'user_blocks_read'], ['channel:read:subscriptions']);
 	});
@@ -55,11 +55,11 @@ describe('compareScopeSets', () => {
 		compareScopeSets(['bits:read'], [['bits:read', 'moderation:read']]);
 		compareScopeSets(
 			['bits:read', 'moderation:read'],
-			[['bits:read'], ['moderation:read', 'channel:manage:moderators']]
+			[['bits:read'], ['moderation:read', 'channel:manage:moderators']],
 		);
 		compareScopeSets(
 			['bits:read', 'channel:manage:moderators'],
-			[['bits:read'], ['moderation:read', 'channel:manage:moderators']]
+			[['bits:read'], ['moderation:read', 'channel:manage:moderators']],
 		);
 	});
 

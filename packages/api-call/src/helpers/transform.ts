@@ -16,7 +16,7 @@ export async function handleTwitchApiResponseError(response: Response, options: 
 			fullUrl,
 			options.method ?? 'GET',
 			text,
-			isJson
+			isJson,
 		);
 	}
 }

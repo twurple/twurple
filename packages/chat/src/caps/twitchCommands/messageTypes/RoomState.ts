@@ -9,7 +9,7 @@ export class RoomState extends Message<RoomStateFields> {
 	static readonly COMMAND = 'ROOMSTATE';
 	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
 		super(command, contents, config, {
-			channel: { type: 'channel' }
+			channel: { type: 'channel' },
 		});
 	}
 }

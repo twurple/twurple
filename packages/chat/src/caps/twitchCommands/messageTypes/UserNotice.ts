@@ -13,7 +13,7 @@ export class UserNotice extends Message<UserNoticeFields> {
 	constructor(command: string, contents?: MessageInternalContents, config?: MessageInternalConfig) {
 		super(command, contents, config, {
 			channel: { type: 'channel' },
-			text: { trailing: true, optional: true }
+			text: { trailing: true, optional: true },
 		});
 	}
 

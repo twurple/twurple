@@ -2,7 +2,7 @@ import { type HelixResponse } from '@twurple/api-call';
 import {
 	type CheermoteBackground,
 	type CheermoteScale,
-	type CheermoteState
+	type CheermoteState,
 } from '../../endpoints/bits/CheermoteDisplayInfo';
 import { type HelixBitsLeaderboardQuery } from './bits.input';
 import { type HelixDateRangeData } from './generic.external';
@@ -61,6 +61,6 @@ export function createBitsLeaderboardQuery(params: HelixBitsLeaderboardQuery = {
 		count: count.toString(),
 		period,
 		started_at: startDate?.toISOString(),
-		user_id: contextUserId
+		user_id: contextUserId,
 	};
 }

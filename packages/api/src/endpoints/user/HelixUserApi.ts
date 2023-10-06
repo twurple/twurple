@@ -6,7 +6,7 @@ import {
 	HellFreezesOverError,
 	rtfm,
 	type UserIdResolvable,
-	type UserNameResolvable
+	type UserNameResolvable,
 } from '@twurple/common';
 import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
 import {
@@ -15,12 +15,12 @@ import {
 	type HelixPrivilegedUserData,
 	type HelixUserBlockData,
 	type HelixUserData,
-	type UserLookupType
+	type UserLookupType,
 } from '../../interfaces/endpoints/user.external';
 import { type HelixUserBlockAdditionalInfo, type HelixUserUpdate } from '../../interfaces/endpoints/user.input';
 import {
 	type HelixInstalledExtensionListData,
-	type HelixUserExtensionData
+	type HelixUserExtensionData,
 } from '../../interfaces/endpoints/userExtension.external';
 import { type HelixUserExtensionUpdatePayload } from '../../interfaces/endpoints/userExtension.input';
 import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
@@ -53,23 +53,23 @@ export class HelixUserApi extends BaseApi {
 	/** @internal */
 	@Enumerable(false) private readonly _getUserByIdBatcher = new HelixRequestBatcher(
 		{
-			url: 'users'
+			url: 'users',
 		},
 		'id',
 		'id',
 		this._client,
-		(data: HelixUserData) => new HelixUser(data, this._client)
+		(data: HelixUserData) => new HelixUser(data, this._client),
 	);
 
 	/** @internal */
 	@Enumerable(false) private readonly _getUserByNameBatcher = new HelixRequestBatcher(
 		{
-			url: 'users'
+			url: 'users',
 		},
 		'login',
 		'login',
 		this._client,
-		(data: HelixUserData) => new HelixUser(data, this._client)
+		(data: HelixUserData) => new HelixUser(data, this._client),
 	);
 
 	/**
@@ -102,8 +102,8 @@ export class HelixUserApi extends BaseApi {
 			url: 'users',
 			userId,
 			query: {
-				id: userId
-			}
+				id: userId,
+			},
 		});
 
 		return mapNullable(result.data[0], data => new HelixUser(data, this._client));
@@ -149,7 +149,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users',
 			forceType: 'user',
 			userId: extractUserId(user),
-			scopes: withEmail ? ['user:read:email'] : undefined
+			scopes: withEmail ? ['user:read:email'] : undefined,
 		});
 
 		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -174,8 +174,8 @@ export class HelixUserApi extends BaseApi {
 			userId: extractUserId(user),
 			scopes: ['user:edit'],
 			query: {
-				description: data.description
-			}
+				description: data.description,
+			},
 		});
 
 		return new HelixPrivilegedUser(result.data[0], this._client);
@@ -191,7 +191,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async getBlocks(
 		user: UserIdResolvable,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedResult<HelixUserBlock>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserBlockData>>({
 			type: 'helix',
@@ -200,8 +200,8 @@ export class HelixUserApi extends BaseApi {
 			scopes: ['user:read:blocked_users'],
 			query: {
 				...createBroadcasterQuery(user),
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return createPaginatedResult(result, HelixUserBlock, this._client);
@@ -218,10 +218,10 @@ export class HelixUserApi extends BaseApi {
 				url: 'users/blocks',
 				userId: extractUserId(user),
 				scopes: ['user:read:blocked_users'],
-				query: createBroadcasterQuery(user)
+				query: createBroadcasterQuery(user),
 			},
 			this._client,
-			data => new HelixUserBlock(data, this._client)
+			data => new HelixUserBlock(data, this._client),
 		);
 	}
 
@@ -237,7 +237,7 @@ export class HelixUserApi extends BaseApi {
 	async createBlock(
 		broadcaster: UserIdResolvable,
 		target: UserIdResolvable,
-		additionalInfo: HelixUserBlockAdditionalInfo = {}
+		additionalInfo: HelixUserBlockAdditionalInfo = {},
 	): Promise<void> {
 		await this._client.callApi({
 			type: 'helix',
@@ -245,7 +245,7 @@ export class HelixUserApi extends BaseApi {
 			method: 'PUT',
 			userId: extractUserId(broadcaster),
 			scopes: ['user:manage:blocked_users'],
-			query: createUserBlockCreateQuery(target, additionalInfo)
+			query: createUserBlockCreateQuery(target, additionalInfo),
 		});
 	}
 
@@ -262,7 +262,7 @@ export class HelixUserApi extends BaseApi {
 			method: 'DELETE',
 			userId: extractUserId(broadcaster),
 			scopes: ['user:manage:blocked_users'],
-			query: createUserBlockDeleteQuery(target)
+			query: createUserBlockDeleteQuery(target),
 		});
 	}
 
@@ -274,13 +274,13 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async getExtensionsForAuthenticatedUser(
 		broadcaster: UserIdResolvable,
-		withInactive = false
+		withInactive = false,
 	): Promise<HelixUserExtension[]> {
 		const result = await this._client.callApi<HelixResponse<HelixUserExtensionData>>({
 			type: 'helix',
 			url: 'users/extensions/list',
 			userId: extractUserId(broadcaster),
-			scopes: withInactive ? ['user:edit:broadcast'] : ['user:read:broadcast', 'user:edit:broadcast']
+			scopes: withInactive ? ['user:edit:broadcast'] : ['user:read:broadcast', 'user:edit:broadcast'],
 		});
 
 		return result.data.map(data => new HelixUserExtension(data));
@@ -299,7 +299,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/extensions',
 			userId,
 			scopes: withDev ? ['user:read:broadcast', 'user:edit:broadcast'] : undefined,
-			query: createSingleKeyQuery('user_id', userId)
+			query: createSingleKeyQuery('user_id', userId),
 		});
 
 		return new HelixInstalledExtensionList(result.data);
@@ -316,7 +316,7 @@ export class HelixUserApi extends BaseApi {
 	 */
 	async updateActiveExtensionsForAuthenticatedUser(
 		broadcaster: UserIdResolvable,
-		data: HelixUserExtensionUpdatePayload
+		data: HelixUserExtensionUpdatePayload,
 	): Promise<HelixInstalledExtensionList> {
 		const result = await this._client.callApi<{ data: HelixInstalledExtensionListData }>({
 			type: 'helix',
@@ -324,7 +324,7 @@ export class HelixUserApi extends BaseApi {
 			method: 'PUT',
 			userId: extractUserId(broadcaster),
 			scopes: ['user:edit:broadcast'],
-			jsonBody: { data }
+			jsonBody: { data },
 		});
 
 		return new HelixInstalledExtensionList(result.data);
@@ -338,7 +338,7 @@ export class HelixUserApi extends BaseApi {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserData>>({
 			type: 'helix',
 			url: 'users',
-			query
+			query,
 		});
 
 		return result.data.map(userData => new HelixUser(userData, this._client));

@@ -25,7 +25,7 @@ export class HelixRequestBatcher<D, T> {
 		private readonly _matchKey: Extract<keyof D, string>,
 		client: BaseApiClient,
 		private readonly _mapper: (data: D) => T,
-		private readonly _limitPerRequest: number = 100
+		private readonly _limitPerRequest: number = 100,
 	) {
 		this._client = client;
 		this._delay = client._batchDelay;
@@ -86,7 +86,7 @@ export class HelixRequestBatcher<D, T> {
 						}
 					}
 					this._requestResolversById.delete(id);
-				})
+				}),
 			);
 		}
 	}
@@ -97,8 +97,8 @@ export class HelixRequestBatcher<D, T> {
 			...this._callOptions,
 			query: {
 				...this._callOptions.query,
-				[this._queryParamName]: ids
-			}
+				[this._queryParamName]: ids,
+			},
 		});
 	}
 }

@@ -9,7 +9,7 @@ import { type EventSubChannelShoutoutCreateEventData } from './EventSubChannelSh
 @rtfm<EventSubChannelShoutoutCreateEvent>(
 	'eventsub-base',
 	'EventSubChannelShoutoutCreateEvent',
-	'shoutedOutBroadcasterId'
+	'shoutedOutBroadcasterId',
 )
 export class EventSubChannelShoutoutCreateEvent extends DataObject<EventSubChannelShoutoutCreateEventData> {
 	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;

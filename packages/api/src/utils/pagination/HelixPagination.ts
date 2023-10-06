@@ -33,6 +33,6 @@ export function createPaginationQuery({ after, before, limit }: HelixPagination 
 	return {
 		after,
 		before,
-		first: limit?.toString()
+		first: limit?.toString(),
 	};
 }

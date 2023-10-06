@@ -39,50 +39,50 @@ export interface HelixPaginatedResultWithTotal<T> {
 
 /** @internal */ export function createPaginatedResult<
 	I,
-	O extends new (data: I, client: BaseApiClient) => ConstructedType<O>
+	O extends new (data: I, client: BaseApiClient) => ConstructedType<O>,
 >(
 	response: HelixPaginatedResponse<I>,
 	type: O,
 	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	client: BaseApiClient
+	client: BaseApiClient,
 ): HelixPaginatedResult<ConstructedType<O>>;
 /** @internal */ export function createPaginatedResult<I, O extends new (data: I) => ConstructedType<O>>(
 	response: HelixPaginatedResponse<I>,
-	type: O
+	type: O,
 ): HelixPaginatedResult<ConstructedType<O>>;
 /** @internal */ export function createPaginatedResult<
 	I,
-	O extends new (data: I, _client?: BaseApiClient) => ConstructedType<O>
+	O extends new (data: I, _client?: BaseApiClient) => ConstructedType<O>,
 >(response: HelixPaginatedResponse<I>, type: O, client?: BaseApiClient): HelixPaginatedResult<ConstructedType<O>> {
 	let dataCache: Array<ConstructedType<O>> | undefined = undefined;
 	return {
 		get data() {
 			return (dataCache ??= (response.data as I[] | undefined)?.map(data => new type(data, client)) ?? []);
 		},
-		cursor: response.pagination?.cursor
+		cursor: response.pagination?.cursor,
 	};
 }
 
 /** @internal */ export function createPaginatedResultWithTotal<
 	I,
-	O extends new (data: I, client: BaseApiClient) => ConstructedType<O>
+	O extends new (data: I, client: BaseApiClient) => ConstructedType<O>,
 >(
 	response: HelixPaginatedResponseWithTotal<I>,
 	type: O,
 	// eslint-disable-next-line @typescript-eslint/unified-signatures
-	client: BaseApiClient
+	client: BaseApiClient,
 ): HelixPaginatedResultWithTotal<ConstructedType<O>>;
 /** @internal */ export function createPaginatedResultWithTotal<I, O extends new (data: I) => ConstructedType<O>>(
 	response: HelixPaginatedResponseWithTotal<I>,
-	type: O
+	type: O,
 ): HelixPaginatedResultWithTotal<ConstructedType<O>>;
 /** @internal */ export function createPaginatedResultWithTotal<
 	I,
-	O extends new (data: I, _client?: BaseApiClient) => ConstructedType<O>
+	O extends new (data: I, _client?: BaseApiClient) => ConstructedType<O>,
 >(
 	response: HelixPaginatedResponseWithTotal<I>,
 	type: O,
-	client?: BaseApiClient
+	client?: BaseApiClient,
 ): HelixPaginatedResultWithTotal<ConstructedType<O>> {
 	let dataCache: Array<ConstructedType<O>> | undefined = undefined;
 	return {
@@ -90,6 +90,6 @@ export interface HelixPaginatedResultWithTotal<T> {
 			return (dataCache ??= (response.data as I[] | undefined)?.map(data => new type(data, client)) ?? []);
 		},
 		cursor: response.pagination!.cursor!,
-		total: response.total
+		total: response.total,
 	};
 }

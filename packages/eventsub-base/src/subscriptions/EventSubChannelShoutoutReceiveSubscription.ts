@@ -14,7 +14,7 @@ export class EventSubChannelShoutoutReceiveSubscription extends EventSubSubscrip
 		handler: (data: EventSubChannelShoutoutReceiveEvent) => void,
 		client: EventSubBase,
 		private readonly _userId: string,
-		private readonly _moderatorId: string
+		private readonly _moderatorId: string,
 	) {
 		super(handler, client);
 	}
@@ -37,8 +37,8 @@ export class EventSubChannelShoutoutReceiveSubscription extends EventSubSubscrip
 			async ctx =>
 				await ctx.eventSub.subscribeToChannelShoutoutReceiveEvents(
 					this._userId,
-					await this._getTransportOptions()
-				)
+					await this._getTransportOptions(),
+				),
 		);
 	}
 }

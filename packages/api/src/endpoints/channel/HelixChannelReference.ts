@@ -38,7 +38,7 @@ export class HelixChannelReference extends DataObject<HelixChannelReferenceData>
 	 */
 	async getChannel(): Promise<HelixChannel> {
 		return checkRelationAssertion(
-			await this._client.channels.getChannelInfoById(this[rawDataSymbol].broadcaster_id)
+			await this._client.channels.getChannelInfoById(this[rawDataSymbol].broadcaster_id),
 		);
 	}
 

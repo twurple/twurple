@@ -41,7 +41,7 @@ function getTwitchMessageTypes(): Map<string, MessageConstructor> {
 		['ROOMSTATE', RoomState],
 		['RECONNECT', Reconnect],
 		['USERNOTICE', UserNotice],
-		['CLEARMSG', ClearMsg]
+		['CLEARMSG', ClearMsg],
 	]));
 }
 

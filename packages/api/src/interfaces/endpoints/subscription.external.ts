@@ -31,6 +31,6 @@ export interface HelixPaginatedSubscriptionsResponse extends HelixPaginatedRespo
 export function createSubscriptionCheckQuery(broadcaster: UserIdResolvable, user: UserIdResolvable) {
 	return {
 		broadcaster_id: extractUserId(broadcaster),
-		user_id: extractUserId(user)
+		user_id: extractUserId(user),
 	};
 }

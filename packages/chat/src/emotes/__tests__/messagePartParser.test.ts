@@ -9,8 +9,8 @@ describe('Message part parser', () => {
 				type: 'text',
 				text: message,
 				position: 0,
-				length: 24
-			}
+				length: 24,
+			},
 		]);
 	});
 
@@ -23,21 +23,21 @@ describe('Message part parser', () => {
 				type: 'text',
 				text: 'very interesting message ',
 				position: 0,
-				length: 25
+				length: 25,
 			},
 			{
 				type: 'emote',
 				id: '25',
 				name: 'Kappa',
 				position: 25,
-				length: 5
+				length: 5,
 			},
 			{
 				type: 'text',
 				text: ' truly great',
 				position: 30,
-				length: 12
-			}
+				length: 12,
+			},
 		]);
 	});
 
@@ -51,41 +51,41 @@ describe('Message part parser', () => {
 				type: 'text',
 				text: 'Happy birthday ',
 				position: 0,
-				length: 15
+				length: 15,
 			},
 			{
 				type: 'cheer',
 				name: 'bday',
 				amount: 100,
 				position: 15,
-				length: 7
+				length: 7,
 			},
 			{
 				type: 'text',
 				text: ' ',
 				position: 22,
-				length: 1
+				length: 1,
 			},
 			{
 				type: 'emote',
 				id: '305954156',
 				name: 'PogChamp',
 				position: 23,
-				length: 8
+				length: 8,
 			},
 			{
 				type: 'text',
 				text: ' ',
 				position: 31,
-				length: 1
+				length: 1,
 			},
 			{
 				type: 'cheer',
 				name: 'cheer',
 				amount: 1000,
 				position: 32,
-				length: 9
-			}
+				length: 9,
+			},
 		]);
 	});
 
@@ -99,41 +99,41 @@ describe('Message part parser', () => {
 				type: 'text',
 				text: 'Happy birthday 🎉 🍰 ',
 				position: 0,
-				length: 19
+				length: 19,
 			},
 			{
 				type: 'cheer',
 				name: 'bday',
 				amount: 100,
 				position: 19,
-				length: 7
+				length: 7,
 			},
 			{
 				type: 'text',
 				text: ' ',
 				position: 26,
-				length: 1
+				length: 1,
 			},
 			{
 				type: 'emote',
 				id: '305954156',
 				name: 'PogChamp',
 				position: 27,
-				length: 8
+				length: 8,
 			},
 			{
 				type: 'text',
 				text: ' ',
 				position: 35,
-				length: 1
+				length: 1,
 			},
 			{
 				type: 'cheer',
 				name: 'cheer',
 				amount: 1000,
 				position: 36,
-				length: 9
-			}
+				length: 9,
+			},
 		]);
 	});
 });

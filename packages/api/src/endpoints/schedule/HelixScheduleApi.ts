@@ -7,7 +7,7 @@ import {
 	createScheduleSegmentModifyQuery,
 	createScheduleSegmentUpdateBody,
 	createScheduleSettingsUpdateQuery,
-	type HelixScheduleResponse
+	type HelixScheduleResponse,
 } from '../../interfaces/endpoints/schedule.external';
 import {
 	type HelixCreateScheduleSegmentData,
@@ -15,7 +15,7 @@ import {
 	type HelixPaginatedScheduleResult,
 	type HelixScheduleFilter,
 	type HelixScheduleSettingsUpdate,
-	type HelixUpdateScheduleSegmentData
+	type HelixUpdateScheduleSegmentData,
 } from '../../interfaces/endpoints/schedule.input';
 import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
@@ -48,7 +48,7 @@ export class HelixScheduleApi extends BaseApi {
 	 */
 	async getSchedule(
 		broadcaster: UserIdResolvable,
-		filter?: HelixPaginatedScheduleFilter
+		filter?: HelixPaginatedScheduleFilter,
 	): Promise<HelixPaginatedScheduleResult> {
 		const result = await this._client.callApi<HelixScheduleResponse>({
 			type: 'helix',
@@ -56,13 +56,13 @@ export class HelixScheduleApi extends BaseApi {
 			userId: extractUserId(broadcaster),
 			query: {
 				...createScheduleQuery(broadcaster, filter),
-				...createPaginationQuery(filter)
-			}
+				...createPaginationQuery(filter),
+			},
 		});
 
 		return {
 			data: new HelixSchedule(result.data, this._client),
-			cursor: result.pagination.cursor
+			cursor: result.pagination.cursor,
 		};
 	}
 
@@ -76,7 +76,7 @@ export class HelixScheduleApi extends BaseApi {
 	 */
 	getScheduleSegmentsPaginated(
 		broadcaster: UserIdResolvable,
-		filter?: HelixScheduleFilter
+		filter?: HelixScheduleFilter,
 	): HelixPaginatedScheduleSegmentRequest {
 		return new HelixPaginatedScheduleSegmentRequest(broadcaster, this._client, filter);
 	}
@@ -92,7 +92,7 @@ export class HelixScheduleApi extends BaseApi {
 			type: 'helix',
 			url: 'schedule',
 			userId: extractUserId(broadcaster),
-			query: createGetByIdsQuery(broadcaster, ids)
+			query: createGetByIdsQuery(broadcaster, ids),
 		});
 
 		return result.data.segments?.map(data => new HelixScheduleSegment(data, this._client)) ?? [];
@@ -119,7 +119,7 @@ export class HelixScheduleApi extends BaseApi {
 		return await this._client.callApi<string>({
 			type: 'helix',
 			url: 'schedule/icalendar',
-			query: createBroadcasterQuery(broadcaster)
+			query: createBroadcasterQuery(broadcaster),
 		});
 	}
 
@@ -138,7 +138,7 @@ export class HelixScheduleApi extends BaseApi {
 			method: 'PATCH',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:schedule'],
-			query: createScheduleSettingsUpdateQuery(broadcaster, settings)
+			query: createScheduleSettingsUpdateQuery(broadcaster, settings),
 		});
 	}
 
@@ -152,7 +152,7 @@ export class HelixScheduleApi extends BaseApi {
 	 */
 	async createScheduleSegment(
 		broadcaster: UserIdResolvable,
-		data: HelixCreateScheduleSegmentData
+		data: HelixCreateScheduleSegmentData,
 	): Promise<HelixScheduleSegment> {
 		const result = await this._client.callApi<HelixScheduleResponse>({
 			type: 'helix',
@@ -161,7 +161,7 @@ export class HelixScheduleApi extends BaseApi {
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:schedule'],
 			query: createBroadcasterQuery(broadcaster),
-			jsonBody: createScheduleSegmentBody(data)
+			jsonBody: createScheduleSegmentBody(data),
 		});
 
 		return new HelixScheduleSegment(result.data.segments![0], this._client);
@@ -179,7 +179,7 @@ export class HelixScheduleApi extends BaseApi {
 	async updateScheduleSegment(
 		broadcaster: UserIdResolvable,
 		segmentId: string,
-		data: HelixUpdateScheduleSegmentData
+		data: HelixUpdateScheduleSegmentData,
 	): Promise<HelixScheduleSegment> {
 		const result = await this._client.callApi<HelixScheduleResponse>({
 			type: 'helix',
@@ -188,7 +188,7 @@ export class HelixScheduleApi extends BaseApi {
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:schedule'],
 			query: createScheduleSegmentModifyQuery(broadcaster, segmentId),
-			jsonBody: createScheduleSegmentUpdateBody(data)
+			jsonBody: createScheduleSegmentUpdateBody(data),
 		});
 
 		return new HelixScheduleSegment(result.data.segments![0], this._client);
@@ -207,7 +207,7 @@ export class HelixScheduleApi extends BaseApi {
 			method: 'DELETE',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:manage:schedule'],
-			query: createScheduleSegmentModifyQuery(broadcaster, segmentId)
+			query: createScheduleSegmentModifyQuery(broadcaster, segmentId),
 		});
 	}
 }

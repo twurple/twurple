@@ -4,7 +4,7 @@ import {
 	type HelixEmoteFormat,
 	type HelixEmoteImageScale,
 	type HelixEmoteScale,
-	type HelixEmoteThemeMode
+	type HelixEmoteThemeMode,
 } from '../../interfaces/endpoints/chat.external';
 
 /**
@@ -94,7 +94,7 @@ export class HelixEmote extends DataObject<HelixEmoteData> {
 	getFormattedImageUrl(
 		scale: HelixEmoteScale = '1.0',
 		format: HelixEmoteFormat = 'static',
-		themeMode: HelixEmoteThemeMode = 'light'
+		themeMode: HelixEmoteThemeMode = 'light',
 	): string {
 		return `https://static-cdn.jtvnw.net/emoticons/v2/${this[rawDataSymbol].id}/${format}/${themeMode}/${scale}`;
 	}

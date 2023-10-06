@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, HellFreezesOverError, rawDataSymbol
 import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
 import {
 	type EventSubChannelPredictionEndEventData,
-	type EventSubChannelPredictionEndStatus
+	type EventSubChannelPredictionEndStatus,
 } from './EventSubChannelPredictionEndEvent.external';
 
 /**

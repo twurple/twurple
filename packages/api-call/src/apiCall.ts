@@ -22,7 +22,7 @@ export async function callTwitchApiRaw(
 	clientId?: string,
 	accessToken?: string,
 	authorizationType?: string,
-	fetchOptions: TwitchApiCallFetchOptions = {}
+	fetchOptions: TwitchApiCallFetchOptions = {},
 ): Promise<Response> {
 	const type = options.type ?? 'helix';
 	const url = getTwitchApiUrl(options.url, type);
@@ -48,7 +48,7 @@ export async function callTwitchApiRaw(
 		...(fetchOptions as RequestInit),
 		method: options.method ?? 'GET',
 		headers,
-		body
+		body,
 	};
 
 	return await fetch(`${url}${params}`, requestOptions);
@@ -72,7 +72,7 @@ export async function callTwitchApi<T = unknown>(
 	clientId?: string,
 	accessToken?: string,
 	authorizationType?: string,
-	fetchOptions: TwitchApiCallFetchOptions = {}
+	fetchOptions: TwitchApiCallFetchOptions = {},
 ): Promise<T> {
 	const response = await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
 

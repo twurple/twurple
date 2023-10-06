@@ -16,7 +16,7 @@ export type {
 	PubSubPongPacket,
 	PubSubReconnectPacket,
 	PubSubResponsePacket,
-	PubSubUnlistenPacket
+	PubSubUnlistenPacket,
 } from './PubSubPacket.external';
 
 export type { PubSubMessage, PubSubLowTrustUserMessage } from './messages/PubSubMessage';
@@ -31,12 +31,12 @@ export { PubSubCustomMessage } from './messages/PubSubCustomMessage';
 export {
 	type PubSubLowTrustUserTreatmentType,
 	type PubSubLowTrustUserBanEvasionEvaluationType,
-	type PubSubLowTrustUserType
+	type PubSubLowTrustUserType,
 } from './messages/common/PubSubLowTrustUserContentBase.external';
 export { PubSubLowTrustUserTreatmentMessage } from './messages/PubSubLowTrustUserTreatmentMessage';
 export {
 	type PubSubLowTrustUserTreatmentChatMessageContentFragmentEmoteData,
-	type PubSubLowTrustUserChatMessageContentFragmentData
+	type PubSubLowTrustUserChatMessageContentFragmentData,
 } from './messages/PubSubLowTrustUserChatMessage.external';
 export { PubSubLowTrustUserChatMessage } from './messages/PubSubLowTrustUserChatMessage';
 export { PubSubRedemptionMessage } from './messages/PubSubRedemptionMessage';

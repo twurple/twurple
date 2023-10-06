@@ -3,7 +3,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import { type BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixCustomRewardRedemptionData,
-	type HelixCustomRewardRedemptionTargetStatus
+	type HelixCustomRewardRedemptionTargetStatus,
 } from '../../interfaces/endpoints/channelPoints.external';
 import type { HelixUser } from '../user/HelixUser';
 import type { HelixCustomReward } from './HelixCustomReward';
@@ -147,8 +147,8 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 		return checkRelationAssertion(
 			await this._client.channelPoints.getCustomRewardById(
 				this[rawDataSymbol].broadcaster_id,
-				this[rawDataSymbol].reward.id
-			)
+				this[rawDataSymbol].reward.id,
+			),
 		);
 	}
 
@@ -162,7 +162,7 @@ export class HelixCustomRewardRedemption extends DataObject<HelixCustomRewardRed
 			this[rawDataSymbol].broadcaster_id,
 			this[rawDataSymbol].reward.id,
 			[this[rawDataSymbol].id],
-			newStatus
+			newStatus,
 		);
 
 		return result[0];

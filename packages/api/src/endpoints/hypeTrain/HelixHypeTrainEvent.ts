@@ -4,7 +4,7 @@ import { type BaseApiClient } from '../../client/BaseApiClient';
 import { type HelixEventData } from '../../interfaces/endpoints/generic.external';
 import {
 	type HelixHypeTrainEventData,
-	type HelixHypeTrainEventType
+	type HelixHypeTrainEventType,
 } from '../../interfaces/endpoints/hypeTrain.external';
 import type { HelixUser } from '../user/HelixUser';
 import { HelixHypeTrainContribution } from './HelixHypeTrainContribution';
@@ -69,7 +69,7 @@ export class HelixHypeTrainEvent extends DataObject<HelixEventData<HelixHypeTrai
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(
-			await this._client.users.getUserById(this[rawDataSymbol].event_data.broadcaster_id)
+			await this._client.users.getUserById(this[rawDataSymbol].event_data.broadcaster_id),
 		);
 	}
 
@@ -127,7 +127,7 @@ export class HelixHypeTrainEvent extends DataObject<HelixEventData<HelixHypeTrai
 	 */
 	get topContributions(): HelixHypeTrainContribution[] {
 		return this[rawDataSymbol].event_data.top_contributions.map(
-			cont => new HelixHypeTrainContribution(cont, this._client)
+			cont => new HelixHypeTrainContribution(cont, this._client),
 		);
 	}
 }

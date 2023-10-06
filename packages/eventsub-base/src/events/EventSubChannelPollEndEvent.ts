@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice';
 import {
 	type EventSubChannelPollEndEventData,
-	type EventSubChannelPollEndStatus
+	type EventSubChannelPollEndStatus,
 } from './EventSubChannelPollEndEvent.external';
 
 /**

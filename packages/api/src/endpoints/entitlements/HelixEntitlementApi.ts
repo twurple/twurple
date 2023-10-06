@@ -7,11 +7,11 @@ import {
 	type HelixDropsEntitlementData,
 	type HelixDropsEntitlementFulfillmentStatus,
 	type HelixDropsEntitlementUpdateData,
-	type HelixDropsEntitlementUpdateStatus
+	type HelixDropsEntitlementUpdateStatus,
 } from '../../interfaces/endpoints/entitlement.external';
 import {
 	type HelixDropsEntitlementFilter,
-	type HelixDropsEntitlementPaginatedFilter
+	type HelixDropsEntitlementPaginatedFilter,
 } from '../../interfaces/endpoints/entitlement.input';
 import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
@@ -38,12 +38,12 @@ import { HelixDropsEntitlement } from './HelixDropsEntitlement';
 export class HelixEntitlementApi extends BaseApi {
 	/** @internal */ @Enumerable(false) private readonly _getDropsEntitlementByIdBatcher = new HelixRequestBatcher(
 		{
-			url: 'entitlements/drops'
+			url: 'entitlements/drops',
 		},
 		'id',
 		'id',
 		this._client,
-		(data: HelixDropsEntitlementData) => new HelixDropsEntitlement(data, this._client)
+		(data: HelixDropsEntitlementData) => new HelixDropsEntitlement(data, this._client),
 	);
 
 	/**
@@ -56,7 +56,7 @@ export class HelixEntitlementApi extends BaseApi {
 	 */
 	async getDropsEntitlements(
 		filter: HelixDropsEntitlementPaginatedFilter,
-		alwaysApp = false
+		alwaysApp = false,
 	): Promise<HelixPaginatedResult<HelixDropsEntitlement>> {
 		const response = await this._client.callApi<HelixPaginatedResponse<HelixDropsEntitlementData>>({
 			type: 'helix',
@@ -65,8 +65,8 @@ export class HelixEntitlementApi extends BaseApi {
 			forceType: filter.user && alwaysApp ? 'app' : undefined,
 			query: {
 				...createDropsEntitlementQuery(filter, alwaysApp),
-				...createPaginationQuery(filter)
-			}
+				...createPaginationQuery(filter),
+			},
 		});
 
 		return createPaginatedResult(response, HelixDropsEntitlement, this._client);
@@ -82,17 +82,17 @@ export class HelixEntitlementApi extends BaseApi {
 	 */
 	getDropsEntitlementsPaginated(
 		filter: HelixDropsEntitlementFilter,
-		alwaysApp = false
+		alwaysApp = false,
 	): HelixPaginatedRequest<HelixDropsEntitlementData, HelixDropsEntitlement> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'entitlements/drops',
 				userId: mapOptional(filter.user, extractUserId),
 				forceType: filter.user && alwaysApp ? 'app' : undefined,
-				query: createDropsEntitlementQuery(filter, alwaysApp)
+				query: createDropsEntitlementQuery(filter, alwaysApp),
 			},
 			this._client,
-			data => new HelixDropsEntitlement(data, this._client)
+			data => new HelixDropsEntitlement(data, this._client),
 		);
 	}
 
@@ -106,8 +106,8 @@ export class HelixEntitlementApi extends BaseApi {
 			type: 'helix',
 			url: 'entitlements/drops',
 			query: {
-				id: ids
-			}
+				id: ids,
+			},
 		});
 
 		return response.data.map(data => new HelixDropsEntitlement(data, this._client));
@@ -143,13 +143,13 @@ export class HelixEntitlementApi extends BaseApi {
 	 */
 	async updateDropsEntitlements(
 		ids: string[],
-		fulfillmentStatus: HelixDropsEntitlementFulfillmentStatus
+		fulfillmentStatus: HelixDropsEntitlementFulfillmentStatus,
 	): Promise<Map<string, HelixDropsEntitlementUpdateStatus>> {
 		const response = await this._client.callApi<HelixResponse<HelixDropsEntitlementUpdateData>>({
 			type: 'helix',
 			url: 'entitlements/drops',
 			method: 'PATCH',
-			jsonBody: createDropsEntitlementUpdateBody(ids, fulfillmentStatus)
+			jsonBody: createDropsEntitlementUpdateBody(ids, fulfillmentStatus),
 		});
 
 		return new Map(response.data.flatMap(entry => entry.ids.map(id => [id, entry.status])));

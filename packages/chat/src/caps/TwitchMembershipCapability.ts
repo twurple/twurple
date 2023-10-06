@@ -7,5 +7,5 @@ import type { Capability } from 'ircv3';
  * @internal
  */
 export const TwitchMembershipCapability: Capability = {
-	name: 'twitch.tv/membership'
+	name: 'twitch.tv/membership',
 };

@@ -14,7 +14,7 @@ export class EventSubExtensionBitsTransactionCreateSubscription extends EventSub
 	constructor(
 		handler: (data: EventSubExtensionBitsTransactionCreateEvent) => void,
 		client: EventSubBase,
-		private readonly _clientId: string
+		private readonly _clientId: string,
 	) {
 		super(handler, client);
 	}
@@ -24,7 +24,7 @@ export class EventSubExtensionBitsTransactionCreateSubscription extends EventSub
 	}
 
 	protected transformData(
-		data: EventSubExtensionBitsTransactionCreateEventData
+		data: EventSubExtensionBitsTransactionCreateEventData,
 	): EventSubExtensionBitsTransactionCreateEvent {
 		return new EventSubExtensionBitsTransactionCreateEvent(data, this._client._apiClient);
 	}
@@ -32,7 +32,7 @@ export class EventSubExtensionBitsTransactionCreateSubscription extends EventSub
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
 		return await this._client._apiClient.eventSub.subscribeToExtensionBitsTransactionCreateEvents(
 			this._clientId,
-			await this._getTransportOptions()
+			await this._getTransportOptions(),
 		);
 	}
 }

@@ -3,7 +3,7 @@ import type { ApiClient, HelixStream, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubStreamOnlineEventData,
-	type EventSubStreamOnlineEventStreamType
+	type EventSubStreamOnlineEventStreamType,
 } from './EventSubStreamOnlineEvent.external';
 
 /**

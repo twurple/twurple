@@ -3,11 +3,11 @@ import { rtfm } from '@twurple/common';
 import { type HelixGameData } from '../../interfaces/endpoints/game.external';
 import {
 	createSearchChannelsQuery,
-	type HelixChannelSearchResultData
+	type HelixChannelSearchResultData,
 } from '../../interfaces/endpoints/search.external';
 import {
 	type HelixChannelSearchFilter,
-	type HelixPaginatedChannelSearchFilter
+	type HelixPaginatedChannelSearchFilter,
 } from '../../interfaces/endpoints/search.input';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
@@ -42,15 +42,15 @@ export class HelixSearchApi extends BaseApi {
 	 */
 	async searchCategories(
 		query: string,
-		pagination?: HelixForwardPagination
+		pagination?: HelixForwardPagination,
 	): Promise<HelixPaginatedResult<HelixGame>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixGameData>>({
 			type: 'helix',
 			url: 'search/categories',
 			query: {
 				query,
-				...createPaginationQuery(pagination)
-			}
+				...createPaginationQuery(pagination),
+			},
 		});
 
 		return createPaginatedResult(result, HelixGame, this._client);
@@ -66,11 +66,11 @@ export class HelixSearchApi extends BaseApi {
 			{
 				url: 'search/categories',
 				query: {
-					query
-				}
+					query,
+				},
 			},
 			this._client,
-			data => new HelixGame(data, this._client)
+			data => new HelixGame(data, this._client),
 		);
 	}
 
@@ -84,15 +84,15 @@ export class HelixSearchApi extends BaseApi {
 	 */
 	async searchChannels(
 		query: string,
-		filter: HelixPaginatedChannelSearchFilter = {}
+		filter: HelixPaginatedChannelSearchFilter = {},
 	): Promise<HelixPaginatedResult<HelixChannelSearchResult>> {
 		const result = await this._client.callApi<HelixPaginatedResponse<HelixChannelSearchResultData>>({
 			type: 'helix',
 			url: 'search/channels',
 			query: {
 				...createSearchChannelsQuery(query, filter),
-				...createPaginationQuery(filter)
-			}
+				...createPaginationQuery(filter),
+			},
 		});
 
 		return createPaginatedResult(result, HelixChannelSearchResult, this._client);
@@ -108,15 +108,15 @@ export class HelixSearchApi extends BaseApi {
 	 */
 	searchChannelsPaginated(
 		query: string,
-		filter: HelixChannelSearchFilter = {}
+		filter: HelixChannelSearchFilter = {},
 	): HelixPaginatedRequest<HelixChannelSearchResultData, HelixChannelSearchResult> {
 		return new HelixPaginatedRequest(
 			{
 				url: 'search/channels',
-				query: createSearchChannelsQuery(query, filter)
+				query: createSearchChannelsQuery(query, filter),
 			},
 			this._client,
-			data => new HelixChannelSearchResult(data, this._client)
+			data => new HelixChannelSearchResult(data, this._client),
 		);
 	}
 }

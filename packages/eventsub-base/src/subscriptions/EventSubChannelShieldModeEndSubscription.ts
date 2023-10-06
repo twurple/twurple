@@ -14,7 +14,7 @@ export class EventSubChannelShieldModeEndSubscription extends EventSubSubscripti
 		handler: (data: EventSubChannelShieldModeEndEvent) => void,
 		client: EventSubBase,
 		private readonly _userId: string,
-		private readonly _moderatorId: string
+		private readonly _moderatorId: string,
 	) {
 		super(handler, client);
 	}
@@ -37,8 +37,8 @@ export class EventSubChannelShieldModeEndSubscription extends EventSubSubscripti
 			async ctx =>
 				await ctx.eventSub.subscribeToChannelShieldModeEndEvents(
 					this._userId,
-					await this._getTransportOptions()
-				)
+					await this._getTransportOptions(),
+				),
 		);
 	}
 }

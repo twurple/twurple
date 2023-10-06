@@ -58,7 +58,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 			this._client._logger.info(`Cycling broken conflicting subscription for event: ${this.id}`);
 			this._unsubscribe().then(
 				() => this._subscribeAndSave(),
-				e => this._client._notifySubscriptionDeleteError(this as EventSubSubscription, e)
+				e => this._client._notifySubscriptionDeleteError(this as EventSubSubscription, e),
 			);
 		} else {
 			this._subscribeAndSave();
@@ -77,7 +77,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 				this._verified = false;
 				this._twitchSubscriptionData = undefined;
 			},
-			e => this._client._notifySubscriptionDeleteError(this as EventSubSubscription, e)
+			e => this._client._notifySubscriptionDeleteError(this as EventSubSubscription, e),
 		);
 	}
 
@@ -132,7 +132,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 				this._client._logger.error(`Subscription ${this.id} failed to subscribe: ${(e as Error).message ?? e}`);
 				this._client._notifySubscriptionCreateError(this as EventSubSubscription, e);
-			}
+			},
 		);
 	}
 

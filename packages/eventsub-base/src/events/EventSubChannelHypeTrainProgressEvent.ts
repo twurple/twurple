@@ -86,7 +86,7 @@ export class EventSubChannelHypeTrainProgressEvent extends DataObject<EventSubCh
 	get topContributors(): EventSubChannelHypeTrainContribution[] {
 		return (
 			this[rawDataSymbol].top_contributions?.map(
-				data => new EventSubChannelHypeTrainContribution(data, this._client)
+				data => new EventSubChannelHypeTrainContribution(data, this._client),
 			) ?? []
 		);
 	}
