@@ -211,15 +211,15 @@ export abstract class EventSubHttpBase extends EventSubBase {
 			} else if (type === 'notification') {
 				if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
 					this._logger.debug(`Old notification(s) prevented for event: ${id}`);
-				}
-
-				const payload = data as EventSubNotificationPayload;
-				if ('events' in payload) {
-					for (const event of payload.events) {
-						this._handleSingleEventPayload(subscription, event.data, event.id);
-					}
 				} else {
-					this._handleSingleEventPayload(subscription, payload.event, messageId);
+					const payload = data as EventSubNotificationPayload;
+					if ('events' in payload) {
+						for (const event of payload.events) {
+							this._handleSingleEventPayload(subscription, event.data, event.id);
+						}
+					} else {
+						this._handleSingleEventPayload(subscription, payload.event, messageId);
+					}
 				}
 
 				res.setHeader('Content-Type', 'text/plain');
@@ -259,6 +259,10 @@ export abstract class EventSubHttpBase extends EventSubBase {
 				res.writeHead(410);
 				res.end('Not OK');
 			}
+
+			res.setHeader('Content-Type', 'text/plain');
+			res.writeHead(404);
+			res.end('Not OK');
 		};
 	}
 
