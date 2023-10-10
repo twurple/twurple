@@ -243,7 +243,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	}
 
 	protected _createDropLegacyRequest(): RequestHandler {
-		return async (req, res) => {
+		return async (req, res, next) => {
 			if (await this._isHostDenied(req)) {
 				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(404);
@@ -258,11 +258,9 @@ export abstract class EventSubHttpBase extends EventSubBase {
 				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(410);
 				res.end('Not OK');
+			} else {
+				next();
 			}
-
-			res.setHeader('Content-Type', 'text/plain');
-			res.writeHead(404);
-			res.end('Not OK');
 		};
 	}
 
