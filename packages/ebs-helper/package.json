@@ -1,6 +1,6 @@
 {
   "name": "@twurple/ebs-helper",
-  "version": "7.0.3",
+  "version": "7.0.4",
   "publishConfig": {
     "access": "public"
   },
@@ -34,8 +34,8 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/shared-utils": "^3.6.1",
-    "@twurple/api-call": "7.0.3",
-    "@twurple/common": "7.0.3",
+    "@twurple/api-call": "7.0.4",
+    "@twurple/common": "7.0.4",
     "jose": "^4.14.4",
     "tslib": "^2.0.3"
   },
