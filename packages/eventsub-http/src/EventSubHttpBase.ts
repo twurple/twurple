@@ -141,7 +141,7 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	}
 
 	protected _createHandleRequest(): RequestHandler {
-		return async (req, res, next) => {
+		return async (req, res) => {
 			if (req.readableEnded) {
 				throw new Error(
 					'The request body was already consumed by something else.\n' +
@@ -196,49 +196,57 @@ export abstract class EventSubHttpBase extends EventSubBase {
 				return;
 			}
 
-			if (type === 'webhook_callback_verification') {
-				const verificationBody = data as EventSubVerificationPayload;
-				this.emit(this.onVerify, true, subscription);
-				subscription._verify();
-				if (twitchSubscription) {
-					twitchSubscription._status = 'enabled';
-				}
-				res.setHeader('Content-Length', verificationBody.challenge.length);
-				res.setHeader('Content-Type', 'text/plain');
-				res.writeHead(200, undefined);
-				res.end(verificationBody.challenge);
-				this._logger.debug(`Successfully subscribed to event: ${id}`);
-			} else if (type === 'notification') {
-				if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
-					this._logger.debug(`Old notification(s) prevented for event: ${id}`);
-				} else {
-					const payload = data as EventSubNotificationPayload;
-					if ('events' in payload) {
-						for (const event of payload.events) {
-							this._handleSingleEventPayload(subscription, event.data, event.id);
-						}
-					} else {
-						this._handleSingleEventPayload(subscription, payload.event, messageId);
+			switch (type) {
+				case 'webhook_callback_verification': {
+					const verificationBody = data as EventSubVerificationPayload;
+					this.emit(this.onVerify, true, subscription);
+					subscription._verify();
+					if (twitchSubscription) {
+						twitchSubscription._status = 'enabled';
 					}
+					res.setHeader('Content-Length', verificationBody.challenge.length);
+					res.setHeader('Content-Type', 'text/plain');
+					res.writeHead(200, undefined);
+					res.end(verificationBody.challenge);
+					this._logger.debug(`Successfully subscribed to event: ${id}`);
+					break;
 				}
-				res.setHeader('Content-Type', 'text/plain');
-				res.writeHead(202);
-				res.end('OK');
-			} else if (type === 'revocation') {
-				this._dropSubscription(subscription.id);
-				this._dropTwitchSubscription(subscription.id);
-				this.emit(this.onRevoke, subscription);
-				this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
-				res.setHeader('Content-Type', 'text/plain');
-				res.writeHead(202);
-				res.end('OK');
-			} else {
-				this._logger.warn(`Unknown action ${type} for event: ${id}`);
-				res.setHeader('Content-Type', 'text/plain');
-				res.writeHead(400);
-				res.end('Not OK');
+				case 'notification': {
+					if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
+						this._logger.debug(`Old notification(s) prevented for event: ${id}`);
+					} else {
+						const payload = data as EventSubNotificationPayload;
+						if ('events' in payload) {
+							for (const event of payload.events) {
+								this._handleSingleEventPayload(subscription, event.data, event.id);
+							}
+						} else {
+							this._handleSingleEventPayload(subscription, payload.event, messageId);
+						}
+					}
+					res.setHeader('Content-Type', 'text/plain');
+					res.writeHead(202);
+					res.end('OK');
+					break;
+				}
+				case 'revocation': {
+					this._dropSubscription(subscription.id);
+					this._dropTwitchSubscription(subscription.id);
+					this.emit(this.onRevoke, subscription);
+					this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
+					res.setHeader('Content-Type', 'text/plain');
+					res.writeHead(202);
+					res.end('OK');
+					break;
+				}
+				default: {
+					this._logger.warn(`Unknown action ${type} for event: ${id}`);
+					res.setHeader('Content-Type', 'text/plain');
+					res.writeHead(400);
+					res.end('Not OK');
+					break;
+				}
 			}
-			next();
 		};
 	}
 
