@@ -144,8 +144,10 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @eventListener
 	 *
 	 * @param subscription The subscription that was successfully created.
+	 * @param apiSubscription The subscription data from the API.
 	 */
-	readonly onSubscriptionCreateSuccess = this.registerEvent<[subscription: EventSubSubscription]>();
+	readonly onSubscriptionCreateSuccess =
+		this.registerEvent<[subscription: EventSubSubscription, apiSubscription: HelixEventSubSubscription]>();
 
 	/**
 	 * Fires when the client fails to create a subscription.
@@ -204,7 +206,7 @@ export abstract class EventSubBase extends EventEmitter {
 	_registerTwitchSubscription(subscription: EventSubSubscription, data: HelixEventSubSubscription): void {
 		this._twitchSubscriptions.set(subscription.id, data);
 		this._subscriptionsByTwitchId.set(data.id, subscription);
-		this.emit(this.onSubscriptionCreateSuccess, subscription);
+		this.emit(this.onSubscriptionCreateSuccess, subscription, data);
 	}
 
 	/** @private */

@@ -101,9 +101,9 @@ export abstract class EventSubHttpBase extends EventSubBase {
 
 	/** @private */
 	async _getCliTestCommandForSubscription(subscription: EventSubSubscription): Promise<string> {
-		return `twitch event trigger ${subscription._cliName} -F ${await this._buildHookUrl(subscription.id)} -s ${
-			this._secret
-		}`;
+		return `twitch event trigger ${subscription._cliName} -T webhook -F ${await this._buildHookUrl(
+			subscription.id,
+		)} -s ${this._secret}`;
 	}
 
 	/** @private */

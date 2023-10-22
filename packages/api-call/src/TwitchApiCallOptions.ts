@@ -76,7 +76,6 @@ export interface TwitchApiCallOptions {
  * }
  * ```
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface TwitchApiCallFetchOptions {
 	/** @private */ _dummy?: never;
 }

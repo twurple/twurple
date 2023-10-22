@@ -397,6 +397,11 @@ export class BaseApiClient extends EventEmitter {
 		return this._config.authProvider;
 	}
 
+	/** @private */
+	get _mockServerPort(): number | undefined {
+		return this._config.mockServerPort;
+	}
+
 	/** @internal */
 	get _batchDelay(): number {
 		return this._config.batchDelay ?? 0;
@@ -457,7 +462,7 @@ export class BaseApiClient extends EventEmitter {
 		accessToken?: string,
 		authorizationType?: string,
 	) {
-		const { fetchOptions } = this._config;
+		const { fetchOptions, mockServerPort } = this._config;
 		const type = options.type ?? 'helix';
 		this._logger.debug(`Calling ${type} API: ${options.method ?? 'GET'} ${options.url}`);
 		this._logger.trace(`Query: ${JSON.stringify(options.query)}`);
@@ -481,8 +486,16 @@ export class BaseApiClient extends EventEmitter {
 								accessToken,
 								authorizationType,
 								fetchOptions,
+								mockServerPort,
 						  })
-						: await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions);
+						: await callTwitchApiRaw(
+								options,
+								clientId,
+								accessToken,
+								authorizationType,
+								fetchOptions,
+								mockServerPort,
+						  );
 
 				if (!response.ok && response.status >= 500 && response.status < 600) {
 					await handleTwitchApiResponseError(response, options);

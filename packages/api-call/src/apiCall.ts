@@ -16,6 +16,7 @@ import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchAp
  *
  * Defaults to "Bearer" for Helix and "OAuth" for everything else.
  * @param fetchOptions Additional options to be passed to the `fetch` function.
+ * @param mockServerPort
  */
 export async function callTwitchApiRaw(
 	options: TwitchApiCallOptions,
@@ -23,9 +24,10 @@ export async function callTwitchApiRaw(
 	accessToken?: string,
 	authorizationType?: string,
 	fetchOptions: TwitchApiCallFetchOptions = {},
+	mockServerPort?: number,
 ): Promise<Response> {
 	const type = options.type ?? 'helix';
-	const url = getTwitchApiUrl(options.url, type);
+	const url = getTwitchApiUrl(options.url, type, mockServerPort);
 	const params = stringify(options.query, { arrayFormat: 'repeat', addQueryPrefix: true });
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const headers = new Headers({ Accept: 'application/json' });

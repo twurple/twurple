@@ -64,7 +64,9 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	constructor(config: EventSubWsConfig) {
 		super(config);
 
-		this._initialUrl = config.url ?? 'wss://eventsub.wss.twitch.tv/ws';
+		this._initialUrl = this._apiClient._mockServerPort
+			? `ws://127.0.0.1:${this._apiClient._mockServerPort}/ws`
+			: config.url ?? 'wss://eventsub.wss.twitch.tv/ws';
 		this._loggerOptions = config.logger;
 	}
 
@@ -91,8 +93,29 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	}
 
 	/** @private */
-	async _getCliTestCommandForSubscription(): Promise<string> {
-		throw new Error("Testing WebSocket subscriptions currently isn't supported by the CLI");
+	async _getCliTestCommandForSubscription(subscription: EventSubSubscription): Promise<string> {
+		if (!this._apiClient._mockServerPort) {
+			throw new Error(`You must use the mock server from the Twitch CLI to be able to test WebSocket events.
+			
+To do so, specify the \`mockServerPort\` option in your \`ApiClient\`.`);
+		}
+		const { authUserId } = subscription;
+		if (!authUserId) {
+			throw new Error('Can not test a WebSocket subscription for a topic without user authentication');
+		}
+		if (!subscription._twitchId) {
+			throw new Error(
+				'Subscription must be registered with the mock server before being able to use this method',
+			);
+		}
+		const socket = this._sockets.get(authUserId);
+		if (!socket) {
+			throw new HellFreezesOverError(`Can not get appropriate socket for user ${authUserId}`);
+		}
+		if (!socket.sessionId) {
+			throw new HellFreezesOverError(`Socket for user ${authUserId} does not have a session ID yet`);
+		}
+		return `twitch event trigger ${subscription._cliName} -T websocket --session ${socket.sessionId} -u ${subscription._twitchId}`;
 	}
 
 	/** @private */
