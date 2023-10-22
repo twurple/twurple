@@ -33,7 +33,7 @@
   "funding": "https://github.com/sponsors/d-fischer",
   "license": "MIT",
   "dependencies": {
-    "@d-fischer/cache-decorators": "^3.0.0",
+    "@d-fischer/cache-decorators": "^4.0.0",
     "@d-fischer/cross-fetch": "^5.0.1",
     "@d-fischer/detect-node": "^3.0.1",
     "@d-fischer/logger": "^4.2.1",
