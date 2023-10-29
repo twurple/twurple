@@ -19,6 +19,11 @@ export interface CreateBotCommandOptions {
 	 * The interval in which expired cooldown data should be cleared, in seconds. Defaults to 10 minutes.
 	 */
 	cooldownCleanupRate?: number;
+
+	/**
+	 * Alternative names for the command that can be used to call it.
+	 */
+	aliases?: string[];
 }
 
 /**
@@ -60,6 +65,10 @@ export function createBotCommand(
 					}
 				}
 			}, (this._options.cooldownCleanupRate ?? 600) * 1000).unref();
+		}
+
+		get aliases() {
+			return options.aliases ?? [];
 		}
 
 		canExecute(channelId: string, userId: string): boolean {
