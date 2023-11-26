@@ -140,7 +140,7 @@ export class HelixPaginatedRequest<D, T> {
 
 	/** @internal */
 	private _processResult(result: HelixPaginatedResponse<D>): T[] {
-		this._currentCursor = result.pagination ? result.pagination.cursor : undefined;
+		this._currentCursor = typeof result.pagination === 'string' ? result.pagination : result.pagination?.cursor;
 		if (this._currentCursor === undefined) {
 			this._isFinished = true;
 		}

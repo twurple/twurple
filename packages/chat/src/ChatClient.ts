@@ -1385,7 +1385,7 @@ export class ChatClient extends EventEmitter {
 			this._chatLogger.warn('No valid token available; trying to refresh');
 
 			try {
-				this._authToken = await this._authProvider.refreshAccessTokenForIntent?.('chat');
+				this._authToken = await this._authProvider.refreshAccessTokenForIntent?.(intent);
 
 				if (this._authToken) {
 					const token = await getTokenInfo(this._authToken.accessToken);

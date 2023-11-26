@@ -200,7 +200,7 @@ export class HelixStreamApi extends BaseApi {
 
 		return {
 			data: flatten(result.data.map(data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client))),
-			cursor: result.pagination?.cursor,
+			cursor: (result.pagination as { cursor: string } | undefined)?.cursor,
 		};
 	}
 
@@ -253,7 +253,7 @@ export class HelixStreamApi extends BaseApi {
 
 		return {
 			data: flatten(result.data.map(data => HelixStreamApi._mapGetStreamMarkersResult(data, this._client))),
-			cursor: result.pagination?.cursor,
+			cursor: (result.pagination as { cursor: string } | undefined)?.cursor,
 		};
 	}
 

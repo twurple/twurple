@@ -59,7 +59,7 @@ export interface HelixPaginatedResultWithTotal<T> {
 		get data() {
 			return (dataCache ??= (response.data as I[] | undefined)?.map(data => new type(data, client)) ?? []);
 		},
-		cursor: response.pagination?.cursor,
+		cursor: typeof response.pagination === 'string' ? response.pagination : response.pagination?.cursor,
 	};
 }
 
@@ -89,7 +89,7 @@ export interface HelixPaginatedResultWithTotal<T> {
 		get data() {
 			return (dataCache ??= (response.data as I[] | undefined)?.map(data => new type(data, client)) ?? []);
 		},
-		cursor: response.pagination!.cursor!,
+		cursor: (response.pagination as { cursor: string }).cursor,
 		total: response.total,
 	};
 }

@@ -86,6 +86,13 @@ export class CommunitySubEvent {
 	}
 
 	/**
+	 * The number of subscriptions that were gifted.
+	 */
+	get count(): number {
+		return this._info.count;
+	}
+
+	/**
 	 * The full object that contains all the message information.
 	 */
 	get messageObject(): UserNotice {
