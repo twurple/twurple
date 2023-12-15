@@ -49,6 +49,16 @@ export interface HelixChannelFollowerData {
 	followed_at: string;
 }
 
+/** @private */
+export interface HelixAdScheduleData {
+	snooze_count: number;
+	snooze_refresh_at: number;
+	next_ad_at: number;
+	duration: number;
+	last_ad_at: number;
+	preroll_free_time: number;
+}
+
 /** @internal */
 export function createChannelUpdateBody(data: HelixChannelUpdate) {
 	return {

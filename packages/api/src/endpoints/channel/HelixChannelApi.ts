@@ -16,6 +16,7 @@ import {
 	type HelixChannelEditorData,
 	type HelixChannelFollowerData,
 	type HelixFollowedChannelData,
+	type HelixAdScheduleData,
 } from '../../interfaces/endpoints/channel.external';
 import { type HelixChannelUpdate } from '../../interfaces/endpoints/channel.input';
 import {
@@ -39,6 +40,7 @@ import { HelixChannel } from './HelixChannel';
 import { HelixChannelEditor } from './HelixChannelEditor';
 import { HelixChannelFollower } from './HelixChannelFollower';
 import { HelixFollowedChannel } from './HelixFollowedChannel';
+import { HelixAdSchedule } from './HelixAdSchedule';
 
 /**
  * The Helix API methods that deal with channels.
@@ -412,5 +414,23 @@ export class HelixChannelApi extends BaseApi {
 			this._client,
 			data => new HelixFollowedChannel(data, this._client),
 		);
+	}
+
+	/**
+	 * Gets information about the broadcaster's ad schedule.
+	 *
+	 * @param broadcaster The broadcaster to get ad schedule information about.
+	 */
+	async getAdSchedule(broadcaster: UserIdResolvable): Promise<HelixAdSchedule> {
+		const response = await this._client.callApi<HelixResponse<HelixAdScheduleData>>({
+			type: 'helix',
+			url: 'channels/ads',
+			method: 'GET',
+			userId: extractUserId(broadcaster),
+			scopes: ['channel:read:ads'],
+			query: createBroadcasterQuery(broadcaster),
+		});
+
+		return new HelixAdSchedule(response.data[0]);
 	}
 }
