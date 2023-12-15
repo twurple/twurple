@@ -1,5 +1,6 @@
 import { type HelixEventSubDropEntitlementGrantFilter } from '@twurple/api';
 import type { UserIdResolvable } from '@twurple/common';
+import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
 import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
@@ -566,6 +567,17 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubChannelShoutoutReceiveEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent an Ad Break beginning in a channel.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelAdBreakBegin: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelAdBreakBeginEvent) => void,
 	) => EventSubSubscription;
 
 	/**

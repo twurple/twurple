@@ -10,6 +10,7 @@ import {
 	type UserIdResolvable,
 } from '@twurple/api';
 import { rtfm } from '@twurple/common';
+import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
 import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
@@ -52,6 +53,7 @@ import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEve
 import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthorizationGrantEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
+import { EventSubChannelAdBreakBeginSubscription } from './subscriptions/EventSubChannelAdBreakBeginSubscription';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelCharityCampaignProgressSubscription } from './subscriptions/EventSubChannelCharityCampaignProgressSubscription';
 import { EventSubChannelCharityCampaignStartSubscription } from './subscriptions/EventSubChannelCharityCampaignStartSubscription';
@@ -941,6 +943,22 @@ export abstract class EventSubBase extends EventEmitter {
 			moderatorId,
 		);
 	}
+
+	/**
+	 * Subscribes to events that represent an Ad Break beginning.
+	 *
+	 * @param user The user for which to get notifications about Ad Breaks in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelAdBreakBegin(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelAdBreakBeginEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelAdBreakBeginEvents');
+
+		return this._genericSubscribe(EventSubChannelAdBreakBeginSubscription, handler, this, userId);
+	}
+
 	/**
 	 * Subscribes to events that represent a drop entitlement being granted.
 	 *
