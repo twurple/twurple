@@ -17,6 +17,7 @@ import {
 	type HelixChannelFollowerData,
 	type HelixFollowedChannelData,
 	type HelixAdScheduleData,
+	type HelixSnoozeNextAdData,
 } from '../../interfaces/endpoints/channel.external';
 import { type HelixChannelUpdate } from '../../interfaces/endpoints/channel.input';
 import {
@@ -41,6 +42,7 @@ import { HelixChannelEditor } from './HelixChannelEditor';
 import { HelixChannelFollower } from './HelixChannelFollower';
 import { HelixFollowedChannel } from './HelixFollowedChannel';
 import { HelixAdSchedule } from './HelixAdSchedule';
+import { HelixSnoozeNextAd } from './HelixSnoozeNextAd';
 
 /**
  * The Helix API methods that deal with channels.
@@ -432,5 +434,23 @@ export class HelixChannelApi extends BaseApi {
 		});
 
 		return new HelixAdSchedule(response.data[0]);
+	}
+
+	/**
+	 * Snoozes the broadcaster's next ad, if a snooze is available.
+	 *
+	 * @param broadcaster The broadcaster to get ad schedule information about.
+	 */
+	async snoozeNextAd(broadcaster: UserIdResolvable): Promise<HelixSnoozeNextAd> {
+		const response = await this._client.callApi<HelixResponse<HelixSnoozeNextAdData>>({
+			type: 'helix',
+			url: 'channels/ads/schedule/snooze',
+			method: 'POST',
+			userId: extractUserId(broadcaster),
+			scopes: ['channel:manage:ads'],
+			query: createBroadcasterQuery(broadcaster),
+		});
+
+		return new HelixSnoozeNextAd(response.data[0]);
 	}
 }

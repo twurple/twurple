@@ -59,6 +59,13 @@ export interface HelixAdScheduleData {
 	preroll_free_time: number;
 }
 
+/** @private */
+export interface HelixSnoozeNextAdData {
+	snooze_count: number;
+	snooze_refresh_at: number;
+	next_ad_at: number;
+}
+
 /** @internal */
 export function createChannelUpdateBody(data: HelixChannelUpdate) {
 	return {
