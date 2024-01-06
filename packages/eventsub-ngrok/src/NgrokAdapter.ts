@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { connect } from '@ngrok/ngrok';
+import { type Config as NgrokConfig, connect } from '@ngrok/ngrok';
 import { ConnectionAdapter } from '@twurple/eventsub-http';
 
 /**
@@ -10,6 +10,13 @@ export interface NgrokAdapterConfig {
 	 * The port to listen on. Defaults to 8000.
 	 */
 	port?: number;
+
+	/**
+	 * Configuration options to pass to the ngrok client constructor.
+	 *
+	 * Note that the `addr` option is not supported.
+	 */
+	ngrokConfig?: Omit<NgrokConfig, 'addr'>;
 }
 
 /**
@@ -17,6 +24,8 @@ export interface NgrokAdapterConfig {
  */
 export class NgrokAdapter extends ConnectionAdapter {
 	/** @internal */ @Enumerable(false) private readonly _listenerPort: number;
+	/** @internal */ @Enumerable(false) private readonly _ngrokConfig?: Omit<NgrokConfig, 'addr'>;
+
 	/** @internal */ @Enumerable(false) private _hostNamePromise?: Promise<string>;
 
 	/**
@@ -29,6 +38,7 @@ export class NgrokAdapter extends ConnectionAdapter {
 	constructor(config: NgrokAdapterConfig = {}) {
 		super();
 		this._listenerPort = config.port ?? 8000;
+		this._ngrokConfig = config.ngrokConfig;
 	}
 
 	/** @protected */
@@ -44,7 +54,7 @@ export class NgrokAdapter extends ConnectionAdapter {
 
 	/** @protected */
 	async getHostName(): Promise<string> {
-		this._hostNamePromise ??= connect({ addr: this._listenerPort }).then(url =>
+		this._hostNamePromise ??= connect({ ...this._ngrokConfig, addr: this._listenerPort }).then(url =>
 			url.replace(/^https?:\/\/|\/$/g, ''),
 		);
 
