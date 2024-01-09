@@ -1190,9 +1190,9 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Subscribe to events that represent an Ad Break beginning in a channel.
+	 * Subscribe to events that represent an ad break beginning in a channel.
 	 *
-	 * @param broadcaster The broadcaster for which you want to listen to Ad Break begin events.
+	 * @param broadcaster The broadcaster for which you want to listen to ad break begin events.
 	 * @param transport The transport options.
 	 */
 	async subscribeToChannelAdBreakBeginEvents(

@@ -87,7 +87,7 @@ export class EventSubChannelAdBreakBeginEvent extends DataObject<EventSubChannel
 	}
 
 	/**
-	 * Indicates if the ad was automatically scheduled via Ads Manager
+	 * Indicates if the ad was automatically scheduled via Ads Manager.
 	 */
 	get isAutomatic(): boolean {
 		return this[rawDataSymbol].is_automatic;

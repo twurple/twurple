@@ -42,7 +42,7 @@ import { HelixChannelEditor } from './HelixChannelEditor';
 import { HelixChannelFollower } from './HelixChannelFollower';
 import { HelixFollowedChannel } from './HelixFollowedChannel';
 import { HelixAdSchedule } from './HelixAdSchedule';
-import { HelixSnoozeNextAd } from './HelixSnoozeNextAd';
+import { HelixSnoozeNextAdResult } from './HelixSnoozeNextAd';
 
 /**
  * The Helix API methods that deal with channels.
@@ -441,7 +441,7 @@ export class HelixChannelApi extends BaseApi {
 	 *
 	 * @param broadcaster The broadcaster to get ad schedule information about.
 	 */
-	async snoozeNextAd(broadcaster: UserIdResolvable): Promise<HelixSnoozeNextAd> {
+	async snoozeNextAd(broadcaster: UserIdResolvable): Promise<HelixSnoozeNextAdResult> {
 		const response = await this._client.callApi<HelixResponse<HelixSnoozeNextAdData>>({
 			type: 'helix',
 			url: 'channels/ads/schedule/snooze',
@@ -451,6 +451,6 @@ export class HelixChannelApi extends BaseApi {
 			query: createBroadcasterQuery(broadcaster),
 		});
 
-		return new HelixSnoozeNextAd(response.data[0]);
+		return new HelixSnoozeNextAdResult(response.data[0]);
 	}
 }

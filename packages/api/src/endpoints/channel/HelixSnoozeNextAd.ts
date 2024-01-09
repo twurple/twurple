@@ -1,14 +1,11 @@
-// import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-// import type { BaseApiClient } from '../../client/BaseApiClient';
 import type { HelixSnoozeNextAdData } from '../../interfaces/endpoints/channel.external';
-// import type { HelixUser } from '../user/HelixUser';
 
 /**
- * Represents a broadcaster's ad schedule snooze event.
+ * Represents the result after a call to snooze the broadcaster's ad schedule.
  */
-@rtfm('api', 'HelixSnoozeNextAd')
-export class HelixSnoozeNextAd extends DataObject<HelixSnoozeNextAdData> {
+@rtfm('api', 'HelixSnoozeNextAdResult')
+export class HelixSnoozeNextAdResult extends DataObject<HelixSnoozeNextAdData> {
 	/**
 	 * The number of snoozes remaining for the broadcaster.
 	 */
@@ -17,16 +14,16 @@ export class HelixSnoozeNextAd extends DataObject<HelixSnoozeNextAdData> {
 	}
 
 	/**
-	 * The UTC Unix Epoch timestamp when the broadcaster will gain an additional snooze.
+	 * The date and time when the broadcaster will gain an additional snooze.
 	 */
-	get snoozeRefreshAt(): number {
-		return this[rawDataSymbol].snooze_refresh_at;
+	get snoozeRefreshAt(): Date {
+		return new Date(this[rawDataSymbol].snooze_refresh_at * 1000);
 	}
 
 	/**
-	 * The UTC Unix Epoch timestamp of the broadcaster's next scheduled ad.
+	 * The date and time of the broadcaster's next scheduled ad.
 	 */
-	get nextAdAt(): number {
-		return this[rawDataSymbol].next_ad_at;
+	get nextAdAt(): Date {
+		return new Date(this[rawDataSymbol].next_ad_at * 1000);
 	}
 }

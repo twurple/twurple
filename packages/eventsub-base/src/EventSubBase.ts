@@ -945,9 +945,9 @@ export abstract class EventSubBase extends EventEmitter {
 	}
 
 	/**
-	 * Subscribes to events that represent an Ad Break beginning.
+	 * Subscribes to events that represent an ad break beginning.
 	 *
-	 * @param user The user for which to get notifications about Ad Breaks in their channel.
+	 * @param user The user for which to get notifications about ad breaks in their channel.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onChannelAdBreakBegin(

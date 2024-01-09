@@ -17,17 +17,17 @@ export class HelixAdSchedule extends DataObject<HelixAdScheduleData> {
 	}
 
 	/**
-	 * The UTC Unix Epoch timestamp when the broadcaster will gain an additional snooze.
+	 * The date and time when the broadcaster will gain an additional snooze.
 	 */
-	get snoozeRefreshAt(): number {
-		return this[rawDataSymbol].snooze_refresh_at;
+	get snoozeRefreshAt(): Date {
+		return new Date(this[rawDataSymbol].snooze_refresh_at * 1000);
 	}
 
 	/**
-	 * The UTC Unix Epoch timestamp of the broadcaster's next scheduled ad.
+	 * The date and time of the broadcaster's next scheduled ad.
 	 */
-	get nextAdAt(): number {
-		return this[rawDataSymbol].next_ad_at;
+	get nextAdAt(): Date {
+		return new Date(this[rawDataSymbol].next_ad_at * 1000);
 	}
 
 	/**
@@ -38,10 +38,10 @@ export class HelixAdSchedule extends DataObject<HelixAdScheduleData> {
 	}
 
 	/**
-	 * The UTC Unix Epoch timestamp of the broadcaster's last ad-break.
+	 * The date and time of the broadcaster's last ad-break.
 	 */
-	get lastAdAt(): number {
-		return this[rawDataSymbol].last_ad_at;
+	get lastAdAt(): Date {
+		return new Date(this[rawDataSymbol].last_ad_at * 1000);
 	}
 
 	/**

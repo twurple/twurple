@@ -570,7 +570,7 @@ export interface EventSubListener {
 	) => EventSubSubscription;
 
 	/**
-	 * Subscribes to events that represent an Ad Break beginning in a channel.
+	 * Subscribes to events that represent an ad break beginning in a channel.
 	 *
 	 * @param user The user for which to get notifications about Hype Trains in their channel.
 	 * @param handler The function that will be called for any new notifications.
