@@ -19,14 +19,14 @@ export class HelixAdSchedule extends DataObject<HelixAdScheduleData> {
 	/**
 	 * The date and time when the broadcaster will gain an additional snooze.
 	 */
-	get snoozeRefreshAt(): Date {
+	get snoozeRefreshDate(): Date {
 		return new Date(this[rawDataSymbol].snooze_refresh_at * 1000);
 	}
 
 	/**
 	 * The date and time of the broadcaster's next scheduled ad.
 	 */
-	get nextAdAt(): Date {
+	get nextAdDate(): Date {
 		return new Date(this[rawDataSymbol].next_ad_at * 1000);
 	}
 
@@ -40,7 +40,7 @@ export class HelixAdSchedule extends DataObject<HelixAdScheduleData> {
 	/**
 	 * The date and time of the broadcaster's last ad-break.
 	 */
-	get lastAdAt(): Date {
+	get lastAdDate(): Date {
 		return new Date(this[rawDataSymbol].last_ad_at * 1000);
 	}
 

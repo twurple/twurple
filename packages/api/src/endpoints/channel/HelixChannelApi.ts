@@ -42,7 +42,7 @@ import { HelixChannelEditor } from './HelixChannelEditor';
 import { HelixChannelFollower } from './HelixChannelFollower';
 import { HelixFollowedChannel } from './HelixFollowedChannel';
 import { HelixAdSchedule } from './HelixAdSchedule';
-import { HelixSnoozeNextAdResult } from './HelixSnoozeNextAd';
+import { HelixSnoozeNextAdResult } from './HelixSnoozeNextAdResult';
 
 /**
  * The Helix API methods that deal with channels.
