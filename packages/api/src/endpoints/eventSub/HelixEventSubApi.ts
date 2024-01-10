@@ -1190,6 +1190,26 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent an ad break beginning in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to ad break begin events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelAdBreakBeginEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.ad_break.begin',
+			'1',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['channel:read:ads'],
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.
