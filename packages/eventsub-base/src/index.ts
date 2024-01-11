@@ -7,6 +7,9 @@ export { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubCh
 export { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
 export { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
 export { EventSubChannelCharityDonationEvent } from './events/EventSubChannelCharityDonationEvent';
+export { EventSubChannelChatClearEvent } from './events/EventSubChannelChatClearEvent';
+export { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
+export { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
 export { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 export { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 export { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
