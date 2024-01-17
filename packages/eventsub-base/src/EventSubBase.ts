@@ -16,6 +16,9 @@ import type { EventSubChannelCharityCampaignProgressEvent } from './events/Event
 import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
 import type { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
 import type { EventSubChannelCharityDonationEvent } from './events/EventSubChannelCharityDonationEvent';
+import type { EventSubChannelChatClearEvent } from './events/EventSubChannelChatClearEvent';
+import type { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
+import type { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -59,6 +62,9 @@ import { EventSubChannelCharityCampaignProgressSubscription } from './subscripti
 import { EventSubChannelCharityCampaignStartSubscription } from './subscriptions/EventSubChannelCharityCampaignStartSubscription';
 import { EventSubChannelCharityCampaignStopSubscription } from './subscriptions/EventSubChannelCharityCampaignStopSubscription';
 import { EventSubChannelCharityDonationSubscription } from './subscriptions/EventSubChannelCharityDonationSubscription';
+import { EventSubChannelChatClearSubscription } from './subscriptions/EventSubChannelChatClearSubscription';
+import { EventSubChannelChatClearUserMessagesSubscription } from './subscriptions/EventSubChannelChatClearUserMessagesSubscription';
+import { EventSubChannelChatMessageDeleteSubscription } from './subscriptions/EventSubChannelChatMessageDeleteSubscription';
 import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription';
 import { EventSubChannelGoalBeginSubscription } from './subscriptions/EventSubChannelGoalBeginSubscription';
@@ -957,6 +963,51 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelAdBreakBeginEvents');
 
 		return this._genericSubscribe(EventSubChannelAdBreakBeginSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent an channel's chat being cleared.
+	 *
+	 * @param user The user for which to get notifications about chat being cleared in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatClear(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatClearEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatClearEvents');
+
+		return this._genericSubscribe(EventSubChannelChatClearSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user's chat messages being cleared in a channel.
+	 *
+	 * @param user The user for which to get notifications about a user's chat messages being cleared in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatClearUserMessages(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatClearUserMessagesEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatClearUserMessagesEvents');
+
+		return this._genericSubscribe(EventSubChannelChatClearUserMessagesSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a chat message being deleted in a channel.
+	 *
+	 * @param user The user for which to get notifications about a chat message being deleted in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatMessageDelete(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatMessageDeleteEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatMessageDeleteEvents');
+
+		return this._genericSubscribe(EventSubChannelChatMessageDeleteSubscription, handler, this, userId);
 	}
 
 	/**

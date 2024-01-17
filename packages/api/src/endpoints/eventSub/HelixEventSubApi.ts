@@ -1210,6 +1210,66 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a channel's chat being cleared.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to chat clear events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelChatClearEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.chat.clear',
+			'1',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['user:read:chat'],
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a user's chat messages being cleared in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to user chat message clear events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelChatClearUserMessagesEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.chat.clear_user_messages',
+			'1',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['user:read:chat'],
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a chat message being deleted in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to chat message delete events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelChatMessageDeleteEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.chat.message_delete',
+			'1',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['user:read:chat'],
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.

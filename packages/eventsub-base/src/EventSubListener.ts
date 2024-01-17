@@ -6,6 +6,9 @@ import type { EventSubChannelCharityCampaignProgressEvent } from './events/Event
 import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
 import type { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
 import type { EventSubChannelCharityDonationEvent } from './events/EventSubChannelCharityDonationEvent';
+import type { EventSubChannelChatClearEvent } from './events/EventSubChannelChatClearEvent';
+import type { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
+import type { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -578,6 +581,39 @@ export interface EventSubListener {
 	onChannelAdBreakBegin: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelAdBreakBeginEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a channel's chat being cleared.
+	 *
+	 * @param user The user for which to get notifications about chat being cleared in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatClear: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatClearEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user's chat messages being cleared in a channel.
+	 *
+	 * @param user The user for which to get notifications about a user's chat messages being cleared in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatClearUserMessages: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatClearUserMessagesEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a chat message being deleted in a channel.
+	 *
+	 * @param user The user for which to get notifications about a chat message being deleted in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatMessageDelete: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatMessageDeleteEvent) => void,
 	) => EventSubSubscription;
 
 	/**
