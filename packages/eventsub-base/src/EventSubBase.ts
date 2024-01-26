@@ -1020,7 +1020,11 @@ export abstract class EventSubBase extends EventEmitter {
 	): HelixEventSubSubscription | undefined;
 
 	protected _genericSubscribe<T, Args extends unknown[]>(
-		clazz: new (handler: (obj: T) => void, client: EventSubBase, ...args: Args) => EventSubSubscription<T>,
+		clazz: new (
+			handler: (obj: T) => void | Promise<void>,
+			client: EventSubBase,
+			...args: Args
+		) => EventSubSubscription<T>,
 		handler: (obj: T) => void,
 		client: EventSubBase,
 		...params: Args
