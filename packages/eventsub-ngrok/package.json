@@ -1,6 +1,6 @@
 {
   "name": "@twurple/eventsub-ngrok",
-  "version": "7.0.7",
+  "version": "7.0.8",
   "publishConfig": {
     "access": "public"
   },
@@ -38,12 +38,12 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/api": "7.0.7",
-    "@twurple/eventsub-http": "7.0.7"
+    "@twurple/api": "7.0.8",
+    "@twurple/eventsub-http": "7.0.8"
   },
   "peerDependencies": {
-    "@twurple/api": "7.0.7",
-    "@twurple/eventsub-http": "7.0.7"
+    "@twurple/api": "7.0.8",
+    "@twurple/eventsub-http": "7.0.8"
   },
   "files": [
     "LICENSE",
