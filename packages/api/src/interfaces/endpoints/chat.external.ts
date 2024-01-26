@@ -180,9 +180,9 @@ export function createSendChatMessageQuery(broadcaster: string, sender: string) 
 }
 
 /** @internal */
-export function createSendChatMessageBody(message: HelixSendChatMessageParams) {
+export function createSendChatMessageBody(message: string, params: HelixSendChatMessageParams | undefined) {
 	return {
-		message: message.message,
-		reply_parent_message_id: message.replyParentMessageId,
+		message,
+		reply_parent_message_id: params?.replyParentMessageId,
 	};
 }

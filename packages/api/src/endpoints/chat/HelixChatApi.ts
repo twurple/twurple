@@ -260,15 +260,19 @@ export class HelixChatApi extends BaseApi {
 	 * Sends a chat message to a broadcaster's chat.
 	 *
 	 * This uses the token of the broadcaster by default.
-	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * If you want to execute this in the context of another user
 	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
+	 * @expandParams
 	 *
 	 * @param broadcaster The broadcaster the chat belongs to.
 	 * @param message The message to send.
+	 * @param params
 	 */
 	async sendChatMessage(
 		broadcaster: UserIdResolvable,
-		message: HelixSendChatMessageParams,
+		message: string,
+		params: HelixSendChatMessageParams,
 	): Promise<HelixSentChatMessage> {
 		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixSentChatMessageData>>({
@@ -279,7 +283,7 @@ export class HelixChatApi extends BaseApi {
 			canOverrideScopedUserContext: true,
 			scopes: ['user:write:chat'],
 			query: createSendChatMessageQuery(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
-			jsonBody: createSendChatMessageBody(message),
+			jsonBody: createSendChatMessageBody(message, params),
 		});
 
 		return new HelixSentChatMessage(result.data[0]);
