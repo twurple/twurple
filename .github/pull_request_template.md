@@ -7,8 +7,7 @@ Don't worry - bugfixes will also be merged back to the main branch, if applicabl
 Type: 
 <!--
 Enter the issue ID(s) of the issue(s) this pull request fixes here.
-Alternatively, if the issue this fixes was only discussed on Discord, please state that here.
-PLEASE DO NOT SUBMIT PULL REQUESTS WITHOUT FIRST FILING AN ISSUE OR TALKING TO US ABOUT IT ON DISCORD: https://discord.gg/b9ZqMfz
+PLEASE DO NOT SUBMIT PULL REQUESTS WITHOUT FIRST FILING AN ISSUE!
 In case of bugs, no further discussion is required and you can submit a fix immediately.
 For improvements and features, please allow for at least 24 hours after filing the issue for discussion about a shallow plan whether and how it should be implemented in order to not waste your time.
 -->

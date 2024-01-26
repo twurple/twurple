@@ -17,8 +17,6 @@ There is a [Discord server](https://discord.gg/b9ZqMfz) where you can ask questi
 If you want to create a new feature, **please file a feature request first**. State that you want to implement the feature by yourself, too.  
 We will decide whether we want this feature in the library. You don't want to spend your precious time for nothing, do you?
 
-Alternatively, you can talk to us on [Discord](https://discord.gg/b9ZqMfz) about the feature.
-
 ### General code conventions
 
 - Property names are always nouns.
@@ -60,6 +58,6 @@ If you want to create a new documentation page, please reflect the outline struc
 ### Sending a Pull Request
 
 After writing your bug fix, feature or improvement, send a pull request stating what it includes
-and [which issue it fixes](https://help.github.com/articles/closing-issues-using-keywords/).  
-If the issue was discussed on Discord (so there is no GitHub issue), please state that in the PR.  
+and [which issue it fixes](https://help.github.com/articles/closing-issues-using-keywords/).
+
 We will then review the code changes and either merge it or request further changes.
