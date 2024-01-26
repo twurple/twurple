@@ -3,6 +3,8 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createChatColorUpdateQuery,
 	createChatSettingsUpdateBody,
+	createSendChatMessageQuery,
+	createSendChatMessageBody,
 	createShoutoutQuery,
 	type HelixChannelEmoteData,
 	type HelixChatBadgeSetData,
@@ -13,8 +15,10 @@ import {
 	type HelixEmoteData,
 	type HelixEmoteFromSetData,
 	type HelixPrivilegedChatSettingsData,
+	type HelixSentChatMessageData,
 } from '../../interfaces/endpoints/chat.external';
 import {
+	type HelixSendChatMessageParams,
 	type HelixSendChatAnnouncementParams,
 	type HelixUpdateChatSettingsParams,
 } from '../../interfaces/endpoints/chat.input';
@@ -33,6 +37,7 @@ import { HelixChatSettings } from './HelixChatSettings';
 import { HelixEmote } from './HelixEmote';
 import { HelixEmoteFromSet } from './HelixEmoteFromSet';
 import { HelixPrivilegedChatSettings } from './HelixPrivilegedChatSettings';
+import { HelixSentChatMessage } from './HelixSentChatMessage';
 
 /**
  * The Helix API methods that deal with chat.
@@ -249,6 +254,35 @@ export class HelixChatApi extends BaseApi {
 		});
 
 		return new HelixPrivilegedChatSettings(result.data[0]);
+	}
+
+	/**
+	 * Sends a chat message to a broadcaster's chat.
+	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
+	 * @param broadcaster The broadcaster the chat belongs to.
+	 * @param message The message to send.
+	 */
+	async sendChatMessage(
+		broadcaster: UserIdResolvable,
+		message: HelixSendChatMessageParams,
+	): Promise<HelixSentChatMessage> {
+		const broadcasterId = extractUserId(broadcaster);
+		const result = await this._client.callApi<HelixResponse<HelixSentChatMessageData>>({
+			type: 'helix',
+			url: 'chat/messages',
+			method: 'POST',
+			userId: broadcasterId,
+			canOverrideScopedUserContext: true,
+			scopes: ['user:write:chat'],
+			query: createSendChatMessageQuery(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			jsonBody: createSendChatMessageBody(message),
+		});
+
+		return new HelixSentChatMessage(result.data[0]);
 	}
 
 	/**

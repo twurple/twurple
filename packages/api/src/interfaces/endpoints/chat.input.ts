@@ -51,6 +51,21 @@ export interface HelixUpdateChatSettingsParams {
 }
 
 /**
+ * A request to send a message to a broadcaster's chat.
+ */
+export interface HelixSendChatMessageParams {
+	/**
+	 * The message to send in the broadcaster's chat room. Messages are limited to a maximum of 500 characters.
+	 */
+	message: string;
+
+	/**
+	 * The ID of the chat message being replied to. If this is not set, message will not be sent as a reply.
+	 */
+	replyParentMessageId?: string;
+}
+
+/**
  * A request to send an announcement to a broadcaster's chat.
  */
 export interface HelixSendChatAnnouncementParams {

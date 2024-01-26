@@ -45,6 +45,7 @@ export { HelixEmote } from './endpoints/chat/HelixEmote';
 export { HelixChannelEmote } from './endpoints/chat/HelixChannelEmote';
 export { HelixEmoteFromSet } from './endpoints/chat/HelixEmoteFromSet';
 export { HelixPrivilegedChatSettings } from './endpoints/chat/HelixPrivilegedChatSettings';
+export { HelixSentChatMessage } from './endpoints/chat/HelixSentChatMessage';
 export type {
 	HelixChannelEmoteSubscriptionTier,
 	HelixEmoteImageScale,
@@ -56,6 +57,7 @@ export type {
 } from './interfaces/endpoints/chat.external';
 export type {
 	HelixUpdateChatSettingsParams,
+	HelixSendChatMessageParams,
 	HelixSendChatAnnouncementParams,
 	HelixChatBadgeScale,
 } from './interfaces/endpoints/chat.input';
