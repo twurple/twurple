@@ -272,7 +272,7 @@ export class HelixChatApi extends BaseApi {
 	async sendChatMessage(
 		broadcaster: UserIdResolvable,
 		message: string,
-		params: HelixSendChatMessageParams,
+		params?: HelixSendChatMessageParams,
 	): Promise<HelixSentChatMessage> {
 		const broadcasterId = extractUserId(broadcaster);
 		const result = await this._client.callApi<HelixResponse<HelixSentChatMessageData>>({
