@@ -127,7 +127,9 @@ export abstract class EventSubHttpBase extends EventSubBase {
 						const url = sub._transport.callback;
 						if (url.startsWith(urlPrefix)) {
 							const id = url.slice(urlPrefix.length);
-							return [id, sub];
+							if (!id.includes('/')) {
+								return [id, sub];
+							}
 						}
 					}
 					return undefined;

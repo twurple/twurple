@@ -48,7 +48,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	 */
 	start(resumeFrom?: HelixEventSubSubscription): void {
 		if (resumeFrom) {
-			if (resumeFrom.status === 'enabled') {
+			if (resumeFrom.status === 'enabled' || resumeFrom.status === 'webhook_callback_verification_pending') {
 				this._twitchSubscriptionData = resumeFrom;
 				this._verified = true;
 				this._client._logger.debug(`Successfully resumed subscription for event: ${this.id}`);
