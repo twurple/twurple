@@ -1,5 +1,5 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixUpdateChatSettingsParams } from './chat.input';
+import { type HelixSendChatMessageParams, type HelixUpdateChatSettingsParams } from './chat.input';
 
 /**
  * The subscription tier necessary to unlock an emote. 1000 means tier 1, and so on.
@@ -65,6 +65,16 @@ export interface HelixChatBadgeVersionData {
 export interface HelixChatBadgeSetData {
 	set_id: string;
 	versions: HelixChatBadgeVersionData[];
+}
+
+/** @private */
+export interface HelixSentChatMessageData {
+	message_id: string;
+	is_sent: boolean;
+	drop_reason?: {
+		code: string;
+		message: string;
+	};
 }
 
 /**
@@ -158,5 +168,21 @@ export function createShoutoutQuery(from: UserIdResolvable, to: UserIdResolvable
 		from_broadcaster_id: extractUserId(from),
 		to_broadcaster_id: extractUserId(to),
 		moderator_id: moderatorId,
+	};
+}
+
+/** @internal */
+export function createSendChatMessageQuery(broadcaster: string, sender: string) {
+	return {
+		broadcaster_id: broadcaster,
+		sender_id: sender,
+	};
+}
+
+/** @internal */
+export function createSendChatMessageBody(message: string, params: HelixSendChatMessageParams | undefined) {
+	return {
+		message,
+		reply_parent_message_id: params?.replyParentMessageId,
 	};
 }

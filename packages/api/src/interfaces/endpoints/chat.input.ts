@@ -51,6 +51,16 @@ export interface HelixUpdateChatSettingsParams {
 }
 
 /**
+ * A request to send a message to a broadcaster's chat.
+ */
+export interface HelixSendChatMessageParams {
+	/**
+	 * The ID of the chat message being replied to. If this is not set, message will not be sent as a reply.
+	 */
+	replyParentMessageId?: string;
+}
+
+/**
  * A request to send an announcement to a broadcaster's chat.
  */
 export interface HelixSendChatAnnouncementParams {

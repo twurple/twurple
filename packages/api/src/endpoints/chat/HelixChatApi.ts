@@ -3,6 +3,8 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createChatColorUpdateQuery,
 	createChatSettingsUpdateBody,
+	createSendChatMessageBody,
+	createSendChatMessageQuery,
 	createShoutoutQuery,
 	type HelixChannelEmoteData,
 	type HelixChatBadgeSetData,
@@ -13,9 +15,11 @@ import {
 	type HelixEmoteData,
 	type HelixEmoteFromSetData,
 	type HelixPrivilegedChatSettingsData,
+	type HelixSentChatMessageData,
 } from '../../interfaces/endpoints/chat.external';
 import {
 	type HelixSendChatAnnouncementParams,
+	type HelixSendChatMessageParams,
 	type HelixUpdateChatSettingsParams,
 } from '../../interfaces/endpoints/chat.input';
 import { createModeratorActionQuery, createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
@@ -33,6 +37,7 @@ import { HelixChatSettings } from './HelixChatSettings';
 import { HelixEmote } from './HelixEmote';
 import { HelixEmoteFromSet } from './HelixEmoteFromSet';
 import { HelixPrivilegedChatSettings } from './HelixPrivilegedChatSettings';
+import { HelixSentChatMessage } from './HelixSentChatMessage';
 
 /**
  * The Helix API methods that deal with chat.
@@ -249,6 +254,75 @@ export class HelixChatApi extends BaseApi {
 		});
 
 		return new HelixPrivilegedChatSettings(result.data[0]);
+	}
+
+	/**
+	 * Sends a chat message to a broadcaster's chat.
+	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
+	 * @expandParams
+	 *
+	 * @param broadcaster The broadcaster the chat belongs to.
+	 * @param message The message to send.
+	 * @param params
+	 */
+	async sendChatMessage(
+		broadcaster: UserIdResolvable,
+		message: string,
+		params?: HelixSendChatMessageParams,
+	): Promise<HelixSentChatMessage> {
+		const broadcasterId = extractUserId(broadcaster);
+		const result = await this._client.callApi<HelixResponse<HelixSentChatMessageData>>({
+			type: 'helix',
+			url: 'chat/messages',
+			method: 'POST',
+			userId: broadcasterId,
+			canOverrideScopedUserContext: true,
+			scopes: ['user:write:chat'],
+			query: createSendChatMessageQuery(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			jsonBody: createSendChatMessageBody(message, params),
+		});
+
+		return new HelixSentChatMessage(result.data[0]);
+	}
+
+	/**
+	 * Sends a chat message to a broadcaster's chat, using an app token.
+	 *
+	 * This requires the scopes `user:write:chat` and `user:bot` for the `user` and `channel:bot` for the `broadcaster`.
+	 * `channel:bot` is not required if the `user` has moderator privileges in the `broadcaster`'s channel.
+	 *
+	 * These scope requirements can not be checked by the library, so they are just assumed.
+	 * Make sure to catch authorization errors yourself.
+	 *
+	 * @expandParams
+	 *
+	 * @param user The user to send the chat message from.
+	 * @param broadcaster The broadcaster the chat belongs to.
+	 * @param message The message to send.
+	 * @param params
+	 */
+	async sendChatMessageAsApp(
+		user: UserIdResolvable,
+		broadcaster: UserIdResolvable,
+		message: string,
+		params?: HelixSendChatMessageParams,
+	): Promise<HelixSentChatMessage> {
+		const userId = extractUserId(user);
+		const broadcasterId = extractUserId(broadcaster);
+		const result = await this._client.callApi<HelixResponse<HelixSentChatMessageData>>({
+			type: 'helix',
+			url: 'chat/messages',
+			method: 'POST',
+			forceType: 'app',
+			query: createSendChatMessageQuery(broadcasterId, userId),
+			jsonBody: createSendChatMessageBody(message, params),
+		});
+
+		return new HelixSentChatMessage(result.data[0]);
 	}
 
 	/**
