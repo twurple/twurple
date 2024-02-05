@@ -3,8 +3,8 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createChatColorUpdateQuery,
 	createChatSettingsUpdateBody,
-	createSendChatMessageQuery,
 	createSendChatMessageBody,
+	createSendChatMessageQuery,
 	createShoutoutQuery,
 	type HelixChannelEmoteData,
 	type HelixChatBadgeSetData,
@@ -18,8 +18,8 @@ import {
 	type HelixSentChatMessageData,
 } from '../../interfaces/endpoints/chat.external';
 import {
-	type HelixSendChatMessageParams,
 	type HelixSendChatAnnouncementParams,
+	type HelixSendChatMessageParams,
 	type HelixUpdateChatSettingsParams,
 } from '../../interfaces/endpoints/chat.input';
 import { createModeratorActionQuery, createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
@@ -283,6 +283,42 @@ export class HelixChatApi extends BaseApi {
 			canOverrideScopedUserContext: true,
 			scopes: ['user:write:chat'],
 			query: createSendChatMessageQuery(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			jsonBody: createSendChatMessageBody(message, params),
+		});
+
+		return new HelixSentChatMessage(result.data[0]);
+	}
+
+	/**
+	 * Sends a chat message to a broadcaster's chat, using an app token.
+	 *
+	 * This requires the scopes `user:write:chat` and `user:bot` for the `user` and `channel:bot` for the `broadcaster`.
+	 * `channel:bot` is not required if the `user` has moderator privileges in the `broadcaster`'s channel.
+	 *
+	 * These scope requirements can not be checked by the library, so they are just assumed.
+	 * Make sure to catch authorization errors yourself.
+	 *
+	 * @expandParams
+	 *
+	 * @param user The user to send the chat message from.
+	 * @param broadcaster The broadcaster the chat belongs to.
+	 * @param message The message to send.
+	 * @param params
+	 */
+	async sendChatMessageAsApp(
+		user: UserIdResolvable,
+		broadcaster: UserIdResolvable,
+		message: string,
+		params?: HelixSendChatMessageParams,
+	): Promise<HelixSentChatMessage> {
+		const userId = extractUserId(user);
+		const broadcasterId = extractUserId(broadcaster);
+		const result = await this._client.callApi<HelixResponse<HelixSentChatMessageData>>({
+			type: 'helix',
+			url: 'chat/messages',
+			method: 'POST',
+			forceType: 'app',
+			query: createSendChatMessageQuery(broadcasterId, userId),
 			jsonBody: createSendChatMessageBody(message, params),
 		});
 
