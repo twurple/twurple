@@ -171,7 +171,11 @@ To do so, specify the \`mockServerPort\` option in your \`ApiClient\`.`);
 	}
 
 	protected _genericSubscribe<T, Args extends unknown[]>(
-		clazz: new (handler: (obj: T) => void, client: EventSubBase, ...args: Args) => EventSubSubscription<T>,
+		clazz: new (
+			handler: (obj: T) => void | Promise<void>,
+			client: EventSubBase,
+			...args: Args
+		) => EventSubSubscription<T>,
 		handler: (obj: T) => void,
 		client: EventSubBase,
 		...params: Args

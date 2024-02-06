@@ -15,7 +15,9 @@ or using npm:
 
 ## 2. Setting up the listener
 
-Listening to events using ngrok is easy since the ngrok adapter benefits from the ability to set itself up completely on its own:
+Listening to events using ngrok is easy since the ngrok adapter benefits from the ability to set itself up completely on its own.
+
+The only thing ngrok requires is an auth token, which you can pass through the `ngrokConfig` option:
 
 ```ts
 // This is necessary to prevent conflict errors resulting from ngrok assigning a new host name every time
@@ -23,7 +25,11 @@ await apiClient.eventSub.deleteAllSubscriptions();
 
 const listener = new EventSubHttpListener({
 	apiClient,
-	adapter: new NgrokAdapter(),
+	adapter: new NgrokAdapter({
+		ngrokConfig: {
+			authtoken: 'YOUR_AUTH_TOKEN'
+		}
+	}),
 	secret: 'thisShouldBeARandomlyGeneratedFixedString'
 });
 ```

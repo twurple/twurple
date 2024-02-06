@@ -14,7 +14,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	/** @protected */ abstract readonly _cliName: string;
 
 	/** @internal */
-	protected constructor(protected _handler: (obj: T) => void, protected _client: EventSubBase) {}
+	protected constructor(protected _handler: (obj: T) => void | Promise<void>, protected _client: EventSubBase) {}
 
 	/**
 	 * Whether the subscription has been verified by Twitch.
@@ -34,8 +34,8 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	}
 
 	/** @private */
-	_handleData(body: Record<string, unknown>): void {
-		this._handler(this.transformData(body));
+	async _handleData(body: Record<string, unknown>): Promise<void> {
+		await this._handler(this.transformData(body));
 	}
 
 	/**
@@ -48,7 +48,7 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	 */
 	start(resumeFrom?: HelixEventSubSubscription): void {
 		if (resumeFrom) {
-			if (resumeFrom.status === 'enabled') {
+			if (resumeFrom.status === 'enabled' || resumeFrom.status === 'webhook_callback_verification_pending') {
 				this._twitchSubscriptionData = resumeFrom;
 				this._verified = true;
 				this._client._logger.debug(`Successfully resumed subscription for event: ${this.id}`);

@@ -22,7 +22,7 @@ export interface UserNameResolveableType {
  * A user ID or a user or channel object.
  *
  * This is not a user name.
- * Please use {@link HelixUserApi#getUserByName}} to fetch a user object by name.
+ * Please use {@link HelixUserApi#getUserByName} to fetch a user object by name.
  */
 export type UserIdResolvable = string | number | UserIdResolvableType;
 

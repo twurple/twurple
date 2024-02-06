@@ -1,7 +1,7 @@
 import { type Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
 import { createLogger, type Logger, type LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { type EventSubNotificationPayload } from '@twurple/eventsub-base';
+import { type EventSubNotificationPayload, type EventSubSubscription } from '@twurple/eventsub-base';
 import { type EventSubWsListener } from './EventSubWsListener';
 import {
 	type EventSubReconnectPayload,
@@ -111,10 +111,10 @@ export class EventSubWsSocket {
 					const notificationPayload = payload as EventSubNotificationPayload;
 					if ('events' in notificationPayload) {
 						for (const event of notificationPayload.events) {
-							subscription._handleData(event.data);
+							this._handleSingleEventPayload(subscription, event.data);
 						}
 					} else {
-						subscription._handleData(notificationPayload.event);
+						this._handleSingleEventPayload(subscription, notificationPayload.event);
 					}
 					break;
 				}
@@ -185,5 +185,17 @@ export class EventSubWsSocket {
 	private _handleKeepaliveTimeout() {
 		this._keepaliveTimer = null;
 		this._connection.assumeExternalDisconnect();
+	}
+
+	/** @internal */
+	private _handleSingleEventPayload(subscription: EventSubSubscription, payload: Record<string, unknown>) {
+		subscription._handleData(payload).catch(e => {
+			this._logger.error(
+				`Caught an unhandled error in EventSub event handler for subscription ${subscription.id}.
+You should probably add try-catch to your handler to be able to examine it further.
+
+Message: ${(e as Error | undefined)?.message ?? e}`,
+			);
+		});
 	}
 }
