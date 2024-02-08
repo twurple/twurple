@@ -13,13 +13,14 @@ export class EventSubChannelChatClearUserMessagesSubscription extends EventSubSu
 	constructor(
 		handler: (data: EventSubChannelChatClearUserMessagesEvent) => void,
 		client: EventSubBase,
+		private readonly _broadcasterId: string,
 		private readonly _userId: string,
 	) {
 		super(handler, client);
 	}
 
 	get id(): string {
-		return `channel.chat.clear_user_messages.${this._userId}`;
+		return `channel.chat.clear_user_messages.${this._broadcasterId}.${this._userId}`;
 	}
 
 	get authUserId(): string | null {
@@ -33,9 +34,13 @@ export class EventSubChannelChatClearUserMessagesSubscription extends EventSubSu
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelChatClearUserMessagesEvents(
+		return await this._client._apiClient.asUser(
 			this._userId,
-			await this._getTransportOptions(),
+			async ctx =>
+				await ctx.eventSub.subscribeToChannelChatClearUserMessagesEvents(
+					this._broadcasterId,
+					await this._getTransportOptions(),
+				),
 		);
 	}
 }

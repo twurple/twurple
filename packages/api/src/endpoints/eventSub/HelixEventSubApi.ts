@@ -6,6 +6,7 @@ import {
 	createEventSubDropEntitlementGrantCondition,
 	createEventSubModeratorCondition,
 	createEventSubRewardCondition,
+	createEventSubUserCondition,
 	type HelixEventSubSubscriptionData,
 	type HelixEventSubSubscriptionStatus,
 	type HelixPaginatedEventSubSubscriptionsResponse,
@@ -1219,10 +1220,11 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions,
 	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.chat.clear',
 			'1',
-			createEventSubBroadcasterCondition(broadcaster),
+			createEventSubUserCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
 			broadcaster,
 			['user:read:chat'],
@@ -1239,10 +1241,11 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions,
 	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.chat.clear_user_messages',
 			'1',
-			createEventSubBroadcasterCondition(broadcaster),
+			createEventSubUserCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
 			broadcaster,
 			['user:read:chat'],
@@ -1259,10 +1262,53 @@ export class HelixEventSubApi extends BaseApi {
 		broadcaster: UserIdResolvable,
 		transport: HelixEventSubTransportOptions,
 	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.chat.message_delete',
 			'1',
-			createEventSubBroadcasterCondition(broadcaster),
+			createEventSubUserCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['user:read:chat'],
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a chat notification in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to chat notification events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelChatNotificationEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.chat.notification',
+			'1',
+			createEventSubUserCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['user:read:chat'],
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a chat message in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to chat message events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelChatMessageEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.chat.message',
+			'1',
+			createEventSubUserCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
 			broadcaster,
 			['user:read:chat'],

@@ -13,13 +13,14 @@ export class EventSubChannelChatMessageDeleteSubscription extends EventSubSubscr
 	constructor(
 		handler: (data: EventSubChannelChatMessageDeleteEvent) => void,
 		client: EventSubBase,
+		private readonly _broadcasterId: string,
 		private readonly _userId: string,
 	) {
 		super(handler, client);
 	}
 
 	get id(): string {
-		return `channel.chat.message_delete.${this._userId}`;
+		return `channel.chat.message_delete.${this._broadcasterId}.${this._userId}`;
 	}
 
 	get authUserId(): string | null {
@@ -31,9 +32,13 @@ export class EventSubChannelChatMessageDeleteSubscription extends EventSubSubscr
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelChatMessageDeleteEvents(
+		return await this._client._apiClient.asUser(
 			this._userId,
-			await this._getTransportOptions(),
+			async ctx =>
+				await ctx.eventSub.subscribeToChannelChatMessageDeleteEvents(
+					this._broadcasterId,
+					await this._getTransportOptions(),
+				),
 		);
 	}
 }

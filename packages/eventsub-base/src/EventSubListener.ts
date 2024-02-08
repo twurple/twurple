@@ -1,5 +1,6 @@
 import { type HelixEventSubDropEntitlementGrantFilter } from '@twurple/api';
 import type { UserIdResolvable } from '@twurple/common';
+import { type EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
 import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
@@ -586,10 +587,12 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent a channel's chat being cleared.
 	 *
-	 * @param user The user for which to get notifications about chat being cleared in their channel.
+	 * @param broadcaster The user for which to get notifications about chat being cleared in their channel.
+	 * @param user The user to use for reading the channel's chat.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onChannelChatClear: (
+		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatClearEvent) => void,
 	) => EventSubSubscription;
@@ -597,10 +600,12 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent a user's chat messages being cleared in a channel.
 	 *
-	 * @param user The user for which to get notifications about a user's chat messages being cleared in their channel.
+	 * @param broadcaster The user for which to get notifications about a user's chat messages being cleared in their channel.
+	 * @param user The user to use for reading the channel's chat.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onChannelChatClearUserMessages: (
+		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatClearUserMessagesEvent) => void,
 	) => EventSubSubscription;
@@ -608,12 +613,27 @@ export interface EventSubListener {
 	/**
 	 * Subscribes to events that represent a chat message being deleted in a channel.
 	 *
-	 * @param user The user for which to get notifications about a chat message being deleted in their channel.
+	 * @param broadcaster The user for which to get notifications about a chat message being deleted in their channel.
+	 * @param user The user to use for reading the channel's chat.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onChannelChatMessageDelete: (
+		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatMessageDeleteEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a chat notification being sent to a channel.
+	 *
+	 * @param broadcaster The user for which to get chat notifications in their channel.
+	 * @param user The user to use for reading the channel's chat.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatNotification: (
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatNotificationEvent) => void,
 	) => EventSubSubscription;
 
 	/**

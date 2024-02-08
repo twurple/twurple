@@ -10,6 +10,7 @@ import {
 	type UserIdResolvable,
 } from '@twurple/api';
 import { rtfm } from '@twurple/common';
+import { type EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
 import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
@@ -65,6 +66,7 @@ import { EventSubChannelCharityDonationSubscription } from './subscriptions/Even
 import { EventSubChannelChatClearSubscription } from './subscriptions/EventSubChannelChatClearSubscription';
 import { EventSubChannelChatClearUserMessagesSubscription } from './subscriptions/EventSubChannelChatClearUserMessagesSubscription';
 import { EventSubChannelChatMessageDeleteSubscription } from './subscriptions/EventSubChannelChatMessageDeleteSubscription';
+import { EventSubChannelChatNotificationSubscription } from './subscriptions/EventSubChannelChatNotificationSubscription';
 import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription';
 import { EventSubChannelGoalBeginSubscription } from './subscriptions/EventSubChannelGoalBeginSubscription';
@@ -968,46 +970,100 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Subscribes to events that represent an channel's chat being cleared.
 	 *
-	 * @param user The user for which to get notifications about chat being cleared in their channel.
+	 * @param broadcaster The user for which to get notifications about chat being cleared in their channel.
+	 * @param user The user to use for reading the channel's chat.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onChannelChatClear(
+		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatClearEvent) => void,
 	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'subscribeToChannelChatClearEvents');
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatClearEvents');
 
-		return this._genericSubscribe(EventSubChannelChatClearSubscription, handler, this, userId);
+		return this._genericSubscribe(EventSubChannelChatClearSubscription, handler, this, broadcasterId, userId);
 	}
 
 	/**
 	 * Subscribes to events that represent a user's chat messages being cleared in a channel.
 	 *
-	 * @param user The user for which to get notifications about a user's chat messages being cleared in their channel.
+	 * @param broadcaster The user for which to get notifications about a user's chat messages being cleared in their channel.
+	 * @param user The user to use for reading the channel's chat.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onChannelChatClearUserMessages(
+		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatClearUserMessagesEvent) => void,
 	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelChatClearUserMessagesEvents',
+		);
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatClearUserMessagesEvents');
 
-		return this._genericSubscribe(EventSubChannelChatClearUserMessagesSubscription, handler, this, userId);
+		return this._genericSubscribe(
+			EventSubChannelChatClearUserMessagesSubscription,
+			handler,
+			this,
+			broadcasterId,
+			userId,
+		);
 	}
 
 	/**
 	 * Subscribes to events that represent a chat message being deleted in a channel.
 	 *
-	 * @param user The user for which to get notifications about a chat message being deleted in their channel.
+	 * @param broadcaster The user for which to get notifications about a chat message being deleted in their channel.
+	 * @param user The user to use for reading the channel's chat.
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onChannelChatMessageDelete(
+		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatMessageDeleteEvent) => void,
 	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelChatMessageDeleteEvents',
+		);
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatMessageDeleteEvents');
 
-		return this._genericSubscribe(EventSubChannelChatMessageDeleteSubscription, handler, this, userId);
+		return this._genericSubscribe(
+			EventSubChannelChatMessageDeleteSubscription,
+			handler,
+			this,
+			broadcasterId,
+			userId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a chat notification being sent to a channel.
+	 *
+	 * @param broadcaster The user for which to get chat notifications in their channel.
+	 * @param user The user to use for reading the channel's chat.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatNotification(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatNotificationEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelChatMessageDeleteEvents',
+		);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatMessageDeleteEvents');
+
+		return this._genericSubscribe(
+			EventSubChannelChatNotificationSubscription,
+			handler,
+			this,
+			broadcasterId,
+			userId,
+		);
 	}
 
 	/**

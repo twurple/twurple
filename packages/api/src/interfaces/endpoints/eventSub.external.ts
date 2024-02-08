@@ -85,6 +85,14 @@ export function createEventSubModeratorCondition(broadcasterId: string, moderato
 }
 
 /** @internal */
+export function createEventSubUserCondition(broadcasterId: string, userId: string) {
+	return {
+		broadcaster_user_id: broadcasterId,
+		user_id: userId,
+	};
+}
+
+/** @internal */
 export function createEventSubDropEntitlementGrantCondition(
 	filter: HelixEventSubDropEntitlementGrantFilter,
 ): Record<string, string | undefined> {
