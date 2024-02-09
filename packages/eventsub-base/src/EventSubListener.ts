@@ -10,6 +10,7 @@ import type { EventSubChannelCharityDonationEvent } from './events/EventSubChann
 import type { EventSubChannelChatClearEvent } from './events/EventSubChannelChatClearEvent';
 import type { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
 import type { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
+import { type EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -634,6 +635,19 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatNotificationEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a chat message being sent to a channel.
+	 *
+	 * @param broadcaster The user for which to get chat message notifications in their channel.
+	 * @param user The user to use for reading the channel's chat.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatMessage: (
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatMessageEvent) => void,
 	) => EventSubSubscription;
 
 	/**

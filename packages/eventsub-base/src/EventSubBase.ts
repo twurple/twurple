@@ -20,6 +20,7 @@ import type { EventSubChannelCharityDonationEvent } from './events/EventSubChann
 import type { EventSubChannelChatClearEvent } from './events/EventSubChannelChatClearEvent';
 import type { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
 import type { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
+import { type EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -66,6 +67,7 @@ import { EventSubChannelCharityDonationSubscription } from './subscriptions/Even
 import { EventSubChannelChatClearSubscription } from './subscriptions/EventSubChannelChatClearSubscription';
 import { EventSubChannelChatClearUserMessagesSubscription } from './subscriptions/EventSubChannelChatClearUserMessagesSubscription';
 import { EventSubChannelChatMessageDeleteSubscription } from './subscriptions/EventSubChannelChatMessageDeleteSubscription';
+import { EventSubChannelChatMessageSubscription } from './subscriptions/EventSubChannelChatMessageSubscription';
 import { EventSubChannelChatNotificationSubscription } from './subscriptions/EventSubChannelChatNotificationSubscription';
 import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription';
@@ -1053,9 +1055,9 @@ export abstract class EventSubBase extends EventEmitter {
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(
 			broadcaster,
-			'subscribeToChannelChatMessageDeleteEvents',
+			'subscribeToChannelChatNotificationEvents',
 		);
-		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatMessageDeleteEvents');
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatNotificationEvents');
 
 		return this._genericSubscribe(
 			EventSubChannelChatNotificationSubscription,
@@ -1064,6 +1066,27 @@ export abstract class EventSubBase extends EventEmitter {
 			broadcasterId,
 			userId,
 		);
+	}
+
+	/**
+	 * Subscribes to events that represent a chat message being sent to a channel.
+	 *
+	 * @param broadcaster The user for which to get chat message notifications in their channel.
+	 * @param user The user to use for reading the channel's chat.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatMessage(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatMessageEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelChatMessageDeleteEvents',
+		);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatMessageEvents');
+
+		return this._genericSubscribe(EventSubChannelChatMessageSubscription, handler, this, broadcasterId, userId);
 	}
 
 	/**
