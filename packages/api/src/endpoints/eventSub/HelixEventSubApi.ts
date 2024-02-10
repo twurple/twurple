@@ -237,6 +237,7 @@ export class HelixEventSubApi extends BaseApi {
 			method: 'POST',
 			scopes,
 			userId: mapOptional(user, extractUserId),
+			canOverrideScopedUserContext,
 			forceType: usesAppAuth ? 'app' : 'user',
 			jsonBody,
 		});
