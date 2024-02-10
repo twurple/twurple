@@ -43,28 +43,28 @@ export class EventSubChannelChatSubGiftNotificationEvent extends EventSubChannel
 	/**
 	 * The ID of the recipient.
 	 */
-	get recipientId(): string | null {
+	get recipientId(): string {
 		return this[rawDataSymbol].sub_gift.recipient_user_id;
 	}
 
 	/**
 	 * The username of the recipient.
 	 */
-	get recipientName(): string | null {
+	get recipientName(): string {
 		return this[rawDataSymbol].sub_gift.recipient_user_login;
 	}
 
 	/**
 	 * The display name of the recipient.
 	 */
-	get recipientDisplayName(): string | null {
+	get recipientDisplayName(): string {
 		return this[rawDataSymbol].sub_gift.recipient_user_name;
 	}
 
 	/**
 	 * Gets more information about the recipient.
 	 */
-	async getGifter(): Promise<HelixUser> {
+	async getRecipient(): Promise<HelixUser> {
 		return checkRelationAssertion(
 			await this._client.users.getUserById(this[rawDataSymbol].sub_gift.recipient_user_id),
 		);
