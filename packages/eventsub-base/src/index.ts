@@ -10,6 +10,8 @@ export { EventSubChannelCharityDonationEvent } from './events/EventSubChannelCha
 export { EventSubChannelChatClearEvent } from './events/EventSubChannelChatClearEvent';
 export { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
 export { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
+export { EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent';
+export type { EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
 export { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 export { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 export { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
