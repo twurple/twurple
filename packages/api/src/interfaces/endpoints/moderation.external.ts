@@ -1,6 +1,11 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
 import { type HelixAutoModSettings } from '../../endpoints/moderation/HelixAutoModSettings';
-import { type HelixBanFilter, type HelixBanUserRequest, type HelixModeratorFilter } from './moderation.input';
+import {
+	type HelixBanFilter,
+	type HelixBanUserRequest,
+	type HelixCheckAutoModStatusData,
+	type HelixModeratorFilter,
+} from './moderation.input';
 
 /** @private */
 export interface HelixAutoModSettingsData {
@@ -131,5 +136,15 @@ export function createBanUserBody(data: HelixBanUserRequest) {
 export function createUpdateShieldModeStatusBody(activate: boolean) {
 	return {
 		is_active: activate,
+	};
+}
+
+/** @internal */
+export function createCheckAutoModStatusBody(data: HelixCheckAutoModStatusData[]) {
+	return {
+		data: data.map(entry => ({
+			msg_id: entry.messageId,
+			msg_text: entry.messageText,
+		})),
 	};
 }
