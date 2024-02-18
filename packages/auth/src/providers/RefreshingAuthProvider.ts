@@ -89,7 +89,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	 *
 	 * @param userId The ID of the user whose token wasn't successfully refreshed.
 	 */
-	readonly onRefreshFailure = this.registerEvent<[userId: string]>();
+	readonly onRefreshFailure = this.registerEvent<[userId: string, error: Error]>();
 
 	/**
 	 * Creates a new auth provider based on the given one that can automatically
@@ -526,7 +526,7 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 			return await refreshUserToken(this.clientId, this._clientSecret, refreshToken);
 		} catch (e) {
 			this._cachedRefreshFailures.add(userId);
-			this.emit(this.onRefreshFailure, userId);
+			this.emit(this.onRefreshFailure, userId, e);
 			throw e;
 		}
 	}
