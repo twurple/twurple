@@ -40,7 +40,7 @@
     "@d-fischer/shared-utils": "^3.6.1",
     "@d-fischer/typed-event-emitter": "^3.3.0",
     "@twurple/common": "7.1.0-pre.4",
-    "ircv3": "^0.32.3",
+    "ircv3": "^0.33.0",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
