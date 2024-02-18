@@ -35,7 +35,7 @@ export class EventSubChannelChatCommunitySubGiftNotificationEvent extends EventS
 	/**
 	 * The amount of gifts that are part of this community sub gift.
 	 */
-	get amount(): number | null {
+	get amount(): number {
 		return this[rawDataSymbol].community_sub_gift.total;
 	}
 

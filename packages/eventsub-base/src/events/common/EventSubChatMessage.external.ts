@@ -21,6 +21,7 @@ export interface EventSubChatMessageCheermote {
 /** @private */
 export interface EventSubChatMessageCheermotePart {
 	type: 'cheermote';
+	text: string;
 	cheermote: EventSubChatMessageCheermote;
 }
 
@@ -35,6 +36,7 @@ export interface EventSubChatMessageEmote {
 /** @private */
 export interface EventSubChatMessageEmotePart {
 	type: 'emote';
+	text: string;
 	emote: EventSubChatMessageEmote;
 }
 
@@ -48,6 +50,7 @@ export interface EventSubChatMessageMention {
 /** @private */
 export interface EventSubChatMessageMentionPart {
 	type: 'mention';
+	text: string;
 	mention: EventSubChatMessageMention;
 }
 

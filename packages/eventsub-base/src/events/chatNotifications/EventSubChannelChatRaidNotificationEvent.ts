@@ -19,28 +19,28 @@ export class EventSubChannelChatRaidNotificationEvent extends EventSubChannelCha
 	/**
 	 * The ID of the user that raided the channel.
 	 */
-	get raiderId(): string | null {
+	get raiderId(): string {
 		return this[rawDataSymbol].raid.user_id;
 	}
 
 	/**
 	 * The username of the user that raided the channel.
 	 */
-	get raiderName(): string | null {
+	get raiderName(): string {
 		return this[rawDataSymbol].raid.user_login;
 	}
 
 	/**
 	 * The display name of the user that raided the channel.
 	 */
-	get raiderDisplayName(): string | null {
+	get raiderDisplayName(): string {
 		return this[rawDataSymbol].raid.user_name;
 	}
 
 	/**
 	 * Gets more information about the user that raided the channel.
 	 */
-	async getGifter(): Promise<HelixUser> {
+	async getRaider(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].raid.user_id));
 	}
 
