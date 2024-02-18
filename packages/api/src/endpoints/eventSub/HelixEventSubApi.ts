@@ -1228,6 +1228,7 @@ export class HelixEventSubApi extends BaseApi {
 			transport,
 			broadcaster,
 			['user:read:chat'],
+			true,
 		);
 	}
 
@@ -1249,6 +1250,7 @@ export class HelixEventSubApi extends BaseApi {
 			transport,
 			broadcaster,
 			['user:read:chat'],
+			true,
 		);
 	}
 
@@ -1270,6 +1272,7 @@ export class HelixEventSubApi extends BaseApi {
 			transport,
 			broadcaster,
 			['user:read:chat'],
+			true,
 		);
 	}
 
@@ -1291,6 +1294,7 @@ export class HelixEventSubApi extends BaseApi {
 			transport,
 			broadcaster,
 			['user:read:chat'],
+			true,
 		);
 	}
 
@@ -1312,6 +1316,7 @@ export class HelixEventSubApi extends BaseApi {
 			transport,
 			broadcaster,
 			['user:read:chat'],
+			true,
 		);
 	}
 
