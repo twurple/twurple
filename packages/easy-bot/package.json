@@ -1,6 +1,6 @@
 {
   "name": "@twurple/easy-bot",
-  "version": "7.1.0-pre.4",
+  "version": "7.1.0-pre.5",
   "publishConfig": {
     "access": "public"
   },
@@ -36,10 +36,10 @@
     "@d-fischer/logger": "^4.2.1",
     "@d-fischer/shared-utils": "^3.6.1",
     "@d-fischer/typed-event-emitter": "^3.3.0",
-    "@twurple/api": "7.1.0-pre.4",
-    "@twurple/auth": "7.1.0-pre.4",
-    "@twurple/chat": "7.1.0-pre.4",
-    "@twurple/common": "7.1.0-pre.4",
+    "@twurple/api": "7.1.0-pre.5",
+    "@twurple/auth": "7.1.0-pre.5",
+    "@twurple/chat": "7.1.0-pre.5",
+    "@twurple/common": "7.1.0-pre.5",
     "tslib": "^2.0.3"
   },
   "files": [
