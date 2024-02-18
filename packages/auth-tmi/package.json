@@ -1,6 +1,6 @@
 {
   "name": "@twurple/auth-tmi",
-  "version": "7.0.9",
+  "version": "7.0.10",
   "publishConfig": {
     "access": "public"
   },
@@ -41,11 +41,11 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "7.0.9",
+    "@twurple/auth": "7.0.10",
     "tmi.js": "^1.7.1"
   },
   "peerDependencies": {
-    "@twurple/auth": "7.0.9",
+    "@twurple/auth": "7.0.10",
     "tmi.js": "^1.6.0"
   },
   "files": [
