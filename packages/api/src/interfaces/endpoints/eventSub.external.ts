@@ -9,7 +9,8 @@ export type HelixEventSubSubscriptionStatus =
 	| 'websocket_disconnected'
 	| 'notification_failures_exceeded'
 	| 'authorization_revoked'
-	| 'user_removed';
+	| 'user_removed'
+	| 'version_removed';
 
 /** @private */
 export interface HelixEventSubWebHookTransportData {

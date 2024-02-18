@@ -31,3 +31,8 @@ export interface EventSubBatchNotificationPayload {
 
 /** @private */
 export type EventSubNotificationPayload = EventSubSingleNotificationPayload | EventSubBatchNotificationPayload;
+
+/** @private */
+export interface EventSubRevocationPayload {
+	subscription: EventSubSubscriptionBody;
+}

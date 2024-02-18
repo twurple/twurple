@@ -1,5 +1,9 @@
 import { type LoggerOptions } from '@d-fischer/logger';
-import { type HelixEventSubWebSocketTransportOptions, HellFreezesOverError } from '@twurple/api';
+import {
+	type HelixEventSubSubscriptionStatus,
+	type HelixEventSubWebSocketTransportOptions,
+	HellFreezesOverError,
+} from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import {
 	EventSubBase,
@@ -156,8 +160,8 @@ To do so, specify the \`mockServerPort\` option in your \`ApiClient\`.`);
 	}
 
 	/** @private */
-	_handleSubscriptionRevoke(subscription: EventSubSubscription): void {
-		this.emit(this.onRevoke, subscription);
+	_handleSubscriptionRevoke(subscription: EventSubSubscription, status: HelixEventSubSubscriptionStatus): void {
+		this.emit(this.onRevoke, subscription, status);
 	}
 
 	/** @internal */

@@ -6,6 +6,7 @@ import {
 	extractUserId,
 	type HelixEventSubDropEntitlementGrantFilter,
 	type HelixEventSubSubscription,
+	type HelixEventSubSubscriptionStatus,
 	type HelixEventSubTransportOptions,
 	type UserIdResolvable,
 } from '@twurple/api';
@@ -148,7 +149,8 @@ export abstract class EventSubBase extends EventEmitter {
 	 *
 	 * @param subscription The subscription that was revoked.
 	 */
-	readonly onRevoke = this.registerEvent<[subscription: EventSubSubscription]>();
+	readonly onRevoke =
+		this.registerEvent<[subscription: EventSubSubscription, status: HelixEventSubSubscriptionStatus]>();
 
 	/**
 	 * Fires when the client successfully created a subscription.

@@ -5,6 +5,7 @@ import {
 	EventSubBase,
 	type EventSubBaseConfig,
 	type EventSubNotificationPayload,
+	type EventSubRevocationPayload,
 	type EventSubSubscription,
 	type EventSubSubscriptionBody,
 } from '@twurple/eventsub-base';
@@ -18,7 +19,7 @@ export interface EventSubVerificationPayload {
 }
 
 /** @private */
-export type EventSubHttpPayload = EventSubVerificationPayload | EventSubNotificationPayload;
+export type EventSubHttpPayload = EventSubVerificationPayload | EventSubNotificationPayload | EventSubRevocationPayload;
 
 /**
  * The base configuration for EventSub over HTTP.
@@ -239,9 +240,10 @@ export abstract class EventSubHttpBase extends EventSubBase {
 						break;
 					}
 					case 'revocation': {
+						const revocationBody = data as EventSubRevocationPayload;
 						this._dropSubscription(subscription.id);
 						this._dropTwitchSubscription(subscription.id);
-						this.emit(this.onRevoke, subscription);
+						this.emit(this.onRevoke, subscription, revocationBody.subscription.status);
 						this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
 						res.setHeader('Content-Type', 'text/plain');
 						res.writeHead(202);

@@ -1,7 +1,11 @@
 import { type Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
 import { createLogger, type Logger, type LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import { type EventSubNotificationPayload, type EventSubSubscription } from '@twurple/eventsub-base';
+import {
+	type EventSubNotificationPayload,
+	type EventSubRevocationPayload,
+	type EventSubSubscription,
+} from '@twurple/eventsub-base';
 import { type EventSubWsListener } from './EventSubWsListener';
 import {
 	type EventSubReconnectPayload,
@@ -119,7 +123,7 @@ export class EventSubWsSocket {
 					break;
 				}
 				case 'revocation': {
-					const { id } = (payload as EventSubNotificationPayload).subscription;
+					const { id, status } = (payload as EventSubRevocationPayload).subscription;
 					const subscription = this._listener._getCorrectSubscriptionByTwitchId(id);
 					if (!subscription) {
 						this._logger.error(`Revocation from unknown event received: ${id}`);
@@ -127,7 +131,7 @@ export class EventSubWsSocket {
 					}
 					this._listener._dropSubscription(subscription.id);
 					this._listener._dropTwitchSubscription(subscription.id);
-					this._listener._handleSubscriptionRevoke(subscription);
+					this._listener._handleSubscriptionRevoke(subscription, status);
 					this._logger.debug(`Subscription revoked by Twitch for event: ${id}`);
 					break;
 				}
