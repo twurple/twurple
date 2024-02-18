@@ -5,6 +5,7 @@ import {
 	createAutoModProcessBody,
 	createAutoModSettingsBody,
 	createBanUserBody,
+	createCheckAutoModStatusBody,
 	createModerationUserListQuery,
 	createModeratorModifyQuery,
 	createUpdateShieldModeStatusBody,
@@ -214,9 +215,7 @@ export class HelixModerationApi extends BaseApi {
 			userId: extractUserId(channel),
 			scopes: ['moderation:read'],
 			query: createBroadcasterQuery(channel),
-			jsonBody: {
-				data,
-			},
+			jsonBody: createCheckAutoModStatusBody(data),
 		});
 
 		return result.data.map(statusData => new HelixAutoModStatus(statusData));
