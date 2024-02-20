@@ -52,15 +52,21 @@ export class EventSubWsSocket {
 		);
 
 		this._connection.onConnect(() => {
-			this._listener._notifySocketConnect(this);
+			if (!this._reconnectInProgress) {
+				this._listener._notifySocketConnect(this);
+			}
 		});
 		this._connection.onDisconnect((_, e) => {
-			this._listener._notifySocketDisconnect(this, e);
-			this._readyToSubscribe = false;
-			this._clearKeepaliveTimer();
-			this._keepaliveTimeout = null;
-			for (const sub of this._listener._getSubscriptionsForUser(this._userId)) {
-				sub._droppedByTwitch();
+			if (this._reconnectInProgress) {
+				this._reconnectInProgress = false;
+			} else {
+				this._listener._notifySocketDisconnect(this, e);
+				this._readyToSubscribe = false;
+				this._clearKeepaliveTimer();
+				this._keepaliveTimeout = null;
+				for (const sub of this._listener._getSubscriptionsForUser(this._userId)) {
+					sub._droppedByTwitch();
+				}
 			}
 		});
 		this._connection.onReceive(data => {
@@ -89,7 +95,6 @@ export class EventSubWsSocket {
 					this._initializeKeepaliveTimeout(
 						(payload as EventSubWelcomePayload).session.keepalive_timeout_seconds!,
 					);
-					this._reconnectInProgress = false;
 					this._connection.acknowledgeSuccessfulReconnect();
 					break;
 				}
