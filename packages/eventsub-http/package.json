@@ -1,6 +1,6 @@
 {
   "name": "@twurple/eventsub-http",
-  "version": "7.1.0-pre.5",
+  "version": "7.1.0-pre.6",
   "publishConfig": {
     "access": "public"
   },
@@ -38,18 +38,18 @@
     "@d-fischer/raw-body": "^2.4.3",
     "@d-fischer/shared-utils": "^3.6.1",
     "@d-fischer/typed-event-emitter": "^3.3.0",
-    "@twurple/auth": "7.1.0-pre.5",
-    "@twurple/common": "7.1.0-pre.5",
-    "@twurple/eventsub-base": "7.1.0-pre.5",
+    "@twurple/auth": "7.1.0-pre.6",
+    "@twurple/common": "7.1.0-pre.6",
+    "@twurple/eventsub-base": "7.1.0-pre.6",
     "@types/express-serve-static-core": "^4.17.24",
     "httpanda": "^0.4.6",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/api": "7.1.0-pre.5"
+    "@twurple/api": "7.1.0-pre.6"
   },
   "peerDependencies": {
-    "@twurple/api": "7.1.0-pre.5"
+    "@twurple/api": "7.1.0-pre.6"
   },
   "files": [
     "LICENSE",
