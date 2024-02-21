@@ -95,6 +95,7 @@ export class EventSubWsSocket {
 					this._initializeKeepaliveTimeout(
 						(payload as EventSubWelcomePayload).session.keepalive_timeout_seconds!,
 					);
+					this._reconnectUrl = undefined;
 					this._connection.acknowledgeSuccessfulReconnect();
 					break;
 				}
