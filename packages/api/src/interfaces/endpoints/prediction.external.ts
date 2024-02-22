@@ -10,9 +10,9 @@ export type HelixPredictionOutcomeColor = 'BLUE' | 'PINK';
 
 /** @private */
 export interface HelixPredictorData {
-	id: string;
-	name: string;
-	login: string;
+	user_id: string;
+	user_name: string;
+	user_login: string;
 	channel_points_used: number;
 	channel_points_won: number | null;
 }
