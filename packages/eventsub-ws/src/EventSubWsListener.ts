@@ -1,4 +1,5 @@
 import { type LoggerOptions } from '@d-fischer/logger';
+import { type EventBinder } from '@d-fischer/typed-event-emitter';
 import {
 	type HelixEventSubSubscriptionStatus,
 	type HelixEventSubWebSocketTransportOptions,
@@ -48,7 +49,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	 *
 	 * @param userId The ID of the user.
 	 */
-	readonly onUserSocketConnect = this.registerEvent<[userId: string]>();
+	readonly onUserSocketConnect: EventBinder<[userId: string]> = this.registerEvent();
 
 	/**
 	 * Fires when a user socket has disconnected from the EventSub server.
@@ -56,7 +57,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	 * @param userId The ID of the user.
 	 * @param error The error that caused the disconnection, or `undefined` for a clean disconnect.
 	 */
-	readonly onUserSocketDisconnect = this.registerEvent<[userId: string, error?: Error]>();
+	readonly onUserSocketDisconnect: EventBinder<[userId: string, error?: Error | undefined]> = this.registerEvent();
 
 	/**
 	 * Creates a new EventSub HTTP listener.
