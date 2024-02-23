@@ -70,6 +70,13 @@ export interface HelixModeratorData {
 }
 
 /** @private */
+export interface HelixModeratedChannelData {
+	broadcaster_id: string;
+	broadcaster_login: string;
+	broadcaster_name: string;
+}
+
+/** @private */
 export interface HelixShieldModeStatusData {
 	is_active: boolean;
 	moderator_id: string;
