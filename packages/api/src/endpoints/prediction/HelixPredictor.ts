@@ -21,28 +21,28 @@ export class HelixPredictor extends DataObject<HelixPredictorData> {
 	 * The user ID of the predictor.
 	 */
 	get userId(): string {
-		return this[rawDataSymbol].id;
+		return this[rawDataSymbol].user_id;
 	}
 
 	/**
 	 * The name of the predictor.
 	 */
 	get userName(): string {
-		return this[rawDataSymbol].login;
+		return this[rawDataSymbol].user_login;
 	}
 
 	/**
 	 * The display name of the predictor.
 	 */
 	get userDisplayName(): string {
-		return this[rawDataSymbol].name;
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Gets more information about the predictor.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return await this._client.users.getUserById(this[rawDataSymbol].id);
+		return await this._client.users.getUserById(this[rawDataSymbol].user_id);
 	}
 
 	/**
