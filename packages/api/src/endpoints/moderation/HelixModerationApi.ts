@@ -184,7 +184,7 @@ export class HelixModerationApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for channels where the specified user moderator privileges.
+	 * Creates a paginator for channels where the specified user has moderator privileges.
 	 *
 	 * @param user The user for whom to return the list of channels where they have moderator privileges.
 	 * This ID must match the user ID in the access token.
