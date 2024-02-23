@@ -14,6 +14,7 @@ import {
 	type HelixBanData,
 	type HelixBanUserData,
 	type HelixBlockedTermData,
+	type HelixModeratedChannelData,
 	type HelixModeratorData,
 	type HelixShieldModeStatusData,
 } from '../../interfaces/endpoints/moderation.external';
@@ -34,6 +35,7 @@ import { HelixBan } from './HelixBan';
 import { HelixBanUser } from './HelixBanUser';
 import { HelixBlockedTerm } from './HelixBlockedTerm';
 import { HelixModerator } from './HelixModerator';
+import { HelixModeratedChannel } from './HelixModeratedChannel';
 import { HelixShieldModeStatus } from './HelixShieldModeStatus';
 
 /**
@@ -148,6 +150,58 @@ export class HelixModerationApi extends BaseApi {
 			},
 			this._client,
 			data => new HelixModerator(data, this._client),
+		);
+	}
+
+	/**
+	 * Gets a list of channels where the specified user has moderator privileges.
+	 *
+	 * @param user The user for whom to return a list of channels where they have moderator privileges.
+	 * This ID must match the user ID in the access token.
+	 * @param filter
+	 *
+	 * @expandParams
+	 *
+	 * @returns A paginated list of channels where the user has moderator privileges.
+	 */
+	async getModeratedChannels(
+		user: UserIdResolvable,
+		filter?: HelixForwardPagination,
+	): Promise<HelixPaginatedResult<HelixModeratedChannel>> {
+		const userId = extractUserId(user);
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixModeratedChannelData>>({
+			type: 'helix',
+			url: 'moderation/channels',
+			userId,
+			scopes: ['user:read:moderated_channels'],
+			query: {
+				...createSingleKeyQuery('user_id', userId),
+				...createPaginationQuery(filter),
+			},
+		});
+
+		return createPaginatedResult(result, HelixModeratedChannel, this._client);
+	}
+
+	/**
+	 * Creates a paginator for channels where the specified user moderator privileges.
+	 *
+	 * @param user The user for whom to return the list of channels where they have moderator privileges.
+	 * This ID must match the user ID in the access token.
+	 */
+	getModeratedChannelsPaginated(
+		user: UserIdResolvable,
+	): HelixPaginatedRequest<HelixModeratedChannelData, HelixModeratedChannel> {
+		const userId = extractUserId(user);
+		return new HelixPaginatedRequest<HelixModeratedChannelData, HelixModeratedChannel>(
+			{
+				url: 'moderation/channels',
+				userId,
+				scopes: ['user:read:moderated_channels'],
+				query: createSingleKeyQuery('user_id', userId),
+			},
+			this._client,
+			data => new HelixModeratedChannel(data, this._client),
 		);
 	}
 

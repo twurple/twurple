@@ -126,6 +126,7 @@ export type {
 export { HelixModerationApi } from './endpoints/moderation/HelixModerationApi';
 export { HelixBan } from './endpoints/moderation/HelixBan';
 export { HelixModerator } from './endpoints/moderation/HelixModerator';
+export { HelixModeratedChannel } from './endpoints/moderation/HelixModeratedChannel';
 export { HelixBanUser } from './endpoints/moderation/HelixBanUser';
 export { HelixBlockedTerm } from './endpoints/moderation/HelixBlockedTerm';
 export { HelixShieldModeStatus } from './endpoints/moderation/HelixShieldModeStatus';
