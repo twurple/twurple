@@ -41,7 +41,7 @@ export interface HelixEventSubWebSocketTransportData {
 	method: 'websocket';
 
 	/**
-	 * The callback URL to send event notifications to.
+	 * The session ID of the websocket.
 	 */
 	session_id: string;
 
