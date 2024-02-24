@@ -3,7 +3,6 @@ import { type HelixPaginatedResultWithTotal } from '../../utils/pagination/Helix
 import type {
 	HelixEventSubWebHookTransportData,
 	HelixEventSubWebSocketTransportData,
-	HelixEventSubConduitShardData,
 	HelixEventSubConduitTransportData,
 } from './eventSub.external';
 
@@ -75,8 +74,14 @@ export interface HelixEventSubDropEntitlementGrantFilter {
 	campaignId?: string;
 }
 
+export type HelixEventSubConduitShardsTransportOptions =
+	| HelixEventSubWebHookTransportOptions
+	| HelixEventSubWebSocketTransportOptions;
+
 /**
  * The properties for updating a conduit shard.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface HelixEventSubConduitShardsOptions extends Omit<HelixEventSubConduitShardData, 'status'> {}
+export interface HelixEventSubConduitShardsOptions {
+	id: string;
+	transport: HelixEventSubConduitShardsTransportOptions;
+}

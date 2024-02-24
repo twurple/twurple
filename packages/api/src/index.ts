@@ -102,6 +102,7 @@ export type {
 	HelixPaginatedEventSubSubscriptionsResult,
 	HelixEventSubDropEntitlementGrantFilter,
 	HelixEventSubConduitShardsOptions,
+	HelixEventSubConduitShardsTransportOptions,
 } from './interfaces/endpoints/eventSub.input';
 
 export { HelixExtensionsApi } from './endpoints/extensions/HelixExtensionsApi';
