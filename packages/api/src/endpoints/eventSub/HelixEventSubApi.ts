@@ -1447,7 +1447,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a new EventSub conduit.
+	 * Creates a new EventSub conduit for the current client.
 	 *
 	 * @param shardCount The number of shards to create for this conduit.
 	 */
@@ -1465,7 +1465,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Updates an EventSub conduit.
+	 * Updates an EventSub conduit for the current client.
 	 *
 	 * @param id The ID of the conduit to update.
 	 * @param shardCount The number of shards to update for this conduit.
@@ -1482,7 +1482,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Deletes an EventSub conduit.
+	 * Deletes an EventSub conduit for the current client.
 	 *
 	 * @param id The ID of the conduit to delete.
 	 */
@@ -1498,7 +1498,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Gets the current EventSub conduits for the current client.
+	 * Gets the shards of an EventSub conduit for the current client.
 	 *
 	 * @param conduitId The ID of the conduit to get shards for.
 	 * @param status The status of the shards to filter by.
@@ -1524,7 +1524,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Creates a paginator for the current EventSub conduits for the current client.
+	 * Creates a paginator for the shards of an EventSub conduit for the current client.
 	 *
 	 * @param conduitId The ID of the conduit to get shards for.
 	 * @param status The status of the shards to filter by.
@@ -1544,7 +1544,7 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
-	 * Updates shards on an EventSub conduit for the current client.
+	 * Updates shards of an EventSub conduit for the current client.
 	 *
 	 * @param conduitId The ID of the conduit to update shards for.
 	 * @param shards List of shards to update
