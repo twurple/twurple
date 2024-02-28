@@ -23,6 +23,7 @@ export type { ChatRaidInfo } from './userNotices/ChatRaidInfo';
 export type { ChatRewardGiftInfo } from './userNotices/ChatRewardGiftInfo';
 export type { ChatRitualInfo } from './userNotices/ChatRitualInfo';
 export type { ChatStandardPayForwardInfo } from './userNotices/ChatStandardPayForwardInfo';
+export type { ChatViewerMilestoneInfo } from './userNotices/ChatViewerMilestoneInfo';
 export type {
 	ChatSubExtendInfo,
 	ChatSubGiftInfo,

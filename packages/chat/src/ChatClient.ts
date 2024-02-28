@@ -45,6 +45,7 @@ import type { ChatRaidInfo } from './userNotices/ChatRaidInfo';
 import type { ChatRewardGiftInfo } from './userNotices/ChatRewardGiftInfo';
 import type { ChatRitualInfo } from './userNotices/ChatRitualInfo';
 import type { ChatStandardPayForwardInfo } from './userNotices/ChatStandardPayForwardInfo';
+import type { ChatViewerMilestoneInfo } from './userNotices/ChatViewerMilestoneInfo';
 import type {
 	ChatSubExtendInfo,
 	ChatSubGiftInfo,
@@ -352,6 +353,18 @@ export class ChatClient extends EventEmitter {
 	 */
 	readonly onRitual =
 		this.registerEvent<[channel: string, user: string, ritualInfo: ChatRitualInfo, msg: UserNotice]>();
+
+	/**
+	 * Fires when a user performs a "viewermilestone" in a channel.
+	 *
+	 * @eventListener
+	 * @param channel The channel where the milestone was performed.
+	 * @param user The user that has performed the milestone.
+	 * @param milestoneInfo Additional information about the milestone.
+	 * @param msg The full message object containing all message and user information.
+	 */
+	readonly onViewerMilestone =
+		this.registerEvent<[channel: string, user: string, milestoneInfo: ChatViewerMilestoneInfo, msg: UserNotice]>();
 
 	/**
 	 * Fires when slow mode is toggled in a channel.
@@ -1029,6 +1042,16 @@ export class ChatClient extends EventEmitter {
 						message,
 					};
 					this.emit(this.onRitual, broadcasterName, tags.get('login')!, ritualInfo, userNotice);
+					break;
+				}
+				case 'viewermilestone': {
+					const milestoneInfo: ChatViewerMilestoneInfo = {
+						categoryName: tags.get('msg-param-category')!,
+						value: Number(tags.get('msg-param-value'))!,
+						reward: Number(tags.get('msg-param-copoReward'))!,
+						message,
+					};
+					this.emit(this.onViewerMilestone, broadcasterName, tags.get('login')!, milestoneInfo, userNotice);
 					break;
 				}
 				case 'bitsbadgetier': {
