@@ -1047,8 +1047,8 @@ export class ChatClient extends EventEmitter {
 				case 'viewermilestone': {
 					const milestoneInfo: ChatViewerMilestoneInfo = {
 						categoryName: tags.get('msg-param-category')!,
-						value: Number(tags.get('msg-param-value'))!,
-						reward: Number(tags.get('msg-param-copoReward'))!,
+						value: Number(tags.get('msg-param-value')),
+						reward: Number(tags.get('msg-param-copoReward')),
 						message,
 					};
 					this.emit(this.onViewerMilestone, broadcasterName, tags.get('login')!, milestoneInfo, userNotice);
