@@ -8,14 +8,14 @@
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
   "devDependencies": {
-    "@d-fischer/documen.ts": "^0.16.8",
-    "@d-fischer/eslint-config": "^6.2.2",
+    "@d-fischer/documen.ts": "^0.16.10",
+    "@d-fischer/eslint-config": "^6.3.0",
     "@types/jest": "^27.4.1",
     "@types/node": "^14.18.50",
     "@types/twitch-ext": "^1.24.4",
     "cross-env": "^7.0.3",
-    "crowd": "^0.1.7",
-    "eslint": "8.50.0",
+    "crowd": "^0.2.0",
+    "eslint": "^8.57.0",
     "husky": "^4.3.6",
     "jest": "^29.5.0",
     "jest-environment-node": "^29.5.0",
@@ -24,8 +24,8 @@
     "rimraf": "^3.0.0",
     "tmi.js": "^1.8.5",
     "ts-jest": "^29.1.0",
-    "tsukuru": "^0.8.0",
-    "typescript": "~5.0"
+    "tsukuru": "^0.8.3",
+    "typescript": "~5.4.2"
   },
   "resolutions": {
     "@types/react": "^17"
