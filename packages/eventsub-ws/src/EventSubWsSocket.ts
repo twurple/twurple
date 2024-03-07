@@ -1,11 +1,7 @@
 import { type Connection, PersistentConnection, WebSocketConnection } from '@d-fischer/connection';
 import { createLogger, type Logger, type LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
-import {
-	type EventSubNotificationPayload,
-	type EventSubRevocationPayload,
-	type EventSubSubscription,
-} from '@twurple/eventsub-base';
+import { type EventSubNotificationPayload, type EventSubRevocationPayload } from '@twurple/eventsub-base';
 import { type EventSubWsListener } from './EventSubWsListener';
 import {
 	type EventSubReconnectPayload,
@@ -112,19 +108,27 @@ export class EventSubWsSocket {
 				}
 				case 'notification': {
 					this._restartKeepaliveTimer();
-					const { id } = (payload as EventSubNotificationPayload).subscription;
+					const notificationPayload = payload as EventSubNotificationPayload;
+					const { id } = notificationPayload.subscription;
 					const subscription = this._listener._getCorrectSubscriptionByTwitchId(id);
 					if (!subscription) {
 						this._logger.error(`Notification from unknown event received: ${id}`);
 						break;
 					}
-					const notificationPayload = payload as EventSubNotificationPayload;
+					if (new Date(metadata.message_timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
+						this._logger.debug(`Old notification(s) prevented for event: ${id}`);
+						break;
+					}
 					if ('events' in notificationPayload) {
 						for (const event of notificationPayload.events) {
-							this._handleSingleEventPayload(subscription, event.data);
+							this._listener._handleSingleEventPayload(subscription, event.data, event.id);
 						}
 					} else {
-						this._handleSingleEventPayload(subscription, notificationPayload.event);
+						this._listener._handleSingleEventPayload(
+							subscription,
+							notificationPayload.event,
+							metadata.message_id,
+						);
 					}
 					break;
 				}
@@ -195,17 +199,5 @@ export class EventSubWsSocket {
 	private _handleKeepaliveTimeout() {
 		this._keepaliveTimer = null;
 		this._connection.assumeExternalDisconnect();
-	}
-
-	/** @internal */
-	private _handleSingleEventPayload(subscription: EventSubSubscription, payload: Record<string, unknown>) {
-		subscription._handleData(payload).catch(e => {
-			this._logger.error(
-				`Caught an unhandled error in EventSub event handler for subscription ${subscription.id}.
-You should probably add try-catch to your handler to be able to examine it further.
-
-Message: ${(e as Error | undefined)?.message ?? e}`,
-			);
-		});
 	}
 }

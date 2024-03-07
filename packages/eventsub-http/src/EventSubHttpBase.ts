@@ -57,7 +57,6 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
  * @inheritDoc
  */
 export abstract class EventSubHttpBase extends EventSubBase {
-	/** @internal */ @Enumerable(false) private readonly _seenEventIds = new Set<string>();
 	/** @internal */ @Enumerable(false) private readonly _secret: string;
 
 	private readonly _strictHostCheck: boolean;
@@ -227,15 +226,15 @@ export abstract class EventSubHttpBase extends EventSubBase {
 
 						if (new Date(timestamp).getTime() < Date.now() - 10 * 60 * 1000) {
 							this._logger.debug(`Old notification(s) prevented for event: ${id}`);
-						} else {
-							const payload = data as EventSubNotificationPayload;
-							if ('events' in payload) {
-								for (const event of payload.events) {
-									this._handleSingleEventPayload(subscription, event.data, event.id);
-								}
-							} else {
-								this._handleSingleEventPayload(subscription, payload.event, messageId);
+							break;
+						}
+						const payload = data as EventSubNotificationPayload;
+						if ('events' in payload) {
+							for (const event of payload.events) {
+								this._handleSingleEventPayload(subscription, event.data, event.id);
 							}
+						} else {
+							this._handleSingleEventPayload(subscription, payload.event, messageId);
 						}
 						break;
 					}
@@ -344,28 +343,6 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		const pathPrefix = (await this.getPathPrefix())?.replace(/^\/|\/$/, '');
 
 		return `https://${hostName}${pathPrefix ? '/' : ''}${pathPrefix ?? ''}/event/${id}`;
-	}
-
-	/** @internal */
-	private _handleSingleEventPayload(
-		subscription: EventSubSubscription,
-		payload: Record<string, unknown>,
-		messageId: string,
-	) {
-		if (this._seenEventIds.has(messageId)) {
-			this._logger.debug(`Duplicate notification prevented for event: ${subscription.id}`);
-			return;
-		}
-		this._seenEventIds.add(messageId);
-		setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
-		subscription._handleData(payload).catch(e => {
-			this._logger.error(
-				`Caught an unhandled error in EventSub event handler for subscription ${subscription.id}.
-You should probably add try-catch to your handler to be able to examine it further.
-
-Message: ${(e as Error | undefined)?.message ?? e}`,
-			);
-		});
 	}
 
 	/** @internal */

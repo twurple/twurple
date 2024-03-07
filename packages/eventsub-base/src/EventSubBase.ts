@@ -138,6 +138,7 @@ export abstract class EventSubBase extends EventEmitter {
 	@Enumerable(false) protected readonly _subscriptions = new Map<string, EventSubSubscription>();
 	@Enumerable(false) protected readonly _subscriptionsByTwitchId = new Map<string, EventSubSubscription>();
 	@Enumerable(false) protected _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
+	@Enumerable(false) private readonly _seenEventIds = new Set<string>();
 
 	/** @private */ @Enumerable(false) readonly _apiClient: ApiClient;
 	/** @private */ readonly _logger: Logger;
@@ -1159,12 +1160,31 @@ export abstract class EventSubBase extends EventEmitter {
 	/** @private */
 	abstract _isReadyToSubscribe(subscription: EventSubSubscription): boolean;
 
-	/**
-	 * @param id
-	 * @protected
-	 */
+	/** @private */
 	_getCorrectSubscriptionByTwitchId(id: string): EventSubSubscription | undefined {
 		return this._subscriptionsByTwitchId.get(id);
+	}
+
+	/** @private */
+	_handleSingleEventPayload(
+		subscription: EventSubSubscription,
+		payload: Record<string, unknown>,
+		messageId: string,
+	): void {
+		if (this._seenEventIds.has(messageId)) {
+			this._logger.debug(`Duplicate notification prevented for event: ${subscription.id}`);
+			return;
+		}
+		this._seenEventIds.add(messageId);
+		setTimeout(() => this._seenEventIds.delete(messageId), 10 * 60 * 1000);
+		subscription._handleData(payload).catch(e => {
+			this._logger.error(
+				`Caught an unhandled error in EventSub event handler for subscription ${subscription.id}.
+You should probably add try-catch to your handler to be able to examine it further.
+
+Message: ${(e as Error | undefined)?.message ?? e}`,
+			);
+		});
 	}
 
 	protected abstract _findTwitchSubscriptionToContinue(
