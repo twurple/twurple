@@ -1322,6 +1322,28 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent chat settings being updated in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to chat settings update events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelChatSettingsUpdateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.chat_settings.update',
+			'1',
+			createEventSubUserCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['user:read:chat'],
+			true,
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.
