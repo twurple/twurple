@@ -4,7 +4,6 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type HelixEventSubConduitShardData,
 	type HelixEventSubSubscriptionStatus,
-	type HelixEventSubTransportData,
 } from '../../interfaces/endpoints/eventSub.external';
 
 /**
@@ -31,15 +30,5 @@ export class HelixEventSubConduitShard extends DataObject<HelixEventSubConduitSh
 	 */
 	get transportMethod(): string {
 		return this[rawDataSymbol].transport.method;
-	}
-
-	/** @private */
-	get _transport(): HelixEventSubTransportData {
-		return this[rawDataSymbol].transport;
-	}
-
-	/** @private */
-	set _status(status: HelixEventSubSubscriptionStatus) {
-		this[rawDataSymbol].status = status;
 	}
 }
