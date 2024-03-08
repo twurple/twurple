@@ -94,7 +94,7 @@ export interface HelixEventSubConduitShardData {
 	/**
 	 * The transport method.
 	 */
-	transport: HelixEventSubTransportData;
+	transport: HelixEventSubWebHookTransportData | HelixEventSubWebSocketTransportData;
 }
 
 /** @private */
