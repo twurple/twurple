@@ -280,7 +280,7 @@ export class HelixUserApi extends BaseApi {
 			type: 'helix',
 			url: 'users/extensions/list',
 			userId: extractUserId(broadcaster),
-			scopes: withInactive ? ['user:edit:broadcast'] : ['user:read:broadcast', 'user:edit:broadcast'],
+			scopes: withInactive ? ['channel:manage:extensions'] : ['user:read:broadcast', 'channel:manage:extensions'],
 		});
 
 		return result.data.map(data => new HelixUserExtension(data));
@@ -298,7 +298,7 @@ export class HelixUserApi extends BaseApi {
 			type: 'helix',
 			url: 'users/extensions',
 			userId,
-			scopes: withDev ? ['user:read:broadcast', 'user:edit:broadcast'] : undefined,
+			scopes: withDev ? ['user:read:broadcast', 'channel:manage:extensions'] : undefined,
 			query: createSingleKeyQuery('user_id', userId),
 		});
 
@@ -323,7 +323,7 @@ export class HelixUserApi extends BaseApi {
 			url: 'users/extensions',
 			method: 'PUT',
 			userId: extractUserId(broadcaster),
-			scopes: ['user:edit:broadcast'],
+			scopes: ['channel:manage:extensions'],
 			jsonBody: { data },
 		});
 

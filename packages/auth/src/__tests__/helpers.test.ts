@@ -42,6 +42,7 @@ describe('compareScopes', () => {
 
 	it('avoids undesired reverse scope equivalencies', () => {
 		expectError(['channel:manage:broadcast'], ['user:edit:broadcast']);
+		expectError(['channel:manage:extensions'], ['user:edit:broadcast']);
 	});
 });
 
