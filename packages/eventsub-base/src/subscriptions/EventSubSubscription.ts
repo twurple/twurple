@@ -1,4 +1,4 @@
-import type { HelixEventSubSubscription, HelixEventSubTransportOptions } from '@twurple/api';
+import { type HelixEventSubSubscription, type HelixEventSubTransportOptions, HellFreezesOverError } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import type { EventSubBase } from '../EventSubBase';
 
@@ -138,7 +138,22 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 
 	private async _unsubscribe() {
 		if (this._twitchSubscriptionData) {
-			await this._client._apiClient.eventSub.deleteSubscription(this._twitchSubscriptionData.id);
+			const subscriptionId = this._twitchSubscriptionData.id;
+			if (this._twitchSubscriptionData._transport.method === 'websocket') {
+				if (!this.authUserId) {
+					throw new HellFreezesOverError(
+						`Trying to delete a websocket subscription that does not have user context (${this.id})`,
+					);
+				}
+				await this._client._apiClient.asUser(
+					this.authUserId,
+					async ctx => await ctx.eventSub.deleteSubscription(subscriptionId),
+				);
+			} else {
+				await this._client._apiClient.withoutUser(
+					async ctx => await ctx.eventSub.deleteSubscription(subscriptionId),
+				);
+			}
 		}
 		this._client._dropTwitchSubscription(this.id);
 		this._client._notifySubscriptionDeleteSuccess(this as EventSubSubscription);
