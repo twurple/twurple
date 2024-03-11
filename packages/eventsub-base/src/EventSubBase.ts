@@ -22,6 +22,7 @@ import type { EventSubChannelChatClearEvent } from './events/EventSubChannelChat
 import type { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
 import type { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
 import { type EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent';
+import type { EventSubChannelChatSettingsUpdateEvent } from './events/EventSubChannelChatSettingsUpdateEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -70,6 +71,7 @@ import { EventSubChannelChatClearUserMessagesSubscription } from './subscription
 import { EventSubChannelChatMessageDeleteSubscription } from './subscriptions/EventSubChannelChatMessageDeleteSubscription';
 import { EventSubChannelChatMessageSubscription } from './subscriptions/EventSubChannelChatMessageSubscription';
 import { EventSubChannelChatNotificationSubscription } from './subscriptions/EventSubChannelChatNotificationSubscription';
+import { EventSubChannelChatSettingsUpdateSubscription } from './subscriptions/EventSubChannelChatSettingsUpdateSubscription';
 import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription';
 import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription';
 import { EventSubChannelGoalBeginSubscription } from './subscriptions/EventSubChannelGoalBeginSubscription';
@@ -1090,6 +1092,33 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatMessageEvents');
 
 		return this._genericSubscribe(EventSubChannelChatMessageSubscription, handler, this, broadcasterId, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent chat settings being updated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications about chat settings being updated in their channel.
+	 * @param user The user to use for reading the channel's chat.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatSettingsUpdate(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatSettingsUpdateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelChatSettingsUpdateEvents',
+		);
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelChatSettingsUpdateEvents');
+
+		return this._genericSubscribe(
+			EventSubChannelChatSettingsUpdateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			userId,
+		);
 	}
 
 	/**
