@@ -59,7 +59,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	readonly onUserSocketDisconnect = this.registerEvent<[userId: string, error?: Error]>();
 
 	/**
-	 * Creates a new EventSub HTTP listener.
+	 * Creates a new EventSub WebSocket listener.
 	 *
 	 * @param config
 	 *

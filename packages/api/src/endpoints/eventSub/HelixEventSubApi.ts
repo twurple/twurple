@@ -1,5 +1,5 @@
 import { mapOptional } from '@d-fischer/shared-utils';
-import type { HelixPaginatedResponseWithTotal } from '@twurple/api-call';
+import type { HelixPaginatedResponseWithTotal, HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createEventSubBroadcasterCondition,
@@ -7,21 +7,30 @@ import {
 	createEventSubModeratorCondition,
 	createEventSubRewardCondition,
 	createEventSubUserCondition,
+	createEventSubConduitCondition,
+	createEventSubConduitUpdateCondition,
+	createEventSubConduitShardsUpdateCondition,
 	type HelixEventSubSubscriptionData,
 	type HelixEventSubSubscriptionStatus,
 	type HelixPaginatedEventSubSubscriptionsResponse,
+	type HelixEventSubConduitData,
+	type HelixEventSubConduitShardData,
 } from '../../interfaces/endpoints/eventSub.external';
 import {
 	type HelixEventSubDropEntitlementGrantFilter,
 	type HelixEventSubTransportOptions,
 	type HelixPaginatedEventSubSubscriptionsResult,
+	type HelixEventSubConduitShardsOptions,
 } from '../../interfaces/endpoints/eventSub.input';
 import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
-import { createPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
+import { createPaginatedResultWithTotal, createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
 import { createPaginationQuery, type HelixPagination } from '../../utils/pagination/HelixPagination';
 import { BaseApi } from '../BaseApi';
 import { HelixEventSubSubscription } from './HelixEventSubSubscription';
 import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEventSubSubscriptionsRequest';
+import { HelixEventSubConduit } from './HelixEventSubConduit';
+import { HelixEventSubConduitShard } from './HelixEventSubConduitShard';
 
 /**
  * The API methods that deal with EventSub.
@@ -218,7 +227,7 @@ export class HelixEventSubApi extends BaseApi {
 		canOverrideScopedUserContext?: boolean,
 		isBatched?: boolean,
 	): Promise<HelixEventSubSubscription> {
-		const usesAppAuth = transport.method === 'webhook';
+		const usesAppAuth = transport.method === 'webhook' || transport.method === 'conduit';
 		const scopes = usesAppAuth ? undefined : requiredScopeSet;
 		if (!usesAppAuth && !user) {
 			throw new Error(`Transport ${transport.method} can only handle subscriptions with user context`);
@@ -1422,6 +1431,136 @@ export class HelixEventSubApi extends BaseApi {
 			false,
 			true,
 		);
+	}
+
+	/**
+	 * Gets the current EventSub conduits for the current client.
+	 *
+	 */
+	async getConduits(): Promise<HelixEventSubConduit[]> {
+		const result = await this._client.callApi<HelixResponse<HelixEventSubConduitData>>({
+			type: 'helix',
+			url: 'eventsub/conduits',
+		});
+
+		return result.data.map(data => new HelixEventSubConduit(data, this._client));
+	}
+
+	/**
+	 * Creates a new EventSub conduit for the current client.
+	 *
+	 * @param shardCount The number of shards to create for this conduit.
+	 */
+	async createConduit(shardCount: number): Promise<HelixEventSubConduit> {
+		const result = await this._client.callApi<HelixResponse<HelixEventSubConduitData>>({
+			type: 'helix',
+			url: 'eventsub/conduits',
+			method: 'POST',
+			query: {
+				...createSingleKeyQuery('shard_count', shardCount.toString()),
+			},
+		});
+
+		return new HelixEventSubConduit(result.data[0], this._client);
+	}
+
+	/**
+	 * Updates an EventSub conduit for the current client.
+	 *
+	 * @param id The ID of the conduit to update.
+	 * @param shardCount The number of shards to update for this conduit.
+	 */
+	async updateConduit(id: string, shardCount: number): Promise<HelixEventSubConduit> {
+		const result = await this._client.callApi<HelixResponse<HelixEventSubConduitData>>({
+			type: 'helix',
+			url: 'eventsub/conduits',
+			method: 'PATCH',
+			query: createEventSubConduitUpdateCondition(id, shardCount),
+		});
+
+		return new HelixEventSubConduit(result.data[0], this._client);
+	}
+
+	/**
+	 * Deletes an EventSub conduit for the current client.
+	 *
+	 * @param id The ID of the conduit to delete.
+	 */
+	async deleteConduit(id: string): Promise<void> {
+		await this._client.callApi<HelixResponse<HelixEventSubConduitData>>({
+			type: 'helix',
+			url: 'eventsub/conduits',
+			method: 'DELETE',
+			query: {
+				...createSingleKeyQuery('id', id),
+			},
+		});
+	}
+
+	/**
+	 * Gets the shards of an EventSub conduit for the current client.
+	 *
+	 * @param conduitId The ID of the conduit to get shards for.
+	 * @param status The status of the shards to filter by.
+	 * @param pagination
+	 */
+	async getConduitShards(
+		conduitId: string,
+		status?: HelixEventSubSubscriptionStatus | undefined,
+		pagination?: HelixPagination,
+	): Promise<HelixPaginatedResponse<HelixEventSubConduitShard>> {
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixEventSubConduitShardData>>({
+			type: 'helix',
+			url: 'eventsub/conduits/shards',
+			query: {
+				...createEventSubConduitCondition(conduitId, status),
+				...createPaginationQuery(pagination),
+			},
+		});
+
+		return {
+			...createPaginatedResult(result, HelixEventSubConduitShard, this._client),
+		};
+	}
+
+	/**
+	 * Creates a paginator for the shards of an EventSub conduit for the current client.
+	 *
+	 * @param conduitId The ID of the conduit to get shards for.
+	 * @param status The status of the shards to filter by.
+	 */
+	getConduitShardsPaginated(
+		conduitId: string,
+		status?: HelixEventSubSubscriptionStatus | undefined,
+	): HelixPaginatedRequest<HelixEventSubConduitShardData, HelixEventSubConduitShard> {
+		return new HelixPaginatedRequest(
+			{
+				url: 'eventsub/conduits/shards',
+				query: createEventSubConduitCondition(conduitId, status),
+			},
+			this._client,
+			data => new HelixEventSubConduitShard(data),
+		);
+	}
+
+	/**
+	 * Updates shards of an EventSub conduit for the current client.
+	 *
+	 * @param conduitId The ID of the conduit to update shards for.
+	 * @param shards List of shards to update
+	 */
+	async updateConduitShards(
+		conduitId: string,
+		shards: HelixEventSubConduitShardsOptions[],
+	): Promise<HelixEventSubConduitShard[]> {
+		const result = await this._client.callApi<HelixResponse<HelixEventSubConduitShardData>>({
+			type: 'helix',
+			url: 'eventsub/conduits/shards',
+			method: 'PATCH',
+			jsonBody: createEventSubConduitShardsUpdateCondition(conduitId, shards),
+		});
+
+		return result.data.map(data => new HelixEventSubConduitShard(data));
 	}
 
 	private async _deleteSubscriptionsWithCondition(cond?: (sub: HelixEventSubSubscription) => boolean): Promise<void> {

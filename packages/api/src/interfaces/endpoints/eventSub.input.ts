@@ -1,6 +1,10 @@
 import { type HelixEventSubSubscription } from '../../endpoints/eventSub/HelixEventSubSubscription';
 import { type HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
-import { type HelixEventSubWebHookTransportData, type HelixEventSubWebSocketTransportData } from './eventSub.external';
+import type {
+	HelixEventSubWebHookTransportData,
+	HelixEventSubWebSocketTransportData,
+	HelixEventSubConduitTransportData,
+} from './eventSub.external';
 
 /**
  * The properties describing where a WebHook notification is sent, and how it is signed.
@@ -19,11 +23,18 @@ export interface HelixEventSubWebHookTransportOptions extends HelixEventSubWebHo
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface HelixEventSubWebSocketTransportOptions
-	extends Omit<HelixEventSubWebSocketTransportData, 'connected_at'> {}
+	extends Omit<HelixEventSubWebSocketTransportData, 'connected_at' | 'disconnected_at'> {}
+
+/**
+ * The properties describing where a conduit notification is sent.
+ */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface HelixEventSubConduitTransportOptions extends HelixEventSubConduitTransportData {}
 
 export type HelixEventSubTransportOptions =
 	| HelixEventSubWebHookTransportOptions
-	| HelixEventSubWebSocketTransportOptions;
+	| HelixEventSubWebSocketTransportOptions
+	| HelixEventSubConduitTransportOptions;
 
 /**
  * The result of an EventSub subscription list request.
@@ -61,4 +72,16 @@ export interface HelixEventSubDropEntitlementGrantFilter {
 	 * The ID of the campaign to get events for.
 	 */
 	campaignId?: string;
+}
+
+export type HelixEventSubConduitShardsTransportOptions =
+	| HelixEventSubWebHookTransportOptions
+	| HelixEventSubWebSocketTransportOptions;
+
+/**
+ * The properties for updating a conduit shard.
+ */
+export interface HelixEventSubConduitShardsOptions {
+	id: string;
+	transport: HelixEventSubConduitShardsTransportOptions;
 }
