@@ -85,6 +85,8 @@ export type {
 } from './interfaces/endpoints/entitlement.input';
 
 export { HelixEventSubApi } from './endpoints/eventSub/HelixEventSubApi';
+export { HelixEventSubConduit } from './endpoints/eventSub/HelixEventSubConduit';
+export { HelixEventSubConduitShard } from './endpoints/eventSub/HelixEventSubConduitShard';
 export { HelixEventSubSubscription } from './endpoints/eventSub/HelixEventSubSubscription';
 export { HelixPaginatedEventSubSubscriptionsRequest } from './endpoints/eventSub/HelixPaginatedEventSubSubscriptionsRequest';
 export type {
@@ -95,8 +97,11 @@ export type {
 	HelixEventSubTransportOptions,
 	HelixEventSubWebSocketTransportOptions,
 	HelixEventSubWebHookTransportOptions,
+	HelixEventSubConduitTransportOptions,
 	HelixPaginatedEventSubSubscriptionsResult,
 	HelixEventSubDropEntitlementGrantFilter,
+	HelixEventSubConduitShardsOptions,
+	HelixEventSubConduitShardsTransportOptions,
 } from './interfaces/endpoints/eventSub.input';
 
 export { HelixExtensionsApi } from './endpoints/extensions/HelixExtensionsApi';

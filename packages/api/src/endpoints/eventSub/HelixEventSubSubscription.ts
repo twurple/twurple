@@ -63,6 +63,13 @@ export class HelixEventSubSubscription extends DataObject<HelixEventSubSubscript
 	}
 
 	/**
+	 * The transport method of the subscription.
+	 */
+	get transportMethod(): string {
+		return this[rawDataSymbol].transport.method;
+	}
+
+	/**
 	 * End the EventSub subscription.
 	 */
 	async unsubscribe(): Promise<void> {
