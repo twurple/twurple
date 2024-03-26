@@ -147,8 +147,8 @@ The mentioned {@link AccessToken} was changed from a class to a fully serializab
 - On the upside, you can now just write the data to a file/database/etc. and read it back from there without any manual conversion shenanigans.
 
 ```ts diff -1,3-18 +2,19-26
-const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
-const tokenData: AccessToken = JSON.parse(await fs.readFile('./tokens.json', 'UTF-8'));
+const tokenData = JSON.parse(await fs.readFile('./tokens.json', 'utf-8'));
+const tokenData: AccessToken = JSON.parse(await fs.readFile('./tokens.json', 'utf-8'));
 const auth = new RefreshableAuthProvider(
 	new StaticAuthProvider(clientId, tokenData.accessToken),
 	{
@@ -161,7 +161,7 @@ const auth = new RefreshableAuthProvider(
 				refreshToken,
 				expiryTimestamp: expiryDate === null ? null : expiryDate.getTime()
 			};
-			await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+			await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'utf-8')
 		}
 	}
 );
@@ -169,7 +169,7 @@ const auth = new RefreshingAuthProvider(
 	{
 		clientId,
 		clientSecret,
-		onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'UTF-8')
+		onRefresh: async newTokenData => await fs.writeFile('./tokens.json', JSON.stringify(newTokenData, null, 4), 'utf-8')
 	},
 	tokenData
 );

@@ -45,8 +45,8 @@ const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
 		clientSecret,
-		onRefresh: async (newTokenData) => await fs.writeFile(`./tokens.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8'),
-		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8'),
+		onRefresh: async (newTokenData) => await fs.writeFile(`./tokens.json`, JSON.stringify(newTokenData, null, 4), 'utf-8'),
+		onRefresh: async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'utf-8'),
 	},
 	tokenData,
 );
