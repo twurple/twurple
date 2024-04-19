@@ -113,6 +113,10 @@ import type { EventSubSubscription } from './subscriptions/EventSubSubscription'
 import { EventSubUserAuthorizationGrantSubscription } from './subscriptions/EventSubUserAuthorizationGrantSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription';
+import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
+import { EventSubChannelUnbanRequestCreateSubscription } from './subscriptions/EventSubChannelUnbanRequestCreateSubscription';
+import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
+import { EventSubChannelUnbanRequestResolveSubscription } from './subscriptions/EventSubChannelUnbanRequestResolveSubscription';
 
 const numberRegex = /^\d+$/;
 
@@ -1118,6 +1122,52 @@ export abstract class EventSubBase extends EventEmitter {
 			this,
 			broadcasterId,
 			userId,
+		);
+	}
+
+	onChannelUnbanRequestCreate(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelUnbanRequestCreateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelUnbanRequestCreateEvents',
+		);
+		const moderatorId = this._extractUserIdWithNumericWarning(
+			moderator,
+			'subscribeToChannelUnbanRequestCreateEvents',
+		);
+
+		return this._genericSubscribe(
+			EventSubChannelUnbanRequestCreateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	onChannelUnbanRequestResolve(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelUnbanRequestResolveEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelUnbanRequestResolveEvents',
+		);
+		const moderatorId = this._extractUserIdWithNumericWarning(
+			moderator,
+			'subscribeToChannelUnbanRequestResolveEvents',
+		);
+
+		return this._genericSubscribe(
+			EventSubChannelUnbanRequestResolveSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
 		);
 	}
 

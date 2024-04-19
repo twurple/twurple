@@ -8,6 +8,7 @@ import {
 	createCheckAutoModStatusBody,
 	createModerationUserListQuery,
 	createModeratorModifyQuery,
+	createResolveUnbanRequestQuery,
 	createUpdateShieldModeStatusBody,
 	type HelixAutoModSettingsData,
 	type HelixAutoModStatusData,
@@ -17,6 +18,8 @@ import {
 	type HelixModeratedChannelData,
 	type HelixModeratorData,
 	type HelixShieldModeStatusData,
+	type HelixUnbanRequestData,
+	type HelixUnbanRequestStatus,
 } from '../../interfaces/endpoints/moderation.external';
 import {
 	type HelixAutoModSettingsUpdate,
@@ -24,6 +27,7 @@ import {
 	type HelixBanUserRequest,
 	type HelixCheckAutoModStatusData,
 	type HelixModeratorFilter,
+	type HelixUnbanRequestFilter,
 } from '../../interfaces/endpoints/moderation.input';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
@@ -37,6 +41,7 @@ import { HelixBlockedTerm } from './HelixBlockedTerm';
 import { HelixModerator } from './HelixModerator';
 import { HelixModeratedChannel } from './HelixModeratedChannel';
 import { HelixShieldModeStatus } from './HelixShieldModeStatus';
+import { HelixUnbanRequest } from './HelixUnbanRequest';
 
 /**
  * The Helix API methods that deal with moderation.
@@ -559,6 +564,103 @@ export class HelixModerationApi extends BaseApi {
 		});
 
 		return new HelixShieldModeStatus(result.data[0], this._client);
+	}
+
+	/**
+	 * Gets a list of unban requests.
+	 *
+	 * @param broadcaster The broadcaster to get unban requests of.
+	 * @param status The status of unban requests to retrieve.
+	 * @param filter Additional filters for the result set.
+	 */
+	async getUnbanRequests(
+		broadcaster: UserIdResolvable,
+		status: HelixUnbanRequestStatus,
+		filter?: HelixUnbanRequestFilter,
+	): Promise<HelixPaginatedResult<HelixUnbanRequest>> {
+		const broadcasterId = extractUserId(broadcaster);
+		const result = await this._client.callApi<HelixResponse<HelixUnbanRequestData>>({
+			type: 'helix',
+			url: 'moderation/unban_requests',
+			method: 'GET',
+			userId: broadcasterId,
+			scopes: ['moderator:read:unban_requests', 'moderator:manage:unban_requests'],
+			canOverrideScopedUserContext: true,
+			query: {
+				...this._createModeratorActionQuery(broadcasterId),
+				...createSingleKeyQuery('status', status),
+				...createPaginationQuery(filter),
+			},
+		});
+
+		return createPaginatedResult(result, HelixUnbanRequest, this._client);
+	}
+
+	/**
+	 * Creates a paginator for unban requests.
+	 *
+	 * @param broadcaster The broadcaster to get unban requests of.
+	 * @param status The status of unban requests to retrieve.
+	 */
+	getUnbanRequestsPaginated(
+		broadcaster: UserIdResolvable,
+		status: HelixUnbanRequestStatus,
+	): HelixPaginatedRequest<HelixUnbanRequestData, HelixUnbanRequest> {
+		const broadcasterId = extractUserId(broadcaster);
+		return new HelixPaginatedRequest<HelixUnbanRequestData, HelixUnbanRequest>(
+			{
+				url: 'moderation/unban_requests',
+				method: 'GET',
+				userId: broadcasterId,
+				scopes: ['moderator:read:unban_requests', 'moderator:manage:unban_requests'],
+				canOverrideScopedUserContext: true,
+				query: {
+					...this._createModeratorActionQuery(broadcasterId),
+					...createSingleKeyQuery('status', status),
+				},
+			},
+			this._client,
+			data => new HelixUnbanRequest(data, this._client),
+		);
+	}
+
+	/**
+	 * Resolves an unban request by approving or denying it.
+	 *
+	 * This uses the token of the broadcaster by default.
+	 * If you want to execute this in the context of another user (who has to be moderator of the channel)
+	 * you can do so using [user context overrides](/docs/auth/concepts/context-switching).
+	 *
+	 * @param broadcaster The ID of the broadcaster whose channel is approving or denying the unban request.
+	 * @param unbanRequestId The ID of the unban request to resolve.
+	 * @param approved Whether to approve or deny the unban request.
+	 * @param resolutionMessage Message supplied by the unban request resolver.
+	 * The message is limited to a maximum of 500 characters.
+	 */
+	async resolveUnbanRequest(
+		broadcaster: UserIdResolvable,
+		unbanRequestId: string,
+		approved: boolean,
+		resolutionMessage?: string,
+	): Promise<HelixUnbanRequest> {
+		const broadcasterId = extractUserId(broadcaster);
+		const result = await this._client.callApi<HelixResponse<HelixUnbanRequestData>>({
+			type: 'helix',
+			url: 'moderation/unban_requests',
+			method: 'PATCH',
+			userId: broadcasterId,
+			scopes: ['moderator:manage:unban_requests'],
+			canOverrideScopedUserContext: true,
+			query: createResolveUnbanRequestQuery(
+				broadcasterId,
+				this._getUserContextIdWithDefault(broadcasterId),
+				unbanRequestId,
+				approved,
+				resolutionMessage?.slice(0, 500),
+			),
+		});
+
+		return new HelixUnbanRequest(result.data[0], this._client);
 	}
 
 	private _createModeratorActionQuery(broadcasterId: string) {
