@@ -1,8 +1,5 @@
-// import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-// import type { BaseApiClient } from '../../client/BaseApiClient';
 import type { HelixAdScheduleData } from '../../interfaces/endpoints/channel.external';
-// import type { HelixUser } from '../user/HelixUser';
 
 /**
  * Represents a broadcaster's ad schedule.
@@ -18,16 +15,18 @@ export class HelixAdSchedule extends DataObject<HelixAdScheduleData> {
 
 	/**
 	 * The date and time when the broadcaster will gain an additional snooze.
+	 * Returns `null` if all snoozes are already available.
 	 */
-	get snoozeRefreshDate(): Date {
-		return new Date(this[rawDataSymbol].snooze_refresh_at * 1000);
+	get snoozeRefreshDate(): Date | null {
+		return this[rawDataSymbol].snooze_refresh_at ? new Date(this[rawDataSymbol].snooze_refresh_at * 1000) : null;
 	}
 
 	/**
 	 * The date and time of the broadcaster's next scheduled ad.
+	 * Returns `null` if channel is not live or has no ad scheduled.
 	 */
-	get nextAdDate(): Date {
-		return new Date(this[rawDataSymbol].next_ad_at * 1000);
+	get nextAdDate(): Date | null {
+		return this[rawDataSymbol].next_ad_at ? new Date(this[rawDataSymbol].next_ad_at * 1000) : null;
 	}
 
 	/**
@@ -39,9 +38,10 @@ export class HelixAdSchedule extends DataObject<HelixAdScheduleData> {
 
 	/**
 	 * The date and time of the broadcaster's last ad-break.
+	 * Returns `null` if channel is not live or has not run an ad
 	 */
-	get lastAdDate(): Date {
-		return new Date(this[rawDataSymbol].last_ad_at * 1000);
+	get lastAdDate(): Date | null {
+		return this[rawDataSymbol].last_ad_at ? new Date(this[rawDataSymbol].last_ad_at * 1000) : null;
 	}
 
 	/**
