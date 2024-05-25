@@ -5,7 +5,7 @@ import type { BaseApiClient } from '../../client/BaseApiClient';
 import type { HelixUser } from '../user/HelixUser';
 
 /**
- * The unban request.
+ * A request from a user to be unbanned from a channel.
  */
 @rtfm<HelixUnbanRequest>('api', 'HelixUnbanRequest', 'id')
 export class HelixUnbanRequest extends DataObject<HelixUnbanRequestData> {
@@ -53,7 +53,7 @@ export class HelixUnbanRequest extends DataObject<HelixUnbanRequestData> {
 	}
 
 	/**
-	 * The ID of the moderator who approved/denied unban request.
+	 * The ID of the moderator who resolved the unban request.
 	 *
 	 * Can be `null` if the request is not resolved.
 	 */
@@ -62,7 +62,7 @@ export class HelixUnbanRequest extends DataObject<HelixUnbanRequestData> {
 	}
 
 	/**
-	 * The name of the moderator who approved/denied unban request.
+	 * The name of the moderator who resolved the unban request.
 	 *
 	 * Can be `null` if the request is not resolved.
 	 */
@@ -71,7 +71,7 @@ export class HelixUnbanRequest extends DataObject<HelixUnbanRequestData> {
 	}
 
 	/**
-	 * The display name of the moderator who approved/denied unban request.
+	 * The display name of the moderator who resolved the unban request.
 	 *
 	 * Can be `null` if the request is not resolved.
 	 */
@@ -87,21 +87,21 @@ export class HelixUnbanRequest extends DataObject<HelixUnbanRequestData> {
 	}
 
 	/**
-	 * The ID of the user who requested to unban.
+	 * The ID of the user who requested to be unbanned.
 	 */
 	get userId(): string {
 		return this[rawDataSymbol].user_id;
 	}
 
 	/**
-	 * The name of the user who requested to unban.
+	 * The name of the user who requested to be unbanned.
 	 */
 	get userName(): string {
 		return this[rawDataSymbol].user_login;
 	}
 
 	/**
-	 * The display name of the user who requested to unban.
+	 * The display name of the user who requested to be unbanned.
 	 */
 	get userDisplayName(): string {
 		return this[rawDataSymbol].user_name;
@@ -129,7 +129,7 @@ export class HelixUnbanRequest extends DataObject<HelixUnbanRequestData> {
 	}
 
 	/**
-	 * Text message by the resolver (moderator) of the unban request.
+	 * The message written by the moderator who resolved the unban request, or `null` if it has not been resolved yet.
 	 */
 	get resolutionMessage(): string | null {
 		// Can be empty string and null
@@ -137,6 +137,9 @@ export class HelixUnbanRequest extends DataObject<HelixUnbanRequestData> {
 		return this[rawDataSymbol].resolution_text || null;
 	}
 
+	/**
+	 * The date when the unban request was resolved, or `null` if it has not been resolved yet.
+ 	 */
 	get resolutionDate(): Date | null {
 		return mapNullable(this[rawDataSymbol].resolved_at, val => new Date(val));
 	}
