@@ -399,6 +399,11 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 			throw new CachedRefreshFailureError(userId);
 		}
 
+		compareScopeSets(
+			this.getCurrentScopesForUser(userId),
+			scopeSets.filter(Boolean as unknown as <T>(value: T | undefined) => value is T),
+		);
+
 		return await fetcher.fetch(...scopeSets);
 	}
 

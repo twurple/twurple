@@ -112,6 +112,7 @@ export class HelixChatApi extends BaseApi {
 			},
 			this._client,
 			data => new HelixChatChatter(data, this._client),
+			1000,
 		);
 	}
 

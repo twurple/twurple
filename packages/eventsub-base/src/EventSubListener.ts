@@ -11,6 +11,7 @@ import type { EventSubChannelChatClearEvent } from './events/EventSubChannelChat
 import type { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
 import type { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
 import { type EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent';
+import type { EventSubChannelChatSettingsUpdateEvent } from './events/EventSubChannelChatSettingsUpdateEvent';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent';
@@ -648,6 +649,19 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatMessageEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent chat settings being updated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications about chat settings being updated in their channel.
+	 * @param user The user to use for reading the channel's chat.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatSettingsUpdate: (
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatSettingsUpdateEvent) => void,
 	) => EventSubSubscription;
 
 	/**

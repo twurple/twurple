@@ -4,7 +4,7 @@ After you established a connection to the Twitch chat server, you can listen to 
 // @target: ES2017
 // @lib: es2015,dom
 import type { ApiClient } from '@twurple/api';
-import type { ChatClient, PrivateMessage } from '@twurple/chat';
+import type { ChatClient, ChatMessage } from '@twurple/chat';
 declare const apiClient: ApiClient;
 declare const chatClient: ChatClient;
 declare function secondsToDuration(secs: number): string;
@@ -14,8 +14,8 @@ declare module '@twurple/chat' {
 	}
 }
 // ---cut---
-const followAgeListener = chatClient.onMessage(async (channel: string, user: string, text: string, msg: PrivateMessage) => {
-	if (message === '!followage') {
+const followAgeListener = chatClient.onMessage(async (channel: string, user: string, text: string, msg: ChatMessage) => {
+	if (text === '!followage') {
 		const broadcasterId = msg.channelId!;
 		const { data: [follow] } = await apiClient.channels.getChannelFollowers(broadcasterId, msg.userInfo.userId);
 
