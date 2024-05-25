@@ -38,7 +38,7 @@ export class HelixAdSchedule extends DataObject<HelixAdScheduleData> {
 
 	/**
 	 * The date and time of the broadcaster's last ad-break.
-	 * Returns `null` if channel is not live or has not run an ad
+	 * Returns `null` if channel is not live or has not run an ad.
 	 */
 	get lastAdDate(): Date | null {
 		return this[rawDataSymbol].last_ad_at ? new Date(this[rawDataSymbol].last_ad_at * 1000) : null;
