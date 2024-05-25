@@ -41,6 +41,8 @@ import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelS
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
 import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent';
 import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
+import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
+import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
@@ -662,6 +664,32 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatSettingsUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent an unban request being created.
+	 *
+	 * @param broadcaster The user for which to get notifications about unban requests being created in their channel.
+	 * @param moderator A user that has permission to read unban requests in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelUnbanRequestCreate: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelUnbanRequestCreateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent an unban request being resolved.
+	 *
+	 * @param broadcaster The user for which to get notifications about unban requests being resolved in their channel.
+	 * @param moderator A user that has permission to read unban requests in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelUnbanRequestResolve: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelUnbanRequestResolveEvent) => void,
 	) => EventSubSubscription;
 
 	/**

@@ -52,6 +52,8 @@ import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelS
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
 import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent';
 import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
+import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
+import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
@@ -103,6 +105,8 @@ import { EventSubChannelSubscriptionEndSubscription } from './subscriptions/Even
 import { EventSubChannelSubscriptionGiftSubscription } from './subscriptions/EventSubChannelSubscriptionGiftSubscription';
 import { EventSubChannelSubscriptionMessageSubscription } from './subscriptions/EventSubChannelSubscriptionMessageSubscription';
 import { EventSubChannelSubscriptionSubscription } from './subscriptions/EventSubChannelSubscriptionSubscription';
+import { EventSubChannelUnbanRequestCreateSubscription } from './subscriptions/EventSubChannelUnbanRequestCreateSubscription';
+import { EventSubChannelUnbanRequestResolveSubscription } from './subscriptions/EventSubChannelUnbanRequestResolveSubscription';
 import { EventSubChannelUnbanSubscription } from './subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelUpdateSubscription } from './subscriptions/EventSubChannelUpdateSubscription';
 import { EventSubDropEntitlementGrantSubscription } from './subscriptions/EventSubDropEntitlementGrantSubscription';
@@ -113,10 +117,6 @@ import type { EventSubSubscription } from './subscriptions/EventSubSubscription'
 import { EventSubUserAuthorizationGrantSubscription } from './subscriptions/EventSubUserAuthorizationGrantSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription';
-import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
-import { EventSubChannelUnbanRequestCreateSubscription } from './subscriptions/EventSubChannelUnbanRequestCreateSubscription';
-import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
-import { EventSubChannelUnbanRequestResolveSubscription } from './subscriptions/EventSubChannelUnbanRequestResolveSubscription';
 
 const numberRegex = /^\d+$/;
 
@@ -1125,6 +1125,13 @@ export abstract class EventSubBase extends EventEmitter {
 		);
 	}
 
+	/**
+	 * Subscribes to events that represent an unban request being created.
+	 *
+	 * @param broadcaster The user for which to get notifications about unban requests being created in their channel.
+	 * @param moderator A user that has permission to read unban requests in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	onChannelUnbanRequestCreate(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
@@ -1148,6 +1155,13 @@ export abstract class EventSubBase extends EventEmitter {
 		);
 	}
 
+	/**
+	 * Subscribes to events that represent an unban request being resolved.
+	 *
+	 * @param broadcaster The user for which to get notifications about unban requests being resolved in their channel.
+	 * @param moderator A user that has permission to read unban requests in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
 	onChannelUnbanRequestResolve(
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,

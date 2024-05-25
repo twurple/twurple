@@ -38,8 +38,8 @@ import { HelixAutoModStatus } from './HelixAutoModStatus';
 import { HelixBan } from './HelixBan';
 import { HelixBanUser } from './HelixBanUser';
 import { HelixBlockedTerm } from './HelixBlockedTerm';
-import { HelixModerator } from './HelixModerator';
 import { HelixModeratedChannel } from './HelixModeratedChannel';
+import { HelixModerator } from './HelixModerator';
 import { HelixShieldModeStatus } from './HelixShieldModeStatus';
 import { HelixUnbanRequest } from './HelixUnbanRequest';
 
@@ -635,6 +635,7 @@ export class HelixModerationApi extends BaseApi {
 	 * @param unbanRequestId The ID of the unban request to resolve.
 	 * @param approved Whether to approve or deny the unban request.
 	 * @param resolutionMessage Message supplied by the unban request resolver.
+	 *
 	 * The message is limited to a maximum of 500 characters.
 	 */
 	async resolveUnbanRequest(

@@ -1,7 +1,7 @@
-import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixUnbanRequestData } from '../../interfaces/endpoints/moderation.external';
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { BaseApiClient } from '../../client/BaseApiClient';
+import { type HelixUnbanRequestData } from '../../interfaces/endpoints/moderation.external';
 import type { HelixUser } from '../user/HelixUser';
 
 /**
@@ -139,7 +139,7 @@ export class HelixUnbanRequest extends DataObject<HelixUnbanRequestData> {
 
 	/**
 	 * The date when the unban request was resolved, or `null` if it has not been resolved yet.
- 	 */
+	 */
 	get resolutionDate(): Date | null {
 		return mapNullable(this[rawDataSymbol].resolved_at, val => new Date(val));
 	}
