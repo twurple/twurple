@@ -7,6 +7,11 @@ import {
 	type HelixModeratorFilter,
 } from './moderation.input';
 
+/**
+ * Status of an unban request.
+ */
+export type HelixUnbanRequestStatus = 'pending' | 'approved' | 'denied' | 'acknowledged' | 'canceled';
+
 /** @private */
 export interface HelixAutoModSettingsData {
 	broadcaster_id: string;
@@ -85,6 +90,22 @@ export interface HelixShieldModeStatusData {
 	last_activated_at: string;
 }
 
+/** @private */
+export interface HelixUnbanRequestData extends HelixModeratedChannelData {
+	id: string;
+	moderator_id: string;
+	moderator_login: string;
+	moderator_name: string;
+	user_id: string;
+	user_login: string;
+	user_name: string;
+	text: string;
+	status: HelixUnbanRequestStatus;
+	created_at: string;
+	resolution_text: string | null;
+	resolved_at: string | null;
+}
+
 /** @internal */
 export function createModerationUserListQuery(
 	channel: UserIdResolvable,
@@ -101,6 +122,23 @@ export function createModeratorModifyQuery(broadcaster: UserIdResolvable, user: 
 	return {
 		broadcaster_id: extractUserId(broadcaster),
 		user_id: extractUserId(user),
+	};
+}
+
+/** @internal */
+export function createResolveUnbanRequestQuery(
+	broadcaster: UserIdResolvable,
+	moderator: UserIdResolvable,
+	unbanRequestId: string,
+	approved: boolean,
+	resolutionMessage?: string,
+) {
+	return {
+		unban_request_id: unbanRequestId,
+		broadcaster_id: extractUserId(broadcaster),
+		moderator_id: extractUserId(moderator),
+		status: approved ? 'approved' : 'denied',
+		resolution_text: resolutionMessage,
 	};
 }
 

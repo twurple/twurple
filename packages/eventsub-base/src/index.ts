@@ -61,6 +61,9 @@ export type { EventSubStreamOnlineEventStreamType } from './events/EventSubStrea
 export { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthorizationGrantEvent';
 export { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 export { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
+export { EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
+export type { EventSubChannelUnbanRequestStatus } from './events/EventSubChannelUnbanRequestResolveEvent.external';
+export { EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 
 export { EventSubChannelCharityAmount } from './events/common/EventSubChannelCharityAmount';
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';

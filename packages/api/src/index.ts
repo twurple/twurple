@@ -140,6 +140,8 @@ export type {
 	HelixBanUserRequest,
 	HelixModeratorFilter,
 } from './interfaces/endpoints/moderation.input';
+export { HelixUnbanRequest } from './endpoints/moderation/HelixUnbanRequest';
+export type { HelixUnbanRequestStatus } from './interfaces/endpoints/moderation.external';
 
 export { HelixPollApi } from './endpoints/poll/HelixPollApi';
 export { HelixPoll } from './endpoints/poll/HelixPoll';

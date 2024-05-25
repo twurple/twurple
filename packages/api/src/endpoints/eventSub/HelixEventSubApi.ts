@@ -1353,6 +1353,50 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a created unban requests in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to unban requests.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelUnbanRequestCreateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.unban_request.create',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:read:unban_requests', 'moderator:manage:unban_requests'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a resolved unban requests in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to unban requests.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelUnbanRequestResolveEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.unban_request.resolve',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:read:unban_requests', 'moderator:manage:unban_requests'],
+			true,
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.

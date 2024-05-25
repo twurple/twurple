@@ -52,6 +52,8 @@ import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelS
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
 import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent';
 import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
+import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
+import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
@@ -103,6 +105,8 @@ import { EventSubChannelSubscriptionEndSubscription } from './subscriptions/Even
 import { EventSubChannelSubscriptionGiftSubscription } from './subscriptions/EventSubChannelSubscriptionGiftSubscription';
 import { EventSubChannelSubscriptionMessageSubscription } from './subscriptions/EventSubChannelSubscriptionMessageSubscription';
 import { EventSubChannelSubscriptionSubscription } from './subscriptions/EventSubChannelSubscriptionSubscription';
+import { EventSubChannelUnbanRequestCreateSubscription } from './subscriptions/EventSubChannelUnbanRequestCreateSubscription';
+import { EventSubChannelUnbanRequestResolveSubscription } from './subscriptions/EventSubChannelUnbanRequestResolveSubscription';
 import { EventSubChannelUnbanSubscription } from './subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelUpdateSubscription } from './subscriptions/EventSubChannelUpdateSubscription';
 import { EventSubDropEntitlementGrantSubscription } from './subscriptions/EventSubDropEntitlementGrantSubscription';
@@ -1118,6 +1122,66 @@ export abstract class EventSubBase extends EventEmitter {
 			this,
 			broadcasterId,
 			userId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent an unban request being created.
+	 *
+	 * @param broadcaster The user for which to get notifications about unban requests being created in their channel.
+	 * @param moderator A user that has permission to read unban requests in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelUnbanRequestCreate(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelUnbanRequestCreateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelUnbanRequestCreateEvents',
+		);
+		const moderatorId = this._extractUserIdWithNumericWarning(
+			moderator,
+			'subscribeToChannelUnbanRequestCreateEvents',
+		);
+
+		return this._genericSubscribe(
+			EventSubChannelUnbanRequestCreateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent an unban request being resolved.
+	 *
+	 * @param broadcaster The user for which to get notifications about unban requests being resolved in their channel.
+	 * @param moderator A user that has permission to read unban requests in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelUnbanRequestResolve(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelUnbanRequestResolveEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(
+			broadcaster,
+			'subscribeToChannelUnbanRequestResolveEvents',
+		);
+		const moderatorId = this._extractUserIdWithNumericWarning(
+			moderator,
+			'subscribeToChannelUnbanRequestResolveEvents',
+		);
+
+		return this._genericSubscribe(
+			EventSubChannelUnbanRequestResolveSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
 		);
 	}
 

@@ -59,3 +59,15 @@ export interface HelixBanUserRequest {
 	 */
 	user: UserIdResolvable;
 }
+
+/**
+ * Filters for the unban requests.
+ *
+ * @inheritDoc
+ */
+export interface HelixUnbanRequestFilter extends HelixForwardPagination {
+	/**
+	 * The ID used to filter what unban requests are returned.
+	 */
+	userId?: string;
+}
