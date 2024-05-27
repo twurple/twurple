@@ -20,7 +20,7 @@ export class EventSubChannelUnbanRequestResolveSubscription extends EventSubSubs
 	}
 
 	get id(): string {
-		return `channel.unban_request.resolve.${this._broadcasterId}`;
+		return `channel.unban_request.resolve.${this._broadcasterId}.${this._moderatorId}`;
 	}
 
 	get authUserId(): string | null {
