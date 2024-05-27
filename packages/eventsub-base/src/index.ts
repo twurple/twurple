@@ -64,7 +64,16 @@ export { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 export { EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 export type { EventSubChannelUnbanRequestStatus } from './events/EventSubChannelUnbanRequestResolveEvent.external';
 export { EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
+export { EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
+export { EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
+export type { EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
+export type { EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
+export type { EventSubAutoModTermsUpdateAction } from './events/EventSubAutoModTermsUpdateEvent.external';
+export type { EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
+export type { EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 
+export type { EventSubAutoModLevel } from './events/common/EventSubAutoModLevel';
+export type { EventSubAutoModResolutionStatus } from './events/common/EventSubAutoModResolutionStatus';
 export { EventSubChannelCharityAmount } from './events/common/EventSubChannelCharityAmount';
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';
 export { EventSubChannelHypeTrainContribution } from './events/common/EventSubChannelHypeTrainContribution';
