@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import { type EventSubChannelUnbanRequestCreateEventData } from './EventSubChannelUnbanRequestCreateEvent.external';
 
 /**
- * An EventSub event representing a broadcaster shouting out another broadcaster.
+ * An EventSub event representing an unban request in a channel.
  */
 @rtfm<EventSubChannelUnbanRequestCreateEvent>('eventsub-base', 'EventSubChannelUnbanRequestCreateEvent', 'id')
 export class EventSubChannelUnbanRequestCreateEvent extends DataObject<EventSubChannelUnbanRequestCreateEventData> {
@@ -24,28 +24,28 @@ export class EventSubChannelUnbanRequestCreateEvent extends DataObject<EventSubC
 	}
 
 	/**
-	 * The ID of the broadcaster the unban request was created for.
+	 * The ID of the broadcaster in which channel the unban request was created.
 	 */
 	get broadcasterId(): string {
 		return this[rawDataSymbol].broadcaster_user_id;
 	}
 
 	/**
-	 * The name of the broadcaster the unban request was created for.
+	 * The name of the broadcaster in which channel the unban request was created.
 	 */
 	get broadcasterName(): string {
 		return this[rawDataSymbol].broadcaster_user_login;
 	}
 
 	/**
-	 * The display name of the broadcaster the unban request was created for.
+	 * The display name of the broadcaster in which channel the unban request was created.
 	 */
 	get broadcasterDisplayName(): string {
 		return this[rawDataSymbol].broadcaster_user_name;
 	}
 
 	/**
-	 * Gets more information about the broadcaster in which channel the unban request was created for.
+	 * Gets more information about the broadcaster in which channel the unban request was created.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
