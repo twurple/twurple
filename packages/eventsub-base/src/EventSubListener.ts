@@ -52,6 +52,7 @@ import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserA
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
+import { type EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 
 /**
  * The common interface of all EventSub listeners.
@@ -690,6 +691,28 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubChannelUnbanRequestResolveEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user getting VIP status in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users get VIP status in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelVipAdd: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelVipEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user losing VIP status in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users lose VIP status in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelVipRemove: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelVipEvent) => void,
 	) => EventSubSubscription;
 
 	/**

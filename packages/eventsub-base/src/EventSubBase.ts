@@ -117,6 +117,9 @@ import type { EventSubSubscription } from './subscriptions/EventSubSubscription'
 import { EventSubUserAuthorizationGrantSubscription } from './subscriptions/EventSubUserAuthorizationGrantSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription';
+import { EventSubChannelVipAddSubscription } from './subscriptions/EventSubChannelVipAddSubscription';
+import { EventSubChannelVipRemoveSubscription } from './subscriptions/EventSubChannelVipRemoveSubscription';
+import { type EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 
 const numberRegex = /^\d+$/;
 
@@ -1183,6 +1186,33 @@ export abstract class EventSubBase extends EventEmitter {
 			broadcasterId,
 			moderatorId,
 		);
+	}
+
+	/**
+	 * Subscribes to events that represent a user getting VIP status in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users get VIP status in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelVipAdd(user: UserIdResolvable, handler: (event: EventSubChannelVipEvent) => void): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelVipAdd');
+
+		return this._genericSubscribe(EventSubChannelVipAddSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user losing VIP status in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users lose VIP status in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelVipRemove(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelVipEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelVipRemove');
+
+		return this._genericSubscribe(EventSubChannelVipRemoveSubscription, handler, this, userId);
 	}
 
 	/**

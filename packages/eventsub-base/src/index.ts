@@ -64,6 +64,7 @@ export { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 export { EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 export type { EventSubChannelUnbanRequestStatus } from './events/EventSubChannelUnbanRequestResolveEvent.external';
 export { EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
+export { EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 
 export { EventSubChannelCharityAmount } from './events/common/EventSubChannelCharityAmount';
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';

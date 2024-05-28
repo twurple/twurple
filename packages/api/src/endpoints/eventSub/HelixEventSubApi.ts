@@ -1397,6 +1397,46 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a VIP being added to a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen for VIP add events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelVipAddEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.vip.add',
+			'1',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['channel:read:vips', 'channel:manage:vips'],
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a VIP being removed from a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen for VIP remove events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelVipRemoveEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.vip.remove',
+			'1',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['channel:read:vips', 'channel:manage:vips'],
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.
