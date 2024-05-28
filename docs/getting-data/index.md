@@ -74,5 +74,6 @@ should use for which use case.
 | Drops                                  | No                           | No                        | Yes                        |
 | Charity campaigns & donations          | No                           | No                        | Yes                        |
 | Shield mode begin/end                  | No                           | No                        | Yes                        |
-| Unban request approve/deny             | No                           | Yes                       | No (in beta by Twitch)     |
+| Unban request create                   | No                           | No                        | Yes                        |
+| Unban request resolve                  | No                           | Yes                       | Yes                        |
 | Low-trust users treatment/chat message | No                           | Yes                       | No (in beta by Twitch)     |
