@@ -39,6 +39,8 @@ export { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent';
 export { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent';
 export { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 export { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
+export { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
+export type { EventSubAutomaticRewardType } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent.external';
 export { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 export { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 export { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';

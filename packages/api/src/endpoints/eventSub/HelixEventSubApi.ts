@@ -897,6 +897,26 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a Channel Points automatic reward being redeemed.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to automatic reward redemption events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelAutomaticRewardRedemptionAddEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.channel_points_automatic_reward_redemption.add',
+			'1',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['channel:read:redemptions', 'channel:manage:redemptions'],
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a poll starting in a channel.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to poll begin events for.
