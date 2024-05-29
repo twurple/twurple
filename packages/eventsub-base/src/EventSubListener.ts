@@ -32,6 +32,7 @@ import type { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent
 import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
+import type { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
 import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 import type { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';
@@ -406,6 +407,17 @@ export interface EventSubListener {
 		user: UserIdResolvable,
 		rewardId: string,
 		handler: (data: EventSubChannelRedemptionUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a specific Channel Points automatic reward being redeemed.
+	 *
+	 * @param user The user for which to get notifications when their automatic reward is redeemed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelAutomaticRewardRedemptionAdd: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelAutomaticRewardRedemptionAddEvent) => void,
 	) => EventSubSubscription;
 
 	/**
