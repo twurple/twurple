@@ -51,6 +51,7 @@ import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEve
 import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthorizationGrantEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
+import type { EventSubUserWhisperMessageEvent } from './events/EventSubUserWhisperMessageEvent';
 import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
 
 /**
@@ -733,4 +734,15 @@ export interface EventSubListener {
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onUserUpdate: (user: UserIdResolvable, handler: (data: EventSubUserUpdateEvent) => void) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user receiving a whisper message from another user.
+	 *
+	 * @param user The user for which to get notifications about whisper messages.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onUserWhisperMessage: (
+		user: UserIdResolvable,
+		handler: (data: EventSubUserWhisperMessageEvent) => void,
+	) => EventSubSubscription;
 }
