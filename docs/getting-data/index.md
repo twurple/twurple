@@ -76,3 +76,4 @@ should use for which use case.
 | Shield mode begin/end                  | No                           | No                        | Yes                        |
 | Unban request approve/deny             | No                           | Yes                       | No (in beta by Twitch)     |
 | Low-trust users treatment/chat message | No                           | Yes                       | No (in beta by Twitch)     |
+| Moderation actions                     | No                           | Yes                       | Yes                        |
