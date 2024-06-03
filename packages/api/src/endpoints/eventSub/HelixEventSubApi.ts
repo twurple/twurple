@@ -1397,6 +1397,40 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a moderator performing an action on a channel.
+	 *
+	 * This requires the following scopes:
+	 * - `moderator:read:blocked_terms` OR `moderator:manage:blocked_terms`
+	 * - `moderator:read:chat_settings` OR `moderator:manage:chat_settings`
+	 * - `moderator:read:unban_requests` OR `moderator:manage:unban_requests`
+	 * - `moderator:read:banned_users` OR `moderator:manage:banned_users`
+	 * - `moderator:read:chat_messages` OR `moderator:manage:chat_messages`
+	 * - `moderator:read:moderators`
+	 * - `moderator:read:vips`
+	 *
+	 * These scope requirements cannot be checked by the library, so they are just assumed.
+	 * Make sure to catch authorization errors yourself.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to moderation events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelModerateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.moderate',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			[],
+			true,
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.

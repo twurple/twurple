@@ -20,6 +20,7 @@ import type { EventSubChannelGoalProgressEvent } from './events/EventSubChannelG
 import type { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
+import { type EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent';
 import type { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 import type { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
 import type { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEvent';
@@ -690,6 +691,31 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubChannelUnbanRequestResolveEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a moderator performing an action on a channel.
+	 *
+	 * This requires the following scopes:
+	 * - `moderator:read:blocked_terms` OR `moderator:manage:blocked_terms`
+	 * - `moderator:read:chat_settings` OR `moderator:manage:chat_settings`
+	 * - `moderator:read:unban_requests` OR `moderator:manage:unban_requests`
+	 * - `moderator:read:banned_users` OR `moderator:manage:banned_users`
+	 * - `moderator:read:chat_messages` OR `moderator:manage:chat_messages`
+	 * - `moderator:read:moderators`
+	 * - `moderator:read:vips`
+	 *
+	 * These scope requirements cannot be checked by the library, so they are just assumed.
+	 * Make sure to catch authorization errors yourself.
+	 *
+	 * @param broadcaster The user for which to get notifications about moderation actions on their channel.
+	 * @param moderator The user that has moderator permission on the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelModerate: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelModerationEvent) => void,
 	) => EventSubSubscription;
 
 	/**
