@@ -7,8 +7,8 @@ export type EventSubAutomaticRewardType =
 	| 'random_sub_emote_unlock'
 	| 'chosen_sub_emote_unlock'
 	| 'chosen_modified_sub_emote_unlock'
-	| 'send_animated_message'
-	| 'send_gigantified_emote'
+	| 'message_effect'
+	| 'gigantify_an_emote'
 	| 'celebration';
 
 /** @private */
