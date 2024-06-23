@@ -1405,6 +1405,7 @@ export class HelixEventSubApi extends BaseApi {
 	 * - `moderator:read:unban_requests` OR `moderator:manage:unban_requests`
 	 * - `moderator:read:banned_users` OR `moderator:manage:banned_users`
 	 * - `moderator:read:chat_messages` OR `moderator:manage:chat_messages`
+	 * - `moderator:read:warnings` OR `moderator:manage:warnings`
 	 * - `moderator:read:moderators`
 	 * - `moderator:read:vips`
 	 *
@@ -1421,7 +1422,7 @@ export class HelixEventSubApi extends BaseApi {
 		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'channel.moderate',
-			'1',
+			'2',
 			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
 			broadcaster,

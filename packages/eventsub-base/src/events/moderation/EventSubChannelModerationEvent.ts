@@ -22,6 +22,7 @@ import { type EventSubChannelUnraidModerationEvent } from './EventSubChannelUnra
 import { type EventSubChannelUntimeoutModerationEvent } from './EventSubChannelUntimeoutModerationEvent';
 import { type EventSubChannelUnvipModerationEvent } from './EventSubChannelUnvipModerationEvent';
 import { type EventSubChannelVipModerationEvent } from './EventSubChannelVipModerationEvent';
+import { type EventSubChannelWarnModerationEvent } from './EventSubChannelWarnModerationEvent';
 
 export type EventSubChannelModerationEvent =
 	| EventSubChannelAutoModTermsModerationEvent
@@ -47,4 +48,5 @@ export type EventSubChannelModerationEvent =
 	| EventSubChannelUnraidModerationEvent
 	| EventSubChannelUntimeoutModerationEvent
 	| EventSubChannelUnvipModerationEvent
-	| EventSubChannelVipModerationEvent;
+	| EventSubChannelVipModerationEvent
+	| EventSubChannelWarnModerationEvent;

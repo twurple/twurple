@@ -28,6 +28,7 @@ import { EventSubChannelModModerationEvent } from '../events/moderation/EventSub
 import { EventSubChannelUnmodModerationEvent } from '../events/moderation/EventSubChannelUnmodModerationEvent';
 import { EventSubChannelVipModerationEvent } from '../events/moderation/EventSubChannelVipModerationEvent';
 import { EventSubChannelUnvipModerationEvent } from '../events/moderation/EventSubChannelUnvipModerationEvent';
+import { EventSubChannelWarnModerationEvent } from '../events/moderation/EventSubChannelWarnModerationEvent';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -118,6 +119,9 @@ export class EventSubChannelModerateSubscription extends EventSubSubscription<Ev
 
 			case 'unvip':
 				return new EventSubChannelUnvipModerationEvent(data, this._client._apiClient);
+
+			case 'warn':
+				return new EventSubChannelWarnModerationEvent(data, this._client._apiClient);
 
 			case 'add_blocked_term':
 			case 'add_permitted_term':

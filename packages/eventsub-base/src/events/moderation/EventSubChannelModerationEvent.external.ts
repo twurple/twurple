@@ -29,7 +29,8 @@ export type EventSubChannelModerationAction =
 	| 'remove_blocked_term'
 	| 'remove_permitted_term'
 	| 'approve_unban_request'
-	| 'deny_unban_request';
+	| 'deny_unban_request'
+	| 'warn';
 
 /**
  * The type of AutoMod terms action.
@@ -199,6 +200,18 @@ export interface EventSubChannelUnbanRequestModerationEventData extends EventSub
 }
 
 /** @private */
+export interface EventSubChannelWarnModerationEventPayload extends EventSubChannelModerationEventUserPayload {
+	reason: string | null;
+	chat_rules_cited: string[] | null;
+}
+
+/** @private */
+export interface EventSubChannelWarnModerationEventData extends EventSubChannelBaseModerationEventData {
+	action: Extract<EventSubChannelModerationAction, 'delete'>;
+	warn: EventSubChannelWarnModerationEventPayload;
+}
+
+/** @private */
 export type EventSubChannelModerationActionEventData =
 	| EventSubChannelBaseModerationEventData
 	| EventSubChannelFollowersModerationEventData
@@ -215,4 +228,5 @@ export type EventSubChannelModerationActionEventData =
 	| EventSubChannelUnraidModerationEventData
 	| EventSubChannelDeleteModerationEventData
 	| EventSubChannelAutoModTermsModerationEventData
-	| EventSubChannelUnbanRequestModerationEventData;
+	| EventSubChannelUnbanRequestModerationEventData
+	| EventSubChannelWarnModerationEventData;
