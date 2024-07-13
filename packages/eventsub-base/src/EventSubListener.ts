@@ -44,6 +44,8 @@ import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEve
 import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+import { type EventSubChannelWarningAcknowledgeEvent } from './events/EventSubChannelWarningAcknowledgeEvent';
+import { type EventSubChannelWarningSendEvent } from './events/EventSubChannelWarningSendEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
@@ -690,6 +692,32 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubChannelUnbanRequestResolveEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a warning being acknowledged by a user.
+	 *
+	 * @param broadcaster The user for which to get notifications about acknowledged warnings in their channel.
+	 * @param moderator A user that has permission to read warnings in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelWarningAcknowledge: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelWarningAcknowledgeEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a warning sent to a user.
+	 *
+	 * @param broadcaster The user for which to get notifications about sent warnings in their channel.
+	 * @param moderator A user that has permission to read warnings in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelWarningSend: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelWarningSendEvent) => void,
 	) => EventSubSubscription;
 
 	/**

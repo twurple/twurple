@@ -1397,6 +1397,50 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a warning being acknowledged by a user.
+	 *
+	 * @param broadcaster The broadcaster for whom you want to listen to warnings.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelWarningAcknowledgeEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.warning.acknowledge',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:read:warnings', 'moderator:manage:warnings'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a warning sent to a user.
+	 *
+	 * @param broadcaster The broadcaster for whom you want to listen to warnings.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelWarningSendEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.warning.send',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:read:warnings', 'moderator:manage:warnings'],
+			true,
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent an extension Bits transaction.
 	 *
 	 * @param clientId The Client ID for the extension you want to listen to Bits transactions for.
