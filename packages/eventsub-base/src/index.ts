@@ -66,11 +66,11 @@ export type { EventSubChannelUnbanRequestStatus } from './events/EventSubChannel
 export { EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 export { EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
 export { EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
-export type { EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
-export type { EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
+export { EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
+export { EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
 export type { EventSubAutoModTermsUpdateAction } from './events/EventSubAutoModTermsUpdateEvent.external';
-export type { EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
-export type { EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
+export { EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
+export { EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 
 export type { EventSubAutoModLevel } from './events/common/EventSubAutoModLevel';
 export type { EventSubAutoModResolutionStatus } from './events/common/EventSubAutoModResolutionStatus';
