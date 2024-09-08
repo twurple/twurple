@@ -26,13 +26,17 @@ export type HelixEmoteScale = '1.0' | '2.0' | '3.0';
 export type HelixEmoteThemeMode = 'light' | 'dark';
 
 /** @private */
-export interface HelixEmoteData {
+export interface HelixEmoteBaseData {
 	id: string;
 	name: string;
-	images: HelixEmoteImageData;
 	format: HelixEmoteFormat[];
 	scale: HelixEmoteScale[];
 	theme_mode: HelixEmoteThemeMode[];
+}
+
+/** @private */
+export interface HelixEmoteData extends HelixEmoteBaseData {
+	images: HelixEmoteImageData;
 }
 
 /** @private */
@@ -44,6 +48,13 @@ export interface HelixChannelEmoteData extends HelixEmoteData {
 
 /** @private */
 export interface HelixEmoteFromSetData extends HelixEmoteData {
+	emote_type: string;
+	emote_set_id: string;
+	owner_id: string;
+}
+
+/** @private */
+export interface HelixUserEmoteData extends HelixEmoteBaseData {
 	emote_type: string;
 	emote_set_id: string;
 	owner_id: string;
