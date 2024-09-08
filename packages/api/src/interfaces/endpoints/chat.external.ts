@@ -25,6 +25,7 @@ export type HelixEmoteScale = '1.0' | '2.0' | '3.0';
 /** @private */
 export type HelixEmoteThemeMode = 'light' | 'dark';
 
+/** @private */
 export interface HelixEmoteBaseData {
 	id: string;
 	name: string;
