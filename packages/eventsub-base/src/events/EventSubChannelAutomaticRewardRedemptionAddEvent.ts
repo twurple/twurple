@@ -81,7 +81,7 @@ export class EventSubChannelAutomaticRewardRedemptionAddEvent extends DataObject
 	}
 
 	/**
-	 * Gets more information about the banned user.
+	 * Gets more information about the redeeming user.
 	 */
 	async getUser(): Promise<HelixUser> {
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
@@ -95,7 +95,7 @@ export class EventSubChannelAutomaticRewardRedemptionAddEvent extends DataObject
 	}
 
 	/**
-	 * The display name of the moderator who issued the ban/timeout.
+	 * The cost of the reward.
 	 */
 	get rewardCost(): number {
 		return this[rawDataSymbol].reward.cost;
