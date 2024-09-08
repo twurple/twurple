@@ -117,6 +117,18 @@ import type { EventSubSubscription } from './subscriptions/EventSubSubscription'
 import { EventSubUserAuthorizationGrantSubscription } from './subscriptions/EventSubUserAuthorizationGrantSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription';
+import type { EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
+import { EventSubAutoModMessageHoldSubscription } from './subscriptions/EventSubAutoModMessageHoldSubscription';
+import type { EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
+import { EventSubAutoModMessageUpdateSubscription } from './subscriptions/EventSubAutoModMessageUpdateSubscription';
+import type { EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
+import { EventSubAutoModSettingsUpdateSubscription } from './subscriptions/EventSubAutoModSettingsUpdateSubscription';
+import type { EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
+import { EventSubAutoModTermsUpdateSubscription } from './subscriptions/EventSubAutoModTermsUpdateSubscription';
+import { EventSubChannelChatUserMessageHoldSubscription } from './subscriptions/EventSubChannelChatUserMessageHoldSubscription';
+import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
+import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
+import { EventSubChannelChatUserMessageUpdateSubscription } from './subscriptions/EventSubChannelChatUserMessageUpdateSubscription';
 
 const numberRegex = /^\d+$/;
 
@@ -1208,6 +1220,150 @@ export abstract class EventSubBase extends EventEmitter {
 	): EventSubSubscription {
 		const { clientId } = this._apiClient._authProvider;
 		return this._genericSubscribe(EventSubExtensionBitsTransactionCreateSubscription, handler, this, clientId);
+	}
+
+	/**
+	 * Subscribes to events that represent a chat message being held by AutoMod in a channel.
+	 *
+	 * @param broadcaster A broadcaster for which to get notifications about the held messages.
+	 * @param moderator A user that has permission to manage AutoMod in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onAutoModMessageHold(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModMessageHoldEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onAutoModMessageHold');
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'onAutoModMessageHold');
+
+		return this._genericSubscribe(
+			EventSubAutoModMessageHoldSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a held chat message by AutoMod being resolved in a channel.
+	 *
+	 * @param broadcaster A Broadcaster for which to get notifications about resolution of held messages.
+	 * @param moderator A user that has permission to manage AutoMod in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onAutoModMessageUpdate(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModMessageUpdateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onAutoModMessageUpdate');
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'onAutoModMessageUpdate');
+
+		return this._genericSubscribe(
+			EventSubAutoModMessageUpdateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent the AutoMod settings being updated in a channel.
+	 *
+	 * @param broadcaster A user for which to get notifications about AutoMod settings update.
+	 * @param moderator A user that has permission to manage AutoMod settings in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onAutoModSettingsUpdate(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModSettingsUpdateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onAutoModSettingsUpdate');
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'onAutoModSettingsUpdate');
+
+		return this._genericSubscribe(
+			EventSubAutoModSettingsUpdateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent AutoMod terms being updated in a channel.
+	 *
+	 * @param broadcaster A user for which to get notifications about AutoMod terms update.
+	 * @param moderator A user that has permission to manage AutoMod in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onAutoModTermsUpdate(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModTermsUpdateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onAutoModTermsUpdate');
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'onAutoModTermsUpdate');
+
+		return this._genericSubscribe(
+			EventSubAutoModTermsUpdateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a user's notification about their chat message being held by AutoMod.
+	 *
+	 * @param broadcaster A broadcaster in which channel to get notifications about held messages.
+	 * @param user A user that has permission to read chat in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatUserMessageHold(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatUserMessageHoldEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelChatUserMessageHold');
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelChatUserMessageHold');
+
+		return this._genericSubscribe(
+			EventSubChannelChatUserMessageHoldSubscription,
+			handler,
+			this,
+			broadcasterId,
+			userId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a user's notification about their held chat message being resolved.
+	 *
+	 * @param broadcaster The user for which to get notifications about resolution of held messages.
+	 * @param user A user that has permission to read chat in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatUserMessageUpdate(
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatUserMessageUpdateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelChatUserMessageUpdate');
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelChatUserMessageUpdate');
+
+		return this._genericSubscribe(
+			EventSubChannelChatUserMessageUpdateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			userId,
+		);
 	}
 
 	/**
