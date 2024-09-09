@@ -57,7 +57,7 @@ should use for which use case.
 |----------------------------------------|------------------------------|---------------------------|------------------------|
 | Chat messages                          | Yes                          | Sub & cheer messages only | Yes                    |
 | Chat mode (e.g. sub only) changes      | Yes                          | No                        | Yes                    |
-| Whispers                               | Yes                          | Yes                       | No (in beta by Twitch) |
+| Whispers                               | Yes                          | Yes                       | Yes                    |
 | Cheers                                 | Yes                          | Yes                       | Yes                    |
 | Channel points                         | Redemptions w/ messages only | Redemptions only          | Yes                    |
 | Subscriptions                          | Published only               | Published only            | Yes                    |
