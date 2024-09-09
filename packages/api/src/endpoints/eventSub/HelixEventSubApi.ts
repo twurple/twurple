@@ -1496,6 +1496,26 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a user receiving a whisper message from another user.
+	 *
+	 * @param user The user you want to listen to whisper message events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToUserWhisperMessageEvents(
+		user: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'user.whisper.message',
+			'1',
+			createSingleKeyQuery('user_id', extractUserId(user)),
+			transport,
+			user,
+			['user:read:whispers', 'user:manage:whispers'],
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a drop entitlement being granted.
 	 *
 	 * @expandParams

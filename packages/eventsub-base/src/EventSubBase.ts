@@ -63,6 +63,7 @@ import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEve
 import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthorizationGrantEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
+import { type EventSubUserWhisperMessageEvent } from './events/EventSubUserWhisperMessageEvent';
 import { EventSubChannelAdBreakBeginSubscription } from './subscriptions/EventSubChannelAdBreakBeginSubscription';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelCharityCampaignProgressSubscription } from './subscriptions/EventSubChannelCharityCampaignProgressSubscription';
@@ -131,6 +132,7 @@ import { EventSubChannelChatUserMessageHoldSubscription } from './subscriptions/
 import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
 import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 import { EventSubChannelChatUserMessageUpdateSubscription } from './subscriptions/EventSubChannelChatUserMessageUpdateSubscription';
+import { EventSubUserWhisperMessageSubscription } from './subscriptions/EventSubUserWhisperMessageSubscription';
 
 const numberRegex = /^\d+$/;
 
@@ -1413,6 +1415,21 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToUserUpdateEvents');
 
 		return this._genericSubscribe(EventSubUserUpdateSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user receiving a whisper message from another user.
+	 *
+	 * @param user The user for which to get notifications about whisper messages.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onUserWhisperMessage(
+		user: UserIdResolvable,
+		handler: (data: EventSubUserWhisperMessageEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onUserWhisperMessage');
+
+		return this._genericSubscribe(EventSubUserWhisperMessageSubscription, handler, this, userId);
 	}
 
 	/** @private */
