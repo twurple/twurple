@@ -1520,6 +1520,138 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribes to events that represent a chat message being held by AutoMod.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to AutoMod message hold events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToAutoModMessageHoldEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'automod.message.hold',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:manage:automod'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a held chat message by AutoMod being resolved.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to AutoMod message resolution events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToAutoModMessageUpdateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'automod.message.update',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:manage:automod'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent the AutoMod settings being updated.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to AutoMod settings update events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToAutoModSettingsUpdateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'automod.settings.update',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:read:automod_settings'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent the AutoMod terms being updated.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to AutoMod terms update events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToAutoModTermsUpdateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'automod.terms.update',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:manage:automod'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a user's notification about their message being held by AutoMod.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to AutoMod message hold events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelChatUserMessageHoldEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.chat.user_message_hold',
+			'1',
+			createEventSubUserCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['user:read:chat'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a user's notification about a held chat message by AutoMod being resolved.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to AutoMod message resolution events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelChatUserMessageUpdateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.chat.user_message_update',
+			'1',
+			createEventSubUserCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['user:read:chat'],
+			true,
+		);
+	}
+
+	/**
 	 * Gets the current EventSub conduits for the current client.
 	 *
 	 */
