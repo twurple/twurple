@@ -1,6 +1,12 @@
 import { type HelixEventSubDropEntitlementGrantFilter } from '@twurple/api';
 import type { UserIdResolvable } from '@twurple/common';
 import { type EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
+import { type EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
+import { type EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
+import { type EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
+import { type EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
+import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
+import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
@@ -32,6 +38,7 @@ import type { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent
 import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent';
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
+import type { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
 import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 import type { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';
@@ -53,6 +60,7 @@ import type { EventSubStreamOnlineEvent } from './events/EventSubStreamOnlineEve
 import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserAuthorizationGrantEvent';
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
+import type { EventSubUserWhisperMessageEvent } from './events/EventSubUserWhisperMessageEvent';
 import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
 
 /**
@@ -411,6 +419,17 @@ export interface EventSubListener {
 	) => EventSubSubscription;
 
 	/**
+	 * Subscribes to events that represent a specific Channel Points automatic reward being redeemed.
+	 *
+	 * @param user The user for which to get notifications when their automatic reward is redeemed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelAutomaticRewardRedemptionAdd: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelAutomaticRewardRedemptionAddEvent) => void,
+	) => EventSubSubscription;
+
+	/**
 	 * Subscribes to events that represent a poll starting in a channel.
 	 *
 	 * @param user The broadcaster for which to receive poll begin events.
@@ -741,6 +760,84 @@ export interface EventSubListener {
 	) => EventSubSubscription;
 
 	/**
+	 * Subscribes to events that represent a chat message being held by AutoMod in a channel.
+	 *
+	 * @param broadcaster A broadcaster for which to get notifications about the held messages.
+	 * @param moderator A user that has permission to manage AutoMod in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onAutoModMessageHold: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModMessageHoldEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a held chat message by AutoMod being resolved in a channel.
+	 *
+	 * @param broadcaster A Broadcaster for which to get notifications about resolution of held messages.
+	 * @param moderator A user that has permission to manage AutoMod in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onAutoModMessageUpdate: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModMessageUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent the AutoMod settings being updated in a channel.
+	 *
+	 * @param broadcaster A user for which to get notifications about AutoMod settings update.
+	 * @param moderator A user that has permission to manage AutoMod settings in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onAutoModSettingsUpdate: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModSettingsUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent AutoMod terms being updated in a channel.
+	 *
+	 * @param broadcaster A user for which to get notifications about AutoMod terms update.
+	 * @param moderator A user that has permission to manage AutoMod in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onAutoModTermsUpdate: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModTermsUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user's notification about their chat message has been held by AutoMod.
+	 *
+	 * @param broadcaster A broadcaster in which channel to get notifications about held messages by AutoMod.
+	 * @param moderator A user that has permission to read chat in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatUserMessageHold: (
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatUserMessageHoldEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user's notification about the resolution of a held chat message by AutoMod.
+	 *
+	 * @param broadcaster The user for which to get notifications about resolution of messages held by AutoMod.
+	 * @param moderator A user that has permission to read chat in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelChatUserMessageUpdate: (
+		broadcaster: UserIdResolvable,
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelChatUserMessageUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
 	 * Subscribes to events that represent a user granting authorization to an application.
 	 *
 	 * @param handler The function that will be called for any new notifications.
@@ -761,4 +858,15 @@ export interface EventSubListener {
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onUserUpdate: (user: UserIdResolvable, handler: (data: EventSubUserUpdateEvent) => void) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user receiving a whisper message from another user.
+	 *
+	 * @param user The user for which to get notifications about whisper messages.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onUserWhisperMessage: (
+		user: UserIdResolvable,
+		handler: (data: EventSubUserWhisperMessageEvent) => void,
+	) => EventSubSubscription;
 }

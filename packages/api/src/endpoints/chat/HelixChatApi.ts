@@ -1,4 +1,4 @@
-import { createBroadcasterQuery, type HelixResponse } from '@twurple/api-call';
+import { createBroadcasterQuery, type HelixPaginatedResponse, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createChatColorUpdateQuery,
@@ -16,16 +16,21 @@ import {
 	type HelixEmoteFromSetData,
 	type HelixPrivilegedChatSettingsData,
 	type HelixSentChatMessageData,
+	type HelixUserEmoteData,
 } from '../../interfaces/endpoints/chat.external';
 import {
 	type HelixSendChatAnnouncementParams,
 	type HelixSendChatMessageParams,
 	type HelixUpdateChatSettingsParams,
+	type HelixUserEmotesFilter,
 } from '../../interfaces/endpoints/chat.input';
 import { createModeratorActionQuery, createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
 import {
+	createPaginatedResult,
 	createPaginatedResultWithTotal,
+	type HelixPaginatedResult,
 	type HelixPaginatedResultWithTotal,
 } from '../../utils/pagination/HelixPaginatedResult';
 import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
@@ -36,6 +41,7 @@ import { HelixChatChatter } from './HelixChatChatter';
 import { HelixChatSettings } from './HelixChatSettings';
 import { HelixEmote } from './HelixEmote';
 import { HelixEmoteFromSet } from './HelixEmoteFromSet';
+import { HelixUserEmote } from './HelixUserEmote';
 import { HelixPrivilegedChatSettings } from './HelixPrivilegedChatSettings';
 import { HelixSentChatMessage } from './HelixSentChatMessage';
 
@@ -185,6 +191,65 @@ export class HelixChatApi extends BaseApi {
 		});
 
 		return result.data.map(data => new HelixEmoteFromSet(data, this._client));
+	}
+
+	/**
+	 * Gets emotes available to the user across all channels.
+	 *
+	 * @param user The ID of the user to get available emotes of.
+	 * @param filter Additional query filters.
+	 */
+	async getUserEmotes(
+		user: UserIdResolvable,
+		filter?: HelixUserEmotesFilter,
+	): Promise<HelixPaginatedResult<HelixUserEmote>> {
+		const userId = extractUserId(user);
+		const result = await this._client.callApi<HelixPaginatedResponse<HelixUserEmoteData>>({
+			type: 'helix',
+			url: 'chat/emotes/user',
+			userId: extractUserId(user),
+			scopes: ['user:read:emotes'],
+			query: {
+				...createSingleKeyQuery('user_id', userId),
+				...createSingleKeyQuery(
+					'broadcasterId',
+					filter?.broadcaster ? extractUserId(filter.broadcaster) : undefined,
+				),
+				...createPaginationQuery(filter),
+			},
+		});
+
+		return createPaginatedResult(result, HelixUserEmote, this._client);
+	}
+
+	/**
+	 * Creates a paginator for emotes available to the user across all channels.
+	 *
+	 * @param user The ID of the user to get available emotes of.
+	 * @param broadcaster The ID of a broadcaster you wish to get follower emotes of. Using this query parameter will
+	 * guarantee inclusion of the broadcaster’s follower emotes in the response body.
+	 *
+	 * If the user who retrieves their emotes is subscribed to the broadcaster specified, their follower emotes will
+	 * appear in the response body regardless of whether this query parameter is used.
+	 */
+	getUserEmotesPaginated(
+		user: UserIdResolvable,
+		broadcaster?: UserIdResolvable,
+	): HelixPaginatedRequest<HelixUserEmoteData, HelixUserEmote> {
+		const userId = extractUserId(user);
+		return new HelixPaginatedRequest(
+			{
+				url: 'chat/emotes/user',
+				userId,
+				scopes: ['user:read:emotes'],
+				query: {
+					...createSingleKeyQuery('user_id', userId),
+					...createSingleKeyQuery('broadcasterId', broadcaster ? extractUserId(broadcaster) : undefined),
+				},
+			},
+			this._client,
+			(data: HelixUserEmoteData) => new HelixUserEmote(data, this._client),
+		);
 	}
 
 	/**

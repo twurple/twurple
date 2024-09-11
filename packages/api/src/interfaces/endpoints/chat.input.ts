@@ -1,4 +1,6 @@
+import { type UserIdResolvable } from '@twurple/common';
 import { type HelixChatAnnouncementColor } from './chat.external';
+import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
 
 /**
  * An update request for a broadcaster's chat settings.
@@ -76,3 +78,17 @@ export interface HelixSendChatAnnouncementParams {
 }
 
 export type HelixChatBadgeScale = 1 | 2 | 4;
+
+/**
+ * Filters for user emotes queries.
+ */
+export interface HelixUserEmotesFilter extends HelixForwardPagination {
+	/**
+	 * The ID of a broadcaster you wish to get follower emotes of. Using this query parameter will
+	 * guarantee inclusion of the broadcaster’s follower emotes in the response body.
+	 *
+	 * If the user who retrieves their emotes is subscribed to the broadcaster specified, their follower emotes will
+	 * appear in the response body regardless of whether this query parameter is used.
+	 */
+	broadcaster?: UserIdResolvable;
+}
