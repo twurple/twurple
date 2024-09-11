@@ -79,4 +79,4 @@ should use for which use case.
 | Unban request approve/deny             | No                           | Yes                       | No (in beta by Twitch) |
 | Low-trust users treatment/chat message | No                           | Yes                       | No (in beta by Twitch) |
 | Warnings                               | No                           | No                        | Yes                    |
-
+| Moderation actions                     | No                           | Yes                       | Yes                    |

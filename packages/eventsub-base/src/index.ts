@@ -17,6 +17,38 @@ export { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChan
 export { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
 export { EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent';
 export type { EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
+
+export { EventSubChannelBanModerationEvent } from './events/moderation/EventSubChannelBanModerationEvent';
+export { EventSubChannelUnbanModerationEvent } from './events/moderation/EventSubChannelUnbanModerationEvent';
+export { EventSubChannelTimeoutModerationEvent } from './events/moderation/EventSubChannelTimeoutModerationEvent';
+export { EventSubChannelUntimeoutModerationEvent } from './events/moderation/EventSubChannelUntimeoutModerationEvent';
+export { EventSubChannelClearModerationEvent } from './events/moderation/EventSubChannelClearModerationEvent';
+export { EventSubChannelDeleteModerationEvent } from './events/moderation/EventSubChannelDeleteModerationEvent';
+export { EventSubChannelEmoteOnlyModerationEvent } from './events/moderation/EventSubChannelEmoteOnlyModerationEvent';
+export { EventSubChannelEmoteOnlyOffModerationEvent } from './events/moderation/EventSubChannelEmoteOnlyOffModerationEvent';
+export { EventSubChannelFollowersModerationEvent } from './events/moderation/EventSubChannelFollowersModerationEvent';
+export { EventSubChannelFollowersOffModerationEvent } from './events/moderation/EventSubChannelFollowersOffModerationEvent';
+export { EventSubChannelSlowModerationEvent } from './events/moderation/EventSubChannelSlowModerationEvent';
+export { EventSubChannelSlowOffModerationEvent } from './events/moderation/EventSubChannelSlowOffModerationEvent';
+export { EventSubChannelSubscribersModerationEvent } from './events/moderation/EventSubChannelSubscribersModerationEvent';
+export { EventSubChannelSubscribersOffModerationEvent } from './events/moderation/EventSubChannelSubscribersOffModerationEvent';
+export { EventSubChannelUniqueChatModerationEvent } from './events/moderation/EventSubChannelUniqueChatModerationEvent';
+export { EventSubChannelUniqueChatOffModerationEvent } from './events/moderation/EventSubChannelUniqueChatOffModerationEvent';
+export { EventSubChannelModModerationEvent } from './events/moderation/EventSubChannelModModerationEvent';
+export { EventSubChannelUnmodModerationEvent } from './events/moderation/EventSubChannelUnmodModerationEvent';
+export { EventSubChannelVipModerationEvent } from './events/moderation/EventSubChannelVipModerationEvent';
+export { EventSubChannelUnvipModerationEvent } from './events/moderation/EventSubChannelUnvipModerationEvent';
+export { EventSubChannelRaidModerationEvent } from './events/moderation/EventSubChannelRaidModerationEvent';
+export { EventSubChannelUnraidModerationEvent } from './events/moderation/EventSubChannelUnraidModerationEvent';
+export { EventSubChannelAutoModTermsModerationEvent } from './events/moderation/EventSubChannelAutoModTermsModerationEvent';
+export { EventSubChannelUnbanRequestModerationEvent } from './events/moderation/EventSubChannelUnbanRequestModerationEvent';
+export type { EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent';
+export type {
+	EventSubChannelModerationAction,
+	EventSubChannelAutomodTermsModerationEventAction,
+	EventSubChannelAutomodTermsModerationEventList,
+} from './events/moderation/EventSubChannelModerationEvent.external';
+
 export { EventSubChannelChatSettingsUpdateEvent } from './events/EventSubChannelChatSettingsUpdateEvent';
 export { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent';
 export { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent';
