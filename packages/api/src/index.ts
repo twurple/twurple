@@ -144,6 +144,7 @@ export type {
 } from './interfaces/endpoints/moderation.input';
 export { HelixUnbanRequest } from './endpoints/moderation/HelixUnbanRequest';
 export type { HelixUnbanRequestStatus } from './interfaces/endpoints/moderation.external';
+export { HelixWarning } from './endpoints/moderation/HelixWarning';
 
 export { HelixPollApi } from './endpoints/poll/HelixPollApi';
 export { HelixPoll } from './endpoints/poll/HelixPoll';

@@ -50,6 +50,7 @@ should use for which use case.
 | Get list of chatters                          | Yes            | No                                                     |
 | Get info about charity campaigns              | Yes            | No                                                     |
 | Get & manage Shield Mode status               | Yes            | No                                                     |
+| Send warnings                                 | Yes            | No                                                     |
 
 ## Events
 
@@ -76,3 +77,5 @@ should use for which use case.
 | Shield mode begin/end                  | No                           | No                        | Yes                    |
 | Unban request approve/deny             | No                           | Yes                       | No (in beta by Twitch) |
 | Low-trust users treatment/chat message | No                           | Yes                       | No (in beta by Twitch) |
+| Warnings                               | No                           | No                        | Yes                    |
+

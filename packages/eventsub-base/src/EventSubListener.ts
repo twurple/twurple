@@ -1,6 +1,12 @@
 import { type HelixEventSubDropEntitlementGrantFilter } from '@twurple/api';
 import type { UserIdResolvable } from '@twurple/common';
 import { type EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
+import { type EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
+import { type EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
+import { type EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
+import { type EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
+import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
+import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
@@ -45,6 +51,8 @@ import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEve
 import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+import { type EventSubChannelWarningAcknowledgeEvent } from './events/EventSubChannelWarningAcknowledgeEvent';
+import { type EventSubChannelWarningSendEvent } from './events/EventSubChannelWarningSendEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
@@ -54,12 +62,6 @@ import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUser
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 import type { EventSubUserWhisperMessageEvent } from './events/EventSubUserWhisperMessageEvent';
 import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
-import { type EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
-import { type EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
-import { type EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
-import { type EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
-import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
-import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 
 /**
  * The common interface of all EventSub listeners.
@@ -709,6 +711,32 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubChannelUnbanRequestResolveEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a warning being acknowledged by a user.
+	 *
+	 * @param broadcaster The user for which to get notifications about acknowledged warnings in their channel.
+	 * @param moderator A user that has permission to read warnings in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelWarningAcknowledge: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelWarningAcknowledgeEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a warning sent to a user.
+	 *
+	 * @param broadcaster The user for which to get notifications about sent warnings in their channel.
+	 * @param moderator A user that has permission to read warnings in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelWarningSend: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelWarningSendEvent) => void,
 	) => EventSubSubscription;
 
 	/**

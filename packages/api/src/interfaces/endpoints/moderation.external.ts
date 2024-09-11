@@ -106,6 +106,14 @@ export interface HelixUnbanRequestData extends HelixModeratedChannelData {
 	resolved_at: string | null;
 }
 
+/** @private */
+export interface HelixWarningData {
+	broadcaster_id: string;
+	moderator_id: string;
+	user_id: string;
+	reason: string;
+}
+
 /** @internal */
 export function createModerationUserListQuery(
 	channel: UserIdResolvable,
@@ -191,5 +199,15 @@ export function createCheckAutoModStatusBody(data: HelixCheckAutoModStatusData[]
 			msg_id: entry.messageId,
 			msg_text: entry.messageText,
 		})),
+	};
+}
+
+/** @internal */
+export function createWarnUserBody(user: UserIdResolvable, reason: string) {
+	return {
+		data: {
+			user_id: extractUserId(user),
+			reason,
+		},
 	};
 }

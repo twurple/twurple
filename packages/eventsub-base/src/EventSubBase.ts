@@ -12,6 +12,12 @@ import {
 } from '@twurple/api';
 import { rtfm } from '@twurple/common';
 import { type EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
+import { type EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
+import { type EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
+import { type EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
+import { type EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
+import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
+import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
@@ -56,6 +62,8 @@ import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEve
 import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+import type { EventSubChannelWarningAcknowledgeEvent } from './events/EventSubChannelWarningAcknowledgeEvent';
+import type { EventSubChannelWarningSendEvent } from './events/EventSubChannelWarningSendEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
@@ -64,6 +72,12 @@ import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserA
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent';
 import { type EventSubUserWhisperMessageEvent } from './events/EventSubUserWhisperMessageEvent';
+import { EventSubAutoModMessageHoldSubscription } from './subscriptions/EventSubAutoModMessageHoldSubscription';
+import { EventSubAutoModMessageUpdateSubscription } from './subscriptions/EventSubAutoModMessageUpdateSubscription';
+import { EventSubAutoModSettingsUpdateSubscription } from './subscriptions/EventSubAutoModSettingsUpdateSubscription';
+import { EventSubAutoModTermsUpdateSubscription } from './subscriptions/EventSubAutoModTermsUpdateSubscription';
+import { EventSubChannelChatUserMessageHoldSubscription } from './subscriptions/EventSubChannelChatUserMessageHoldSubscription';
+import { EventSubChannelChatUserMessageUpdateSubscription } from './subscriptions/EventSubChannelChatUserMessageUpdateSubscription';
 import { EventSubChannelAdBreakBeginSubscription } from './subscriptions/EventSubChannelAdBreakBeginSubscription';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
 import { EventSubChannelCharityCampaignProgressSubscription } from './subscriptions/EventSubChannelCharityCampaignProgressSubscription';
@@ -112,27 +126,17 @@ import { EventSubChannelUnbanRequestCreateSubscription } from './subscriptions/E
 import { EventSubChannelUnbanRequestResolveSubscription } from './subscriptions/EventSubChannelUnbanRequestResolveSubscription';
 import { EventSubChannelUnbanSubscription } from './subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelUpdateSubscription } from './subscriptions/EventSubChannelUpdateSubscription';
+import { EventSubChannelWarningAcknowledgeSubscription } from './subscriptions/EventSubChannelWarningAcknowledgeSubscription';
+import { EventSubChannelWarningSendSubscription } from './subscriptions/EventSubChannelWarningSendSubscription';
 import { EventSubDropEntitlementGrantSubscription } from './subscriptions/EventSubDropEntitlementGrantSubscription';
 import { EventSubExtensionBitsTransactionCreateSubscription } from './subscriptions/EventSubExtensionBitsTransactionCreateSubscription';
 import { EventSubStreamOfflineSubscription } from './subscriptions/EventSubStreamOfflineSubscription';
 import { EventSubStreamOnlineSubscription } from './subscriptions/EventSubStreamOnlineSubscription';
-import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
 import { EventSubUserAuthorizationGrantSubscription } from './subscriptions/EventSubUserAuthorizationGrantSubscription';
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription';
-import type { EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
-import { EventSubAutoModMessageHoldSubscription } from './subscriptions/EventSubAutoModMessageHoldSubscription';
-import type { EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
-import { EventSubAutoModMessageUpdateSubscription } from './subscriptions/EventSubAutoModMessageUpdateSubscription';
-import type { EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
-import { EventSubAutoModSettingsUpdateSubscription } from './subscriptions/EventSubAutoModSettingsUpdateSubscription';
-import type { EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
-import { EventSubAutoModTermsUpdateSubscription } from './subscriptions/EventSubAutoModTermsUpdateSubscription';
-import { EventSubChannelChatUserMessageHoldSubscription } from './subscriptions/EventSubChannelChatUserMessageHoldSubscription';
-import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
-import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
-import { EventSubChannelChatUserMessageUpdateSubscription } from './subscriptions/EventSubChannelChatUserMessageUpdateSubscription';
 import { EventSubUserWhisperMessageSubscription } from './subscriptions/EventSubUserWhisperMessageSubscription';
+import type { EventSubSubscription } from './subscriptions/EventSubSubscription';
 
 const numberRegex = /^\d+$/;
 
@@ -1209,6 +1213,54 @@ export abstract class EventSubBase extends EventEmitter {
 
 		return this._genericSubscribe(
 			EventSubChannelUnbanRequestResolveSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a warning being acknowledged by a user.
+	 *
+	 * @param broadcaster The user for which to get notifications about acknowledged warnings in their channel.
+	 * @param moderator A user that has permission to read warnings in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelWarningAcknowledge(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelWarningAcknowledgeEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelWarningAcknowledge');
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'onChannelWarningAcknowledge');
+
+		return this._genericSubscribe(
+			EventSubChannelWarningAcknowledgeSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a warning sent to a user.
+	 *
+	 * @param broadcaster The user for which to get notifications about sent warnings in their channel.
+	 * @param moderator A user that has permission to read warnings in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelWarningSend(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubChannelWarningSendEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelWarningSend');
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'onChannelWarningSend');
+
+		return this._genericSubscribe(
+			EventSubChannelWarningSendSubscription,
 			handler,
 			this,
 			broadcasterId,

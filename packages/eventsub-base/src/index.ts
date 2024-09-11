@@ -75,6 +75,8 @@ export { EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUp
 export type { EventSubAutoModTermsUpdateAction } from './events/EventSubAutoModTermsUpdateEvent.external';
 export { EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
 export { EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
+export { EventSubChannelWarningAcknowledgeEvent } from './events/EventSubChannelWarningAcknowledgeEvent';
+export { EventSubChannelWarningSendEvent } from './events/EventSubChannelWarningSendEvent';
 
 export type { EventSubAutoModLevel } from './events/common/EventSubAutoModLevel';
 export type { EventSubAutoModResolutionStatus } from './events/common/EventSubAutoModResolutionStatus';
