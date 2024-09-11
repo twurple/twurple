@@ -50,6 +50,7 @@ should use for which use case.
 | Get list of chatters                          | Yes            | No                                                     |
 | Get info about charity campaigns              | Yes            | No                                                     |
 | Get & manage Shield Mode status               | Yes            | No                                                     |
+| Send warnings                                 | Yes            | No                                                     |
 
 ## Events
 
@@ -67,7 +68,7 @@ should use for which use case.
 | Raids                                  | Yes                          | No                        | Yes                    |
 | Bans                                   | Yes                          | Yes                       | Yes                    |
 | Mod add/remove                         | No                           | Yes                       | Yes                    |
-| Vip add/remove                         | No                           | No                        | Yes                    |
+| VIP add/remove                         | No                           | No                        | Yes                    |
 | Polls & predictions                    | No                           | No                        | Yes                    |
 | Extension transactions                 | No                           | No                        | Yes                    |
 | Hype Trains                            | No                           | No                        | Yes                    |
