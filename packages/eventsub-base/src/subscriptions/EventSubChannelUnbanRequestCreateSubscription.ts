@@ -13,18 +13,18 @@ export class EventSubChannelUnbanRequestCreateSubscription extends EventSubSubsc
 	constructor(
 		handler: (data: EventSubChannelUnbanRequestCreateEvent) => void,
 		client: EventSubBase,
-		private readonly _userId: string,
+		private readonly _broadcasterId: string,
 		private readonly _moderatorId: string,
 	) {
 		super(handler, client);
 	}
 
 	get id(): string {
-		return `channel.unban_request.create.${this._userId}`;
+		return `channel.unban_request.create.${this._broadcasterId}.${this._moderatorId}`;
 	}
 
 	get authUserId(): string | null {
-		return this._userId;
+		return this._moderatorId;
 	}
 
 	protected transformData(data: EventSubChannelUnbanRequestCreateEventData): EventSubChannelUnbanRequestCreateEvent {
@@ -36,7 +36,7 @@ export class EventSubChannelUnbanRequestCreateSubscription extends EventSubSubsc
 			this._moderatorId,
 			async ctx =>
 				await ctx.eventSub.subscribeToChannelUnbanRequestCreateEvents(
-					this._userId,
+					this._broadcasterId,
 					await this._getTransportOptions(),
 				),
 		);

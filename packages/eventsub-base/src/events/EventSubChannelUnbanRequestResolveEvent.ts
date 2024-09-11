@@ -7,7 +7,7 @@ import {
 } from './EventSubChannelUnbanRequestResolveEvent.external';
 
 /**
- * An EventSub event representing an unban request in a channel.
+ * An EventSub event representing the resolution of an unban request in a channel.
  */
 @rtfm<EventSubChannelUnbanRequestResolveEvent>('eventsub-base', 'EventSubChannelUnbanRequestResolveEvent', 'id')
 export class EventSubChannelUnbanRequestResolveEvent extends DataObject<EventSubChannelUnbanRequestResolveEventData> {
@@ -111,7 +111,7 @@ export class EventSubChannelUnbanRequestResolveEvent extends DataObject<EventSub
 	}
 
 	/**
-	 * Resolution text supplied by the mod/broadcaster upon approval/denial of the request.
+	 * The message supplied by the mod/broadcaster upon resolution of the request.
 	 */
 	get resolutionMessage(): string | null {
 		return this[rawDataSymbol].resolution_text ?? null;
