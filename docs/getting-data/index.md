@@ -50,30 +50,34 @@ should use for which use case.
 | Get list of chatters                          | Yes            | No                                                     |
 | Get info about charity campaigns              | Yes            | No                                                     |
 | Get & manage Shield Mode status               | Yes            | No                                                     |
+| Send warnings                                 | Yes            | No                                                     |
 
 ## Events
 
-| Event type                             | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub-*`      |
-|----------------------------------------|------------------------------|---------------------------|----------------------------|
-| Chat messages                          | Yes                          | Sub & cheer messages only | Yes                        |
-| Chat mode (e.g. sub only) changes      | Yes                          | No                        | Yes                        |
-| Whispers                               | Yes                          | Yes                       | No (in beta by Twitch)     |
-| Cheers                                 | Yes                          | Yes                       | Yes                        |
-| Channel points                         | Redemptions w/ messages only | Redemptions only          | Yes                        |
-| Subscriptions                          | Published only               | Published only            | Yes                        |
-| AutoMod                                | No                           | Yes                       | No (implemented by Twitch) |
-| Live / offline / stream changes        | No                           | No                        | Yes                        |
-| Follows                                | No                           | No                        | Yes                        |
-| Raids                                  | Yes                          | No                        | Yes                        |
-| Bans                                   | Yes                          | Yes                       | Yes                        |
-| Mod add/remove                         | No                           | Yes                       | Yes                        |
-| Polls & predictions                    | No                           | No                        | Yes                        |
-| Extension transactions                 | No                           | No                        | Yes                        |
-| Hype Trains                            | No                           | No                        | Yes                        |
-| Authorization grant/revoke             | No                           | No                        | Yes                        |
-| Drops                                  | No                           | No                        | Yes                        |
-| Charity campaigns & donations          | No                           | No                        | Yes                        |
-| Shield mode begin/end                  | No                           | No                        | Yes                        |
-| Unban request create                   | No                           | No                        | Yes                        |
-| Unban request resolve                  | No                           | Yes                       | Yes                        |
-| Low-trust users treatment/chat message | No                           | Yes                       | No (in beta by Twitch)     |
+| Event type                             | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub-*`  |
+|----------------------------------------|------------------------------|---------------------------|------------------------|
+| Chat messages                          | Yes                          | Sub & cheer messages only | Yes                    |
+| Chat mode (e.g. sub only) changes      | Yes                          | No                        | Yes                    |
+| Whispers                               | Yes                          | Yes                       | Yes                    |
+| Cheers                                 | Yes                          | Yes                       | Yes                    |
+| Channel points                         | Redemptions w/ messages only | Redemptions only          | Yes                    |
+| Subscriptions                          | Published only               | Published only            | Yes                    |
+| AutoMod                                | No                           | Yes                       | Yes                    |
+| Live / offline / stream changes        | No                           | No                        | Yes                    |
+| Follows                                | No                           | No                        | Yes                    |
+| Raids                                  | Yes                          | No                        | Yes                    |
+| Bans                                   | Yes                          | Yes                       | Yes                    |
+| Mod add/remove                         | No                           | Yes                       | Yes                    |
+| VIP add/remove                         | No                           | No                        | Yes                    |
+| Polls & predictions                    | No                           | No                        | Yes                    |
+| Extension transactions                 | No                           | No                        | Yes                    |
+| Hype Trains                            | No                           | No                        | Yes                    |
+| Authorization grant/revoke             | No                           | No                        | Yes                    |
+| Drops                                  | No                           | No                        | Yes                    |
+| Charity campaigns & donations          | No                           | No                        | Yes                    |
+| Shield mode begin/end                  | No                           | No                        | Yes                    |
+| Unban request create                   | No                           | No                        | Yes                    |
+| Unban request resolve                  | No                           | Yes                       | Yes                    |
+| Low-trust users treatment/chat message | No                           | Yes                       | No (in beta by Twitch) |
+| Warnings                               | No                           | No                        | Yes                    |
+| Moderation actions                     | No                           | Yes                       | Yes                    |

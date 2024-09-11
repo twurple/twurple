@@ -44,6 +44,7 @@ export { HelixChatChatter } from './endpoints/chat/HelixChatChatter';
 export { HelixEmote } from './endpoints/chat/HelixEmote';
 export { HelixChannelEmote } from './endpoints/chat/HelixChannelEmote';
 export { HelixEmoteFromSet } from './endpoints/chat/HelixEmoteFromSet';
+export { HelixUserEmote } from './endpoints/chat/HelixUserEmote';
 export { HelixPrivilegedChatSettings } from './endpoints/chat/HelixPrivilegedChatSettings';
 export { HelixSentChatMessage } from './endpoints/chat/HelixSentChatMessage';
 export type {
@@ -60,6 +61,7 @@ export type {
 	HelixSendChatMessageParams,
 	HelixSendChatAnnouncementParams,
 	HelixChatBadgeScale,
+	HelixUserEmotesFilter,
 } from './interfaces/endpoints/chat.input';
 
 export { HelixClipApi } from './endpoints/clip/HelixClipApi';
@@ -142,6 +144,7 @@ export type {
 } from './interfaces/endpoints/moderation.input';
 export { HelixUnbanRequest } from './endpoints/moderation/HelixUnbanRequest';
 export type { HelixUnbanRequestStatus } from './interfaces/endpoints/moderation.external';
+export { HelixWarning } from './endpoints/moderation/HelixWarning';
 
 export { HelixPollApi } from './endpoints/poll/HelixPollApi';
 export { HelixPoll } from './endpoints/poll/HelixPoll';
