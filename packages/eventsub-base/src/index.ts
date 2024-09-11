@@ -68,6 +68,7 @@ export { EventSubUserWhisperMessageEvent } from './events/EventSubUserWhisperMes
 export { EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 export type { EventSubChannelUnbanRequestStatus } from './events/EventSubChannelUnbanRequestResolveEvent.external';
 export { EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
+export { EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 export { EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
 export { EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
 export { EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';

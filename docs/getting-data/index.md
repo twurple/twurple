@@ -68,6 +68,7 @@ should use for which use case.
 | Raids                                  | Yes                          | No                        | Yes                    |
 | Bans                                   | Yes                          | Yes                       | Yes                    |
 | Mod add/remove                         | No                           | Yes                       | Yes                    |
+| VIP add/remove                         | No                           | No                        | Yes                    |
 | Polls & predictions                    | No                           | No                        | Yes                    |
 | Extension transactions                 | No                           | No                        | Yes                    |
 | Hype Trains                            | No                           | No                        | Yes                    |

@@ -51,6 +51,7 @@ import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEve
 import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+import { type EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 import { type EventSubChannelWarningAcknowledgeEvent } from './events/EventSubChannelWarningAcknowledgeEvent';
 import { type EventSubChannelWarningSendEvent } from './events/EventSubChannelWarningSendEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
@@ -711,6 +712,28 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubChannelUnbanRequestResolveEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user getting VIP status in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users get VIP status in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelVipAdd: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelVipEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a user losing VIP status in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users lose VIP status in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelVipRemove: (
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelVipEvent) => void,
 	) => EventSubSubscription;
 
 	/**

@@ -62,6 +62,7 @@ import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEve
 import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
 import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateEvent';
+import { type EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 import type { EventSubChannelWarningAcknowledgeEvent } from './events/EventSubChannelWarningAcknowledgeEvent';
 import type { EventSubChannelWarningSendEvent } from './events/EventSubChannelWarningSendEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
@@ -126,6 +127,8 @@ import { EventSubChannelUnbanRequestCreateSubscription } from './subscriptions/E
 import { EventSubChannelUnbanRequestResolveSubscription } from './subscriptions/EventSubChannelUnbanRequestResolveSubscription';
 import { EventSubChannelUnbanSubscription } from './subscriptions/EventSubChannelUnbanSubscription';
 import { EventSubChannelUpdateSubscription } from './subscriptions/EventSubChannelUpdateSubscription';
+import { EventSubChannelVipAddSubscription } from './subscriptions/EventSubChannelVipAddSubscription';
+import { EventSubChannelVipRemoveSubscription } from './subscriptions/EventSubChannelVipRemoveSubscription';
 import { EventSubChannelWarningAcknowledgeSubscription } from './subscriptions/EventSubChannelWarningAcknowledgeSubscription';
 import { EventSubChannelWarningSendSubscription } from './subscriptions/EventSubChannelWarningSendSubscription';
 import { EventSubDropEntitlementGrantSubscription } from './subscriptions/EventSubDropEntitlementGrantSubscription';
@@ -1266,6 +1269,33 @@ export abstract class EventSubBase extends EventEmitter {
 			broadcasterId,
 			moderatorId,
 		);
+	}
+
+	/**
+	 * Subscribes to events that represent a user getting VIP status in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users get VIP status in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelVipAdd(user: UserIdResolvable, handler: (event: EventSubChannelVipEvent) => void): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelVipAdd');
+
+		return this._genericSubscribe(EventSubChannelVipAddSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a user losing VIP status in a channel.
+	 *
+	 * @param user The user for which to get notifications for when users lose VIP status in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelVipRemove(
+		user: UserIdResolvable,
+		handler: (event: EventSubChannelVipEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelVipRemove');
+
+		return this._genericSubscribe(EventSubChannelVipRemoveSubscription, handler, this, userId);
 	}
 
 	/**
