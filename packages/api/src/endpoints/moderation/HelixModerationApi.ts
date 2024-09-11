@@ -10,6 +10,7 @@ import {
 	createModeratorModifyQuery,
 	createResolveUnbanRequestQuery,
 	createUpdateShieldModeStatusBody,
+	createWarnUserBody,
 	type HelixAutoModSettingsData,
 	type HelixAutoModStatusData,
 	type HelixBanData,
@@ -20,6 +21,7 @@ import {
 	type HelixShieldModeStatusData,
 	type HelixUnbanRequestData,
 	type HelixUnbanRequestStatus,
+	type HelixWarningData,
 } from '../../interfaces/endpoints/moderation.external';
 import {
 	type HelixAutoModSettingsUpdate,
@@ -42,6 +44,7 @@ import { HelixModeratedChannel } from './HelixModeratedChannel';
 import { HelixModerator } from './HelixModerator';
 import { HelixShieldModeStatus } from './HelixShieldModeStatus';
 import { HelixUnbanRequest } from './HelixUnbanRequest';
+import { HelixWarning } from './HelixWarning';
 
 /**
  * The Helix API methods that deal with moderation.
@@ -662,6 +665,33 @@ export class HelixModerationApi extends BaseApi {
 		});
 
 		return new HelixUnbanRequest(result.data[0], this._client);
+	}
+
+	/**
+	 * Warns a user in the specified broadcaster’s chat room, preventing them from chat interaction until the
+	 * warning is acknowledged.
+	 *
+	 * New warnings can be issued to a user when they already have a warning in the channel
+	 * (new warning will replace old warning).
+	 *
+	 * @param broadcaster The ID of the broadcaster in which channel the warning will take effect.
+	 * @param user The ID of the user to be warned.
+	 * @param reason A custom reason for the warning. Max 500 chars.
+	 */
+	async warnUser(broadcaster: UserIdResolvable, user: UserIdResolvable, reason: string): Promise<HelixWarning> {
+		const broadcasterId = extractUserId(broadcaster);
+		const result = await this._client.callApi<HelixResponse<HelixWarningData>>({
+			type: 'helix',
+			url: 'moderation/warnings',
+			method: 'POST',
+			userId: broadcasterId,
+			scopes: ['moderator:manage:warnings'],
+			canOverrideScopedUserContext: true,
+			query: this._createModeratorActionQuery(broadcasterId),
+			jsonBody: createWarnUserBody(user, reason.slice(0, 500)),
+		});
+
+		return new HelixWarning(result.data[0], this._client);
 	}
 
 	private _createModeratorActionQuery(broadcasterId: string) {
