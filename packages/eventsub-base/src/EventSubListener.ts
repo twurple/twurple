@@ -48,6 +48,8 @@ import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChann
 import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
 import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent';
+import type { EventSubChannelSuspiciousUserUpdateEvent } from './events/EventSubChannelSuspiciousUserUpdateEvent';
+import type { EventSubChannelSuspiciousUserMessageEvent } from './events/EventSubChannelSuspiciousUserMessageEvent';
 import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
 import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
@@ -786,6 +788,32 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubChannelWarningSendEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a suspicious user updated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications about suspicious user updated in their channel.
+	 * @param moderator A user that has permission to read suspicious users in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelSuspiciousUserUpdate: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelSuspiciousUserUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a message sent by a suspicious user.
+	 *
+	 * @param broadcaster The user for which to get notifications about messages sent by suspicious users.
+	 * @param moderator A user that has permission to read suspicious users in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelSuspiciousUserMessage: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelSuspiciousUserMessageEvent) => void,
 	) => EventSubSubscription;
 
 	/**

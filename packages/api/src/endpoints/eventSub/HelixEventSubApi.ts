@@ -1791,6 +1791,50 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribes to events that represent a suspicious user updated in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen for suspicious user update events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelSuspiciousUserUpdateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.suspicious_user.update',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:read:suspicious_users'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a message sent by a suspicious user.
+	 *
+	 * @param broadcaster The broadcaster you want to listen for messages sent by suspicious users.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelSuspiciousUserMessageEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.suspicious_user.message',
+			'1',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:read:suspicious_users'],
+			true,
+		);
+	}
+
+	/**
 	 * Gets the current EventSub conduits for the current client.
 	 *
 	 */
