@@ -3,7 +3,7 @@ import { type EventSubChannelSuspiciousUserLowTrustStatus } from './common/Event
 /**
  * User types (if any) that apply to the suspicious user.
  */
-export type EventSubChannelSuspiciousUserType = 'manually_added' | 'ban_evader' | 'shared_channel_ban';
+export type EventSubChannelSuspiciousUserType = 'manually_added' | 'ban_evader' | 'banned_in_shared_channel';
 
 /**
  * A ban evasion likelihood value (if any) that as been applied to the user automatically by Twitch.
