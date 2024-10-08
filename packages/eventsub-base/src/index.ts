@@ -110,6 +110,12 @@ export { EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChanne
 export { EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 export { EventSubChannelWarningAcknowledgeEvent } from './events/EventSubChannelWarningAcknowledgeEvent';
 export { EventSubChannelWarningSendEvent } from './events/EventSubChannelWarningSendEvent';
+export { EventSubChannelSuspiciousUserUpdateEvent } from './events/EventSubChannelSuspiciousUserUpdateEvent';
+export { EventSubChannelSuspiciousUserMessageEvent } from './events/EventSubChannelSuspiciousUserMessageEvent';
+export type {
+	EventSubChannelBanEvasionEvaluation,
+	EventSubChannelSuspiciousUserType,
+} from './events/EventSubChannelSuspiciousUserMessageEvent.external';
 
 export type { EventSubAutoModLevel } from './events/common/EventSubAutoModLevel';
 export type { EventSubAutoModResolutionStatus } from './events/common/EventSubAutoModResolutionStatus';
@@ -123,5 +129,6 @@ export { EventSubChannelPredictionBeginOutcome } from './events/common/EventSubC
 export type { EventSubChannelPredictionColor } from './events/common/EventSubChannelPredictionBeginOutcome.external';
 export { EventSubChannelPredictionOutcome } from './events/common/EventSubChannelPredictionOutcome';
 export { EventSubChannelPredictionPredictor } from './events/common/EventSubChannelPredictionPredictor';
+export type { EventSubChannelSuspiciousUserLowTrustStatus } from './events/common/EventSubChannelSuspiciousUserLowTrustStatus';
 
 export { EventSubSubscription } from './subscriptions/EventSubSubscription';

@@ -59,6 +59,8 @@ import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChann
 import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent';
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent';
 import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent';
+import type { EventSubChannelSuspiciousUserUpdateEvent } from './events/EventSubChannelSuspiciousUserUpdateEvent';
+import type { EventSubChannelSuspiciousUserMessageEvent } from './events/EventSubChannelSuspiciousUserMessageEvent';
 import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent';
 import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent';
 import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent';
@@ -125,6 +127,8 @@ import { EventSubChannelSubscriptionEndSubscription } from './subscriptions/Even
 import { EventSubChannelSubscriptionGiftSubscription } from './subscriptions/EventSubChannelSubscriptionGiftSubscription';
 import { EventSubChannelSubscriptionMessageSubscription } from './subscriptions/EventSubChannelSubscriptionMessageSubscription';
 import { EventSubChannelSubscriptionSubscription } from './subscriptions/EventSubChannelSubscriptionSubscription';
+import { EventSubChannelSuspiciousUserUpdateSubscription } from './subscriptions/EventSubChannelSuspiciousUserUpdateSubscription';
+import { EventSubChannelSuspiciousUserMessageSubscription } from './subscriptions/EventSubChannelSuspiciousUserMessageSubscription';
 import { EventSubChannelUnbanRequestCreateSubscription } from './subscriptions/EventSubChannelUnbanRequestCreateSubscription';
 import { EventSubChannelUnbanRequestResolveSubscription } from './subscriptions/EventSubChannelUnbanRequestResolveSubscription';
 import { EventSubChannelUnbanSubscription } from './subscriptions/EventSubChannelUnbanSubscription';
@@ -1328,6 +1332,54 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelVipRemove');
 
 		return this._genericSubscribe(EventSubChannelVipRemoveSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a suspicious user updated in a channel.
+	 *
+	 * @param broadcaster The user for which to get notifications about suspicious user updated in their channel.
+	 * @param moderator A user that has permission to read suspicious users in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelSuspiciousUserUpdate(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelSuspiciousUserUpdateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelSuspiciousUserUpdate');
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'onChannelSuspiciousUserUpdate');
+
+		return this._genericSubscribe(
+			EventSubChannelSuspiciousUserUpdateSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
+	}
+
+	/**
+	 * Subscribes to events that represent a message sent by a suspicious user.
+	 *
+	 * @param broadcaster The user for which to get notifications about messages sent by suspicious users.
+	 * @param moderator A user that has permission to read suspicious users in the broadcaster's channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelSuspiciousUserMessage(
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (event: EventSubChannelSuspiciousUserMessageEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelSuspiciousUserMessage');
+		const moderatorId = this._extractUserIdWithNumericWarning(moderator, 'onChannelSuspiciousUserMessage');
+
+		return this._genericSubscribe(
+			EventSubChannelSuspiciousUserMessageSubscription,
+			handler,
+			this,
+			broadcasterId,
+			moderatorId,
+		);
 	}
 
 	/**
