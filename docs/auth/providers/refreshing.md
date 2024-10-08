@@ -38,7 +38,7 @@ import { promises as fs } from 'fs';
 
 const clientId = 'YOUR_CLIENT_ID';
 const clientSecret = 'YOUR_CLIENT_SECRET';
-const tokenData = JSON.parse(await fs.readFile('./tokens.125328655.json', 'UTF-8'));
+const tokenData = JSON.parse(await fs.readFile('./tokens.125328655.json', 'utf-8'));
 const authProvider = new RefreshingAuthProvider(
 	{
 		clientId,
@@ -46,7 +46,7 @@ const authProvider = new RefreshingAuthProvider(
 	}
 );
 
-authProvider.onRefresh(async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'UTF-8'));
+authProvider.onRefresh(async (userId, newTokenData) => await fs.writeFile(`./tokens.${userId}.json`, JSON.stringify(newTokenData, null, 4), 'utf-8'));
 
 await authProvider.addUserForToken(tokenData);
 ```
