@@ -97,4 +97,11 @@ export class EventSubChannelHypeTrainEndEvent extends DataObject<EventSubChannel
 	get cooldownEndDate(): Date {
 		return new Date(this[rawDataSymbol].cooldown_ends_at);
 	}
+
+	/**
+	 * Indicates if the Hype Train is a Golden Kappa Train.
+	 */
+	get isGoldenKappaTrain(): boolean {
+		return this[rawDataSymbol].is_golden_kappa_train;
+	}
 }

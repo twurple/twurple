@@ -14,4 +14,5 @@ export interface EventSubChannelHypeTrainBeginEventData {
 	last_contribution: EventSubChannelHypeTrainContributionData;
 	started_at: string;
 	expires_at: string;
+	is_golden_kappa_train: boolean;
 }
