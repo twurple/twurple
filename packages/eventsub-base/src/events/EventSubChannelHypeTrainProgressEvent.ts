@@ -111,4 +111,11 @@ export class EventSubChannelHypeTrainProgressEvent extends DataObject<EventSubCh
 	get expiryDate(): Date {
 		return new Date(this[rawDataSymbol].expires_at);
 	}
+
+	/**
+	 * Indicates if the Hype Train is a Golden Kappa Train.
+	 */
+	get isGoldenKappaTrain(): boolean {
+		return this[rawDataSymbol].is_golden_kappa_train;
+	}
 }
