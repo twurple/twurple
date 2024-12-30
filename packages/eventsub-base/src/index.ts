@@ -118,6 +118,10 @@ export type {
 } from './events/EventSubChannelSuspiciousUserMessageEvent.external';
 
 export type { EventSubAutoModLevel } from './events/common/EventSubAutoModLevel';
+export type { EventSubAutoModMessageHoldReason } from './events/common/EventSubAutoModMessageHoldReason';
+export { EventSubAutoModMessageAutoMod } from './events/common/EventSubAutoModMessageAutoMod';
+export { EventSubAutoModMessageAutoModBoundary } from './events/common/EventSubAutoModMessageAutoModBoundary';
+export { EventSubAutoModMessageBlockedTerm } from './events/common/EventSubAutoModMessageBlockedTerm';
 export type { EventSubAutoModResolutionStatus } from './events/common/EventSubAutoModResolutionStatus';
 export { EventSubChannelCharityAmount } from './events/common/EventSubChannelCharityAmount';
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';

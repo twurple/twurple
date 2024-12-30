@@ -1,10 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel';
 import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external';
 import { type EventSubAutoModMessageUpdateEventData } from './EventSubAutoModMessageUpdateEvent.external';
 import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus';
+import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason';
+import { EventSubAutoModMessageAutoMod } from './common/EventSubAutoModMessageAutoMod';
+import { EventSubAutoModMessageBlockedTerm } from './common/EventSubAutoModMessageBlockedTerm';
 
 /**
  * An EventSub event representing a held chat message by AutoMod being resolved in a channel.
@@ -125,17 +127,35 @@ export class EventSubAutoModMessageUpdateEvent extends DataObject<EventSubAutoMo
 	}
 
 	/**
-	 * The category of the message.
+	 * The reason why the message was caught.
 	 */
-	get category(): string {
-		return this[rawDataSymbol].category;
+	get reason(): EventSubAutoModMessageHoldReason {
+		return this[rawDataSymbol].reason;
 	}
 
 	/**
-	 * The level of severity.
+	 * The AutoMod violation data if the message was caught by AutoMod.
+	 *
+	 * This is only relevant if {@link EventSubAutoModMessageUpdateEvent#reason} is `automod`, otherwise it is `null`.
 	 */
-	get level(): EventSubAutoModLevel {
-		return this[rawDataSymbol].level;
+	get autoMod(): EventSubAutoModMessageAutoMod | null {
+		return this[rawDataSymbol].automod
+			? new EventSubAutoModMessageAutoMod(this[rawDataSymbol].automod, this.messageText)
+			: null;
+	}
+
+	/**
+	 * The list of blocked terms caused the message to be caught.
+	 *
+	 * This is only relevant if {@link EventSubAutoModMessageUpdateEvent#reason} is `blocked_term`, otherwise it is
+	 * `null`.
+	 */
+	get blockedTerms(): EventSubAutoModMessageBlockedTerm[] | null {
+		return this[rawDataSymbol].blocked_term
+			? this[rawDataSymbol].blocked_term.terms_found.map(
+					term => new EventSubAutoModMessageBlockedTerm(term, this.messageText),
+			  )
+			: null;
 	}
 
 	/**
