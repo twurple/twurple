@@ -12,8 +12,17 @@ export type EventSubChannelChatNotificationType =
 	| 'unraid'
 	| 'pay_it_forward'
 	| 'announcement'
+	| 'bits_badge_tier'
 	| 'charity_donation'
-	| 'bits_badge_tier';
+	| 'shared_chat_sub'
+	| 'shared_chat_resub'
+	| 'shared_chat_sub_gift'
+	| 'shared_chat_community_sub_gift'
+	| 'shared_chat_gift_paid_upgrade'
+	| 'shared_chat_prime_paid_upgrade'
+	| 'shared_chat_raid'
+	| 'shared_chat_pay_it_forward'
+	| 'shared_chat_announcement';
 
 /**
  * The tier of a subscription. 1000 means tier 1, and so on.
@@ -43,6 +52,11 @@ export interface EventSubChannelChatBaseNotificationEventData {
 	system_message: string;
 	message_id: string;
 	message: EventSubChatMessageData;
+	source_broadcaster_user_id: string | null;
+	source_broadcaster_user_login: string | null;
+	source_broadcaster_user_name: string | null;
+	source_message_id: string | null;
+	source_badges: EventSubChatBadge[] | null;
 }
 
 /** @private */
@@ -199,6 +213,69 @@ export interface EventSubChannelChatBitsBadgeTierNotificationEventData
 }
 
 /** @private */
+export interface EventSubChannelChatSharedChatSubNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_sub';
+	shared_chat_sub: EventSubChannelChatSubNotificationPayload;
+}
+
+/** @private */
+export interface EventSubChannelChatSharedChatResubNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_resub';
+	shared_chat_resub: EventSubChannelChatResubNotificationPayload;
+}
+
+/** @private */
+export interface EventSubChannelChatSharedChatSubGiftNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_sub_gift';
+	shared_chat_sub_gift: EventSubChannelChatSubGiftNotificationPayload;
+}
+
+/** @private */
+export interface EventSubChannelChatSharedChatCommunitySubGiftNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_community_sub_gift';
+	shared_chat_community_sub_gift: EventSubChannelChatCommunitySubGiftNotificationPayload;
+}
+
+/** @private */
+export interface EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_gift_paid_upgrade';
+	shared_chat_gift_paid_upgrade: EventSubChannelChatNotificationOriginalGifterData;
+}
+
+/** @private */
+export interface EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_prime_paid_upgrade';
+	shared_chat_prime_paid_upgrade: EventSubChannelChatPrimePaidUpgradeNotificationPayload;
+}
+
+/** @private */
+export interface EventSubChannelChatSharedChatRaidNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_raid';
+	shared_chat_raid: EventSubChannelChatRaidNotificationPayload;
+}
+
+/** @private */
+export interface EventSubChannelChatSharedChatPayItForwardNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_pay_it_forward';
+	shared_chat_pay_it_forward: EventSubChannelChatNotificationOriginalGifterData;
+}
+
+/** @private */
+export interface EventSubChannelChatSharedChatAnnouncementNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'shared_chat_announcement';
+	shared_chat_announcement: EventSubChannelChatAnnouncementNotificationPayload;
+}
+
+/** @private */
 export type EventSubChannelChatNotificationEventData =
 	| EventSubChannelChatSubNotificationEventData
 	| EventSubChannelChatResubNotificationEventData
@@ -211,4 +288,13 @@ export type EventSubChannelChatNotificationEventData =
 	| EventSubChannelChatPayItForwardNotificationEventData
 	| EventSubChannelChatAnnouncementNotificationEventData
 	| EventSubChannelChatCharityDonationNotificationEventData
-	| EventSubChannelChatBitsBadgeTierNotificationEventData;
+	| EventSubChannelChatBitsBadgeTierNotificationEventData
+	| EventSubChannelChatSharedChatSubNotificationEventData
+	| EventSubChannelChatSharedChatResubNotificationEventData
+	| EventSubChannelChatSharedChatSubGiftNotificationEventData
+	| EventSubChannelChatSharedChatCommunitySubGiftNotificationEventData
+	| EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEventData
+	| EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEventData
+	| EventSubChannelChatSharedChatRaidNotificationEventData
+	| EventSubChannelChatSharedChatPayItForwardNotificationEventData
+	| EventSubChannelChatSharedChatAnnouncementNotificationEventData;

@@ -34,6 +34,15 @@ export { EventSubChannelChatPayItForwardNotificationEvent } from './events/chatN
 export { EventSubChannelChatAnnouncementNotificationEvent } from './events/chatNotifications/EventSubChannelChatAnnouncementNotificationEvent';
 export { EventSubChannelChatCharityDonationNotificationEvent } from './events/chatNotifications/EventSubChannelChatCharityDonationNotificationEvent';
 export { EventSubChannelChatBitsBadgeTierNotificationEvent } from './events/chatNotifications/EventSubChannelChatBitsBadgeTierNotificationEvent';
+export { EventSubChannelChatSharedChatSubNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatSubNotificationEvent';
+export { EventSubChannelChatSharedChatResubNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatResubNotificationEvent';
+export { EventSubChannelChatSharedChatSubGiftNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatSubGiftNotificationEvent';
+export { EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent';
+export { EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent';
+export { EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent';
+export { EventSubChannelChatSharedChatPayItForwardNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatPayItForwardNotificationEvent';
+export { EventSubChannelChatSharedChatRaidNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatRaidNotificationEvent';
+export { EventSubChannelChatSharedChatAnnouncementNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatAnnouncementNotificationEvent';
 export type { EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
 
 export { EventSubChannelBanModerationEvent } from './events/moderation/EventSubChannelBanModerationEvent';
