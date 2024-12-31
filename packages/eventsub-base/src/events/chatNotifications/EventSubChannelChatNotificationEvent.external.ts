@@ -1,7 +1,6 @@
 import { type EventSubChannelCharityAmountData } from '../common/EventSubChannelCharityAmount.external';
 import { type EventSubChatBadge, type EventSubChatMessageData } from '../common/EventSubChatMessage.external';
 
-/** @private */
 export type EventSubChannelChatNotificationType =
 	| 'sub'
 	| 'resub'
