@@ -29,6 +29,11 @@ import { EventSubChannelUnmodModerationEvent } from '../events/moderation/EventS
 import { EventSubChannelVipModerationEvent } from '../events/moderation/EventSubChannelVipModerationEvent';
 import { EventSubChannelUnvipModerationEvent } from '../events/moderation/EventSubChannelUnvipModerationEvent';
 import { EventSubChannelWarnModerationEvent } from '../events/moderation/EventSubChannelWarnModerationEvent';
+import { EventSubChannelSharedChatDeleteModerationEvent } from '../events/moderation/EventSubChannelSharedChatDeleteModerationEvent';
+import { EventSubChannelSharedChatBanModerationEvent } from '../events/moderation/EventSubChannelSharedChatBanModerationEvent';
+import { EventSubChannelSharedChatTimeoutModerationEvent } from '../events/moderation/EventSubChannelSharedChatTimeoutModerationEvent';
+import { EventSubChannelSharedChatUnbanModerationEvent } from '../events/moderation/EventSubChannelSharedChatUnbanModerationEvent';
+import { EventSubChannelSharedChatUntimeoutModerationEvent } from '../events/moderation/EventSubChannelSharedChatUntimeoutModerationEvent';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -132,6 +137,21 @@ export class EventSubChannelModerateSubscription extends EventSubSubscription<Ev
 			case 'approve_unban_request':
 			case 'deny_unban_request':
 				return new EventSubChannelUnbanRequestModerationEvent(data, data.action, this._client._apiClient);
+
+			case 'shared_chat_ban':
+				return new EventSubChannelSharedChatBanModerationEvent(data, this._client._apiClient);
+
+			case 'shared_chat_unban':
+				return new EventSubChannelSharedChatUnbanModerationEvent(data, this._client._apiClient);
+
+			case 'shared_chat_timeout':
+				return new EventSubChannelSharedChatTimeoutModerationEvent(data, this._client._apiClient);
+
+			case 'shared_chat_untimeout':
+				return new EventSubChannelSharedChatUntimeoutModerationEvent(data, this._client._apiClient);
+
+			case 'shared_chat_delete':
+				return new EventSubChannelSharedChatDeleteModerationEvent(data, this._client._apiClient);
 
 			default:
 				throw new Error(

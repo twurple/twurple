@@ -69,6 +69,11 @@ export { EventSubChannelRaidModerationEvent } from './events/moderation/EventSub
 export { EventSubChannelUnraidModerationEvent } from './events/moderation/EventSubChannelUnraidModerationEvent';
 export { EventSubChannelAutoModTermsModerationEvent } from './events/moderation/EventSubChannelAutoModTermsModerationEvent';
 export { EventSubChannelUnbanRequestModerationEvent } from './events/moderation/EventSubChannelUnbanRequestModerationEvent';
+export { EventSubChannelSharedChatBanModerationEvent } from './events/moderation/EventSubChannelSharedChatBanModerationEvent';
+export { EventSubChannelSharedChatUnbanModerationEvent } from './events/moderation/EventSubChannelSharedChatUnbanModerationEvent';
+export { EventSubChannelSharedChatTimeoutModerationEvent } from './events/moderation/EventSubChannelSharedChatTimeoutModerationEvent';
+export { EventSubChannelSharedChatUntimeoutModerationEvent } from './events/moderation/EventSubChannelSharedChatUntimeoutModerationEvent';
+export { EventSubChannelSharedChatDeleteModerationEvent } from './events/moderation/EventSubChannelSharedChatDeleteModerationEvent';
 export type { EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent';
 export type {
 	EventSubChannelModerationAction,
