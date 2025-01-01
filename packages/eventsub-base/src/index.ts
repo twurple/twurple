@@ -106,6 +106,9 @@ export { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRe
 export { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 export { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
 export type { EventSubAutomaticRewardType } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent.external';
+export { EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent';
+export { EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent';
+export { EventSubChannelSharedChatSessionEndEvent } from './events/EventSubChannelSharedChatSessionEndEvent';
 export { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 export { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 export { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';
@@ -162,5 +165,6 @@ export type { EventSubChannelPredictionColor } from './events/common/EventSubCha
 export { EventSubChannelPredictionOutcome } from './events/common/EventSubChannelPredictionOutcome';
 export { EventSubChannelPredictionPredictor } from './events/common/EventSubChannelPredictionPredictor';
 export type { EventSubChannelSuspiciousUserLowTrustStatus } from './events/common/EventSubChannelSuspiciousUserLowTrustStatus';
+export { EventSubChannelSharedChatSessionParticipant } from './events/common/EventSubChannelSharedChatSessionParticipant';
 
 export { EventSubSubscription } from './subscriptions/EventSubSubscription';
