@@ -349,11 +349,12 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	private _verifyData(messageId: string, timestamp: string, body: string, algoAndSignature: string): boolean {
 		const [algorithm, signature] = algoAndSignature.split('=', 2);
 
+		const expected = Buffer.from(signature, 'hex');
 		const hash = crypto
 			.createHmac(algorithm, this._secret)
 			.update(messageId + timestamp + body)
-			.digest('hex');
+			.digest();
 
-		return hash === signature;
+		return hash.length === expected.length && crypto.timingSafeEqual(hash, expected);
 	}
 }
