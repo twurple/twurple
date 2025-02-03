@@ -1671,7 +1671,7 @@ export class HelixEventSubApi extends BaseApi {
 		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'automod.message.hold',
-			'2',
+			'1',
 			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
 			broadcaster,
@@ -1693,7 +1693,7 @@ export class HelixEventSubApi extends BaseApi {
 		const broadcasterId = extractUserId(broadcaster);
 		return await this.createSubscription(
 			'automod.message.update',
-			'2',
+			'1',
 			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
 			transport,
 			broadcaster,
