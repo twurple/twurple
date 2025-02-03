@@ -8,6 +8,7 @@ export { HelixBitsLeaderboard } from './endpoints/bits/HelixBitsLeaderboard';
 export { HelixBitsLeaderboardEntry } from './endpoints/bits/HelixBitsLeaderboardEntry';
 export { HelixCheermoteList } from './endpoints/bits/HelixCheermoteList';
 export { type HelixBitsLeaderboardQuery, type HelixBitsLeaderboardPeriod } from './interfaces/endpoints/bits.input';
+export type { CheermoteDisplayInfo } from './endpoints/bits/CheermoteDisplayInfo';
 
 export { HelixChannelApi } from './endpoints/channel/HelixChannelApi';
 export { HelixAdSchedule } from './endpoints/channel/HelixAdSchedule';

@@ -23,7 +23,7 @@ jobs:
       - name: Archive build assets
         run: tar cvf build-result.tar packages/*/lib packages/*/es node_modules/.cache/tsukuru
       - name: Save build assets
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: build-result
           path: build-result.tar
@@ -43,7 +43,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: yarn
       - name: Load build assets
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-result
       - name: Unarchive build assets
@@ -64,7 +64,7 @@ jobs:
           node-version: 20
       - run: yarn
       - name: Load build assets
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: build-result
       - name: Unarchive build assets
