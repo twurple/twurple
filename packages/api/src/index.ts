@@ -1,5 +1,6 @@
 export { ApiClient } from './client/ApiClient';
 export type { ApiConfig } from './client/ApiClient';
+export type { BaseApiClient } from './client/BaseApiClient';
 
 export type { BaseApi } from './endpoints/BaseApi';
 
