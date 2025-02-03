@@ -44,6 +44,11 @@ import { HelixEmoteFromSet } from './HelixEmoteFromSet';
 import { HelixUserEmote } from './HelixUserEmote';
 import { HelixPrivilegedChatSettings } from './HelixPrivilegedChatSettings';
 import { HelixSentChatMessage } from './HelixSentChatMessage';
+import {
+	createSharedChatSessionQuery,
+	type HelixSharedChatSessionData,
+} from '../../interfaces/endpoints/shared-chat-session.external';
+import { HelixSharedChatSession } from './HelixSharedChatSession';
 
 /**
  * The Helix API methods that deal with chat.
@@ -503,6 +508,30 @@ export class HelixChatApi extends BaseApi {
 			scopes: ['moderator:manage:shoutouts'],
 			query: createShoutoutQuery(from, to, this._getUserContextIdWithDefault(fromId)),
 		});
+	}
+
+	/**
+	 * Gets the active shared chat session for a channel.
+	 *
+	 * Returns `null` if there is no active shared chat session in the channel.
+	 *
+	 * @param broadcaster The broadcaster to get the active shared chat session for.
+	 */
+	async getSharedChatSession(broadcaster: UserIdResolvable): Promise<HelixSharedChatSession | null> {
+		const broadcasterId = extractUserId(broadcaster);
+
+		const response = await this._client.callApi<HelixResponse<HelixSharedChatSessionData>>({
+			type: 'helix',
+			url: 'shared_chat/session',
+			userId: broadcasterId,
+			query: createSharedChatSessionQuery(broadcasterId),
+		});
+
+		if (response.data.length === 0) {
+			return null;
+		}
+
+		return new HelixSharedChatSession(response.data[0], this._client);
 	}
 
 	private _createModeratorActionQuery(broadcasterId: string) {
