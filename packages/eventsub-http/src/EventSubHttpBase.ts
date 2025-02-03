@@ -347,13 +347,18 @@ export abstract class EventSubHttpBase extends EventSubBase {
 
 	/** @internal */
 	private _verifyData(messageId: string, timestamp: string, body: string, algoAndSignature: string): boolean {
-		const [algorithm, signature] = algoAndSignature.split('=', 2);
+		const signaturePrefix = 'sha256=';
+		if (!algoAndSignature.startsWith(signaturePrefix)) {
+			return false;
+		}
 
+		const signature = algoAndSignature.substring(signaturePrefix.length);
+		const expected = Buffer.from(signature, 'hex');
 		const hash = crypto
-			.createHmac(algorithm, this._secret)
+			.createHmac('sha256', this._secret)
 			.update(messageId + timestamp + body)
-			.digest('hex');
+			.digest();
 
-		return hash === signature;
+		return hash.length === expected.length && crypto.timingSafeEqual(hash, expected);
 	}
 }
