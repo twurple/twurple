@@ -148,4 +148,84 @@ export abstract class EventSubChannelChatBaseNotificationEvent extends DataObjec
 	get messageParts(): EventSubChatMessagePart[] {
 		return this[rawDataSymbol].message.fragments;
 	}
+
+	/**
+	 * The ID of the broadcaster from whose channel the message was sent.
+	 *
+	 * This only applies if a chatter sends a chat message in another channel's chat during a shared chat session.
+	 * Is `null` when the message notification happens in the same channel as the broadcaster.
+	 */
+	get sourceBroadcasterId(): string | null {
+		return this[rawDataSymbol].source_broadcaster_user_id;
+	}
+
+	/**
+	 * The name of the broadcaster from whose channel the message was sent.
+	 *
+	 * This only applies if a chatter sends a chat message in another channel's chat during a shared chat session.
+	 * Is `null` when the message notification happens in the same channel as the broadcaster.
+	 */
+	get sourceBroadcasterName(): string | null {
+		return this[rawDataSymbol].source_broadcaster_user_login;
+	}
+
+	/**
+	 * The display name of the broadcaster from whose channel the message was sent.
+	 *
+	 * This only applies if a chatter sends a chat message in another channel's chat during a shared chat session.
+	 * Is `null` when the message notification happens in the same channel as the broadcaster.
+	 */
+	get sourceBroadcasterDisplayName(): string | null {
+		return this[rawDataSymbol].source_broadcaster_user_name;
+	}
+
+	/**
+	 * The UUID that identifies the source message from the channel the message was sent.
+	 *
+	 * This only applies if a chatter sends a chat message in another channel's chat during a shared chat session.
+	 * Is `null` when the message happens in the same channel as the broadcaster.
+	 */
+	get sourceMessageId(): string | null {
+		return this[rawDataSymbol].source_message_id;
+	}
+
+	/**
+	 * The chat badges for the chatter in the channel the message was sent from.
+	 *
+	 * The returned object contains the badge names as keys and the badge versions as the respective values.
+	 *
+	 * This only applies if a chatter sends a chat message in another channel's chat during a shared chat session.
+	 * Is `null` when the message happens in the same channel as the broadcaster.
+	 */
+	get sourceBadges(): Record<string, string> | null {
+		return this[rawDataSymbol].source_badges
+			? Object.fromEntries(this[rawDataSymbol].source_badges.map(badge => [badge.set_id, badge.id]))
+			: null;
+	}
+
+	/**
+	 * Checks whether the chatter has the specified badge.
+	 *
+	 * This only applies if a chatter sends a chat message to another chat during a shared chat session.
+	 * Is `null` when the message happens in the same channel as the broadcaster.
+	 *
+	 * @param name The name of the badge to check.
+	 */
+	hasSourceBadge(name: string): boolean | null {
+		return this[rawDataSymbol].source_badges
+			? this[rawDataSymbol].source_badges.some(badge => badge.set_id === name)
+			: null;
+	}
+
+	/**
+	 * Gets the badge info for a specified badge.
+	 *
+	 * This only applies if a chatter sends a chat message in another channel's chat during a shared chat session.
+	 * Is `null` when the message happens in the same channel as the broadcaster, or if the badge does not exist.
+	 *
+	 * @param name The name of the badge to get info for.
+	 */
+	getSourceBadgeInfo(name: string): string | null {
+		return this[rawDataSymbol].source_badges?.find(badge => badge.set_id === name)?.info ?? null;
+	}
 }
