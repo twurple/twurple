@@ -53,6 +53,9 @@ import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannel
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 import type { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
+import { type EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent';
+import { type EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent';
+import { type EventSubChannelSharedChatSessionEndEvent } from './events/EventSubChannelSharedChatSessionEndEvent';
 import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 import type { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';
@@ -123,6 +126,9 @@ import { EventSubChannelRewardAddSubscription } from './subscriptions/EventSubCh
 import { EventSubChannelRewardRemoveSubscription } from './subscriptions/EventSubChannelRewardRemoveSubscription';
 import { EventSubChannelRewardUpdateSubscription } from './subscriptions/EventSubChannelRewardUpdateSubscription';
 import { EventSubChannelAutomaticRewardRedemptionAddSubscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddSubscription';
+import { EventSubChannelSharedChatSessionBeginSubscription } from './subscriptions/EventSubChannelSharedChatSessionBeginSubscription';
+import { EventSubChannelSharedChatSessionUpdateSubscription } from './subscriptions/EventSubChannelSharedChatSessionUpdateSubscription';
+import { EventSubChannelSharedChatSessionEndSubscription } from './subscriptions/EventSubChannelSharedChatSessionEndSubscription';
 import { EventSubChannelShieldModeBeginSubscription } from './subscriptions/EventSubChannelShieldModeBeginSubscription';
 import { EventSubChannelShieldModeEndSubscription } from './subscriptions/EventSubChannelShieldModeEndSubscription';
 import { EventSubChannelShoutoutCreateSubscription } from './subscriptions/EventSubChannelShoutoutCreateSubscription';
@@ -1601,6 +1607,48 @@ export abstract class EventSubBase extends EventEmitter {
 			broadcasterId,
 			userId,
 		);
+	}
+
+	/**
+	 * Subscribes to events that indicate the start of a shared chat session in a channel.
+	 *
+	 * @param broadcaster The user for whom to receive notifications when a shared chat session starts in their channel.
+	 * @param handler The function to be called when a new notification is received.
+	 */
+	onChannelSharedChatSessionBegin(
+		broadcaster: UserIdResolvable,
+		handler: (data: EventSubChannelSharedChatSessionBeginEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelSharedChatSessionBegin');
+		return this._genericSubscribe(EventSubChannelSharedChatSessionBeginSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that indicate updates to a shared chat session in a channel.
+	 *
+	 * @param broadcaster The user for whom to receive notifications when a shared chat session is updated in their channel.
+	 * @param handler The function to be called when a new notification is received.
+	 */
+	onChannelSharedChatSessionUpdate(
+		broadcaster: UserIdResolvable,
+		handler: (data: EventSubChannelSharedChatSessionUpdateEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelSharedChatSessionUpdate');
+		return this._genericSubscribe(EventSubChannelSharedChatSessionUpdateSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events that indicate the end of a shared chat session in a channel.
+	 *
+	 * @param broadcaster The user for whom to receive notifications when a shared chat session ends in their channel.
+	 * @param handler The function to be called when a new notification is received.
+	 */
+	onChannelSharedChatSessionEnd(
+		broadcaster: UserIdResolvable,
+		handler: (data: EventSubChannelSharedChatSessionEndEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelSharedChatSessionBegin');
+		return this._genericSubscribe(EventSubChannelSharedChatSessionEndSubscription, handler, this, broadcasterId);
 	}
 
 	/**

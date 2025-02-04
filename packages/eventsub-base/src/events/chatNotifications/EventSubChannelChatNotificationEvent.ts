@@ -10,6 +10,15 @@ import { type EventSubChannelChatResubNotificationEvent } from './EventSubChanne
 import { type EventSubChannelChatSubGiftNotificationEvent } from './EventSubChannelChatSubGiftNotificationEvent';
 import { type EventSubChannelChatSubNotificationEvent } from './EventSubChannelChatSubNotificationEvent';
 import { type EventSubChannelChatUnraidNotificationEvent } from './EventSubChannelChatUnraidNotificationEvent';
+import { type EventSubChannelChatSharedChatPayItForwardNotificationEvent } from './EventSubChannelChatSharedChatPayItForwardNotificationEvent';
+import { type EventSubChannelChatSharedChatSubNotificationEvent } from './EventSubChannelChatSharedChatSubNotificationEvent';
+import { type EventSubChannelChatSharedChatResubNotificationEvent } from './EventSubChannelChatSharedChatResubNotificationEvent';
+import { type EventSubChannelChatSharedChatSubGiftNotificationEvent } from './EventSubChannelChatSharedChatSubGiftNotificationEvent';
+import { type EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent } from './EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent';
+import { type EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent } from './EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent';
+import { type EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent } from './EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent';
+import { type EventSubChannelChatSharedChatRaidNotificationEvent } from './EventSubChannelChatSharedChatRaidNotificationEvent';
+import { type EventSubChannelChatSharedChatAnnouncementNotificationEvent } from './EventSubChannelChatSharedChatAnnouncementNotificationEvent';
 
 export type EventSubChannelChatNotificationEvent =
 	| EventSubChannelChatSubNotificationEvent
@@ -23,4 +32,13 @@ export type EventSubChannelChatNotificationEvent =
 	| EventSubChannelChatPayItForwardNotificationEvent
 	| EventSubChannelChatAnnouncementNotificationEvent
 	| EventSubChannelChatCharityDonationNotificationEvent
-	| EventSubChannelChatBitsBadgeTierNotificationEvent;
+	| EventSubChannelChatBitsBadgeTierNotificationEvent
+	| EventSubChannelChatSharedChatSubNotificationEvent
+	| EventSubChannelChatSharedChatResubNotificationEvent
+	| EventSubChannelChatSharedChatSubGiftNotificationEvent
+	| EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent
+	| EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent
+	| EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent
+	| EventSubChannelChatSharedChatPayItForwardNotificationEvent
+	| EventSubChannelChatSharedChatRaidNotificationEvent
+	| EventSubChannelChatSharedChatAnnouncementNotificationEvent;

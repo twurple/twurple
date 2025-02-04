@@ -59,6 +59,9 @@ import type { EventSubChannelUpdateEvent } from './events/EventSubChannelUpdateE
 import { type EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 import { type EventSubChannelWarningAcknowledgeEvent } from './events/EventSubChannelWarningAcknowledgeEvent';
 import { type EventSubChannelWarningSendEvent } from './events/EventSubChannelWarningSendEvent';
+import { type EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent';
+import { type EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent';
+import { type EventSubChannelSharedChatSessionEndEvent } from './events/EventSubChannelSharedChatSessionEndEvent';
 import { type EventSubDropEntitlementGrantEvent } from './events/EventSubDropEntitlementGrantEvent';
 import type { EventSubExtensionBitsTransactionCreateEvent } from './events/EventSubExtensionBitsTransactionCreateEvent';
 import type { EventSubStreamOfflineEvent } from './events/EventSubStreamOfflineEvent';
@@ -940,6 +943,39 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelChatUserMessageUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that indicate the start of a shared chat session in a channel.
+	 *
+	 * @param broadcaster The user for whom to receive notifications when a shared chat session starts in their channel.
+	 * @param handler The function to be called when a new notification is received.
+	 */
+	onChannelSharedChatSessionBegin: (
+		broadcaster: UserIdResolvable,
+		handler: (data: EventSubChannelSharedChatSessionBeginEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that indicate updates to a shared chat session in a channel.
+	 *
+	 * @param broadcaster The user for whom to receive notifications when a shared chat session is updated in their channel.
+	 * @param handler The function to be called when a new notification is received.
+	 */
+	onChannelSharedChatSessionUpdate: (
+		broadcaster: UserIdResolvable,
+		handler: (data: EventSubChannelSharedChatSessionUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that indicate the end of a shared chat session in a channel.
+	 *
+	 * @param broadcaster The user for whom to receive notifications when a shared chat session ends in their channel.
+	 * @param handler The function to be called when a new notification is received.
+	 */
+	onChannelSharedChatSessionEnd: (
+		broadcaster: UserIdResolvable,
+		handler: (data: EventSubChannelSharedChatSessionEndEvent) => void,
 	) => EventSubSubscription;
 
 	/**

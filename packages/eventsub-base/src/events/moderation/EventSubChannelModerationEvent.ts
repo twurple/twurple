@@ -23,6 +23,11 @@ import { type EventSubChannelUntimeoutModerationEvent } from './EventSubChannelU
 import { type EventSubChannelUnvipModerationEvent } from './EventSubChannelUnvipModerationEvent';
 import { type EventSubChannelVipModerationEvent } from './EventSubChannelVipModerationEvent';
 import { type EventSubChannelWarnModerationEvent } from './EventSubChannelWarnModerationEvent';
+import { type EventSubChannelSharedChatBanModerationEvent } from './EventSubChannelSharedChatBanModerationEvent';
+import { type EventSubChannelSharedChatTimeoutModerationEvent } from './EventSubChannelSharedChatTimeoutModerationEvent';
+import { type EventSubChannelSharedChatUnbanModerationEvent } from './EventSubChannelSharedChatUnbanModerationEvent';
+import { type EventSubChannelSharedChatUntimeoutModerationEvent } from './EventSubChannelSharedChatUntimeoutModerationEvent';
+import { type EventSubChannelSharedChatDeleteModerationEvent } from './EventSubChannelSharedChatDeleteModerationEvent';
 
 export type EventSubChannelModerationEvent =
 	| EventSubChannelAutoModTermsModerationEvent
@@ -49,4 +54,9 @@ export type EventSubChannelModerationEvent =
 	| EventSubChannelUntimeoutModerationEvent
 	| EventSubChannelUnvipModerationEvent
 	| EventSubChannelVipModerationEvent
-	| EventSubChannelWarnModerationEvent;
+	| EventSubChannelWarnModerationEvent
+	| EventSubChannelSharedChatBanModerationEvent
+	| EventSubChannelSharedChatUnbanModerationEvent
+	| EventSubChannelSharedChatTimeoutModerationEvent
+	| EventSubChannelSharedChatUntimeoutModerationEvent
+	| EventSubChannelSharedChatDeleteModerationEvent;
