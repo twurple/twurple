@@ -3,6 +3,8 @@ import type { UserIdResolvable } from '@twurple/common';
 import { type EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
 import { type EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
 import { type EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
+import { type EventSubAutoModMessageHoldV2Event } from './events/EventSubAutoModMessageHoldV2Event';
+import { type EventSubAutoModMessageUpdateV2Event } from './events/EventSubAutoModMessageUpdateV2Event';
 import { type EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
 import { type EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
 import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent';
@@ -863,6 +865,32 @@ export interface EventSubListener {
 		broadcaster: UserIdResolvable,
 		moderator: UserIdResolvable,
 		handler: (data: EventSubAutoModMessageUpdateEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events (v2) that represent a chat message being held by AutoMod in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which to receive notifications about held messages.
+	 * @param moderator A user with permission to manage AutoMod in the broadcaster's channel.
+	 * @param handler The function that will be called for each new notification.
+	 */
+	onAutoModMessageHoldV2: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModMessageHoldV2Event) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events (v2) that represent a held chat message by AutoMod being resolved in a channel.
+	 *
+	 * @param broadcaster The broadcaster for which to receive notifications about held message resolutions.
+	 * @param moderator A user with permission to manage AutoMod in the broadcaster's channel.
+	 * @param handler The function that will be called for each new notification.
+	 */
+	onAutoModMessageUpdateV2: (
+		broadcaster: UserIdResolvable,
+		moderator: UserIdResolvable,
+		handler: (data: EventSubAutoModMessageUpdateV2Event) => void,
 	) => EventSubSubscription;
 
 	/**

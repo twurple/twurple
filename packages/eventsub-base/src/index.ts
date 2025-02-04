@@ -138,6 +138,8 @@ export { EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChanne
 export { EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 export { EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
 export { EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
+export { EventSubAutoModMessageHoldV2Event } from './events/EventSubAutoModMessageHoldV2Event';
+export { EventSubAutoModMessageUpdateV2Event } from './events/EventSubAutoModMessageUpdateV2Event';
 export { EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
 export { EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
 export type { EventSubAutoModTermsUpdateAction } from './events/EventSubAutoModTermsUpdateEvent.external';
@@ -153,6 +155,10 @@ export type {
 } from './events/EventSubChannelSuspiciousUserMessageEvent.external';
 
 export type { EventSubAutoModLevel } from './events/common/EventSubAutoModLevel';
+export type { EventSubAutoModMessageHoldReason } from './events/common/EventSubAutoModMessageHoldReason';
+export { EventSubAutoModMessageAutoMod } from './events/common/EventSubAutoModMessageAutoMod';
+export { EventSubAutoModMessageAutoModBoundary } from './events/common/EventSubAutoModMessageAutoModBoundary';
+export { EventSubAutoModMessageBlockedTerm } from './events/common/EventSubAutoModMessageBlockedTerm';
 export type { EventSubAutoModResolutionStatus } from './events/common/EventSubAutoModResolutionStatus';
 export { EventSubChannelCharityAmount } from './events/common/EventSubChannelCharityAmount';
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';
