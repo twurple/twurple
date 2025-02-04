@@ -1,5 +1,6 @@
 export { ApiClient } from './client/ApiClient';
 export type { ApiConfig } from './client/ApiClient';
+export type { BaseApiClient } from './client/BaseApiClient';
 
 export type { BaseApi } from './endpoints/BaseApi';
 
@@ -49,6 +50,8 @@ export { HelixEmoteFromSet } from './endpoints/chat/HelixEmoteFromSet';
 export { HelixUserEmote } from './endpoints/chat/HelixUserEmote';
 export { HelixPrivilegedChatSettings } from './endpoints/chat/HelixPrivilegedChatSettings';
 export { HelixSentChatMessage } from './endpoints/chat/HelixSentChatMessage';
+export { HelixSharedChatSessionParticipant } from './endpoints/chat/HelixSharedChatSessionParticipant';
+export { HelixSharedChatSession } from './endpoints/chat/HelixSharedChatSession';
 export type {
 	HelixChannelEmoteSubscriptionTier,
 	HelixEmoteImageScale,

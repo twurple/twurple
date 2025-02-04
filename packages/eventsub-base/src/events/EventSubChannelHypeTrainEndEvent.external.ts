@@ -12,4 +12,5 @@ export interface EventSubChannelHypeTrainEndEventData {
 	started_at: string;
 	ended_at: string;
 	cooldown_ends_at: string;
+	is_golden_kappa_train: boolean;
 }

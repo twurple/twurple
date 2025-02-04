@@ -39,4 +39,9 @@ export interface EventSubChannelChatMessageEventData {
 	color: string;
 	reply: EventSubChatMessageReplyData | null;
 	channel_points_custom_reward_id: string | null;
+	source_broadcaster_user_id: string | null;
+	source_broadcaster_user_login: string | null;
+	source_broadcaster_user_name: string | null;
+	source_message_id: string | null;
+	source_badges: EventSubChatBadge[] | null;
 }

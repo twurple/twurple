@@ -16,6 +16,33 @@ export { EventSubChannelChatClearEvent } from './events/EventSubChannelChatClear
 export { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent';
 export { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent';
 export { EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent';
+
+export {
+	type EventSubChannelChatNotificationType,
+	type EventSubChannelChatNotificationSubTier,
+	type EventSubChannelChatAnnouncementColor,
+} from './events/chatNotifications/EventSubChannelChatNotificationEvent.external';
+export { EventSubChannelChatSubNotificationEvent } from './events/chatNotifications/EventSubChannelChatSubNotificationEvent';
+export { EventSubChannelChatResubNotificationEvent } from './events/chatNotifications/EventSubChannelChatResubNotificationEvent';
+export { EventSubChannelChatSubGiftNotificationEvent } from './events/chatNotifications/EventSubChannelChatSubGiftNotificationEvent';
+export { EventSubChannelChatCommunitySubGiftNotificationEvent } from './events/chatNotifications/EventSubChannelChatCommunitySubGiftNotificationEvent';
+export { EventSubChannelChatGiftPaidUpgradeNotificationEvent } from './events/chatNotifications/EventSubChannelChatGiftPaidUpgradeNotificationEvent';
+export { EventSubChannelChatPrimePaidUpgradeNotificationEvent } from './events/chatNotifications/EventSubChannelChatPrimePaidUpgradeNotificationEvent';
+export { EventSubChannelChatRaidNotificationEvent } from './events/chatNotifications/EventSubChannelChatRaidNotificationEvent';
+export { EventSubChannelChatUnraidNotificationEvent } from './events/chatNotifications/EventSubChannelChatUnraidNotificationEvent';
+export { EventSubChannelChatPayItForwardNotificationEvent } from './events/chatNotifications/EventSubChannelChatPayItForwardNotificationEvent';
+export { EventSubChannelChatAnnouncementNotificationEvent } from './events/chatNotifications/EventSubChannelChatAnnouncementNotificationEvent';
+export { EventSubChannelChatCharityDonationNotificationEvent } from './events/chatNotifications/EventSubChannelChatCharityDonationNotificationEvent';
+export { EventSubChannelChatBitsBadgeTierNotificationEvent } from './events/chatNotifications/EventSubChannelChatBitsBadgeTierNotificationEvent';
+export { EventSubChannelChatSharedChatSubNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatSubNotificationEvent';
+export { EventSubChannelChatSharedChatResubNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatResubNotificationEvent';
+export { EventSubChannelChatSharedChatSubGiftNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatSubGiftNotificationEvent';
+export { EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent';
+export { EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent';
+export { EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent';
+export { EventSubChannelChatSharedChatPayItForwardNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatPayItForwardNotificationEvent';
+export { EventSubChannelChatSharedChatRaidNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatRaidNotificationEvent';
+export { EventSubChannelChatSharedChatAnnouncementNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatAnnouncementNotificationEvent';
 export type { EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent';
 
 export { EventSubChannelBanModerationEvent } from './events/moderation/EventSubChannelBanModerationEvent';
@@ -42,6 +69,11 @@ export { EventSubChannelRaidModerationEvent } from './events/moderation/EventSub
 export { EventSubChannelUnraidModerationEvent } from './events/moderation/EventSubChannelUnraidModerationEvent';
 export { EventSubChannelAutoModTermsModerationEvent } from './events/moderation/EventSubChannelAutoModTermsModerationEvent';
 export { EventSubChannelUnbanRequestModerationEvent } from './events/moderation/EventSubChannelUnbanRequestModerationEvent';
+export { EventSubChannelSharedChatBanModerationEvent } from './events/moderation/EventSubChannelSharedChatBanModerationEvent';
+export { EventSubChannelSharedChatUnbanModerationEvent } from './events/moderation/EventSubChannelSharedChatUnbanModerationEvent';
+export { EventSubChannelSharedChatTimeoutModerationEvent } from './events/moderation/EventSubChannelSharedChatTimeoutModerationEvent';
+export { EventSubChannelSharedChatUntimeoutModerationEvent } from './events/moderation/EventSubChannelSharedChatUntimeoutModerationEvent';
+export { EventSubChannelSharedChatDeleteModerationEvent } from './events/moderation/EventSubChannelSharedChatDeleteModerationEvent';
 export type { EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent';
 export type {
 	EventSubChannelModerationAction,
@@ -74,6 +106,9 @@ export { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRe
 export { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 export { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
 export type { EventSubAutomaticRewardType } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent.external';
+export { EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent';
+export { EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent';
+export { EventSubChannelSharedChatSessionEndEvent } from './events/EventSubChannelSharedChatSessionEndEvent';
 export { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent';
 export { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent';
 export { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent';
@@ -134,5 +169,6 @@ export type { EventSubChannelPredictionColor } from './events/common/EventSubCha
 export { EventSubChannelPredictionOutcome } from './events/common/EventSubChannelPredictionOutcome';
 export { EventSubChannelPredictionPredictor } from './events/common/EventSubChannelPredictionPredictor';
 export type { EventSubChannelSuspiciousUserLowTrustStatus } from './events/common/EventSubChannelSuspiciousUserLowTrustStatus';
+export { EventSubChannelSharedChatSessionParticipant } from './events/common/EventSubChannelSharedChatSessionParticipant';
 
 export { EventSubSubscription } from './subscriptions/EventSubSubscription';

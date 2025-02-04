@@ -30,7 +30,12 @@ export type EventSubChannelModerationAction =
 	| 'remove_permitted_term'
 	| 'approve_unban_request'
 	| 'deny_unban_request'
-	| 'warn';
+	| 'warn'
+	| 'shared_chat_ban'
+	| 'shared_chat_unban'
+	| 'shared_chat_timeout'
+	| 'shared_chat_untimeout'
+	| 'shared_chat_delete';
 
 /**
  * The type of AutoMod terms action.
@@ -207,8 +212,38 @@ export interface EventSubChannelWarnModerationEventPayload extends EventSubChann
 
 /** @private */
 export interface EventSubChannelWarnModerationEventData extends EventSubChannelBaseModerationEventData {
-	action: Extract<EventSubChannelModerationAction, 'delete'>;
+	action: Extract<EventSubChannelModerationAction, 'warn'>;
 	warn: EventSubChannelWarnModerationEventPayload;
+}
+
+/** @private */
+export interface EventSubChannelSharedChatBanModerationEventData extends EventSubChannelBaseModerationEventData {
+	action: Extract<EventSubChannelModerationAction, 'shared_chat_ban'>;
+	shared_chat_ban: EventSubChannelBanModerationEventPayload;
+}
+
+/** @private */
+export interface EventSubChannelSharedChatUnbanModerationEventData extends EventSubChannelBaseModerationEventData {
+	action: Extract<EventSubChannelModerationAction, 'shared_chat_unban'>;
+	shared_chat_unban: EventSubChannelModerationEventUserPayload;
+}
+
+/** @private */
+export interface EventSubChannelSharedChatTimeoutModerationEventData extends EventSubChannelBaseModerationEventData {
+	action: Extract<EventSubChannelModerationAction, 'shared_chat_timeout'>;
+	shared_chat_timeout: EventSubChannelTimeoutModerationEventPayload;
+}
+
+/** @private */
+export interface EventSubChannelSharedChatUntimeoutModerationEventData extends EventSubChannelBaseModerationEventData {
+	action: Extract<EventSubChannelModerationAction, 'shared_chat_untimeout'>;
+	shared_chat_untimeout: EventSubChannelModerationEventUserPayload;
+}
+
+/** @private */
+export interface EventSubChannelSharedChatDeleteModerationEventData extends EventSubChannelBaseModerationEventData {
+	action: Extract<EventSubChannelModerationAction, 'shared_chat_delete'>;
+	shared_chat_delete: EventSubChannelDeleteModerationEventPayload;
 }
 
 /** @private */
@@ -229,4 +264,9 @@ export type EventSubChannelModerationActionEventData =
 	| EventSubChannelDeleteModerationEventData
 	| EventSubChannelAutoModTermsModerationEventData
 	| EventSubChannelUnbanRequestModerationEventData
-	| EventSubChannelWarnModerationEventData;
+	| EventSubChannelWarnModerationEventData
+	| EventSubChannelSharedChatBanModerationEventData
+	| EventSubChannelSharedChatUnbanModerationEventData
+	| EventSubChannelSharedChatTimeoutModerationEventData
+	| EventSubChannelSharedChatUntimeoutModerationEventData
+	| EventSubChannelSharedChatDeleteModerationEventData;

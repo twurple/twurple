@@ -1835,6 +1835,66 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribes to events indicating that a shared chat session has begun in a channel.
+	 *
+	 * @param broadcaster The broadcaster for whom shared chat session begin events should be listened to.
+	 * @param transport The transport options to use for the subscription.
+	 */
+	async subscribeToChannelSharedChatSessionBeginEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.shared_chat.begin',
+			'1',
+			createEventSubBroadcasterCondition(broadcasterId),
+			transport,
+			broadcasterId,
+		);
+	}
+
+	/**
+	 * Subscribes to events indicating that a shared chat session has been updated in a channel.
+	 *
+	 * @param broadcaster The broadcaster for whom shared chat session update events should be listened to.
+	 * @param transport The transport options to use for the subscription.
+	 */
+	async subscribeToChannelSharedChatSessionUpdateEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.shared_chat.update',
+			'1',
+			createEventSubBroadcasterCondition(broadcasterId),
+			transport,
+			broadcasterId,
+		);
+	}
+
+	/**
+	 * Subscribes to events indicating that a shared chat session has ended in a channel.
+	 *
+	 * @param broadcaster The broadcaster for whom shared chat session end events should be listened to.
+	 * @param transport The transport options to use for the subscription.
+	 */
+	async subscribeToChannelSharedChatSessionEndEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.shared_chat.end',
+			'1',
+			createEventSubBroadcasterCondition(broadcasterId),
+			transport,
+			broadcasterId,
+		);
+	}
+
+	/**
 	 * Gets the current EventSub conduits for the current client.
 	 *
 	 */
