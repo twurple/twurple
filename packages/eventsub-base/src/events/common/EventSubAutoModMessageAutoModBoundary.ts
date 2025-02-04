@@ -4,7 +4,7 @@ import { type EventSubAutoModMessageAutoModBoundaryData } from './EventSubAutoMo
 /**
  * The bounds of the text that caused the message to be caught.
  */
-@rtfm('eventsub-base', 'EventSubAutoModMessageBlockedTermBoundary')
+@rtfm('eventsub-base', 'EventSubAutoModMessageAutoModBoundary')
 export class EventSubAutoModMessageAutoModBoundary extends DataObject<EventSubAutoModMessageAutoModBoundaryData> {
 	/** @internal */
 	constructor(data: EventSubAutoModMessageAutoModBoundaryData, private readonly _messageText: string) {
