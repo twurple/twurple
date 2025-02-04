@@ -103,6 +103,8 @@ export { EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChanne
 export { EventSubChannelVipEvent } from './events/EventSubChannelVipEvent';
 export { EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent';
 export { EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent';
+export { EventSubAutoModMessageHoldV2Event } from './events/EventSubAutoModMessageHoldV2Event';
+export { EventSubAutoModMessageUpdateV2Event } from './events/EventSubAutoModMessageUpdateV2Event';
 export { EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent';
 export { EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent';
 export type { EventSubAutoModTermsUpdateAction } from './events/EventSubAutoModTermsUpdateEvent.external';
