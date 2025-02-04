@@ -337,7 +337,7 @@ export class HelixEventSubApi extends BaseApi {
 	): Promise<HelixEventSubSubscription> {
 		return await this.createSubscription(
 			'channel.update',
-			'1',
+			'2',
 			createEventSubBroadcasterCondition(broadcaster),
 			transport,
 			broadcaster,

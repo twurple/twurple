@@ -83,8 +83,24 @@ export class EventSubChannelUpdateEvent extends DataObject<EventSubChannelUpdate
 
 	/**
 	 * Whether the channel is flagged as suitable for mature audiences only.
+	 *
+	 * @deprecated Use {@link EventSubChannelUpdateEvent#contentClassificationLabels} to check if any content
+	 * classification labels are applied to the channel.
+	 *
+	 * Currently, this flag mimics the previous behavior by checking whether the `contentClassificationLabels`
+	 * array is not empty.
+	 *
+	 * This flag will be removed in the next major release.
 	 */
 	get isMature(): boolean {
-		return this[rawDataSymbol].is_mature;
+		return this[rawDataSymbol].content_classification_labels.length > 0;
+	}
+
+	/**
+	 * An array of content classification label IDs currently applied on the channel.
+	 * To retrieve a list of all possible IDs, use the {@link ApiClient#contentClassificationLabels#getAll} API method.
+	 */
+	get contentClassificationLabels(): string[] {
+		return this[rawDataSymbol].content_classification_labels;
 	}
 }
