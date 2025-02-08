@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { rtfm } from '@twurple/common';
-import { type AccessToken, accessTokenIsExpired } from '../AccessToken';
+import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
+import { type AccessToken, accessTokenIsExpired, type AccessTokenWithUserId } from '../AccessToken';
 import { getAppToken } from '../helpers';
 import { TokenFetcher } from '../TokenFetcher';
 import { type AuthProvider } from './AuthProvider';
@@ -46,17 +46,32 @@ export class AppTokenAuthProvider implements AuthProvider {
 	}
 
 	/**
-	 * Throws, because this auth provider does not support user authentication.
+	 * Can only get tokens for implied scopes (i.e. extension subscription support).
+	 *
+	 * The consumer is expected to take care that this is actually set up in the Twitch developer console.
+	 *
+	 * @param user The user to get an access token for.
+	 * @param scopeSets The requested scopes.
 	 */
-	async getAccessTokenForUser(): Promise<never> {
+	async getAccessTokenForUser(
+		user: UserIdResolvable,
+		...scopeSets: Array<string[] | undefined>
+	): Promise<AccessTokenWithUserId> {
+		if (scopeSets.every(scopeSet => scopeSet?.some(scope => this._impliedScopes.includes(scope)) ?? true)) {
+			const appToken = await this.getAppAccessToken();
+			return {
+				...appToken,
+				userId: extractUserId(user),
+			};
+		}
 		throw new Error('Can not get user access token for AppTokenAuthProvider');
 	}
 
 	/**
 	 * Throws, because this auth provider does not support user authentication.
 	 */
-	getCurrentScopesForUser(): never {
-		throw new Error('Can not get user scopes for AppTokenAuthProvider');
+	getCurrentScopesForUser(): string[] {
+		return this._impliedScopes;
 	}
 
 	/**
