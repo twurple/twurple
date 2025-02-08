@@ -24,6 +24,11 @@ export interface CreateBotCommandOptions {
 	 * Alternative names for the command that can be used to call it.
 	 */
 	aliases?: string[];
+
+	/**
+	 * Whether the command name should be case-insensitive. Case-sensitive by default.
+	 */
+	ignoreCase?: boolean;
 }
 
 /**
@@ -51,6 +56,8 @@ export function createBotCommand(
 		constructor(private readonly _options: CreateBotCommandOptions) {
 			super();
 
+			this.name = _options.ignoreCase ? commandName.toLowerCase() : commandName;
+
 			setInterval(() => {
 				const now = Date.now();
 				for (const [key, time] of this._allowedExecutionPerChannel) {
@@ -69,6 +76,16 @@ export function createBotCommand(
 
 		get aliases() {
 			return options.aliases ?? [];
+		}
+
+		match(line: string, prefix: string): string[] | null {
+			if (!this._options.ignoreCase) {
+				return super.match(line, prefix);
+			}
+
+			const [command, ...params] = line.split(' ');
+			const transformedLine = [command.toLowerCase(), ...params].join(' ');
+			return super.match(transformedLine, prefix);
 		}
 
 		canExecute(channelId: string, userId: string): boolean {
