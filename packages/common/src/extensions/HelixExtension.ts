@@ -151,6 +151,15 @@ export class HelixExtension extends DataObject<HelixExtensionData> {
 	/**
 	 * The extension's feature summary for viewers.
 	 */
+	get viewerSummary(): string {
+		return this[rawDataSymbol].viewer_summary;
+	}
+
+	/**
+	 * The extension's feature summary for viewers.
+	 *
+	 * @deprecated Use `viewerSummary` instead.
+	 */
 	get viewerSummery(): string {
 		return this[rawDataSymbol].viewer_summary;
 	}
