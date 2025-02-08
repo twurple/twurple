@@ -1703,6 +1703,50 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribes to events (v2) that represent a chat message being held by AutoMod.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to AutoMod message hold events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToAutoModMessageHoldV2Events(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'automod.message.hold',
+			'2',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:manage:automod'],
+			true,
+		);
+	}
+
+	/**
+	 * Subscribes to events (v2) that represent a held chat message by AutoMod being resolved.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to AutoMod message resolution events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToAutoModMessageUpdateV2Events(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'automod.message.update',
+			'2',
+			createEventSubModeratorCondition(broadcasterId, this._getUserContextIdWithDefault(broadcasterId)),
+			transport,
+			broadcaster,
+			['moderator:manage:automod'],
+			true,
+		);
+	}
+
+	/**
 	 * Subscribes to events that represent the AutoMod settings being updated.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to AutoMod settings update events.
