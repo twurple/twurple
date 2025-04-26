@@ -1217,7 +1217,13 @@ export class Bot extends EventEmitter {
 	// region internals
 	/** @internal */
 	private _findMatch(msg: ChatMessage): BotCommandMatch | null {
-		const line = msg.text.trim().replace(/  +/g, ' ');
+		let line = msg.text.trim().replace(/  +/g, ' ');
+		if (msg.isReply) {
+			const [nameTag, ...restOfLine] = line.split(' ');
+			if (nameTag.toLowerCase() === `@${msg.parentMessageUserName}`) {
+				line = restOfLine.join(' ');
+			}
+		}
 		for (const command of this._commands.values()) {
 			const params = command.match(line, this._prefix);
 			if (params !== null) {
