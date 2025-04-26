@@ -96,6 +96,13 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 		this._sockets.clear();
 	}
 
+	/**
+	 * Whether the WebSocket listener is active.
+	 */
+	get isActive(): boolean {
+		return this._accepting;
+	}
+
 	/** @private */
 	async _getCliTestCommandForSubscription(subscription: EventSubSubscription): Promise<string> {
 		if (!this._apiClient._mockServerPort) {
