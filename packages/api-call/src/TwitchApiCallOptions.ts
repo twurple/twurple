@@ -10,7 +10,7 @@ export interface TwitchApiCallOptions {
 	/**
 	 * The URL to request.
 	 *
-	 * If `type` is not `'custom'`, this is relative to the respective API root endpoint. Otherwise, it is an absoulte URL.
+	 * If `type` is not `'custom'`, this is relative to the respective API root endpoint. Otherwise, it is an absolute URL.
 	 */
 	url: string;
 
