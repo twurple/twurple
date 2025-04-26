@@ -36,7 +36,7 @@
     "@d-fischer/cache-decorators": "^4.0.0",
     "@d-fischer/deprecate": "^2.0.2",
     "@d-fischer/logger": "^4.2.1",
-    "@d-fischer/rate-limiter": "^1.0.0",
+    "@d-fischer/rate-limiter": "^1.1.0",
     "@d-fischer/shared-utils": "^3.6.1",
     "@d-fischer/typed-event-emitter": "^3.3.0",
     "@twurple/common": "7.2.1",

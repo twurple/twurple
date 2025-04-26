@@ -183,8 +183,11 @@ export class ChatClient extends EventEmitter {
 
 	private readonly _chatLogger: Logger;
 
-	private readonly _messageRateLimiter: RateLimiter<ChatMessageRequest, void>;
-	private readonly _joinRateLimiter: RateLimiter<string, void>;
+	private readonly _isAlwaysMod: boolean;
+	private readonly _botLevel: TwitchBotLevel;
+
+	private _messageRateLimiter?: RateLimiter<ChatMessageRequest, void>;
+	private _joinRateLimiter?: RateLimiter<string, void>;
 
 	private readonly _ircClient: IrcClient;
 
@@ -653,10 +656,10 @@ export class ChatClient extends EventEmitter {
 		});
 
 		this._ircClient.onDisconnect((manually: boolean, reason?: Error) => {
-			this._messageRateLimiter.clear();
-			this._messageRateLimiter.pause();
-			this._joinRateLimiter.clear();
-			this._joinRateLimiter.pause();
+			this._messageRateLimiter?.clear();
+			this._messageRateLimiter?.pause();
+			this._joinRateLimiter?.clear();
+			this._joinRateLimiter?.pause();
 			this.emit(this.onDisconnect, manually, reason);
 		});
 
@@ -673,73 +676,8 @@ export class ChatClient extends EventEmitter {
 		this._readOnly = !!config.readOnly;
 		this._authIntents = [...(config.authIntents ?? []), 'chat'];
 
-		const executeChatMessageRequest = async ({ type, text, channel, tags }: ChatMessageRequest) => {
-			if (type === 'say') {
-				this._ircClient.say(channel, text, tags);
-			} else {
-				this._ircClient.action(channel, text);
-			}
-		};
-
-		const executeJoinRequest = async (channel: string) => {
-			const { promise, resolve, reject } = promiseWithResolvers();
-
-			// eslint-disable-next-line @typescript-eslint/init-declarations
-			let timer: ReturnType<typeof setTimeout>;
-			const e = this.addInternalListener(this._onJoinResult, (chan, state, error) => {
-				if (chan === channel) {
-					clearTimeout(timer);
-					if (error) {
-						// TODO
-						reject(error as unknown as Error);
-					} else {
-						resolve();
-					}
-					this.removeListener(e);
-				}
-			});
-			timer = setTimeout(() => {
-				this.removeListener(e);
-				this.emit(this._onJoinResult, channel, undefined, 'twurple_timeout');
-				reject(new Error(`Did not receive a reply to join ${channel} in time; assuming that the join failed`));
-			}, 10000);
-
-			this._ircClient.join(channel);
-			await promise;
-		};
-
-		if (config.isAlwaysMod) {
-			this._messageRateLimiter = new TimeBasedRateLimiter({
-				bucketSize: config.botLevel === 'verified' ? 7500 : 100,
-				timeFrame: 32000,
-				doRequest: executeChatMessageRequest,
-			});
-		} else {
-			let bucketSize = 20;
-			if (config.botLevel === 'verified') {
-				bucketSize = 7500;
-			} else if (config.botLevel === 'known') {
-				bucketSize = 50;
-			}
-			this._messageRateLimiter = new TimedPassthruRateLimiter(
-				new PartitionedTimeBasedRateLimiter({
-					bucketSize: 1,
-					timeFrame: 1200,
-					logger: { minLevel: LogLevel.ERROR },
-					doRequest: executeChatMessageRequest,
-					getPartitionKey: ({ channel }) => channel,
-				}),
-				{ bucketSize, timeFrame: 32000 },
-			);
-		}
-		this._joinRateLimiter = new TimeBasedRateLimiter({
-			bucketSize: config.botLevel === 'verified' ? 2000 : 20,
-			timeFrame: 11000,
-			doRequest: executeJoinRequest,
-		});
-
-		this._messageRateLimiter.pause();
-		this._joinRateLimiter.pause();
+		this._isAlwaysMod = config.isAlwaysMod ?? false;
+		this._botLevel = config.botLevel ?? 'none';
 
 		this._ircClient.addCapability(TwitchTagsCapability);
 		this._ircClient.addCapability(TwitchCommandsCapability);
@@ -752,8 +690,8 @@ export class ChatClient extends EventEmitter {
 		});
 
 		this._ircClient.onRegister(async () => {
-			this._messageRateLimiter.resume();
-			this._joinRateLimiter.resume();
+			this._messageRateLimiter?.resume();
+			this._joinRateLimiter?.resume();
 			this._authVerified = true;
 			this._authRetryTimer = undefined;
 			this._authRetryCount = 0;
@@ -1220,6 +1158,8 @@ export class ChatClient extends EventEmitter {
 			this._ircClient.changeNick(ChatClient._generateJustinfanNick());
 		}
 
+		this._initializeRateLimiters();
+
 		this._ircClient.connect();
 	}
 
@@ -1274,7 +1214,7 @@ export class ChatClient extends EventEmitter {
 		await Promise.all(
 			texts.map(
 				async msg =>
-					await this._messageRateLimiter.request(
+					await this._messageRateLimiter!.request(
 						{
 							type: 'say',
 							channel: toChannelName(channel),
@@ -1299,7 +1239,7 @@ export class ChatClient extends EventEmitter {
 		await Promise.all(
 			texts.map(
 				async msg =>
-					await this._messageRateLimiter.request(
+					await this._messageRateLimiter!.request(
 						{
 							type: 'action',
 							channel: toChannelName(channel),
@@ -1317,7 +1257,7 @@ export class ChatClient extends EventEmitter {
 	 * @param channel The channel to join.
 	 */
 	async join(channel: string): Promise<void> {
-		await this._joinRateLimiter.request(toChannelName(channel));
+		await this._joinRateLimiter!.request(toChannelName(channel));
 	}
 
 	/**
@@ -1333,6 +1273,10 @@ export class ChatClient extends EventEmitter {
 	 * Disconnects from the chat server.
 	 */
 	quit(): void {
+		this._messageRateLimiter?.destroy?.();
+		this._joinRateLimiter?.destroy?.();
+		this._messageRateLimiter = undefined;
+		this._joinRateLimiter = undefined;
 		this._ircClient.quitAbruptly();
 	}
 
@@ -1437,5 +1381,75 @@ export class ChatClient extends EventEmitter {
 			.toString()
 			.padStart(5, '0');
 		return `justinfan${randomSuffix}`;
+	}
+
+	private _initializeRateLimiters() {
+		const executeChatMessageRequest = async ({ type, text, channel, tags }: ChatMessageRequest) => {
+			if (type === 'say') {
+				this._ircClient.say(channel, text, tags);
+			} else {
+				this._ircClient.action(channel, text);
+			}
+		};
+
+		const executeJoinRequest = async (channel: string) => {
+			const { promise, resolve, reject } = promiseWithResolvers();
+
+			// eslint-disable-next-line @typescript-eslint/init-declarations
+			let timer: ReturnType<typeof setTimeout>;
+			const e = this.addInternalListener(this._onJoinResult, (chan, state, error) => {
+				if (chan === channel) {
+					clearTimeout(timer);
+					if (error) {
+						// TODO
+						reject(error as unknown as Error);
+					} else {
+						resolve();
+					}
+					this.removeListener(e);
+				}
+			});
+			timer = setTimeout(() => {
+				this.removeListener(e);
+				this.emit(this._onJoinResult, channel, undefined, 'twurple_timeout');
+				reject(new Error(`Did not receive a reply to join ${channel} in time; assuming that the join failed`));
+			}, 10000);
+
+			this._ircClient.join(channel);
+			await promise;
+		};
+
+		if (this._isAlwaysMod) {
+			this._messageRateLimiter = new TimeBasedRateLimiter({
+				bucketSize: this._botLevel === 'verified' ? 7500 : 100,
+				timeFrame: 32000,
+				doRequest: executeChatMessageRequest,
+			});
+		} else {
+			let bucketSize = 20;
+			if (this._botLevel === 'verified') {
+				bucketSize = 7500;
+			} else if (this._botLevel === 'known') {
+				bucketSize = 50;
+			}
+			this._messageRateLimiter = new TimedPassthruRateLimiter(
+				new PartitionedTimeBasedRateLimiter({
+					bucketSize: 1,
+					timeFrame: 1200,
+					logger: { minLevel: LogLevel.ERROR },
+					doRequest: executeChatMessageRequest,
+					getPartitionKey: ({ channel }) => channel,
+				}),
+				{ bucketSize, timeFrame: 32000 },
+			);
+		}
+		this._joinRateLimiter = new TimeBasedRateLimiter({
+			bucketSize: this._botLevel === 'verified' ? 2000 : 20,
+			timeFrame: 11000,
+			doRequest: executeJoinRequest,
+		});
+
+		this._messageRateLimiter.pause();
+		this._joinRateLimiter.pause();
 	}
 }
