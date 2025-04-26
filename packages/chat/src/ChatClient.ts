@@ -685,7 +685,7 @@ export class ChatClient extends EventEmitter {
 			const { promise, resolve, reject } = promiseWithResolvers();
 
 			// eslint-disable-next-line @typescript-eslint/init-declarations
-			let timer: NodeJS.Timer;
+			let timer: ReturnType<typeof setTimeout>;
 			const e = this.addInternalListener(this._onJoinResult, (chan, state, error) => {
 				if (chan === channel) {
 					clearTimeout(timer);
