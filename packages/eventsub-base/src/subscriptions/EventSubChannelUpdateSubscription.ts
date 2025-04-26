@@ -19,7 +19,7 @@ export class EventSubChannelUpdateSubscription extends EventSubSubscription<Even
 	}
 
 	get id(): string {
-		return `channel.update.${this._userId}`;
+		return `channel.update.v2.${this._userId}`;
 	}
 
 	get authUserId(): string | null {

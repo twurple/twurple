@@ -18,7 +18,7 @@ export class EventSubWsSocket {
 	private _reconnectInProgress: boolean = false;
 	private _reconnectUrl?: string;
 	private _keepaliveTimeout: number | null;
-	private _keepaliveTimer: NodeJS.Timer | null;
+	private _keepaliveTimer: ReturnType<typeof setTimeout> | null;
 
 	private readonly _logger: Logger;
 	private _readyToSubscribe = false;

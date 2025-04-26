@@ -11,7 +11,7 @@
     "@d-fischer/documen.ts": "^0.16.10",
     "@d-fischer/eslint-config": "^6.3.0",
     "@types/jest": "^27.4.1",
-    "@types/node": "^14.18.50",
+    "@types/node": "^18.19.87",
     "@types/twitch-ext": "^1.24.4",
     "cross-env": "^7.0.3",
     "crowd": "^0.2.0",

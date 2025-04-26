@@ -70,9 +70,9 @@ export class BasicPubSubClient extends EventEmitter {
 	private readonly _pingOnActivity: number = 240;
 	private readonly _pingOnInactivity: number = 60;
 	private readonly _pingTimeout: number = 10;
-	private _activityPingCheckTimer?: NodeJS.Timer;
-	private _inactivityPingCheckTimer?: NodeJS.Timer;
-	private _pingTimeoutTimer?: NodeJS.Timer;
+	private _activityPingCheckTimer?: ReturnType<typeof setInterval>;
+	private _inactivityPingCheckTimer?: ReturnType<typeof setInterval>;
+	private _pingTimeoutTimer?: ReturnType<typeof setTimeout>;
 
 	private readonly _onPong = this.registerInternalEvent<[]>();
 	private readonly _onResponse = this.registerInternalEvent<[nonce: string, error: string]>();
