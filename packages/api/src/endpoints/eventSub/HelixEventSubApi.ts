@@ -1939,6 +1939,27 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribes to events indicating that bits are used in a channel.
+	 *
+	 * @param broadcaster The broadcaster for whom you want to listen to bits usage events.
+	 * @param transport The transport options to use for the subscription.
+	 */
+	async subscribeToChannelBitsUseEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.bits.use',
+			'1',
+			createEventSubBroadcasterCondition(broadcasterId),
+			transport,
+			broadcasterId,
+			['bits:read'],
+		);
+	}
+
+	/**
 	 * Gets the current EventSub conduits for the current client.
 	 *
 	 */
