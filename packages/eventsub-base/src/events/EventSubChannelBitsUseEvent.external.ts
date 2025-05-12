@@ -8,7 +8,7 @@ import { type EventSubChannelBitsUsePowerUpData } from './common/EventSubChannel
 /**
  * The type of bits usage.
  */
-export type EventSubChannelBitsUseType = 'cheer' | 'power_up';
+export type EventSubChannelBitsUseType = 'cheer' | 'power_up' | 'combo';
 
 /** @private */
 export type EventSubChannelBitsUseMessagePart =
