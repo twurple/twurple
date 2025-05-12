@@ -8,6 +8,12 @@ export type {
 
 export { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 export { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+
+export { EventSubChannelBitsUseEvent } from './events/EventSubChannelBitsUseEvent';
+export { EventSubChannelBitsUsePowerUp } from './events/common/EventSubChannelBitsUsePowerUp';
+export type { EventSubChannelBitsUseType } from './events/EventSubChannelBitsUseEvent.external';
+export type { EventSubChannelBitsUsePowerUpType } from './events/common/EventSubChannelBitsUsePowerUp.external';
+
 export { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
 export { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
 export { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
