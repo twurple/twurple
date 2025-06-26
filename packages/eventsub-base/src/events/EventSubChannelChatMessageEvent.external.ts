@@ -44,4 +44,5 @@ export interface EventSubChannelChatMessageEventData {
 	source_broadcaster_user_name: string | null;
 	source_message_id: string | null;
 	source_badges: EventSubChatBadge[] | null;
+	is_source_only: boolean | null;
 }

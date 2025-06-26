@@ -1,5 +1,9 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixSendChatMessageParams, type HelixUpdateChatSettingsParams } from './chat.input';
+import {
+	type HelixSendChatMessageAsAppParams,
+	type HelixSendChatMessageParams,
+	type HelixUpdateChatSettingsParams,
+} from './chat.input';
 
 /**
  * The subscription tier necessary to unlock an emote. 1000 means tier 1, and so on.
@@ -195,5 +199,14 @@ export function createSendChatMessageBody(message: string, params: HelixSendChat
 	return {
 		message,
 		reply_parent_message_id: params?.replyParentMessageId,
+	};
+}
+
+/** @internal */
+export function createSendChatMessageAsAppBody(message: string, params: HelixSendChatMessageAsAppParams | undefined) {
+	return {
+		message,
+		reply_parent_message_id: params?.replyParentMessageId,
+		for_source_only: params?.forSourceOnly,
 	};
 }
