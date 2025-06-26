@@ -39,6 +39,9 @@ import type { EventSubChannelGoalProgressEvent } from './events/EventSubChannelG
 import type { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
+import { type EventSubChannelHypeTrainBeginV2Event } from './events/EventSubChannelHypeTrainBeginV2Event';
+import { type EventSubChannelHypeTrainProgressV2Event } from './events/EventSubChannelHypeTrainProgressV2Event';
+import { type EventSubChannelHypeTrainEndV2Event } from './events/EventSubChannelHypeTrainEndV2Event';
 import { type EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent';
 import type { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 import type { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
@@ -109,6 +112,9 @@ import { EventSubChannelGoalProgressSubscription } from './subscriptions/EventSu
 import { EventSubChannelHypeTrainBeginSubscription } from './subscriptions/EventSubChannelHypeTrainBeginSubscription';
 import { EventSubChannelHypeTrainEndSubscription } from './subscriptions/EventSubChannelHypeTrainEndSubscription';
 import { EventSubChannelHypeTrainProgressSubscription } from './subscriptions/EventSubChannelHypeTrainProgressSubscription';
+import { EventSubChannelHypeTrainBeginV2Subscription } from './subscriptions/EventSubChannelHypeTrainBeginV2Subscription';
+import { EventSubChannelHypeTrainProgressV2Subscription } from './subscriptions/EventSubChannelHypeTrainProgressV2Subscription';
+import { EventSubChannelHypeTrainEndV2Subscription } from './subscriptions/EventSubChannelHypeTrainEndV2Subscription';
 import { EventSubChannelModerateSubscription } from './subscriptions/EventSubChannelModerateSubscription';
 import { EventSubChannelModeratorAddSubscription } from './subscriptions/EventSubChannelModeratorAddSubscription';
 import { EventSubChannelModeratorRemoveSubscription } from './subscriptions/EventSubChannelModeratorRemoveSubscription';
@@ -991,6 +997,51 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainEndEvents');
 
 		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a Hype Train beginning.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainBeginV2(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainBeginV2Event) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelHypeTrainBeginV2');
+
+		return this._genericSubscribe(EventSubChannelHypeTrainBeginV2Subscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent progress in a Hype Train in a channel.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainProgressV2(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainProgressV2Event) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelHypeTrainProgressV2');
+
+		return this._genericSubscribe(EventSubChannelHypeTrainProgressV2Subscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent the end of a Hype Train in a channel.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainEndV2(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainEndV2Event) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelHypeTrainEndV2');
+
+		return this._genericSubscribe(EventSubChannelHypeTrainEndV2Subscription, handler, this, userId);
 	}
 
 	/**
