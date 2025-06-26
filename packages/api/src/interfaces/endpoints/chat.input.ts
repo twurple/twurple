@@ -63,6 +63,19 @@ export interface HelixSendChatMessageParams {
 }
 
 /**
+ * A request to send a message to a broadcaster's chat with app access token.
+ */
+export interface HelixSendChatMessageAsAppParams extends HelixSendChatMessageParams {
+	/**
+	 * Specifies whether the chat message should be sent only to the source channel during a shared chat session.
+	 * This parameter has no effect if a shared chat session is not active.
+	 *
+	 * @default true
+	 */
+	forSourceOnly?: boolean;
+}
+
+/**
  * A request to send an announcement to a broadcaster's chat.
  */
 export interface HelixSendChatAnnouncementParams {
