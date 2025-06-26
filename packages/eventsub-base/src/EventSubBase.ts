@@ -53,6 +53,7 @@ import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannel
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 import type { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
+import { type EventSubChannelAutomaticRewardRedemptionAddV2Event } from './events/EventSubChannelAutomaticRewardRedemptionAddV2Event';
 import { type EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent';
 import { type EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent';
 import { type EventSubChannelSharedChatSessionEndEvent } from './events/EventSubChannelSharedChatSessionEndEvent';
@@ -126,6 +127,7 @@ import { EventSubChannelRewardAddSubscription } from './subscriptions/EventSubCh
 import { EventSubChannelRewardRemoveSubscription } from './subscriptions/EventSubChannelRewardRemoveSubscription';
 import { EventSubChannelRewardUpdateSubscription } from './subscriptions/EventSubChannelRewardUpdateSubscription';
 import { EventSubChannelAutomaticRewardRedemptionAddSubscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddSubscription';
+import { EventSubChannelAutomaticRewardRedemptionAddV2Subscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddV2Subscription';
 import { EventSubChannelSharedChatSessionBeginSubscription } from './subscriptions/EventSubChannelSharedChatSessionBeginSubscription';
 import { EventSubChannelSharedChatSessionUpdateSubscription } from './subscriptions/EventSubChannelSharedChatSessionUpdateSubscription';
 import { EventSubChannelSharedChatSessionEndSubscription } from './subscriptions/EventSubChannelSharedChatSessionEndSubscription';
@@ -796,6 +798,21 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelAutomaticRewardRedemptionAdd');
 
 		return this._genericSubscribe(EventSubChannelAutomaticRewardRedemptionAddSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a specific Channel Points automatic reward being redeemed.
+	 *
+	 * @param user The user for which to get notifications when their automatic reward is redeemed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelAutomaticRewardRedemptionAddV2(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelAutomaticRewardRedemptionAddV2Event) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelAutomaticRewardRedemptionAddV2');
+
+		return this._genericSubscribe(EventSubChannelAutomaticRewardRedemptionAddV2Subscription, handler, this, userId);
 	}
 
 	/**
