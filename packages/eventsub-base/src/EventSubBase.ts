@@ -22,6 +22,7 @@ import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubC
 import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+import { type EventSubChannelBitsUseEvent } from './events/EventSubChannelBitsUseEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
 import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
 import type { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
@@ -94,6 +95,7 @@ import { EventSubChannelChatUserMessageHoldSubscription } from './subscriptions/
 import { EventSubChannelChatUserMessageUpdateSubscription } from './subscriptions/EventSubChannelChatUserMessageUpdateSubscription';
 import { EventSubChannelAdBreakBeginSubscription } from './subscriptions/EventSubChannelAdBreakBeginSubscription';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
+import { EventSubChannelBitsUseSubscription } from './subscriptions/EventSubChannelBitsUseSubscription';
 import { EventSubChannelCharityCampaignProgressSubscription } from './subscriptions/EventSubChannelCharityCampaignProgressSubscription';
 import { EventSubChannelCharityCampaignStartSubscription } from './subscriptions/EventSubChannelCharityCampaignStartSubscription';
 import { EventSubChannelCharityCampaignStopSubscription } from './subscriptions/EventSubChannelCharityCampaignStopSubscription';
@@ -1700,6 +1702,20 @@ export abstract class EventSubBase extends EventEmitter {
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelSharedChatSessionBegin');
 		return this._genericSubscribe(EventSubChannelSharedChatSessionEndSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events indicating that bits are used in a channel.
+	 *
+	 * @param broadcaster The broadcaster for whom you want to listen to bits usage events.
+	 * @param handler The function to be called when a new notification is received.
+	 */
+	onChannelBitsUse(
+		broadcaster: UserIdResolvable,
+		handler: (data: EventSubChannelBitsUseEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelBitsUse');
+		return this._genericSubscribe(EventSubChannelBitsUseSubscription, handler, this, broadcasterId);
 	}
 
 	/**
