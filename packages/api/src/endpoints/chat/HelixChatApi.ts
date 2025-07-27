@@ -3,6 +3,7 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	createChatColorUpdateQuery,
 	createChatSettingsUpdateBody,
+	createSendChatMessageAsAppBody,
 	createSendChatMessageBody,
 	createSendChatMessageQuery,
 	createShoutoutQuery,
@@ -20,6 +21,7 @@ import {
 } from '../../interfaces/endpoints/chat.external';
 import {
 	type HelixSendChatAnnouncementParams,
+	type HelixSendChatMessageAsAppParams,
 	type HelixSendChatMessageParams,
 	type HelixUpdateChatSettingsParams,
 	type HelixUserEmotesFilter,
@@ -380,7 +382,7 @@ export class HelixChatApi extends BaseApi {
 		user: UserIdResolvable,
 		broadcaster: UserIdResolvable,
 		message: string,
-		params?: HelixSendChatMessageParams,
+		params?: HelixSendChatMessageAsAppParams,
 	): Promise<HelixSentChatMessage> {
 		const userId = extractUserId(user);
 		const broadcasterId = extractUserId(broadcaster);
@@ -390,7 +392,7 @@ export class HelixChatApi extends BaseApi {
 			method: 'POST',
 			forceType: 'app',
 			query: createSendChatMessageQuery(broadcasterId, userId),
-			jsonBody: createSendChatMessageBody(message, params),
+			jsonBody: createSendChatMessageAsAppBody(message, params),
 		});
 
 		return new HelixSentChatMessage(result.data[0]);
