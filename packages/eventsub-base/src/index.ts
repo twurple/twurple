@@ -114,6 +114,7 @@ export { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedem
 export { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 export { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 export { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
+export { EventSubChannelAutomaticRewardRedemptionAddV2Event } from './events/EventSubChannelAutomaticRewardRedemptionAddV2Event';
 export type { EventSubAutomaticRewardType } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent.external';
 export { EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent';
 export { EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent';
@@ -163,6 +164,8 @@ export type {
 	EventSubChannelSuspiciousUserType,
 } from './events/EventSubChannelSuspiciousUserMessageEvent.external';
 
+export type { EventSubChannelAutomaticReward } from './events/common/EventSubChannelAutomaticReward';
+export type { EventSubChannelAutomaticRewardType } from './events/common/EventSubChannelAutomaticReward.external';
 export type { EventSubAutoModLevel } from './events/common/EventSubAutoModLevel';
 export type { EventSubAutoModMessageHoldReason } from './events/common/EventSubAutoModMessageHoldReason';
 export { EventSubAutoModMessageAutoMod } from './events/common/EventSubAutoModMessageAutoMod';
