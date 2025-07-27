@@ -29,6 +29,9 @@ import type { EventSubChannelGoalProgressEvent } from './events/EventSubChannelG
 import type { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
+import { type EventSubChannelHypeTrainBeginV2Event } from './events/EventSubChannelHypeTrainBeginV2Event';
+import { type EventSubChannelHypeTrainProgressV2Event } from './events/EventSubChannelHypeTrainProgressV2Event';
+import { type EventSubChannelHypeTrainEndV2Event } from './events/EventSubChannelHypeTrainEndV2Event';
 import { type EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent';
 import type { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 import type { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
@@ -580,6 +583,39 @@ export interface EventSubListener {
 	onChannelHypeTrainEnd: (
 		user: UserIdResolvable,
 		handler: (data: EventSubChannelHypeTrainEndEvent) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent a Hype Train beginning.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainBeginV2: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainBeginV2Event) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent progress in a Hype Train in a channel.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainProgressV2: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainProgressV2Event) => void,
+	) => EventSubSubscription;
+
+	/**
+	 * Subscribes to events that represent the end of a Hype Train in a channel.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainEndV2: (
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainEndV2Event) => void,
 	) => EventSubSubscription;
 
 	/**

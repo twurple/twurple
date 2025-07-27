@@ -96,6 +96,9 @@ export { EventSubChannelGoalProgressEvent } from './events/EventSubChannelGoalPr
 export { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 export { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 export { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
+export { EventSubChannelHypeTrainBeginV2Event } from './events/EventSubChannelHypeTrainBeginV2Event';
+export { EventSubChannelHypeTrainEndV2Event } from './events/EventSubChannelHypeTrainEndV2Event';
+export { EventSubChannelHypeTrainProgressV2Event } from './events/EventSubChannelHypeTrainProgressV2Event';
 export { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 export { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
 export { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEvent';
@@ -170,6 +173,8 @@ export { EventSubChannelCharityAmount } from './events/common/EventSubChannelCha
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';
 export { EventSubChannelHypeTrainContribution } from './events/common/EventSubChannelHypeTrainContribution';
 export type { EventSubChannelHypeTrainContributionType } from './events/common/EventSubChannelHypeTrainContribution.external';
+export type { EventSubChannelHypeTrainType } from './events/common/EventSubChannelHypeTrainType';
+export { EventSubChannelHypeTrainSharedParticipant } from './events/common/EventSubChannelHypeTrainSharedParticipant';
 export { EventSubChannelPollBeginChoice } from './events/common/EventSubChannelPollBeginChoice';
 export { EventSubChannelPollChoice } from './events/common/EventSubChannelPollChoice';
 export { EventSubChannelPredictionBeginOutcome } from './events/common/EventSubChannelPredictionBeginOutcome';
