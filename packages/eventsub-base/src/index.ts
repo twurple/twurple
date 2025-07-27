@@ -80,6 +80,7 @@ export { EventSubChannelSharedChatUnbanModerationEvent } from './events/moderati
 export { EventSubChannelSharedChatTimeoutModerationEvent } from './events/moderation/EventSubChannelSharedChatTimeoutModerationEvent';
 export { EventSubChannelSharedChatUntimeoutModerationEvent } from './events/moderation/EventSubChannelSharedChatUntimeoutModerationEvent';
 export { EventSubChannelSharedChatDeleteModerationEvent } from './events/moderation/EventSubChannelSharedChatDeleteModerationEvent';
+export { EventSubChannelWarnModerationEvent } from './events/moderation/EventSubChannelWarnModerationEvent';
 export type { EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent';
 export type {
 	EventSubChannelModerationAction,
