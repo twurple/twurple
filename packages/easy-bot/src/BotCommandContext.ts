@@ -179,6 +179,28 @@ export class BotCommandContext {
 		await this._bot.say(this.broadcasterName, text, { replyTo: this.msg.id });
 
 	/**
+	 * Sends a reply to the chat message's parent message to the channel.
+	 *
+	 * @param text The text to send.
+	 */
+	replyToParent = async (text: string): Promise<void> => {
+		if (this.msg.isReply) {
+			await this._bot.say(this.broadcasterName, text, { replyTo: this.msg.parentMessageId! });
+		}
+	};
+
+	/**
+	 * Sends a reply to the chat message's thread starter message to the channel.
+	 *
+	 * @param text The text to send.
+	 */
+	replyToThread = async (text: string): Promise<void> => {
+		if (this.msg.isReply) {
+			await this._bot.say(this.broadcasterName, text, { replyTo: this.msg.threadMessageId! });
+		}
+	};
+
+	/**
 	 * Sends a regular chat message to the channel.
 	 *
 	 * @param text The text to send.
