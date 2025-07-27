@@ -305,4 +305,12 @@ export class EventSubChannelChatMessageEvent extends DataObject<EventSubChannelC
 	getSourceBadgeInfo(name: string): string | null {
 		return this[rawDataSymbol].source_badges?.find(badge => badge.set_id === name)?.info ?? null;
 	}
+
+	/**
+	 * Determines if a message delivered during a shared chat session is only sent to the source channel.
+	 * Has no effect if the message is not sent during a shared chat session.
+	 */
+	get isSourceOnly(): boolean | null {
+		return this[rawDataSymbol].is_source_only;
+	}
 }
