@@ -22,6 +22,7 @@ import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubC
 import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent';
 import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+import { type EventSubChannelBitsUseEvent } from './events/EventSubChannelBitsUseEvent';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
 import type { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
 import type { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
@@ -39,6 +40,9 @@ import type { EventSubChannelGoalProgressEvent } from './events/EventSubChannelG
 import type { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 import type { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 import type { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
+import { type EventSubChannelHypeTrainBeginV2Event } from './events/EventSubChannelHypeTrainBeginV2Event';
+import { type EventSubChannelHypeTrainProgressV2Event } from './events/EventSubChannelHypeTrainProgressV2Event';
+import { type EventSubChannelHypeTrainEndV2Event } from './events/EventSubChannelHypeTrainEndV2Event';
 import { type EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent';
 import type { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 import type { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
@@ -53,6 +57,7 @@ import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannel
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 import type { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
+import { type EventSubChannelAutomaticRewardRedemptionAddV2Event } from './events/EventSubChannelAutomaticRewardRedemptionAddV2Event';
 import { type EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent';
 import { type EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent';
 import { type EventSubChannelSharedChatSessionEndEvent } from './events/EventSubChannelSharedChatSessionEndEvent';
@@ -91,6 +96,7 @@ import { EventSubChannelChatUserMessageHoldSubscription } from './subscriptions/
 import { EventSubChannelChatUserMessageUpdateSubscription } from './subscriptions/EventSubChannelChatUserMessageUpdateSubscription';
 import { EventSubChannelAdBreakBeginSubscription } from './subscriptions/EventSubChannelAdBreakBeginSubscription';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription';
+import { EventSubChannelBitsUseSubscription } from './subscriptions/EventSubChannelBitsUseSubscription';
 import { EventSubChannelCharityCampaignProgressSubscription } from './subscriptions/EventSubChannelCharityCampaignProgressSubscription';
 import { EventSubChannelCharityCampaignStartSubscription } from './subscriptions/EventSubChannelCharityCampaignStartSubscription';
 import { EventSubChannelCharityCampaignStopSubscription } from './subscriptions/EventSubChannelCharityCampaignStopSubscription';
@@ -109,6 +115,9 @@ import { EventSubChannelGoalProgressSubscription } from './subscriptions/EventSu
 import { EventSubChannelHypeTrainBeginSubscription } from './subscriptions/EventSubChannelHypeTrainBeginSubscription';
 import { EventSubChannelHypeTrainEndSubscription } from './subscriptions/EventSubChannelHypeTrainEndSubscription';
 import { EventSubChannelHypeTrainProgressSubscription } from './subscriptions/EventSubChannelHypeTrainProgressSubscription';
+import { EventSubChannelHypeTrainBeginV2Subscription } from './subscriptions/EventSubChannelHypeTrainBeginV2Subscription';
+import { EventSubChannelHypeTrainProgressV2Subscription } from './subscriptions/EventSubChannelHypeTrainProgressV2Subscription';
+import { EventSubChannelHypeTrainEndV2Subscription } from './subscriptions/EventSubChannelHypeTrainEndV2Subscription';
 import { EventSubChannelModerateSubscription } from './subscriptions/EventSubChannelModerateSubscription';
 import { EventSubChannelModeratorAddSubscription } from './subscriptions/EventSubChannelModeratorAddSubscription';
 import { EventSubChannelModeratorRemoveSubscription } from './subscriptions/EventSubChannelModeratorRemoveSubscription';
@@ -126,6 +135,7 @@ import { EventSubChannelRewardAddSubscription } from './subscriptions/EventSubCh
 import { EventSubChannelRewardRemoveSubscription } from './subscriptions/EventSubChannelRewardRemoveSubscription';
 import { EventSubChannelRewardUpdateSubscription } from './subscriptions/EventSubChannelRewardUpdateSubscription';
 import { EventSubChannelAutomaticRewardRedemptionAddSubscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddSubscription';
+import { EventSubChannelAutomaticRewardRedemptionAddV2Subscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddV2Subscription';
 import { EventSubChannelSharedChatSessionBeginSubscription } from './subscriptions/EventSubChannelSharedChatSessionBeginSubscription';
 import { EventSubChannelSharedChatSessionUpdateSubscription } from './subscriptions/EventSubChannelSharedChatSessionUpdateSubscription';
 import { EventSubChannelSharedChatSessionEndSubscription } from './subscriptions/EventSubChannelSharedChatSessionEndSubscription';
@@ -799,6 +809,21 @@ export abstract class EventSubBase extends EventEmitter {
 	}
 
 	/**
+	 * Subscribes to events that represent a specific Channel Points automatic reward being redeemed.
+	 *
+	 * @param user The user for which to get notifications when their automatic reward is redeemed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelAutomaticRewardRedemptionAddV2(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelAutomaticRewardRedemptionAddV2Event) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelAutomaticRewardRedemptionAddV2');
+
+		return this._genericSubscribe(EventSubChannelAutomaticRewardRedemptionAddV2Subscription, handler, this, userId);
+	}
+
+	/**
 	 * Subscribes to events that represent a poll starting in a channel.
 	 *
 	 * @param user The broadcaster for which to receive poll begin events.
@@ -991,6 +1016,51 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelHypeTrainEndEvents');
 
 		return this._genericSubscribe(EventSubChannelHypeTrainEndSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a Hype Train beginning.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainBeginV2(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainBeginV2Event) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelHypeTrainBeginV2');
+
+		return this._genericSubscribe(EventSubChannelHypeTrainBeginV2Subscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent progress in a Hype Train in a channel.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainProgressV2(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainProgressV2Event) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelHypeTrainProgressV2');
+
+		return this._genericSubscribe(EventSubChannelHypeTrainProgressV2Subscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent the end of a Hype Train in a channel.
+	 *
+	 * @param user The user for which to get notifications about Hype Trains in their channel.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelHypeTrainEndV2(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelHypeTrainEndV2Event) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelHypeTrainEndV2');
+
+		return this._genericSubscribe(EventSubChannelHypeTrainEndV2Subscription, handler, this, userId);
 	}
 
 	/**
@@ -1649,6 +1719,20 @@ export abstract class EventSubBase extends EventEmitter {
 	): EventSubSubscription {
 		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelSharedChatSessionBegin');
 		return this._genericSubscribe(EventSubChannelSharedChatSessionEndSubscription, handler, this, broadcasterId);
+	}
+
+	/**
+	 * Subscribes to events indicating that bits are used in a channel.
+	 *
+	 * @param broadcaster The broadcaster for whom you want to listen to bits usage events.
+	 * @param handler The function to be called when a new notification is received.
+	 */
+	onChannelBitsUse(
+		broadcaster: UserIdResolvable,
+		handler: (data: EventSubChannelBitsUseEvent) => void,
+	): EventSubSubscription {
+		const broadcasterId = this._extractUserIdWithNumericWarning(broadcaster, 'onChannelBitsUse');
+		return this._genericSubscribe(EventSubChannelBitsUseSubscription, handler, this, broadcasterId);
 	}
 
 	/**

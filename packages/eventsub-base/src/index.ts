@@ -8,6 +8,12 @@ export type {
 
 export { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent';
 export { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent';
+
+export { EventSubChannelBitsUseEvent } from './events/EventSubChannelBitsUseEvent';
+export { EventSubChannelBitsUsePowerUp } from './events/common/EventSubChannelBitsUsePowerUp';
+export type { EventSubChannelBitsUseType } from './events/EventSubChannelBitsUseEvent.external';
+export type { EventSubChannelBitsUsePowerUpType } from './events/common/EventSubChannelBitsUsePowerUp.external';
+
 export { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent';
 export { EventSubChannelCharityCampaignStartEvent } from './events/EventSubChannelCharityCampaignStartEvent';
 export { EventSubChannelCharityCampaignStopEvent } from './events/EventSubChannelCharityCampaignStopEvent';
@@ -90,6 +96,9 @@ export { EventSubChannelGoalProgressEvent } from './events/EventSubChannelGoalPr
 export { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent';
 export { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent';
 export { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent';
+export { EventSubChannelHypeTrainBeginV2Event } from './events/EventSubChannelHypeTrainBeginV2Event';
+export { EventSubChannelHypeTrainEndV2Event } from './events/EventSubChannelHypeTrainEndV2Event';
+export { EventSubChannelHypeTrainProgressV2Event } from './events/EventSubChannelHypeTrainProgressV2Event';
 export { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent';
 export { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent';
 export { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEvent';
@@ -105,6 +114,7 @@ export { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedem
 export { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent';
 export { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent';
 export { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent';
+export { EventSubChannelAutomaticRewardRedemptionAddV2Event } from './events/EventSubChannelAutomaticRewardRedemptionAddV2Event';
 export type { EventSubAutomaticRewardType } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent.external';
 export { EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent';
 export { EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent';
@@ -154,6 +164,8 @@ export type {
 	EventSubChannelSuspiciousUserType,
 } from './events/EventSubChannelSuspiciousUserMessageEvent.external';
 
+export type { EventSubChannelAutomaticReward } from './events/common/EventSubChannelAutomaticReward';
+export type { EventSubChannelAutomaticRewardType } from './events/common/EventSubChannelAutomaticReward.external';
 export type { EventSubAutoModLevel } from './events/common/EventSubAutoModLevel';
 export type { EventSubAutoModMessageHoldReason } from './events/common/EventSubAutoModMessageHoldReason';
 export { EventSubAutoModMessageAutoMod } from './events/common/EventSubAutoModMessageAutoMod';
@@ -164,6 +176,8 @@ export { EventSubChannelCharityAmount } from './events/common/EventSubChannelCha
 export type { EventSubChannelGoalType } from './events/common/EventSubChannelGoalType';
 export { EventSubChannelHypeTrainContribution } from './events/common/EventSubChannelHypeTrainContribution';
 export type { EventSubChannelHypeTrainContributionType } from './events/common/EventSubChannelHypeTrainContribution.external';
+export type { EventSubChannelHypeTrainType } from './events/common/EventSubChannelHypeTrainType';
+export { EventSubChannelHypeTrainSharedParticipant } from './events/common/EventSubChannelHypeTrainSharedParticipant';
 export { EventSubChannelPollBeginChoice } from './events/common/EventSubChannelPollBeginChoice';
 export { EventSubChannelPollChoice } from './events/common/EventSubChannelPollChoice';
 export { EventSubChannelPredictionBeginOutcome } from './events/common/EventSubChannelPredictionBeginOutcome';
