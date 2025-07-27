@@ -1197,6 +1197,66 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent the beginning of a Hype Train event in a channel.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to Hype train begin events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelHypeTrainBeginV2Events(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.hype_train.begin',
+			'2',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['channel:read:hype_train'],
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent progress towards the Hype Train goal.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to Hype Train progress events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelHypeTrainProgressV2Events(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.hype_train.progress',
+			'2',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['channel:read:hype_train'],
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent the end of a Hype Train event.
+	 *
+	 * @param broadcaster The broadcaster for which you want to listen to Hype Train end events.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelHypeTrainEndV2Events(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.hype_train.end',
+			'2',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['channel:read:hype_train'],
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a broadcaster shouting out another broadcaster.
 	 *
 	 * @param broadcaster The broadcaster for which you want to listen to outgoing shoutout events.
@@ -1955,6 +2015,27 @@ export class HelixEventSubApi extends BaseApi {
 			createEventSubBroadcasterCondition(broadcasterId),
 			transport,
 			broadcasterId,
+		);
+	}
+
+	/**
+	 * Subscribes to events indicating that bits are used in a channel.
+	 *
+	 * @param broadcaster The broadcaster for whom you want to listen to bits usage events.
+	 * @param transport The transport options to use for the subscription.
+	 */
+	async subscribeToChannelBitsUseEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		const broadcasterId = extractUserId(broadcaster);
+		return await this.createSubscription(
+			'channel.bits.use',
+			'1',
+			createEventSubBroadcasterCondition(broadcasterId),
+			transport,
+			broadcasterId,
+			['bits:read'],
 		);
 	}
 
