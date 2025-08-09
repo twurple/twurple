@@ -1,9 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import { type EventSubListener } from '@twurple/eventsub-base';
-import { defaultOnError, type NextFunction, type Request, type Response, Server } from 'httpanda';
 import { type ConnectionAdapter } from './adapters/ConnectionAdapter';
 import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase';
+import { H3, onError, onResponse } from 'h3';
+import { type Server } from 'srvx';
 
 /**
  * Certificate data used to make the listener server SSL capable.
@@ -64,52 +65,43 @@ export class EventSubHttpListener extends EventSubHttpBase implements EventSubLi
 		if (this._server) {
 			throw new Error('Trying to start while already running');
 		}
-		const server = this._adapter.createHttpServer();
-		this._server = new Server({
-			server,
-			onError: async (e, req: Request, res: Response, next: NextFunction) => {
-				// eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-				if (e.code === 404 && !(await this._isHostDenied(req))) {
-					this._logger.warn(`Access to unknown URL/method attempted: ${req.method!} ${req.url!}`);
-				}
-				defaultOnError(e, req, res, next);
-			},
-		});
-		// needs to be first in chain but run last, for proper logging of status
-		this._server.use((req, res, next) => {
-			setImmediate(() => {
-				this._logger.debug(`${req.method!} ${req.path} - ${res.statusCode}`);
-			});
-			next();
-		});
+		const app = new H3()
+			.use(this._isHostDenied)
+			.use(
+				onError((error, event) => {
+					if (error.status === 404) {
+						this._logger.warn(
+							`Access to unknown URL/method attempted: ${event.req.method} ${event.url.pathname}`,
+						);
+					}
+				}),
+			)
+			.use(
+				onResponse((response, event) =>
+					this._logger.debug(`${event.req.method} ${event.url.pathname} - ${response.status}`),
+				),
+			)
+			.post('/event/:id', this._createHandleRequest())
+			.post('/:id', this._createDropLegacyRequest());
+
+		if (this._helperRoutes) {
+			app.get('/', this._createHandleHealthRequest());
+		}
+
 		let requestPathPrefix: string | undefined = undefined;
 		if (this._adapter.usePathPrefixInHandlers) {
 			requestPathPrefix = this._adapter.pathPrefix;
 			requestPathPrefix &&= `/${requestPathPrefix.replace(/^\/|\/$/g, '')}`;
 		}
 
-		const healthHandler = this._createHandleHealthRequest();
-		const dropLegacyHandler = this._createDropLegacyRequest();
-		const requestHandler = this._createHandleRequest();
-
-		if (requestPathPrefix) {
-			this._server.post(`${requestPathPrefix}/event/:id`, requestHandler);
-			this._server.post(`${requestPathPrefix}/:id`, dropLegacyHandler);
-			if (this._helperRoutes) {
-				this._server.get(`${requestPathPrefix}`, healthHandler);
-			}
-		} else {
-			this._server.post('/event/:id', requestHandler);
-			this._server.post('/:id', dropLegacyHandler);
-			if (this._helperRoutes) {
-				this._server.get('/', healthHandler);
-			}
-		}
+		const prefixedApp = requestPathPrefix ? new H3().mount(requestPathPrefix, app) : app;
 
 		const adapterListenerPort = this._adapter.listenerPort;
 		const listenerPort = adapterListenerPort ?? 443;
+
+		this._server = this._adapter.createHttpServer(prefixedApp, listenerPort);
 		this._server
-			.listen(listenerPort)
+			.ready()
 			.then(async () => {
 				this._logger.info(`Listening on port ${listenerPort}`);
 				await this._resumeExistingSubscriptions();

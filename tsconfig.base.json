@@ -3,7 +3,7 @@
 		"composite": true,
 		"module": "commonjs",
 		"target": "es2019",
-		"lib": ["es2019", "es2021.promise", "es2022.error"],
+		"lib": ["dom", "es2019", "es2021.promise", "es2022.error"],
 		"moduleResolution": "node",
 		"declaration": true,
 		"forceConsistentCasingInFileNames": true,

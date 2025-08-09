@@ -42,8 +42,10 @@
     "@twurple/common": "7.4.0",
     "@twurple/eventsub-base": "7.4.0",
     "@types/express-serve-static-core": "^4.17.24",
+    "h3": "^2.0.0-beta.3",
     "httpanda": "^0.4.6",
-    "tslib": "^2.0.3"
+    "tslib": "^2.0.3",
+    "srvx": "^0.8.5"
   },
   "devDependencies": {
     "@twurple/api": "7.4.0"

@@ -1,4 +1,5 @@
-import * as http from 'http';
+import {type Server, serve} from 'srvx';
+import { type H3 } from 'h3';
 
 /**
  * An abstraction of a WebHook connection adapter.
@@ -7,10 +8,15 @@ export abstract class ConnectionAdapter {
 	/**
 	 * Creates the HTTP server to use for listening to events.
 	 *
+	 * @param app
+	 * @param port
 	 * @protected
 	 */
-	createHttpServer(): http.Server {
-		return http.createServer();
+	createHttpServer(app: H3, port: number): Server {
+		return serve({
+			fetch: app.fetch,
+			port,
+		})
 	}
 
 	/**
