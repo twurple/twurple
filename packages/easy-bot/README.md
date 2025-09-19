@@ -18,20 +18,21 @@ or using npm:
 
 ```typescript
 import { Bot, createBotCommand } from '@twurple/easy-bot';
+import { StaticAuthProvider } from '@twurple/auth';
 
-const bot = new Bot(null, {
-	authProvider,
+const bot = new Bot({
+	authProvider:  new StaticAuthProvider("clientId", "accessToken"),
 	channel: 'satisfiedpear',
 	commands: [
-		createBotCommand('d20', async (params, { user, say, timeout }) => {
+		createBotCommand('d20', async (params, { userName, say, timeout }) => {
 			const diceRoll = Math.floor(Math.random() * 20) + 1;
 			if (diceRoll === 1) {
-				await say(`@${user} rolled a critical failure and must be punished!`);
+				await say(`@${userName} rolled a critical failure and must be punished!`);
 				await timeout(30, 'critical failure');
 			} else if (diceRoll === 20) {
-				await say(`Woah, critical success! @${user} deserves all the praise!`);
+				await say(`Woah, critical success! @${userName} deserves all the praise!`);
 			} else {
-				await say(`@${user} rolled a ${diceRoll}!`);
+				await say(`@${userName} rolled a ${diceRoll}!`);
 			}
 		})
 	]
