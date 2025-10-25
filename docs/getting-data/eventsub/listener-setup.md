@@ -2,7 +2,16 @@
 
 This section assumes that you have prepared [authentication](/docs/auth/).
 
+In addition to this, the Twitch EventSub API is restricted
+in that it is only possible to subscribe to events coming from a channel if you are authenticated as that channel's broadcaster.
+In other words, even though events like "user A subscribed to channel B" are visible on the Twitch website by any account,
+receiving it as an EventSub update requires an authentication as the B Twitch account.
+Some accesses, such as refunding a channel point reward redemption (which, on the Twitch website, can be done by a moderator),
+have additional restrictions, in addition to being only accessible when authenticated as the broadcaster.
+
 :::
+
+EventSub listeners come in two implementation flavors : the heavier HTTP(S) which requires you to create a server, and the lighter WebSocket which does not.
 
 ## Setting up an HTTP EventSub listener
 
