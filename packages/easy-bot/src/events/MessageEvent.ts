@@ -99,6 +99,13 @@ export class MessageEvent {
 	}
 
 	/**
+	 * The number of bits that have been cheered in the message.
+	 */
+	get bits(): number {
+		return this._msg.bits;
+	}
+
+	/**
 	 * Replies to the message.
 	 *
 	 * @param text The text to send as a reply.
