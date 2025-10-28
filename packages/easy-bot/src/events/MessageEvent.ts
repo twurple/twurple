@@ -99,7 +99,7 @@ export class MessageEvent {
 	}
 
 	/**
-	 * The number of bits that have been cheered in the message.
+	 * The number of bits cheered with the message.
 	 */
 	get bits(): number {
 		return this._msg.bits;
