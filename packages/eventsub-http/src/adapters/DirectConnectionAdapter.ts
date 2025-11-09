@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
-import type * as http from 'http';
-import * as https from 'https';
+import {type Server, serve} from 'srvx';
+import { type H3 } from 'h3';
 import { checkHostName } from '../checks';
 import type { EventSubHttpListenerCertificateConfig } from '../EventSubHttpListener';
 import { ConnectionAdapter } from './ConnectionAdapter';
@@ -34,7 +34,7 @@ export interface DirectConnectionAdapterConfig {
 export class DirectConnectionAdapter extends ConnectionAdapter {
 	private readonly _hostName: string;
 	/** @internal */ @Enumerable(false) private _ssl: EventSubHttpListenerCertificateConfig;
-	/** @internal */ @Enumerable(false) private _httpsServer?: https.Server;
+	/** @internal */ @Enumerable(false) private _server?: Server;
 
 	/**
 	 * Creates a new simple WebHook adapter.
@@ -61,15 +61,24 @@ export class DirectConnectionAdapter extends ConnectionAdapter {
 	 */
 	updateSslCertificate(ssl: EventSubHttpListenerCertificateConfig): void {
 		this._ssl = ssl;
-		this._httpsServer?.setSecureContext(ssl);
+		// this._httpsServer?.setSecureContext(ssl); TODO re-add this
 	}
 
-	/** @protected */
-	createHttpServer(): http.Server {
-		return (this._httpsServer = https.createServer({
-			key: this._ssl.key,
-			cert: this._ssl.cert,
-		}));
+	/**
+	 * @param app
+	 * @param port
+	 * @protected
+	 */
+	createHttpServer(app: H3, port: number): Server {
+		this._server = serve({
+			fetch: app.fetch,
+			port,
+			tls: {
+				key: this._ssl.key,
+				cert: this._ssl.cert,
+			}
+		})
+		return this._server;
 	}
 
 	/** @protected */
