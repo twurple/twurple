@@ -20,8 +20,19 @@ export class EventSubChannelChatAnnouncementNotificationEvent extends EventSubCh
 
 	/**
 	 * The color of the announcement.
+	 *
+	 * @deprecated Use `announcementColor` instead.
+	 * In the next major release, this property will not override the base `color` property anymore.
+	 * As such, you will be able to use `color` to get the chat color of the user again.
 	 */
 	get color(): EventSubChannelChatAnnouncementColor {
+		return this[rawDataSymbol].announcement.color;
+	}
+
+	/**
+	 * The color of the announcement.
+	 */
+	get announcementColor(): EventSubChannelChatAnnouncementColor {
 		return this[rawDataSymbol].announcement.color;
 	}
 }
