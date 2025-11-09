@@ -42,7 +42,7 @@ export class HelixPaginatedRequest<D, T> {
 	/**
 	 * The last fetched page of data associated to the requested resource.
 	 *
-	 * Only works with {@link HelixPaginatedRequest#getNext}} and not with any other methods of data fetching.
+	 * Only works with {@link HelixPaginatedRequest#getNext} and not with any other methods of data fetching.
 	 */
 	get current(): D[] | undefined {
 		return this._currentData?.data;

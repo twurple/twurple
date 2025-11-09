@@ -1,6 +1,4 @@
-// import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-// import type { BaseApiClient } from '../../client/BaseApiClient';
 import {
 	type HelixEventSubConduitShardData,
 	type HelixEventSubSubscriptionStatus,
