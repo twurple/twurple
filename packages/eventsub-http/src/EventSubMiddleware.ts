@@ -1,7 +1,8 @@
 import { rtfm } from '@twurple/common';
-import type { IRouter, RequestHandler } from 'express-serve-static-core';
+import type { IRouter } from 'express-serve-static-core';
 import { checkHostName } from './checks';
 import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase';
+import { H3, toNodeHandler } from 'h3';
 
 /**
  * The configuration of the EventSub middleware.
@@ -66,27 +67,27 @@ export class EventSubMiddleware extends EventSubHttpBase {
 	 * @param router The app or router the middleware should be applied to.
 	 */
 	apply(router: IRouter): void {
+		const prefixedApp = this.getApp();
+		router.use(toNodeHandler(prefixedApp));
+	}
+
+	getApp(): H3 {
 		let requestPathPrefix: string | undefined = undefined;
 		if (this._usePathPrefixInHandlers) {
 			requestPathPrefix = this._pathPrefix;
 			requestPathPrefix &&= `/${requestPathPrefix.replace(/^\/|\/$/g, '')}`;
 		}
-		const requestHandler = this._createHandleRequest() as unknown as RequestHandler;
-		const dropLegacyHandler = this._createDropLegacyRequest() as unknown as RequestHandler;
-		const healthHandler = this._createHandleHealthRequest() as unknown as RequestHandler;
-		if (requestPathPrefix) {
-			router.post(`${requestPathPrefix}/event/:id`, requestHandler);
-			router.post(`${requestPathPrefix}/:id`, dropLegacyHandler);
-			if (this._helperRoutes) {
-				router.get(`${requestPathPrefix}`, healthHandler);
-			}
-		} else {
-			router.post('event/:id', requestHandler);
-			router.post(':id', dropLegacyHandler);
-			if (this._helperRoutes) {
-				router.get('/', healthHandler);
-			}
+
+		const app = new H3()
+			.use(this._isHostDenied)
+			.post('/event/:id', this._createHandleRequest())
+			.post('/:id', this._createDropLegacyRequest());
+
+		if (this._helperRoutes) {
+			app.get('/', this._createHandleHealthRequest());
 		}
+
+		return requestPathPrefix ? new H3().mount(requestPathPrefix, app) : app;
 	}
 
 	/**
