@@ -14,7 +14,7 @@ import { type EventSubChannelChatCharityDonationNotificationEventData } from './
 export class EventSubChannelChatCharityDonationNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatCharityDonationNotificationEventData;
 
-	readonly type = 'charity_donation';
+	readonly type = 'charity_donation' as const;
 
 	/**
 	 * The name of the charity that was donated to.

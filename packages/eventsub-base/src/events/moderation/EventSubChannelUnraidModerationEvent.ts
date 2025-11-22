@@ -1,7 +1,7 @@
+import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelUnraidModerationEventData } from './EventSubChannelModerationEvent.external';
-import type { HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator canceling the raid on a channel.
@@ -10,7 +10,7 @@ import type { HelixUser } from '@twurple/api';
 export class EventSubChannelUnraidModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelUnraidModerationEventData;
 
-	override readonly moderationAction = 'unraid';
+	override readonly moderationAction = 'unraid' as const;
 
 	/**
 	 * The ID of the user no longer being raided.

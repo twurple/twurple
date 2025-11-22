@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"composite": true,
-		"module": "commonjs",
+		"module": "es2022",
 		"target": "es2022",
 		"lib": ["es2022"],
 		"moduleResolution": "node",
@@ -17,5 +17,5 @@
 		"declarationMap": true,
 		"stripInternal": true
 	},
-	"exclude": ["node_modules", "lib", "es"]
+	"exclude": ["node_modules", "lib"]
 }

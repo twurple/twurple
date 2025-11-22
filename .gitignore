@@ -14,7 +14,6 @@ node_modules
 
 # Build outputs
 generatedDocs
-/packages/*/es
 /packages/*/lib
 /packages/*/docs.json
 /docs*.json

@@ -1,4 +1,4 @@
-import { stringify } from '@d-fischer/qs';
+import { stringify } from 'qs';
 import { handleTwitchApiResponseError, transformTwitchApiResponse } from './helpers/transform';
 import { getTwitchApiUrl } from './helpers/url';
 import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchApiCallOptions';

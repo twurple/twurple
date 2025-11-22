@@ -6,5 +6,5 @@ import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerat
  */
 @rtfm<EventSubChannelClearModerationEvent>('eventsub-base', 'EventSubChannelClearModerationEvent', 'broadcasterId')
 export class EventSubChannelClearModerationEvent extends EventSubChannelBaseModerationEvent {
-	override readonly moderationAction = 'clear';
+	override readonly moderationAction = 'clear' as const;
 }

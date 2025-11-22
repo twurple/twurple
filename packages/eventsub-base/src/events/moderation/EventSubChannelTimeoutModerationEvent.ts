@@ -1,7 +1,7 @@
+import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelTimeoutModerationEventData } from './EventSubChannelModerationEvent.external';
-import type { HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator timing out a user on a channel.
@@ -10,7 +10,7 @@ import type { HelixUser } from '@twurple/api';
 export class EventSubChannelTimeoutModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelTimeoutModerationEventData;
 
-	override readonly moderationAction = 'timeout';
+	override readonly moderationAction = 'timeout' as const;
 
 	/**
 	 * The ID of the user being timed out.

@@ -9,7 +9,7 @@ import { type EventSubChannelSlowModerationEventData } from './EventSubChannelMo
 export class EventSubChannelSlowModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelSlowModerationEventData;
 
-	override readonly moderationAction = 'slow';
+	override readonly moderationAction = 'slow' as const;
 
 	/**
 	 * The amount of time, in seconds, that users need to wait between sending messages.

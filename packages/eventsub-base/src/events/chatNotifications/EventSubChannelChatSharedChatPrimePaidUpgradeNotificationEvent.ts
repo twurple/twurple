@@ -17,7 +17,7 @@ import {
 export class EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEventData;
 
-	readonly type = 'shared_chat_prime_paid_upgrade';
+	readonly type = 'shared_chat_prime_paid_upgrade' as const;
 
 	get tier(): EventSubChannelChatNotificationSubTier {
 		return this[rawDataSymbol].shared_chat_prime_paid_upgrade.sub_tier;

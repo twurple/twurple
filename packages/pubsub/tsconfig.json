@@ -16,5 +16,5 @@
 			"path": "../common"
 		}
 	],
-	"exclude": ["node_modules", "lib", "es"]
+	"exclude": ["node_modules", "lib"]
 }

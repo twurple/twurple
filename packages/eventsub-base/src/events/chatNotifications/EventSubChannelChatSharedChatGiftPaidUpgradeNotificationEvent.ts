@@ -16,7 +16,7 @@ import { type EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEventData 
 export class EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEventData;
 
-	readonly type = 'shared_chat_gift_paid_upgrade';
+	readonly type = 'shared_chat_gift_paid_upgrade' as const;
 
 	/**
 	 * Whether the original gifter is anonymous.

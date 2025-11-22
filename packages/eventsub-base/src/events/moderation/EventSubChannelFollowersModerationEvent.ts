@@ -13,7 +13,7 @@ import { type EventSubChannelFollowersModerationEventData } from './EventSubChan
 export class EventSubChannelFollowersModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelFollowersModerationEventData;
 
-	override readonly moderationAction = 'followers';
+	override readonly moderationAction = 'followers' as const;
 
 	/**
 	 * The length of time, in minutes, that the followers must have followed the broadcaster to participate in

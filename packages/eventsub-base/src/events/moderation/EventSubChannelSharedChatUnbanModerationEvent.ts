@@ -1,7 +1,7 @@
+import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelSharedChatUnbanModerationEventData } from './EventSubChannelModerationEvent.external';
-import type { HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator unbanning a user in another channel during a shared chat session.
@@ -14,7 +14,7 @@ import type { HelixUser } from '@twurple/api';
 export class EventSubChannelSharedChatUnbanModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelSharedChatUnbanModerationEventData;
 
-	override readonly moderationAction = 'shared_chat_unban';
+	override readonly moderationAction = 'shared_chat_unban' as const;
 
 	/**
 	 * The ID of the user being unbanned.

@@ -14,7 +14,7 @@ import { type EventSubChannelChatRaidNotificationEventData } from './EventSubCha
 export class EventSubChannelChatRaidNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatRaidNotificationEventData;
 
-	readonly type = 'raid';
+	readonly type = 'raid' as const;
 
 	/**
 	 * The ID of the user that raided the channel.

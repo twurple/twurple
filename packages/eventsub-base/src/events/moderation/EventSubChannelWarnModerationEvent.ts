@@ -1,7 +1,7 @@
+import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelWarnModerationEventData } from './EventSubChannelModerationEvent.external';
-import type { HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator warning a user in a channel.
@@ -10,7 +10,7 @@ import type { HelixUser } from '@twurple/api';
 export class EventSubChannelWarnModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelWarnModerationEventData;
 
-	override readonly moderationAction = 'warn';
+	override readonly moderationAction = 'warn' as const;
 
 	/**
 	 * The ID of the user being warned.

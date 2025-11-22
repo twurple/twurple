@@ -9,7 +9,7 @@ import { type EventSubChannelModModerationEventData } from './EventSubChannelMod
 export class EventSubChannelModModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelModModerationEventData;
 
-	override readonly moderationAction = 'mod';
+	override readonly moderationAction = 'mod' as const;
 
 	/**
 	 * The ID of the user gaining mod status.

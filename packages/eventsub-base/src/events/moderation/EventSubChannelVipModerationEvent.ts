@@ -1,7 +1,7 @@
+import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelVipModerationEventData } from './EventSubChannelModerationEvent.external';
-import type { HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a user having gained VIP status on a channel.
@@ -10,7 +10,7 @@ import type { HelixUser } from '@twurple/api';
 export class EventSubChannelVipModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelVipModerationEventData;
 
-	override readonly moderationAction = 'vip';
+	override readonly moderationAction = 'vip' as const;
 
 	/**
 	 * The ID of the user gaining VIP status.

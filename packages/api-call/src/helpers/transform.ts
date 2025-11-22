@@ -1,4 +1,4 @@
-import { stringify } from '@d-fischer/qs';
+import { stringify } from 'qs';
 import { HttpStatusCodeError } from '../errors/HttpStatusCodeError';
 import type { TwitchApiCallOptions } from '../TwitchApiCallOptions';
 

@@ -1,7 +1,7 @@
+import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelUnbanModerationEventData } from './EventSubChannelModerationEvent.external';
-import type { HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator unbanning a user on a channel.
@@ -10,7 +10,7 @@ import type { HelixUser } from '@twurple/api';
 export class EventSubChannelUnbanModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelUnbanModerationEventData;
 
-	override readonly moderationAction = 'unban';
+	override readonly moderationAction = 'unban' as const;
 
 	/**
 	 * The ID of the user being unbanned.

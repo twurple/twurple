@@ -18,7 +18,7 @@ import {
 export class EventSubChannelChatResubNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatResubNotificationEventData;
 
-	readonly type = 'resub';
+	readonly type = 'resub' as const;
 
 	/**
 	 * The tier of the subscription.

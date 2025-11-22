@@ -21,7 +21,7 @@ jobs:
       - run: yarn run lint
       - run: yarn run prettier:check
       - name: Archive build assets
-        run: tar cvf build-result.tar packages/*/lib packages/*/es node_modules/.cache/tsukuru
+        run: tar cvf build-result.tar packages/*/lib node_modules/.cache/tsukuru
       - name: Save build assets
         uses: actions/upload-artifact@v4
         with:

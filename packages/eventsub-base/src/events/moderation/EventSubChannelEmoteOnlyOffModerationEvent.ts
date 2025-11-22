@@ -10,5 +10,5 @@ import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerat
 	'broadcasterId',
 )
 export class EventSubChannelEmoteOnlyOffModerationEvent extends EventSubChannelBaseModerationEvent {
-	override readonly moderationAction = 'emoteonlyoff';
+	override readonly moderationAction = 'emoteonlyoff' as const;
 }

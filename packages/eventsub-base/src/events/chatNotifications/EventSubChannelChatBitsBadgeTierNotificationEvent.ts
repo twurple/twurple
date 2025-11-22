@@ -13,7 +13,7 @@ import { type EventSubChannelChatBitsBadgeTierNotificationEventData } from './Ev
 export class EventSubChannelChatBitsBadgeTierNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatBitsBadgeTierNotificationEventData;
 
-	readonly type = 'bits_badge_tier';
+	readonly type = 'bits_badge_tier' as const;
 
 	/**
 	 * The new bits badge tier that was just reached.

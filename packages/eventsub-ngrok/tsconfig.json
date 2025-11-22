@@ -24,5 +24,5 @@
 			"path": "../eventsub-http"
 		}
 	],
-	"exclude": ["node_modules", "lib", "es"]
+	"exclude": ["node_modules", "lib"]
 }

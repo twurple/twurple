@@ -1,10 +1,10 @@
+import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelUntimeoutModerationEventData } from './EventSubChannelModerationEvent.external';
-import type { HelixUser } from '@twurple/api';
 
 /**
- * An EventSub event representing a moderator untimming out a user on a channel.
+ * An EventSub event representing a moderator removing a timeout from a user on a channel.
  */
 @rtfm<EventSubChannelUntimeoutModerationEvent>(
 	'eventsub-base',
@@ -14,7 +14,7 @@ import type { HelixUser } from '@twurple/api';
 export class EventSubChannelUntimeoutModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelUntimeoutModerationEventData;
 
-	override readonly moderationAction = 'untimeout';
+	override readonly moderationAction = 'untimeout' as const;
 
 	/**
 	 * The ID of the user being untimed out.

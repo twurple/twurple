@@ -15,7 +15,7 @@ import { type EventSubChannelChatPayItForwardNotificationEventData } from './Eve
 export class EventSubChannelChatPayItForwardNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatPayItForwardNotificationEventData;
 
-	readonly type = 'pay_it_forward';
+	readonly type = 'pay_it_forward' as const;
 
 	/**
 	 * Whether the original gifter is anonymous.

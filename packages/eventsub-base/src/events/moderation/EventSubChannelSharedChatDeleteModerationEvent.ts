@@ -1,7 +1,7 @@
+import { type HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelSharedChatDeleteModerationEventData } from './EventSubChannelModerationEvent.external';
-import { type HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator deleting a message in another channel during a shared chat session.
@@ -14,7 +14,7 @@ import { type HelixUser } from '@twurple/api';
 export class EventSubChannelSharedChatDeleteModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelSharedChatDeleteModerationEventData;
 
-	override readonly moderationAction = 'shared_chat_delete';
+	override readonly moderationAction = 'shared_chat_delete' as const;
 
 	/**
 	 * The ID of the user whose message is being deleted.

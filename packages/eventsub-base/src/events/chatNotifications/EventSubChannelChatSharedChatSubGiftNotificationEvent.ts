@@ -17,7 +17,7 @@ import {
 export class EventSubChannelChatSharedChatSubGiftNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatSharedChatSubGiftNotificationEventData;
 
-	readonly type = 'shared_chat_sub_gift';
+	readonly type = 'shared_chat_sub_gift' as const;
 
 	/**
 	 * The tier of the subscription.

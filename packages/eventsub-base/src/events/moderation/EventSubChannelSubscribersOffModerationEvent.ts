@@ -10,5 +10,5 @@ import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerat
 	'broadcasterId',
 )
 export class EventSubChannelSubscribersOffModerationEvent extends EventSubChannelBaseModerationEvent {
-	override readonly moderationAction = 'subscribersoff';
+	override readonly moderationAction = 'subscribersoff' as const;
 }

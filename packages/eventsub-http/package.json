@@ -20,8 +20,7 @@
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
-      "require": "./lib/index.js",
-      "import": "./es/index.mjs"
+      "import": "./lib/index.js"
     }
   },
   "repository": {
@@ -35,7 +34,6 @@
   "license": "MIT",
   "dependencies": {
     "@d-fischer/logger": "^4.2.1",
-    "@d-fischer/raw-body": "^2.4.3",
     "@d-fischer/shared-utils": "^3.6.1",
     "@d-fischer/typed-event-emitter": "^3.3.0",
     "@twurple/auth": "7.4.0",
@@ -43,6 +41,7 @@
     "@twurple/eventsub-base": "7.4.0",
     "@types/express-serve-static-core": "^4.17.24",
     "httpanda": "^0.4.6",
+    "raw-body": "^3.0.2",
     "tslib": "^2.0.3"
   },
   "devDependencies": {
@@ -55,9 +54,6 @@
     "LICENSE",
     "README.md",
     "lib",
-    "!lib/**/*.d.ts.map",
-    "es",
-    "!es/**/*.d.ts",
-    "!es/**/*.d.ts.map"
+    "!lib/**/*.d.ts.map"
   ]
 }

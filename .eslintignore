@@ -1,5 +1,4 @@
 node_modules
-/packages/*/es
 /packages/*/lib
 *.tsbuildinfo
 .eslintrc.js

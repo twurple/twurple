@@ -1,4 +1,3 @@
-import getRawBody from '@d-fischer/raw-body';
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixEventSubSubscription, HelixEventSubWebHookTransportOptions } from '@twurple/api';
 import {
@@ -11,6 +10,7 @@ import {
 } from '@twurple/eventsub-base';
 import * as crypto from 'crypto';
 import type { Request, RequestHandler } from 'httpanda';
+import * as getRawBody from 'raw-body';
 
 /** @private */
 export interface EventSubVerificationPayload {

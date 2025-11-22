@@ -16,7 +16,7 @@ import {
 export class EventSubChannelChatPrimePaidUpgradeNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatPrimePaidUpgradeNotificationEventData;
 
-	readonly type = 'prime_paid_upgrade';
+	readonly type = 'prime_paid_upgrade' as const;
 
 	get tier(): EventSubChannelChatNotificationSubTier {
 		return this[rawDataSymbol].prime_paid_upgrade.sub_tier;

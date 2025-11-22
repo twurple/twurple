@@ -1,7 +1,7 @@
+import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelSharedChatBanModerationEventData } from './EventSubChannelModerationEvent.external';
-import type { HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator banning a user in another channel during a shared chat session.
@@ -14,7 +14,7 @@ import type { HelixUser } from '@twurple/api';
 export class EventSubChannelSharedChatBanModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelSharedChatBanModerationEventData;
 
-	override readonly moderationAction = 'shared_chat_ban';
+	override readonly moderationAction = 'shared_chat_ban' as const;
 
 	/**
 	 * The ID of the user being banned.

@@ -19,8 +19,7 @@
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
-      "require": "./lib/index.js",
-      "import": "./es/index.mjs"
+      "import": "./lib/index.js"
     }
   },
   "repository": {
@@ -44,8 +43,7 @@
     "tslib": "^2.0.3"
   },
   "devDependencies": {
-    "@twurple/auth": "7.4.0",
-    "@types/jest": "^29.2.3"
+    "@twurple/auth": "7.4.0"
   },
   "peerDependencies": {
     "@twurple/auth": "7.4.0"
@@ -54,9 +52,6 @@
     "LICENSE",
     "README.md",
     "lib",
-    "!lib/**/*.d.ts.map",
-    "es",
-    "!es/**/*.d.ts",
-    "!es/**/*.d.ts.map"
+    "!lib/**/*.d.ts.map"
   ]
 }

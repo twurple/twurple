@@ -1,7 +1,7 @@
+import { type HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
 import { type EventSubChannelDeleteModerationEventData } from './EventSubChannelModerationEvent.external';
-import { type HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator deleting a message on a channel.
@@ -10,7 +10,7 @@ import { type HelixUser } from '@twurple/api';
 export class EventSubChannelDeleteModerationEvent extends EventSubChannelBaseModerationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelDeleteModerationEventData;
 
-	override readonly moderationAction = 'delete';
+	override readonly moderationAction = 'delete' as const;
 
 	/**
 	 * The ID of the user whose message is being deleted.

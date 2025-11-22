@@ -13,5 +13,5 @@ import { type EventSubChannelChatUnraidNotificationEventData } from './EventSubC
 export class EventSubChannelChatUnraidNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatUnraidNotificationEventData;
 
-	readonly type = 'unraid';
+	readonly type = 'unraid' as const;
 }

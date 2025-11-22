@@ -17,7 +17,7 @@ import {
 export class EventSubChannelChatSharedChatAnnouncementNotificationEvent extends EventSubChannelChatBaseNotificationEvent {
 	/** @internal */ declare readonly [rawDataSymbol]: EventSubChannelChatSharedChatAnnouncementNotificationEventData;
 
-	readonly type = 'shared_chat_announcement';
+	readonly type = 'shared_chat_announcement' as const;
 
 	/**
 	 * The color of the announcement.

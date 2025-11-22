@@ -16,5 +16,5 @@
 			"path": "../common"
 		}
 	],
-	"exclude": ["node_modules", "lib", "es", "src/**/__tests__"]
+	"exclude": ["node_modules", "lib", "src/**/__tests__"]
 }
