@@ -20,31 +20,35 @@ export class EventSubChannelSubscriptionGiftEvent extends DataObject<EventSubCha
 	}
 
 	/**
-	 * The ID of the gifting user.
+	 * The ID of the gifting user, or `null` if the gifter was anonymous.
 	 */
-	get gifterId(): string {
+	get gifterId(): string | null {
 		return this[rawDataSymbol].user_id;
 	}
 
 	/**
-	 * The name of the gifting user.
+	 * The name of the gifting user, or `null` if the gifter was anonymous.
 	 */
-	get gifterName(): string {
+	get gifterName(): string | null {
 		return this[rawDataSymbol].user_login;
 	}
 
 	/**
-	 * The display name of the gifting user.
+	 * The display name of the gifting user, or `null` if the gifter was anonymous.
 	 */
-	get gifterDisplayName(): string {
+	get gifterDisplayName(): string | null {
 		return this[rawDataSymbol].user_name;
 	}
 
 	/**
-	 * Gets more information about the gifting user.
+	 * Gets more information about the gifting user. Returns `null` if the gifter was anonymous.
 	 */
-	async getGifter(): Promise<HelixUser> {
-		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
+	async getGifter(): Promise<HelixUser | null> {
+		const userId = this[rawDataSymbol].user_id;
+		if (!userId) {
+			return null;
+		}
+		return checkRelationAssertion(await this._client.users.getUserById(userId));
 	}
 
 	/**

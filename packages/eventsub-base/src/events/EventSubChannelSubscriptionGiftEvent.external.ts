@@ -5,9 +5,9 @@ export type EventSubChannelSubscriptionGiftEventTier = '1000' | '2000' | '3000';
 
 /** @private */
 export interface EventSubChannelSubscriptionGiftEventData {
-	user_id: string;
-	user_login: string;
-	user_name: string;
+	user_id: string | null;
+	user_login: string | null;
+	user_name: string | null;
 	broadcaster_user_id: string;
 	broadcaster_user_login: string;
 	broadcaster_user_name: string;
