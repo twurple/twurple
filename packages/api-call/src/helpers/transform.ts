@@ -1,4 +1,3 @@
-import { type Response } from '@d-fischer/cross-fetch';
 import { stringify } from '@d-fischer/qs';
 import { HttpStatusCodeError } from '../errors/HttpStatusCodeError';
 import type { TwitchApiCallOptions } from '../TwitchApiCallOptions';

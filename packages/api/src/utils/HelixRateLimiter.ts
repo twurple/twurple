@@ -1,4 +1,3 @@
-import { type Response } from '@d-fischer/cross-fetch';
 import { type RateLimiterResponseParameters, ResponseBasedRateLimiter } from '@d-fischer/rate-limiter';
 import { callTwitchApiRaw } from '@twurple/api-call';
 import type { TwitchApiCallOptionsInternal } from '../client/ApiClient';

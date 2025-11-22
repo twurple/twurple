@@ -1,4 +1,3 @@
-import fetch, { Headers, type RequestInit, type Response } from '@d-fischer/cross-fetch';
 import { stringify } from '@d-fischer/qs';
 import { handleTwitchApiResponseError, transformTwitchApiResponse } from './helpers/transform';
 import { getTwitchApiUrl } from './helpers/url';
