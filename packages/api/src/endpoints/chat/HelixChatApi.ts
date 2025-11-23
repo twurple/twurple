@@ -1,5 +1,6 @@
 import { createBroadcasterQuery, type HelixPaginatedResponse, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
+import { ChatMessageDroppedError } from '../../errors/ChatMessageDroppedError';
 import {
 	createChatColorUpdateQuery,
 	createChatSettingsUpdateBody,
@@ -27,6 +28,10 @@ import {
 	type HelixUserEmotesFilter,
 } from '../../interfaces/endpoints/chat.input';
 import { createModeratorActionQuery, createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
+import {
+	createSharedChatSessionQuery,
+	type HelixSharedChatSessionData,
+} from '../../interfaces/endpoints/shared-chat-session.external';
 import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
 import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
 import {
@@ -43,14 +48,10 @@ import { HelixChatChatter } from './HelixChatChatter';
 import { HelixChatSettings } from './HelixChatSettings';
 import { HelixEmote } from './HelixEmote';
 import { HelixEmoteFromSet } from './HelixEmoteFromSet';
-import { HelixUserEmote } from './HelixUserEmote';
 import { HelixPrivilegedChatSettings } from './HelixPrivilegedChatSettings';
 import { HelixSentChatMessage } from './HelixSentChatMessage';
-import {
-	createSharedChatSessionQuery,
-	type HelixSharedChatSessionData,
-} from '../../interfaces/endpoints/shared-chat-session.external';
 import { HelixSharedChatSession } from './HelixSharedChatSession';
+import { HelixUserEmote } from './HelixUserEmote';
 
 /**
  * The Helix API methods that deal with chat.
@@ -359,7 +360,10 @@ export class HelixChatApi extends BaseApi {
 			jsonBody: createSendChatMessageBody(message, params),
 		});
 
-		return new HelixSentChatMessage(result.data[0]);
+		const msg = new HelixSentChatMessage(result.data[0]);
+		this._handleUnsentChatMessage(broadcasterId, msg);
+
+		return msg;
 	}
 
 	/**
@@ -395,9 +399,11 @@ export class HelixChatApi extends BaseApi {
 			jsonBody: createSendChatMessageAsAppBody(message, params),
 		});
 
-		return new HelixSentChatMessage(result.data[0]);
-	}
+		const msg = new HelixSentChatMessage(result.data[0]);
+		this._handleUnsentChatMessage(broadcasterId, msg);
 
+		return msg;
+	}
 	/**
 	 * Sends an announcement to a broadcaster's chat.
 	 *
@@ -538,5 +544,11 @@ export class HelixChatApi extends BaseApi {
 
 	private _createModeratorActionQuery(broadcasterId: string) {
 		return createModeratorActionQuery(broadcasterId, this._getUserContextIdWithDefault(broadcasterId));
+	}
+
+	private _handleUnsentChatMessage(broadcasterId: string, msg: HelixSentChatMessage) {
+		if (!msg.isSent) {
+			throw new ChatMessageDroppedError(broadcasterId, msg.dropReasonMessage, msg.dropReasonCode);
+		}
 	}
 }

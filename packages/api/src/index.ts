@@ -229,6 +229,7 @@ export type { HelixPaginatedVideoFilter, HelixVideoFilter } from './interfaces/e
 
 export { HelixWhisperApi } from './endpoints/whisper/HelixWhisperApi';
 
+export { ChatMessageDroppedError } from './errors/ChatMessageDroppedError';
 export { ConfigError } from './errors/ConfigError';
 export { StreamNotLiveError } from './errors/StreamNotLiveError';
 
