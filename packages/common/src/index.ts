@@ -1,5 +1,7 @@
 export { DataObject, getRawData, rawDataSymbol } from './DataObject';
 
+export { getMockApiPort } from './mockApiPort';
+
 export { checkRelationAssertion } from './relations';
 
 export { rtfm } from './rtfm';

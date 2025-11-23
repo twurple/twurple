@@ -38,13 +38,6 @@ export interface ApiConfig {
 	 * Defaults to 0 (executes immediately after all synchronous tasks are finished).
 	 */
 	batchDelay?: number;
-
-	/**
-	 * The port your local mock server (from the Twitch CLI) runs on.
-	 *
-	 * Do not set this if you want to use the real production Twitch API.
-	 */
-	mockServerPort?: number;
 }
 
 /** @private */
@@ -55,7 +48,6 @@ export interface TwitchApiCallOptionsInternal {
 	accessToken?: string;
 	authorizationType?: string;
 	fetchOptions?: TwitchApiCallFetchOptions;
-	mockServerPort?: number;
 }
 
 /**
@@ -95,16 +87,8 @@ export class ApiClient extends BaseApiClient {
 							accessToken,
 							authorizationType,
 							fetchOptions,
-							mockServerPort,
 						}: TwitchApiCallOptionsInternal) =>
-							await callTwitchApiRaw(
-								options,
-								clientId,
-								accessToken,
-								authorizationType,
-								fetchOptions,
-								mockServerPort,
-							),
+							await callTwitchApiRaw(options, clientId, accessToken, authorizationType, fetchOptions),
 						getPartitionKey: req => req.userId ?? null,
 				  }),
 		);

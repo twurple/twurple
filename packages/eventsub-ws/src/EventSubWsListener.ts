@@ -4,7 +4,7 @@ import {
 	type HelixEventSubWebSocketTransportOptions,
 	HellFreezesOverError,
 } from '@twurple/api';
-import { rtfm } from '@twurple/common';
+import { getMockApiPort, rtfm } from '@twurple/common';
 import {
 	EventSubBase,
 	type EventSubBaseConfig,
@@ -42,6 +42,7 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	private readonly _initialUrl: string;
 	private _accepting = false;
 	private readonly _loggerOptions?: Partial<LoggerOptions>;
+	private readonly _mockApiPort: string | null;
 
 	/**
 	 * Fires when a user socket has established a connection with the EventSub server.
@@ -68,8 +69,9 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	constructor(config: EventSubWsConfig) {
 		super(config);
 
-		this._initialUrl = this._apiClient._mockServerPort
-			? `ws://127.0.0.1:${this._apiClient._mockServerPort}/ws`
+		this._mockApiPort = getMockApiPort();
+		this._initialUrl = this._mockApiPort
+			? `ws://127.0.0.1:${this._mockApiPort}/ws`
 			: config.url ?? 'wss://eventsub.wss.twitch.tv/ws';
 		this._loggerOptions = config.logger;
 	}
@@ -105,10 +107,10 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 
 	/** @private */
 	async _getCliTestCommandForSubscription(subscription: EventSubSubscription): Promise<string> {
-		if (!this._apiClient._mockServerPort) {
+		if (!this._mockApiPort) {
 			throw new Error(`You must use the mock server from the Twitch CLI to be able to test WebSocket events.
 			
-To do so, specify the \`mockServerPort\` option in your \`ApiClient\`.`);
+To do so, set the \`TWURPLE_MOCK_API_PORT\` environment variable to the port the mock server runs on (usually 8080).`);
 		}
 		const { authUserId } = subscription;
 		if (!authUserId) {
