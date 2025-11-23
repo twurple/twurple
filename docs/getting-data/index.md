@@ -54,30 +54,30 @@ should use for which use case.
 
 ## Events
 
-| Event type                                  | `@twurple/chat`              | `@twurple/pubsub`         | `@twurple/eventsub-*` |
-|---------------------------------------------|------------------------------|---------------------------|-----------------------|
-| Chat messages                               | Yes                          | Sub & cheer messages only | Yes                   |
-| Chat mode (e.g. sub only) changes           | Yes                          | No                        | Yes                   |
-| Whispers                                    | Yes                          | Yes                       | Yes                   |
-| Cheers                                      | Yes                          | Yes                       | Yes                   |
-| Channel points                              | Redemptions w/ messages only | Redemptions only          | Yes                   |
-| Subscriptions                               | Published only               | Published only            | Yes                   |
-| AutoMod                                     | No                           | Yes                       | Yes                   |
-| Live / offline / stream changes             | No                           | No                        | Yes                   |
-| Follows                                     | No                           | No                        | Yes                   |
-| Raids                                       | Yes                          | No                        | Yes                   |
-| Bans                                        | Yes                          | Yes                       | Yes                   |
-| Mod add/remove                              | No                           | Yes                       | Yes                   |
-| VIP add/remove                              | No                           | No                        | Yes                   |
-| Polls & predictions                         | No                           | No                        | Yes                   |
-| Extension transactions                      | No                           | No                        | Yes                   |
-| Hype Trains                                 | No                           | No                        | Yes                   |
-| Authorization grant/revoke                  | No                           | No                        | Yes                   |
-| Drops                                       | No                           | No                        | Yes                   |
-| Charity campaigns & donations               | No                           | No                        | Yes                   |
-| Shield mode begin/end                       | No                           | No                        | Yes                   |
-| Unban request create                        | No                           | No                        | Yes                   |
-| Unban request resolve                       | No                           | Yes                       | Yes                   |
-| Suspicious (low-trust) users update/message | No                           | Yes                       | Yes                   |
-| Warnings                                    | No                           | No                        | Yes                   |
-| Moderation actions                          | No                           | Yes                       | Yes                   |
+| Event type                                  | `@twurple/chat`              | `@twurple/eventsub-*` |
+|---------------------------------------------|------------------------------|-----------------------|
+| Chat messages                               | Yes                          | Yes                   |
+| Chat mode (e.g. sub only) changes           | Yes                          | Yes                   |
+| Whispers                                    | Yes                          | Yes                   |
+| Cheers                                      | Yes                          | Yes                   |
+| Channel points                              | Redemptions w/ messages only | Yes                   |
+| Subscriptions                               | Published only               | Yes                   |
+| AutoMod                                     | No                           | Yes                   |
+| Live / offline / stream changes             | No                           | Yes                   |
+| Follows                                     | No                           | Yes                   |
+| Raids                                       | Yes                          | Yes                   |
+| Bans                                        | Yes                          | Yes                   |
+| Mod add/remove                              | No                           | Yes                   |
+| VIP add/remove                              | No                           | Yes                   |
+| Polls & predictions                         | No                           | Yes                   |
+| Extension transactions                      | No                           | Yes                   |
+| Hype Trains                                 | No                           | Yes                   |
+| Authorization grant/revoke                  | No                           | Yes                   |
+| Drops                                       | No                           | Yes                   |
+| Charity campaigns & donations               | No                           | Yes                   |
+| Shield mode begin/end                       | No                           | Yes                   |
+| Unban request create                        | No                           | Yes                   |
+| Unban request resolve                       | No                           | Yes                   |
+| Suspicious (low-trust) users update/message | No                           | Yes                   |
+| Warnings                                    | No                           | Yes                   |
+| Moderation actions                          | No                           | Yes                   |

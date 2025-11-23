@@ -18,7 +18,6 @@ All peer dependencies between the different packages are shown here:
 | `@twurple/chat`          | `@twurple/auth`                  |
 | `@twurple/eventsub-http` | `@twurple/auth`, `@twurple/api`  |
 | `@twurple/eventsub-ws`   | `@twurple/auth`, `@twurple/api`  |
-| `@twurple/pubsub`        | `@twurple/auth`                  |
 
 For example, to use EventSub over WebSockets, execute one of:
 ```bash

@@ -106,17 +106,6 @@
 					]
 				},
 				{
-					"name": "pubsub",
-					"title": "PubSub",
-					"articles": [
-						{
-							"name": "listening-to-topics",
-							"title": "Listening to PubSub topics",
-							"file": "getting-data/pubsub/listening-to-topics.md"
-						}
-					]
-				},
-				{
 					"name": "eventsub",
 					"title": "EventSub",
 					"articles": [

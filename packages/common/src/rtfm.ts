@@ -1,16 +1,7 @@
 import type { NoInfer } from '@d-fischer/shared-utils';
 
 /** @private */
-type PackageName =
-	| 'api'
-	| 'auth'
-	| 'chat'
-	| 'common'
-	| 'easy-bot'
-	| 'eventsub-base'
-	| 'eventsub-http'
-	| 'eventsub-ws'
-	| 'pubsub';
+type PackageName = 'api' | 'auth' | 'chat' | 'common' | 'easy-bot' | 'eventsub-base' | 'eventsub-http' | 'eventsub-ws';
 
 // Read The Fine Manual
 /** @private */

@@ -32,7 +32,6 @@ The mentioned `@twurple/auth` package only provides authentication functionality
 
 - [@twurple/api](https://npmjs.com/package/@twurple/api) - make calls to the Helix API
 - [@twurple/chat](https://npmjs.com/package/@twurple/chat) - connect to and interact with Twitch Chat
-- [@twurple/pubsub](https://npmjs.com/package/@twurple/pubsub) - listen to events using the Twitch PubSub interface
 - [@twurple/eventsub-http](https://npmjs.com/package/@twurple/eventsub-http) - listen to events using EventSub over HTTP/WebHooks
 - [@twurple/eventsub-ws](https://npmjs.com/package/@twurple/eventsub-ws) - listen to events using EventSub over WebSockets
 

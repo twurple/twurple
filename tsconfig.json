@@ -38,9 +38,6 @@
 		},
 		{
 			"path": "./packages/eventsub-ws"
-		},
-		{
-			"path": "./packages/pubsub"
 		}
 	],
 	"files": []
