@@ -24,18 +24,32 @@ export class HelixHypeTrainContribution extends DataObject<HelixHypeTrainContrib
 	 * The ID of the user contributing to the Hype Train.
 	 */
 	get userId(): string {
-		return this[rawDataSymbol].user;
+		return this[rawDataSymbol].user_id;
+	}
+
+	/**
+	 * The name of the user contributing to the Hype Train.
+	 */
+	get userName(): string {
+		return this[rawDataSymbol].user_login;
+	}
+
+	/**
+	 * The display name of the user contributing to the Hype Train.
+	 */
+	get userDisplayName(): string {
+		return this[rawDataSymbol].user_name;
 	}
 
 	/**
 	 * Gets additional information about the user contributing to the Hype Train.
 	 */
 	async getUser(): Promise<HelixUser> {
-		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user));
+		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
 	/**
-	 * The Hype Train event type.
+	 * The type of the Hype Train contribution.
 	 */
 	get type(): HelixHypeTrainContributionType {
 		return this[rawDataSymbol].type;

@@ -128,12 +128,12 @@ export { HelixGoal } from './endpoints/goals/HelixGoal';
 export type { HelixGoalType } from './interfaces/endpoints/goal.external';
 
 export { HelixHypeTrainApi } from './endpoints/hypeTrain/HelixHypeTrainApi';
+export { HelixHypeTrain } from './endpoints/hypeTrain/HelixHypeTrain';
+export { HelixHypeTrainAllTimeHigh } from './endpoints/hypeTrain/HelixHypeTrainAllTimeHigh';
 export { HelixHypeTrainContribution } from './endpoints/hypeTrain/HelixHypeTrainContribution';
-export { HelixHypeTrainEvent } from './endpoints/hypeTrain/HelixHypeTrainEvent';
-export type {
-	HelixHypeTrainContributionType,
-	HelixHypeTrainEventType,
-} from './interfaces/endpoints/hypeTrain.external';
+export { HelixHypeTrainSharedParticipant } from './endpoints/hypeTrain/HelixHypeTrainSharedParticipant';
+export { HelixHypeTrainStatus } from './endpoints/hypeTrain/HelixHypeTrainStatus';
+export type { HelixHypeTrainType, HelixHypeTrainContributionType } from './interfaces/endpoints/hypeTrain.external';
 
 export { HelixModerationApi } from './endpoints/moderation/HelixModerationApi';
 export { HelixBan } from './endpoints/moderation/HelixBan';
