@@ -10,7 +10,6 @@
   "devDependencies": {
     "@d-fischer/documen.ts": "^0.16.10",
     "@d-fischer/eslint-config": "^6.3.0",
-    "@types/jest": "^30.0.0",
     "@types/node": "^18.19.87",
     "@types/twitch-ext": "^1.24.4",
     "cross-env": "^7.0.3",
@@ -18,13 +17,11 @@
     "del-cli": "^7.0.0",
     "eslint": "^8.57.0",
     "husky": "^4.3.6",
-    "jest": "^30.2.0",
-    "jest-environment-node": "^30.2.0",
     "lint-staged": "^11.2.6",
     "prettier": "^2.2.1",
     "tmi.js": "^1.8.5",
-    "ts-jest": "^29.4.5",
-    "typescript": "~5.4.2"
+    "typescript": "~5.4.2",
+    "vitest": "^4.0.13"
   },
   "resolutions": {
     "@types/react": "^17"
@@ -37,7 +34,7 @@
     "rebuild": "yarn clean && yarn build",
     "clean": "del-cli packages/**/lib packages/**/*.tsbuildinfo",
     "docs": "documen.ts",
-    "test": "jest",
+    "test": "vitest",
     "preversion": "yarn build && yarn lint && yarn prettier:check",
     "prepublishOnly": "yarn rebuild"
   },

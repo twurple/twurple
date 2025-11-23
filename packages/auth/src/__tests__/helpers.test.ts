@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { compareScopes, compareScopeSets } from '../helpers';
 
 describe('compareScopes', () => {

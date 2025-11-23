@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { parseEmoteOffsets } from '../emoteUtil';
 
 describe('Emote offset parser', () => {

@@ -12,6 +12,7 @@
     "bot"
   ],
   "sideEffects": false,
+  "type": "module",
   "main": "lib",
   "types": "lib",
   "exports": {

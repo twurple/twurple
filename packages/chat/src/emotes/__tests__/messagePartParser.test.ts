@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'vitest';
 import { parseChatMessage } from '../messagePartParser';
 
 describe('Message part parser', () => {

@@ -4,7 +4,7 @@
 		"rootDir": "src",
 		"outDir": "lib",
 		"paths": {
-			"@twurple/api-call/src": ["../api-call/src"],
+			"@twurple/api-call": ["../api-call/src"],
 			"@twurple/common": ["../common/src"]
 		}
 	},

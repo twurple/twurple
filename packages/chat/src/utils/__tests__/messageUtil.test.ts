@@ -1,3 +1,4 @@
+import { describe, expect, test } from 'vitest';
 import { splitOnSpaces } from '../messageUtil';
 
 describe('Auto Text Splitter with Spaces', () => {
