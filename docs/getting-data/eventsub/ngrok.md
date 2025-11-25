@@ -7,11 +7,11 @@ Download and install ngrok from their [download page](https://ngrok.com/download
 
 Then, add the specialized apater for it to your packages:
 
-    yarn add @twurple/eventsub-ngrok
-
-or using npm:
-
     npm install @twurple/eventsub-ngrok
+	# or
+    yarn add @twurple/eventsub-ngrok
+	# or
+	pnpm install @twurple/eventsub-ngrok
 
 ## 2. Setting up the listener
 

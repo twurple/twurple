@@ -1,8 +1,9 @@
-# npm & yarn
+# package manager files
 node_modules
 /package-lock.json
 /yarn.lock
 /yalc.lock
+/pnpm-lock.yaml
 /.yalc
 *.tgz
 .yarn-integrity

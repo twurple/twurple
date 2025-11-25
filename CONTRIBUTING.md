@@ -40,13 +40,17 @@ On the `main` branch, only ongoing development of future minor and major version
 
 Bugfixes will be merged back to the `main` branch if applicable.
 
-Then install the dependencies. We use yarn as our package manager, so to make sure you get the exact package versions of the lock file, you should use it too:
+Then install the dependencies. We use npm as our package manager, but it doesn't matter whether you use npm or Yarn to install them, since we don't commit the `package-lock.json` file.
 
 	yarn
+	# or
+	npm i
+	# or
+	pnpm install
 
 After fixing the bug you wanted to fix, or implementing a new feature, you should build and lint the whole package in order to prevent unnecessary waiting for the CI to tell you about it:
 
-	yarn run build && yarn run lint
+	npm run build && npm run lint
 
 ### Documentation & Examples
 

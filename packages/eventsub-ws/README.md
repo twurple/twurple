@@ -8,11 +8,11 @@ Listen to events on Twitch via their EventSub API using WebSockets.
 
 ## Installation
 
-	yarn add @twurple/api @twurple/eventsub-ws
-
-or using npm:
-
 	npm install @twurple/api @twurple/eventsub-ws
+	# or
+	yarn add @twurple/api @twurple/eventsub-ws
+	# or
+	pnpm install @twurple/api @twurple/eventsub-ws
 
 ## Documentation
 

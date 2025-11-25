@@ -8,11 +8,11 @@ A simplified framework to get a chatbot running easily.
 
 ## Installation
 
-	yarn add @twurple/easy-bot
-
-or using npm:
-
 	npm install @twurple/easy-bot
+	# or
+	yarn add @twurple/easy-bot
+	# or
+	pnpm install @twurple/easy-bot
 
 ## Example
 

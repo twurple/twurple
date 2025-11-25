@@ -5,11 +5,11 @@ such as managing secrets and communicating between instances.
 
 ## Installation
 
-	yarn add @twurple/ebs-helper
-
-or using npm:
-
 	npm install @twurple/ebs-helper
+	# or
+	yarn add @twurple/ebs-helper
+	# or
+	pnpm install @twurple/ebs-helper
 
 ## Documentation
 

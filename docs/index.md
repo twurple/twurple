@@ -21,9 +21,11 @@ All peer dependencies between the different packages are shown here:
 
 For example, to use EventSub over WebSockets, execute one of:
 ```bash
+npm install @twurple/auth @twurple/api @twurple/eventsub-ws
+# or
 yarn add @twurple/auth @twurple/api @twurple/eventsub-ws
 # or
-npm install @twurple/auth @twurple/api @twurple/eventsub-ws
+pnpm install @twurple/auth @twurple/api @twurple/eventsub-ws
 ```
 
 ## I got stuck/have more questions! Where do I get help?

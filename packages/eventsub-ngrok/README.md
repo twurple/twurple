@@ -8,11 +8,11 @@ Test your EventSub listener locally using ngrok.
 
 ## Installation
 
-	yarn add @twurple/auth @twurple/api @twurple/eventsub-http @twurple/eventsub-ngrok
-
-or using npm:
-
 	npm install @twurple/auth @twurple/api @twurple/eventsub-http @twurple/eventsub-ngrok
+	# or
+	yarn add @twurple/auth @twurple/api @twurple/eventsub-http @twurple/eventsub-ngrok
+	# or
+	pnpm install @twurple/auth @twurple/api @twurple/eventsub-http @twurple/eventsub-ngrok
 
 ## Documentation
 

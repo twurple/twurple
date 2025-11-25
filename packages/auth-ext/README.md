@@ -11,11 +11,11 @@ that will use the token provided to your Extension by Twitch.
 
 To add this library to your project, just execute:
 
-	yarn add @twurple/auth-ext
-
-or using npm:
-
 	npm install @twurple/auth-ext
+	# or
+	yarn add @twurple/auth-ext
+	# or
+	pnpm install @twurple/auth-ext
 
 ## Basic usage
 

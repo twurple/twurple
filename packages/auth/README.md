@@ -8,11 +8,11 @@ Authenticate with Twitch and stop caring about refreshing tokens.
 
 ## Installation
 
-	yarn add @twurple/auth
-
-or using npm:
-
 	npm install @twurple/auth
+	# or
+	yarn add @twurple/auth
+	# or
+	pnpm install @twurple/auth
 
 ## Documentation
 

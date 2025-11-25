@@ -15,11 +15,11 @@ A set of libraries that aims to cover all existing Twitch APIs.
 
 To add Twurple to your project, just execute:
 
+	npm i @twurple/auth
+	# or
 	yarn add @twurple/auth
-
-or using npm:
-
-	npm install @twurple/auth
+	# or
+	pnpm install @twurple/auth
 
 ## Documentation
 

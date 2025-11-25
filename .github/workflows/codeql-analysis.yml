@@ -28,7 +28,7 @@ jobs:
         languages: javascript
 
     - run: |
-       yarn
+       npm i
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

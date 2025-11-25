@@ -8,11 +8,11 @@ Interact with the Twitch Messaging Interface (aka Twitch chat).
 
 ## Installation
 
-	yarn add @twurple/auth @twurple/chat
-
-or using npm:
-
 	npm install @twurple/auth @twurple/chat
+	# or
+	yarn add @twurple/auth @twurple/chat
+	# or
+	pnpm install @twurple/auth @twurple/chat
 
 ## Documentation
 

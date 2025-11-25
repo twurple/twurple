@@ -8,11 +8,11 @@ Use tmi.js with the added benefits of `@twurple/auth`'s automatic token handling
 
 ## Installation
 
-	yarn add @twurple/auth @twurple/auth-tmi
-
-or using npm:
-
 	npm install @twurple/auth @twurple/auth-tmi
+	# or
+	yarn add @twurple/auth @twurple/auth-tmi
+	# or
+	pnpm install @twurple/auth @twurple/auth-tmi
 
 ## How to use
 

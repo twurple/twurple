@@ -8,11 +8,11 @@ Interact with Twitch's API.
 
 ## Installation
 
-	yarn add @twurple/auth @twurple/api
-
-or using npm:
-
 	npm install @twurple/auth @twurple/api
+	# or
+	yarn add @twurple/auth @twurple/api
+	# or
+	pnpm install @twurple/auth @twurple/api
 
 ## Documentation
 

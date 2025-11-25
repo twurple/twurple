@@ -16,10 +16,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-      - run: yarn
-      - run: yarn run build
-      - run: yarn run lint
-      - run: yarn run prettier:check
+      - run: npm i
+      - run: npm run build
+      - run: npm run lint
+      - run: npm run prettier:check
       - name: Archive build assets
         run: tar cvf build-result.tar packages/*/lib
       - name: Save build assets
@@ -41,14 +41,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - run: yarn
+      - run: npm i
       - name: Load build assets
         uses: actions/download-artifact@v4
         with:
           name: build-result
       - name: Unarchive build assets
         run: tar xvf build-result.tar
-      - run: yarn test
+      - run: npm run test
   docs:
     if: ${{ github.event_name == 'push' }}
     needs: [ build, test ]
@@ -62,7 +62,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 20
-      - run: yarn
+      - run: npm i
       - name: Load build assets
         uses: actions/download-artifact@v4
         with:

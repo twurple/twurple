@@ -10,7 +10,7 @@
   "devDependencies": {
     "@d-fischer/documen.ts": "^0.16.10",
     "@d-fischer/eslint-config": "^6.3.0",
-    "@types/node": "^18.19.87",
+    "@types/node": "^20.19.25",
     "@types/twitch-ext": "^1.24.4",
     "cross-env": "^7.0.3",
     "crowd": "^0.2.0",
@@ -31,12 +31,12 @@
     "prettier:check": "prettier --check \"packages/**\"",
     "prettier:fix": "prettier --write \"packages/**\"",
     "build": "tsc --build",
-    "rebuild": "yarn clean && yarn build",
+    "rebuild": "npm run clean && npm run build",
     "clean": "del-cli packages/**/lib packages/**/*.tsbuildinfo",
     "docs": "documen.ts",
     "test": "vitest",
-    "preversion": "yarn build && yarn lint && yarn prettier:check",
-    "prepublishOnly": "yarn rebuild"
+    "preversion": "npm run build && npm run lint && npm run prettier:check",
+    "prepublishOnly": "npm run rebuild"
   },
   "husky": {
     "hooks": {
