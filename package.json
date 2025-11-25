@@ -13,7 +13,7 @@
     "@types/node": "^20.19.25",
     "@types/twitch-ext": "^1.24.4",
     "cross-env": "^7.0.3",
-    "crowd": "^0.2.0",
+    "crowd": "^0.2.7",
     "del-cli": "^7.0.0",
     "eslint": "^8.57.0",
     "husky": "^4.3.6",
