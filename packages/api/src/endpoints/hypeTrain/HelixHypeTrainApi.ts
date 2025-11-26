@@ -12,7 +12,7 @@ import { HelixHypeTrainStatus } from './HelixHypeTrainStatus';
  * ## Example
  * ```ts
  * const api = new ApiClient({ authProvider });
- * const { data: events } = await api.hypeTrain.getHypeTrainEventsForBroadcaster('125328655');
+ * const hypeTrainStatus = await api.hypeTrain.getHypeTrainStatusForBroadcaster('125328655');
  * ```
  *
  * @meta category helix
@@ -27,7 +27,7 @@ export class HelixHypeTrainApi extends BaseApi {
 	async getHypeTrainStatusForBroadcaster(broadcaster: UserIdResolvable): Promise<HelixHypeTrainStatus> {
 		const result = await this._client.callApi<HelixResponse<HelixHypeTrainStatusData>>({
 			type: 'helix',
-			url: 'hypetrain/events',
+			url: 'hypetrain/status',
 			userId: extractUserId(broadcaster),
 			scopes: ['channel:read:hype_train'],
 			query: {
