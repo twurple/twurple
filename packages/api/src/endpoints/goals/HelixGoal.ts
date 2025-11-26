@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixGoalData, type HelixGoalType } from '../../interfaces/endpoints/goal.external';
-import type { HelixUser } from '../user/HelixUser';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixGoalData, type HelixGoalType } from '../../interfaces/endpoints/goal.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * A creator goal.

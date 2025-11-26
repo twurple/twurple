@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixHypeTrainAllTimeHighData } from '../../interfaces/endpoints/hypeTrain.external';
+import { type HelixHypeTrainAllTimeHighData } from '../../interfaces/endpoints/hypeTrain.external.js';
 
 /**
  * All-time-high Hype Train statistics.

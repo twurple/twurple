@@ -1,6 +1,6 @@
 import { Message, type MessageInternalConfig, type MessageInternalContents } from 'ircv3';
-import { ChatUser } from '../../../ChatUser';
-import { parseEmoteOffsets } from '../../../utils/emoteUtil';
+import { ChatUser } from '../../../ChatUser.js';
+import { parseEmoteOffsets } from '../../../utils/emoteUtil.js';
 
 interface WhisperFields {
 	target: string;

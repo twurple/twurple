@@ -1,5 +1,5 @@
 import { extractUserId, type HelixUserType, type UserIdResolvable } from '@twurple/common';
-import { type HelixUserBlockAdditionalInfo } from './user.input';
+import { type HelixUserBlockAdditionalInfo } from './user.input.js';
 
 /** @private */
 export interface HelixFollowData {

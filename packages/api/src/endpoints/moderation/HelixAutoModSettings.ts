@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixAutoModSettingsData } from '../../interfaces/endpoints/moderation.external';
+import { type HelixAutoModSettingsData } from '../../interfaces/endpoints/moderation.external.js';
 
 /**
  * The AutoMod settings of a channel.

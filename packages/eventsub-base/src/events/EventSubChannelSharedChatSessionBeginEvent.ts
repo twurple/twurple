@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { type EventSubChannelSharedChatSessionBeginEventData } from './EventSubChannelSharedChatSessionBeginEvent.external';
-import { EventSubChannelSharedChatSessionParticipant } from './common/EventSubChannelSharedChatSessionParticipant';
+import { type EventSubChannelSharedChatSessionBeginEventData } from './EventSubChannelSharedChatSessionBeginEvent.external.js';
+import { EventSubChannelSharedChatSessionParticipant } from './common/EventSubChannelSharedChatSessionParticipant.js';
 
 /**
  * An EventSub event representing the start of a shared chat session in a channel.

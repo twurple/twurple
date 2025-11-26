@@ -18,31 +18,31 @@ import {
 	type HelixFollowedChannelData,
 	type HelixAdScheduleData,
 	type HelixSnoozeNextAdData,
-} from '../../interfaces/endpoints/channel.external';
-import { type HelixChannelUpdate } from '../../interfaces/endpoints/channel.input';
+} from '../../interfaces/endpoints/channel.external.js';
+import { type HelixChannelUpdate } from '../../interfaces/endpoints/channel.input.js';
 import {
 	createChannelUsersCheckQuery,
 	createSingleKeyQuery,
 	type HelixUserRelationData,
-} from '../../interfaces/endpoints/generic.external';
-import { HelixUserRelation } from '../../relations/HelixUserRelation';
-import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
+} from '../../interfaces/endpoints/generic.external.js';
+import { HelixUserRelation } from '../../relations/HelixUserRelation.js';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal.js';
 import {
 	createPaginatedResult,
 	createPaginatedResultWithTotal,
 	type HelixPaginatedResult,
 	type HelixPaginatedResultWithTotal,
-} from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixChannel } from './HelixChannel';
-import { HelixChannelEditor } from './HelixChannelEditor';
-import { HelixChannelFollower } from './HelixChannelFollower';
-import { HelixFollowedChannel } from './HelixFollowedChannel';
-import { HelixAdSchedule } from './HelixAdSchedule';
-import { HelixSnoozeNextAdResult } from './HelixSnoozeNextAdResult';
+} from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixChannel } from './HelixChannel.js';
+import { HelixChannelEditor } from './HelixChannelEditor.js';
+import { HelixChannelFollower } from './HelixChannelFollower.js';
+import { HelixFollowedChannel } from './HelixFollowedChannel.js';
+import { HelixAdSchedule } from './HelixAdSchedule.js';
+import { HelixSnoozeNextAdResult } from './HelixSnoozeNextAdResult.js';
 
 /**
  * The Helix API methods that deal with channels.

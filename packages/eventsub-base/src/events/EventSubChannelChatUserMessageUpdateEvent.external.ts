@@ -1,5 +1,5 @@
-import { type EventSubAutoModMessageData } from './common/EventSubAutoModMessage.external';
-import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus';
+import { type EventSubAutoModMessageData } from './common/EventSubAutoModMessage.external.js';
+import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus.js';
 
 /** @private */
 export interface EventSubChannelChatUserMessageUpdateEventData {

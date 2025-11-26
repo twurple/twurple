@@ -8,17 +8,17 @@ import {
 	type HelixDropsEntitlementFulfillmentStatus,
 	type HelixDropsEntitlementUpdateData,
 	type HelixDropsEntitlementUpdateStatus,
-} from '../../interfaces/endpoints/entitlement.external';
+} from '../../interfaces/endpoints/entitlement.external.js';
 import {
 	type HelixDropsEntitlementFilter,
 	type HelixDropsEntitlementPaginatedFilter,
-} from '../../interfaces/endpoints/entitlement.input';
-import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixDropsEntitlement } from './HelixDropsEntitlement';
+} from '../../interfaces/endpoints/entitlement.input.js';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixDropsEntitlement } from './HelixDropsEntitlement.js';
 
 /**
  * The Helix API methods that deal with entitlements (drops).

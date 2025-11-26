@@ -1,13 +1,13 @@
-export type { EventSubHttpBaseConfig } from './EventSubHttpBase';
-export { EventSubHttpListener } from './EventSubHttpListener';
-export type { EventSubHttpListenerCertificateConfig, EventSubHttpListenerConfig } from './EventSubHttpListener';
-export { EventSubMiddleware } from './EventSubMiddleware';
-export type { EventSubMiddlewareConfig } from './EventSubMiddleware';
+export type { EventSubHttpBaseConfig } from './EventSubHttpBase.js';
+export { EventSubHttpListener } from './EventSubHttpListener.js';
+export type { EventSubHttpListenerCertificateConfig, EventSubHttpListenerConfig } from './EventSubHttpListener.js';
+export { EventSubMiddleware } from './EventSubMiddleware.js';
+export type { EventSubMiddlewareConfig } from './EventSubMiddleware.js';
 
-export { ConnectionAdapter } from './adapters/ConnectionAdapter';
-export { DirectConnectionAdapter } from './adapters/DirectConnectionAdapter';
-export type { DirectConnectionAdapterConfig } from './adapters/DirectConnectionAdapter';
-export { EnvPortAdapter } from './adapters/EnvPortAdapter';
-export type { EnvPortAdapterConfig } from './adapters/EnvPortAdapter';
-export { ReverseProxyAdapter } from './adapters/ReverseProxyAdapter';
-export type { ReverseProxyAdapterConfig } from './adapters/ReverseProxyAdapter';
+export { ConnectionAdapter } from './adapters/ConnectionAdapter.js';
+export { DirectConnectionAdapter } from './adapters/DirectConnectionAdapter.js';
+export type { DirectConnectionAdapterConfig } from './adapters/DirectConnectionAdapter.js';
+export { EnvPortAdapter } from './adapters/EnvPortAdapter.js';
+export type { EnvPortAdapterConfig } from './adapters/EnvPortAdapter.js';
+export { ReverseProxyAdapter } from './adapters/ReverseProxyAdapter.js';
+export type { ReverseProxyAdapterConfig } from './adapters/ReverseProxyAdapter.js';

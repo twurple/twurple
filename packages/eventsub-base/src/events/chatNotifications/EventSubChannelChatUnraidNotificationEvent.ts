@@ -1,6 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
-import { type EventSubChannelChatUnraidNotificationEventData } from './EventSubChannelChatNotificationEvent.external';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
+import { type EventSubChannelChatUnraidNotificationEventData } from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a notification for cancelling an outgoing raid in a channel's chat.

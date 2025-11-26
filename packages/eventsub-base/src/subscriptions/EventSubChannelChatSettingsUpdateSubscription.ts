@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelChatSettingsUpdateEvent } from '../events/EventSubChannelChatSettingsUpdateEvent';
-import { type EventSubChannelChatSettingsUpdateEventData } from '../events/EventSubChannelChatSettingsUpdateEvent.external';
-import type { EventSubBase } from '../EventSubBase';
-import { EventSubSubscription } from './EventSubSubscription';
+import { EventSubChannelChatSettingsUpdateEvent } from '../events/EventSubChannelChatSettingsUpdateEvent.js';
+import { type EventSubChannelChatSettingsUpdateEventData } from '../events/EventSubChannelChatSettingsUpdateEvent.external.js';
+import type { EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')

@@ -1,11 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixExtensionProductType,
 	type HelixExtensionTransactionData,
-} from '../../interfaces/endpoints/extensions.external';
-import type { HelixUser } from '../user/HelixUser';
+} from '../../interfaces/endpoints/extensions.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * A bits transaction made inside an extension.

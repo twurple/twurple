@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixTeamData } from '../../interfaces/endpoints/team.external';
-import type { HelixUserRelation } from '../../relations/HelixUserRelation';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixTeamData } from '../../interfaces/endpoints/team.external.js';
+import type { HelixUserRelation } from '../../relations/HelixUserRelation.js';
 
 /**
  * A Stream Team.

@@ -8,14 +8,14 @@ import {
 	type UserIdResolvableType,
 	type UserNameResolveableType,
 } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixBroadcasterType, type HelixUserData } from '../../interfaces/endpoints/user.external';
-import type { HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
-import { type HelixChannelFollower } from '../channel/HelixChannelFollower';
-import { type HelixFollowedChannel } from '../channel/HelixFollowedChannel';
-import type { HelixStream } from '../stream/HelixStream';
-import { type HelixSubscription } from '../subscriptions/HelixSubscription';
-import { type HelixUserSubscription } from '../subscriptions/HelixUserSubscription';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixBroadcasterType, type HelixUserData } from '../../interfaces/endpoints/user.external.js';
+import type { HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult.js';
+import { type HelixChannelFollower } from '../channel/HelixChannelFollower.js';
+import { type HelixFollowedChannel } from '../channel/HelixFollowedChannel.js';
+import type { HelixStream } from '../stream/HelixStream.js';
+import { type HelixSubscription } from '../subscriptions/HelixSubscription.js';
+import { type HelixUserSubscription } from '../subscriptions/HelixUserSubscription.js';
 
 /**
  * A Twitch user.

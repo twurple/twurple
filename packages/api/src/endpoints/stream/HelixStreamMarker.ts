@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixStreamMarkerData } from '../../interfaces/endpoints/stream.external';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixStreamMarkerData } from '../../interfaces/endpoints/stream.external.js';
 
 /**
  * A stream marker.

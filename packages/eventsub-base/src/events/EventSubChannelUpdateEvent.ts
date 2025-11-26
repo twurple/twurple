@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixGame, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelUpdateEventData } from './EventSubChannelUpdateEvent.external';
+import { type EventSubChannelUpdateEventData } from './EventSubChannelUpdateEvent.external.js';
 
 /**
  * An EventSub event representing a change in channel metadata.

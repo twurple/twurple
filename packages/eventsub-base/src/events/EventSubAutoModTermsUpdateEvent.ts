@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import {
 	type EventSubAutoModTermsUpdateAction,
 	type EventSubAutoModTermsUpdateEventData,
-} from './EventSubAutoModTermsUpdateEvent.external';
+} from './EventSubAutoModTermsUpdateEvent.external.js';
 
 /**
  * An EventSub event representing AutoMod terms being updated in a channel.

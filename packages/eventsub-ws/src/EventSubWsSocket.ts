@@ -2,12 +2,12 @@ import { type Connection, PersistentConnection, WebSocketConnection } from '@d-f
 import { createLogger, type Logger, type LoggerOptions } from '@d-fischer/logger';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { type EventSubNotificationPayload, type EventSubRevocationPayload } from '@twurple/eventsub-base';
-import { type EventSubWsListener } from './EventSubWsListener';
+import { type EventSubWsListener } from './EventSubWsListener.js';
 import {
 	type EventSubReconnectPayload,
 	type EventSubWelcomePayload,
 	type EventSubWsPacket,
-} from './EventSubWsPacket.external';
+} from './EventSubWsPacket.external.js';
 
 /** @internal */
 export class EventSubWsSocket {

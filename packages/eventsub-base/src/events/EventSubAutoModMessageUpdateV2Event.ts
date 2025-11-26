@@ -1,12 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external';
-import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus';
-import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason';
-import { EventSubAutoModMessageAutoMod } from './common/EventSubAutoModMessageAutoMod';
-import { EventSubAutoModMessageBlockedTerm } from './common/EventSubAutoModMessageBlockedTerm';
-import { type EventSubAutoModMessageUpdateV2EventData } from './EventSubAutoModMessageUpdateV2Event.external';
+import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external.js';
+import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus.js';
+import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason.js';
+import { EventSubAutoModMessageAutoMod } from './common/EventSubAutoModMessageAutoMod.js';
+import { EventSubAutoModMessageBlockedTerm } from './common/EventSubAutoModMessageBlockedTerm.js';
+import { type EventSubAutoModMessageUpdateV2EventData } from './EventSubAutoModMessageUpdateV2Event.external.js';
 
 /**
  * An EventSub event representing a held chat message by AutoMod being resolved in a channel.

@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixPollChoiceData } from '../../interfaces/endpoints/poll.external';
+import { type HelixPollChoiceData } from '../../interfaces/endpoints/poll.external.js';
 
 /**
  * A choice in a channel poll.

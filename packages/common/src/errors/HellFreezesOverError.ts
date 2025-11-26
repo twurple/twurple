@@ -1,4 +1,4 @@
-import { CustomError } from './CustomError';
+import { CustomError } from './CustomError.js';
 
 /**
  * These are the kind of errors that should never happen.

@@ -1,9 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixPredictionData, type HelixPredictionStatus } from '../../interfaces/endpoints/prediction.external';
-import type { HelixUser } from '../user/HelixUser';
-import { HelixPredictionOutcome } from './HelixPredictionOutcome';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import {
+	type HelixPredictionData,
+	type HelixPredictionStatus,
+} from '../../interfaces/endpoints/prediction.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import { HelixPredictionOutcome } from './HelixPredictionOutcome.js';
 
 /**
  * A channel prediction.

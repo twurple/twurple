@@ -1,6 +1,6 @@
 import { type ChatMessage, toUserName } from '@twurple/chat';
 import { type CommercialLength } from '@twurple/common';
-import { type Bot, type ChatAnnouncementColor } from './Bot';
+import { type Bot, type ChatAnnouncementColor } from './Bot.js';
 
 /**
  * The message context of a bot command execution handler.

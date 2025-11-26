@@ -1,4 +1,4 @@
-import { type BotCommandContext } from './BotCommandContext';
+import { type BotCommandContext } from './BotCommandContext.js';
 
 /** @private */
 export interface BotCommandMatch {

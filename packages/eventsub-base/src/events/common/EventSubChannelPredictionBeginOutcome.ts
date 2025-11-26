@@ -2,7 +2,7 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelPredictionBeginOutcomeData,
 	type EventSubChannelPredictionColor,
-} from './EventSubChannelPredictionBeginOutcome.external';
+} from './EventSubChannelPredictionBeginOutcome.external.js';
 
 /**
  * A possible outcome of a prediction, as defined when beginning that prediction.

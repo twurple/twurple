@@ -6,12 +6,12 @@ import {
 	accessTokenIsExpired,
 	type AccessTokenMaybeWithUserId,
 	type AccessTokenWithUserId,
-} from '../AccessToken';
-import { CachedRefreshFailureError } from '../errors/CachedRefreshFailureError';
-import { IntermediateUserRemovalError } from '../errors/IntermediateUserRemovalError';
-import { InvalidTokenError } from '../errors/InvalidTokenError';
-import { InvalidTokenTypeError } from '../errors/InvalidTokenTypeError';
-import { UnknownIntentError } from '../errors/UnknownIntentError';
+} from '../AccessToken.js';
+import { CachedRefreshFailureError } from '../errors/CachedRefreshFailureError.js';
+import { IntermediateUserRemovalError } from '../errors/IntermediateUserRemovalError.js';
+import { InvalidTokenError } from '../errors/InvalidTokenError.js';
+import { InvalidTokenTypeError } from '../errors/InvalidTokenTypeError.js';
+import { UnknownIntentError } from '../errors/UnknownIntentError.js';
 import {
 	compareScopeSets,
 	exchangeCode,
@@ -19,10 +19,10 @@ import {
 	getTokenInfo,
 	loadAndCompareTokenInfo,
 	refreshUserToken,
-} from '../helpers';
-import { TokenFetcher } from '../TokenFetcher';
-import { type TokenInfo } from '../TokenInfo';
-import { type AuthProvider } from './AuthProvider';
+} from '../helpers.js';
+import { TokenFetcher } from '../TokenFetcher.js';
+import { type TokenInfo } from '../TokenInfo.js';
+import { type AuthProvider } from './AuthProvider.js';
 
 /**
  * Configuration for the {@link RefreshingAuthProvider}.

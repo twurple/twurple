@@ -1,5 +1,5 @@
-import { BotCommand } from './BotCommand';
-import { type BotCommandContext } from './BotCommandContext';
+import { BotCommand } from './BotCommand.js';
+import { type BotCommandContext } from './BotCommandContext.js';
 
 /**
  * Options for a bot command.

@@ -2,7 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { type HelixUser } from '@twurple/api';
 import { type ClearChat, toUserName } from '@twurple/chat';
 import { checkRelationAssertion, HellFreezesOverError, rtfm } from '@twurple/common';
-import { type Bot } from '../Bot';
+import { type Bot } from '../Bot.js';
 
 /**
  * An event representing a user getting banned from a channel.

@@ -1,11 +1,11 @@
 import { mapNullable } from '@d-fischer/shared-utils';
 import { type HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
 import {
 	type EventSubChannelChatNotificationSubTier,
 	type EventSubChannelChatSharedChatResubNotificationEventData,
-} from './EventSubChannelChatNotificationEvent.external';
+} from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a resub notification in another channel's chat during a shared chat session.

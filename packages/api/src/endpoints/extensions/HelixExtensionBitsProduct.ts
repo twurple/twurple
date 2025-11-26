@@ -1,6 +1,6 @@
 import { mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixExtensionBitsProductData } from '../../interfaces/endpoints/extensions.external';
+import { type HelixExtensionBitsProductData } from '../../interfaces/endpoints/extensions.external.js';
 
 /**
  * An extension's product to purchase with Bits.

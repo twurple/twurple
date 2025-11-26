@@ -1,5 +1,9 @@
 import { utf8Length, utf8Substring } from '@d-fischer/shared-utils';
-import { type ParsedMessageCheerPart, type ParsedMessageEmotePart, type ParsedMessagePart } from './ParsedMessagePart';
+import {
+	type ParsedMessageCheerPart,
+	type ParsedMessageEmotePart,
+	type ParsedMessagePart,
+} from './ParsedMessagePart.js';
 
 /**
  * Transforms the parts of the given text that are marked as emotes.

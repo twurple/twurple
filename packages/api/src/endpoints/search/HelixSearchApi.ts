@@ -1,20 +1,20 @@
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
-import { type HelixGameData } from '../../interfaces/endpoints/game.external';
+import { type HelixGameData } from '../../interfaces/endpoints/game.external.js';
 import {
 	createSearchChannelsQuery,
 	type HelixChannelSearchResultData,
-} from '../../interfaces/endpoints/search.external';
+} from '../../interfaces/endpoints/search.external.js';
 import {
 	type HelixChannelSearchFilter,
 	type HelixPaginatedChannelSearchFilter,
-} from '../../interfaces/endpoints/search.input';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixGame } from '../game/HelixGame';
-import { HelixChannelSearchResult } from './HelixChannelSearchResult';
+} from '../../interfaces/endpoints/search.input.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixGame } from '../game/HelixGame.js';
+import { HelixChannelSearchResult } from './HelixChannelSearchResult.js';
 
 /**
  * The Helix API methods that run searches.

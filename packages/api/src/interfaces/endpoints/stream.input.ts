@@ -1,5 +1,5 @@
-import { type HelixPagination } from '../../utils/pagination/HelixPagination';
-import { type HelixStreamType } from './stream.external';
+import { type HelixPagination } from '../../utils/pagination/HelixPagination.js';
+import { type HelixStreamType } from './stream.external.js';
 
 /**
  * Filters for the streams request.

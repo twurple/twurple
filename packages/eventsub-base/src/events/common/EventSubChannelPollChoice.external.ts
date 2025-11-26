@@ -1,4 +1,4 @@
-import { type EventSubChannelPollBeginChoiceData } from './EventSubChannelPollBeginChoice.external';
+import { type EventSubChannelPollBeginChoiceData } from './EventSubChannelPollBeginChoice.external.js';
 
 /** @private */
 export interface EventSubChannelPollChoiceData extends EventSubChannelPollBeginChoiceData {

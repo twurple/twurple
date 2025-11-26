@@ -1,4 +1,4 @@
-import { type EventSubChannelHypeTrainContributionData } from './common/EventSubChannelHypeTrainContribution.external';
+import { type EventSubChannelHypeTrainContributionData } from './common/EventSubChannelHypeTrainContribution.external.js';
 
 /** @private */
 export interface EventSubChannelHypeTrainEndEventData {

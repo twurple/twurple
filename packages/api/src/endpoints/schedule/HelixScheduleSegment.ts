@@ -1,8 +1,8 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixScheduleSegmentData } from '../../interfaces/endpoints/schedule.external';
-import type { HelixGame } from '../game/HelixGame';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixScheduleSegmentData } from '../../interfaces/endpoints/schedule.external.js';
+import type { HelixGame } from '../game/HelixGame.js';
 
 /**
  * A segment of a schedule.

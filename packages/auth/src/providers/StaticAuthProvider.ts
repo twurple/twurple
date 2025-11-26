@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm, type UserIdResolvable } from '@twurple/common';
-import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
-import { loadAndCompareTokenInfo } from '../helpers';
-import type { AuthProvider } from './AuthProvider';
+import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken.js';
+import { loadAndCompareTokenInfo } from '../helpers.js';
+import type { AuthProvider } from './AuthProvider.js';
 
 /**
  * An auth provider that always returns the same initially given credentials.

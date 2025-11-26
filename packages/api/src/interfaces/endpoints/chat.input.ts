@@ -1,6 +1,6 @@
 import { type UserIdResolvable } from '@twurple/common';
-import { type HelixChatAnnouncementColor } from './chat.external';
-import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
+import { type HelixChatAnnouncementColor } from './chat.external.js';
+import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
 
 /**
  * An update request for a broadcaster's chat settings.

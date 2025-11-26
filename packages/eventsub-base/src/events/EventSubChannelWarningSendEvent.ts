@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelWarningSendEventData } from './EventSubChannelWarningSendEvent.external';
+import { type EventSubChannelWarningSendEventData } from './EventSubChannelWarningSendEvent.external.js';
 
 /**
  * An EventSub event representing a warning sent to a user.

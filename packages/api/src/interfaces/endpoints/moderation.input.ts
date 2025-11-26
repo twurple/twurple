@@ -1,6 +1,6 @@
 import { type UserIdResolvable } from '@twurple/common';
-import { type HelixAutoModSettings } from '../../endpoints/moderation/HelixAutoModSettings';
-import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
+import { type HelixAutoModSettings } from '../../endpoints/moderation/HelixAutoModSettings.js';
+import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
 
 /**
  * Filters for the banned users request.

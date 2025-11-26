@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelSuspiciousUserUpdateEventData } from './EventSubChannelSuspiciousUserUpdateEvent.external';
-import type { EventSubChannelSuspiciousUserLowTrustStatus } from './common/EventSubChannelSuspiciousUserLowTrustStatus';
+import { type EventSubChannelSuspiciousUserUpdateEventData } from './EventSubChannelSuspiciousUserUpdateEvent.external.js';
+import type { EventSubChannelSuspiciousUserLowTrustStatus } from './common/EventSubChannelSuspiciousUserLowTrustStatus.js';
 
 /**
  * An EventSub event representing a suspicious user being updated in a channel.

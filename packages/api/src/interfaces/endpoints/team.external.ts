@@ -1,4 +1,4 @@
-import { type HelixUserRelationData } from './generic.external';
+import { type HelixUserRelationData } from './generic.external.js';
 
 /** @private */
 export interface HelixTeamData {

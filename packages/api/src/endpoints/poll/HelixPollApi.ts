@@ -1,13 +1,13 @@
 import { createBroadcasterQuery, type HelixPaginatedResponse, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external';
-import { createPollBody, createPollEndBody, type HelixPollData } from '../../interfaces/endpoints/poll.external';
-import { type HelixCreatePollData } from '../../interfaces/endpoints/poll.input';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixPoll } from './HelixPoll';
+import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external.js';
+import { createPollBody, createPollEndBody, type HelixPollData } from '../../interfaces/endpoints/poll.external.js';
+import { type HelixCreatePollData } from '../../interfaces/endpoints/poll.input.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixPoll } from './HelixPoll.js';
 
 /**
  * The Helix API methods that deal with polls.

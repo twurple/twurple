@@ -1,10 +1,10 @@
-import { type HelixEventSubSubscription } from '../../endpoints/eventSub/HelixEventSubSubscription';
-import { type HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
+import { type HelixEventSubSubscription } from '../../endpoints/eventSub/HelixEventSubSubscription.js';
+import { type HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult.js';
 import type {
 	HelixEventSubWebHookTransportData,
 	HelixEventSubWebSocketTransportData,
 	HelixEventSubConduitTransportData,
-} from './eventSub.external';
+} from './eventSub.external.js';
 
 /**
  * The properties describing where a WebHook notification is sent, and how it is signed.

@@ -1,4 +1,7 @@
-import { type HelixExtensionBitsProductUpdatePayload, type HelixExtensionTransactionsFilter } from './extensions.input';
+import {
+	type HelixExtensionBitsProductUpdatePayload,
+	type HelixExtensionTransactionsFilter,
+} from './extensions.input.js';
 
 /** @private */
 export interface HelixExtensionBitsProductCostData {

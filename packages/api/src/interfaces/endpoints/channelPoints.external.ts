@@ -3,7 +3,7 @@ import {
 	type HelixCreateCustomRewardData,
 	type HelixCustomRewardRedemptionFilter,
 	type HelixUpdateCustomRewardData,
-} from './channelPoints.input';
+} from './channelPoints.input.js';
 
 /**
  * The possible statuses of a custom Channel Points reward redemption you can set.

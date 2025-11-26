@@ -1,14 +1,14 @@
 import type { HelixPaginatedResponse, TwitchApiCallOptions } from '@twurple/api-call';
 import { rtfm, type UserIdResolvable } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	createScheduleQuery,
 	type HelixScheduleResponse,
 	type HelixScheduleSegmentData,
-} from '../../interfaces/endpoints/schedule.external';
-import { type HelixScheduleFilter } from '../../interfaces/endpoints/schedule.input';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { HelixScheduleSegment } from './HelixScheduleSegment';
+} from '../../interfaces/endpoints/schedule.external.js';
+import { type HelixScheduleFilter } from '../../interfaces/endpoints/schedule.input.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { HelixScheduleSegment } from './HelixScheduleSegment.js';
 
 /**
  * A paginator specifically for schedule segments.

@@ -1,7 +1,7 @@
 import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
-import { type EventSubChannelUnbanModerationEventData } from './EventSubChannelModerationEvent.external';
+import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent.js';
+import { type EventSubChannelUnbanModerationEventData } from './EventSubChannelModerationEvent.external.js';
 
 /**
  * An EventSub event representing a moderator unbanning a user on a channel.

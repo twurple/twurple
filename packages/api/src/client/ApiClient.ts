@@ -4,12 +4,12 @@ import { PartitionedRateLimiter, PartitionedTimeBasedRateLimiter } from '@d-fisc
 import { callTwitchApiRaw, type TwitchApiCallFetchOptions } from '@twurple/api-call';
 import { type AuthProvider } from '@twurple/auth';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { ConfigError } from '../errors/ConfigError';
-import { HelixRateLimiter } from '../utils/HelixRateLimiter';
-import { BaseApiClient } from './BaseApiClient';
-import { type ContextApiCallOptions } from './ContextApiCallOptions';
-import { NoContextApiClient } from './NoContextApiClient';
-import { UserContextApiClient } from './UserContextApiClient';
+import { ConfigError } from '../errors/ConfigError.js';
+import { HelixRateLimiter } from '../utils/HelixRateLimiter.js';
+import { BaseApiClient } from './BaseApiClient.js';
+import { type ContextApiCallOptions } from './ContextApiCallOptions.js';
+import { NoContextApiClient } from './NoContextApiClient.js';
+import { UserContextApiClient } from './UserContextApiClient.js';
 
 /**
  * Configuration for an {@link ApiClient} instance.

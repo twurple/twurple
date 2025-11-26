@@ -1,4 +1,4 @@
-import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel';
+import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel.js';
 
 /** @private */
 export interface EventSubAutoModSettingsUpdateEventData {

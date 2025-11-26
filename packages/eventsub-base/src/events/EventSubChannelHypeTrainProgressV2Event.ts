@@ -1,10 +1,10 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution';
-import type { EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType';
-import { EventSubChannelHypeTrainSharedParticipant } from './common/EventSubChannelHypeTrainSharedParticipant';
-import { type EventSubChannelHypeTrainProgressV2EventData } from './EventSubChannelHypeTrainProgressV2Event.external';
+import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution.js';
+import type { EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType.js';
+import { EventSubChannelHypeTrainSharedParticipant } from './common/EventSubChannelHypeTrainSharedParticipant.js';
+import { type EventSubChannelHypeTrainProgressV2EventData } from './EventSubChannelHypeTrainProgressV2Event.external.js';
 
 /**
  * An EventSub event representing progress towards the Hype Train goal.

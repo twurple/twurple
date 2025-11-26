@@ -1,5 +1,5 @@
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelHypeTrainSharedParticipantData } from './EventSubChannelHypeTrainSharedParticipant.external';
+import { type EventSubChannelHypeTrainSharedParticipantData } from './EventSubChannelHypeTrainSharedParticipant.external.js';
 import { type ApiClient, type HelixUser } from '@twurple/api';
 
 /**

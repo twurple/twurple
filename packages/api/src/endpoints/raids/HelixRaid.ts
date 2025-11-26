@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixRaidData } from '../../interfaces/endpoints/raid.external';
+import { type HelixRaidData } from '../../interfaces/endpoints/raid.external.js';
 
 /**
  * A result of a successful raid initiation.

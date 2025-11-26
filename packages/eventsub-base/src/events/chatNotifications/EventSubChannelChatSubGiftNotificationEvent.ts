@@ -1,10 +1,10 @@
 import { type HelixUser } from '@twurple/api';
 import { checkRelationAssertion, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
 import {
 	type EventSubChannelChatNotificationSubTier,
 	type EventSubChannelChatSubGiftNotificationEventData,
-} from './EventSubChannelChatNotificationEvent.external';
+} from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a sub gift notification in a channel's chat.

@@ -1,1 +1,1 @@
-export { EventSubWsListener, type EventSubWsConfig } from './EventSubWsListener';
+export { EventSubWsListener, type EventSubWsConfig } from './EventSubWsListener.js';

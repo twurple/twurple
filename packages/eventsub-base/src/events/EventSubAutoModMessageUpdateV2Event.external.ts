@@ -1,5 +1,5 @@
-import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus';
-import { type EventSubAutoModMessageHoldV2EventData } from './EventSubAutoModMessageHoldV2Event.external';
+import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus.js';
+import { type EventSubAutoModMessageHoldV2EventData } from './EventSubAutoModMessageHoldV2Event.external.js';
 
 /** @private */
 export interface EventSubAutoModMessageUpdateV2EventData extends EventSubAutoModMessageHoldV2EventData {

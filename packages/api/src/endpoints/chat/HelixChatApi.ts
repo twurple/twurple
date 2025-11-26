@@ -1,6 +1,6 @@
 import { createBroadcasterQuery, type HelixPaginatedResponse, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { ChatMessageDroppedError } from '../../errors/ChatMessageDroppedError';
+import { ChatMessageDroppedError } from '../../errors/ChatMessageDroppedError.js';
 import {
 	createChatColorUpdateQuery,
 	createChatSettingsUpdateBody,
@@ -19,39 +19,39 @@ import {
 	type HelixPrivilegedChatSettingsData,
 	type HelixSentChatMessageData,
 	type HelixUserEmoteData,
-} from '../../interfaces/endpoints/chat.external';
+} from '../../interfaces/endpoints/chat.external.js';
 import {
 	type HelixSendChatAnnouncementParams,
 	type HelixSendChatMessageAsAppParams,
 	type HelixSendChatMessageParams,
 	type HelixUpdateChatSettingsParams,
 	type HelixUserEmotesFilter,
-} from '../../interfaces/endpoints/chat.input';
-import { createModeratorActionQuery, createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
+} from '../../interfaces/endpoints/chat.input.js';
+import { createModeratorActionQuery, createSingleKeyQuery } from '../../interfaces/endpoints/generic.external.js';
 import {
 	createSharedChatSessionQuery,
 	type HelixSharedChatSessionData,
-} from '../../interfaces/endpoints/shared-chat-session.external';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
+} from '../../interfaces/endpoints/shared-chat-session.external.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal.js';
 import {
 	createPaginatedResult,
 	createPaginatedResultWithTotal,
 	type HelixPaginatedResult,
 	type HelixPaginatedResultWithTotal,
-} from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixChannelEmote } from './HelixChannelEmote';
-import { HelixChatBadgeSet } from './HelixChatBadgeSet';
-import { HelixChatChatter } from './HelixChatChatter';
-import { HelixChatSettings } from './HelixChatSettings';
-import { HelixEmote } from './HelixEmote';
-import { HelixEmoteFromSet } from './HelixEmoteFromSet';
-import { HelixPrivilegedChatSettings } from './HelixPrivilegedChatSettings';
-import { HelixSentChatMessage } from './HelixSentChatMessage';
-import { HelixSharedChatSession } from './HelixSharedChatSession';
-import { HelixUserEmote } from './HelixUserEmote';
+} from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixChannelEmote } from './HelixChannelEmote.js';
+import { HelixChatBadgeSet } from './HelixChatBadgeSet.js';
+import { HelixChatChatter } from './HelixChatChatter.js';
+import { HelixChatSettings } from './HelixChatSettings.js';
+import { HelixEmote } from './HelixEmote.js';
+import { HelixEmoteFromSet } from './HelixEmoteFromSet.js';
+import { HelixPrivilegedChatSettings } from './HelixPrivilegedChatSettings.js';
+import { HelixSentChatMessage } from './HelixSentChatMessage.js';
+import { HelixSharedChatSession } from './HelixSharedChatSession.js';
+import { HelixUserEmote } from './HelixUserEmote.js';
 
 /**
  * The Helix API methods that deal with chat.

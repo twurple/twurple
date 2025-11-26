@@ -1,11 +1,11 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixAutoModSettings } from '../../endpoints/moderation/HelixAutoModSettings';
+import { type HelixAutoModSettings } from '../../endpoints/moderation/HelixAutoModSettings.js';
 import {
 	type HelixBanFilter,
 	type HelixBanUserRequest,
 	type HelixCheckAutoModStatusData,
 	type HelixModeratorFilter,
-} from './moderation.input';
+} from './moderation.input.js';
 
 /**
  * Status of an unban request.

@@ -1,8 +1,8 @@
 import { type HelixResponse } from '@twurple/api-call';
 import { rtfm } from '@twurple/common';
-import { type HelixContentClassificationLabelData } from '../../interfaces/endpoints/contentClassificationLabels.external';
-import { BaseApi } from '../BaseApi';
-import { HelixContentClassificationLabel } from './HelixContentClassificationLabel';
+import { type HelixContentClassificationLabelData } from '../../interfaces/endpoints/contentClassificationLabels.external.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixContentClassificationLabel } from './HelixContentClassificationLabel.js';
 
 /**
  * The Helix API methods that deal with content classification labels.

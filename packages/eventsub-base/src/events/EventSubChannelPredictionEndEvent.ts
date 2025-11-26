@@ -1,11 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome';
+import { EventSubChannelPredictionOutcome } from './common/EventSubChannelPredictionOutcome.js';
 import {
 	type EventSubChannelPredictionEndEventData,
 	type EventSubChannelPredictionEndStatus,
-} from './EventSubChannelPredictionEndEvent.external';
+} from './EventSubChannelPredictionEndEvent.external.js';
 
 /**
  * An EventSub event representing a prediction being locked in a channel.

@@ -1,4 +1,4 @@
-import { type EventSubChannelSharedChatSessionParticipantData } from './common/EventSubChannelSharedChatSessionParticipant.external';
+import { type EventSubChannelSharedChatSessionParticipantData } from './common/EventSubChannelSharedChatSessionParticipant.external.js';
 
 /** @private */
 export interface EventSubChannelSharedChatSessionBeginEventData {

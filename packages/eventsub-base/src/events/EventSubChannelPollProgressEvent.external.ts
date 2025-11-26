@@ -1,5 +1,5 @@
-import { type EventSubChannelPollChoiceData } from './common/EventSubChannelPollChoice.external';
-import { type EventSubChannelPollVoteTypeSettingsData } from './common/EventSubChannelPollVoteTypeSettings.external';
+import { type EventSubChannelPollChoiceData } from './common/EventSubChannelPollChoice.external.js';
+import { type EventSubChannelPollVoteTypeSettingsData } from './common/EventSubChannelPollVoteTypeSettings.external.js';
 
 /** @private */
 export interface EventSubChannelPollProgressEventData {

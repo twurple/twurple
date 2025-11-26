@@ -1,6 +1,6 @@
 import { createBroadcasterQuery, type HelixPaginatedResponse, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { createModeratorActionQuery, createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
+import { createModeratorActionQuery, createSingleKeyQuery } from '../../interfaces/endpoints/generic.external.js';
 import {
 	createAutoModProcessBody,
 	createAutoModSettingsBody,
@@ -22,7 +22,7 @@ import {
 	type HelixUnbanRequestData,
 	type HelixUnbanRequestStatus,
 	type HelixWarningData,
-} from '../../interfaces/endpoints/moderation.external';
+} from '../../interfaces/endpoints/moderation.external.js';
 import {
 	type HelixAutoModSettingsUpdate,
 	type HelixBanFilter,
@@ -30,21 +30,21 @@ import {
 	type HelixCheckAutoModStatusData,
 	type HelixModeratorFilter,
 	type HelixUnbanRequestFilter,
-} from '../../interfaces/endpoints/moderation.input';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixAutoModSettings } from './HelixAutoModSettings';
-import { HelixAutoModStatus } from './HelixAutoModStatus';
-import { HelixBan } from './HelixBan';
-import { HelixBanUser } from './HelixBanUser';
-import { HelixBlockedTerm } from './HelixBlockedTerm';
-import { HelixModeratedChannel } from './HelixModeratedChannel';
-import { HelixModerator } from './HelixModerator';
-import { HelixShieldModeStatus } from './HelixShieldModeStatus';
-import { HelixUnbanRequest } from './HelixUnbanRequest';
-import { HelixWarning } from './HelixWarning';
+} from '../../interfaces/endpoints/moderation.input.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixAutoModSettings } from './HelixAutoModSettings.js';
+import { HelixAutoModStatus } from './HelixAutoModStatus.js';
+import { HelixBan } from './HelixBan.js';
+import { HelixBanUser } from './HelixBanUser.js';
+import { HelixBlockedTerm } from './HelixBlockedTerm.js';
+import { HelixModeratedChannel } from './HelixModeratedChannel.js';
+import { HelixModerator } from './HelixModerator.js';
+import { HelixShieldModeStatus } from './HelixShieldModeStatus.js';
+import { HelixUnbanRequest } from './HelixUnbanRequest.js';
+import { HelixWarning } from './HelixWarning.js';
 
 /**
  * The Helix API methods that deal with moderation.

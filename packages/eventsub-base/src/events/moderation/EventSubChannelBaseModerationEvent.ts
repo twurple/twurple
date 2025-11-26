@@ -2,7 +2,7 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelBaseModerationEventData,
 	type EventSubChannelModerationAction,
-} from './EventSubChannelModerationEvent.external';
+} from './EventSubChannelModerationEvent.external.js';
 import { type ApiClient, type HelixUser } from '@twurple/api';
 import { Enumerable } from '@d-fischer/shared-utils';
 

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { splitOnSpaces } from '../messageUtil';
+import { splitOnSpaces } from '../messageUtil.js';
 
 describe('Auto Text Splitter with Spaces', () => {
 	const testString = 'This is a test ';

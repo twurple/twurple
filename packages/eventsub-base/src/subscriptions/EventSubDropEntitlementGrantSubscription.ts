@@ -1,9 +1,9 @@
 import type { HelixEventSubDropEntitlementGrantFilter, HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubDropEntitlementGrantEvent } from '../events/EventSubDropEntitlementGrantEvent';
-import { type EventSubDropEntitlementGrantEventData } from '../events/EventSubDropEntitlementGrantEvent.external';
-import type { EventSubBase } from '../EventSubBase';
-import { EventSubSubscription } from './EventSubSubscription';
+import { EventSubDropEntitlementGrantEvent } from '../events/EventSubDropEntitlementGrantEvent.js';
+import { type EventSubDropEntitlementGrantEventData } from '../events/EventSubDropEntitlementGrantEvent.external.js';
+import type { EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')

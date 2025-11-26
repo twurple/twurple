@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubAutoModMessageHoldEventData } from './EventSubAutoModMessageHoldEvent.external';
-import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel';
-import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external';
+import { type EventSubAutoModMessageHoldEventData } from './EventSubAutoModMessageHoldEvent.external.js';
+import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel.js';
+import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external.js';
 
 /**
  * An EventSub event representing chat message being held by AutoMod in a channel.

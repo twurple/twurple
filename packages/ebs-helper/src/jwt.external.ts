@@ -1,4 +1,4 @@
-import { type ExternalJwtConfig } from './jwt';
+import { type ExternalJwtConfig } from './jwt.js';
 
 /** @internal */
 export function createExternalJwtData(config: ExternalJwtConfig, ttl: number) {

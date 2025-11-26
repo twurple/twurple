@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixAutoModStatusData } from '../../interfaces/endpoints/moderation.external';
+import { type HelixAutoModStatusData } from '../../interfaces/endpoints/moderation.external.js';
 
 /**
  * The status of a message that says whether it is permitted by AutoMod or not.

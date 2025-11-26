@@ -1,6 +1,6 @@
 import { type UserIdResolvable } from '@twurple/common';
-import { type HelixPagination } from '../../utils/pagination/HelixPagination';
-import { type HelixClipFilterType } from './clip.external';
+import { type HelixPagination } from '../../utils/pagination/HelixPagination.js';
+import { type HelixClipFilterType } from './clip.external.js';
 
 /**
  * Filters for clip queries.

@@ -1,5 +1,5 @@
 import { type UserIdResolvable } from '@twurple/common';
-import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken';
+import type { AccessToken, AccessTokenMaybeWithUserId, AccessTokenWithUserId } from '../AccessToken.js';
 
 /**
  * Describes a class that manages and supplies access tokens.

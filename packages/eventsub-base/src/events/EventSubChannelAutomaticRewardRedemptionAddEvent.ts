@@ -5,7 +5,7 @@ import {
 	type EventSubAutomaticRewardRedemptionRewardUnlockedEmoteData,
 	type EventSubAutomaticRewardType,
 	type EventSubChannelAutomaticRewardRedemptionAddEventData,
-} from './EventSubChannelAutomaticRewardRedemptionAddEvent.external';
+} from './EventSubChannelAutomaticRewardRedemptionAddEvent.external.js';
 
 /**
  * An EventSub event representing an automatic reward being redeemed by a user in a channel.

@@ -3,7 +3,7 @@ import {
 	type HelixSendChatMessageAsAppParams,
 	type HelixSendChatMessageParams,
 	type HelixUpdateChatSettingsParams,
-} from './chat.input';
+} from './chat.input.js';
 
 /**
  * The subscription tier necessary to unlock an emote. 1000 means tier 1, and so on.

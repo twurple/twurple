@@ -2,7 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { type HelixUser } from '@twurple/api';
 import { type ChatSubUpgradeInfo, toUserName, type UserNotice } from '@twurple/chat';
 import { checkRelationAssertion, rtfm } from '@twurple/common';
-import { type Bot } from '../Bot';
+import { type Bot } from '../Bot.js';
 
 /**
  * An event representing a free subscription from Prime Gaming being replaced by a paid one.

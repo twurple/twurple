@@ -3,7 +3,7 @@ import {
 	type EventSubChannelAutomaticRewardData,
 	type EventSubChannelAutomaticRewardEmoteData,
 	type EventSubChannelAutomaticRewardType,
-} from './EventSubChannelAutomaticReward.external';
+} from './EventSubChannelAutomaticReward.external.js';
 
 /**
  * An object that contains the reward information.

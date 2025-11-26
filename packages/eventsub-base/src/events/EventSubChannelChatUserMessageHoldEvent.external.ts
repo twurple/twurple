@@ -1,4 +1,4 @@
-import { type EventSubAutoModMessageData } from './common/EventSubAutoModMessage.external';
+import { type EventSubAutoModMessageData } from './common/EventSubAutoModMessage.external.js';
 
 /** @private */
 export interface EventSubChannelChatUserMessageHoldEventData {

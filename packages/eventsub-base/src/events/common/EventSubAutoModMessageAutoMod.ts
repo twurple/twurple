@@ -1,7 +1,7 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubAutoModMessageAutoModData } from './EventSubAutoModMessageAutoMod.external';
-import { type EventSubAutoModLevel } from './EventSubAutoModLevel';
-import { EventSubAutoModMessageAutoModBoundary } from './EventSubAutoModMessageAutoModBoundary';
+import { type EventSubAutoModMessageAutoModData } from './EventSubAutoModMessageAutoMod.external.js';
+import { type EventSubAutoModLevel } from './EventSubAutoModLevel.js';
+import { EventSubAutoModMessageAutoModBoundary } from './EventSubAutoModMessageAutoModBoundary.js';
 
 /**
  * An object representing an AutoMod violation data if the massage caught by AutoMod.

@@ -1,7 +1,7 @@
 import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
-import { type EventSubChannelWarnModerationEventData } from './EventSubChannelModerationEvent.external';
+import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent.js';
+import { type EventSubChannelWarnModerationEventData } from './EventSubChannelModerationEvent.external.js';
 
 /**
  * An EventSub event representing a moderator warning a user in a channel.

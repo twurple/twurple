@@ -1,5 +1,5 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixClipIdFilter } from './clip.input';
+import { type HelixClipIdFilter } from './clip.input.js';
 
 /** @private */
 export interface HelixClipData {

@@ -1,8 +1,8 @@
 import { type Logger } from '@d-fischer/logger';
 import { type RateLimiter } from '@d-fischer/rate-limiter';
 import { rtfm } from '@twurple/common';
-import { type ApiConfig, type TwitchApiCallOptionsInternal } from './ApiClient';
-import { BaseApiClient } from './BaseApiClient';
+import { type ApiConfig, type TwitchApiCallOptionsInternal } from './ApiClient.js';
+import { BaseApiClient } from './BaseApiClient.js';
 
 /** @private */
 @rtfm('api', 'ApiClient')

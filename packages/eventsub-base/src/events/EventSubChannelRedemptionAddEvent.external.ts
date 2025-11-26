@@ -1,4 +1,4 @@
-import { type EventSubChannelRedemptionRewardData } from './common/EventSubChannelRedemptionReward.external';
+import { type EventSubChannelRedemptionRewardData } from './common/EventSubChannelRedemptionReward.external.js';
 
 /** @private */
 export interface EventSubChannelRedemptionAddEventData {

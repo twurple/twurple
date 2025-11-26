@@ -1,5 +1,5 @@
 import { rtfm } from '@twurple/common';
-import { BaseApiClient } from './BaseApiClient';
+import { BaseApiClient } from './BaseApiClient.js';
 
 /** @private */
 @rtfm('api', 'ApiClient')

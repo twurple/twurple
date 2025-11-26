@@ -10,20 +10,20 @@ import {
 	type HelixCustomRewardRedemptionData,
 	type HelixCustomRewardRedemptionStatus,
 	type HelixCustomRewardRedemptionTargetStatus,
-} from '../../interfaces/endpoints/channelPoints.external';
+} from '../../interfaces/endpoints/channelPoints.external.js';
 import {
 	type HelixCreateCustomRewardData,
 	type HelixCustomRewardRedemptionFilter,
 	type HelixPaginatedCustomRewardRedemptionFilter,
 	type HelixUpdateCustomRewardData,
-} from '../../interfaces/endpoints/channelPoints.input';
-import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixCustomReward } from './HelixCustomReward';
-import { HelixCustomRewardRedemption } from './HelixCustomRewardRedemption';
+} from '../../interfaces/endpoints/channelPoints.input.js';
+import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixCustomReward } from './HelixCustomReward.js';
+import { HelixCustomRewardRedemption } from './HelixCustomRewardRedemption.js';
 
 /**
  * The Helix API methods that deal with channel points.

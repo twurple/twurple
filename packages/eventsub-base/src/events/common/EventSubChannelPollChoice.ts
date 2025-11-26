@@ -1,6 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelPollBeginChoice } from './EventSubChannelPollBeginChoice';
-import { type EventSubChannelPollChoiceData } from './EventSubChannelPollChoice.external';
+import { EventSubChannelPollBeginChoice } from './EventSubChannelPollBeginChoice.js';
+import { type EventSubChannelPollChoiceData } from './EventSubChannelPollChoice.external.js';
 
 /**
  * A choice in a poll.

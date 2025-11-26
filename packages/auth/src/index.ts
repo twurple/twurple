@@ -3,8 +3,8 @@ export type {
 	AccessTokenMaybeWithUserId,
 	AccessTokenWithUserId,
 	ExpireableAccessToken,
-} from './AccessToken';
-export { accessTokenIsExpired, getExpiryDateOfAccessToken } from './AccessToken';
+} from './AccessToken.js';
+export { accessTokenIsExpired, getExpiryDateOfAccessToken } from './AccessToken.js';
 
 export {
 	exchangeCode,
@@ -14,20 +14,20 @@ export {
 	getValidTokenFromProviderForIntent,
 	refreshUserToken,
 	revokeToken,
-} from './helpers';
+} from './helpers.js';
 
-export { TokenFetcher } from './TokenFetcher';
-export { TokenInfo } from './TokenInfo';
-export type { TokenInfoData } from './TokenInfo.external';
+export { TokenFetcher } from './TokenFetcher.js';
+export { TokenInfo } from './TokenInfo.js';
+export type { TokenInfoData } from './TokenInfo.external.js';
 
-export type { AuthProvider } from './providers/AuthProvider';
-export { AppTokenAuthProvider } from './providers/AppTokenAuthProvider';
-export { RefreshingAuthProvider } from './providers/RefreshingAuthProvider';
-export type { RefreshingAuthProviderConfig } from './providers/RefreshingAuthProvider';
-export { StaticAuthProvider } from './providers/StaticAuthProvider';
+export type { AuthProvider } from './providers/AuthProvider.js';
+export { AppTokenAuthProvider } from './providers/AppTokenAuthProvider.js';
+export { RefreshingAuthProvider } from './providers/RefreshingAuthProvider.js';
+export type { RefreshingAuthProviderConfig } from './providers/RefreshingAuthProvider.js';
+export { StaticAuthProvider } from './providers/StaticAuthProvider.js';
 
-export { CachedRefreshFailureError } from './errors/CachedRefreshFailureError';
-export { IntermediateUserRemovalError } from './errors/IntermediateUserRemovalError';
-export { InvalidTokenError } from './errors/InvalidTokenError';
-export { InvalidTokenTypeError } from './errors/InvalidTokenTypeError';
-export { UnknownIntentError } from './errors/UnknownIntentError';
+export { CachedRefreshFailureError } from './errors/CachedRefreshFailureError.js';
+export { IntermediateUserRemovalError } from './errors/IntermediateUserRemovalError.js';
+export { InvalidTokenError } from './errors/InvalidTokenError.js';
+export { InvalidTokenTypeError } from './errors/InvalidTokenTypeError.js';
+export { UnknownIntentError } from './errors/UnknownIntentError.js';

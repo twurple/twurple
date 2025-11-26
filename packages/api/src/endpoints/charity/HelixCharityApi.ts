@@ -3,12 +3,12 @@ import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
 	type HelixCharityCampaignData,
 	type HelixCharityCampaignDonationData,
-} from '../../interfaces/endpoints/charity.external';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixCharityCampaign } from './HelixCharityCampaign';
-import { HelixCharityCampaignDonation } from './HelixCharityCampaignDonation';
+} from '../../interfaces/endpoints/charity.external.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixCharityCampaign } from './HelixCharityCampaign.js';
+import { HelixCharityCampaignDonation } from './HelixCharityCampaignDonation.js';
 
 /**
  * The Helix API methods that deal with charity campaigns.

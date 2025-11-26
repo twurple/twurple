@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelCharityAmount } from './common/EventSubChannelCharityAmount';
-import { type EventSubChannelCharityCampaignStartEventData } from './EventSubChannelCharityCampaignStartEvent.external';
+import { EventSubChannelCharityAmount } from './common/EventSubChannelCharityAmount.js';
+import { type EventSubChannelCharityCampaignStartEventData } from './EventSubChannelCharityCampaignStartEvent.external.js';
 
 /**
  * An EventSub event representing the start of a charity campaign in a channel.

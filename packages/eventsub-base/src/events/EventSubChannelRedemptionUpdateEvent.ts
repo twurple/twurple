@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelRedemptionUpdateEventData } from './EventSubChannelRedemptionUpdateEvent.external';
+import { type EventSubChannelRedemptionUpdateEventData } from './EventSubChannelRedemptionUpdateEvent.external.js';
 
 /**
  * An EventSub event representing a Channel Points redemption being updated.

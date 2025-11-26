@@ -2,8 +2,8 @@ import {
 	type EventSubChatMessageCheermotePart,
 	type EventSubChatMessageEmotePart,
 	type EventSubChatMessageTextPart,
-} from './common/EventSubChatMessage.external';
-import { type EventSubChannelBitsUsePowerUpData } from './common/EventSubChannelBitsUsePowerUp.external';
+} from './common/EventSubChatMessage.external.js';
+import { type EventSubChannelBitsUsePowerUpData } from './common/EventSubChannelBitsUsePowerUp.external.js';
 
 /**
  * The type of bits usage.

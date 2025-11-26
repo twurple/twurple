@@ -1,4 +1,4 @@
-import { type EventSubChatBadge, type EventSubChatMessageData } from './common/EventSubChatMessage.external';
+import { type EventSubChatBadge, type EventSubChatMessageData } from './common/EventSubChatMessage.external.js';
 
 /**
  * The type of message that was sent.

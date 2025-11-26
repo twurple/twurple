@@ -11,7 +11,7 @@ import {
 	type EventSubListener,
 	type EventSubSubscription,
 } from '@twurple/eventsub-base';
-import { EventSubWsSocket } from './EventSubWsSocket';
+import { EventSubWsSocket } from './EventSubWsSocket.js';
 
 /**
  * Configuration for an EventSub WebSocket listener.

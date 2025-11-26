@@ -1,10 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixClipData } from '../../interfaces/endpoints/clip.external';
-import type { HelixGame } from '../game/HelixGame';
-import type { HelixUser } from '../user/HelixUser';
-import type { HelixVideo } from '../video/HelixVideo';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixClipData } from '../../interfaces/endpoints/clip.external.js';
+import type { HelixGame } from '../game/HelixGame.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import type { HelixVideo } from '../video/HelixVideo.js';
 
 /**
  * A clip from a Twitch stream.

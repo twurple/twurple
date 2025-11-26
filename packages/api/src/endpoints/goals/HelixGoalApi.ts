@@ -1,8 +1,8 @@
 import { createBroadcasterQuery, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { type HelixGoalData } from '../../interfaces/endpoints/goal.external';
-import { BaseApi } from '../BaseApi';
-import { HelixGoal } from './HelixGoal';
+import { type HelixGoalData } from '../../interfaces/endpoints/goal.external.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixGoal } from './HelixGoal.js';
 
 /**
  * The Helix API methods that deal with creator goals.

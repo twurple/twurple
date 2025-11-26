@@ -1,8 +1,8 @@
 import { mapNullable } from '@d-fischer/shared-utils';
 import { type HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
-import { type EventSubChannelChatGiftPaidUpgradeNotificationEventData } from './EventSubChannelChatNotificationEvent.external';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
+import { type EventSubChannelChatGiftPaidUpgradeNotificationEventData } from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a notification of a user upgrading their gifted sub to a paid one in a channel's chat.

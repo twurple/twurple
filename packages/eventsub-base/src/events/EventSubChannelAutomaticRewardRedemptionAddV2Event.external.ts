@@ -1,4 +1,4 @@
-import { type EventSubChannelAutomaticRewardData } from './common/EventSubChannelAutomaticReward.external';
+import { type EventSubChannelAutomaticRewardData } from './common/EventSubChannelAutomaticReward.external.js';
 
 /** @private */
 export interface EventSubChatAutomaticRewardRedemptionMessageTextPart {

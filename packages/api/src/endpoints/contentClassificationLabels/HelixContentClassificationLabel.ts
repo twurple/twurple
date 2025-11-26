@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol } from '@twurple/common';
-import { type HelixContentClassificationLabelData } from '../../interfaces/endpoints/contentClassificationLabels.external';
+import { type HelixContentClassificationLabelData } from '../../interfaces/endpoints/contentClassificationLabels.external.js';
 
 /**
  * A content classification label that can be applied to a Twitch stream.

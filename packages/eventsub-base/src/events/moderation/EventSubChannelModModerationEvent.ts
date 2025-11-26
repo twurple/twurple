@@ -1,6 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
-import { type EventSubChannelModModerationEventData } from './EventSubChannelModerationEvent.external';
+import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent.js';
+import { type EventSubChannelModModerationEventData } from './EventSubChannelModerationEvent.external.js';
 
 /**
  * An EventSub event representing a user having gained moderator status on a channel.

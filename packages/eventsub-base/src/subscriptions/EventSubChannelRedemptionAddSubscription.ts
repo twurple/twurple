@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelRedemptionAddEvent } from '../events/EventSubChannelRedemptionAddEvent';
-import { type EventSubChannelRedemptionAddEventData } from '../events/EventSubChannelRedemptionAddEvent.external';
-import type { EventSubBase } from '../EventSubBase';
-import { EventSubSubscription } from './EventSubSubscription';
+import { EventSubChannelRedemptionAddEvent } from '../events/EventSubChannelRedemptionAddEvent.js';
+import { type EventSubChannelRedemptionAddEventData } from '../events/EventSubChannelRedemptionAddEvent.external.js';
+import type { EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')

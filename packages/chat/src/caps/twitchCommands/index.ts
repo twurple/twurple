@@ -1,10 +1,10 @@
 import type { Capability } from 'ircv3';
-import { ClearChat } from './messageTypes/ClearChat';
-import { Reconnect } from './messageTypes/Reconnect';
-import { RoomState } from './messageTypes/RoomState';
-import { UserNotice } from './messageTypes/UserNotice';
-import { UserState } from './messageTypes/UserState';
-import { Whisper } from './messageTypes/Whisper';
+import { ClearChat } from './messageTypes/ClearChat.js';
+import { Reconnect } from './messageTypes/Reconnect.js';
+import { RoomState } from './messageTypes/RoomState.js';
+import { UserNotice } from './messageTypes/UserNotice.js';
+import { UserState } from './messageTypes/UserState.js';
+import { Whisper } from './messageTypes/Whisper.js';
 
 /** @internal */
 export const TwitchCommandsCapability: Capability = {

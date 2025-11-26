@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { type AccessToken, accessTokenIsExpired, type AccessTokenWithUserId } from '../AccessToken';
-import { getAppToken } from '../helpers';
-import { TokenFetcher } from '../TokenFetcher';
-import { type AuthProvider } from './AuthProvider';
+import { type AccessToken, accessTokenIsExpired, type AccessTokenWithUserId } from '../AccessToken.js';
+import { getAppToken } from '../helpers.js';
+import { TokenFetcher } from '../TokenFetcher.js';
+import { type AuthProvider } from './AuthProvider.js';
 
 /**
  * An auth provider that gets tokens using client credentials.

@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixAdScheduleData } from '../../interfaces/endpoints/channel.external';
+import type { HelixAdScheduleData } from '../../interfaces/endpoints/channel.external.js';
 
 /**
  * Represents a broadcaster's ad schedule.

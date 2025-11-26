@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { EventSubChannelSharedChatSessionParticipant } from './common/EventSubChannelSharedChatSessionParticipant';
-import { type EventSubChannelSharedChatSessionUpdateEventData } from './EventSubChannelSharedChatSessionUpdateEvent.external';
+import { EventSubChannelSharedChatSessionParticipant } from './common/EventSubChannelSharedChatSessionParticipant.js';
+import { type EventSubChannelSharedChatSessionUpdateEventData } from './EventSubChannelSharedChatSessionUpdateEvent.external.js';
 
 /**
  * An EventSub event representing an update to a shared chat session in a channel.

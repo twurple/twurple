@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type ApiClient, type HelixUser } from '@twurple/api';
-import { type EventSubChannelSharedChatSessionParticipantData } from './EventSubChannelSharedChatSessionParticipant.external';
+import { type EventSubChannelSharedChatSessionParticipantData } from './EventSubChannelSharedChatSessionParticipant.external.js';
 
 /**
  * Represents a broadcaster participating in a shared chat session.

@@ -1,6 +1,6 @@
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { createWhisperQuery } from '../../interfaces/endpoints/whisper.external';
-import { BaseApi } from '../BaseApi';
+import { createWhisperQuery } from '../../interfaces/endpoints/whisper.external.js';
+import { BaseApi } from '../BaseApi.js';
 
 /**
  * The API methods that deal with whispers.

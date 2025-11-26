@@ -1,7 +1,7 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelCheerEventData } from './EventSubChannelCheerEvent.external';
+import { type EventSubChannelCheerEventData } from './EventSubChannelCheerEvent.external.js';
 
 /**
  * An EventSub event representing a user cheering bits.

@@ -1,10 +1,10 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixChannelReferenceData } from '../../interfaces/endpoints/channel.external';
-import type { HelixGame } from '../game/HelixGame';
-import type { HelixUser } from '../user/HelixUser';
-import type { HelixChannel } from './HelixChannel';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixChannelReferenceData } from '../../interfaces/endpoints/channel.external.js';
+import type { HelixGame } from '../game/HelixGame.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import type { HelixChannel } from './HelixChannel.js';
 
 /**
  * A reference to a Twitch channel.

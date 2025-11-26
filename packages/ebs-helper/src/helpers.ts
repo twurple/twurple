@@ -5,9 +5,9 @@ import {
 	HelixExtensionConfigurationSegment,
 	type HelixExtensionConfigurationSegmentData,
 	type HelixExtensionConfigurationSegmentName,
-} from './classes/HelixExtensionConfigurationSegment';
-import { HelixExtensionSecretList } from './classes/HelixExtensionSecretList';
-import { type HelixExtensionSecretListData } from './classes/HelixExtensionSecretList.external';
+} from './classes/HelixExtensionConfigurationSegment.js';
+import { HelixExtensionSecretList } from './classes/HelixExtensionSecretList.js';
+import { type HelixExtensionSecretListData } from './classes/HelixExtensionSecretList.external.js';
 import {
 	createChatMessageBody,
 	createChatMessageJwtData,
@@ -21,8 +21,8 @@ import {
 	getExtensionQuery,
 	getExtensionSecretCreateQuery,
 	getExtensionSecretsQuery,
-} from './helpers.external';
-import { type BaseExternalJwtConfig, createExternalJwt } from './jwt';
+} from './helpers.external.js';
+import { type BaseExternalJwtConfig, createExternalJwt } from './jwt.js';
 
 /**
  * Configuration for an EBS call.

@@ -1,6 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
-import { type EventSubChannelChatBitsBadgeTierNotificationEventData } from './EventSubChannelChatNotificationEvent.external';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
+import { type EventSubChannelChatBitsBadgeTierNotificationEventData } from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a notification for a new bits badge tier being reached in a channel's chat.

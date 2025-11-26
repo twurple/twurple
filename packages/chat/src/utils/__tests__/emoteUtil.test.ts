@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseEmoteOffsets } from '../emoteUtil';
+import { parseEmoteOffsets } from '../emoteUtil.js';
 
 describe('Emote offset parser', () => {
 	it('parses a single emote at a single place', () => {

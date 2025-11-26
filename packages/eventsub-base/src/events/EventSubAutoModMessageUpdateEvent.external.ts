@@ -1,6 +1,6 @@
-import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel';
-import { type EventSubAutoModMessageData } from './common/EventSubAutoModMessage.external';
-import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus';
+import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel.js';
+import { type EventSubAutoModMessageData } from './common/EventSubAutoModMessage.external.js';
+import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus.js';
 
 /** @private */
 export interface EventSubAutoModMessageUpdateEventData {

@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixCharityCampaignAmountData } from '../../interfaces/endpoints/charity.external';
+import { type HelixCharityCampaignAmountData } from '../../interfaces/endpoints/charity.external.js';
 
 /**
  * An object representing monetary amount and currency information for charity donations/goals.

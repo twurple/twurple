@@ -5,8 +5,8 @@ import {
 	type EventSubChannelBitsUseEventData,
 	type EventSubChannelBitsUseMessagePart,
 	type EventSubChannelBitsUseType,
-} from './EventSubChannelBitsUseEvent.external';
-import { EventSubChannelBitsUsePowerUp } from './common/EventSubChannelBitsUsePowerUp';
+} from './EventSubChannelBitsUseEvent.external.js';
+import { EventSubChannelBitsUsePowerUp } from './common/EventSubChannelBitsUsePowerUp.js';
 
 /**
  * An EventSub event representing bits being used in a channel.

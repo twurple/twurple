@@ -1,9 +1,9 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixBitsLeaderboardResponse } from '../../interfaces/endpoints/bits.external';
-import { HelixBitsLeaderboardEntry } from './HelixBitsLeaderboardEntry';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixBitsLeaderboardResponse } from '../../interfaces/endpoints/bits.external.js';
+import { HelixBitsLeaderboardEntry } from './HelixBitsLeaderboardEntry.js';
 
 /**
  * A leaderboard where the users who used the most bits to a broadcaster are listed.

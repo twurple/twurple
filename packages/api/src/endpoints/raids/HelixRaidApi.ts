@@ -1,8 +1,8 @@
 import { createBroadcasterQuery, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { createRaidStartQuery, type HelixRaidData } from '../../interfaces/endpoints/raid.external';
-import { BaseApi } from '../BaseApi';
-import { HelixRaid } from './HelixRaid';
+import { createRaidStartQuery, type HelixRaidData } from '../../interfaces/endpoints/raid.external.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixRaid } from './HelixRaid.js';
 
 /**
  * The Helix API methods that deal with raids.

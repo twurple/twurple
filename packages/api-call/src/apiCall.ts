@@ -1,7 +1,7 @@
-import { stringify } from 'qs';
-import { handleTwitchApiResponseError, transformTwitchApiResponse } from './helpers/transform';
-import { getTwitchApiUrl } from './helpers/url';
-import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchApiCallOptions';
+import { qsStringify } from '@twurple/common';
+import { handleTwitchApiResponseError, transformTwitchApiResponse } from './helpers/transform.js';
+import { getTwitchApiUrl } from './helpers/url.js';
+import type { TwitchApiCallFetchOptions, TwitchApiCallOptions } from './TwitchApiCallOptions.js';
 
 /**
  * Makes a call to the Twitch API using the given credentials, returning the raw Response object.
@@ -25,7 +25,7 @@ export async function callTwitchApiRaw(
 ): Promise<Response> {
 	const type = options.type ?? 'helix';
 	const url = getTwitchApiUrl(options.url, type);
-	const params = stringify(options.query, { arrayFormat: 'repeat', addQueryPrefix: true });
+	const params = qsStringify(options.query);
 	// eslint-disable-next-line @typescript-eslint/naming-convention
 	const headers = new Headers({ Accept: 'application/json' });
 

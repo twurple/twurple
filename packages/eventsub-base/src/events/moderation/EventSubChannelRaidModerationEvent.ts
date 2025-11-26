@@ -1,7 +1,7 @@
 import type { HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
-import { type EventSubChannelRaidModerationEventData } from './EventSubChannelModerationEvent.external';
+import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent.js';
+import { type EventSubChannelRaidModerationEventData } from './EventSubChannelModerationEvent.external.js';
 
 /**
  * An EventSub event representing a moderator starting a raid on a channel.

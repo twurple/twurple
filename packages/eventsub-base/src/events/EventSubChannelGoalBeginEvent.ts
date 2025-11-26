@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { EventSubChannelGoalType } from './common/EventSubChannelGoalType';
-import { type EventSubChannelGoalBeginEventData } from './EventSubChannelGoalBeginEvent.external';
+import type { EventSubChannelGoalType } from './common/EventSubChannelGoalType.js';
+import { type EventSubChannelGoalBeginEventData } from './EventSubChannelGoalBeginEvent.external.js';
 
 /**
  * An EventSub event representing a creator goal starting in a channel.

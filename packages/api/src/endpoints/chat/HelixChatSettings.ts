@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixChatSettingsData } from '../../interfaces/endpoints/chat.external';
+import { type HelixChatSettingsData } from '../../interfaces/endpoints/chat.external.js';
 
 /**
  * The settings of a broadcaster's chat.

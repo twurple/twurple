@@ -1,5 +1,5 @@
-import { type EventSubChannelPredictionBeginOutcomeData } from './EventSubChannelPredictionBeginOutcome.external';
-import { type EventSubChannelPredictionPredictorData } from './EventSubChannelPredictionPredictor.external';
+import { type EventSubChannelPredictionBeginOutcomeData } from './EventSubChannelPredictionBeginOutcome.external.js';
+import { type EventSubChannelPredictionPredictorData } from './EventSubChannelPredictionPredictor.external.js';
 
 /** @private */
 export interface EventSubChannelPredictionOutcomeData extends EventSubChannelPredictionBeginOutcomeData {

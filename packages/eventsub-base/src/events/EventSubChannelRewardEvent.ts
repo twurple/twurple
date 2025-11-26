@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import {
 	type EventSubChannelRewardEventData,
 	type EventSubChannelRewardImageScale,
-} from './EventSubChannelRewardEvent.external';
+} from './EventSubChannelRewardEvent.external.js';
 
 /**
  * An EventSub event representing a broadcaster adding, updating or removing a Channel Points reward for their channel.

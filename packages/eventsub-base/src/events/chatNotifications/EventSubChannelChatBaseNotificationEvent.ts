@@ -1,11 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { type ApiClient, type HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChatMessagePart } from '../common/EventSubChatMessage.external';
+import { type EventSubChatMessagePart } from '../common/EventSubChatMessage.external.js';
 import {
 	type EventSubChannelChatBaseNotificationEventData,
 	type EventSubChannelChatNotificationType,
-} from './EventSubChannelChatNotificationEvent.external';
+} from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a notification being sent to a channel's chat.

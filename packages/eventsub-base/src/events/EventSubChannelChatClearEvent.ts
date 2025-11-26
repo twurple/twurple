@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelChatClearEventData } from './EventSubChannelChatClearEvent.external';
+import { type EventSubChannelChatClearEventData } from './EventSubChannelChatClearEvent.external.js';
 
 /**
  * An EventSub event representing a channel's chat being cleared.

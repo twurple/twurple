@@ -5,11 +5,11 @@ import {
 	createBitsLeaderboardQuery,
 	type HelixBitsLeaderboardResponse,
 	type HelixCheermoteData,
-} from '../../interfaces/endpoints/bits.external';
-import { type HelixBitsLeaderboardQuery } from '../../interfaces/endpoints/bits.input';
-import { BaseApi } from '../BaseApi';
-import { HelixBitsLeaderboard } from './HelixBitsLeaderboard';
-import { HelixCheermoteList } from './HelixCheermoteList';
+} from '../../interfaces/endpoints/bits.external.js';
+import { type HelixBitsLeaderboardQuery } from '../../interfaces/endpoints/bits.input.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixBitsLeaderboard } from './HelixBitsLeaderboard.js';
+import { HelixCheermoteList } from './HelixCheermoteList.js';
 
 /**
  * The Helix API methods that deal with bits.

@@ -1,5 +1,5 @@
 import { SignJWT, base64url } from 'jose';
-import { createExternalJwtData } from './jwt.external';
+import { createExternalJwtData } from './jwt.external.js';
 
 /** @private */
 export interface BaseExternalJwtConfig {

@@ -1,8 +1,8 @@
 import { createBroadcasterQuery, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixHypeTrainStatusData } from '../../interfaces/endpoints/hypeTrain.external';
-import { BaseApi } from '../BaseApi';
-import { HelixHypeTrainStatus } from './HelixHypeTrainStatus';
+import { type HelixHypeTrainStatusData } from '../../interfaces/endpoints/hypeTrain.external.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixHypeTrainStatus } from './HelixHypeTrainStatus.js';
 
 /**
  * The Helix API methods that deal with Hype Trains.

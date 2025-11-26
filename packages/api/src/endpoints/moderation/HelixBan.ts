@@ -1,7 +1,7 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixBanData } from '../../interfaces/endpoints/moderation.external';
-import { HelixBanUser } from './HelixBanUser';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixBanData } from '../../interfaces/endpoints/moderation.external.js';
+import { HelixBanUser } from './HelixBanUser.js';
 
 /**
  * Information about the ban of a user.

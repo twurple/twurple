@@ -8,7 +8,7 @@ import {
 	type UserIdResolvable,
 	type UserNameResolvable,
 } from '@twurple/common';
-import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
+import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external.js';
 import {
 	createUserBlockCreateQuery,
 	createUserBlockDeleteQuery,
@@ -16,23 +16,23 @@ import {
 	type HelixUserBlockData,
 	type HelixUserData,
 	type UserLookupType,
-} from '../../interfaces/endpoints/user.external';
-import { type HelixUserBlockAdditionalInfo, type HelixUserUpdate } from '../../interfaces/endpoints/user.input';
+} from '../../interfaces/endpoints/user.external.js';
+import { type HelixUserBlockAdditionalInfo, type HelixUserUpdate } from '../../interfaces/endpoints/user.input.js';
 import {
 	type HelixInstalledExtensionListData,
 	type HelixUserExtensionData,
-} from '../../interfaces/endpoints/userExtension.external';
-import { type HelixUserExtensionUpdatePayload } from '../../interfaces/endpoints/userExtension.input';
-import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixInstalledExtensionList } from './extensions/HelixInstalledExtensionList';
-import { HelixUserExtension } from './extensions/HelixUserExtension';
-import { HelixPrivilegedUser } from './HelixPrivilegedUser';
-import { HelixUser } from './HelixUser';
-import { HelixUserBlock } from './HelixUserBlock';
+} from '../../interfaces/endpoints/userExtension.external.js';
+import { type HelixUserExtensionUpdatePayload } from '../../interfaces/endpoints/userExtension.input.js';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixInstalledExtensionList } from './extensions/HelixInstalledExtensionList.js';
+import { HelixUserExtension } from './extensions/HelixUserExtension.js';
+import { HelixPrivilegedUser } from './HelixPrivilegedUser.js';
+import { HelixUser } from './HelixUser.js';
+import { HelixUserBlock } from './HelixUserBlock.js';
 
 /**
  * The Helix API methods that deal with users.

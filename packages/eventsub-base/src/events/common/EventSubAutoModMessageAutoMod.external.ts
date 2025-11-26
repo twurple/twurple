@@ -1,5 +1,5 @@
-import { type EventSubAutoModLevel } from './EventSubAutoModLevel';
-import { type EventSubAutoModMessageAutoModBoundaryData } from './EventSubAutoModMessageAutoModBoundary.external';
+import { type EventSubAutoModLevel } from './EventSubAutoModLevel.js';
+import { type EventSubAutoModMessageAutoModBoundaryData } from './EventSubAutoModMessageAutoModBoundary.external.js';
 
 /** @private */
 export interface EventSubAutoModMessageAutoModData {

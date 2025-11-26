@@ -1,12 +1,12 @@
-import { DataObject, rawDataSymbol } from '../DataObject';
-import { rtfm } from '../rtfm';
+import { DataObject, rawDataSymbol } from '../DataObject.js';
+import { rtfm } from '../rtfm.js';
 import {
 	type HelixExtensionConfigurationLocation,
 	type HelixExtensionData,
 	type HelixExtensionIconSize,
 	type HelixExtensionState,
 	type HelixExtensionSubscriptionsSupportLevel,
-} from './HelixExtension.external';
+} from './HelixExtension.external.js';
 
 /**
  * A Twitch Extension.

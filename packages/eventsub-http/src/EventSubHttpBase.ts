@@ -10,7 +10,7 @@ import {
 } from '@twurple/eventsub-base';
 import * as crypto from 'crypto';
 import type { Request, RequestHandler } from 'httpanda';
-import * as getRawBody from 'raw-body';
+import getRawBody from 'raw-body';
 
 /** @private */
 export interface EventSubVerificationPayload {

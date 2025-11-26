@@ -1,4 +1,4 @@
-import { type HelixPagination } from '../../utils/pagination/HelixPagination';
+import { type HelixPagination } from '../../utils/pagination/HelixPagination.js';
 
 /**
  * The data to send to create or update a bits product.

@@ -1,6 +1,6 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixChatBadgeVersionData } from '../../interfaces/endpoints/chat.external';
-import { type HelixChatBadgeScale } from '../../interfaces/endpoints/chat.input';
+import { type HelixChatBadgeVersionData } from '../../interfaces/endpoints/chat.external.js';
+import { type HelixChatBadgeScale } from '../../interfaces/endpoints/chat.input.js';
 
 /**
  * A version of a chat badge.

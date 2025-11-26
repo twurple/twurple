@@ -1,5 +1,5 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixStreamFilter } from './stream.input';
+import { type HelixStreamFilter } from './stream.input.js';
 
 /**
  * The type of a stream.

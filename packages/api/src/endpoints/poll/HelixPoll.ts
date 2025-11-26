@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixPollData, type HelixPollStatus } from '../../interfaces/endpoints/poll.external';
-import type { HelixUser } from '../user/HelixUser';
-import { HelixPollChoice } from './HelixPollChoice';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixPollData, type HelixPollStatus } from '../../interfaces/endpoints/poll.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import { HelixPollChoice } from './HelixPollChoice.js';
 
 /**
  * A channel poll.

@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { BaseApiClient } from '../../client/BaseApiClient';
-import type { HelixFollowedChannelData } from '../../interfaces/endpoints/channel.external';
-import type { HelixUser } from '../user/HelixUser';
+import type { BaseApiClient } from '../../client/BaseApiClient.js';
+import type { HelixFollowedChannelData } from '../../interfaces/endpoints/channel.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * Represents a broadcaster that a user follows.

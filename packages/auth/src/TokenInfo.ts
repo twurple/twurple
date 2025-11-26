@@ -1,6 +1,6 @@
 import { mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type TokenInfoData } from './TokenInfo.external';
+import { type TokenInfoData } from './TokenInfo.external.js';
 
 /**
  * Information about an access token.

@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelCharityAmountData } from './EventSubChannelCharityAmount.external';
+import { type EventSubChannelCharityAmountData } from './EventSubChannelCharityAmount.external.js';
 
 /**
  * An object representing monetary amount and currency information for charity donations/goals.

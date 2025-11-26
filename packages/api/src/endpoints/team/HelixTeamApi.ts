@@ -1,9 +1,9 @@
 import { createBroadcasterQuery, type HelixResponse, HttpStatusCodeError } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { type HelixTeamData, type HelixTeamWithUsersData } from '../../interfaces/endpoints/team.external';
-import { BaseApi } from '../BaseApi';
-import { HelixTeam } from './HelixTeam';
-import { HelixTeamWithUsers } from './HelixTeamWithUsers';
+import { type HelixTeamData, type HelixTeamWithUsersData } from '../../interfaces/endpoints/team.external.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixTeam } from './HelixTeam.js';
+import { HelixTeamWithUsers } from './HelixTeamWithUsers.js';
 
 /**
  * The Helix API methods that deal with teams.

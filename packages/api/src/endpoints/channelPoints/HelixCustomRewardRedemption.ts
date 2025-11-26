@@ -1,12 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixCustomRewardRedemptionData,
 	type HelixCustomRewardRedemptionTargetStatus,
-} from '../../interfaces/endpoints/channelPoints.external';
-import type { HelixUser } from '../user/HelixUser';
-import type { HelixCustomReward } from './HelixCustomReward';
+} from '../../interfaces/endpoints/channelPoints.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import type { HelixCustomReward } from './HelixCustomReward.js';
 
 /**
  * A redemption of a custom Channel Points reward.

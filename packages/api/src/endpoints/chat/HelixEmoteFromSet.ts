@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixEmoteFromSetData } from '../../interfaces/endpoints/chat.external';
-import type { HelixUser } from '../user/HelixUser';
-import { HelixEmote } from './HelixEmote';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixEmoteFromSetData } from '../../interfaces/endpoints/chat.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import { HelixEmote } from './HelixEmote.js';
 
 /**
  * A Twitch Channel emote.

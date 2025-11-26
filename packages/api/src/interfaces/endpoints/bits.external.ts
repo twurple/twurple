@@ -3,9 +3,9 @@ import {
 	type CheermoteBackground,
 	type CheermoteScale,
 	type CheermoteState,
-} from '../../endpoints/bits/CheermoteDisplayInfo';
-import { type HelixBitsLeaderboardQuery } from './bits.input';
-import { type HelixDateRangeData } from './generic.external';
+} from '../../endpoints/bits/CheermoteDisplayInfo.js';
+import { type HelixBitsLeaderboardQuery } from './bits.input.js';
+import { type HelixDateRangeData } from './generic.external.js';
 
 /** @private */
 export interface HelixBitsLeaderboardEntryData {

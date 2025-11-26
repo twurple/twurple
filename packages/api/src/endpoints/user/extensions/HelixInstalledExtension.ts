@@ -2,8 +2,8 @@ import { rtfm } from '@twurple/common';
 import {
 	type HelixBaseExtensionData,
 	type HelixExtensionSlotType,
-} from '../../../interfaces/endpoints/userExtension.external';
-import { HelixBaseExtension } from './HelixBaseExtension';
+} from '../../../interfaces/endpoints/userExtension.external.js';
+import { HelixBaseExtension } from './HelixBaseExtension.js';
 
 /**
  * A Twitch Extension that is installed in a slot of a channel.

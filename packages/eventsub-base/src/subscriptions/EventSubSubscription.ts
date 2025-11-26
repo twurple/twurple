@@ -1,6 +1,6 @@
 import { type HelixEventSubSubscription, type HelixEventSubTransportOptions, HellFreezesOverError } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import type { EventSubBase } from '../EventSubBase';
+import type { EventSubBase } from '../EventSubBase.js';
 
 /**
  * A subscription to an EventSub event.

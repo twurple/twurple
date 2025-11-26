@@ -1,7 +1,7 @@
 import { rtfm } from '@twurple/common';
 import type { IRouter, RequestHandler } from 'express-serve-static-core';
-import { checkHostName } from './checks';
-import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase';
+import { checkHostName } from './checks.js';
+import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase.js';
 
 /**
  * The configuration of the EventSub middleware.

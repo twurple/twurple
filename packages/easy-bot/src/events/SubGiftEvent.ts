@@ -2,8 +2,8 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { type HelixUser } from '@twurple/api';
 import { type ChatSubGiftInfo, type UserNotice } from '@twurple/chat';
 import { checkRelationAssertion, rtfm } from '@twurple/common';
-import { type Bot } from '../Bot';
-import { SubEvent } from './SubEvent';
+import { type Bot } from '../Bot.js';
+import { SubEvent } from './SubEvent.js';
 
 /**
  * An event representing a user gifting a subscription to another user.

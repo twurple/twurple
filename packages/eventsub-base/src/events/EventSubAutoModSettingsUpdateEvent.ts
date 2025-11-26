@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel';
-import { type EventSubAutoModSettingsUpdateEventData } from './EventSubAutoModSettingsUpdateEvent.external';
+import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel.js';
+import { type EventSubAutoModSettingsUpdateEventData } from './EventSubAutoModSettingsUpdateEvent.external.js';
 
 /**
  * An EventSub event representing the AutoMod settings being updated in a channel.

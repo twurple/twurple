@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelRaidEventData } from './EventSubChannelRaidEvent.external';
+import { type EventSubChannelRaidEventData } from './EventSubChannelRaidEvent.external.js';
 
 /**
  * An EventSub event representing a broadcaster raiding another broadcaster.

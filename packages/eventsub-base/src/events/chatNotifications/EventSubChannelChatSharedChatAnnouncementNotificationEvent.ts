@@ -1,9 +1,9 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
 import {
 	type EventSubChannelChatAnnouncementColor,
 	type EventSubChannelChatSharedChatAnnouncementNotificationEventData,
-} from './EventSubChannelChatNotificationEvent.external';
+} from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a notification for an announcement in another channel's chat during a shared chat

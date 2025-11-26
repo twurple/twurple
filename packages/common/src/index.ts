@@ -1,30 +1,32 @@
-export { DataObject, getRawData, rawDataSymbol } from './DataObject';
+export { DataObject, getRawData, rawDataSymbol } from './DataObject.js';
 
-export { getMockApiPort } from './mockApiPort';
+export { getMockApiPort } from './mockApiPort.js';
 
-export { checkRelationAssertion } from './relations';
+export { qsStringify } from './qs.js';
 
-export { rtfm } from './rtfm';
+export { checkRelationAssertion } from './relations.js';
 
-export type { CommercialLength, HelixUserType } from './types';
+export { rtfm } from './rtfm.js';
 
-export { HelixExtension } from './extensions/HelixExtension';
+export type { CommercialLength, HelixUserType } from './types.js';
+
+export { HelixExtension } from './extensions/HelixExtension.js';
 export type {
 	HelixExtensionConfigurationLocation,
 	HelixExtensionState,
 	HelixExtensionIconSize,
 	HelixExtensionSubscriptionsSupportLevel,
 	HelixExtensionData,
-} from './extensions/HelixExtension.external';
+} from './extensions/HelixExtension.external.js';
 
-export { CustomError } from './errors/CustomError';
-export { HellFreezesOverError } from './errors/HellFreezesOverError';
-export { RelationAssertionError } from './errors/RelationAssertionError';
+export { CustomError } from './errors/CustomError.js';
+export { HellFreezesOverError } from './errors/HellFreezesOverError.js';
+export { RelationAssertionError } from './errors/RelationAssertionError.js';
 
 export type {
 	UserIdResolvable,
 	UserIdResolvableType,
 	UserNameResolvable,
 	UserNameResolveableType,
-} from './userResolvers';
-export { extractUserId, extractUserName } from './userResolvers';
+} from './userResolvers.js';
+export { extractUserId, extractUserName } from './userResolvers.js';

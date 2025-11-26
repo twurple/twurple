@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { BaseApiClient } from '../../client/BaseApiClient';
-import type { HelixModeratedChannelData } from '../../interfaces/endpoints/moderation.external';
-import type { HelixUser } from '../user/HelixUser';
-import type { HelixChannel } from '../channel/HelixChannel';
+import type { BaseApiClient } from '../../client/BaseApiClient.js';
+import type { HelixModeratedChannelData } from '../../interfaces/endpoints/moderation.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import type { HelixChannel } from '../channel/HelixChannel.js';
 
 /**
  * A reference to a Twitch channel where a user is a moderator.

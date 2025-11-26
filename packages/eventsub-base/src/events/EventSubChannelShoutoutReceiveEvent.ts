@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelShoutoutReceiveEventData } from './EventSubChannelShoutoutReceiveEvent.external';
+import { type EventSubChannelShoutoutReceiveEventData } from './EventSubChannelShoutoutReceiveEvent.external.js';
 
 /**
  * An EventSub event representing a broadcaster being shouted out by another broadcaster.

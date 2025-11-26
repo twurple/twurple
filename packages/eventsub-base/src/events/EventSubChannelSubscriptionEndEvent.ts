@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import {
 	type EventSubChannelSubscriptionEndEventData,
 	type EventSubChannelSubscriptionEndEventTier,
-} from './EventSubChannelSubscriptionEndEvent.external';
+} from './EventSubChannelSubscriptionEndEvent.external.js';
 
 /**
  * An EventSub event representing the end of a channel subscription.

@@ -1,6 +1,6 @@
 import { createBroadcasterQuery } from '@twurple/api-call';
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external';
+import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external.js';
 import {
 	createScheduleQuery,
 	createScheduleSegmentBody,
@@ -8,7 +8,7 @@ import {
 	createScheduleSegmentUpdateBody,
 	createScheduleSettingsUpdateQuery,
 	type HelixScheduleResponse,
-} from '../../interfaces/endpoints/schedule.external';
+} from '../../interfaces/endpoints/schedule.external.js';
 import {
 	type HelixCreateScheduleSegmentData,
 	type HelixPaginatedScheduleFilter,
@@ -16,12 +16,12 @@ import {
 	type HelixScheduleFilter,
 	type HelixScheduleSettingsUpdate,
 	type HelixUpdateScheduleSegmentData,
-} from '../../interfaces/endpoints/schedule.input';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixPaginatedScheduleSegmentRequest } from './HelixPaginatedScheduleSegmentRequest';
-import { HelixSchedule } from './HelixSchedule';
-import { HelixScheduleSegment } from './HelixScheduleSegment';
+} from '../../interfaces/endpoints/schedule.input.js';
+import { createPaginationQuery } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixPaginatedScheduleSegmentRequest } from './HelixPaginatedScheduleSegmentRequest.js';
+import { HelixSchedule } from './HelixSchedule.js';
+import { HelixScheduleSegment } from './HelixScheduleSegment.js';
 
 /**
  * The Helix API methods that deal with schedules.

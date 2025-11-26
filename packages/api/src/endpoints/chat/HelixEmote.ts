@@ -1,6 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixEmoteData, type HelixEmoteImageScale } from '../../interfaces/endpoints/chat.external';
-import { HelixEmoteBase } from './HelixEmoteBase';
+import { type HelixEmoteData, type HelixEmoteImageScale } from '../../interfaces/endpoints/chat.external.js';
+import { HelixEmoteBase } from './HelixEmoteBase.js';
 
 /**
  * A Twitch emote.

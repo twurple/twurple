@@ -1,11 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixHypeTrainContributionData,
 	type HelixHypeTrainContributionType,
-} from '../../interfaces/endpoints/hypeTrain.external';
-import type { HelixUser } from '../user/HelixUser';
+} from '../../interfaces/endpoints/hypeTrain.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * A Hype Train contributor.

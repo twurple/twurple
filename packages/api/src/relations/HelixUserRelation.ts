@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../client/BaseApiClient';
-import type { HelixUser } from '../endpoints/user/HelixUser';
-import { type HelixUserRelationData } from '../interfaces/endpoints/generic.external';
+import { type BaseApiClient } from '../client/BaseApiClient.js';
+import type { HelixUser } from '../endpoints/user/HelixUser.js';
+import { type HelixUserRelationData } from '../interfaces/endpoints/generic.external.js';
 
 /**
  * A relation of anything with a user.

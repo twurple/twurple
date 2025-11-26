@@ -1,5 +1,5 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixCreatePollData } from './poll.input';
+import { type HelixCreatePollData } from './poll.input.js';
 
 /**
  * The different statuses a poll can have.

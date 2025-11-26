@@ -1,4 +1,4 @@
-import { RelationAssertionError } from './errors/RelationAssertionError';
+import { RelationAssertionError } from './errors/RelationAssertionError.js';
 
 /** @private */
 export function checkRelationAssertion<T>(value: T | null): T {

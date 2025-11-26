@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelChatSettingsUpdateEventData } from './EventSubChannelChatSettingsUpdateEvent.external';
+import { type EventSubChannelChatSettingsUpdateEventData } from './EventSubChannelChatSettingsUpdateEvent.external.js';
 
 /**
  * An EventSub event representing chat settings being updated in a channel.

@@ -1,5 +1,5 @@
-import { type HelixPagination } from '../../utils/pagination/HelixPagination';
-import { type HelixVideoFilterPeriod, type HelixVideoSort, type HelixVideoType } from './video.external';
+import { type HelixPagination } from '../../utils/pagination/HelixPagination.js';
+import { type HelixVideoFilterPeriod, type HelixVideoSort, type HelixVideoType } from './video.external.js';
 
 /**
  * Filters for the videos request.

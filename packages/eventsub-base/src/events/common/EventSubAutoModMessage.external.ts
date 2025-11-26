@@ -2,7 +2,7 @@ import {
 	type EventSubChatMessageCheermotePart,
 	type EventSubChatMessageEmotePart,
 	type EventSubChatMessageTextPart,
-} from './EventSubChatMessage.external';
+} from './EventSubChatMessage.external.js';
 
 /** @private */
 export type EventSubAutoModMessagePart =

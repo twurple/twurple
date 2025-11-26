@@ -1,6 +1,9 @@
 import { type HelixPaginatedResponseWithTotal } from '@twurple/api-call';
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixEventSubDropEntitlementGrantFilter, type HelixEventSubConduitShardsOptions } from './eventSub.input';
+import {
+	type HelixEventSubDropEntitlementGrantFilter,
+	type HelixEventSubConduitShardsOptions,
+} from './eventSub.input.js';
 
 export type HelixEventSubSubscriptionStatus =
 	| 'enabled'

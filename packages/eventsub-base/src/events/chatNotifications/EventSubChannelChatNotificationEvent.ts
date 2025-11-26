@@ -1,24 +1,24 @@
-import { type EventSubChannelChatAnnouncementNotificationEvent } from './EventSubChannelChatAnnouncementNotificationEvent';
-import { type EventSubChannelChatBitsBadgeTierNotificationEvent } from './EventSubChannelChatBitsBadgeTierNotificationEvent';
-import { type EventSubChannelChatCharityDonationNotificationEvent } from './EventSubChannelChatCharityDonationNotificationEvent';
-import { type EventSubChannelChatCommunitySubGiftNotificationEvent } from './EventSubChannelChatCommunitySubGiftNotificationEvent';
-import { type EventSubChannelChatGiftPaidUpgradeNotificationEvent } from './EventSubChannelChatGiftPaidUpgradeNotificationEvent';
-import { type EventSubChannelChatPayItForwardNotificationEvent } from './EventSubChannelChatPayItForwardNotificationEvent';
-import { type EventSubChannelChatPrimePaidUpgradeNotificationEvent } from './EventSubChannelChatPrimePaidUpgradeNotificationEvent';
-import { type EventSubChannelChatRaidNotificationEvent } from './EventSubChannelChatRaidNotificationEvent';
-import { type EventSubChannelChatResubNotificationEvent } from './EventSubChannelChatResubNotificationEvent';
-import { type EventSubChannelChatSubGiftNotificationEvent } from './EventSubChannelChatSubGiftNotificationEvent';
-import { type EventSubChannelChatSubNotificationEvent } from './EventSubChannelChatSubNotificationEvent';
-import { type EventSubChannelChatUnraidNotificationEvent } from './EventSubChannelChatUnraidNotificationEvent';
-import { type EventSubChannelChatSharedChatPayItForwardNotificationEvent } from './EventSubChannelChatSharedChatPayItForwardNotificationEvent';
-import { type EventSubChannelChatSharedChatSubNotificationEvent } from './EventSubChannelChatSharedChatSubNotificationEvent';
-import { type EventSubChannelChatSharedChatResubNotificationEvent } from './EventSubChannelChatSharedChatResubNotificationEvent';
-import { type EventSubChannelChatSharedChatSubGiftNotificationEvent } from './EventSubChannelChatSharedChatSubGiftNotificationEvent';
-import { type EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent } from './EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent';
-import { type EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent } from './EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent';
-import { type EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent } from './EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent';
-import { type EventSubChannelChatSharedChatRaidNotificationEvent } from './EventSubChannelChatSharedChatRaidNotificationEvent';
-import { type EventSubChannelChatSharedChatAnnouncementNotificationEvent } from './EventSubChannelChatSharedChatAnnouncementNotificationEvent';
+import { type EventSubChannelChatAnnouncementNotificationEvent } from './EventSubChannelChatAnnouncementNotificationEvent.js';
+import { type EventSubChannelChatBitsBadgeTierNotificationEvent } from './EventSubChannelChatBitsBadgeTierNotificationEvent.js';
+import { type EventSubChannelChatCharityDonationNotificationEvent } from './EventSubChannelChatCharityDonationNotificationEvent.js';
+import { type EventSubChannelChatCommunitySubGiftNotificationEvent } from './EventSubChannelChatCommunitySubGiftNotificationEvent.js';
+import { type EventSubChannelChatGiftPaidUpgradeNotificationEvent } from './EventSubChannelChatGiftPaidUpgradeNotificationEvent.js';
+import { type EventSubChannelChatPayItForwardNotificationEvent } from './EventSubChannelChatPayItForwardNotificationEvent.js';
+import { type EventSubChannelChatPrimePaidUpgradeNotificationEvent } from './EventSubChannelChatPrimePaidUpgradeNotificationEvent.js';
+import { type EventSubChannelChatRaidNotificationEvent } from './EventSubChannelChatRaidNotificationEvent.js';
+import { type EventSubChannelChatResubNotificationEvent } from './EventSubChannelChatResubNotificationEvent.js';
+import { type EventSubChannelChatSubGiftNotificationEvent } from './EventSubChannelChatSubGiftNotificationEvent.js';
+import { type EventSubChannelChatSubNotificationEvent } from './EventSubChannelChatSubNotificationEvent.js';
+import { type EventSubChannelChatUnraidNotificationEvent } from './EventSubChannelChatUnraidNotificationEvent.js';
+import { type EventSubChannelChatSharedChatPayItForwardNotificationEvent } from './EventSubChannelChatSharedChatPayItForwardNotificationEvent.js';
+import { type EventSubChannelChatSharedChatSubNotificationEvent } from './EventSubChannelChatSharedChatSubNotificationEvent.js';
+import { type EventSubChannelChatSharedChatResubNotificationEvent } from './EventSubChannelChatSharedChatResubNotificationEvent.js';
+import { type EventSubChannelChatSharedChatSubGiftNotificationEvent } from './EventSubChannelChatSharedChatSubGiftNotificationEvent.js';
+import { type EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent } from './EventSubChannelChatSharedChatCommunitySubGiftNotificationEvent.js';
+import { type EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent } from './EventSubChannelChatSharedChatGiftPaidUpgradeNotificationEvent.js';
+import { type EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent } from './EventSubChannelChatSharedChatPrimePaidUpgradeNotificationEvent.js';
+import { type EventSubChannelChatSharedChatRaidNotificationEvent } from './EventSubChannelChatSharedChatRaidNotificationEvent.js';
+import { type EventSubChannelChatSharedChatAnnouncementNotificationEvent } from './EventSubChannelChatSharedChatAnnouncementNotificationEvent.js';
 
 export type EventSubChannelChatNotificationEvent =
 	| EventSubChannelChatSubNotificationEvent

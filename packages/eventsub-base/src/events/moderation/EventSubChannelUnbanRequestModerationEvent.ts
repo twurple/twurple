@@ -1,10 +1,10 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
+import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent.js';
 import {
 	type EventSubChannelBaseModerationEventData,
 	type EventSubChannelModerationAction,
 	type EventSubChannelUnbanRequestModerationEventData,
-} from './EventSubChannelModerationEvent.external';
+} from './EventSubChannelModerationEvent.external.js';
 import { type ApiClient, type HelixUser } from '@twurple/api';
 
 /**

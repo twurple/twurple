@@ -1,9 +1,9 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
 import {
 	type EventSubChannelChatCommunitySubGiftNotificationEventData,
 	type EventSubChannelChatNotificationSubTier,
-} from './EventSubChannelChatNotificationEvent.external';
+} from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a community sub gift notification in a channel's chat.

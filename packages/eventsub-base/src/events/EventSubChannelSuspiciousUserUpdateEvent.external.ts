@@ -1,4 +1,4 @@
-import { type EventSubChannelSuspiciousUserLowTrustStatus } from './common/EventSubChannelSuspiciousUserLowTrustStatus';
+import { type EventSubChannelSuspiciousUserLowTrustStatus } from './common/EventSubChannelSuspiciousUserLowTrustStatus.js';
 
 /** @private */
 export interface EventSubChannelSuspiciousUserUpdateEventData {

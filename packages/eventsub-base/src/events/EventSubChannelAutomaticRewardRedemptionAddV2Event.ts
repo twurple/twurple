@@ -4,8 +4,8 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import {
 	type EventSubAutomaticRewardRedemptionMessagePart,
 	type EventSubChannelAutomaticRewardRedemptionAddV2EventData,
-} from './EventSubChannelAutomaticRewardRedemptionAddV2Event.external';
-import { EventSubChannelAutomaticReward } from './common/EventSubChannelAutomaticReward';
+} from './EventSubChannelAutomaticRewardRedemptionAddV2Event.external.js';
+import { EventSubChannelAutomaticReward } from './common/EventSubChannelAutomaticReward.js';
 
 /**
  * An EventSub event representing an automatic reward being redeemed by a user in a channel.

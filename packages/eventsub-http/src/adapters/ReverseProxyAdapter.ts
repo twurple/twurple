@@ -1,6 +1,6 @@
 import { rtfm } from '@twurple/common';
-import { checkHostName } from '../checks';
-import { ConnectionAdapter } from './ConnectionAdapter';
+import { checkHostName } from '../checks.js';
+import { ConnectionAdapter } from './ConnectionAdapter.js';
 
 /**
  * The configuration of the reverse proxy connection adapter.

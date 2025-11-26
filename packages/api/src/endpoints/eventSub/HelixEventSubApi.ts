@@ -15,22 +15,22 @@ import {
 	type HelixPaginatedEventSubSubscriptionsResponse,
 	type HelixEventSubConduitData,
 	type HelixEventSubConduitShardData,
-} from '../../interfaces/endpoints/eventSub.external';
+} from '../../interfaces/endpoints/eventSub.external.js';
 import {
 	type HelixEventSubDropEntitlementGrantFilter,
 	type HelixEventSubTransportOptions,
 	type HelixPaginatedEventSubSubscriptionsResult,
 	type HelixEventSubConduitShardsOptions,
-} from '../../interfaces/endpoints/eventSub.input';
-import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResultWithTotal, createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixEventSubSubscription } from './HelixEventSubSubscription';
-import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEventSubSubscriptionsRequest';
-import { HelixEventSubConduit } from './HelixEventSubConduit';
-import { HelixEventSubConduitShard } from './HelixEventSubConduitShard';
+} from '../../interfaces/endpoints/eventSub.input.js';
+import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResultWithTotal, createPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixEventSubSubscription } from './HelixEventSubSubscription.js';
+import { HelixPaginatedEventSubSubscriptionsRequest } from './HelixPaginatedEventSubSubscriptionsRequest.js';
+import { HelixEventSubConduit } from './HelixEventSubConduit.js';
+import { HelixEventSubConduitShard } from './HelixEventSubConduitShard.js';
 
 /**
  * The API methods that deal with EventSub.

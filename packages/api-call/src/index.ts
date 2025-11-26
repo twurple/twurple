@@ -1,8 +1,8 @@
-export { callTwitchApi, callTwitchApiRaw } from './apiCall';
-export type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from './HelixResponse';
-export type { TwitchApiCallFetchOptions, TwitchApiCallOptions, TwitchApiCallType } from './TwitchApiCallOptions';
+export { callTwitchApi, callTwitchApiRaw } from './apiCall.js';
+export type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal, HelixResponse } from './HelixResponse.js';
+export type { TwitchApiCallFetchOptions, TwitchApiCallOptions, TwitchApiCallType } from './TwitchApiCallOptions.js';
 
-export { createBroadcasterQuery } from './helpers/queries.external';
-export { handleTwitchApiResponseError, transformTwitchApiResponse } from './helpers/transform';
+export { createBroadcasterQuery } from './helpers/queries.external.js';
+export { handleTwitchApiResponseError, transformTwitchApiResponse } from './helpers/transform.js';
 
-export { HttpStatusCodeError } from './errors/HttpStatusCodeError';
+export { HttpStatusCodeError } from './errors/HttpStatusCodeError.js';

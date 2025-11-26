@@ -1,1 +1,1 @@
-export { ExtensionAuthProvider } from './ExtensionAuthProvider';
+export { ExtensionAuthProvider } from './ExtensionAuthProvider.js';

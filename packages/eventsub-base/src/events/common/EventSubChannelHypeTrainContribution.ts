@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol } from '@twurple/comm
 import {
 	type EventSubChannelHypeTrainContributionData,
 	type EventSubChannelHypeTrainContributionType,
-} from './EventSubChannelHypeTrainContribution.external';
+} from './EventSubChannelHypeTrainContribution.external.js';
 
 export class EventSubChannelHypeTrainContribution extends DataObject<EventSubChannelHypeTrainContributionData> {
 	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;

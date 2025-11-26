@@ -1,19 +1,19 @@
 import { createBroadcasterQuery, type HelixResponse, HttpStatusCodeError } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { createChannelUsersCheckQuery } from '../../interfaces/endpoints/generic.external';
+import { createChannelUsersCheckQuery } from '../../interfaces/endpoints/generic.external.js';
 import {
 	createSubscriptionCheckQuery,
 	type HelixPaginatedSubscriptionsResponse,
 	type HelixSubscriptionData,
 	type HelixUserSubscriptionData,
-} from '../../interfaces/endpoints/subscription.external';
-import { type HelixPaginatedSubscriptionsResult } from '../../interfaces/endpoints/subscription.input';
-import { createPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixPaginatedSubscriptionsRequest } from './HelixPaginatedSubscriptionsRequest';
-import { HelixSubscription } from './HelixSubscription';
-import { HelixUserSubscription } from './HelixUserSubscription';
+} from '../../interfaces/endpoints/subscription.external.js';
+import { type HelixPaginatedSubscriptionsResult } from '../../interfaces/endpoints/subscription.input.js';
+import { createPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixPaginatedSubscriptionsRequest } from './HelixPaginatedSubscriptionsRequest.js';
+import { HelixSubscription } from './HelixSubscription.js';
+import { HelixUserSubscription } from './HelixUserSubscription.js';
 
 /**
  * The Helix API methods that deal with subscriptions.

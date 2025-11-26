@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixUserSubscriptionData } from '../../interfaces/endpoints/subscription.external';
-import type { HelixUser } from '../user/HelixUser';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixUserSubscriptionData } from '../../interfaces/endpoints/subscription.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * The user info about a (paid) subscription to a broadcaster.

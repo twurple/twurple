@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixSnoozeNextAdData } from '../../interfaces/endpoints/channel.external';
+import type { HelixSnoozeNextAdData } from '../../interfaces/endpoints/channel.external.js';
 
 /**
  * Represents the result after a call to snooze the broadcaster's ad schedule.

@@ -1,9 +1,9 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
 import {
 	type EventSubChannelChatNotificationSubTier,
 	type EventSubChannelChatPrimePaidUpgradeNotificationEventData,
-} from './EventSubChannelChatNotificationEvent.external';
+} from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a notification of a user upgrading their gifted sub to a paid one in a channel's chat.

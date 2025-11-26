@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixHypeTrainData, type HelixHypeTrainType } from '../../interfaces/endpoints/hypeTrain.external';
-import type { HelixUser } from '../user/HelixUser';
-import { HelixHypeTrainContribution } from './HelixHypeTrainContribution';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixHypeTrainData, type HelixHypeTrainType } from '../../interfaces/endpoints/hypeTrain.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import { HelixHypeTrainContribution } from './HelixHypeTrainContribution.js';
 
 /**
  * Data about the currently running Hype Train.

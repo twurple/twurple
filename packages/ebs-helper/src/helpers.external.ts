@@ -1,6 +1,6 @@
 import { mapOptional } from '@d-fischer/shared-utils';
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type EbsCallConfig } from './helpers';
+import { type EbsCallConfig } from './helpers.js';
 
 /** @internal */
 export function getExtensionQuery(config: EbsCallConfig, version: string | undefined) {

@@ -1,7 +1,7 @@
 import { type HelixUser } from '@twurple/api';
 import { checkRelationAssertion, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
-import { type EventSubChannelChatSharedChatRaidNotificationEventData } from './EventSubChannelChatNotificationEvent.external';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
+import { type EventSubChannelChatSharedChatRaidNotificationEventData } from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing an incoming raid notification in another channel's chat during a shared chat session.

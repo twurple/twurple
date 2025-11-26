@@ -2,7 +2,7 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { type HelixUser } from '@twurple/api';
 import { type ChatCommunitySubInfo, toUserName, type UserNotice } from '@twurple/chat';
 import { checkRelationAssertion, rtfm } from '@twurple/common';
-import { type Bot } from '../Bot';
+import { type Bot } from '../Bot.js';
 
 /**
  * An event representing a user gifting subscriptions to the community of a channel.

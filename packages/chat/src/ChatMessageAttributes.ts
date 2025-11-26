@@ -1,4 +1,4 @@
-import { ChatMessage } from './commands/ChatMessage';
+import { ChatMessage } from './commands/ChatMessage.js';
 
 /**
  * Additional attributes for a channel message.

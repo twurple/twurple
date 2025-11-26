@@ -1,6 +1,6 @@
 import type { ConstructedType } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse, HelixPaginatedResponseWithTotal } from '@twurple/api-call';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 
 /**
  * A result coming from a Helix resource that is paginated using a cursor.

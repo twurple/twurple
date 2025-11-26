@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelPredictionPredictorData } from './EventSubChannelPredictionPredictor.external';
+import { type EventSubChannelPredictionPredictorData } from './EventSubChannelPredictionPredictor.external.js';
 
 /**
  * A user that voted on a prediction.

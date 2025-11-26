@@ -1,4 +1,4 @@
-import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
+import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
 
 /**
  * Filters for a channel search.

@@ -6,9 +6,9 @@ import {
 	HttpStatusCodeError,
 } from '@twurple/api-call';
 import { extractUserId, extractUserName, rtfm, type UserIdResolvable, type UserNameResolvable } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { StreamNotLiveError } from '../../errors/StreamNotLiveError';
-import { createSingleKeyQuery, createUserQuery } from '../../interfaces/endpoints/generic.external';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { StreamNotLiveError } from '../../errors/StreamNotLiveError.js';
+import { createSingleKeyQuery, createUserQuery } from '../../interfaces/endpoints/generic.external.js';
 import {
 	createStreamMarkerBody,
 	createStreamQuery,
@@ -17,20 +17,20 @@ import {
 	type HelixStreamData,
 	type HelixStreamGetMarkersResponse,
 	type HelixStreamMarkerData,
-} from '../../interfaces/endpoints/stream.external';
-import { type HelixPaginatedStreamFilter, type HelixStreamFilter } from '../../interfaces/endpoints/stream.input';
-import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
+} from '../../interfaces/endpoints/stream.external.js';
+import { type HelixPaginatedStreamFilter, type HelixStreamFilter } from '../../interfaces/endpoints/stream.input.js';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
 import {
 	createPaginationQuery,
 	type HelixForwardPagination,
 	type HelixPagination,
-} from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixStream } from './HelixStream';
-import { HelixStreamMarker } from './HelixStreamMarker';
-import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo';
+} from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixStream } from './HelixStream.js';
+import { HelixStreamMarker } from './HelixStreamMarker.js';
+import { HelixStreamMarkerWithVideo } from './HelixStreamMarkerWithVideo.js';
 
 /**
  * The Helix API methods that deal with streams.

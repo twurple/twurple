@@ -1,9 +1,9 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixHypeTrainStatusData } from '../../interfaces/endpoints/hypeTrain.external';
-import { HelixHypeTrain } from './HelixHypeTrain';
-import { HelixHypeTrainAllTimeHigh } from './HelixHypeTrainAllTimeHigh';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixHypeTrainStatusData } from '../../interfaces/endpoints/hypeTrain.external.js';
+import { HelixHypeTrain } from './HelixHypeTrain.js';
+import { HelixHypeTrainAllTimeHigh } from './HelixHypeTrainAllTimeHigh.js';
 
 /**
  * Statistics of Hype Trains on a channel.

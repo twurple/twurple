@@ -4,8 +4,8 @@ import {
 	type HelixExtensionSlotType,
 	type HelixInstalledExtensionData,
 	type HelixInstalledExtensionListData,
-} from '../../../interfaces/endpoints/userExtension.external';
-import { HelixInstalledExtension } from './HelixInstalledExtension';
+} from '../../../interfaces/endpoints/userExtension.external.js';
+import { HelixInstalledExtension } from './HelixInstalledExtension.js';
 
 /**
  * A list of extensions installed in a channel.

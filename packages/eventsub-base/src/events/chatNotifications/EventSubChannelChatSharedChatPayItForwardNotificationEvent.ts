@@ -1,8 +1,8 @@
 import { mapNullable } from '@d-fischer/shared-utils';
 import { type HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
-import { type EventSubChannelChatSharedChatPayItForwardNotificationEventData } from './EventSubChannelChatNotificationEvent.external';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
+import { type EventSubChannelChatSharedChatPayItForwardNotificationEventData } from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a notification of a user "paying it forward" in another channel's chat during a shared

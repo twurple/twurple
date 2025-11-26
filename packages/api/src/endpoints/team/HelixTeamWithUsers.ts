@@ -1,7 +1,7 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixTeamWithUsersData } from '../../interfaces/endpoints/team.external';
-import { HelixUserRelation } from '../../relations/HelixUserRelation';
-import { HelixTeam } from './HelixTeam';
+import { type HelixTeamWithUsersData } from '../../interfaces/endpoints/team.external.js';
+import { HelixUserRelation } from '../../relations/HelixUserRelation.js';
+import { HelixTeam } from './HelixTeam.js';
 
 /**
  * A Stream Team with its member relations.

@@ -1,9 +1,9 @@
 import { type HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { type EventSubBase } from '../EventSubBase';
-import { EventSubSubscription } from './EventSubSubscription';
-import { EventSubChannelUnbanRequestCreateEvent } from '../events/EventSubChannelUnbanRequestCreateEvent';
-import { type EventSubChannelUnbanRequestCreateEventData } from '../events/EventSubChannelUnbanRequestCreateEvent.external';
+import { type EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
+import { EventSubChannelUnbanRequestCreateEvent } from '../events/EventSubChannelUnbanRequestCreateEvent.js';
+import { type EventSubChannelUnbanRequestCreateEventData } from '../events/EventSubChannelUnbanRequestCreateEvent.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')

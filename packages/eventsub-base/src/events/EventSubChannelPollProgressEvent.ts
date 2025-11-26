@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice';
-import { type EventSubChannelPollProgressEventData } from './EventSubChannelPollProgressEvent.external';
+import { EventSubChannelPollChoice } from './common/EventSubChannelPollChoice.js';
+import { type EventSubChannelPollProgressEventData } from './EventSubChannelPollProgressEvent.external.js';
 
 /**
  * An EventSub event representing a poll starting in a channel.

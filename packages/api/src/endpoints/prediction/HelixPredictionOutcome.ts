@@ -1,11 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixPredictionOutcomeColor,
 	type HelixPredictionOutcomeData,
-} from '../../interfaces/endpoints/prediction.external';
-import { HelixPredictor } from './HelixPredictor';
+} from '../../interfaces/endpoints/prediction.external.js';
+import { HelixPredictor } from './HelixPredictor.js';
 
 /**
  * A possible outcome in a channel prediction.

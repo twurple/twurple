@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelUnbanEventData } from './EventSubChannelUnbanEvent.external';
+import { type EventSubChannelUnbanEventData } from './EventSubChannelUnbanEvent.external.js';
 
 /**
  * An EventSub event representing a user being unbanned in a channel.

@@ -1,6 +1,6 @@
 import { DataObject, rawDataSymbol } from '@twurple/common';
 import { base64url, errors, type JWTPayload, jwtVerify } from 'jose';
-import { type HelixExtensionSecretListData } from './HelixExtensionSecretList.external';
+import { type HelixExtensionSecretListData } from './HelixExtensionSecretList.external.js';
 
 export class HelixExtensionSecretList extends DataObject<HelixExtensionSecretListData> {
 	get latestSecret(): string | null {

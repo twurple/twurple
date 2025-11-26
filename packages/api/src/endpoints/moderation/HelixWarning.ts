@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixWarningData } from '../../interfaces/endpoints/moderation.external';
-import type { HelixUser } from '../user/HelixUser';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixWarningData } from '../../interfaces/endpoints/moderation.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * Information about the warning.

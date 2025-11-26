@@ -1,6 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixPrivilegedUserData } from '../../interfaces/endpoints/user.external';
-import { HelixUser } from './HelixUser';
+import { type HelixPrivilegedUserData } from '../../interfaces/endpoints/user.external.js';
+import { HelixUser } from './HelixUser.js';
 
 /**
  * A user you have extended privilges for, i.e. yourself.

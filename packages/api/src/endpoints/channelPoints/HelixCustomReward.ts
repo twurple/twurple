@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixCustomRewardData } from '../../interfaces/endpoints/channelPoints.external';
-import { type HelixCustomRewardImageScale } from '../../interfaces/endpoints/channelPoints.input';
-import type { HelixUser } from '../user/HelixUser';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixCustomRewardData } from '../../interfaces/endpoints/channelPoints.external.js';
+import { type HelixCustomRewardImageScale } from '../../interfaces/endpoints/channelPoints.input.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * A custom Channel Points reward.

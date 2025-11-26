@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import {
 	type EventSubChannelSubscriptionMessageEventData,
 	type EventSubChannelSubscriptionMessageEventTier,
-} from './EventSubChannelSubscriptionMessageEvent.external';
+} from './EventSubChannelSubscriptionMessageEvent.external.js';
 
 /**
  * An EventSub event representing the public announcement of a channel subscription by the subscriber.

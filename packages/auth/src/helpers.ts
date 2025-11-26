@@ -1,18 +1,18 @@
 import type { Logger } from '@d-fischer/logger';
 import { callTwitchApi, HttpStatusCodeError } from '@twurple/api-call';
-import type { AccessToken } from './AccessToken';
-import { type AccessTokenData } from './AccessToken.external';
-import { InvalidTokenError } from './errors/InvalidTokenError';
-import { InvalidTokenTypeError } from './errors/InvalidTokenTypeError';
+import type { AccessToken } from './AccessToken.js';
+import { type AccessTokenData } from './AccessToken.external.js';
+import { InvalidTokenError } from './errors/InvalidTokenError.js';
+import { InvalidTokenTypeError } from './errors/InvalidTokenTypeError.js';
 import {
 	createExchangeCodeQuery,
 	createGetAppTokenQuery,
 	createRefreshTokenQuery,
 	createRevokeTokenQuery,
-} from './helpers.external';
-import type { AuthProvider } from './providers/AuthProvider';
-import { TokenInfo } from './TokenInfo';
-import { type TokenInfoData } from './TokenInfo.external';
+} from './helpers.external.js';
+import type { AuthProvider } from './providers/AuthProvider.js';
+import { TokenInfo } from './TokenInfo.js';
+import { type TokenInfoData } from './TokenInfo.external.js';
 
 /** @internal */
 function createAccessTokenFromData(data: AccessTokenData): AccessToken {

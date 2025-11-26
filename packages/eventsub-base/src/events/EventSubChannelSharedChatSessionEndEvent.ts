@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type ApiClient, type HelixUser } from '@twurple/api';
-import { type EventSubChannelSharedChatSessionEndEventData } from './EventSubChannelSharedChatSessionEndEvent.external';
+import { type EventSubChannelSharedChatSessionEndEventData } from './EventSubChannelSharedChatSessionEndEvent.external.js';
 
 /**
  * An EventSub event representing the end of a shared chat session in a channel.

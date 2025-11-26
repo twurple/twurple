@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixChatChatterData } from '../../interfaces/endpoints/chat.external';
-import { type HelixUser } from '../user/HelixUser';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixChatChatterData } from '../../interfaces/endpoints/chat.external.js';
+import { type HelixUser } from '../user/HelixUser.js';
 
 /**
  * A user connected to a Twitch channel's chat session.

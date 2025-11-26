@@ -26,34 +26,34 @@ import {
 } from '@twurple/auth';
 import { rtfm } from '@twurple/common';
 import { IrcClient, MessageTypes, type WebSocketConnectionOptions } from 'ircv3';
-import { TwitchCommandsCapability } from './caps/twitchCommands';
-import { ClearChat } from './caps/twitchCommands/messageTypes/ClearChat';
-import { RoomState } from './caps/twitchCommands/messageTypes/RoomState';
-import { UserNotice } from './caps/twitchCommands/messageTypes/UserNotice';
-import { Whisper } from './caps/twitchCommands/messageTypes/Whisper';
-import { TwitchMembershipCapability } from './caps/TwitchMembershipCapability';
-import { TwitchTagsCapability } from './caps/twitchTags';
-import { ClearMsg } from './caps/twitchTags/messageTypes/ClearMsg';
-import { type ChatSayMessageAttributes, extractMessageId } from './ChatMessageAttributes';
-import { ChatMessage } from './commands/ChatMessage';
-import type { ChatAnnouncementInfo } from './userNotices/ChatAnnouncementInfo';
-import type { ChatBitsBadgeUpgradeInfo } from './userNotices/ChatBitsBadgeUpgradeInfo';
-import type { ChatCommunityPayForwardInfo } from './userNotices/ChatCommunityPayForwardInfo';
-import type { ChatCommunitySubInfo } from './userNotices/ChatCommunitySubInfo';
-import type { ChatPrimeCommunityGiftInfo } from './userNotices/ChatPrimeCommunityGiftInfo';
-import type { ChatRaidInfo } from './userNotices/ChatRaidInfo';
-import type { ChatRewardGiftInfo } from './userNotices/ChatRewardGiftInfo';
-import type { ChatRitualInfo } from './userNotices/ChatRitualInfo';
-import type { ChatStandardPayForwardInfo } from './userNotices/ChatStandardPayForwardInfo';
+import { TwitchCommandsCapability } from './caps/twitchCommands/index.js';
+import { ClearChat } from './caps/twitchCommands/messageTypes/ClearChat.js';
+import { RoomState } from './caps/twitchCommands/messageTypes/RoomState.js';
+import { UserNotice } from './caps/twitchCommands/messageTypes/UserNotice.js';
+import { Whisper } from './caps/twitchCommands/messageTypes/Whisper.js';
+import { TwitchMembershipCapability } from './caps/TwitchMembershipCapability.js';
+import { TwitchTagsCapability } from './caps/twitchTags/index.js';
+import { ClearMsg } from './caps/twitchTags/messageTypes/ClearMsg.js';
+import { type ChatSayMessageAttributes, extractMessageId } from './ChatMessageAttributes.js';
+import { ChatMessage } from './commands/ChatMessage.js';
+import type { ChatAnnouncementInfo } from './userNotices/ChatAnnouncementInfo.js';
+import type { ChatBitsBadgeUpgradeInfo } from './userNotices/ChatBitsBadgeUpgradeInfo.js';
+import type { ChatCommunityPayForwardInfo } from './userNotices/ChatCommunityPayForwardInfo.js';
+import type { ChatCommunitySubInfo } from './userNotices/ChatCommunitySubInfo.js';
+import type { ChatPrimeCommunityGiftInfo } from './userNotices/ChatPrimeCommunityGiftInfo.js';
+import type { ChatRaidInfo } from './userNotices/ChatRaidInfo.js';
+import type { ChatRewardGiftInfo } from './userNotices/ChatRewardGiftInfo.js';
+import type { ChatRitualInfo } from './userNotices/ChatRitualInfo.js';
+import type { ChatStandardPayForwardInfo } from './userNotices/ChatStandardPayForwardInfo.js';
 import type {
 	ChatSubExtendInfo,
 	ChatSubGiftInfo,
 	ChatSubGiftUpgradeInfo,
 	ChatSubInfo,
 	ChatSubUpgradeInfo,
-} from './userNotices/ChatSubInfo';
-import { splitOnSpaces } from './utils/messageUtil';
-import { toChannelName, toUserName } from './utils/userUtil';
+} from './userNotices/ChatSubInfo.js';
+import { splitOnSpaces } from './utils/messageUtil.js';
+import { toChannelName, toUserName } from './utils/userUtil.js';
 
 /**
  * A Twitch bot level, i.e. whether you're connecting as a known or verified bot.

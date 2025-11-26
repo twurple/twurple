@@ -2,8 +2,8 @@ import { rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type HelixExtensionType,
 	type HelixUserExtensionData,
-} from '../../../interfaces/endpoints/userExtension.external';
-import { HelixBaseExtension } from './HelixBaseExtension';
+} from '../../../interfaces/endpoints/userExtension.external.js';
+import { HelixBaseExtension } from './HelixBaseExtension.js';
 
 /**
  * A Twitch Extension that was installed by a user.

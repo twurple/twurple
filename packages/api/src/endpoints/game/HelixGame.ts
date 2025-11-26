@@ -1,12 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixGameData } from '../../interfaces/endpoints/game.external';
-import { type HelixStreamData } from '../../interfaces/endpoints/stream.external';
-import type { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import type { HelixPagination } from '../../utils/pagination/HelixPagination';
-import type { HelixStream } from '../stream/HelixStream';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixGameData } from '../../interfaces/endpoints/game.external.js';
+import { type HelixStreamData } from '../../interfaces/endpoints/stream.external.js';
+import type { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import type { HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import type { HelixPagination } from '../../utils/pagination/HelixPagination.js';
+import type { HelixStream } from '../stream/HelixStream.js';
 
 /**
  * A game as displayed on Twitch.

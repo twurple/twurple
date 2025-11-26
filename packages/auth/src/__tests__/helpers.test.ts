@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareScopes, compareScopeSets } from '../helpers';
+import { compareScopes, compareScopeSets } from '../helpers.js';
 
 describe('compareScopes', () => {
 	it('does nothing if there are no requested scopes', () => {

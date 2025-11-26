@@ -1,7 +1,7 @@
 import { Enumerable, indexBy, promiseWithResolvers } from '@d-fischer/shared-utils';
 import { type HelixPaginatedResponse } from '@twurple/api-call';
-import { type BaseApiClient } from '../client/BaseApiClient';
-import { type ContextApiCallOptions } from '../client/ContextApiCallOptions';
+import { type BaseApiClient } from '../client/BaseApiClient.js';
+import { type ContextApiCallOptions } from '../client/ContextApiCallOptions.js';
 
 /** @internal */
 interface RequestResolver<T> {

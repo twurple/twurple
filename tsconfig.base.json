@@ -1,10 +1,10 @@
 {
 	"compilerOptions": {
 		"composite": true,
-		"module": "es2022",
+		"module": "node16",
 		"target": "es2022",
 		"lib": ["es2022"],
-		"moduleResolution": "node",
+		"moduleResolution": "node16",
 		"declaration": true,
 		"forceConsistentCasingInFileNames": true,
 		"noImplicitReturns": true,

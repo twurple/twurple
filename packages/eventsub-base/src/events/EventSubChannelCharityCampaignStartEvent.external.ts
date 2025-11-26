@@ -1,4 +1,4 @@
-import { type EventSubChannelCharityAmountData } from './common/EventSubChannelCharityAmount.external';
+import { type EventSubChannelCharityAmountData } from './common/EventSubChannelCharityAmount.external.js';
 
 /** @private */
 export interface EventSubChannelCharityCampaignStartEventData {

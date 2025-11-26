@@ -7,7 +7,7 @@ import type {
 	HelixUser,
 } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelRedemptionAddEventData } from './EventSubChannelRedemptionAddEvent.external';
+import { type EventSubChannelRedemptionAddEventData } from './EventSubChannelRedemptionAddEvent.external.js';
 
 /**
  * An EventSub event representing a Channel Points redemption.

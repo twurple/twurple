@@ -1,4 +1,4 @@
-import { type EventSubChannelSuspiciousUserLowTrustStatus } from './common/EventSubChannelSuspiciousUserLowTrustStatus';
+import { type EventSubChannelSuspiciousUserLowTrustStatus } from './common/EventSubChannelSuspiciousUserLowTrustStatus.js';
 
 /**
  * User types (if any) that apply to the suspicious user.

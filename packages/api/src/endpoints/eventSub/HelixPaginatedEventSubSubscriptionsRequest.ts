@@ -1,11 +1,11 @@
 import { rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixEventSubSubscriptionData,
 	type HelixPaginatedEventSubSubscriptionsResponse,
-} from '../../interfaces/endpoints/eventSub.external';
-import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
-import { HelixEventSubSubscription } from './HelixEventSubSubscription';
+} from '../../interfaces/endpoints/eventSub.external.js';
+import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal.js';
+import { HelixEventSubSubscription } from './HelixEventSubSubscription.js';
 
 /**
  * A special case of {@link HelixPaginatedRequestWithTotal} with support for fetching the total cost and cost limit

@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubAutoModMessageFoundBlockedTermData } from './EventSubAutoModMessageBlockedTerm.external';
+import { type EventSubAutoModMessageFoundBlockedTermData } from './EventSubAutoModMessageBlockedTerm.external.js';
 
 /**
  * An object representing an AutoMod blocked term that caused the message to be caught.

@@ -1,4 +1,4 @@
-import { type EventSubAutoModMessageAutoModBoundaryData } from './EventSubAutoModMessageAutoModBoundary.external';
+import { type EventSubAutoModMessageAutoModBoundaryData } from './EventSubAutoModMessageAutoModBoundary.external.js';
 
 /** @private */
 export interface EventSubAutoModMessageBlockedTermData {

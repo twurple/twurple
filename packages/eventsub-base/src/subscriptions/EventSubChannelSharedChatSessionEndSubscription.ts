@@ -1,9 +1,9 @@
 import { rtfm } from '@twurple/common';
 import type { HelixEventSubSubscription } from '@twurple/api';
-import type { EventSubBase } from '../EventSubBase';
-import { EventSubSubscription } from './EventSubSubscription';
-import { type EventSubChannelSharedChatSessionEndEventData } from '../events/EventSubChannelSharedChatSessionEndEvent.external';
-import { EventSubChannelSharedChatSessionEndEvent } from '../events/EventSubChannelSharedChatSessionEndEvent';
+import type { EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
+import { type EventSubChannelSharedChatSessionEndEventData } from '../events/EventSubChannelSharedChatSessionEndEvent.external.js';
+import { EventSubChannelSharedChatSessionEndEvent } from '../events/EventSubChannelSharedChatSessionEndEvent.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')

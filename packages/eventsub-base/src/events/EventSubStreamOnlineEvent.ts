@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import {
 	type EventSubStreamOnlineEventData,
 	type EventSubStreamOnlineEventStreamType,
-} from './EventSubStreamOnlineEvent.external';
+} from './EventSubStreamOnlineEvent.external.js';
 
 /**
  * An EventSub event representing a stream going live.

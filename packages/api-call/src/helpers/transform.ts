@@ -1,13 +1,13 @@
-import { stringify } from 'qs';
-import { HttpStatusCodeError } from '../errors/HttpStatusCodeError';
-import type { TwitchApiCallOptions } from '../TwitchApiCallOptions';
+import { qsStringify } from '@twurple/common';
+import { HttpStatusCodeError } from '../errors/HttpStatusCodeError.js';
+import type { TwitchApiCallOptions } from '../TwitchApiCallOptions.js';
 
 /** @private */
 export async function handleTwitchApiResponseError(response: Response, options: TwitchApiCallOptions): Promise<void> {
 	if (!response.ok) {
 		const isJson = response.headers.get('Content-Type') === 'application/json';
 		const text = isJson ? JSON.stringify(await response.json(), null, 2) : await response.text();
-		const params = stringify(options.query, { arrayFormat: 'repeat', addQueryPrefix: true });
+		const params = qsStringify(options.query);
 		const fullUrl = `${options.url}${params}`;
 		throw new HttpStatusCodeError(
 			response.status,

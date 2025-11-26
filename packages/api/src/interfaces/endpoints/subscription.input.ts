@@ -1,5 +1,5 @@
-import { type HelixSubscription } from '../../endpoints/subscriptions/HelixSubscription';
-import { type HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult';
+import { type HelixSubscription } from '../../endpoints/subscriptions/HelixSubscription.js';
+import { type HelixPaginatedResultWithTotal } from '../../utils/pagination/HelixPaginatedResult.js';
 
 /**
  * The result of a subscription query, including the subscription data, cursor, total count and sub points.

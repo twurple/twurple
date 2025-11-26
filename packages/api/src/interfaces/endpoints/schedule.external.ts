@@ -4,7 +4,7 @@ import {
 	type HelixScheduleFilter,
 	type HelixScheduleSettingsUpdate,
 	type HelixUpdateScheduleSegmentData,
-} from './schedule.input';
+} from './schedule.input.js';
 
 /** @private */
 export interface HelixScheduleVacationData {

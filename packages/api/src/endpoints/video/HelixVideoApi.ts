@@ -1,14 +1,14 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { type HelixVideoData } from '../../interfaces/endpoints/video.external';
-import { type HelixPaginatedVideoFilter, type HelixVideoFilter } from '../../interfaces/endpoints/video.input';
-import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixVideo } from './HelixVideo';
+import { type HelixVideoData } from '../../interfaces/endpoints/video.external.js';
+import { type HelixPaginatedVideoFilter, type HelixVideoFilter } from '../../interfaces/endpoints/video.input.js';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixVideo } from './HelixVideo.js';
 
 /** @internal */
 export type HelixVideoFilterType = 'id' | 'user_id' | 'game_id';

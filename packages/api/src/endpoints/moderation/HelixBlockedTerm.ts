@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixBlockedTermData } from '../../interfaces/endpoints/moderation.external';
+import { type HelixBlockedTermData } from '../../interfaces/endpoints/moderation.external.js';
 
 /**
  * Information about a word or phrase blocked in a broadcaster's channel.

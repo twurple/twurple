@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution';
-import { type EventSubChannelHypeTrainEndEventData } from './EventSubChannelHypeTrainEndEvent.external';
+import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution.js';
+import { type EventSubChannelHypeTrainEndEventData } from './EventSubChannelHypeTrainEndEvent.external.js';
 
 /**
  * An EventSub event representing the end of a Hype train event.

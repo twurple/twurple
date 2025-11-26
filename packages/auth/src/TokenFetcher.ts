@@ -1,5 +1,5 @@
 import { promiseWithResolvers } from '@d-fischer/shared-utils';
-import type { AccessToken } from './AccessToken';
+import type { AccessToken } from './AccessToken.js';
 
 export class TokenFetcher<T extends AccessToken = AccessToken> {
 	private readonly _executor: (scopeSets: string[][]) => Promise<T>;

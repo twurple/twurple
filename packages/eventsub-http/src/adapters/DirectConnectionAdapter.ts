@@ -2,9 +2,9 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import type * as http from 'http';
 import * as https from 'https';
-import { checkHostName } from '../checks';
-import type { EventSubHttpListenerCertificateConfig } from '../EventSubHttpListener';
-import { ConnectionAdapter } from './ConnectionAdapter';
+import { checkHostName } from '../checks.js';
+import type { EventSubHttpListenerCertificateConfig } from '../EventSubHttpListener.js';
+import { ConnectionAdapter } from './ConnectionAdapter.js';
 
 /**
  * The configuration of the simple connection adapter.

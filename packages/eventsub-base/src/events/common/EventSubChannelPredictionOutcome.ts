@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelPredictionBeginOutcome } from './EventSubChannelPredictionBeginOutcome';
-import { type EventSubChannelPredictionOutcomeData } from './EventSubChannelPredictionOutcome.external';
-import { EventSubChannelPredictionPredictor } from './EventSubChannelPredictionPredictor';
+import { EventSubChannelPredictionBeginOutcome } from './EventSubChannelPredictionBeginOutcome.js';
+import { type EventSubChannelPredictionOutcomeData } from './EventSubChannelPredictionOutcome.external.js';
+import { EventSubChannelPredictionPredictor } from './EventSubChannelPredictionPredictor.js';
 
 /**
  * A possible outcome of a prediction.

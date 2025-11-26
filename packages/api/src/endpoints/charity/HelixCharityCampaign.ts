@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixCharityCampaignData } from '../../interfaces/endpoints/charity.external';
-import type { HelixUser } from '../user/HelixUser';
-import { HelixCharityCampaignAmount } from './HelixCharityCampaignAmount';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixCharityCampaignData } from '../../interfaces/endpoints/charity.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import { HelixCharityCampaignAmount } from './HelixCharityCampaignAmount.js';
 
 /**
  * A charity campaign in a Twitch channel.

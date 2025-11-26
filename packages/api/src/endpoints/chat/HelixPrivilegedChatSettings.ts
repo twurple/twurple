@@ -1,6 +1,6 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixPrivilegedChatSettingsData } from '../../interfaces/endpoints/chat.external';
-import { HelixChatSettings } from './HelixChatSettings';
+import { type HelixPrivilegedChatSettingsData } from '../../interfaces/endpoints/chat.external.js';
+import { HelixChatSettings } from './HelixChatSettings.js';
 
 /**
  * The settings of a broadcaster's chat, with additional privileged data.

@@ -1,6 +1,6 @@
-import { type EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType';
-import { type EventSubChannelHypeTrainContributionData } from './common/EventSubChannelHypeTrainContribution.external';
-import { type EventSubChannelHypeTrainSharedParticipantData } from './common/EventSubChannelHypeTrainSharedParticipant.external';
+import { type EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType.js';
+import { type EventSubChannelHypeTrainContributionData } from './common/EventSubChannelHypeTrainContribution.external.js';
+import { type EventSubChannelHypeTrainSharedParticipantData } from './common/EventSubChannelHypeTrainSharedParticipant.external.js';
 
 /** @private */
 export interface EventSubChannelHypeTrainBeginV2EventData {

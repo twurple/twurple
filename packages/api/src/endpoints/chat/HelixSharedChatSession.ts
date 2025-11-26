@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixSharedChatSessionData } from '../../interfaces/endpoints/shared-chat-session.external';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixUser } from '../user/HelixUser';
-import { HelixSharedChatSessionParticipant } from './HelixSharedChatSessionParticipant';
+import { type HelixSharedChatSessionData } from '../../interfaces/endpoints/shared-chat-session.external.js';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixUser } from '../user/HelixUser.js';
+import { HelixSharedChatSessionParticipant } from './HelixSharedChatSessionParticipant.js';
 
 /**
  * A shared chat session.

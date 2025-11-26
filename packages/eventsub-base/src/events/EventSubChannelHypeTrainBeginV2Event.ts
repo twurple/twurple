@@ -1,10 +1,10 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution';
-import { type EventSubChannelHypeTrainBeginV2EventData } from './EventSubChannelHypeTrainBeginV2Event.external';
-import type { EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType';
-import { EventSubChannelHypeTrainSharedParticipant } from './common/EventSubChannelHypeTrainSharedParticipant';
+import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution.js';
+import { type EventSubChannelHypeTrainBeginV2EventData } from './EventSubChannelHypeTrainBeginV2Event.external.js';
+import type { EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType.js';
+import { EventSubChannelHypeTrainSharedParticipant } from './common/EventSubChannelHypeTrainSharedParticipant.js';
 
 /**
  * An EventSub event representing a Hype Train starting in a channel.

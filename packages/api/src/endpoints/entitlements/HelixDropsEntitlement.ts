@@ -1,12 +1,12 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixDropsEntitlementData,
 	type HelixDropsEntitlementFulfillmentStatus,
-} from '../../interfaces/endpoints/entitlement.external';
-import { type HelixGame } from '../game/HelixGame';
-import { type HelixUser } from '../user/HelixUser';
+} from '../../interfaces/endpoints/entitlement.external.js';
+import { type HelixGame } from '../game/HelixGame.js';
+import { type HelixUser } from '../user/HelixUser.js';
 
 /**
  * An entitlement for a drop.

@@ -1,5 +1,5 @@
 import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixCreatePredictionData } from './prediction.input';
+import { type HelixCreatePredictionData } from './prediction.input.js';
 
 /**
  * The different statuses a prediction can have.

@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubExtensionBitsTransactionCreateEventData } from './EventSubExtensionBitsTransactionCreateEvent.external';
+import { type EventSubExtensionBitsTransactionCreateEventData } from './EventSubExtensionBitsTransactionCreateEvent.external.js';
 
 /**
  * An EventSub event representing a bits transaction in an extension.

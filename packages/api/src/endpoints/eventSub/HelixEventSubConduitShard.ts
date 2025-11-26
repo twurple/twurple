@@ -2,7 +2,7 @@ import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type HelixEventSubConduitShardData,
 	type HelixEventSubSubscriptionStatus,
-} from '../../interfaces/endpoints/eventSub.external';
+} from '../../interfaces/endpoints/eventSub.external.js';
 
 /**
  * Represents an EventSub conduit shard.

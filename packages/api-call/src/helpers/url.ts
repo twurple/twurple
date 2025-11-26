@@ -1,5 +1,5 @@
 import { getMockApiPort } from '@twurple/common';
-import type { TwitchApiCallType } from '../TwitchApiCallOptions';
+import type { TwitchApiCallType } from '../TwitchApiCallOptions.js';
 
 /** @internal */
 export function getTwitchApiUrl(url: string, type: TwitchApiCallType): string {

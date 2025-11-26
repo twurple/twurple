@@ -1,6 +1,6 @@
 import { mapOptional } from '@d-fischer/shared-utils';
 import { type CommercialLength, extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixChannelUpdate } from './channel.input';
+import { type HelixChannelUpdate } from './channel.input.js';
 
 /** @private */
 export interface HelixChannelData {

@@ -6,20 +6,20 @@ import {
 	createClipQuery,
 	type HelixClipCreateResponse,
 	type HelixClipData,
-} from '../../interfaces/endpoints/clip.external';
+} from '../../interfaces/endpoints/clip.external.js';
 import {
 	type HelixClipCreateParams,
 	type HelixClipFilter,
 	type HelixClipIdFilter,
 	type HelixPaginatedClipFilter,
 	type HelixPaginatedClipIdFilter,
-} from '../../interfaces/endpoints/clip.input';
-import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixClip } from './HelixClip';
+} from '../../interfaces/endpoints/clip.input.js';
+import { HelixRequestBatcher } from '../../utils/HelixRequestBatcher.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixClip } from './HelixClip.js';
 
 /**
  * The Helix API methods that deal with clips.

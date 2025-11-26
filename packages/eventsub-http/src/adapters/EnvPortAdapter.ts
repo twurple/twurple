@@ -1,5 +1,5 @@
 import { rtfm } from '@twurple/common';
-import { ReverseProxyAdapter } from './ReverseProxyAdapter';
+import { ReverseProxyAdapter } from './ReverseProxyAdapter.js';
 
 /**
  * The configuration for the environment port connection adapter.

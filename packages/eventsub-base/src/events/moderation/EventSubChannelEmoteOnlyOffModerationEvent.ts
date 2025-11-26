@@ -1,5 +1,5 @@
 import { rtfm } from '@twurple/common';
-import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent';
+import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent.js';
 
 /**
  * An EventSub event representing a moderator disabling emote-only mode on a channel.

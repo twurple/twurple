@@ -1,18 +1,18 @@
 import { createBroadcasterQuery, type HelixPaginatedResponse, type HelixResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external';
+import { createGetByIdsQuery } from '../../interfaces/endpoints/generic.external.js';
 import {
 	createEndPredictionBody,
 	createPredictionBody,
 	type HelixPredictionData,
 	type HelixPredictionStatus,
-} from '../../interfaces/endpoints/prediction.external';
-import { type HelixCreatePredictionData } from '../../interfaces/endpoints/prediction.input';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixPrediction } from './HelixPrediction';
+} from '../../interfaces/endpoints/prediction.external.js';
+import { type HelixCreatePredictionData } from '../../interfaces/endpoints/prediction.input.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixPrediction } from './HelixPrediction.js';
 
 /**
  * The Helix API methods that deal with predictions.

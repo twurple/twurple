@@ -1,12 +1,12 @@
 import { createBroadcasterQuery } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixPaginatedSubscriptionsResponse,
 	type HelixSubscriptionData,
-} from '../../interfaces/endpoints/subscription.external';
-import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal';
-import { HelixSubscription } from './HelixSubscription';
+} from '../../interfaces/endpoints/subscription.external.js';
+import { HelixPaginatedRequestWithTotal } from '../../utils/pagination/HelixPaginatedRequestWithTotal.js';
+import { HelixSubscription } from './HelixSubscription.js';
 
 /**
  * A special case of {@link HelixPaginatedRequestWithTotal}

@@ -1,13 +1,13 @@
 import { Cacheable, CachedGetter } from '@d-fischer/cache-decorators';
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixVideoData,
 	type HelixVideoMutedSegmentData,
 	type HelixVideoType,
-} from '../../interfaces/endpoints/video.external';
-import type { HelixUser } from '../user/HelixUser';
+} from '../../interfaces/endpoints/video.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * A video on Twitch.

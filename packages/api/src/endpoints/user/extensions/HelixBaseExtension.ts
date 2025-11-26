@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol } from '@twurple/common';
-import { type HelixBaseExtensionData } from '../../../interfaces/endpoints/userExtension.external';
+import { type HelixBaseExtensionData } from '../../../interfaces/endpoints/userExtension.external.js';
 
 /** @protected */
 export abstract class HelixBaseExtension extends DataObject<HelixBaseExtensionData> {

@@ -25,8 +25,8 @@ export type {
 	Userstate,
 } from 'tmi.js';
 
-import { Client } from './client';
+import { Client } from './client.js';
 
 export { Client, Client as client };
 
-export type { Options } from './client';
+export type { Options } from './client.js';

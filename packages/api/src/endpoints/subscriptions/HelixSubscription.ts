@@ -1,7 +1,7 @@
 import { checkRelationAssertion, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixSubscriptionData } from '../../interfaces/endpoints/subscription.external';
-import type { HelixUser } from '../user/HelixUser';
-import { HelixUserSubscription } from './HelixUserSubscription';
+import { type HelixSubscriptionData } from '../../interfaces/endpoints/subscription.external.js';
+import type { HelixUser } from '../user/HelixUser.js';
+import { HelixUserSubscription } from './HelixUserSubscription.js';
 
 /**
  * A (paid) subscription of a user to a broadcaster.

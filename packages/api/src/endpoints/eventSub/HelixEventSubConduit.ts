@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { HelixPaginatedResponse } from '@twurple/api-call';
-import type { BaseApiClient } from '../../client/BaseApiClient';
-import type { HelixEventSubConduitData } from '../../interfaces/endpoints/eventSub.external';
-import type { HelixEventSubConduitShard } from './HelixEventSubConduitShard';
+import type { BaseApiClient } from '../../client/BaseApiClient.js';
+import type { HelixEventSubConduitData } from '../../interfaces/endpoints/eventSub.external.js';
+import type { HelixEventSubConduitShard } from './HelixEventSubConduitShard.js';
 
 /**
  * Represents an EventSub conduit.

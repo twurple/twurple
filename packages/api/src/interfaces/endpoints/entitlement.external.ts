@@ -1,6 +1,6 @@
 import { mapOptional } from '@d-fischer/shared-utils';
 import { extractUserId } from '@twurple/common';
-import { type HelixDropsEntitlementFilter } from './entitlement.input';
+import { type HelixDropsEntitlementFilter } from './entitlement.input.js';
 
 /**
  * The fulfillment status of a drop entitlement.

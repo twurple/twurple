@@ -13,8 +13,8 @@ export {
 	sendExtensionPubSubGlobalMessage,
 	sendExtensionPubSubBroadcastMessage,
 	sendExtensionPubSubWhisperMessage,
-} from './helpers';
-export type { EbsCallConfig } from './helpers';
+} from './helpers.js';
+export type { EbsCallConfig } from './helpers.js';
 
-export { createExternalJwt } from './jwt';
-export type { ExternalJwtConfig } from './jwt';
+export { createExternalJwt } from './jwt.js';
+export type { ExternalJwtConfig } from './jwt.js';

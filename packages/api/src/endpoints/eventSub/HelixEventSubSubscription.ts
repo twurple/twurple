@@ -1,11 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { BaseApiClient } from '../../client/BaseApiClient';
+import type { BaseApiClient } from '../../client/BaseApiClient.js';
 import {
 	type HelixEventSubSubscriptionData,
 	type HelixEventSubSubscriptionStatus,
 	type HelixEventSubTransportData,
-} from '../../interfaces/endpoints/eventSub.external';
+} from '../../interfaces/endpoints/eventSub.external.js';
 
 /**
  * An EventSub subscription.

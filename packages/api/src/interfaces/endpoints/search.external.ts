@@ -1,4 +1,4 @@
-import { type HelixChannelSearchFilter } from './search.input';
+import { type HelixChannelSearchFilter } from './search.input.js';
 
 /** @private */
 export interface HelixChannelSearchResultData {

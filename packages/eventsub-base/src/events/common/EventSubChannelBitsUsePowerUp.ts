@@ -3,7 +3,7 @@ import {
 	type EventSubChannelBitsUsePowerUpData,
 	type EventSubChannelBitsUsePowerUpType,
 	type EventSubChannelBitsUsePowerUpEmoteData,
-} from './EventSubChannelBitsUsePowerUp.external';
+} from './EventSubChannelBitsUsePowerUp.external.js';
 
 /**
  * Represents a bits usage Power-up.

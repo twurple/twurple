@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseChatMessage } from '../messagePartParser';
+import { parseChatMessage } from '../messagePartParser.js';
 
 describe('Message part parser', () => {
 	it('parses a message without emotes or cheers', () => {

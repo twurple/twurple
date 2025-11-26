@@ -1,7 +1,7 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { type ApiClient, type HelixGame, type HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubDropEntitlementGrantEventData } from './EventSubDropEntitlementGrantEvent.external';
+import { type EventSubDropEntitlementGrantEventData } from './EventSubDropEntitlementGrantEvent.external.js';
 
 /**
  * An EventSub event representing a drop entitlement grant.

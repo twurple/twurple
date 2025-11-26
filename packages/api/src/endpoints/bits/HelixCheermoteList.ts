@@ -1,7 +1,7 @@
 import { indexBy } from '@d-fischer/shared-utils';
 import { DataObject, HellFreezesOverError, rawDataSymbol, rtfm } from '@twurple/common';
-import { type HelixCheermoteData } from '../../interfaces/endpoints/bits.external';
-import { type CheermoteDisplayInfo, type CheermoteFormat } from './CheermoteDisplayInfo';
+import { type HelixCheermoteData } from '../../interfaces/endpoints/bits.external.js';
+import { type CheermoteDisplayInfo, type CheermoteFormat } from './CheermoteDisplayInfo.js';
 
 /**
  * A list of cheermotes you can use globally or in a specific channel, depending on how you fetched the list.

@@ -1,26 +1,26 @@
 import type { HelixPaginatedResponse, HelixResponse } from '@twurple/api-call';
 import { HelixExtension, type HelixExtensionData, rtfm } from '@twurple/common';
-import { type HelixChannelReferenceData } from '../../interfaces/endpoints/channel.external';
+import { type HelixChannelReferenceData } from '../../interfaces/endpoints/channel.external.js';
 import {
 	createExtensionProductBody,
 	createExtensionTransactionQuery,
 	createReleasedExtensionFilter,
 	type HelixExtensionBitsProductData,
 	type HelixExtensionTransactionData,
-} from '../../interfaces/endpoints/extensions.external';
+} from '../../interfaces/endpoints/extensions.external.js';
 import {
 	type HelixExtensionBitsProductUpdatePayload,
 	type HelixExtensionTransactionsFilter,
 	type HelixExtensionTransactionsPaginatedFilter,
-} from '../../interfaces/endpoints/extensions.input';
-import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external';
-import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest';
-import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult';
-import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
-import { BaseApi } from '../BaseApi';
-import { HelixChannelReference } from '../channel/HelixChannelReference';
-import { HelixExtensionBitsProduct } from './HelixExtensionBitsProduct';
-import { HelixExtensionTransaction } from './HelixExtensionTransaction';
+} from '../../interfaces/endpoints/extensions.input.js';
+import { createSingleKeyQuery } from '../../interfaces/endpoints/generic.external.js';
+import { HelixPaginatedRequest } from '../../utils/pagination/HelixPaginatedRequest.js';
+import { createPaginatedResult, type HelixPaginatedResult } from '../../utils/pagination/HelixPaginatedResult.js';
+import { createPaginationQuery, type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
+import { BaseApi } from '../BaseApi.js';
+import { HelixChannelReference } from '../channel/HelixChannelReference.js';
+import { HelixExtensionBitsProduct } from './HelixExtensionBitsProduct.js';
+import { HelixExtensionTransaction } from './HelixExtensionTransaction.js';
 
 /**
  * The Helix API methods that deal with extensions.

@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixChannelSearchResultData } from '../../interfaces/endpoints/search.external';
-import type { HelixGame } from '../game/HelixGame';
-import type { HelixUser } from '../user/HelixUser';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixChannelSearchResultData } from '../../interfaces/endpoints/search.external.js';
+import type { HelixGame } from '../game/HelixGame.js';
+import type { HelixUser } from '../user/HelixUser.js';
 
 /**
  * The result of a channel search.

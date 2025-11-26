@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelShieldModeBeginEvent } from '../events/EventSubChannelShieldModeBeginEvent';
-import type { EventSubChannelShieldModeBeginEventData } from '../events/EventSubChannelShieldModeBeginEvent.external';
-import type { EventSubBase } from '../EventSubBase';
-import { EventSubSubscription } from './EventSubSubscription';
+import { EventSubChannelShieldModeBeginEvent } from '../events/EventSubChannelShieldModeBeginEvent.js';
+import type { EventSubChannelShieldModeBeginEventData } from '../events/EventSubChannelShieldModeBeginEvent.external.js';
+import type { EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')

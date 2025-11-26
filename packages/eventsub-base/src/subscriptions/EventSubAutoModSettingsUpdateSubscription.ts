@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import type { EventSubBase } from '../EventSubBase';
-import { EventSubSubscription } from './EventSubSubscription';
-import { EventSubAutoModSettingsUpdateEvent } from '../events/EventSubAutoModSettingsUpdateEvent';
-import { type EventSubAutoModSettingsUpdateEventData } from '../events/EventSubAutoModSettingsUpdateEvent.external';
+import type { EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
+import { EventSubAutoModSettingsUpdateEvent } from '../events/EventSubAutoModSettingsUpdateEvent.js';
+import { type EventSubAutoModSettingsUpdateEventData } from '../events/EventSubAutoModSettingsUpdateEvent.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')

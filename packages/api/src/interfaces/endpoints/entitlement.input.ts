@@ -1,6 +1,6 @@
 import { type UserIdResolvable } from '@twurple/common';
-import { type HelixPagination } from '../../utils/pagination/HelixPagination';
-import { type HelixDropsEntitlementFulfillmentStatus } from './entitlement.external';
+import { type HelixPagination } from '../../utils/pagination/HelixPagination.js';
+import { type HelixDropsEntitlementFulfillmentStatus } from './entitlement.external.js';
 
 /**
  * Filters for drops entitlement queries.

@@ -1,9 +1,9 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external';
-import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus';
-import { type EventSubChannelChatUserMessageUpdateEventData } from './EventSubChannelChatUserMessageUpdateEvent.external';
+import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external.js';
+import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus.js';
+import { type EventSubChannelChatUserMessageUpdateEventData } from './EventSubChannelChatUserMessageUpdateEvent.external.js';
 
 /**
  * An EventSub event representing a user's notification about the resolution of their held chat message by AutoMod.

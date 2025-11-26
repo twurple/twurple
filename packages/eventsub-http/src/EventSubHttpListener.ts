@@ -2,8 +2,8 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import { type EventSubListener } from '@twurple/eventsub-base';
 import { defaultOnError, type NextFunction, type Request, type Response, Server } from 'httpanda';
-import { type ConnectionAdapter } from './adapters/ConnectionAdapter';
-import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase';
+import { type ConnectionAdapter } from './adapters/ConnectionAdapter.js';
+import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBase.js';
 
 /**
  * Certificate data used to make the listener server SSL capable.

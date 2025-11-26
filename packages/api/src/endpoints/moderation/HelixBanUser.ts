@@ -1,8 +1,8 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixCommonBanUserData } from '../../interfaces/endpoints/moderation.external';
-import { type HelixUser } from '../user/HelixUser';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixCommonBanUserData } from '../../interfaces/endpoints/moderation.external.js';
+import { type HelixUser } from '../user/HelixUser.js';
 
 /**
  * Information about a user who has been banned/timed out.

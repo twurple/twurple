@@ -1,8 +1,8 @@
 import { mapNullable } from '@d-fischer/shared-utils';
 import { rtfm } from '@twurple/common';
 import { MessageTypes } from 'ircv3';
-import { ChatUser } from '../ChatUser';
-import { parseEmoteOffsets } from '../utils/emoteUtil';
+import { ChatUser } from '../ChatUser.js';
+import { parseEmoteOffsets } from '../utils/emoteUtil.js';
 
 // yes, this is necessary. pls fix twitch
 const HYPE_CHAT_LEVELS = ['ONE', 'TWO', 'THREE', 'FOUR', 'FIVE', 'SIX', 'SEVEN', 'EIGHT', 'NINE', 'TEN'];

@@ -1,13 +1,13 @@
 import { decodeCtcp, type Message, type MessageConstructor, MessageTypes, parseMessage } from 'ircv3';
-import { ClearChat } from '../caps/twitchCommands/messageTypes/ClearChat';
-import { Reconnect } from '../caps/twitchCommands/messageTypes/Reconnect';
-import { RoomState } from '../caps/twitchCommands/messageTypes/RoomState';
-import { UserNotice } from '../caps/twitchCommands/messageTypes/UserNotice';
-import { UserState } from '../caps/twitchCommands/messageTypes/UserState';
-import { Whisper } from '../caps/twitchCommands/messageTypes/Whisper';
-import { ClearMsg } from '../caps/twitchTags/messageTypes/ClearMsg';
-import { GlobalUserState } from '../caps/twitchTags/messageTypes/GlobalUserState';
-import { ChatMessage } from '../commands/ChatMessage';
+import { ClearChat } from '../caps/twitchCommands/messageTypes/ClearChat.js';
+import { Reconnect } from '../caps/twitchCommands/messageTypes/Reconnect.js';
+import { RoomState } from '../caps/twitchCommands/messageTypes/RoomState.js';
+import { UserNotice } from '../caps/twitchCommands/messageTypes/UserNotice.js';
+import { UserState } from '../caps/twitchCommands/messageTypes/UserState.js';
+import { Whisper } from '../caps/twitchCommands/messageTypes/Whisper.js';
+import { ClearMsg } from '../caps/twitchTags/messageTypes/ClearMsg.js';
+import { GlobalUserState } from '../caps/twitchTags/messageTypes/GlobalUserState.js';
+import { ChatMessage } from '../commands/ChatMessage.js';
 
 let twitchMessageTypesCache: Map<string, MessageConstructor> | null = null;
 

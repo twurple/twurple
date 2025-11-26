@@ -1,8 +1,8 @@
 import { checkRelationAssertion, rawDataSymbol, rtfm } from '@twurple/common';
-import { type BaseApiClient } from '../../client/BaseApiClient';
-import { type HelixStreamMarkerVideoData } from '../../interfaces/endpoints/stream.external';
-import type { HelixVideo } from '../video/HelixVideo';
-import { HelixStreamMarker } from './HelixStreamMarker';
+import { type BaseApiClient } from '../../client/BaseApiClient.js';
+import { type HelixStreamMarkerVideoData } from '../../interfaces/endpoints/stream.external.js';
+import type { HelixVideo } from '../video/HelixVideo.js';
+import { HelixStreamMarker } from './HelixStreamMarker.js';
 
 /**
  * A stream marker, also containing some video data.

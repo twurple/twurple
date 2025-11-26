@@ -4,7 +4,7 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import {
 	type EventSubChannelUnbanRequestResolveEventData,
 	type EventSubChannelUnbanRequestStatus,
-} from './EventSubChannelUnbanRequestResolveEvent.external';
+} from './EventSubChannelUnbanRequestResolveEvent.external.js';
 
 /**
  * An EventSub event representing the resolution of an unban request in a channel.

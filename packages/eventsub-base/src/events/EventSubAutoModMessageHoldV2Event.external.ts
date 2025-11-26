@@ -1,7 +1,7 @@
-import { type EventSubAutoModMessageData } from './common/EventSubAutoModMessage.external';
-import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason';
-import { type EventSubAutoModMessageBlockedTermData } from './common/EventSubAutoModMessageBlockedTerm.external';
-import { type EventSubAutoModMessageAutoModData } from './common/EventSubAutoModMessageAutoMod.external';
+import { type EventSubAutoModMessageData } from './common/EventSubAutoModMessage.external.js';
+import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason.js';
+import { type EventSubAutoModMessageBlockedTermData } from './common/EventSubAutoModMessageBlockedTerm.external.js';
+import { type EventSubAutoModMessageAutoModData } from './common/EventSubAutoModMessageAutoMod.external.js';
 
 /** @private */
 export interface EventSubAutoModMessageHoldV2EventData {

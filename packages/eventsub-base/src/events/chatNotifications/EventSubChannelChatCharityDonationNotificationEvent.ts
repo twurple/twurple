@@ -1,7 +1,7 @@
 import { rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelCharityAmount } from '../common/EventSubChannelCharityAmount';
-import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent';
-import { type EventSubChannelChatCharityDonationNotificationEventData } from './EventSubChannelChatNotificationEvent.external';
+import { EventSubChannelCharityAmount } from '../common/EventSubChannelCharityAmount.js';
+import { EventSubChannelChatBaseNotificationEvent } from './EventSubChannelChatBaseNotificationEvent.js';
+import { type EventSubChannelChatCharityDonationNotificationEventData } from './EventSubChannelChatNotificationEvent.external.js';
 
 /**
  * An EventSub event representing a notification for a charity donation in a channel's chat.

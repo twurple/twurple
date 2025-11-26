@@ -4,7 +4,7 @@ import {
 	type HelixEmoteFormat,
 	type HelixEmoteScale,
 	type HelixEmoteThemeMode,
-} from '../../interfaces/endpoints/chat.external';
+} from '../../interfaces/endpoints/chat.external.js';
 
 /** @private */
 export class HelixEmoteBase extends DataObject<HelixEmoteBaseData> {

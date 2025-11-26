@@ -1,4 +1,4 @@
-import { type EventSubChannelGoalType } from './common/EventSubChannelGoalType';
+import { type EventSubChannelGoalType } from './common/EventSubChannelGoalType.js';
 
 /** @private */
 export interface EventSubChannelGoalEndEventData {

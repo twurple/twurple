@@ -1,4 +1,4 @@
-import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
+import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
 
 /**
  * Data to create a new custom reward.

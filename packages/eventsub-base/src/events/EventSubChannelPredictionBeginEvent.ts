@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { EventSubChannelPredictionBeginOutcome } from './common/EventSubChannelPredictionBeginOutcome';
-import { type EventSubChannelPredictionBeginEventData } from './EventSubChannelPredictionBeginEvent.external';
+import { EventSubChannelPredictionBeginOutcome } from './common/EventSubChannelPredictionBeginOutcome.js';
+import { type EventSubChannelPredictionBeginEventData } from './EventSubChannelPredictionBeginEvent.external.js';
 
 /**
  * An EventSub event representing a prediction starting in a channel.

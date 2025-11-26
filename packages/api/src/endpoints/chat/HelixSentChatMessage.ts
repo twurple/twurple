@@ -1,5 +1,5 @@
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import type { HelixSentChatMessageData } from '../../interfaces/endpoints/chat.external';
+import type { HelixSentChatMessageData } from '../../interfaces/endpoints/chat.external.js';
 
 /**
  * Information about a sent Twitch chat message.

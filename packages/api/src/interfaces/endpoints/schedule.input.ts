@@ -1,5 +1,5 @@
-import { type HelixSchedule } from '../../endpoints/schedule/HelixSchedule';
-import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination';
+import { type HelixSchedule } from '../../endpoints/schedule/HelixSchedule.js';
+import { type HelixForwardPagination } from '../../utils/pagination/HelixPagination.js';
 
 /**
  * Filters for the schedule request.

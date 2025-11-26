@@ -1,5 +1,5 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { type BaseApiClient } from '../client/BaseApiClient';
+import { type BaseApiClient } from '../client/BaseApiClient.js';
 
 /** @private */
 export class BaseApi {
