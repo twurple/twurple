@@ -64,6 +64,7 @@ export type {
 export type {
 	HelixUpdateChatSettingsParams,
 	HelixSendChatMessageParams,
+	HelixSendChatMessageAsAppParams,
 	HelixSendChatAnnouncementParams,
 	HelixChatBadgeScale,
 	HelixUserEmotesFilter,
