@@ -4,6 +4,7 @@
   ],
   "private": true,
   "name": "twurple-workspace",
+  "version": "0.0.0",
   "repository": "github:twurple/twurple",
   "author": "Daniel Fischer <daniel@d-fischer.dev>",
   "license": "MIT",
