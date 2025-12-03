@@ -182,13 +182,18 @@
 		{
 			"name": "migration",
 			"title": "Migration",
-			"indexTitle": "Migration from v6 to v7",
-			"indexFile": "migration/v6-to-v7.md",
+			"indexTitle": "Migration from v7 to v8",
+			"indexFile": "migration/v7-to-v8.md",
 			"groups": [
 				{
 					"name": "previous-versions",
 					"title": "Previous versions",
 					"articles": [
+						{
+							"name": "v6-to-v7",
+							"title": "Migration from v6 to v7",
+							"file": "migration/v6-to-v7.md"
+						},
 						{
 							"name": "v5-to-v6",
 							"title": "Migration from v5 to v6",
