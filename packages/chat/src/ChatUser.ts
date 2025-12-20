@@ -117,9 +117,16 @@ export class ChatUser {
 	 * Whether the user is a moderator of the channel.
 	 */
 	get isMod(): boolean {
-		return this.badges.has('moderator');
+		return this.badges.has('moderator') || this.isLeadMod;
 	}
 
+	/**
+	 * Whether the user is a moderator of the channel.
+	 */
+	get isLeadMod(): boolean {
+		return this.badges.has('lead_moderator');
+	}
+	
 	/**
 	 * Whether the user is a VIP in the channel.
 	 */
