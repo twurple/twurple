@@ -121,7 +121,7 @@ export class ChatUser {
 	}
 
 	/**
-	 * Whether the user is a moderator of the channel.
+	 * Whether the user is a lead moderator of the channel.
 	 */
 	get isLeadMod(): boolean {
 		return this.badges.has('lead_moderator');
