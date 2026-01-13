@@ -33,7 +33,7 @@ export class EventSubChannelHypeTrainProgressV2Subscription extends EventSubSubs
 	}
 
 	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelHypeTrainProgressEvents(
+		return await this._client._apiClient.eventSub.subscribeToChannelHypeTrainProgressV2Events(
 			this._userId,
 			await this._getTransportOptions(),
 		);
