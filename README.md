@@ -8,7 +8,7 @@ A set of libraries that aims to cover all existing Twitch APIs.
 
 - Query the Helix API
 - Build a chat bot
-- React to custom redemptions, subscriptions, follows and much more using PubSub and EventSub
+- React to custom redemptions, subscriptions, follows and much more using EventSub
 - Do all this without caring about the expiry of your access tokens - **we can refresh them automatically**
 
 ## Installation
