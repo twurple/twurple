@@ -77,6 +77,7 @@ export interface HelixClipCreateParams extends HelixBaseClipCreateParams {
 /**
  * Parameters for creating a clip from a VOD.
  *
+ * @beta
  * @inheritDoc
  */
 export interface HelixClipCreateFromVodParams extends HelixBaseClipCreateParams {

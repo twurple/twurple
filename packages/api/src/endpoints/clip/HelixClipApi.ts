@@ -190,6 +190,7 @@ export class HelixClipApi extends BaseApi {
 	 *
 	 * @param params
 	 * @expandParams
+	 * @beta
 	 */
 	async createClipFromVod(params: HelixClipCreateFromVodParams): Promise<string> {
 		const broadcasterId = extractUserId(params.channel);
