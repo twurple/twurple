@@ -2,12 +2,14 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { HelixPaginatedResponse } from '@twurple/api-call';
 import { extractUserId, rtfm, type UserIdResolvable } from '@twurple/common';
 import {
+	createClipCreateFromVodQuery,
 	createClipCreateQuery,
 	createClipQuery,
 	type HelixClipCreateResponse,
 	type HelixClipData,
 } from '../../interfaces/endpoints/clip.external.js';
 import {
+	type HelixClipCreateFromVodParams,
 	type HelixClipCreateParams,
 	type HelixClipFilter,
 	type HelixClipIdFilter,
@@ -168,15 +170,37 @@ export class HelixClipApi extends BaseApi {
 	 * @expandParams
 	 */
 	async createClip(params: HelixClipCreateParams): Promise<string> {
-		const { channel, createAfterDelay = false } = params;
 		const result = await this._client.callApi<{ data: [HelixClipCreateResponse] }>({
 			type: 'helix',
 			url: 'clips',
 			method: 'POST',
-			userId: extractUserId(channel),
+			userId: extractUserId(params.channel),
 			scopes: ['clips:edit'],
 			canOverrideScopedUserContext: true,
-			query: createClipCreateQuery(channel, createAfterDelay),
+			query: createClipCreateQuery(params),
+		});
+
+		return result.data[0].id;
+	}
+
+	/**
+	 * Creates a clip of a VOD.
+	 *
+	 * Returns the ID of the clip.
+	 *
+	 * @param params
+	 * @expandParams
+	 */
+	async createClipFromVod(params: HelixClipCreateFromVodParams): Promise<string> {
+		const broadcasterId = extractUserId(params.channel);
+		const result = await this._client.callApi<{ data: [HelixClipCreateResponse] }>({
+			type: 'helix',
+			url: 'videos/clips',
+			method: 'POST',
+			userId: broadcasterId,
+			scopes: ['editor:manage:clips', 'channel:manage:clips'],
+			canOverrideScopedUserContext: true,
+			query: createClipCreateFromVodQuery(params, this._getUserContextIdWithDefault(broadcasterId)),
 		});
 
 		return result.data[0].id;

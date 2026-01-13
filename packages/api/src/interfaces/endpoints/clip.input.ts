@@ -42,17 +42,51 @@ export interface HelixClipIdFilter extends HelixClipFilter, HelixClipIdFilterPar
 /** @private */
 export interface HelixPaginatedClipIdFilter extends HelixPaginatedClipFilter, HelixClipIdFilterPart {}
 
-/**
- * Parameters for creating a clip.
- */
-export interface HelixClipCreateParams {
+/** @private */
+interface HelixBaseClipCreateParams {
 	/**
 	 * The broadcaster of which you want to create a clip.
 	 */
 	channel: UserIdResolvable;
 
 	/**
+	 * The title of the clip. If not given, the title of the clip will be the same as the title of the stream.
+	 */
+	title?: string;
+
+	/**
+	 * The duration of the clip, in seconds. The valid range is 5-60, with a precision of 0.1.
+	 *
+	 * If not given, the duration of the clip will be 30 seconds.
+	 */
+	duration?: number;
+}
+
+/**
+ * Parameters for creating a clip from a live stream.
+ *
+ * @inheritDoc
+ */
+export interface HelixClipCreateParams extends HelixBaseClipCreateParams {
+	/**
 	 * Add a delay before the clip creation that accounts for the usual delay in the viewing experience.
 	 */
 	createAfterDelay?: boolean;
+}
+
+/**
+ * Parameters for creating a clip from a VOD.
+ *
+ * @inheritDoc
+ */
+export interface HelixClipCreateFromVodParams extends HelixBaseClipCreateParams {
+	/**
+	 * The ID of the VOD to create a clip from.
+	 */
+	vodId: string;
+
+	/**
+	 * The offset of the VOD to **end** the clip on. Must be higher than `duration`.
+	 */
+	vodOffset: number;
 }

@@ -1,5 +1,5 @@
-import { extractUserId, type UserIdResolvable } from '@twurple/common';
-import { type HelixClipIdFilter } from './clip.input.js';
+import { extractUserId } from '@twurple/common';
+import { type HelixClipCreateFromVodParams, type HelixClipCreateParams, type HelixClipIdFilter } from './clip.input.js';
 
 /** @private */
 export interface HelixClipData {
@@ -32,10 +32,26 @@ export interface HelixClipCreateResponse {
 }
 
 /** @internal */
-export function createClipCreateQuery(channel: UserIdResolvable, createAfterDelay: boolean) {
+export function createClipCreateQuery(params: HelixClipCreateParams) {
+	const { channel, createAfterDelay = false, title, duration } = params;
 	return {
 		broadcaster_id: extractUserId(channel),
 		has_delay: createAfterDelay.toString(),
+		title,
+		duration: duration?.toFixed(1),
+	};
+}
+
+/** @internal */
+export function createClipCreateFromVodQuery(params: HelixClipCreateFromVodParams, editorId: string) {
+	const { channel, title, duration, vodId, vodOffset } = params;
+	return {
+		broadcaster_id: extractUserId(channel),
+		editor_id: editorId,
+		title,
+		duration: duration?.toFixed(1),
+		vod_id: vodId,
+		vod_offset: vodOffset.toString(),
 	};
 }
 
