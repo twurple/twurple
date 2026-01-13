@@ -126,7 +126,7 @@ export class ChatUser {
 	get isLeadMod(): boolean {
 		return this.badges.has('lead_moderator');
 	}
-	
+
 	/**
 	 * Whether the user is a VIP in the channel.
 	 */
