@@ -44,6 +44,7 @@ import { SubEvent } from './events/SubEvent.js';
 import { SubGiftEvent } from './events/SubGiftEvent.js';
 import { SubsOnlyToggleEvent } from './events/SubsOnlyToggleEvent.js';
 import { UniqueChatToggleEvent } from './events/UniqueChatToggleEvent.js';
+import { ViewerMilestoneEvent } from './events/ViewerMilestoneEvent.js';
 import { WhisperEvent } from './events/WhisperEvent.js';
 
 export type BotAuthMethod = 'bot' | 'broadcaster';
@@ -360,6 +361,14 @@ export class Bot extends EventEmitter {
 	readonly onAnnouncement = this.registerEvent<[event: AnnouncementEvent]>();
 
 	/**
+	 * Fires when a user reaches a viewer milestone in a channel.
+	 *
+	 * @eventListener
+	 * @param event The event object.
+	 */
+	readonly onViewerMilestone = this.registerEvent<[event: ViewerMilestoneEvent]>();
+
+	/**
 	 * Fires when receiving a whisper from another user.
 	 *
 	 * @eventListener
@@ -543,6 +552,9 @@ export class Bot extends EventEmitter {
 		);
 		this.chat.onAnnouncement((channel, user, announcementInfo, msg) =>
 			this.emit(this.onAnnouncement, new AnnouncementEvent(channel, user, announcementInfo, msg, this)),
+		);
+		this.chat.onViewerMilestone((channel, user, milestoneInfo, msg) =>
+			this.emit(this.onViewerMilestone, new ViewerMilestoneEvent(channel, user, milestoneInfo, msg, this)),
 		);
 
 		this.chat.onWhisper((user, text, msg) => this.emit(this.onWhisper, new WhisperEvent(user, text, msg, this)));

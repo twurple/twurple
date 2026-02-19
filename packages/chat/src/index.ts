@@ -31,6 +31,7 @@ export type {
 	ChatSubOriginalGiftInfo,
 	ChatSubUpgradeInfo,
 } from './userNotices/ChatSubInfo.js';
+export type { ChatViewerMilestoneInfo } from './userNotices/ChatViewerMilestoneInfo.js';
 
 export { extractMessageId, type ChatSayMessageAttributes } from './ChatMessageAttributes.js';
 
