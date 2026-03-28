@@ -28,4 +28,5 @@ export { SubEvent } from './events/SubEvent.js';
 export { SubGiftEvent } from './events/SubGiftEvent.js';
 export { SubsOnlyToggleEvent } from './events/SubsOnlyToggleEvent.js';
 export { UniqueChatToggleEvent } from './events/UniqueChatToggleEvent.js';
+export { ViewerMilestoneEvent } from './events/ViewerMilestoneEvent.js';
 export { WhisperEvent } from './events/WhisperEvent.js';
