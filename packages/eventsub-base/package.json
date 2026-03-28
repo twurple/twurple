@@ -34,7 +34,7 @@
   "dependencies": {
     "@d-fischer/logger": "^4.2.1",
     "@d-fischer/shared-utils": "^3.6.1",
-    "@d-fischer/typed-event-emitter": "^3.3.0",
+    "@d-fischer/typed-event-emitter": "^3.3.3",
     "@twurple/api": "8.0.3",
     "@twurple/auth": "8.0.3",
     "@twurple/common": "8.0.3",
