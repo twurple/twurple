@@ -3,18 +3,18 @@ import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel.js';
 import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external.js';
-import { type EventSubAutoModMessageUpdateEventData } from './EventSubAutoModMessageUpdateEvent.external.js';
 import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus.js';
+import { type EventSubAutoModMessageUpdateEventData } from './EventSubAutoModMessageUpdateEvent.external.js';
 
 /**
  * An EventSub event representing a held chat message by AutoMod being resolved in a channel.
  */
 @rtfm<EventSubAutoModMessageUpdateEvent>('eventsub-base', 'EventSubAutoModMessageUpdateEvent', 'messageId')
 export class EventSubAutoModMessageUpdateEvent extends DataObject<EventSubAutoModMessageUpdateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubAutoModMessageUpdateEventData, client: ApiClient) {
+	constructor(data: EventSubAutoModMessageUpdateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -44,6 +44,9 @@ export class EventSubAutoModMessageUpdateEvent extends DataObject<EventSubAutoMo
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageUpdateEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -72,6 +75,9 @@ export class EventSubAutoModMessageUpdateEvent extends DataObject<EventSubAutoMo
 	 * Gets more information about the moderator.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageUpdateEvent#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 
@@ -100,6 +106,9 @@ export class EventSubAutoModMessageUpdateEvent extends DataObject<EventSubAutoMo
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageUpdateEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

@@ -8,10 +8,10 @@ import { type EventSubChannelUpdateEventData } from './EventSubChannelUpdateEven
  */
 @rtfm<EventSubChannelUpdateEvent>('eventsub-base', 'EventSubChannelUpdateEvent', 'broadcasterId')
 export class EventSubChannelUpdateEvent extends DataObject<EventSubChannelUpdateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelUpdateEventData, client: ApiClient) {
+	constructor(data: EventSubChannelUpdateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelUpdateEvent extends DataObject<EventSubChannelUpdate
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUpdateEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -76,6 +79,9 @@ export class EventSubChannelUpdateEvent extends DataObject<EventSubChannelUpdate
 	 * Gets more information about the game that is currently being played on the channel.
 	 */
 	async getGame(): Promise<HelixGame | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUpdateEvent#getGame is not supported in this context');
+		}
 		return this[rawDataSymbol].category_id
 			? checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].category_id))
 			: null;

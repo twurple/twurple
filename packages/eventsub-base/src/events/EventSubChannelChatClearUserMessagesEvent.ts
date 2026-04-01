@@ -12,10 +12,10 @@ import { type EventSubChannelChatClearUserMessagesEventData } from './EventSubCh
 	'broadcasterId',
 )
 export class EventSubChannelChatClearUserMessagesEvent extends DataObject<EventSubChannelChatClearUserMessagesEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelChatClearUserMessagesEventData, client: ApiClient) {
+	constructor(data: EventSubChannelChatClearUserMessagesEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -45,6 +45,9 @@ export class EventSubChannelChatClearUserMessagesEvent extends DataObject<EventS
 	 * Gets more information about the user whose chat messages were cleared.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatClearUserMessagesEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].target_user_id));
 	}
 
@@ -73,6 +76,11 @@ export class EventSubChannelChatClearUserMessagesEvent extends DataObject<EventS
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelChatClearUserMessagesEvent#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 }

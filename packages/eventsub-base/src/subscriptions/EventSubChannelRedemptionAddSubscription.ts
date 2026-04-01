@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelRedemptionAddEvent } from '../events/EventSubChannelRedemptionAddEvent.js';
 import { type EventSubChannelRedemptionAddEventData } from '../events/EventSubChannelRedemptionAddEvent.external.js';
+import { EventSubChannelRedemptionAddEvent } from '../events/EventSubChannelRedemptionAddEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -31,20 +31,26 @@ export class EventSubChannelRedemptionAddSubscription extends EventSubSubscripti
 	}
 
 	protected transformData(data: EventSubChannelRedemptionAddEventData): EventSubChannelRedemptionAddEvent {
-		return new EventSubChannelRedemptionAddEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelRedemptionAddEvent(data, this._client._config.apiClient)
+			: new EventSubChannelRedemptionAddEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
 		if (this._rewardId) {
-			return await this._client._apiClient.eventSub.subscribeToChannelRedemptionAddEventsForReward(
-				this._userId,
-				this._rewardId,
-				await this._getTransportOptions(),
-			);
+			return this._client._config.managed
+				? await this._client._config.apiClient.eventSub.subscribeToChannelRedemptionAddEventsForReward(
+						this._userId,
+						this._rewardId,
+						await this._getTransportOptions(),
+				  )
+				: undefined;
 		}
-		return await this._client._apiClient.eventSub.subscribeToChannelRedemptionAddEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelRedemptionAddEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

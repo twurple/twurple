@@ -11,10 +11,10 @@ import {
  */
 @rtfm<EventSubChannelSubscriptionGiftEvent>('eventsub-base', 'EventSubChannelSubscriptionGiftEvent', 'gifterId')
 export class EventSubChannelSubscriptionGiftEvent extends DataObject<EventSubChannelSubscriptionGiftEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelSubscriptionGiftEventData, client: ApiClient) {
+	constructor(data: EventSubChannelSubscriptionGiftEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -44,6 +44,9 @@ export class EventSubChannelSubscriptionGiftEvent extends DataObject<EventSubCha
 	 * Gets more information about the gifting user. Returns `null` if the gifter was anonymous.
 	 */
 	async getGifter(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSubscriptionGiftEvent#getGifter is not supported in this context');
+		}
 		const userId = this[rawDataSymbol].user_id;
 		if (!userId) {
 			return null;
@@ -76,6 +79,9 @@ export class EventSubChannelSubscriptionGiftEvent extends DataObject<EventSubCha
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSubscriptionGiftEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

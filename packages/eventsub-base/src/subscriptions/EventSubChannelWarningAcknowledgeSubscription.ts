@@ -1,9 +1,9 @@
 import { type HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
+import { type EventSubChannelWarningAcknowledgeEventData } from '../events/EventSubChannelWarningAcknowledgeEvent.external.js';
+import { EventSubChannelWarningAcknowledgeEvent } from '../events/EventSubChannelWarningAcknowledgeEvent.js';
 import { type EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
-import { EventSubChannelWarningAcknowledgeEvent } from '../events/EventSubChannelWarningAcknowledgeEvent.js';
-import { type EventSubChannelWarningAcknowledgeEventData } from '../events/EventSubChannelWarningAcknowledgeEvent.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -28,17 +28,21 @@ export class EventSubChannelWarningAcknowledgeSubscription extends EventSubSubsc
 	}
 
 	protected transformData(data: EventSubChannelWarningAcknowledgeEventData): EventSubChannelWarningAcknowledgeEvent {
-		return new EventSubChannelWarningAcknowledgeEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelWarningAcknowledgeEvent(data, this._client._config.apiClient)
+			: new EventSubChannelWarningAcknowledgeEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._moderatorId,
-			async ctx =>
-				await ctx.eventSub.subscribeToChannelWarningAcknowledgeEvents(
-					this._broadcasterId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._moderatorId,
+					async ctx =>
+						await ctx.eventSub.subscribeToChannelWarningAcknowledgeEvents(
+							this._broadcasterId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

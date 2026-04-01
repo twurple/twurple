@@ -8,10 +8,10 @@ import { type EventSubChannelAdBreakBeginEventData } from './EventSubChannelAdBr
  */
 @rtfm<EventSubChannelAdBreakBeginEvent>('eventsub-base', 'EventSubChannelAdBreakBeginEvent', 'broadcasterId')
 export class EventSubChannelAdBreakBeginEvent extends DataObject<EventSubChannelAdBreakBeginEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelAdBreakBeginEventData, client: ApiClient) {
+	constructor(data: EventSubChannelAdBreakBeginEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelAdBreakBeginEvent extends DataObject<EventSubChannel
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelAdBreakBeginEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelAdBreakBeginEvent extends DataObject<EventSubChannel
 	 * Gets more information about the user that requested the ad.
 	 */
 	async getRequester(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelAdBreakBeginEvent#getRequester is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].requester_user_id));
 	}
 

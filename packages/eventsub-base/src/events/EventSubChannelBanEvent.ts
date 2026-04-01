@@ -8,10 +8,10 @@ import { type EventSubChannelBanEventData } from './EventSubChannelBanEvent.exte
  */
 @rtfm<EventSubChannelBanEvent>('eventsub-base', 'EventSubChannelBanEvent', 'userId')
 export class EventSubChannelBanEvent extends DataObject<EventSubChannelBanEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelBanEventData, client: ApiClient) {
+	constructor(data: EventSubChannelBanEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelBanEvent extends DataObject<EventSubChannelBanEventD
 	 * Gets more information about the banned user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelBanEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelBanEvent extends DataObject<EventSubChannelBanEventD
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelBanEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -97,6 +103,9 @@ export class EventSubChannelBanEvent extends DataObject<EventSubChannelBanEventD
 	 * Gets more information about the moderator.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelBanEvent#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 

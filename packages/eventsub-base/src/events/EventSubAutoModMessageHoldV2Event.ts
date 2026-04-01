@@ -2,9 +2,9 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external.js';
-import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason.js';
 import { EventSubAutoModMessageAutoMod } from './common/EventSubAutoModMessageAutoMod.js';
 import { EventSubAutoModMessageBlockedTerm } from './common/EventSubAutoModMessageBlockedTerm.js';
+import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason.js';
 import { type EventSubAutoModMessageHoldV2EventData } from './EventSubAutoModMessageHoldV2Event.external.js';
 
 /**
@@ -12,10 +12,10 @@ import { type EventSubAutoModMessageHoldV2EventData } from './EventSubAutoModMes
  */
 @rtfm<EventSubAutoModMessageHoldV2Event>('eventsub-base', 'EventSubAutoModMessageHoldV2Event', 'messageId')
 export class EventSubAutoModMessageHoldV2Event extends DataObject<EventSubAutoModMessageHoldV2EventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubAutoModMessageHoldV2EventData, client: ApiClient) {
+	constructor(data: EventSubAutoModMessageHoldV2EventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -45,6 +45,9 @@ export class EventSubAutoModMessageHoldV2Event extends DataObject<EventSubAutoMo
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageHoldV2Event#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -73,6 +76,9 @@ export class EventSubAutoModMessageHoldV2Event extends DataObject<EventSubAutoMo
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageHoldV2Event#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

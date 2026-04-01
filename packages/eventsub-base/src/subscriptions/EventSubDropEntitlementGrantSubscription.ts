@@ -1,7 +1,7 @@
 import type { HelixEventSubDropEntitlementGrantFilter, HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubDropEntitlementGrantEvent } from '../events/EventSubDropEntitlementGrantEvent.js';
 import { type EventSubDropEntitlementGrantEventData } from '../events/EventSubDropEntitlementGrantEvent.external.js';
+import { EventSubDropEntitlementGrantEvent } from '../events/EventSubDropEntitlementGrantEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -26,13 +26,17 @@ export class EventSubDropEntitlementGrantSubscription extends EventSubSubscripti
 	}
 
 	protected transformData(data: EventSubDropEntitlementGrantEventData): EventSubDropEntitlementGrantEvent {
-		return new EventSubDropEntitlementGrantEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubDropEntitlementGrantEvent(data, this._client._config.apiClient)
+			: new EventSubDropEntitlementGrantEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToDropEntitlementGrantEvents(
-			this._filter,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToDropEntitlementGrantEvents(
+					this._filter,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

@@ -94,9 +94,12 @@ export class EventSubChannelChatResubNotificationEvent extends EventSubChannelCh
 	 * Gets more information about the gifter, or `null` if they're anonymous or this is not a gift.
 	 */
 	async getGifter(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatResubNotificationEvent#getGifter is not supported in this context');
+		}
 		return await mapNullable(
 			this[rawDataSymbol].resub.gifter_user_id,
-			async id => await this._client.users.getUserById(id),
+			async id => await this._client!.users.getUserById(id),
 		);
 	}
 }

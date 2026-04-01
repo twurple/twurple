@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubChannelSuspiciousUserUpdateEventData } from './EventSubChannelSuspiciousUserUpdateEvent.external.js';
 import type { EventSubChannelSuspiciousUserLowTrustStatus } from './common/EventSubChannelSuspiciousUserLowTrustStatus.js';
+import { type EventSubChannelSuspiciousUserUpdateEventData } from './EventSubChannelSuspiciousUserUpdateEvent.external.js';
 
 /**
  * An EventSub event representing a suspicious user being updated in a channel.
@@ -13,10 +13,10 @@ import type { EventSubChannelSuspiciousUserLowTrustStatus } from './common/Event
 	'broadcasterId',
 )
 export class EventSubChannelSuspiciousUserUpdateEvent extends DataObject<EventSubChannelSuspiciousUserUpdateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelSuspiciousUserUpdateEventData, client: ApiClient) {
+	constructor(data: EventSubChannelSuspiciousUserUpdateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -46,6 +46,9 @@ export class EventSubChannelSuspiciousUserUpdateEvent extends DataObject<EventSu
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSuspiciousUserUpdateEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -74,6 +77,9 @@ export class EventSubChannelSuspiciousUserUpdateEvent extends DataObject<EventSu
 	 * Gets more information about the moderator.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSuspiciousUserUpdateEvent#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 
@@ -102,6 +108,9 @@ export class EventSubChannelSuspiciousUserUpdateEvent extends DataObject<EventSu
 	 * Gets more information about the user whose treatment was updated.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSuspiciousUserUpdateEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

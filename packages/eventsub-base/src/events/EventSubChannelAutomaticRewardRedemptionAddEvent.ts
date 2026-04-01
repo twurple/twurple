@@ -16,10 +16,10 @@ import {
 	'id',
 )
 export class EventSubChannelAutomaticRewardRedemptionAddEvent extends DataObject<EventSubChannelAutomaticRewardRedemptionAddEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelAutomaticRewardRedemptionAddEventData, client: ApiClient) {
+	constructor(data: EventSubChannelAutomaticRewardRedemptionAddEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -56,6 +56,11 @@ export class EventSubChannelAutomaticRewardRedemptionAddEvent extends DataObject
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelAutomaticRewardRedemptionAddEvent#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -84,6 +89,11 @@ export class EventSubChannelAutomaticRewardRedemptionAddEvent extends DataObject
 	 * Gets more information about the redeeming user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelAutomaticRewardRedemptionAddEvent#getUser is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

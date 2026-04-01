@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelGoalProgressEvent } from '../events/EventSubChannelGoalProgressEvent.js';
 import { type EventSubChannelGoalProgressEventData } from '../events/EventSubChannelGoalProgressEvent.external.js';
+import { EventSubChannelGoalProgressEvent } from '../events/EventSubChannelGoalProgressEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubChannelGoalProgressSubscription extends EventSubSubscriptio
 	}
 
 	protected transformData(data: EventSubChannelGoalProgressEventData): EventSubChannelGoalProgressEvent {
-		return new EventSubChannelGoalProgressEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelGoalProgressEvent(data, this._client._config.apiClient)
+			: new EventSubChannelGoalProgressEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelGoalProgressEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelGoalProgressEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

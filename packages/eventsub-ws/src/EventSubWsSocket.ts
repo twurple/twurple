@@ -75,6 +75,7 @@ export class EventSubWsSocket {
 					);
 					this._sessionId = (payload as EventSubWelcomePayload).session.id;
 					this._readyToSubscribe = true;
+					this._listener._notifySocketReady(this);
 					if (!this._reconnectInProgress) {
 						const subs = this._listener._getSubscriptionsForUser(this._userId);
 						if (!subs.length) {

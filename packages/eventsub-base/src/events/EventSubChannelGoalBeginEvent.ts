@@ -9,10 +9,10 @@ import { type EventSubChannelGoalBeginEventData } from './EventSubChannelGoalBeg
  */
 @rtfm<EventSubChannelGoalBeginEvent>('eventsub-base', 'EventSubChannelGoalBeginEvent', 'broadcasterId')
 export class EventSubChannelGoalBeginEvent extends DataObject<EventSubChannelGoalBeginEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelGoalBeginEventData, client: ApiClient) {
+	constructor(data: EventSubChannelGoalBeginEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -49,6 +49,9 @@ export class EventSubChannelGoalBeginEvent extends DataObject<EventSubChannelGoa
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelGoalBeginEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

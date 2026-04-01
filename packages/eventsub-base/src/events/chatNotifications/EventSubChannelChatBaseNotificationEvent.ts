@@ -16,7 +16,7 @@ import {
 	'broadcasterId',
 )
 export abstract class EventSubChannelChatBaseNotificationEvent extends DataObject<EventSubChannelChatBaseNotificationEventData> {
-	/** @internal */ @Enumerable(false) protected readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) protected readonly _client?: ApiClient;
 
 	/**
 	 * The type of the notification.
@@ -24,7 +24,7 @@ export abstract class EventSubChannelChatBaseNotificationEvent extends DataObjec
 	abstract readonly type: EventSubChannelChatNotificationType;
 
 	/** @internal */
-	constructor(data: EventSubChannelChatBaseNotificationEventData, client: ApiClient) {
+	constructor(data: EventSubChannelChatBaseNotificationEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -54,6 +54,9 @@ export abstract class EventSubChannelChatBaseNotificationEvent extends DataObjec
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatBaseNotificationEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -91,6 +94,9 @@ export abstract class EventSubChannelChatBaseNotificationEvent extends DataObjec
 	 * Gets more information about the chatter.
 	 */
 	async getChatter(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatBaseNotificationEvent#getChatter is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].chatter_user_id));
 	}
 

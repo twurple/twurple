@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelHypeTrainBeginEvent } from '../events/EventSubChannelHypeTrainBeginEvent.js';
 import { type EventSubChannelHypeTrainBeginEventData } from '../events/EventSubChannelHypeTrainBeginEvent.external.js';
+import { EventSubChannelHypeTrainBeginEvent } from '../events/EventSubChannelHypeTrainBeginEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubChannelHypeTrainBeginSubscription extends EventSubSubscript
 	}
 
 	protected transformData(data: EventSubChannelHypeTrainBeginEventData): EventSubChannelHypeTrainBeginEvent {
-		return new EventSubChannelHypeTrainBeginEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelHypeTrainBeginEvent(data, this._client._config.apiClient)
+			: new EventSubChannelHypeTrainBeginEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelHypeTrainBeginEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelHypeTrainBeginEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

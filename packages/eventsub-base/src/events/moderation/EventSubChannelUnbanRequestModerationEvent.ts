@@ -1,3 +1,4 @@
+import { type ApiClient, type HelixUser } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent.js';
 import {
@@ -5,7 +6,6 @@ import {
 	type EventSubChannelModerationAction,
 	type EventSubChannelUnbanRequestModerationEventData,
 } from './EventSubChannelModerationEvent.external.js';
-import { type ApiClient, type HelixUser } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator resolving an unban request on a channel.
@@ -27,7 +27,7 @@ export class EventSubChannelUnbanRequestModerationEvent extends EventSubChannelB
 	constructor(
 		data: EventSubChannelBaseModerationEventData,
 		action: Extract<EventSubChannelModerationAction, 'approve_unban_request' | 'deny_unban_request'>,
-		client: ApiClient,
+		client?: ApiClient,
 	) {
 		super(data, client);
 		this.moderationAction = action;
@@ -65,6 +65,9 @@ export class EventSubChannelUnbanRequestModerationEvent extends EventSubChannelB
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUnbanRequestModerationEvent#getUser is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].unban_request.user_id);
 	}
 

@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelChatMessageDeleteEvent } from '../events/EventSubChannelChatMessageDeleteEvent.js';
 import { type EventSubChannelChatMessageDeleteEventData } from '../events/EventSubChannelChatMessageDeleteEvent.external.js';
+import { EventSubChannelChatMessageDeleteEvent } from '../events/EventSubChannelChatMessageDeleteEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -28,17 +28,21 @@ export class EventSubChannelChatMessageDeleteSubscription extends EventSubSubscr
 	}
 
 	protected transformData(data: EventSubChannelChatMessageDeleteEventData): EventSubChannelChatMessageDeleteEvent {
-		return new EventSubChannelChatMessageDeleteEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelChatMessageDeleteEvent(data, this._client._config.apiClient)
+			: new EventSubChannelChatMessageDeleteEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._userId,
-			async ctx =>
-				await ctx.eventSub.subscribeToChannelChatMessageDeleteEvents(
-					this._broadcasterId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._userId,
+					async ctx =>
+						await ctx.eventSub.subscribeToChannelChatMessageDeleteEvents(
+							this._broadcasterId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

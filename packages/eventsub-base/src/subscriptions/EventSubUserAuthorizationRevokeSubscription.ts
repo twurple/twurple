@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubUserAuthorizationRevokeEvent } from '../events/EventSubUserAuthorizationRevokeEvent.js';
 import { type EventSubUserAuthorizationRevokeEventData } from '../events/EventSubUserAuthorizationRevokeEvent.external.js';
+import { EventSubUserAuthorizationRevokeEvent } from '../events/EventSubUserAuthorizationRevokeEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -24,13 +24,17 @@ export class EventSubUserAuthorizationRevokeSubscription extends EventSubSubscri
 	}
 
 	protected transformData(data: EventSubUserAuthorizationRevokeEventData): EventSubUserAuthorizationRevokeEvent {
-		return new EventSubUserAuthorizationRevokeEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubUserAuthorizationRevokeEvent(data, this._client._config.apiClient)
+			: new EventSubUserAuthorizationRevokeEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToUserAuthorizationRevokeEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToUserAuthorizationRevokeEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

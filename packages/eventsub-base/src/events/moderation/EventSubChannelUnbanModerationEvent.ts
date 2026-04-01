@@ -37,6 +37,9 @@ export class EventSubChannelUnbanModerationEvent extends EventSubChannelBaseMode
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUnbanModerationEvent#getUser is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].unban.user_id);
 	}
 }

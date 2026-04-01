@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubStreamOfflineEvent } from '../events/EventSubStreamOfflineEvent.js';
 import { type EventSubStreamOfflineEventData } from '../events/EventSubStreamOfflineEvent.external.js';
+import { EventSubStreamOfflineEvent } from '../events/EventSubStreamOfflineEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubStreamOfflineSubscription extends EventSubSubscription<Even
 	}
 
 	protected transformData(data: EventSubStreamOfflineEventData): EventSubStreamOfflineEvent {
-		return new EventSubStreamOfflineEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubStreamOfflineEvent(data, this._client._config.apiClient)
+			: new EventSubStreamOfflineEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToStreamOfflineEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToStreamOfflineEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

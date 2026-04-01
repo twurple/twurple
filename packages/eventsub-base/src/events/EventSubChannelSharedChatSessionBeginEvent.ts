@@ -1,8 +1,8 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient, HelixUser } from '@twurple/api';
-import { type EventSubChannelSharedChatSessionBeginEventData } from './EventSubChannelSharedChatSessionBeginEvent.external.js';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelSharedChatSessionParticipant } from './common/EventSubChannelSharedChatSessionParticipant.js';
+import { type EventSubChannelSharedChatSessionBeginEventData } from './EventSubChannelSharedChatSessionBeginEvent.external.js';
 
 /**
  * An EventSub event representing the start of a shared chat session in a channel.
@@ -13,10 +13,10 @@ import { EventSubChannelSharedChatSessionParticipant } from './common/EventSubCh
 	'broadcasterId',
 )
 export class EventSubChannelSharedChatSessionBeginEvent extends DataObject<EventSubChannelSharedChatSessionBeginEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelSharedChatSessionBeginEventData, client: ApiClient) {
+	constructor(data: EventSubChannelSharedChatSessionBeginEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -53,6 +53,11 @@ export class EventSubChannelSharedChatSessionBeginEvent extends DataObject<Event
 	 * Gets information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelSharedChatSessionBeginEvent#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -81,6 +86,11 @@ export class EventSubChannelSharedChatSessionBeginEvent extends DataObject<Event
 	 * Gets information about the broadcaster.
 	 */
 	async getHostBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelSharedChatSessionBeginEvent#getHostBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(
 			await this._client.users.getUserById(this[rawDataSymbol].host_broadcaster_user_id),
 		);

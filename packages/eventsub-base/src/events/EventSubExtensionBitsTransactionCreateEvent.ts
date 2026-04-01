@@ -8,10 +8,10 @@ import { type EventSubExtensionBitsTransactionCreateEventData } from './EventSub
  */
 @rtfm<EventSubExtensionBitsTransactionCreateEvent>('eventsub-base', 'EventSubExtensionBitsTransactionCreateEvent', 'id')
 export class EventSubExtensionBitsTransactionCreateEvent extends DataObject<EventSubExtensionBitsTransactionCreateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubExtensionBitsTransactionCreateEventData, client: ApiClient) {
+	constructor(data: EventSubExtensionBitsTransactionCreateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -55,6 +55,9 @@ export class EventSubExtensionBitsTransactionCreateEvent extends DataObject<Even
 	 * Gets more information about the subscribing user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubExtensionBitsTransactionCreateEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
@@ -83,6 +86,11 @@ export class EventSubExtensionBitsTransactionCreateEvent extends DataObject<Even
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubExtensionBitsTransactionCreateEvent#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

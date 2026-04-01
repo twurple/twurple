@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelChatClearUserMessagesEvent } from '../events/EventSubChannelChatClearUserMessagesEvent.js';
 import { type EventSubChannelChatClearUserMessagesEventData } from '../events/EventSubChannelChatClearUserMessagesEvent.external.js';
+import { EventSubChannelChatClearUserMessagesEvent } from '../events/EventSubChannelChatClearUserMessagesEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -30,17 +30,21 @@ export class EventSubChannelChatClearUserMessagesSubscription extends EventSubSu
 	protected transformData(
 		data: EventSubChannelChatClearUserMessagesEventData,
 	): EventSubChannelChatClearUserMessagesEvent {
-		return new EventSubChannelChatClearUserMessagesEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelChatClearUserMessagesEvent(data, this._client._config.apiClient)
+			: new EventSubChannelChatClearUserMessagesEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._userId,
-			async ctx =>
-				await ctx.eventSub.subscribeToChannelChatClearUserMessagesEvents(
-					this._broadcasterId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._userId,
+					async ctx =>
+						await ctx.eventSub.subscribeToChannelChatClearUserMessagesEvents(
+							this._broadcasterId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

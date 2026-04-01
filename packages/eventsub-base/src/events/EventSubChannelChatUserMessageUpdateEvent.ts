@@ -14,10 +14,10 @@ import { type EventSubChannelChatUserMessageUpdateEventData } from './EventSubCh
 	'messageId',
 )
 export class EventSubChannelChatUserMessageUpdateEvent extends DataObject<EventSubChannelChatUserMessageUpdateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelChatUserMessageUpdateEventData, client: ApiClient) {
+	constructor(data: EventSubChannelChatUserMessageUpdateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -47,6 +47,11 @@ export class EventSubChannelChatUserMessageUpdateEvent extends DataObject<EventS
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelChatUserMessageUpdateEvent#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -75,6 +80,9 @@ export class EventSubChannelChatUserMessageUpdateEvent extends DataObject<EventS
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatUserMessageUpdateEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

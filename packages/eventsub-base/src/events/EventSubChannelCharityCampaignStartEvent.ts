@@ -9,10 +9,10 @@ import { type EventSubChannelCharityCampaignStartEventData } from './EventSubCha
  */
 @rtfm<EventSubChannelCharityCampaignStartEvent>('eventsub-base', 'EventSubChannelCharityCampaignStartEvent', 'id')
 export class EventSubChannelCharityCampaignStartEvent extends DataObject<EventSubChannelCharityCampaignStartEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelCharityCampaignStartEventData, client: ApiClient) {
+	constructor(data: EventSubChannelCharityCampaignStartEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -49,6 +49,9 @@ export class EventSubChannelCharityCampaignStartEvent extends DataObject<EventSu
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelCharityCampaignStartEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 

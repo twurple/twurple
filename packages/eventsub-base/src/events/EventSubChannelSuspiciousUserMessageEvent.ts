@@ -4,9 +4,9 @@ import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurpl
 import type { EventSubChannelSuspiciousUserLowTrustStatus } from './common/EventSubChannelSuspiciousUserLowTrustStatus.js';
 import {
 	type EventSubChannelBanEvasionEvaluation,
-	type EventSubChannelSuspiciousUserType,
 	type EventSubChannelSuspiciousUserMessageEventData,
 	type EventSubChannelSuspiciousUserMessagePart,
+	type EventSubChannelSuspiciousUserType,
 } from './EventSubChannelSuspiciousUserMessageEvent.external.js';
 
 /**
@@ -18,10 +18,10 @@ import {
 	'broadcasterId',
 )
 export class EventSubChannelSuspiciousUserMessageEvent extends DataObject<EventSubChannelSuspiciousUserMessageEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelSuspiciousUserMessageEventData, client: ApiClient) {
+	constructor(data: EventSubChannelSuspiciousUserMessageEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -51,6 +51,11 @@ export class EventSubChannelSuspiciousUserMessageEvent extends DataObject<EventS
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelSuspiciousUserMessageEvent#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -79,6 +84,9 @@ export class EventSubChannelSuspiciousUserMessageEvent extends DataObject<EventS
 	 * Gets more information about the user whose treatment was updated.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSuspiciousUserMessageEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

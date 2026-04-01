@@ -41,6 +41,9 @@ export class EventSubChannelSharedChatDeleteModerationEvent extends EventSubChan
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSharedChatDeleteModerationEvent#getUser is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].shared_chat_delete.user_id);
 	}
 

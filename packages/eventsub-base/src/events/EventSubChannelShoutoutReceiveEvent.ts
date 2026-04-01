@@ -12,10 +12,10 @@ import { type EventSubChannelShoutoutReceiveEventData } from './EventSubChannelS
 	'shoutingOutBroadcasterId',
 )
 export class EventSubChannelShoutoutReceiveEvent extends DataObject<EventSubChannelShoutoutReceiveEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelShoutoutReceiveEventData, client: ApiClient) {
+	constructor(data: EventSubChannelShoutoutReceiveEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -45,6 +45,9 @@ export class EventSubChannelShoutoutReceiveEvent extends DataObject<EventSubChan
 	 * Gets more information about the broadcaster who received the shoutout.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelShoutoutReceiveEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -73,6 +76,11 @@ export class EventSubChannelShoutoutReceiveEvent extends DataObject<EventSubChan
 	 * Gets more information about the broadcaster who sent the shoutout.
 	 */
 	async getShoutingOutBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelShoutoutReceiveEvent#getShoutingOutBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(
 			await this._client.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id),
 		);

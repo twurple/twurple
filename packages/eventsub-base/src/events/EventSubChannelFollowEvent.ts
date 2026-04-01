@@ -8,10 +8,10 @@ import { type EventSubChannelFollowEventData } from './EventSubChannelFollowEven
  */
 @rtfm<EventSubChannelFollowEvent>('eventsub-base', 'EventSubChannelFollowEvent', 'userId')
 export class EventSubChannelFollowEvent extends DataObject<EventSubChannelFollowEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelFollowEventData, client: ApiClient) {
+	constructor(data: EventSubChannelFollowEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelFollowEvent extends DataObject<EventSubChannelFollow
 	 * Gets more information about the following user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelFollowEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelFollowEvent extends DataObject<EventSubChannelFollow
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelFollowEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

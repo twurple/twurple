@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelModeratorEvent } from '../events/EventSubChannelModeratorEvent.js';
 import { type EventSubChannelModeratorEventData } from '../events/EventSubChannelModeratorEvent.external.js';
+import { EventSubChannelModeratorEvent } from '../events/EventSubChannelModeratorEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubChannelModeratorAddSubscription extends EventSubSubscriptio
 	}
 
 	protected transformData(data: EventSubChannelModeratorEventData): EventSubChannelModeratorEvent {
-		return new EventSubChannelModeratorEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelModeratorEvent(data, this._client._config.apiClient)
+			: new EventSubChannelModeratorEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelModeratorAddEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelModeratorAddEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

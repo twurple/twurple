@@ -11,10 +11,10 @@ import {
  */
 @rtfm<EventSubStreamOnlineEvent>('eventsub-base', 'EventSubStreamOnlineEvent', 'broadcasterId')
 export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubStreamOnlineEventData, client: ApiClient) {
+	constructor(data: EventSubStreamOnlineEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -44,6 +44,9 @@ export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEv
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubStreamOnlineEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -53,6 +56,9 @@ export class EventSubStreamOnlineEvent extends DataObject<EventSubStreamOnlineEv
 	 * This may sometimes return null, as the Helix API might be behind due to caching on Twitch's side.
 	 */
 	async getStream(): Promise<HelixStream | null> {
+		if (!this._client) {
+			throw new Error('EventSubStreamOnlineEvent#getStream is not supported in this context');
+		}
 		return await this._client.streams.getStreamByUserId(this[rawDataSymbol].broadcaster_user_id);
 	}
 

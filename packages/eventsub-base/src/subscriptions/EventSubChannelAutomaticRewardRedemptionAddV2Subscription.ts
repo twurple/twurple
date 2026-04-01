@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
+import { type EventSubChannelAutomaticRewardRedemptionAddV2EventData } from '../events/EventSubChannelAutomaticRewardRedemptionAddV2Event.external.js';
+import { EventSubChannelAutomaticRewardRedemptionAddV2Event } from '../events/EventSubChannelAutomaticRewardRedemptionAddV2Event.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
-import { EventSubChannelAutomaticRewardRedemptionAddV2Event } from '../events/EventSubChannelAutomaticRewardRedemptionAddV2Event.js';
-import { type EventSubChannelAutomaticRewardRedemptionAddV2EventData } from '../events/EventSubChannelAutomaticRewardRedemptionAddV2Event.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -29,13 +29,17 @@ export class EventSubChannelAutomaticRewardRedemptionAddV2Subscription extends E
 	protected transformData(
 		data: EventSubChannelAutomaticRewardRedemptionAddV2EventData,
 	): EventSubChannelAutomaticRewardRedemptionAddV2Event {
-		return new EventSubChannelAutomaticRewardRedemptionAddV2Event(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelAutomaticRewardRedemptionAddV2Event(data, this._client._config.apiClient)
+			: new EventSubChannelAutomaticRewardRedemptionAddV2Event(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelAutomaticRewardRedemptionAddV2Events(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelAutomaticRewardRedemptionAddV2Events(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

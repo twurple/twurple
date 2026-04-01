@@ -41,6 +41,11 @@ export class EventSubChannelChatSharedChatRaidNotificationEvent extends EventSub
 	 * Gets more information about the user that raided the channel.
 	 */
 	async getRaider(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelChatSharedChatRaidNotificationEvent#getRaider is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(
 			await this._client.users.getUserById(this[rawDataSymbol].shared_chat_raid.user_id),
 		);

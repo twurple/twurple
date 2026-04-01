@@ -9,10 +9,10 @@ import { type EventSubAutoModSettingsUpdateEventData } from './EventSubAutoModSe
  */
 @rtfm<EventSubAutoModSettingsUpdateEvent>('eventsub-base', 'EventSubAutoModSettingsUpdateEvent', 'broadcasterId')
 export class EventSubAutoModSettingsUpdateEvent extends DataObject<EventSubAutoModSettingsUpdateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubAutoModSettingsUpdateEventData, client: ApiClient) {
+	constructor(data: EventSubAutoModSettingsUpdateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -42,6 +42,9 @@ export class EventSubAutoModSettingsUpdateEvent extends DataObject<EventSubAutoM
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModSettingsUpdateEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -70,6 +73,9 @@ export class EventSubAutoModSettingsUpdateEvent extends DataObject<EventSubAutoM
 	 * Gets more information about the moderator.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModSettingsUpdateEvent#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 

@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelShieldModeEndEvent } from '../events/EventSubChannelShieldModeEndEvent.js';
 import type { EventSubChannelShieldModeEndEventData } from '../events/EventSubChannelShieldModeEndEvent.external.js';
+import { EventSubChannelShieldModeEndEvent } from '../events/EventSubChannelShieldModeEndEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -28,17 +28,21 @@ export class EventSubChannelShieldModeEndSubscription extends EventSubSubscripti
 	}
 
 	protected transformData(data: EventSubChannelShieldModeEndEventData): EventSubChannelShieldModeEndEvent {
-		return new EventSubChannelShieldModeEndEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelShieldModeEndEvent(data, this._client._config.apiClient)
+			: new EventSubChannelShieldModeEndEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._moderatorId,
-			async ctx =>
-				await ctx.eventSub.subscribeToChannelShieldModeEndEvents(
-					this._userId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._moderatorId,
+					async ctx =>
+						await ctx.eventSub.subscribeToChannelShieldModeEndEvents(
+							this._userId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

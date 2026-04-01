@@ -99,6 +99,7 @@ export { HelixEventSubSubscription } from './endpoints/eventSub/HelixEventSubSub
 export { HelixPaginatedEventSubSubscriptionsRequest } from './endpoints/eventSub/HelixPaginatedEventSubSubscriptionsRequest.js';
 export type {
 	HelixEventSubTransportData,
+	HelixEventSubSubscriptionData,
 	HelixEventSubSubscriptionStatus,
 } from './interfaces/endpoints/eventSub.external.js';
 export type {

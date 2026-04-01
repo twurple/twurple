@@ -5,7 +5,8 @@ import {
 	type ApiClient,
 	extractUserId,
 	type HelixEventSubDropEntitlementGrantFilter,
-	type HelixEventSubSubscription,
+	HelixEventSubSubscription,
+	type HelixEventSubSubscriptionData,
 	type HelixEventSubSubscriptionStatus,
 	type HelixEventSubTransportOptions,
 	type UserIdResolvable,
@@ -13,14 +14,14 @@ import {
 import { rtfm } from '@twurple/common';
 import { type EventSubChannelChatNotificationEvent } from './events/chatNotifications/EventSubChannelChatNotificationEvent.js';
 import { type EventSubAutoModMessageHoldEvent } from './events/EventSubAutoModMessageHoldEvent.js';
-import { type EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent.js';
 import { type EventSubAutoModMessageHoldV2Event } from './events/EventSubAutoModMessageHoldV2Event.js';
+import { type EventSubAutoModMessageUpdateEvent } from './events/EventSubAutoModMessageUpdateEvent.js';
 import { type EventSubAutoModMessageUpdateV2Event } from './events/EventSubAutoModMessageUpdateV2Event.js';
 import { type EventSubAutoModSettingsUpdateEvent } from './events/EventSubAutoModSettingsUpdateEvent.js';
 import { type EventSubAutoModTermsUpdateEvent } from './events/EventSubAutoModTermsUpdateEvent.js';
-import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent.js';
-import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent.js';
 import type { EventSubChannelAdBreakBeginEvent } from './events/EventSubChannelAdBreakBeginEvent.js';
+import type { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent.js';
+import { type EventSubChannelAutomaticRewardRedemptionAddV2Event } from './events/EventSubChannelAutomaticRewardRedemptionAddV2Event.js';
 import type { EventSubChannelBanEvent } from './events/EventSubChannelBanEvent.js';
 import { type EventSubChannelBitsUseEvent } from './events/EventSubChannelBitsUseEvent.js';
 import type { EventSubChannelCharityCampaignProgressEvent } from './events/EventSubChannelCharityCampaignProgressEvent.js';
@@ -32,18 +33,19 @@ import type { EventSubChannelChatClearUserMessagesEvent } from './events/EventSu
 import type { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent.js';
 import { type EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent.js';
 import type { EventSubChannelChatSettingsUpdateEvent } from './events/EventSubChannelChatSettingsUpdateEvent.js';
+import { type EventSubChannelChatUserMessageHoldEvent } from './events/EventSubChannelChatUserMessageHoldEvent.js';
+import { type EventSubChannelChatUserMessageUpdateEvent } from './events/EventSubChannelChatUserMessageUpdateEvent.js';
 import type { EventSubChannelCheerEvent } from './events/EventSubChannelCheerEvent.js';
 import type { EventSubChannelFollowEvent } from './events/EventSubChannelFollowEvent.js';
 import type { EventSubChannelGoalBeginEvent } from './events/EventSubChannelGoalBeginEvent.js';
 import type { EventSubChannelGoalEndEvent } from './events/EventSubChannelGoalEndEvent.js';
 import type { EventSubChannelGoalProgressEvent } from './events/EventSubChannelGoalProgressEvent.js';
 import type { EventSubChannelHypeTrainBeginEvent } from './events/EventSubChannelHypeTrainBeginEvent.js';
-import type { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent.js';
-import type { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent.js';
 import { type EventSubChannelHypeTrainBeginV2Event } from './events/EventSubChannelHypeTrainBeginV2Event.js';
-import { type EventSubChannelHypeTrainProgressV2Event } from './events/EventSubChannelHypeTrainProgressV2Event.js';
+import type { EventSubChannelHypeTrainEndEvent } from './events/EventSubChannelHypeTrainEndEvent.js';
 import { type EventSubChannelHypeTrainEndV2Event } from './events/EventSubChannelHypeTrainEndV2Event.js';
-import { type EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent.js';
+import type { EventSubChannelHypeTrainProgressEvent } from './events/EventSubChannelHypeTrainProgressEvent.js';
+import { type EventSubChannelHypeTrainProgressV2Event } from './events/EventSubChannelHypeTrainProgressV2Event.js';
 import type { EventSubChannelModeratorEvent } from './events/EventSubChannelModeratorEvent.js';
 import type { EventSubChannelPollBeginEvent } from './events/EventSubChannelPollBeginEvent.js';
 import type { EventSubChannelPollEndEvent } from './events/EventSubChannelPollEndEvent.js';
@@ -56,11 +58,9 @@ import type { EventSubChannelRaidEvent } from './events/EventSubChannelRaidEvent
 import type { EventSubChannelRedemptionAddEvent } from './events/EventSubChannelRedemptionAddEvent.js';
 import type { EventSubChannelRedemptionUpdateEvent } from './events/EventSubChannelRedemptionUpdateEvent.js';
 import type { EventSubChannelRewardEvent } from './events/EventSubChannelRewardEvent.js';
-import type { EventSubChannelAutomaticRewardRedemptionAddEvent } from './events/EventSubChannelAutomaticRewardRedemptionAddEvent.js';
-import { type EventSubChannelAutomaticRewardRedemptionAddV2Event } from './events/EventSubChannelAutomaticRewardRedemptionAddV2Event.js';
 import { type EventSubChannelSharedChatSessionBeginEvent } from './events/EventSubChannelSharedChatSessionBeginEvent.js';
-import { type EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent.js';
 import { type EventSubChannelSharedChatSessionEndEvent } from './events/EventSubChannelSharedChatSessionEndEvent.js';
+import { type EventSubChannelSharedChatSessionUpdateEvent } from './events/EventSubChannelSharedChatSessionUpdateEvent.js';
 import type { EventSubChannelShieldModeBeginEvent } from './events/EventSubChannelShieldModeBeginEvent.js';
 import type { EventSubChannelShieldModeEndEvent } from './events/EventSubChannelShieldModeEndEvent.js';
 import type { EventSubChannelShoutoutCreateEvent } from './events/EventSubChannelShoutoutCreateEvent.js';
@@ -69,8 +69,8 @@ import type { EventSubChannelSubscriptionEndEvent } from './events/EventSubChann
 import type { EventSubChannelSubscriptionEvent } from './events/EventSubChannelSubscriptionEvent.js';
 import type { EventSubChannelSubscriptionGiftEvent } from './events/EventSubChannelSubscriptionGiftEvent.js';
 import type { EventSubChannelSubscriptionMessageEvent } from './events/EventSubChannelSubscriptionMessageEvent.js';
-import type { EventSubChannelSuspiciousUserUpdateEvent } from './events/EventSubChannelSuspiciousUserUpdateEvent.js';
 import type { EventSubChannelSuspiciousUserMessageEvent } from './events/EventSubChannelSuspiciousUserMessageEvent.js';
+import type { EventSubChannelSuspiciousUserUpdateEvent } from './events/EventSubChannelSuspiciousUserUpdateEvent.js';
 import type { EventSubChannelUnbanEvent } from './events/EventSubChannelUnbanEvent.js';
 import { type EventSubChannelUnbanRequestCreateEvent } from './events/EventSubChannelUnbanRequestCreateEvent.js';
 import { type EventSubChannelUnbanRequestResolveEvent } from './events/EventSubChannelUnbanRequestResolveEvent.js';
@@ -86,15 +86,16 @@ import type { EventSubUserAuthorizationGrantEvent } from './events/EventSubUserA
 import type { EventSubUserAuthorizationRevokeEvent } from './events/EventSubUserAuthorizationRevokeEvent.js';
 import type { EventSubUserUpdateEvent } from './events/EventSubUserUpdateEvent.js';
 import { type EventSubUserWhisperMessageEvent } from './events/EventSubUserWhisperMessageEvent.js';
+import { type EventSubChannelModerationEvent } from './events/moderation/EventSubChannelModerationEvent.js';
 import { EventSubAutoModMessageHoldSubscription } from './subscriptions/EventSubAutoModMessageHoldSubscription.js';
-import { EventSubAutoModMessageUpdateSubscription } from './subscriptions/EventSubAutoModMessageUpdateSubscription.js';
 import { EventSubAutoModMessageHoldV2Subscription } from './subscriptions/EventSubAutoModMessageHoldV2Subscription.js';
+import { EventSubAutoModMessageUpdateSubscription } from './subscriptions/EventSubAutoModMessageUpdateSubscription.js';
 import { EventSubAutoModMessageUpdateV2Subscription } from './subscriptions/EventSubAutoModMessageUpdateV2Subscription.js';
 import { EventSubAutoModSettingsUpdateSubscription } from './subscriptions/EventSubAutoModSettingsUpdateSubscription.js';
 import { EventSubAutoModTermsUpdateSubscription } from './subscriptions/EventSubAutoModTermsUpdateSubscription.js';
-import { EventSubChannelChatUserMessageHoldSubscription } from './subscriptions/EventSubChannelChatUserMessageHoldSubscription.js';
-import { EventSubChannelChatUserMessageUpdateSubscription } from './subscriptions/EventSubChannelChatUserMessageUpdateSubscription.js';
 import { EventSubChannelAdBreakBeginSubscription } from './subscriptions/EventSubChannelAdBreakBeginSubscription.js';
+import { EventSubChannelAutomaticRewardRedemptionAddSubscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddSubscription.js';
+import { EventSubChannelAutomaticRewardRedemptionAddV2Subscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddV2Subscription.js';
 import { EventSubChannelBanSubscription } from './subscriptions/EventSubChannelBanSubscription.js';
 import { EventSubChannelBitsUseSubscription } from './subscriptions/EventSubChannelBitsUseSubscription.js';
 import { EventSubChannelCharityCampaignProgressSubscription } from './subscriptions/EventSubChannelCharityCampaignProgressSubscription.js';
@@ -107,17 +108,19 @@ import { EventSubChannelChatMessageDeleteSubscription } from './subscriptions/Ev
 import { EventSubChannelChatMessageSubscription } from './subscriptions/EventSubChannelChatMessageSubscription.js';
 import { EventSubChannelChatNotificationSubscription } from './subscriptions/EventSubChannelChatNotificationSubscription.js';
 import { EventSubChannelChatSettingsUpdateSubscription } from './subscriptions/EventSubChannelChatSettingsUpdateSubscription.js';
+import { EventSubChannelChatUserMessageHoldSubscription } from './subscriptions/EventSubChannelChatUserMessageHoldSubscription.js';
+import { EventSubChannelChatUserMessageUpdateSubscription } from './subscriptions/EventSubChannelChatUserMessageUpdateSubscription.js';
 import { EventSubChannelCheerSubscription } from './subscriptions/EventSubChannelCheerSubscription.js';
 import { EventSubChannelFollowSubscription } from './subscriptions/EventSubChannelFollowSubscription.js';
 import { EventSubChannelGoalBeginSubscription } from './subscriptions/EventSubChannelGoalBeginSubscription.js';
 import { EventSubChannelGoalEndSubscription } from './subscriptions/EventSubChannelGoalEndSubscription.js';
 import { EventSubChannelGoalProgressSubscription } from './subscriptions/EventSubChannelGoalProgressSubscription.js';
 import { EventSubChannelHypeTrainBeginSubscription } from './subscriptions/EventSubChannelHypeTrainBeginSubscription.js';
-import { EventSubChannelHypeTrainEndSubscription } from './subscriptions/EventSubChannelHypeTrainEndSubscription.js';
-import { EventSubChannelHypeTrainProgressSubscription } from './subscriptions/EventSubChannelHypeTrainProgressSubscription.js';
 import { EventSubChannelHypeTrainBeginV2Subscription } from './subscriptions/EventSubChannelHypeTrainBeginV2Subscription.js';
-import { EventSubChannelHypeTrainProgressV2Subscription } from './subscriptions/EventSubChannelHypeTrainProgressV2Subscription.js';
+import { EventSubChannelHypeTrainEndSubscription } from './subscriptions/EventSubChannelHypeTrainEndSubscription.js';
 import { EventSubChannelHypeTrainEndV2Subscription } from './subscriptions/EventSubChannelHypeTrainEndV2Subscription.js';
+import { EventSubChannelHypeTrainProgressSubscription } from './subscriptions/EventSubChannelHypeTrainProgressSubscription.js';
+import { EventSubChannelHypeTrainProgressV2Subscription } from './subscriptions/EventSubChannelHypeTrainProgressV2Subscription.js';
 import { EventSubChannelModerateSubscription } from './subscriptions/EventSubChannelModerateSubscription.js';
 import { EventSubChannelModeratorAddSubscription } from './subscriptions/EventSubChannelModeratorAddSubscription.js';
 import { EventSubChannelModeratorRemoveSubscription } from './subscriptions/EventSubChannelModeratorRemoveSubscription.js';
@@ -134,11 +137,9 @@ import { EventSubChannelRedemptionUpdateSubscription } from './subscriptions/Eve
 import { EventSubChannelRewardAddSubscription } from './subscriptions/EventSubChannelRewardAddSubscription.js';
 import { EventSubChannelRewardRemoveSubscription } from './subscriptions/EventSubChannelRewardRemoveSubscription.js';
 import { EventSubChannelRewardUpdateSubscription } from './subscriptions/EventSubChannelRewardUpdateSubscription.js';
-import { EventSubChannelAutomaticRewardRedemptionAddSubscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddSubscription.js';
-import { EventSubChannelAutomaticRewardRedemptionAddV2Subscription } from './subscriptions/EventSubChannelAutomaticRewardRedemptionAddV2Subscription.js';
 import { EventSubChannelSharedChatSessionBeginSubscription } from './subscriptions/EventSubChannelSharedChatSessionBeginSubscription.js';
-import { EventSubChannelSharedChatSessionUpdateSubscription } from './subscriptions/EventSubChannelSharedChatSessionUpdateSubscription.js';
 import { EventSubChannelSharedChatSessionEndSubscription } from './subscriptions/EventSubChannelSharedChatSessionEndSubscription.js';
+import { EventSubChannelSharedChatSessionUpdateSubscription } from './subscriptions/EventSubChannelSharedChatSessionUpdateSubscription.js';
 import { EventSubChannelShieldModeBeginSubscription } from './subscriptions/EventSubChannelShieldModeBeginSubscription.js';
 import { EventSubChannelShieldModeEndSubscription } from './subscriptions/EventSubChannelShieldModeEndSubscription.js';
 import { EventSubChannelShoutoutCreateSubscription } from './subscriptions/EventSubChannelShoutoutCreateSubscription.js';
@@ -147,8 +148,8 @@ import { EventSubChannelSubscriptionEndSubscription } from './subscriptions/Even
 import { EventSubChannelSubscriptionGiftSubscription } from './subscriptions/EventSubChannelSubscriptionGiftSubscription.js';
 import { EventSubChannelSubscriptionMessageSubscription } from './subscriptions/EventSubChannelSubscriptionMessageSubscription.js';
 import { EventSubChannelSubscriptionSubscription } from './subscriptions/EventSubChannelSubscriptionSubscription.js';
-import { EventSubChannelSuspiciousUserUpdateSubscription } from './subscriptions/EventSubChannelSuspiciousUserUpdateSubscription.js';
 import { EventSubChannelSuspiciousUserMessageSubscription } from './subscriptions/EventSubChannelSuspiciousUserMessageSubscription.js';
+import { EventSubChannelSuspiciousUserUpdateSubscription } from './subscriptions/EventSubChannelSuspiciousUserUpdateSubscription.js';
 import { EventSubChannelUnbanRequestCreateSubscription } from './subscriptions/EventSubChannelUnbanRequestCreateSubscription.js';
 import { EventSubChannelUnbanRequestResolveSubscription } from './subscriptions/EventSubChannelUnbanRequestResolveSubscription.js';
 import { EventSubChannelUnbanSubscription } from './subscriptions/EventSubChannelUnbanSubscription.js';
@@ -161,28 +162,81 @@ import { EventSubDropEntitlementGrantSubscription } from './subscriptions/EventS
 import { EventSubExtensionBitsTransactionCreateSubscription } from './subscriptions/EventSubExtensionBitsTransactionCreateSubscription.js';
 import { EventSubStreamOfflineSubscription } from './subscriptions/EventSubStreamOfflineSubscription.js';
 import { EventSubStreamOnlineSubscription } from './subscriptions/EventSubStreamOnlineSubscription.js';
+import type { EventSubSubscription } from './subscriptions/EventSubSubscription.js';
 import { EventSubUserAuthorizationGrantSubscription } from './subscriptions/EventSubUserAuthorizationGrantSubscription.js';
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription.js';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription.js';
 import { EventSubUserWhisperMessageSubscription } from './subscriptions/EventSubUserWhisperMessageSubscription.js';
-import type { EventSubSubscription } from './subscriptions/EventSubSubscription.js';
 
 const numberRegex = /^\d+$/;
 
-/**
- * The base EventSub configuration.
- */
-export interface EventSubBaseConfig {
-	/**
-	 * The API client that will be used to subscribe to events.
-	 */
-	apiClient: ApiClient;
-
+/** @private */
+export interface EventSubBaseConfigBase {
 	/**
 	 * Options to pass to the logger.
 	 */
 	logger?: Partial<LoggerOptions>;
 }
+
+/**
+ * The base EventSub configuration for managed servers.
+ *
+ * @inheritDoc
+ */
+export interface EventSubBaseManagedConfig extends EventSubBaseConfigBase {
+	/**
+	 * Whether to automatically send a subscription request to Twitch
+	 * when a subscription is created or needs to be restarted. Defaults to `true`.
+	 *
+	 * You can listen to the `onSubscriptionActivate` and `onSubscriptionDeactivate` events to offload the management
+	 * of subscriptions to an external server
+	 * (for example, if this runs client side without access to the Twitch access tokens).
+	 * In that case, you should set this to `false`.
+	 *
+	 * As of now, unmanaged mode has only been tested with EventSub via WebSockets.
+	 *
+	 * @beta
+	 */
+	managed?: true;
+
+	/**
+	 * The API client that will be used to subscribe to events.
+	 */
+	apiClient: ApiClient;
+}
+
+/**
+ * The base EventSub configuration for unmanaged servers.
+ */
+export interface EventSubBaseUnmanagedConfig extends EventSubBaseConfigBase {
+	/**
+	 * Whether to automatically send a subscription request to Twitch
+	 * when a subscription is created or needs to be restarted. Defaults to `true`.
+	 *
+	 * You can listen to the `onSubscriptionActivate` and `onSubscriptionDeactivate` events to offload the management
+	 * of subscriptions to an external server
+	 * (for example, if this runs client side without access to the Twitch access tokens).
+	 * In that case, you should set this to `false`.
+	 *
+	 * As of now, unmanaged mode has only been tested with EventSub via WebSockets.
+	 *
+	 * @beta
+	 */
+	managed: false;
+
+	/**
+	 * The client ID of your Twitch application.
+	 *
+	 * Is only required if you want to subscribe to topics that refer directly to your application,
+	 * e.g. authorization or extension related topics.
+	 */
+	clientId?: string;
+}
+
+/**
+ * The base EventSub configuration.
+ */
+export type EventSubBaseConfig = EventSubBaseManagedConfig | EventSubBaseUnmanagedConfig;
 
 /**
  * @private
@@ -195,7 +249,7 @@ export abstract class EventSubBase extends EventEmitter {
 	@Enumerable(false) protected _twitchSubscriptions = new Map<string, HelixEventSubSubscription>();
 	@Enumerable(false) private readonly _seenEventIds = new Set<string>();
 
-	/** @private */ @Enumerable(false) readonly _apiClient: ApiClient;
+	/** @private */ @Enumerable(false) readonly _config: EventSubBaseConfig;
 	/** @private */ readonly _logger: Logger;
 
 	/**
@@ -209,7 +263,36 @@ export abstract class EventSubBase extends EventEmitter {
 		this.registerEvent<[subscription: EventSubSubscription, status: HelixEventSubSubscriptionStatus]>();
 
 	/**
+	 * Fires when a subscription is activated, i.e. before a subscription is created on Twitch.
+	 *
+	 * Can be used in unmanaged mode to create the subscription externally.
+	 *
+	 * @param subscription The subscription that was activated.
+	 * @param setData A callback to set the subscription data returned from Twitch.
+	 */
+	readonly onSubscriptionActivate =
+		this.registerEvent<
+			[
+				subscription: EventSubSubscription,
+				setData: (data: HelixEventSubSubscription | HelixEventSubSubscriptionData) => void,
+			]
+		>();
+
+	/**
+	 * Fires when a subscription is deactivated, i.e. before a subscription is deleted on Twiitch.
+	 *
+	 * Can be used in unmanaged mode to delete the subscription externally.
+	 *
+	 * @param subscription The subscription that was activated.
+	 * @param clearData A callback to clear the Twitch subscription data.
+	 */
+	readonly onSubscriptionDeactivate =
+		this.registerEvent<[subscription: EventSubSubscription, clearData: () => void]>();
+
+	/**
 	 * Fires when the client successfully created a subscription.
+	 *
+	 * Only available in managed mode.
 	 *
 	 * @eventListener
 	 *
@@ -222,6 +305,8 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Fires when the client fails to create a subscription.
 	 *
+	 * Only available in managed mode.
+	 *
 	 * @eventListener
 	 *
 	 * @param subscription The subscription that was not successfully created.
@@ -232,6 +317,8 @@ export abstract class EventSubBase extends EventEmitter {
 	/**
 	 * Fires when the client successfully deleted a subscription.
 	 *
+	 * Only available in managed mode.
+	 *
 	 * @eventListener
 	 *
 	 * @param subscription The subscription that was successfully deleted.
@@ -240,6 +327,8 @@ export abstract class EventSubBase extends EventEmitter {
 
 	/**
 	 * Fires when the client fails to delete a subscription.
+	 *
+	 * Only available in managed mode.
 	 *
 	 * @eventListener
 	 *
@@ -251,7 +340,7 @@ export abstract class EventSubBase extends EventEmitter {
 	constructor(config: EventSubBaseConfig) {
 		super();
 
-		this._apiClient = config.apiClient;
+		this._config = config;
 		this._logger = createLogger({
 			name: 'twurple:eventsub',
 			...config.logger,
@@ -273,15 +362,45 @@ export abstract class EventSubBase extends EventEmitter {
 	}
 
 	/** @private */
-	_registerTwitchSubscription(subscription: EventSubSubscription, data: HelixEventSubSubscription): void {
+	_registerTwitchSubscription(
+		subscription: EventSubSubscription,
+		data: HelixEventSubSubscription,
+		notify = true,
+	): void {
 		this._twitchSubscriptions.set(subscription.id, data);
 		this._subscriptionsByTwitchId.set(data.id, subscription);
-		this.emit(this.onSubscriptionCreateSuccess, subscription, data);
+		if (notify) {
+			this.emit(this.onSubscriptionCreateSuccess, subscription, data);
+		}
 	}
 
 	/** @private */
 	_notifySubscriptionCreateError(subscription: EventSubSubscription, error: Error): void {
 		this.emit(this.onSubscriptionCreateFailure, subscription, error);
+	}
+
+	/** @private */
+	_notifySubscriptionActivate(
+		subscription: EventSubSubscription,
+		setSubscriptionData: (data: HelixEventSubSubscription) => void,
+	): void {
+		this.emit(
+			this.onSubscriptionActivate,
+			subscription,
+			(data: HelixEventSubSubscription | HelixEventSubSubscriptionData) => {
+				this._dropTwitchSubscription(subscription.id);
+				const instance = data instanceof HelixEventSubSubscription ? data : new HelixEventSubSubscription(data);
+				setSubscriptionData(instance);
+				this._registerTwitchSubscription(subscription, instance, false);
+			},
+		);
+	}
+
+	/** @private */
+	_notifySubscriptionDeactivate(subscription: EventSubSubscription): void {
+		this.emit(this.onSubscriptionDeactivate, subscription, () => {
+			this._dropTwitchSubscription(subscription.id);
+		});
 	}
 
 	/** @private */
@@ -1483,8 +1602,12 @@ export abstract class EventSubBase extends EventEmitter {
 	onExtensionBitsTransactionCreate(
 		handler: (event: EventSubExtensionBitsTransactionCreateEvent) => void,
 	): EventSubSubscription {
-		const { clientId } = this._apiClient._authProvider;
-		return this._genericSubscribe(EventSubExtensionBitsTransactionCreateSubscription, handler, this, clientId);
+		return this._genericSubscribe(
+			EventSubExtensionBitsTransactionCreateSubscription,
+			handler,
+			this,
+			this._ensureClientId(),
+		);
 	}
 
 	/**
@@ -1741,8 +1864,12 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onUserAuthorizationGrant(handler: (data: EventSubUserAuthorizationGrantEvent) => void): EventSubSubscription {
-		const { clientId } = this._apiClient._authProvider;
-		return this._genericSubscribe(EventSubUserAuthorizationGrantSubscription, handler, this, clientId);
+		return this._genericSubscribe(
+			EventSubUserAuthorizationGrantSubscription,
+			handler,
+			this,
+			this._ensureClientId(),
+		);
 	}
 
 	/**
@@ -1751,8 +1878,12 @@ export abstract class EventSubBase extends EventEmitter {
 	 * @param handler The function that will be called for any new notifications.
 	 */
 	onUserAuthorizationRevoke(handler: (data: EventSubUserAuthorizationRevokeEvent) => void): EventSubSubscription {
-		const { clientId } = this._apiClient._authProvider;
-		return this._genericSubscribe(EventSubUserAuthorizationRevokeSubscription, handler, this, clientId);
+		return this._genericSubscribe(
+			EventSubUserAuthorizationRevokeSubscription,
+			handler,
+			this,
+			this._ensureClientId(),
+		);
 	}
 
 	/**
@@ -1836,7 +1967,11 @@ Message: ${(e as Error | undefined)?.message ?? e}`,
 	): EventSubSubscription {
 		const subscription = new clazz(handler, client, ...params) as EventSubSubscription;
 		if (this._isReadyToSubscribe(subscription)) {
-			subscription.start(this._findTwitchSubscriptionToContinue(subscription));
+			let resumeFrom: HelixEventSubSubscription | undefined = undefined;
+			if (this._config.managed) {
+				resumeFrom = this._findTwitchSubscriptionToContinue(subscription);
+			}
+			subscription.start(resumeFrom);
 		}
 		this._subscriptions.set(subscription.id, subscription);
 
@@ -1852,5 +1987,15 @@ Message: ${(e as Error | undefined)?.message ?? e}`,
 		}
 
 		return userId;
+	}
+
+	private _ensureClientId() {
+		const clientId =
+			this._config.managed === false ? this._config.clientId : this._config.apiClient._authProvider.clientId;
+		if (!clientId) {
+			throw new Error('A client ID is required to subscribe to this topic');
+		}
+
+		return clientId;
 	}
 }

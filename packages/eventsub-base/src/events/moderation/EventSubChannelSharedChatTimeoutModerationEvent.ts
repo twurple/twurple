@@ -41,6 +41,9 @@ export class EventSubChannelSharedChatTimeoutModerationEvent extends EventSubCha
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSharedChatTimeoutModerationEvent#getUser is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].shared_chat_timeout.user_id);
 	}
 

@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import type { ApiClient, HelixUser } from '@twurple/api';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelSharedChatSessionParticipant } from './common/EventSubChannelSharedChatSessionParticipant.js';
 import { type EventSubChannelSharedChatSessionUpdateEventData } from './EventSubChannelSharedChatSessionUpdateEvent.external.js';
 
@@ -13,10 +13,10 @@ import { type EventSubChannelSharedChatSessionUpdateEventData } from './EventSub
 	'broadcasterId',
 )
 export class EventSubChannelSharedChatSessionUpdateEvent extends DataObject<EventSubChannelSharedChatSessionUpdateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelSharedChatSessionUpdateEventData, client: ApiClient) {
+	constructor(data: EventSubChannelSharedChatSessionUpdateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -53,6 +53,11 @@ export class EventSubChannelSharedChatSessionUpdateEvent extends DataObject<Even
 	 * Gets information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelSharedChatSessionUpdateEvent#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -81,6 +86,11 @@ export class EventSubChannelSharedChatSessionUpdateEvent extends DataObject<Even
 	 * Gets information about the broadcaster.
 	 */
 	async getHostBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelSharedChatSessionUpdateEvent#getHostBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(
 			await this._client.users.getUserById(this[rawDataSymbol].host_broadcaster_user_id),
 		);

@@ -7,10 +7,10 @@ import {
 } from './EventSubChannelHypeTrainContribution.external.js';
 
 export class EventSubChannelHypeTrainContribution extends DataObject<EventSubChannelHypeTrainContributionData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelHypeTrainContributionData, client: ApiClient) {
+	constructor(data: EventSubChannelHypeTrainContributionData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -40,6 +40,9 @@ export class EventSubChannelHypeTrainContribution extends DataObject<EventSubCha
 	 * Gets more information about the contributor.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelHypeTrainContribution#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

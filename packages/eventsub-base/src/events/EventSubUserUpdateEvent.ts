@@ -8,10 +8,10 @@ import { type EventSubUserUpdateEventData } from './EventSubUserUpdateEvent.exte
  */
 @rtfm<EventSubUserUpdateEvent>('eventsub-base', 'EventSubUserUpdateEvent', 'userId')
 export class EventSubUserUpdateEvent extends DataObject<EventSubUserUpdateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubUserUpdateEventData, client: ApiClient) {
+	constructor(data: EventSubUserUpdateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -68,6 +68,9 @@ export class EventSubUserUpdateEvent extends DataObject<EventSubUserUpdateEventD
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubUserUpdateEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

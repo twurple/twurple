@@ -11,10 +11,10 @@ import {
  */
 @rtfm<EventSubChannelSubscriptionMessageEvent>('eventsub-base', 'EventSubChannelSubscriptionMessageEvent', 'userId')
 export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSubChannelSubscriptionMessageEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelSubscriptionMessageEventData, client: ApiClient) {
+	constructor(data: EventSubChannelSubscriptionMessageEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -44,6 +44,9 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 	 * Gets more information about the user whose subscription is being announced.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSubscriptionMessageEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
@@ -72,6 +75,9 @@ export class EventSubChannelSubscriptionMessageEvent extends DataObject<EventSub
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelSubscriptionMessageEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

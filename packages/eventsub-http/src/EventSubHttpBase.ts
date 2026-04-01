@@ -26,7 +26,7 @@ export type EventSubHttpPayload = EventSubVerificationPayload | EventSubNotifica
  *
  * @inheritDoc
  */
-export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
+export type EventSubHttpBaseConfig = EventSubBaseConfig & {
 	/**
 	 * Your EventSub secret.
 	 *
@@ -49,7 +49,7 @@ export interface EventSubHttpBaseConfig extends EventSubBaseConfig {
 	 * Enabled by default. Set this to `false` to disable it.
 	 */
 	helperRoutes?: boolean;
-}
+};
 
 /**
  * @private
@@ -116,7 +116,10 @@ export abstract class EventSubHttpBase extends EventSubBase {
 	protected abstract getPathPrefix(): Promise<string | undefined>;
 
 	protected async _resumeExistingSubscriptions(): Promise<void> {
-		const subscriptions = await this._apiClient.eventSub.getSubscriptionsPaginated().getAll();
+		if (!this._config.managed) {
+			return;
+		}
+		const subscriptions = await this._config.apiClient.eventSub.getSubscriptionsPaginated().getAll();
 
 		const urlPrefix = await this._buildHookUrl('');
 		this._twitchSubscriptions = new Map<string, HelixEventSubSubscription>(
@@ -274,7 +277,9 @@ export abstract class EventSubHttpBase extends EventSubBase {
 
 			const twitchSub = this._twitchSubscriptions.get(req.params.id);
 			if (twitchSub) {
-				await this._apiClient.eventSub.deleteSubscription(twitchSub.id);
+				if (this._config.managed) {
+					await this._config.apiClient.eventSub.deleteSubscription(twitchSub.id);
+				}
 				this._logger.debug(`Dropped legacy subscription for event: ${req.params.id}`);
 				res.setHeader('Content-Type', 'text/plain');
 				res.writeHead(410);

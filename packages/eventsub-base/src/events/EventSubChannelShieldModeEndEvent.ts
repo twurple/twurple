@@ -8,10 +8,10 @@ import type { EventSubChannelShieldModeEndEventData } from './EventSubChannelShi
  */
 @rtfm('eventsub-base', 'EventSubChannelShieldModeEndEvent')
 export class EventSubChannelShieldModeEndEvent extends DataObject<EventSubChannelShieldModeEndEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelShieldModeEndEventData, client: ApiClient) {
+	constructor(data: EventSubChannelShieldModeEndEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelShieldModeEndEvent extends DataObject<EventSubChanne
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelShieldModeEndEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelShieldModeEndEvent extends DataObject<EventSubChanne
 	 * Gets more information about the moderator.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelShieldModeEndEvent#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 

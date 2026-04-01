@@ -9,10 +9,10 @@ import { type EventSubChannelHypeTrainProgressEventData } from './EventSubChanne
  */
 @rtfm<EventSubChannelHypeTrainProgressEvent>('eventsub-base', 'EventSubChannelHypeTrainProgressEvent', 'broadcasterId')
 export class EventSubChannelHypeTrainProgressEvent extends DataObject<EventSubChannelHypeTrainProgressEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelHypeTrainProgressEventData, client: ApiClient) {
+	constructor(data: EventSubChannelHypeTrainProgressEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -49,6 +49,9 @@ export class EventSubChannelHypeTrainProgressEvent extends DataObject<EventSubCh
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelHypeTrainProgressEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

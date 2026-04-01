@@ -1,9 +1,9 @@
-import { rtfm } from '@twurple/common';
 import type { HelixEventSubSubscription } from '@twurple/api';
-import type { EventSubBase } from '../EventSubBase.js';
-import { EventSubSubscription } from './EventSubSubscription.js';
+import { rtfm } from '@twurple/common';
 import { type EventSubChannelSharedChatSessionBeginEventData } from '../events/EventSubChannelSharedChatSessionBeginEvent.external.js';
 import { EventSubChannelSharedChatSessionBeginEvent } from '../events/EventSubChannelSharedChatSessionBeginEvent.js';
+import type { EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -29,13 +29,17 @@ export class EventSubChannelSharedChatSessionBeginSubscription extends EventSubS
 	protected transformData(
 		data: EventSubChannelSharedChatSessionBeginEventData,
 	): EventSubChannelSharedChatSessionBeginEvent {
-		return new EventSubChannelSharedChatSessionBeginEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelSharedChatSessionBeginEvent(data, this._client._config.apiClient)
+			: new EventSubChannelSharedChatSessionBeginEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelSharedChatSessionBeginEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelSharedChatSessionBeginEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

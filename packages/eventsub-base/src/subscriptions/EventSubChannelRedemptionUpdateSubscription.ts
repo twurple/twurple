@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelRedemptionUpdateEvent } from '../events/EventSubChannelRedemptionUpdateEvent.js';
 import { type EventSubChannelRedemptionUpdateEventData } from '../events/EventSubChannelRedemptionUpdateEvent.external.js';
+import { EventSubChannelRedemptionUpdateEvent } from '../events/EventSubChannelRedemptionUpdateEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -31,20 +31,26 @@ export class EventSubChannelRedemptionUpdateSubscription extends EventSubSubscri
 	}
 
 	protected transformData(data: EventSubChannelRedemptionUpdateEventData): EventSubChannelRedemptionUpdateEvent {
-		return new EventSubChannelRedemptionUpdateEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelRedemptionUpdateEvent(data, this._client._config.apiClient)
+			: new EventSubChannelRedemptionUpdateEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
 		if (this._rewardId) {
-			return await this._client._apiClient.eventSub.subscribeToChannelRedemptionUpdateEventsForReward(
-				this._userId,
-				this._rewardId,
-				await this._getTransportOptions(),
-			);
+			return this._client._config.managed
+				? await this._client._config.apiClient.eventSub.subscribeToChannelRedemptionUpdateEventsForReward(
+						this._userId,
+						this._rewardId,
+						await this._getTransportOptions(),
+				  )
+				: undefined;
 		}
-		return await this._client._apiClient.eventSub.subscribeToChannelRedemptionUpdateEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelRedemptionUpdateEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

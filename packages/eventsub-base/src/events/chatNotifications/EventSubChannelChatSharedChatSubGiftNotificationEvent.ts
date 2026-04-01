@@ -65,6 +65,11 @@ export class EventSubChannelChatSharedChatSubGiftNotificationEvent extends Event
 	 * Gets more information about the recipient.
 	 */
 	async getRecipient(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelChatSharedChatSubGiftNotificationEvent#getRecipient is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(
 			await this._client.users.getUserById(this[rawDataSymbol].shared_chat_sub_gift.recipient_user_id),
 		);

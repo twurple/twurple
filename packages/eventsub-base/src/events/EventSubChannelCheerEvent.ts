@@ -8,10 +8,10 @@ import { type EventSubChannelCheerEventData } from './EventSubChannelCheerEvent.
  */
 @rtfm<EventSubChannelCheerEvent>('eventsub-base', 'EventSubChannelCheerEvent', 'userId')
 export class EventSubChannelCheerEvent extends DataObject<EventSubChannelCheerEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelCheerEventData, client: ApiClient) {
+	constructor(data: EventSubChannelCheerEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,7 +41,10 @@ export class EventSubChannelCheerEvent extends DataObject<EventSubChannelCheerEv
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
-		return await mapNullable(this[rawDataSymbol].user_id, async v => await this._client.users.getUserById(v));
+		if (!this._client) {
+			throw new Error('EventSubChannelCheerEvent#getUser is not supported in this context');
+		}
+		return await mapNullable(this[rawDataSymbol].user_id, async v => await this._client!.users.getUserById(v));
 	}
 
 	/**
@@ -69,6 +72,9 @@ export class EventSubChannelCheerEvent extends DataObject<EventSubChannelCheerEv
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelCheerEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

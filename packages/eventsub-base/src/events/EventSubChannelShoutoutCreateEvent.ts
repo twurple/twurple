@@ -12,10 +12,10 @@ import { type EventSubChannelShoutoutCreateEventData } from './EventSubChannelSh
 	'shoutedOutBroadcasterId',
 )
 export class EventSubChannelShoutoutCreateEvent extends DataObject<EventSubChannelShoutoutCreateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelShoutoutCreateEventData, client: ApiClient) {
+	constructor(data: EventSubChannelShoutoutCreateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -45,6 +45,9 @@ export class EventSubChannelShoutoutCreateEvent extends DataObject<EventSubChann
 	 * Gets more information about the broadcaster from whose channel the shoutout was sent.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelShoutoutCreateEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -73,6 +76,9 @@ export class EventSubChannelShoutoutCreateEvent extends DataObject<EventSubChann
 	 * Gets more information about the moderator who sent the shoutout.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelShoutoutCreateEvent#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 
@@ -101,6 +107,11 @@ export class EventSubChannelShoutoutCreateEvent extends DataObject<EventSubChann
 	 * Gets more information about the broadcaster who was shoutout out.
 	 */
 	async getShoutedOutBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelShoutoutCreateEvent#getShoutedOutBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].to_broadcaster_user_id));
 	}
 

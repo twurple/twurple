@@ -1,39 +1,39 @@
 import { type HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { type EventSubBase } from '../EventSubBase.js';
-import { EventSubSubscription } from './EventSubSubscription.js';
-import { type EventSubChannelModerationEvent } from '../events/moderation/EventSubChannelModerationEvent.js';
-import { type EventSubChannelModerationActionEventData } from '../events/moderation/EventSubChannelModerationEvent.external.js';
-import { EventSubChannelBanModerationEvent } from '../events/moderation/EventSubChannelBanModerationEvent.js';
-import { EventSubChannelDeleteModerationEvent } from '../events/moderation/EventSubChannelDeleteModerationEvent.js';
-import { EventSubChannelTimeoutModerationEvent } from '../events/moderation/EventSubChannelTimeoutModerationEvent.js';
-import { EventSubChannelClearModerationEvent } from '../events/moderation/EventSubChannelClearModerationEvent.js';
 import { EventSubChannelAutoModTermsModerationEvent } from '../events/moderation/EventSubChannelAutoModTermsModerationEvent.js';
-import { EventSubChannelUnbanRequestModerationEvent } from '../events/moderation/EventSubChannelUnbanRequestModerationEvent.js';
-import { EventSubChannelUnbanModerationEvent } from '../events/moderation/EventSubChannelUnbanModerationEvent.js';
-import { EventSubChannelUntimeoutModerationEvent } from '../events/moderation/EventSubChannelUntimeoutModerationEvent.js';
+import { EventSubChannelBanModerationEvent } from '../events/moderation/EventSubChannelBanModerationEvent.js';
+import { EventSubChannelClearModerationEvent } from '../events/moderation/EventSubChannelClearModerationEvent.js';
+import { EventSubChannelDeleteModerationEvent } from '../events/moderation/EventSubChannelDeleteModerationEvent.js';
 import { EventSubChannelEmoteOnlyModerationEvent } from '../events/moderation/EventSubChannelEmoteOnlyModerationEvent.js';
 import { EventSubChannelEmoteOnlyOffModerationEvent } from '../events/moderation/EventSubChannelEmoteOnlyOffModerationEvent.js';
 import { EventSubChannelFollowersModerationEvent } from '../events/moderation/EventSubChannelFollowersModerationEvent.js';
 import { EventSubChannelFollowersOffModerationEvent } from '../events/moderation/EventSubChannelFollowersOffModerationEvent.js';
-import { EventSubChannelUniqueChatModerationEvent } from '../events/moderation/EventSubChannelUniqueChatModerationEvent.js';
-import { EventSubChannelUniqueChatOffModerationEvent } from '../events/moderation/EventSubChannelUniqueChatOffModerationEvent.js';
+import { type EventSubChannelModerationActionEventData } from '../events/moderation/EventSubChannelModerationEvent.external.js';
+import { type EventSubChannelModerationEvent } from '../events/moderation/EventSubChannelModerationEvent.js';
+import { EventSubChannelModModerationEvent } from '../events/moderation/EventSubChannelModModerationEvent.js';
+import { EventSubChannelRaidModerationEvent } from '../events/moderation/EventSubChannelRaidModerationEvent.js';
+import { EventSubChannelSharedChatBanModerationEvent } from '../events/moderation/EventSubChannelSharedChatBanModerationEvent.js';
+import { EventSubChannelSharedChatDeleteModerationEvent } from '../events/moderation/EventSubChannelSharedChatDeleteModerationEvent.js';
+import { EventSubChannelSharedChatTimeoutModerationEvent } from '../events/moderation/EventSubChannelSharedChatTimeoutModerationEvent.js';
+import { EventSubChannelSharedChatUnbanModerationEvent } from '../events/moderation/EventSubChannelSharedChatUnbanModerationEvent.js';
+import { EventSubChannelSharedChatUntimeoutModerationEvent } from '../events/moderation/EventSubChannelSharedChatUntimeoutModerationEvent.js';
 import { EventSubChannelSlowModerationEvent } from '../events/moderation/EventSubChannelSlowModerationEvent.js';
 import { EventSubChannelSlowOffModerationEvent } from '../events/moderation/EventSubChannelSlowOffModerationEvent.js';
 import { EventSubChannelSubscribersModerationEvent } from '../events/moderation/EventSubChannelSubscribersModerationEvent.js';
 import { EventSubChannelSubscribersOffModerationEvent } from '../events/moderation/EventSubChannelSubscribersOffModerationEvent.js';
-import { EventSubChannelRaidModerationEvent } from '../events/moderation/EventSubChannelRaidModerationEvent.js';
-import { EventSubChannelUnraidModerationEvent } from '../events/moderation/EventSubChannelUnraidModerationEvent.js';
-import { EventSubChannelModModerationEvent } from '../events/moderation/EventSubChannelModModerationEvent.js';
+import { EventSubChannelTimeoutModerationEvent } from '../events/moderation/EventSubChannelTimeoutModerationEvent.js';
+import { EventSubChannelUnbanModerationEvent } from '../events/moderation/EventSubChannelUnbanModerationEvent.js';
+import { EventSubChannelUnbanRequestModerationEvent } from '../events/moderation/EventSubChannelUnbanRequestModerationEvent.js';
+import { EventSubChannelUniqueChatModerationEvent } from '../events/moderation/EventSubChannelUniqueChatModerationEvent.js';
+import { EventSubChannelUniqueChatOffModerationEvent } from '../events/moderation/EventSubChannelUniqueChatOffModerationEvent.js';
 import { EventSubChannelUnmodModerationEvent } from '../events/moderation/EventSubChannelUnmodModerationEvent.js';
-import { EventSubChannelVipModerationEvent } from '../events/moderation/EventSubChannelVipModerationEvent.js';
+import { EventSubChannelUnraidModerationEvent } from '../events/moderation/EventSubChannelUnraidModerationEvent.js';
+import { EventSubChannelUntimeoutModerationEvent } from '../events/moderation/EventSubChannelUntimeoutModerationEvent.js';
 import { EventSubChannelUnvipModerationEvent } from '../events/moderation/EventSubChannelUnvipModerationEvent.js';
+import { EventSubChannelVipModerationEvent } from '../events/moderation/EventSubChannelVipModerationEvent.js';
 import { EventSubChannelWarnModerationEvent } from '../events/moderation/EventSubChannelWarnModerationEvent.js';
-import { EventSubChannelSharedChatDeleteModerationEvent } from '../events/moderation/EventSubChannelSharedChatDeleteModerationEvent.js';
-import { EventSubChannelSharedChatBanModerationEvent } from '../events/moderation/EventSubChannelSharedChatBanModerationEvent.js';
-import { EventSubChannelSharedChatTimeoutModerationEvent } from '../events/moderation/EventSubChannelSharedChatTimeoutModerationEvent.js';
-import { EventSubChannelSharedChatUnbanModerationEvent } from '../events/moderation/EventSubChannelSharedChatUnbanModerationEvent.js';
-import { EventSubChannelSharedChatUntimeoutModerationEvent } from '../events/moderation/EventSubChannelSharedChatUntimeoutModerationEvent.js';
+import { type EventSubBase } from '../EventSubBase.js';
+import { EventSubSubscription } from './EventSubSubscription.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -60,98 +60,158 @@ export class EventSubChannelModerateSubscription extends EventSubSubscription<Ev
 	protected transformData(data: EventSubChannelModerationActionEventData): EventSubChannelModerationEvent {
 		switch (data.action) {
 			case 'delete':
-				return new EventSubChannelDeleteModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelDeleteModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelDeleteModerationEvent(data);
 
 			case 'clear':
-				return new EventSubChannelClearModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelClearModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelClearModerationEvent(data);
 
 			case 'timeout':
-				return new EventSubChannelTimeoutModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelTimeoutModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelTimeoutModerationEvent(data);
 
 			case 'untimeout':
-				return new EventSubChannelUntimeoutModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelUntimeoutModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelUntimeoutModerationEvent(data);
 
 			case 'ban':
-				return new EventSubChannelBanModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelBanModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelBanModerationEvent(data);
 
 			case 'unban':
-				return new EventSubChannelUnbanModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelUnbanModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelUnbanModerationEvent(data);
 
 			case 'emoteonly':
-				return new EventSubChannelEmoteOnlyModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelEmoteOnlyModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelEmoteOnlyModerationEvent(data);
 
 			case 'emoteonlyoff':
-				return new EventSubChannelEmoteOnlyOffModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelEmoteOnlyOffModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelEmoteOnlyOffModerationEvent(data);
 
 			case 'followers':
-				return new EventSubChannelFollowersModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelFollowersModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelFollowersModerationEvent(data);
 
 			case 'followersoff':
-				return new EventSubChannelFollowersOffModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelFollowersOffModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelFollowersOffModerationEvent(data);
 
 			case 'uniquechat':
-				return new EventSubChannelUniqueChatModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelUniqueChatModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelUniqueChatModerationEvent(data);
 
 			case 'uniquechatoff':
-				return new EventSubChannelUniqueChatOffModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelUniqueChatOffModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelUniqueChatOffModerationEvent(data);
 
 			case 'slow':
-				return new EventSubChannelSlowModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSlowModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSlowModerationEvent(data);
 
 			case 'slowoff':
-				return new EventSubChannelSlowOffModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSlowOffModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSlowOffModerationEvent(data);
 
 			case 'subscribers':
-				return new EventSubChannelSubscribersModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSubscribersModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSubscribersModerationEvent(data);
 
 			case 'subscribersoff':
-				return new EventSubChannelSubscribersOffModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSubscribersOffModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSubscribersOffModerationEvent(data);
 
 			case 'raid':
-				return new EventSubChannelRaidModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelRaidModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelRaidModerationEvent(data);
 
 			case 'unraid':
-				return new EventSubChannelUnraidModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelUnraidModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelUnraidModerationEvent(data);
 
 			case 'mod':
-				return new EventSubChannelModModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelModModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelModModerationEvent(data);
 
 			case 'unmod':
-				return new EventSubChannelUnmodModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelUnmodModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelUnmodModerationEvent(data);
 
 			case 'vip':
-				return new EventSubChannelVipModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelVipModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelVipModerationEvent(data);
 
 			case 'unvip':
-				return new EventSubChannelUnvipModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelUnvipModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelUnvipModerationEvent(data);
 
 			case 'warn':
-				return new EventSubChannelWarnModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelWarnModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelWarnModerationEvent(data);
 
 			case 'add_blocked_term':
 			case 'add_permitted_term':
 			case 'remove_blocked_term':
 			case 'remove_permitted_term':
-				return new EventSubChannelAutoModTermsModerationEvent(data, data.action, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelAutoModTermsModerationEvent(data, data.action, this._client._config.apiClient)
+					: new EventSubChannelAutoModTermsModerationEvent(data, data.action);
 
 			case 'approve_unban_request':
 			case 'deny_unban_request':
-				return new EventSubChannelUnbanRequestModerationEvent(data, data.action, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelUnbanRequestModerationEvent(data, data.action, this._client._config.apiClient)
+					: new EventSubChannelUnbanRequestModerationEvent(data, data.action);
 
 			case 'shared_chat_ban':
-				return new EventSubChannelSharedChatBanModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSharedChatBanModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSharedChatBanModerationEvent(data);
 
 			case 'shared_chat_unban':
-				return new EventSubChannelSharedChatUnbanModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSharedChatUnbanModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSharedChatUnbanModerationEvent(data);
 
 			case 'shared_chat_timeout':
-				return new EventSubChannelSharedChatTimeoutModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSharedChatTimeoutModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSharedChatTimeoutModerationEvent(data);
 
 			case 'shared_chat_untimeout':
-				return new EventSubChannelSharedChatUntimeoutModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSharedChatUntimeoutModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSharedChatUntimeoutModerationEvent(data);
 
 			case 'shared_chat_delete':
-				return new EventSubChannelSharedChatDeleteModerationEvent(data, this._client._apiClient);
+				return this._client._config.managed
+					? new EventSubChannelSharedChatDeleteModerationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelSharedChatDeleteModerationEvent(data);
 
 			default:
 				throw new Error(
@@ -160,14 +220,16 @@ export class EventSubChannelModerateSubscription extends EventSubSubscription<Ev
 		}
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._moderatorId,
-			async ctx =>
-				await ctx.eventSub.subscribeToChannelModerateEvents(
-					this._broadcasterId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._moderatorId,
+					async ctx =>
+						await ctx.eventSub.subscribeToChannelModerateEvents(
+							this._broadcasterId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

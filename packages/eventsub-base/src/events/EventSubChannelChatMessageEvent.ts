@@ -9,10 +9,10 @@ import { type EventSubChannelChatMessageEventData } from './EventSubChannelChatM
  */
 @rtfm<EventSubChannelChatMessageEvent>('eventsub-base', 'EventSubChannelChatMessageEvent', 'broadcasterId')
 export class EventSubChannelChatMessageEvent extends DataObject<EventSubChannelChatMessageEventData> {
-	/** @internal */ @Enumerable(false) protected readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) protected readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelChatMessageEventData, client: ApiClient) {
+	constructor(data: EventSubChannelChatMessageEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -49,6 +49,9 @@ export class EventSubChannelChatMessageEvent extends DataObject<EventSubChannelC
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatMessageEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -77,6 +80,9 @@ export class EventSubChannelChatMessageEvent extends DataObject<EventSubChannelC
 	 * Gets more information about the chatter.
 	 */
 	async getChatter(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatMessageEvent#getChatter is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].chatter_user_id));
 	}
 

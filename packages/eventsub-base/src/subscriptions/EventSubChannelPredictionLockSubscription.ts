@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelPredictionLockEvent } from '../events/EventSubChannelPredictionLockEvent.js';
 import { type EventSubChannelPredictionLockEventData } from '../events/EventSubChannelPredictionLockEvent.external.js';
+import { EventSubChannelPredictionLockEvent } from '../events/EventSubChannelPredictionLockEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubChannelPredictionLockSubscription extends EventSubSubscript
 	}
 
 	protected transformData(data: EventSubChannelPredictionLockEventData): EventSubChannelPredictionLockEvent {
-		return new EventSubChannelPredictionLockEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelPredictionLockEvent(data, this._client._config.apiClient)
+			: new EventSubChannelPredictionLockEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelPredictionLockEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelPredictionLockEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

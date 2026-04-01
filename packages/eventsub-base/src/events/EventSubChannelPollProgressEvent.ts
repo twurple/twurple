@@ -9,10 +9,10 @@ import { type EventSubChannelPollProgressEventData } from './EventSubChannelPoll
  */
 @rtfm<EventSubChannelPollProgressEvent>('eventsub-base', 'EventSubChannelPollProgressEvent', 'broadcasterId')
 export class EventSubChannelPollProgressEvent extends DataObject<EventSubChannelPollProgressEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelPollProgressEventData, client: ApiClient) {
+	constructor(data: EventSubChannelPollProgressEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -49,6 +49,9 @@ export class EventSubChannelPollProgressEvent extends DataObject<EventSubChannel
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelPollProgressEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

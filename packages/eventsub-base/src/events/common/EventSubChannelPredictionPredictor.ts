@@ -8,10 +8,10 @@ import { type EventSubChannelPredictionPredictorData } from './EventSubChannelPr
  */
 @rtfm<EventSubChannelPredictionPredictor>('eventsub-base', 'EventSubChannelPredictionPredictor', 'userId')
 export class EventSubChannelPredictionPredictor extends DataObject<EventSubChannelPredictionPredictorData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelPredictionPredictorData, client: ApiClient) {
+	constructor(data: EventSubChannelPredictionPredictorData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelPredictionPredictor extends DataObject<EventSubChann
 	 * Gets more information about the predictor.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelPredictionPredictor#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

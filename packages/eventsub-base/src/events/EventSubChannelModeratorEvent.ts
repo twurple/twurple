@@ -8,10 +8,10 @@ import { type EventSubChannelModeratorEventData } from './EventSubChannelModerat
  */
 @rtfm<EventSubChannelModeratorEvent>('eventsub-base', 'EventSubChannelModeratorEvent', 'userId')
 export class EventSubChannelModeratorEvent extends DataObject<EventSubChannelModeratorEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelModeratorEventData, client: ApiClient) {
+	constructor(data: EventSubChannelModeratorEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelModeratorEvent extends DataObject<EventSubChannelMod
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelModeratorEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelModeratorEvent extends DataObject<EventSubChannelMod
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelModeratorEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

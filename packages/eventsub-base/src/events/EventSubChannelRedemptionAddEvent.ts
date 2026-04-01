@@ -14,10 +14,10 @@ import { type EventSubChannelRedemptionAddEventData } from './EventSubChannelRed
  */
 @rtfm<EventSubChannelRedemptionAddEvent>('eventsub-base', 'EventSubChannelRedemptionAddEvent', 'id')
 export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChannelRedemptionAddEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelRedemptionAddEventData, client: ApiClient) {
+	constructor(data: EventSubChannelRedemptionAddEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -54,6 +54,9 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelRedemptionAddEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -82,6 +85,9 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelRedemptionAddEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 
@@ -133,6 +139,9 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	 * Gets more information about the reward that was redeemed.
 	 */
 	async getReward(): Promise<HelixCustomReward> {
+		if (!this._client) {
+			throw new Error('EventSubChannelRedemptionAddEvent#getReward is not supported in this context');
+		}
 		return checkRelationAssertion(
 			await this._client.channelPoints.getCustomRewardById(
 				this[rawDataSymbol].broadcaster_user_id,
@@ -154,6 +163,9 @@ export class EventSubChannelRedemptionAddEvent extends DataObject<EventSubChanne
 	 * @param newStatus The status the redemption should have.
 	 */
 	async updateStatus(newStatus: HelixCustomRewardRedemptionTargetStatus): Promise<HelixCustomRewardRedemption> {
+		if (!this._client) {
+			throw new Error('EventSubChannelRedemptionAddEvent#updateStatus is not supported in this context');
+		}
 		const result = await this._client.channelPoints.updateRedemptionStatusByIds(
 			this[rawDataSymbol].broadcaster_user_id,
 			this[rawDataSymbol].reward.id,

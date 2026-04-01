@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
+import { type EventSubChannelChatUserMessageHoldEventData } from '../events/EventSubChannelChatUserMessageHoldEvent.external.js';
+import { EventSubChannelChatUserMessageHoldEvent } from '../events/EventSubChannelChatUserMessageHoldEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
-import { EventSubChannelChatUserMessageHoldEvent } from '../events/EventSubChannelChatUserMessageHoldEvent.js';
-import { type EventSubChannelChatUserMessageHoldEventData } from '../events/EventSubChannelChatUserMessageHoldEvent.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -30,17 +30,21 @@ export class EventSubChannelChatUserMessageHoldSubscription extends EventSubSubs
 	protected transformData(
 		data: EventSubChannelChatUserMessageHoldEventData,
 	): EventSubChannelChatUserMessageHoldEvent {
-		return new EventSubChannelChatUserMessageHoldEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelChatUserMessageHoldEvent(data, this._client._config.apiClient)
+			: new EventSubChannelChatUserMessageHoldEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._userId,
-			async ctx =>
-				await ctx.eventSub.subscribeToChannelChatUserMessageHoldEvents(
-					this._broadcasterId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._userId,
+					async ctx =>
+						await ctx.eventSub.subscribeToChannelChatUserMessageHoldEvents(
+							this._broadcasterId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

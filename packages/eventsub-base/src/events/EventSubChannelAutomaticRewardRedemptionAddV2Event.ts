@@ -1,11 +1,11 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { EventSubChannelAutomaticReward } from './common/EventSubChannelAutomaticReward.js';
 import {
 	type EventSubAutomaticRewardRedemptionMessagePart,
 	type EventSubChannelAutomaticRewardRedemptionAddV2EventData,
 } from './EventSubChannelAutomaticRewardRedemptionAddV2Event.external.js';
-import { EventSubChannelAutomaticReward } from './common/EventSubChannelAutomaticReward.js';
 
 /**
  * An EventSub event representing an automatic reward being redeemed by a user in a channel.
@@ -16,10 +16,10 @@ import { EventSubChannelAutomaticReward } from './common/EventSubChannelAutomati
 	'id',
 )
 export class EventSubChannelAutomaticRewardRedemptionAddV2Event extends DataObject<EventSubChannelAutomaticRewardRedemptionAddV2EventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelAutomaticRewardRedemptionAddV2EventData, client: ApiClient) {
+	constructor(data: EventSubChannelAutomaticRewardRedemptionAddV2EventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -56,6 +56,11 @@ export class EventSubChannelAutomaticRewardRedemptionAddV2Event extends DataObje
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelAutomaticRewardRedemptionAddV2Event#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -84,6 +89,11 @@ export class EventSubChannelAutomaticRewardRedemptionAddV2Event extends DataObje
 	 * Gets more information about the redeeming user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelAutomaticRewardRedemptionAddV2Event#getUser is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

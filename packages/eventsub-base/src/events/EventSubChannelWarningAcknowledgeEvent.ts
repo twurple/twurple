@@ -8,10 +8,10 @@ import { type EventSubChannelWarningAcknowledgeEventData } from './EventSubChann
  */
 @rtfm<EventSubChannelWarningAcknowledgeEvent>('eventsub-base', 'EventSubChannelWarningAcknowledgeEvent', 'userId')
 export class EventSubChannelWarningAcknowledgeEvent extends DataObject<EventSubChannelWarningAcknowledgeEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelWarningAcknowledgeEventData, client: ApiClient) {
+	constructor(data: EventSubChannelWarningAcknowledgeEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelWarningAcknowledgeEvent extends DataObject<EventSubC
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelWarningAcknowledgeEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelWarningAcknowledgeEvent extends DataObject<EventSubC
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelWarningAcknowledgeEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

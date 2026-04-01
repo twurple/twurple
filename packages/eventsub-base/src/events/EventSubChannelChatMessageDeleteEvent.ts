@@ -8,10 +8,10 @@ import { type EventSubChannelChatMessageDeleteEventData } from './EventSubChanne
  */
 @rtfm<EventSubChannelChatMessageDeleteEvent>('eventsub-base', 'EventSubChannelChatMessageDeleteEvent', 'broadcasterId')
 export class EventSubChannelChatMessageDeleteEvent extends DataObject<EventSubChannelChatMessageDeleteEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelChatMessageDeleteEventData, client: ApiClient) {
+	constructor(data: EventSubChannelChatMessageDeleteEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelChatMessageDeleteEvent extends DataObject<EventSubCh
 	 * Gets more information about the user whose chat message was deleted.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatMessageDeleteEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].target_user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelChatMessageDeleteEvent extends DataObject<EventSubCh
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatMessageDeleteEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

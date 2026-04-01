@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelRewardEvent } from '../events/EventSubChannelRewardEvent.js';
 import { type EventSubChannelRewardEventData } from '../events/EventSubChannelRewardEvent.external.js';
+import { EventSubChannelRewardEvent } from '../events/EventSubChannelRewardEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubChannelRewardAddSubscription extends EventSubSubscription<E
 	}
 
 	protected transformData(data: EventSubChannelRewardEventData): EventSubChannelRewardEvent {
-		return new EventSubChannelRewardEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelRewardEvent(data, this._client._config.apiClient)
+			: new EventSubChannelRewardEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelRewardAddEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelRewardAddEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

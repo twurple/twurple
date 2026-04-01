@@ -1,9 +1,9 @@
-import { rtfm } from '@twurple/common';
 import type { HelixEventSubSubscription } from '@twurple/api';
+import { rtfm } from '@twurple/common';
+import { type EventSubUserWhisperMessageEventData } from '../events/EventSubUserWhisperMessageEvent.external.js';
+import { EventSubUserWhisperMessageEvent } from '../events/EventSubUserWhisperMessageEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
-import { EventSubUserWhisperMessageEvent } from '../events/EventSubUserWhisperMessageEvent.js';
-import { type EventSubUserWhisperMessageEventData } from '../events/EventSubUserWhisperMessageEvent.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -27,13 +27,17 @@ export class EventSubUserWhisperMessageSubscription extends EventSubSubscription
 	}
 
 	protected transformData(data: EventSubUserWhisperMessageEventData): EventSubUserWhisperMessageEvent {
-		return new EventSubUserWhisperMessageEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubUserWhisperMessageEvent(data, this._client._config.apiClient)
+			: new EventSubUserWhisperMessageEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToUserWhisperMessageEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToUserWhisperMessageEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

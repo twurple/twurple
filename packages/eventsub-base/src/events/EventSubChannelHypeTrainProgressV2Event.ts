@@ -2,8 +2,8 @@ import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution.js';
-import type { EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType.js';
 import { EventSubChannelHypeTrainSharedParticipant } from './common/EventSubChannelHypeTrainSharedParticipant.js';
+import type { EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType.js';
 import { type EventSubChannelHypeTrainProgressV2EventData } from './EventSubChannelHypeTrainProgressV2Event.external.js';
 
 /**
@@ -15,10 +15,10 @@ import { type EventSubChannelHypeTrainProgressV2EventData } from './EventSubChan
 	'broadcasterId',
 )
 export class EventSubChannelHypeTrainProgressV2Event extends DataObject<EventSubChannelHypeTrainProgressV2EventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelHypeTrainProgressV2EventData, client: ApiClient) {
+	constructor(data: EventSubChannelHypeTrainProgressV2EventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -55,6 +55,9 @@ export class EventSubChannelHypeTrainProgressV2Event extends DataObject<EventSub
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelHypeTrainProgressV2Event#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

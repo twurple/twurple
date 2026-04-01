@@ -37,6 +37,9 @@ export class EventSubChannelBanModerationEvent extends EventSubChannelBaseModera
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelBanModerationEvent#getUser is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].ban.user_id);
 	}
 

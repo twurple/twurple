@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelAdBreakBeginEvent } from '../events/EventSubChannelAdBreakBeginEvent.js';
 import { type EventSubChannelAdBreakBeginEventData } from '../events/EventSubChannelAdBreakBeginEvent.external.js';
+import { EventSubChannelAdBreakBeginEvent } from '../events/EventSubChannelAdBreakBeginEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubChannelAdBreakBeginSubscription extends EventSubSubscriptio
 	}
 
 	protected transformData(data: EventSubChannelAdBreakBeginEventData): EventSubChannelAdBreakBeginEvent {
-		return new EventSubChannelAdBreakBeginEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelAdBreakBeginEvent(data, this._client._config.apiClient)
+			: new EventSubChannelAdBreakBeginEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelAdBreakBeginEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelAdBreakBeginEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

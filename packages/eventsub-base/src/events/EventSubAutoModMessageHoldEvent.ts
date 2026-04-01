@@ -1,19 +1,19 @@
 import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
-import { type EventSubAutoModMessageHoldEventData } from './EventSubAutoModMessageHoldEvent.external.js';
 import { type EventSubAutoModLevel } from './common/EventSubAutoModLevel.js';
 import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external.js';
+import { type EventSubAutoModMessageHoldEventData } from './EventSubAutoModMessageHoldEvent.external.js';
 
 /**
  * An EventSub event representing chat message being held by AutoMod in a channel.
  */
 @rtfm<EventSubAutoModMessageHoldEvent>('eventsub-base', 'EventSubAutoModMessageHoldEvent', 'messageId')
 export class EventSubAutoModMessageHoldEvent extends DataObject<EventSubAutoModMessageHoldEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubAutoModMessageHoldEventData, client: ApiClient) {
+	constructor(data: EventSubAutoModMessageHoldEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -43,6 +43,9 @@ export class EventSubAutoModMessageHoldEvent extends DataObject<EventSubAutoModM
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageHoldEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -71,6 +74,9 @@ export class EventSubAutoModMessageHoldEvent extends DataObject<EventSubAutoModM
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageHoldEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

@@ -1,7 +1,7 @@
 import { type HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelShoutoutReceiveEvent } from '../events/EventSubChannelShoutoutReceiveEvent.js';
 import { type EventSubChannelShoutoutReceiveEventData } from '../events/EventSubChannelShoutoutReceiveEvent.external.js';
+import { EventSubChannelShoutoutReceiveEvent } from '../events/EventSubChannelShoutoutReceiveEvent.js';
 import { type EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -28,17 +28,21 @@ export class EventSubChannelShoutoutReceiveSubscription extends EventSubSubscrip
 	}
 
 	protected transformData(data: EventSubChannelShoutoutReceiveEventData): EventSubChannelShoutoutReceiveEvent {
-		return new EventSubChannelShoutoutReceiveEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelShoutoutReceiveEvent(data, this._client._config.apiClient)
+			: new EventSubChannelShoutoutReceiveEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._moderatorId,
-			async ctx =>
-				await ctx.eventSub.subscribeToChannelShoutoutReceiveEvents(
-					this._userId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._moderatorId,
+					async ctx =>
+						await ctx.eventSub.subscribeToChannelShoutoutReceiveEvents(
+							this._userId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

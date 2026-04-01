@@ -1,6 +1,6 @@
 import { Enumerable } from '@d-fischer/shared-utils';
-import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type ApiClient, type HelixUser } from '@twurple/api';
+import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type EventSubChannelSharedChatSessionParticipantData } from './EventSubChannelSharedChatSessionParticipant.external.js';
 
 /**
@@ -12,10 +12,10 @@ import { type EventSubChannelSharedChatSessionParticipantData } from './EventSub
 	'broadcasterId',
 )
 export class EventSubChannelSharedChatSessionParticipant extends DataObject<EventSubChannelSharedChatSessionParticipantData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelSharedChatSessionParticipantData, client: ApiClient) {
+	constructor(data: EventSubChannelSharedChatSessionParticipantData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -45,6 +45,11 @@ export class EventSubChannelSharedChatSessionParticipant extends DataObject<Even
 	 * Gets information about the participant broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelSharedChatSessionParticipant#getBroadcaster is not supported in this context',
+			);
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 }

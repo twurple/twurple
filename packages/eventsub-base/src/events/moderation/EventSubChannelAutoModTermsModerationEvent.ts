@@ -1,3 +1,4 @@
+import { type ApiClient } from '@twurple/api';
 import { rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelBaseModerationEvent } from './EventSubChannelBaseModerationEvent.js';
 import {
@@ -7,7 +8,6 @@ import {
 	type EventSubChannelBaseModerationEventData,
 	type EventSubChannelModerationAction,
 } from './EventSubChannelModerationEvent.external.js';
-import { type ApiClient } from '@twurple/api';
 
 /**
  * An EventSub event representing a moderator managing AutoMod terms on a channel.
@@ -32,7 +32,7 @@ export class EventSubChannelAutoModTermsModerationEvent extends EventSubChannelB
 			EventSubChannelModerationAction,
 			'add_blocked_term' | 'add_permitted_term' | 'remove_blocked_term' | 'remove_permitted_term'
 		>,
-		client: ApiClient,
+		client?: ApiClient,
 	) {
 		super(data, client);
 		this.moderationAction = action;

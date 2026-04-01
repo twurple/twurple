@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubUserUpdateEvent } from '../events/EventSubUserUpdateEvent.js';
 import { type EventSubUserUpdateEventData } from '../events/EventSubUserUpdateEvent.external.js';
+import { EventSubUserUpdateEvent } from '../events/EventSubUserUpdateEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubUserUpdateSubscription extends EventSubSubscription<EventSu
 	}
 
 	protected transformData(data: EventSubUserUpdateEventData): EventSubUserUpdateEvent {
-		return new EventSubUserUpdateEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubUserUpdateEvent(data, this._client._config.apiClient)
+			: new EventSubUserUpdateEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToUserUpdateEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToUserUpdateEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

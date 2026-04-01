@@ -8,10 +8,10 @@ import { type EventSubChannelRaidEventData } from './EventSubChannelRaidEvent.ex
  */
 @rtfm<EventSubChannelRaidEvent>('eventsub-base', 'EventSubChannelRaidEvent', 'raidedBroadcasterId')
 export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelRaidEventData, client: ApiClient) {
+	constructor(data: EventSubChannelRaidEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEven
 	 * Gets more information about the raiding broadcaster.
 	 */
 	async getRaidingBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelRaidEvent#getRaidingBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(
 			await this._client.users.getUserById(this[rawDataSymbol].from_broadcaster_user_id),
 		);
@@ -71,6 +74,9 @@ export class EventSubChannelRaidEvent extends DataObject<EventSubChannelRaidEven
 	 * Gets more information about the raided broadcaster.
 	 */
 	async getRaidedBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelRaidEvent#getRaidedBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].to_broadcaster_user_id));
 	}
 

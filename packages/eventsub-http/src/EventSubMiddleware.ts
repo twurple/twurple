@@ -8,7 +8,7 @@ import { EventSubHttpBase, type EventSubHttpBaseConfig } from './EventSubHttpBas
  *
  * @inheritDoc
  */
-export interface EventSubMiddlewareConfig extends EventSubHttpBaseConfig {
+export type EventSubMiddlewareConfig = EventSubHttpBaseConfig & {
 	/**
 	 * The host name the root application is available under.
 	 */
@@ -25,7 +25,7 @@ export interface EventSubMiddlewareConfig extends EventSubHttpBaseConfig {
 	 * Must be `false` if you use this with subrouters.
 	 */
 	usePathPrefixInHandlers?: boolean;
-}
+};
 
 /**
  * An Express middleware for the Twitch EventSub event distribution mechanism.

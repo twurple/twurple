@@ -37,6 +37,9 @@ export class EventSubChannelTimeoutModerationEvent extends EventSubChannelBaseMo
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelTimeoutModerationEvent#getUser is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].timeout.user_id);
 	}
 

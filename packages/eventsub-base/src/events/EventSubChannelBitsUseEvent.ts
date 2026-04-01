@@ -1,22 +1,22 @@
 import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
+import { EventSubChannelBitsUsePowerUp } from './common/EventSubChannelBitsUsePowerUp.js';
 import {
 	type EventSubChannelBitsUseEventData,
 	type EventSubChannelBitsUseMessagePart,
 	type EventSubChannelBitsUseType,
 } from './EventSubChannelBitsUseEvent.external.js';
-import { EventSubChannelBitsUsePowerUp } from './common/EventSubChannelBitsUsePowerUp.js';
 
 /**
  * An EventSub event representing bits being used in a channel.
  */
 @rtfm<EventSubChannelBitsUseEvent>('eventsub-base', 'EventSubChannelBitsUserEvent', 'userId')
 export class EventSubChannelBitsUseEvent extends DataObject<EventSubChannelBitsUseEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelBitsUseEventData, client: ApiClient) {
+	constructor(data: EventSubChannelBitsUseEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -46,6 +46,9 @@ export class EventSubChannelBitsUseEvent extends DataObject<EventSubChannelBitsU
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelBitsUseEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -74,6 +77,9 @@ export class EventSubChannelBitsUseEvent extends DataObject<EventSubChannelBitsU
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelBitsUseEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

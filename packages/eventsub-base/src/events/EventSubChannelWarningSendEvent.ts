@@ -8,10 +8,10 @@ import { type EventSubChannelWarningSendEventData } from './EventSubChannelWarni
  */
 @rtfm<EventSubChannelWarningSendEvent>('eventsub-base', 'EventSubChannelWarningSendEvent', 'userId')
 export class EventSubChannelWarningSendEvent extends DataObject<EventSubChannelWarningSendEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelWarningSendEventData, client: ApiClient) {
+	constructor(data: EventSubChannelWarningSendEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelWarningSendEvent extends DataObject<EventSubChannelW
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelWarningSendEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelWarningSendEvent extends DataObject<EventSubChannelW
 	 * Gets more information about the moderator.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelWarningSendEvent#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 
@@ -97,6 +103,9 @@ export class EventSubChannelWarningSendEvent extends DataObject<EventSubChannelW
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelWarningSendEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

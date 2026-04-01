@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubExtensionBitsTransactionCreateEvent } from '../events/EventSubExtensionBitsTransactionCreateEvent.js';
 import { type EventSubExtensionBitsTransactionCreateEventData } from '../events/EventSubExtensionBitsTransactionCreateEvent.external.js';
+import { EventSubExtensionBitsTransactionCreateEvent } from '../events/EventSubExtensionBitsTransactionCreateEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -26,13 +26,17 @@ export class EventSubExtensionBitsTransactionCreateSubscription extends EventSub
 	protected transformData(
 		data: EventSubExtensionBitsTransactionCreateEventData,
 	): EventSubExtensionBitsTransactionCreateEvent {
-		return new EventSubExtensionBitsTransactionCreateEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubExtensionBitsTransactionCreateEvent(data, this._client._config.apiClient)
+			: new EventSubExtensionBitsTransactionCreateEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToExtensionBitsTransactionCreateEvents(
-			this._clientId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToExtensionBitsTransactionCreateEvents(
+					this._clientId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

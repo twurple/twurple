@@ -8,10 +8,10 @@ import { type EventSubChannelVipEventData } from './EventSubChannelVipEvent.exte
  */
 @rtfm<EventSubChannelVipEvent>('eventsub-base', 'EventSubChannelVipEvent', 'userId')
 export class EventSubChannelVipEvent extends DataObject<EventSubChannelVipEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelVipEventData, client: ApiClient) {
+	constructor(data: EventSubChannelVipEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelVipEvent extends DataObject<EventSubChannelVipEventD
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelVipEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -69,6 +72,9 @@ export class EventSubChannelVipEvent extends DataObject<EventSubChannelVipEventD
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelVipEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 }

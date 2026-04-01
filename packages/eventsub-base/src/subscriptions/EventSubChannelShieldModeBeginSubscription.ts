@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelShieldModeBeginEvent } from '../events/EventSubChannelShieldModeBeginEvent.js';
 import type { EventSubChannelShieldModeBeginEventData } from '../events/EventSubChannelShieldModeBeginEvent.external.js';
+import { EventSubChannelShieldModeBeginEvent } from '../events/EventSubChannelShieldModeBeginEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -28,17 +28,21 @@ export class EventSubChannelShieldModeBeginSubscription extends EventSubSubscrip
 	}
 
 	protected transformData(data: EventSubChannelShieldModeBeginEventData): EventSubChannelShieldModeBeginEvent {
-		return new EventSubChannelShieldModeBeginEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelShieldModeBeginEvent(data, this._client._config.apiClient)
+			: new EventSubChannelShieldModeBeginEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._moderatorId,
-			async ctx =>
-				await ctx.eventSub.subscribeToChannelShieldModeBeginEvents(
-					this._userId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._moderatorId,
+					async ctx =>
+						await ctx.eventSub.subscribeToChannelShieldModeBeginEvents(
+							this._userId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

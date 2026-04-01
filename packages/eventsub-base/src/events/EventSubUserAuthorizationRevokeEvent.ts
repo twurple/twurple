@@ -8,10 +8,10 @@ import { type EventSubUserAuthorizationRevokeEventData } from './EventSubUserAut
  */
 @rtfm<EventSubUserAuthorizationRevokeEvent>('eventsub-base', 'EventSubUserAuthorizationRevokeEvent', 'userId')
 export class EventSubUserAuthorizationRevokeEvent extends DataObject<EventSubUserAuthorizationRevokeEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubUserAuthorizationRevokeEventData, client: ApiClient) {
+	constructor(data: EventSubUserAuthorizationRevokeEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -45,6 +45,9 @@ export class EventSubUserAuthorizationRevokeEvent extends DataObject<EventSubUse
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubUserAuthorizationRevokeEvent#getUser is not supported in this context');
+		}
 		if (this[rawDataSymbol].user_login == null) {
 			return null;
 		}

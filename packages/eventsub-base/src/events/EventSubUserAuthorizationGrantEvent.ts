@@ -8,10 +8,10 @@ import { type EventSubUserAuthorizationGrantEventData } from './EventSubUserAuth
  */
 @rtfm<EventSubUserAuthorizationGrantEvent>('eventsub-base', 'EventSubUserAuthorizationGrantEvent', 'userId')
 export class EventSubUserAuthorizationGrantEvent extends DataObject<EventSubUserAuthorizationGrantEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubUserAuthorizationGrantEventData, client: ApiClient) {
+	constructor(data: EventSubUserAuthorizationGrantEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubUserAuthorizationGrantEvent extends DataObject<EventSubUser
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubUserAuthorizationGrantEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

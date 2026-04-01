@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
+import { type EventSubChannelHypeTrainEndV2EventData } from '../events/EventSubChannelHypeTrainEndV2Event.external.js';
+import { EventSubChannelHypeTrainEndV2Event } from '../events/EventSubChannelHypeTrainEndV2Event.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
-import { EventSubChannelHypeTrainEndV2Event } from '../events/EventSubChannelHypeTrainEndV2Event.js';
-import { type EventSubChannelHypeTrainEndV2EventData } from '../events/EventSubChannelHypeTrainEndV2Event.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -27,13 +27,17 @@ export class EventSubChannelHypeTrainEndV2Subscription extends EventSubSubscript
 	}
 
 	protected transformData(data: EventSubChannelHypeTrainEndV2EventData): EventSubChannelHypeTrainEndV2Event {
-		return new EventSubChannelHypeTrainEndV2Event(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelHypeTrainEndV2Event(data, this._client._config.apiClient)
+			: new EventSubChannelHypeTrainEndV2Event(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelHypeTrainEndV2Events(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelHypeTrainEndV2Events(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

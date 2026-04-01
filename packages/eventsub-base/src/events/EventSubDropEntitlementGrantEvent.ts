@@ -8,10 +8,10 @@ import { type EventSubDropEntitlementGrantEventData } from './EventSubDropEntitl
  */
 @rtfm<EventSubDropEntitlementGrantEvent>('eventsub-base', 'EventSubDropEntitlementGrantEvent', 'entitlementId')
 export class EventSubDropEntitlementGrantEvent extends DataObject<EventSubDropEntitlementGrantEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubDropEntitlementGrantEventData, client: ApiClient) {
+	constructor(data: EventSubDropEntitlementGrantEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubDropEntitlementGrantEvent extends DataObject<EventSubDropEn
 	 * Gets more information about the category/game.
 	 */
 	async getCategory(): Promise<HelixGame> {
+		if (!this._client) {
+			throw new Error('EventSubDropEntitlementGrantEvent#getCategory is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.games.getGameById(this[rawDataSymbol].category_id));
 	}
 
@@ -76,6 +79,9 @@ export class EventSubDropEntitlementGrantEvent extends DataObject<EventSubDropEn
 	 * Gets more information about the entitled user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubDropEntitlementGrantEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

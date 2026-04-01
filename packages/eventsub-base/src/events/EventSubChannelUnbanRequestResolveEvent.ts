@@ -11,10 +11,10 @@ import {
  */
 @rtfm<EventSubChannelUnbanRequestResolveEvent>('eventsub-base', 'EventSubChannelUnbanRequestResolveEvent', 'id')
 export class EventSubChannelUnbanRequestResolveEvent extends DataObject<EventSubChannelUnbanRequestResolveEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelUnbanRequestResolveEventData, client: ApiClient) {
+	constructor(data: EventSubChannelUnbanRequestResolveEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -51,6 +51,9 @@ export class EventSubChannelUnbanRequestResolveEvent extends DataObject<EventSub
 	 * Gets more information about the broadcaster in which channel the unban request was resolved.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUnbanRequestResolveEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -79,6 +82,9 @@ export class EventSubChannelUnbanRequestResolveEvent extends DataObject<EventSub
 	 * Gets more information about the moderator that resolved the unban request.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUnbanRequestResolveEvent#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 
@@ -107,6 +113,9 @@ export class EventSubChannelUnbanRequestResolveEvent extends DataObject<EventSub
 	 * Gets more information about the user that requested to be unbanned.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUnbanRequestResolveEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

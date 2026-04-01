@@ -118,26 +118,38 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 	/** @private */
 	abstract get id(): string;
 
-	protected abstract _subscribe(): Promise<HelixEventSubSubscription>;
+	protected abstract _subscribe(): Promise<HelixEventSubSubscription | undefined>;
 
 	protected abstract transformData(response: unknown): T;
 
 	private _subscribeAndSave() {
-		this._subscribe().then(
-			data => {
-				this._twitchSubscriptionData = data;
-				this._client._registerTwitchSubscription(this as EventSubSubscription, data);
-			},
-			e => {
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				this._client._logger.error(`Subscription ${this.id} failed to subscribe: ${(e as Error).message ?? e}`);
-				this._client._notifySubscriptionCreateError(this as EventSubSubscription, e);
-			},
+		this._client._notifySubscriptionActivate(
+			this as EventSubSubscription,
+			data => (this._twitchSubscriptionData = data),
 		);
+		if (this._client._config.managed) {
+			this._subscribe().then(
+				data => {
+					if (!data) {
+						throw new HellFreezesOverError('Should always have subscription data in managed mode');
+					}
+					this._twitchSubscriptionData = data;
+					this._client._registerTwitchSubscription(this as EventSubSubscription, data);
+				},
+				e => {
+					this._client._logger.error(
+						// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+						`Subscription ${this.id} failed to subscribe: ${(e as Error).message ?? e}`,
+					);
+					this._client._notifySubscriptionCreateError(this as EventSubSubscription, e);
+				},
+			);
+		}
 	}
 
 	private async _unsubscribe() {
-		if (this._twitchSubscriptionData) {
+		this._client._notifySubscriptionDeactivate(this as EventSubSubscription);
+		if (this._client._config.managed && this._twitchSubscriptionData) {
 			const subscriptionId = this._twitchSubscriptionData.id;
 			if (this._twitchSubscriptionData._transport.method === 'websocket') {
 				if (!this.authUserId) {
@@ -145,12 +157,12 @@ export abstract class EventSubSubscription</** @private */ T = unknown> {
 						`Trying to delete a websocket subscription that does not have user context (${this.id})`,
 					);
 				}
-				await this._client._apiClient.asUser(
+				await this._client._config.apiClient.asUser(
 					this.authUserId,
 					async ctx => await ctx.eventSub.deleteSubscription(subscriptionId),
 				);
 			} else {
-				await this._client._apiClient.withoutUser(
+				await this._client._config.apiClient.withoutUser(
 					async ctx => await ctx.eventSub.deleteSubscription(subscriptionId),
 				);
 			}

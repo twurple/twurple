@@ -2,10 +2,10 @@ import { Enumerable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { type EventSubAutoModMessagePart } from './common/EventSubAutoModMessage.external.js';
-import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus.js';
-import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason.js';
 import { EventSubAutoModMessageAutoMod } from './common/EventSubAutoModMessageAutoMod.js';
 import { EventSubAutoModMessageBlockedTerm } from './common/EventSubAutoModMessageBlockedTerm.js';
+import { type EventSubAutoModMessageHoldReason } from './common/EventSubAutoModMessageHoldReason.js';
+import { type EventSubAutoModResolutionStatus } from './common/EventSubAutoModResolutionStatus.js';
 import { type EventSubAutoModMessageUpdateV2EventData } from './EventSubAutoModMessageUpdateV2Event.external.js';
 
 /**
@@ -13,10 +13,10 @@ import { type EventSubAutoModMessageUpdateV2EventData } from './EventSubAutoModM
  */
 @rtfm<EventSubAutoModMessageUpdateV2Event>('eventsub-base', 'EventSubAutoModMessageUpdateV2Event', 'messageId')
 export class EventSubAutoModMessageUpdateV2Event extends DataObject<EventSubAutoModMessageUpdateV2EventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubAutoModMessageUpdateV2EventData, client: ApiClient) {
+	constructor(data: EventSubAutoModMessageUpdateV2EventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -46,6 +46,9 @@ export class EventSubAutoModMessageUpdateV2Event extends DataObject<EventSubAuto
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageUpdateV2Event#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -74,6 +77,9 @@ export class EventSubAutoModMessageUpdateV2Event extends DataObject<EventSubAuto
 	 * Gets more information about the moderator.
 	 */
 	async getModerator(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModeMessageUpdateV2Event#getModerator is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id));
 	}
 
@@ -102,6 +108,9 @@ export class EventSubAutoModMessageUpdateV2Event extends DataObject<EventSubAuto
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubAutoModMessageUpdateV2Event#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

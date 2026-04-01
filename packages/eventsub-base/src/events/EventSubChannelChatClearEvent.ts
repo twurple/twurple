@@ -8,10 +8,10 @@ import { type EventSubChannelChatClearEventData } from './EventSubChannelChatCle
  */
 @rtfm<EventSubChannelChatClearEvent>('eventsub-base', 'EventSubChannelChatClearEvent', 'broadcasterId')
 export class EventSubChannelChatClearEvent extends DataObject<EventSubChannelChatClearEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelChatClearEventData, client: ApiClient) {
+	constructor(data: EventSubChannelChatClearEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -41,6 +41,9 @@ export class EventSubChannelChatClearEvent extends DataObject<EventSubChannelCha
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelChatClearEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 }

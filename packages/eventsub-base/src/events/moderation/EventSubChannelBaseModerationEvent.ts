@@ -1,14 +1,14 @@
+import { Enumerable } from '@d-fischer/shared-utils';
+import { type ApiClient, type HelixUser } from '@twurple/api';
 import { DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import {
 	type EventSubChannelBaseModerationEventData,
 	type EventSubChannelModerationAction,
 } from './EventSubChannelModerationEvent.external.js';
-import { type ApiClient, type HelixUser } from '@twurple/api';
-import { Enumerable } from '@d-fischer/shared-utils';
 
 @rtfm<EventSubChannelBaseModerationEvent>('eventsub-base', 'EventSubChannelBaseModerationEvent', 'broadcasterId')
 export abstract class EventSubChannelBaseModerationEvent extends DataObject<EventSubChannelBaseModerationEventData> {
-	/** @internal */ @Enumerable(false) protected readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) protected readonly _client?: ApiClient;
 
 	/**
 	 * The moderation action performed in the channel's chat.
@@ -16,7 +16,7 @@ export abstract class EventSubChannelBaseModerationEvent extends DataObject<Even
 	abstract readonly moderationAction: EventSubChannelModerationAction;
 
 	/** @internal */
-	constructor(data: EventSubChannelBaseModerationEventData, client: ApiClient) {
+	constructor(data: EventSubChannelBaseModerationEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -46,6 +46,9 @@ export abstract class EventSubChannelBaseModerationEvent extends DataObject<Even
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelBaseModerationEvent#getBroadcaster is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id);
 	}
 
@@ -74,6 +77,9 @@ export abstract class EventSubChannelBaseModerationEvent extends DataObject<Even
 	 * Gets more information about the broadcaster.
 	 */
 	async getModerator(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelBaseModerationEvent#getModerator is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].moderator_user_id);
 	}
 }

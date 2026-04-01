@@ -13,10 +13,10 @@ import { type EventSubChannelPredictionProgressEventData } from './EventSubChann
 	'broadcasterId',
 )
 export class EventSubChannelPredictionProgressEvent extends DataObject<EventSubChannelPredictionProgressEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelPredictionProgressEventData, client: ApiClient) {
+	constructor(data: EventSubChannelPredictionProgressEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -53,6 +53,9 @@ export class EventSubChannelPredictionProgressEvent extends DataObject<EventSubC
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelPredictionProgressEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

@@ -18,14 +18,14 @@ import { EventSubWsSocket } from './EventSubWsSocket.js';
  *
  * @inheritDoc
  */
-export interface EventSubWsConfig extends EventSubBaseConfig {
+export type EventSubWsConfig = EventSubBaseConfig & {
 	/**
 	 * The URL to connect to initially.
 	 *
 	 * Can be used to connect to a test server, for example one created by the Twitch CLI.
 	 */
 	url?: string;
-}
+};
 
 /**
  * A WebSocket listener for the Twitch EventSub event distribution mechanism.
@@ -49,6 +49,14 @@ export class EventSubWsListener extends EventSubBase implements EventSubListener
 	 * @param userId The ID of the user.
 	 */
 	readonly onUserSocketConnect = this.registerEvent<[userId: string]>();
+
+	/**
+	 * Fires when a user socket is ready to accept subscriptions.
+	 *
+	 * @param userId The ID of the user.
+	 * @param sessionId The session ID of the socket.
+	 */
+	readonly onUserSocketReady = this.registerEvent<[userId: string, sessionId: string]>();
 
 	/**
 	 * Fires when a user socket has disconnected from the EventSub server.
@@ -175,6 +183,14 @@ To do so, set the \`TWURPLE_MOCK_API_PORT\` environment variable to the port the
 	/** @internal */
 	_notifySocketConnect(socket: EventSubWsSocket): void {
 		this.emit(this.onUserSocketConnect, socket.userId);
+	}
+
+	/** @internal */
+	_notifySocketReady(socket: EventSubWsSocket): void {
+		if (!socket.sessionId) {
+			throw new HellFreezesOverError(`socket for use ${socket.userId} notified ready without session ID set`);
+		}
+		this.emit(this.onUserSocketReady, socket.userId, socket.sessionId);
 	}
 
 	/** @internal */

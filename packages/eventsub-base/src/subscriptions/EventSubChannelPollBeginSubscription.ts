@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelPollBeginEvent } from '../events/EventSubChannelPollBeginEvent.js';
 import { type EventSubChannelPollBeginEventData } from '../events/EventSubChannelPollBeginEvent.external.js';
+import { EventSubChannelPollBeginEvent } from '../events/EventSubChannelPollBeginEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubChannelPollBeginSubscription extends EventSubSubscription<E
 	}
 
 	protected transformData(data: EventSubChannelPollBeginEventData): EventSubChannelPollBeginEvent {
-		return new EventSubChannelPollBeginEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelPollBeginEvent(data, this._client._config.apiClient)
+			: new EventSubChannelPollBeginEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelPollBeginEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelPollBeginEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

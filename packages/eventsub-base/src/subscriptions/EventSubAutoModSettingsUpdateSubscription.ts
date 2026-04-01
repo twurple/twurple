@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
+import { type EventSubAutoModSettingsUpdateEventData } from '../events/EventSubAutoModSettingsUpdateEvent.external.js';
+import { EventSubAutoModSettingsUpdateEvent } from '../events/EventSubAutoModSettingsUpdateEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
-import { EventSubAutoModSettingsUpdateEvent } from '../events/EventSubAutoModSettingsUpdateEvent.js';
-import { type EventSubAutoModSettingsUpdateEventData } from '../events/EventSubAutoModSettingsUpdateEvent.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -28,17 +28,21 @@ export class EventSubAutoModSettingsUpdateSubscription extends EventSubSubscript
 	}
 
 	protected transformData(data: EventSubAutoModSettingsUpdateEventData): EventSubAutoModSettingsUpdateEvent {
-		return new EventSubAutoModSettingsUpdateEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubAutoModSettingsUpdateEvent(data, this._client._config.apiClient)
+			: new EventSubAutoModSettingsUpdateEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._moderatorId,
-			async ctx =>
-				await ctx.eventSub.subscribeToAutoModSettingsUpdateEvents(
-					this._broadcasterId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._moderatorId,
+					async ctx =>
+						await ctx.eventSub.subscribeToAutoModSettingsUpdateEvents(
+							this._broadcasterId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }

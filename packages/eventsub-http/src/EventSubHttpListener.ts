@@ -25,12 +25,12 @@ export interface EventSubHttpListenerCertificateConfig {
  *
  * @inheritDoc
  */
-export interface EventSubHttpListenerConfig extends EventSubHttpBaseConfig {
+export type EventSubHttpListenerConfig = EventSubHttpBaseConfig & {
 	/**
 	 * The connection adapter responsible for the configuration of the connection method.
 	 */
 	adapter: ConnectionAdapter;
-}
+};
 
 /**
  * An HTTP listener for the Twitch EventSub event distribution mechanism.

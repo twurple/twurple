@@ -2,19 +2,19 @@ import { Enumerable, mapNullable } from '@d-fischer/shared-utils';
 import type { ApiClient, HelixUser } from '@twurple/api';
 import { checkRelationAssertion, DataObject, rawDataSymbol, rtfm } from '@twurple/common';
 import { EventSubChannelHypeTrainContribution } from './common/EventSubChannelHypeTrainContribution.js';
-import { type EventSubChannelHypeTrainBeginV2EventData } from './EventSubChannelHypeTrainBeginV2Event.external.js';
-import type { EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType.js';
 import { EventSubChannelHypeTrainSharedParticipant } from './common/EventSubChannelHypeTrainSharedParticipant.js';
+import type { EventSubChannelHypeTrainType } from './common/EventSubChannelHypeTrainType.js';
+import { type EventSubChannelHypeTrainBeginV2EventData } from './EventSubChannelHypeTrainBeginV2Event.external.js';
 
 /**
  * An EventSub event representing a Hype Train starting in a channel.
  */
 @rtfm<EventSubChannelHypeTrainBeginV2Event>('eventsub-base', 'EventSubChannelHypeTrainBeginV2Event', 'broadcasterId')
 export class EventSubChannelHypeTrainBeginV2Event extends DataObject<EventSubChannelHypeTrainBeginV2EventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelHypeTrainBeginV2EventData, client: ApiClient) {
+	constructor(data: EventSubChannelHypeTrainBeginV2EventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -51,6 +51,9 @@ export class EventSubChannelHypeTrainBeginV2Event extends DataObject<EventSubCha
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelHypeTrainBeginV2Event#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 

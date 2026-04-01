@@ -8,10 +8,10 @@ import { type EventSubChannelUnbanRequestCreateEventData } from './EventSubChann
  */
 @rtfm<EventSubChannelUnbanRequestCreateEvent>('eventsub-base', 'EventSubChannelUnbanRequestCreateEvent', 'id')
 export class EventSubChannelUnbanRequestCreateEvent extends DataObject<EventSubChannelUnbanRequestCreateEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelUnbanRequestCreateEventData, client: ApiClient) {
+	constructor(data: EventSubChannelUnbanRequestCreateEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -48,6 +48,9 @@ export class EventSubChannelUnbanRequestCreateEvent extends DataObject<EventSubC
 	 * Gets more information about the broadcaster in which channel the unban request was created.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUnbanRequestCreateEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_user_id));
 	}
 
@@ -76,6 +79,9 @@ export class EventSubChannelUnbanRequestCreateEvent extends DataObject<EventSubC
 	 * Gets more information about the user that requested to be unbanned.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUnbanRequestCreateEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

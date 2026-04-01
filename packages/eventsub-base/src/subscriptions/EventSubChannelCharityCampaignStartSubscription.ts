@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelCharityCampaignStartEvent } from '../events/EventSubChannelCharityCampaignStartEvent.js';
 import { type EventSubChannelCharityCampaignStartEventData } from '../events/EventSubChannelCharityCampaignStartEvent.external.js';
+import { EventSubChannelCharityCampaignStartEvent } from '../events/EventSubChannelCharityCampaignStartEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -29,13 +29,17 @@ export class EventSubChannelCharityCampaignStartSubscription extends EventSubSub
 	protected transformData(
 		data: EventSubChannelCharityCampaignStartEventData,
 	): EventSubChannelCharityCampaignStartEvent {
-		return new EventSubChannelCharityCampaignStartEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelCharityCampaignStartEvent(data, this._client._config.apiClient)
+			: new EventSubChannelCharityCampaignStartEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelCharityCampaignStartEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelCharityCampaignStartEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

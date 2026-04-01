@@ -9,10 +9,10 @@ import { type EventSubChannelCharityDonationEventData } from './EventSubChannelC
  */
 @rtfm<EventSubChannelCharityDonationEvent>('eventsub-base', 'EventSubChannelCharityDonationEvent', 'broadcasterId')
 export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChannelCharityDonationEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubChannelCharityDonationEventData, client: ApiClient) {
+	constructor(data: EventSubChannelCharityDonationEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -49,6 +49,9 @@ export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChan
 	 * Gets more information about the broadcaster.
 	 */
 	async getBroadcaster(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelCharityDonationEvent#getBroadcaster is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].broadcaster_id));
 	}
 
@@ -77,6 +80,9 @@ export class EventSubChannelCharityDonationEvent extends DataObject<EventSubChan
 	 * Gets more information about the donating user.
 	 */
 	async getDonor(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubChannelCharityDonationEvent#getDonor is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].user_id));
 	}
 

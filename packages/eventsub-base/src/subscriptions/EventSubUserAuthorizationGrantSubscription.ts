@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubUserAuthorizationGrantEvent } from '../events/EventSubUserAuthorizationGrantEvent.js';
 import { type EventSubUserAuthorizationGrantEventData } from '../events/EventSubUserAuthorizationGrantEvent.external.js';
+import { EventSubUserAuthorizationGrantEvent } from '../events/EventSubUserAuthorizationGrantEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -24,13 +24,17 @@ export class EventSubUserAuthorizationGrantSubscription extends EventSubSubscrip
 	}
 
 	protected transformData(data: EventSubUserAuthorizationGrantEventData): EventSubUserAuthorizationGrantEvent {
-		return new EventSubUserAuthorizationGrantEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubUserAuthorizationGrantEvent(data, this._client._config.apiClient)
+			: new EventSubUserAuthorizationGrantEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToUserAuthorizationGrantEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToUserAuthorizationGrantEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

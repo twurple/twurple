@@ -41,6 +41,9 @@ export class EventSubChannelUntimeoutModerationEvent extends EventSubChannelBase
 	 * Gets more information about the user.
 	 */
 	async getUser(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error('EventSubChannelUntimeoutModerationEvent#getUser is not supported in this context');
+		}
 		return await this._client.users.getUserById(this[rawDataSymbol].untimeout.user_id);
 	}
 }

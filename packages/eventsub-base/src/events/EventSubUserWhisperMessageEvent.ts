@@ -8,10 +8,10 @@ import { type EventSubUserWhisperMessageEventData } from './EventSubUserWhisperM
  */
 @rtfm<EventSubUserWhisperMessageEvent>('eventsub-base', 'EventSubUserWhisperMessageEvent', 'id')
 export class EventSubUserWhisperMessageEvent extends DataObject<EventSubUserWhisperMessageEventData> {
-	/** @internal */ @Enumerable(false) private readonly _client: ApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: ApiClient;
 
 	/** @internal */
-	constructor(data: EventSubUserWhisperMessageEventData, client: ApiClient) {
+	constructor(data: EventSubUserWhisperMessageEventData, client?: ApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -48,6 +48,9 @@ export class EventSubUserWhisperMessageEvent extends DataObject<EventSubUserWhis
 	 * Gets more information about the user received the whisper message.
 	 */
 	async getUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubUserWhisperMessageEvent#getUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].to_user_id));
 	}
 
@@ -76,6 +79,9 @@ export class EventSubUserWhisperMessageEvent extends DataObject<EventSubUserWhis
 	 * Gets more information about the user sent the whisper message.
 	 */
 	async getSenderUser(): Promise<HelixUser> {
+		if (!this._client) {
+			throw new Error('EventSubUserWhisperMessageEvent#getSenderUser is not supported in this context');
+		}
 		return checkRelationAssertion(await this._client.users.getUserById(this[rawDataSymbol].from_user_id));
 	}
 

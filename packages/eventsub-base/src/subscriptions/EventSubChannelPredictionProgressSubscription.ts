@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelPredictionProgressEvent } from '../events/EventSubChannelPredictionProgressEvent.js';
 import { type EventSubChannelPredictionProgressEventData } from '../events/EventSubChannelPredictionProgressEvent.external.js';
+import { EventSubChannelPredictionProgressEvent } from '../events/EventSubChannelPredictionProgressEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -27,13 +27,17 @@ export class EventSubChannelPredictionProgressSubscription extends EventSubSubsc
 	}
 
 	protected transformData(data: EventSubChannelPredictionProgressEventData): EventSubChannelPredictionProgressEvent {
-		return new EventSubChannelPredictionProgressEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelPredictionProgressEvent(data, this._client._config.apiClient)
+			: new EventSubChannelPredictionProgressEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelPredictionProgressEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelPredictionProgressEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

@@ -1,7 +1,7 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
-import { EventSubChannelSubscriptionMessageEvent } from '../events/EventSubChannelSubscriptionMessageEvent.js';
 import { type EventSubChannelSubscriptionMessageEventData } from '../events/EventSubChannelSubscriptionMessageEvent.external.js';
+import { EventSubChannelSubscriptionMessageEvent } from '../events/EventSubChannelSubscriptionMessageEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -29,13 +29,17 @@ export class EventSubChannelSubscriptionMessageSubscription extends EventSubSubs
 	protected transformData(
 		data: EventSubChannelSubscriptionMessageEventData,
 	): EventSubChannelSubscriptionMessageEvent {
-		return new EventSubChannelSubscriptionMessageEvent(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubChannelSubscriptionMessageEvent(data, this._client._config.apiClient)
+			: new EventSubChannelSubscriptionMessageEvent(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.eventSub.subscribeToChannelSubscriptionMessageEvents(
-			this._userId,
-			await this._getTransportOptions(),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.eventSub.subscribeToChannelSubscriptionMessageEvents(
+					this._userId,
+					await this._getTransportOptions(),
+			  )
+			: undefined;
 	}
 }

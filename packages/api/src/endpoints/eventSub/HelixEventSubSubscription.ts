@@ -12,10 +12,10 @@ import {
  */
 @rtfm<HelixEventSubSubscription>('api', 'HelixEventSubSubscription', 'id')
 export class HelixEventSubSubscription extends DataObject<HelixEventSubSubscriptionData> {
-	/** @internal */ @Enumerable(false) private readonly _client: BaseApiClient;
+	/** @internal */ @Enumerable(false) private readonly _client?: BaseApiClient;
 
 	/** @internal */
-	constructor(data: HelixEventSubSubscriptionData, client: BaseApiClient) {
+	constructor(data: HelixEventSubSubscriptionData, client?: BaseApiClient) {
 		super(data);
 		this._client = client;
 	}
@@ -73,6 +73,9 @@ export class HelixEventSubSubscription extends DataObject<HelixEventSubSubscript
 	 * End the EventSub subscription.
 	 */
 	async unsubscribe(): Promise<void> {
+		if (!this._client) {
+			throw new Error('HelixEventSubSubscription#unsubscribe is not supported in this context');
+		}
 		await this._client.eventSub.deleteSubscription(this[rawDataSymbol].id);
 	}
 

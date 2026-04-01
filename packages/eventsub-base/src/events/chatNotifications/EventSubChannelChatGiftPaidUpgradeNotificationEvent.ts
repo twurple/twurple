@@ -49,9 +49,14 @@ export class EventSubChannelChatGiftPaidUpgradeNotificationEvent extends EventSu
 	 * Gets more information about the original gifter, or `null` if they're anonymous.
 	 */
 	async getGifter(): Promise<HelixUser | null> {
+		if (!this._client) {
+			throw new Error(
+				'EventSubChannelChatGiftPaidUpgradeNotificationEvent#getGifter is not supported in this context',
+			);
+		}
 		return await mapNullable(
 			this[rawDataSymbol].gift_paid_upgrade.gifter_user_id,
-			async id => await this._client.users.getUserById(id),
+			async id => await this._client!.users.getUserById(id),
 		);
 	}
 }

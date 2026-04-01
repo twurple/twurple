@@ -1,9 +1,9 @@
 import type { HelixEventSubSubscription } from '@twurple/api';
 import { rtfm } from '@twurple/common';
+import { type EventSubAutoModMessageHoldV2EventData } from '../events/EventSubAutoModMessageHoldV2Event.external.js';
+import { EventSubAutoModMessageHoldV2Event } from '../events/EventSubAutoModMessageHoldV2Event.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
-import { EventSubAutoModMessageHoldV2Event } from '../events/EventSubAutoModMessageHoldV2Event.js';
-import { type EventSubAutoModMessageHoldV2EventData } from '../events/EventSubAutoModMessageHoldV2Event.external.js';
 
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
@@ -28,17 +28,21 @@ export class EventSubAutoModMessageHoldV2Subscription extends EventSubSubscripti
 	}
 
 	protected transformData(data: EventSubAutoModMessageHoldV2EventData): EventSubAutoModMessageHoldV2Event {
-		return new EventSubAutoModMessageHoldV2Event(data, this._client._apiClient);
+		return this._client._config.managed
+			? new EventSubAutoModMessageHoldV2Event(data, this._client._config.apiClient)
+			: new EventSubAutoModMessageHoldV2Event(data);
 	}
 
-	protected async _subscribe(): Promise<HelixEventSubSubscription> {
-		return await this._client._apiClient.asUser(
-			this._moderatorId,
-			async ctx =>
-				await ctx.eventSub.subscribeToAutoModMessageHoldV2Events(
-					this._broadcasterId,
-					await this._getTransportOptions(),
-				),
-		);
+	protected async _subscribe(): Promise<HelixEventSubSubscription | undefined> {
+		return this._client._config.managed
+			? await this._client._config.apiClient.asUser(
+					this._moderatorId,
+					async ctx =>
+						await ctx.eventSub.subscribeToAutoModMessageHoldV2Events(
+							this._broadcasterId,
+							await this._getTransportOptions(),
+						),
+			  )
+			: undefined;
 	}
 }
