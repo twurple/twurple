@@ -340,7 +340,13 @@ export abstract class EventSubBase extends EventEmitter {
 	constructor(config: EventSubBaseConfig) {
 		super();
 
-		this._config = config;
+		this._config =
+			config.managed == null
+				? {
+						...config,
+						managed: true,
+				  }
+				: config;
 		this._logger = createLogger({
 			name: 'twurple:eventsub',
 			...config.logger,
