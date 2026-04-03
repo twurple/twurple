@@ -40,6 +40,7 @@ export { EventSubChannelChatPayItForwardNotificationEvent } from './events/chatN
 export { EventSubChannelChatAnnouncementNotificationEvent } from './events/chatNotifications/EventSubChannelChatAnnouncementNotificationEvent.js';
 export { EventSubChannelChatCharityDonationNotificationEvent } from './events/chatNotifications/EventSubChannelChatCharityDonationNotificationEvent.js';
 export { EventSubChannelChatBitsBadgeTierNotificationEvent } from './events/chatNotifications/EventSubChannelChatBitsBadgeTierNotificationEvent.js';
+export { EventSubChannelChatWatchStreakNotificationEvent } from './events/chatNotifications/EventSubChannelChatWatchStreakNotificationEvent.js';
 export { EventSubChannelChatSharedChatSubNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatSubNotificationEvent.js';
 export { EventSubChannelChatSharedChatResubNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatResubNotificationEvent.js';
 export { EventSubChannelChatSharedChatSubGiftNotificationEvent } from './events/chatNotifications/EventSubChannelChatSharedChatSubGiftNotificationEvent.js';
