@@ -23,6 +23,7 @@ import { EventSubChannelChatSharedChatSubNotificationEvent } from '../events/cha
 import { EventSubChannelChatSubGiftNotificationEvent } from '../events/chatNotifications/EventSubChannelChatSubGiftNotificationEvent.js';
 import { EventSubChannelChatSubNotificationEvent } from '../events/chatNotifications/EventSubChannelChatSubNotificationEvent.js';
 import { EventSubChannelChatUnraidNotificationEvent } from '../events/chatNotifications/EventSubChannelChatUnraidNotificationEvent.js';
+import { EventSubChannelChatWatchStreakNotificationEvent } from '../events/chatNotifications/EventSubChannelChatWatchStreakNotificationEvent.js';
 import type { EventSubBase } from '../EventSubBase.js';
 import { EventSubSubscription } from './EventSubSubscription.js';
 
@@ -109,6 +110,11 @@ export class EventSubChannelChatNotificationSubscription extends EventSubSubscri
 				return this._client._config.managed
 					? new EventSubChannelChatBitsBadgeTierNotificationEvent(data, this._client._config.apiClient)
 					: new EventSubChannelChatBitsBadgeTierNotificationEvent(data);
+
+			case 'watch_streak':
+				return this._client._config.managed
+					? new EventSubChannelChatWatchStreakNotificationEvent(data, this._client._config.apiClient)
+					: new EventSubChannelChatWatchStreakNotificationEvent(data);
 
 			case 'shared_chat_sub':
 				return this._client._config.managed
