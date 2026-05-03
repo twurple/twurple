@@ -52,7 +52,7 @@ export interface HelixBanUserRequest {
 	/**
 	 * The reason why the user is being timed out/banned.
 	 */
-	reason: string;
+	reason?: string;
 
 	/**
 	 * The user who is to be banned/timed out.
