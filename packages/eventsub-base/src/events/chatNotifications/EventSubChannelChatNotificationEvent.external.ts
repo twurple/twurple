@@ -14,6 +14,7 @@ export type EventSubChannelChatNotificationType =
 	| 'announcement'
 	| 'bits_badge_tier'
 	| 'charity_donation'
+	| 'watch_streak'
 	| 'shared_chat_sub'
 	| 'shared_chat_resub'
 	| 'shared_chat_sub_gift'
@@ -213,6 +214,19 @@ export interface EventSubChannelChatBitsBadgeTierNotificationEventData
 }
 
 /** @private */
+interface EventSubChannelChatWatchStreakNotificationPayload {
+	streak_count: number;
+	channel_points_awarded: number;
+}
+
+/** @private */
+export interface EventSubChannelChatWatchStreakNotificationEventData
+	extends EventSubChannelChatBaseNotificationEventData {
+	notice_type: 'watch_streak';
+	watch_streak: EventSubChannelChatWatchStreakNotificationPayload;
+}
+
+/** @private */
 export interface EventSubChannelChatSharedChatSubNotificationEventData
 	extends EventSubChannelChatBaseNotificationEventData {
 	notice_type: 'shared_chat_sub';
@@ -289,6 +303,7 @@ export type EventSubChannelChatNotificationEventData =
 	| EventSubChannelChatAnnouncementNotificationEventData
 	| EventSubChannelChatCharityDonationNotificationEventData
 	| EventSubChannelChatBitsBadgeTierNotificationEventData
+	| EventSubChannelChatWatchStreakNotificationEventData
 	| EventSubChannelChatSharedChatSubNotificationEventData
 	| EventSubChannelChatSharedChatResubNotificationEventData
 	| EventSubChannelChatSharedChatSubGiftNotificationEventData
