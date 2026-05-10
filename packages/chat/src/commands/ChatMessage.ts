@@ -42,6 +42,13 @@ export class ChatMessage extends MessageTypes.Commands.PrivateMessage {
 	}
 
 	/**
+	 * The ID of the channel the message was sent from. This is different from `channelId` in case Shared Chat is used.
+	 */
+	get sourceChannelId(): string | null {
+		return this._tags.get('source-room-id') ?? null;
+	}
+
+	/**
 	 * Whether the message is a cheer.
 	 */
 	get isCheer(): boolean {
