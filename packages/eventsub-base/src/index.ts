@@ -22,6 +22,7 @@ export { EventSubChannelChatClearEvent } from './events/EventSubChannelChatClear
 export { EventSubChannelChatClearUserMessagesEvent } from './events/EventSubChannelChatClearUserMessagesEvent.js';
 export { EventSubChannelChatMessageDeleteEvent } from './events/EventSubChannelChatMessageDeleteEvent.js';
 export { EventSubChannelChatMessageEvent } from './events/EventSubChannelChatMessageEvent.js';
+export { EventSubChannelCustomPowerUpAddEvent } from './events/EventSubChannelCustomPowerUpAddEvent.js';
 
 export {
 	type EventSubChannelChatNotificationType,
