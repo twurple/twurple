@@ -34,6 +34,8 @@ export type {
 	HelixCreateCustomRewardData,
 } from './interfaces/endpoints/channelPoints.input.js';
 
+export { HelixCustomPowerUp } from './endpoints/bits/HelixCustomPowerUp.js';
+
 export { HelixCharityApi } from './endpoints/charity/HelixCharityApi.js';
 export { HelixCharityCampaign } from './endpoints/charity/HelixCharityCampaign.js';
 export { HelixCharityCampaignDonation } from './endpoints/charity/HelixCharityCampaignDonation.js';

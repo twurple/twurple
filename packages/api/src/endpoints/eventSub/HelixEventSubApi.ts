@@ -855,6 +855,48 @@ export class HelixEventSubApi extends BaseApi {
 	}
 
 	/**
+	 * Subscribe to events that represent a Power Up reward being redeemed.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to Power Up events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPowerUpAddEvents(
+		broadcaster: UserIdResolvable,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.custom_power_up_redemption.add',
+			'1',
+			createEventSubBroadcasterCondition(broadcaster),
+			transport,
+			broadcaster,
+			['bits:read'],
+		);
+	}
+
+	/**
+	 * Subscribe to events that represent a specific Power Up reward being redeemed.
+	 *
+	 * @param broadcaster The broadcaster you want to listen to Power Up events for.
+	 * @param rewardId The ID of the reward you want to listen to Power Up events for.
+	 * @param transport The transport options.
+	 */
+	async subscribeToChannelPowerUpAddEventsForReward(
+		broadcaster: UserIdResolvable,
+		rewardId: string,
+		transport: HelixEventSubTransportOptions,
+	): Promise<HelixEventSubSubscription> {
+		return await this.createSubscription(
+			'channel.custom_power_up_redemption.add',
+			'1',
+			createEventSubRewardCondition(broadcaster, rewardId),
+			transport,
+			broadcaster,
+			['bits:read'],
+		);
+	}
+
+	/**
 	 * Subscribe to events that represent a Channel Points redemption being updated.
 	 *
 	 * @param broadcaster The broadcaster you want to listen to redemption update events for.

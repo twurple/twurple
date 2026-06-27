@@ -10,6 +10,13 @@ import { type HelixBitsLeaderboardQuery } from '../../interfaces/endpoints/bits.
 import { BaseApi } from '../BaseApi.js';
 import { HelixBitsLeaderboard } from './HelixBitsLeaderboard.js';
 import { HelixCheermoteList } from './HelixCheermoteList.js';
+import {
+	getAllPowerUpsQuery,
+	getPowerUpQuery,
+	getPowerUpsQuery,
+	type HelixCustomPowerUpData,
+} from '../../interfaces/endpoints/powerUps.external.js';
+import { HelixCustomPowerUp } from './HelixCustomPowerUp.js';
 
 /**
  * The Helix API methods that deal with bits.
@@ -65,5 +72,75 @@ export class HelixBitsApi extends BaseApi {
 		});
 
 		return new HelixCheermoteList(result.data);
+	}
+
+	/**
+	 * Gets all custom power ups for the given broadcaster.
+	 *
+	 * @param broadcaster The broadcaster to get the power ups for.
+	 */
+	async getCustomPowerUps(broadcaster: UserIdResolvable): Promise<HelixCustomPowerUp[]> {
+		const result = await this._client.callApi<HelixResponse<HelixCustomPowerUpData>>({
+			type: 'helix',
+			url: 'bits/custom_power_ups',
+			userId: extractUserId(broadcaster),
+			scopes: ['bits:read'],
+			query: getAllPowerUpsQuery(broadcaster),
+		});
+
+		return result.data.map(data => new HelixCustomPowerUp(data, this._client));
+	}
+
+	/**
+	 * Gets custom power ups by ID.
+	 *
+	 * @param broadcaster The broadcaster to get the power ups for.
+	 * @param powerUpId The ID of the power up.
+	 */
+	async getCustomPowerUpsById(broadcaster: UserIdResolvable, powerUpId: string): Promise<HelixCustomPowerUp[]> {
+		if (!powerUpId) {
+			return [];
+		}
+		const result = await this._client.callApi<HelixResponse<HelixCustomPowerUpData>>({
+			type: 'helix',
+			url: 'bits/custom_power_ups',
+			userId: extractUserId(broadcaster),
+			scopes: ['bits:read'],
+			query: getPowerUpQuery(broadcaster, powerUpId),
+		});
+
+		return result.data.map(data => new HelixCustomPowerUp(data, this._client));
+	}
+
+	/**
+	 * Gets custom power ups by IDs.
+	 *
+	 * @param broadcaster The broadcaster to get the power ups for.
+	 * @param powerUpIds The IDs of the power ups.
+	 */
+	async getCustomPowerUpsByIds(broadcaster: UserIdResolvable, powerUpIds: string[]): Promise<HelixCustomPowerUp[]> {
+		if (!powerUpIds.length) {
+			return [];
+		}
+		const result = await this._client.callApi<HelixResponse<HelixCustomPowerUpData>>({
+			type: 'helix',
+			url: 'bits/custom_power_ups',
+			userId: extractUserId(broadcaster),
+			scopes: ['bits:read'],
+			query: getPowerUpsQuery(broadcaster, powerUpIds),
+		});
+
+		return result.data.map(data => new HelixCustomPowerUp(data, this._client));
+	}
+
+	/**
+	 * Gets a custom power up by ID.
+	 *
+	 * @param broadcaster The broadcaster to get the power up for.
+	 * @param powerUpId The ID of the power up.
+	 */
+	async getCustomPowerUpById(broadcaster: UserIdResolvable, powerUpId: string): Promise<HelixCustomPowerUp | null> {
+		const powerUps = await this.getCustomPowerUpsById(broadcaster, powerUpId);
+		return powerUps.length ? powerUps[0] : null;
 	}
 }
