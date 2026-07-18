@@ -2,9 +2,13 @@ import type { Logger } from '@d-fischer/logger';
 import { callTwitchApi, HttpStatusCodeError } from '@twurple/api-call';
 import type { AccessToken } from './AccessToken.js';
 import { type AccessTokenData } from './AccessToken.external.js';
+import type { DeviceCodeInfo } from './DeviceCode.js';
+import { type DeviceCodeData } from './DeviceCode.external.js';
 import { InvalidTokenError } from './errors/InvalidTokenError.js';
 import { InvalidTokenTypeError } from './errors/InvalidTokenTypeError.js';
 import {
+	createDeviceCodeQuery,
+	createExchangeDeviceCodeQuery,
 	createExchangeCodeQuery,
 	createGetAppTokenQuery,
 	createRefreshTokenQuery,
@@ -22,6 +26,17 @@ function createAccessTokenFromData(data: AccessTokenData): AccessToken {
 		scope: data.scope ?? [],
 		expiresIn: data.expires_in ?? null,
 		obtainmentTimestamp: Date.now(),
+	};
+}
+
+/** @internal */
+function createDeviceCodeInfoFromData(data: DeviceCodeData): DeviceCodeInfo {
+	return {
+		deviceCode: data.device_code,
+		userCode: data.user_code,
+		verificationUri: data.verification_uri,
+		expiresIn: data.expires_in,
+		interval: data.interval,
 	};
 }
 
@@ -52,6 +67,41 @@ export async function exchangeCode(
 }
 
 /**
+ * Starts the Device Code Flow.
+ *
+ * @param clientId The client ID of your application.
+ * @param scopes The scopes to request.
+ */
+export async function startDeviceCodeFlow(clientId: string, scopes: string[]): Promise<DeviceCodeInfo> {
+	return createDeviceCodeInfoFromData(
+		await callTwitchApi<DeviceCodeData>({
+			type: 'auth',
+			url: 'device',
+			method: 'POST',
+			query: createDeviceCodeQuery(clientId, scopes),
+		}),
+	);
+}
+
+/**
+ * Exchanges a device code for an access token.
+ *
+ * @param clientId The client ID of your application.
+ * @param deviceCode The device code returned by {@link startDeviceCodeFlow}.
+ * @param scopes The scopes requested when starting the Device Code Flow.
+ */
+export async function exchangeDeviceCode(clientId: string, deviceCode: string, scopes: string[]): Promise<AccessToken> {
+	return createAccessTokenFromData(
+		await callTwitchApi<AccessTokenData>({
+			type: 'auth',
+			url: 'token',
+			method: 'POST',
+			query: createExchangeDeviceCodeQuery(clientId, deviceCode, scopes),
+		}),
+	);
+}
+
+/**
  * Gets an app access token with your client credentials.
  *
  * @param clientId The client ID of your application.
@@ -69,15 +119,17 @@ export async function getAppToken(clientId: string, clientSecret: string): Promi
 }
 
 /**
- * Refreshes an expired access token with your client credentials and the refresh token that was given by the initial authentication.
+ * Refreshes an expired access token using a refresh token.
+ *
+ * Public clients using Device Code Flow do not need a client secret.
  *
  * @param clientId The client ID of your application.
- * @param clientSecret The client secret of your application.
+ * @param clientSecret The client secret, or `undefined` for public clients.
  * @param refreshToken The refresh token.
  */
 export async function refreshUserToken(
 	clientId: string,
-	clientSecret: string,
+	clientSecret: string | undefined,
 	refreshToken: string,
 ): Promise<AccessToken> {
 	return createAccessTokenFromData(

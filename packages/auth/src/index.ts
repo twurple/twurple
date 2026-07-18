@@ -7,6 +7,7 @@ export type {
 export { accessTokenIsExpired, getExpiryDateOfAccessToken } from './AccessToken.js';
 
 export {
+	exchangeDeviceCode,
 	exchangeCode,
 	getAppToken,
 	getTokenInfo,
@@ -14,8 +15,10 @@ export {
 	getValidTokenFromProviderForIntent,
 	refreshUserToken,
 	revokeToken,
+	startDeviceCodeFlow,
 } from './helpers.js';
 
+export type { DeviceCodeInfo } from './DeviceCode.js';
 export { TokenFetcher } from './TokenFetcher.js';
 export { TokenInfo } from './TokenInfo.js';
 export type { TokenInfoData } from './TokenInfo.external.js';

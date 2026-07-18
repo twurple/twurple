@@ -7,6 +7,7 @@ import {
 	type AccessTokenMaybeWithUserId,
 	type AccessTokenWithUserId,
 } from '../AccessToken.js';
+import type { DeviceCodeInfo } from '../DeviceCode.js';
 import { CachedRefreshFailureError } from '../errors/CachedRefreshFailureError.js';
 import { IntermediateUserRemovalError } from '../errors/IntermediateUserRemovalError.js';
 import { InvalidTokenError } from '../errors/InvalidTokenError.js';
@@ -15,10 +16,12 @@ import { UnknownIntentError } from '../errors/UnknownIntentError.js';
 import {
 	compareScopeSets,
 	exchangeCode,
+	exchangeDeviceCode,
 	getAppToken,
 	getTokenInfo,
 	loadAndCompareTokenInfo,
 	refreshUserToken,
+	startDeviceCodeFlow,
 } from '../helpers.js';
 import { TokenFetcher } from '../TokenFetcher.js';
 import { type TokenInfo } from '../TokenInfo.js';
@@ -35,8 +38,10 @@ export interface RefreshingAuthProviderConfig {
 
 	/**
 	 * The client secret of your application.
+	 *
+	 * Only required if you use `addUserForCode` or app access tokens.
 	 */
-	clientSecret: string;
+	clientSecret?: string;
 
 	/**
 	 * A valid redirect URI for your application.
@@ -58,7 +63,7 @@ export interface RefreshingAuthProviderConfig {
 @rtfm<RefreshingAuthProvider>('auth', 'RefreshingAuthProvider', 'clientId')
 export class RefreshingAuthProvider extends EventEmitter implements AuthProvider {
 	private readonly _clientId: string;
-	/** @internal */ @Enumerable(false) private readonly _clientSecret: string;
+	/** @internal */ @Enumerable(false) private readonly _clientSecret?: string;
 	private readonly _redirectUri?: string;
 	/** @internal */ @Enumerable(false) private readonly _userAccessTokens = new Map<
 		string,
@@ -218,7 +223,33 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 		if (!this._redirectUri) {
 			throw new Error('This method requires you to pass a `redirectUri` as a configuration property');
 		}
-		const token = await exchangeCode(this._clientId, this._clientSecret, code, this._redirectUri);
+		const token = await exchangeCode(this._clientId, this._getClientSecretForCodeFlow(), code, this._redirectUri);
+
+		return await this.addUserForToken(token, intents);
+	}
+
+	/**
+	 * Starts the Device Code Flow.
+	 *
+	 * @param scopes The scopes to request.
+	 */
+	async startDeviceCodeFlow(scopes: string[]): Promise<DeviceCodeInfo> {
+		return await startDeviceCodeFlow(this._clientId, scopes);
+	}
+
+	/**
+	 * Gets an OAuth token from the given device code and adds the user to the provider.
+	 *
+	 * A device code can be obtained using the Device Code Flow.
+	 *
+	 * @param deviceCode The device code.
+	 * @param scopes The scopes requested when starting the Device Code Flow.
+	 * @param intents The intents to add to the user.
+	 *
+	 * Any intents that were already set before will be overwritten to point to the associated user instead.
+	 */
+	async addUserForDeviceCode(deviceCode: string, scopes: string[], intents?: string[]): Promise<string> {
+		const token = await exchangeDeviceCode(this._clientId, deviceCode, scopes);
 
 		return await this.addUserForToken(token, intents);
 	}
@@ -565,6 +596,22 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	}
 
 	private async _refreshAppToken(): Promise<AccessToken> {
-		return (this._appAccessToken = await getAppToken(this._clientId, this._clientSecret));
+		return (this._appAccessToken = await getAppToken(this._clientId, this._getClientSecretForAppToken()));
+	}
+
+	private _getClientSecretForCodeFlow(): string {
+		if (!this._clientSecret) {
+			throw new Error('This method requires you to pass a `clientSecret` as a configuration property');
+		}
+
+		return this._clientSecret;
+	}
+
+	private _getClientSecretForAppToken(): string {
+		if (!this._clientSecret) {
+			throw new Error('App access tokens require you to pass a `clientSecret` as a configuration property');
+		}
+
+		return this._clientSecret;
 	}
 }
