@@ -17,6 +17,11 @@ export class AppTokenAuthProvider implements AuthProvider {
 	private readonly _impliedScopes: string[];
 
 	/**
+	 * Whether the provider has access to a client secret.
+	 */
+	readonly hasClientSecret = true;
+
+	/**
 	 * Creates a new auth provider to receive an application token with using the client ID and secret.
 	 *
 	 * @param clientId The client ID of your application.

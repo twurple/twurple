@@ -20,6 +20,13 @@ export interface AuthProvider {
 	readonly clientId: string;
 
 	/**
+	 * Whether the provider has access to a client secret.
+	 *
+	 * This is optional for providers that can not determine this.
+	 */
+	readonly hasClientSecret?: boolean;
+
+	/**
 	 * The type of Authorization header to send. Defaults to "Bearer".
 	 */
 	readonly authorizationType?: string;

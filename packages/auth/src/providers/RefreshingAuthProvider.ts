@@ -223,7 +223,10 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 		if (!this._redirectUri) {
 			throw new Error('This method requires you to pass a `redirectUri` as a configuration property');
 		}
-		const token = await exchangeCode(this._clientId, this._getClientSecretForCodeFlow(), code, this._redirectUri);
+		if (!this._clientSecret) {
+			throw new Error('This method requires you to pass a `clientSecret` as a configuration property');
+		}
+		const token = await exchangeCode(this._clientId, this._clientSecret, code, this._redirectUri);
 
 		return await this.addUserForToken(token, intents);
 	}
@@ -392,6 +395,13 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	 */
 	get clientId(): string {
 		return this._clientId;
+	}
+
+	/**
+	 * Whether the provider has access to a client secret.
+	 */
+	get hasClientSecret(): boolean {
+		return this._clientSecret !== undefined;
 	}
 
 	/**
@@ -596,22 +606,10 @@ export class RefreshingAuthProvider extends EventEmitter implements AuthProvider
 	}
 
 	private async _refreshAppToken(): Promise<AccessToken> {
-		return (this._appAccessToken = await getAppToken(this._clientId, this._getClientSecretForAppToken()));
-	}
-
-	private _getClientSecretForCodeFlow(): string {
-		if (!this._clientSecret) {
-			throw new Error('This method requires you to pass a `clientSecret` as a configuration property');
-		}
-
-		return this._clientSecret;
-	}
-
-	private _getClientSecretForAppToken(): string {
 		if (!this._clientSecret) {
 			throw new Error('App access tokens require you to pass a `clientSecret` as a configuration property');
 		}
 
-		return this._clientSecret;
+		return (this._appAccessToken = await getAppToken(this._clientId, this._clientSecret));
 	}
 }

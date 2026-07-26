@@ -82,6 +82,9 @@ export abstract class EventSubHttpBase extends EventSubBase {
 		if (config.secret.length < 10 || config.secret.length > 100) {
 			throw new Error('Your secret must be between 10 and 100 characters long');
 		}
+		if (config.managed !== false && config.apiClient._authProvider.hasClientSecret === false) {
+			throw new Error('EventSub over HTTP requires an auth provider with a client secret');
+		}
 		super(config);
 		this._secret = config.secret;
 		this._strictHostCheck = config.strictHostCheck ?? true;
