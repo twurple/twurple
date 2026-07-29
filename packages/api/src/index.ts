@@ -10,6 +10,7 @@ export { HelixBitsLeaderboardEntry } from './endpoints/bits/HelixBitsLeaderboard
 export { HelixCheermoteList } from './endpoints/bits/HelixCheermoteList.js';
 export { type HelixBitsLeaderboardQuery, type HelixBitsLeaderboardPeriod } from './interfaces/endpoints/bits.input.js';
 export type { CheermoteDisplayInfo } from './endpoints/bits/CheermoteDisplayInfo.js';
+export { HelixCustomPowerUp } from './endpoints/bits/HelixCustomPowerUp.js';
 
 export { HelixChannelApi } from './endpoints/channel/HelixChannelApi.js';
 export { HelixAdSchedule } from './endpoints/channel/HelixAdSchedule.js';
@@ -33,8 +34,6 @@ export type {
 	HelixUpdateCustomRewardData,
 	HelixCreateCustomRewardData,
 } from './interfaces/endpoints/channelPoints.input.js';
-
-export { HelixCustomPowerUp } from './endpoints/bits/HelixCustomPowerUp.js';
 
 export { HelixCharityApi } from './endpoints/charity/HelixCharityApi.js';
 export { HelixCharityCampaign } from './endpoints/charity/HelixCharityCampaign.js';
