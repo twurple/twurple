@@ -19,12 +19,30 @@ export function createGetAppTokenQuery(clientId: string, clientSecret: string) {
 }
 
 /** @internal */
-export function createRefreshTokenQuery(clientId: string, clientSecret: string, refreshToken: string) {
+export function createRefreshTokenQuery(clientId: string, clientSecret: string | undefined, refreshToken: string) {
 	return {
 		grant_type: 'refresh_token',
 		client_id: clientId,
 		client_secret: clientSecret,
 		refresh_token: refreshToken,
+	};
+}
+
+/** @internal */
+export function createDeviceCodeQuery(clientId: string, scopes: string[]) {
+	return {
+		client_id: clientId,
+		scopes: scopes.join(' '),
+	};
+}
+
+/** @internal */
+export function createExchangeDeviceCodeQuery(clientId: string, deviceCode: string, scopes: string[]) {
+	return {
+		grant_type: 'urn:ietf:params:oauth:grant-type:device_code',
+		client_id: clientId,
+		device_code: deviceCode,
+		scopes: scopes.join(' '),
 	};
 }
 

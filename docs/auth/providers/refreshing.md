@@ -57,10 +57,10 @@ If you already know the ID of the user you're adding, you can save a few interna
 authProvider.addUser('125328655', tokenData);
 ```
 
-## Getting the initial token using an OAuth code
+## Getting the initial token using the Authorization Code Grant Flow
 
-If you received an OAuth authorization code from Twitch's Authorization Code Flow,
-you can use that to directly get a suitable {@link AccessToken} object using the `exchangeToken` function:
+If you received an OAuth authorization code from Twitch's Authorization Code Grant Flow,
+you can use the `exchangeCode` function to get a suitable {@link AccessToken} object:
 
 ```ts twoslash
 // @module: esnext
@@ -75,3 +75,54 @@ const code = req.query.code; // get it from wherever
 const redirectUri = 'http://localhost'; // must match one of the URLs in the dev console exactly
 const tokenData = await exchangeCode(clientId, clientSecret, code, redirectUri);
 ```
+
+You can then add it to the provider:
+
+```ts
+await authProvider.addUserForToken(tokenData);
+```
+
+## Getting the initial token using Device Code Flow
+
+Device Code Flow is useful for apps where opening a redirect server is inconvenient, such as desktop apps,
+TV apps or command line tools.
+
+For apps running on open platforms like Windows, macOS or Linux, you should generally use Device Code Flow as a public
+client and avoid embedding a client secret in your application.
+
+Unlike the Authorization Code Grant Flow, Device Code Flow sends the requested scopes to Twitch's device endpoints
+instead of putting them in an authorization URL.
+Use the same scopes when starting the flow and when exchanging the device code.
+
+```ts twoslash
+// @module: esnext
+// @target: ES2017
+declare const clientId: string;
+// ---cut---
+import { startDeviceCodeFlow } from '@twurple/auth';
+
+const scopes = ['chat:read', 'chat:edit'];
+const deviceInfo = await startDeviceCodeFlow(clientId, scopes);
+
+console.log(`Go to ${deviceInfo.verificationUri} and enter ${deviceInfo.userCode}`);
+```
+
+After the user authorized your application, you can exchange the device code and add the resulting token to the provider:
+
+```ts twoslash
+// @module: esnext
+// @target: ES2017
+declare const clientId: string;
+declare const deviceInfo: { deviceCode: string };
+// ---cut---
+import { exchangeDeviceCode, RefreshingAuthProvider } from '@twurple/auth';
+
+const scopes = ['chat:read', 'chat:edit'];
+const authProvider = new RefreshingAuthProvider({ clientId });
+
+const tokenData = await exchangeDeviceCode(clientId, deviceInfo.deviceCode, scopes);
+await authProvider.addUserForToken(tokenData, ['chat']);
+```
+
+Public-client refresh tokens returned by Device Code Flow are one-time-use and expire after 30 days of inactivity.
+Always persist the newest token data from `onRefresh`, just like with other refreshing setups.
