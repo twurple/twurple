@@ -167,6 +167,8 @@ import { EventSubUserAuthorizationGrantSubscription } from './subscriptions/Even
 import { EventSubUserAuthorizationRevokeSubscription } from './subscriptions/EventSubUserAuthorizationRevokeSubscription.js';
 import { EventSubUserUpdateSubscription } from './subscriptions/EventSubUserUpdateSubscription.js';
 import { EventSubUserWhisperMessageSubscription } from './subscriptions/EventSubUserWhisperMessageSubscription.js';
+import { EventSubChannelCustomPowerUpRedemptionAddSubscription } from './subscriptions/EventSubChannelCustomPowerUpRedemptionAddSubscription.js';
+import type { EventSubChannelCustomPowerUpAddEvent } from './events/EventSubChannelCustomPowerUpAddEvent.js';
 
 const numberRegex = /^\d+$/;
 
@@ -946,6 +948,42 @@ export abstract class EventSubBase extends EventEmitter {
 		const userId = this._extractUserIdWithNumericWarning(user, 'onChannelAutomaticRewardRedemptionAddV2');
 
 		return this._genericSubscribe(EventSubChannelAutomaticRewardRedemptionAddV2Subscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represents a Custom Power Up being redeemed.
+	 *
+	 * @param user The user for which to get notifications for when their power ups are redeemed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelPowerUpRedemptionAdd(
+		user: UserIdResolvable,
+		handler: (data: EventSubChannelCustomPowerUpAddEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToChannelPowerUpRedemptionEvents');
+		return this._genericSubscribe(EventSubChannelCustomPowerUpRedemptionAddSubscription, handler, this, userId);
+	}
+
+	/**
+	 * Subscribes to events that represent a specific Custom Power Up being redeemed.
+	 *
+	 * @param user The user for which to get notifications when their power up is redeemed.
+	 * @param rewardId The ID of the power up for which to get notifications when it is redeemed.
+	 * @param handler The function that will be called for any new notifications.
+	 */
+	onChannelPowerUpRedemptionAddForReward(
+		user: UserIdResolvable,
+		rewardId: string,
+		handler: (data: EventSubChannelCustomPowerUpAddEvent) => void,
+	): EventSubSubscription {
+		const userId = this._extractUserIdWithNumericWarning(user, 'subscribeToRedemptionAddEventsForReward');
+		return this._genericSubscribe(
+			EventSubChannelCustomPowerUpRedemptionAddSubscription,
+			handler,
+			this,
+			userId,
+			rewardId,
+		);
 	}
 
 	/**
