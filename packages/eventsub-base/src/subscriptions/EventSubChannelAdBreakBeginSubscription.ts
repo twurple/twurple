@@ -8,7 +8,7 @@ import { EventSubSubscription } from './EventSubSubscription.js';
 /** @internal */
 @rtfm('eventsub-base', 'EventSubSubscription')
 export class EventSubChannelAdBreakBeginSubscription extends EventSubSubscription<EventSubChannelAdBreakBeginEvent> {
-	/** @protected */ readonly _cliName = 'ad-break-begin';
+	/** @protected */ readonly _cliName = 'channel.ad_break.begin';
 
 	constructor(
 		handler: (data: EventSubChannelAdBreakBeginEvent) => void,
