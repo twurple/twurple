@@ -16,21 +16,11 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v7
-      with:
-        fetch-depth: 2
-
-    - run: npm i -g npm@11.17.0
-
-    - run: git checkout HEAD^2
-      if: ${{ github.event_name == 'pull_request' }}
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
       with:
         languages: javascript
-
-    - run: |
-       npm i
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
