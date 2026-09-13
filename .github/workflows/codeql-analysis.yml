@@ -19,6 +19,8 @@ jobs:
       with:
         fetch-depth: 2
 
+    - run: npm i -g npm@11.17.0
+
     - run: git checkout HEAD^2
       if: ${{ github.event_name == 'pull_request' }}
 
