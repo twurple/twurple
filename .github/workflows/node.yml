@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Use Node.js 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
           node-version: 20
       - run: npm i
@@ -23,7 +23,7 @@ jobs:
       - name: Archive build assets
         run: tar cvf build-result.tar packages/*/lib
       - name: Save build assets
-        uses: actions/upload-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build-result
           path: build-result.tar
@@ -36,14 +36,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm i
       - name: Load build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build-result
       - name: Unarchive build assets
@@ -57,14 +57,14 @@ jobs:
       group: docs-${{ github.ref }}
       cancel-in-progress: true
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Use Node.js 20
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v7
         with:
           node-version: 20
       - run: npm i
       - name: Load build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: build-result
       - name: Unarchive build assets
