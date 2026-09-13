@@ -7,6 +7,7 @@
 		"moduleResolution": "node16",
 		"declaration": true,
 		"forceConsistentCasingInFileNames": true,
+		"skipLibCheck": true,
 		"noImplicitReturns": true,
 		"importHelpers": true,
 		"strict": true,
